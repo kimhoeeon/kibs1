@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mtf.kibs.mapper.CommMapper">
+
+    <select id="getCommCodeList" parameterType="com.mtf.kibs.dto.CommCodeDTO" resultType="com.mtf.kibs.dto.CommCodeDTO">
+        <!-- com.mtf.kibs.mapper.CommMapper.getCommCodeList -->
+        SELECT comm_cd_val
+        , use_yn
+        , cd_note_1
+        FROM comm_code
+        WHERE comm_cd_nm = #{commCdNm}
+        ORDER BY comm_cd_val ASC
+    </select>
+
+    <update id="updateFileDeleteUseN" parameterType="com.mtf.kibs.dto.FileDTO">
+        /* com.mtf.kibs.mapper.CommMapper.updateFileDeleteUseN */
+        UPDATE file
+        SET file_yn = 'N'
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateFileParentSeq" parameterType="com.mtf.kibs.dto.FileDTO">
+        /* com.mtf.kibs.mapper.CommMapper.updateFileParentSeq */
+        UPDATE file
+        SET user_id = #{userId}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectFileParentSeqList" parameterType="com.mtf.kibs.dto.FileDTO" resultType="com.mtf.kibs.dto.FileDTO">
+        /* com.mtf.poster.mapper.CommMapper.selectFileParentSeqList */
+        SELECT id
+             , user_id
+             , full_file_path
+             , full_path
+             , folder_path
+             , full_file_name
+             , uuid
+             , file_name
+             , file_yn
+             , note
+        FROM file
+        WHERE user_id = #{userId}
+          AND file_yn = 'Y'
+        ORDER BY id
+    </select>
+
+</mapper>
