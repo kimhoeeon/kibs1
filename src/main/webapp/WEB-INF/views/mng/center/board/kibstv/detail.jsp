@@ -2034,10 +2034,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">카테고리</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">카테고리</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <!--begin::Input-->
                                                     <select id="category" name="category" class="form-select form-select-solid" data-control="select2"
                                                             aria-label="- 카테고리 -" data-placeholder="- 카테고리 -" data-hide-search="true">
@@ -2063,10 +2063,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">제목</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제목</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" id="title" name="title" class="form-control form-control-lg form-control-solid-bg" placeholder="제목" value="<c:out value="${info.title}" escapeXml="true" />"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -2075,10 +2075,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">작성자</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">작성자</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" id="writer" name="writer" class="form-control form-control-lg form-control-solid-bg" placeholder="작성자" value="${info.writer eq null ? '관리자' : info.writer}"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -2087,10 +2087,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">작성일</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">작성일</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${info.writeDate}"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -2099,10 +2099,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">언어</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">언어</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <!--begin::Select2-->
                                                     <select id="lang" name="lang" class="form-select form-select-solid" data-control="select2" aria-label="- 언어 -" data-placeholder="- 언어 -" data-hide-search="true">
                                                         <option></option>
@@ -2118,7 +2118,7 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">추가 설정</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">추가 설정</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8 d-flex flex-wrap">
@@ -2138,10 +2138,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6 h-375px">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">내용</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <div id="quill_editor_content" class="h-325px">${info.content}</div>
                                                     <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true" />">
                                                 </div>
@@ -2151,10 +2151,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">YouTube 주소</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">YouTube 주소</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" id="youtubeUrl" name="youtubeUrl" class="form-control form-control-lg form-control-solid-bg" placeholder="Youtube 주소" value="${info.youtubeUrl}"/>
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7 mt-3">※ YouTube 영상 하단 "공유" 버튼을 클릭하여 열린 창의 주소를 복사하여 입력해주시기 바랍니다.</div>

@@ -2175,7 +2175,7 @@ if (document.documentElement) {
                     <!--begin::Input group-->
                     <div class="row mb-6">
                         <!--begin::Label-->
-                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">내용</label>
+                        <label class="col-lg-2 col-form-label required fw-semibold fs-6">내용</label>
                         <!--end::Label-->
                         <!--begin::Col-->
                         <div class="col-lg-8 d-flex align-items-center">

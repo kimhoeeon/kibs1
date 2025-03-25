@@ -58,9 +58,7 @@ var KTQuillEditor = function () {
         });
 
         quill.on('text-change', function() {
-            let inputHTML = quill.root.innerHTML.replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&nbsp;','');
-            document.getElementById("quill_content").value = inputHTML;
-            quill.clipboard.convert(inputHTML);
+            document.getElementById('quill_content').value = quill.root.innerHTML;
         });
 
         quill.getModule('toolbar').addHandler('image', function () {

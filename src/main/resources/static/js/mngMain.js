@@ -46,43 +46,44 @@ $(function(){
 
     // 파일 입력 변경에 대한 이벤트 핸들러 추가
     $(document).on('change', '.upload_hidden', function () {
+
         let fileName = $(this).val();
         if(nvl(fileName,'') !== ''){
-            let fileExt = fileName.split('.').pop().toLowerCase(); //확장자분리
-            let fileInputName = fileName.split('\\').pop().toLowerCase();
-            fileInputName = fileInputName.slice(0,fileInputName.lastIndexOf(".")).toLowerCase();
+            let fileNameVal = $(this).val().split('\\').pop();
+            let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
 
-            //특수문자가 속해있는지 확인하는 정규식
-            let reg =   /[\{\}\/?,.;:|\[\]*~`!^\+<>@\#$%&\\\=\'\"]/gi;
-            if(reg.test(fileInputName)){
-                alert('파일명에 허용되지 않는 특수문자가 포함되어 있습니다.\n허용된 특수문자는 - _ ( ) 입니다.');
+            let _lastDot = fileNameVal.lastIndexOf('.');
+            let realFileName = fileNameVal.substring(0, _lastDot).toLowerCase();
+
+            // 파일명에 특수문자 체크
+            let pattern = /[\{\}\/?,.;:|\[\]*~`!^\+<>@\#$%&\\\=\'\"]/gi;
+            if(pattern.test(String(realFileName)) ){
                 $(this).val(''); //업로드한 파일 제거
-                let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-                fileNameInput.val('');
-                return;
-            }
-
-            if (this.files && this.files[0]) {
-                let maxSize = 10 * 1024 * 1024; //* 10MB 사이즈 제한
-                let file = this.files[0];
-                if (file.size > maxSize) {
-                    alert("파일 첨부는 10MB 이내 파일만 가능합니다.");
-                    $(this).val(''); //업로드한 파일 제거
-                    let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-                    fileNameInput.val('');
-                    return;
-                } else {
-                    let fileName = $(this).val().split('\\').pop();
-                    let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-                    fileNameInput.val(fileName);
+                fileNameInput.val('File');
+                alert('파일명에 허용되지 않는 공백 및 특수문자가 포함되어 있습니다.\n허용된 특수문자는 - _ ( ) 입니다.');
+            }else{
+                if (this.files && this.files[0]) {
+                    let maxSize = 10 * 1024 * 1024; //* 10MB 사이즈 제한
+                    let file = this.files[0];
+                    if (file.size > maxSize) {
+                        alert("파일 첨부는 10MB 이내 파일만 가능합니다.");
+                        $(this).val(''); //업로드한 파일 제거
+                        let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
+                        fileNameInput.val('File');
+                    } else {
+                        let fileName = $(this).val().split('\\').pop();
+                        let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
+                        fileNameInput.val(fileName);
+                    }
                 }
             }
 
         }else{
             $(this).val(''); //업로드한 파일 제거
             let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-            fileNameInput.val('');
+            fileNameInput.val('File');
         }
+
     });
 
     let customDatepicker = document.getElementById("kt_td_picker_custom_icons");

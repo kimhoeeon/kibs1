@@ -2036,7 +2036,7 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">아이디</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">아이디</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
                                                     <div class="col-lg-8 fv-row">
@@ -2048,7 +2048,7 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">비밀번호</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">비밀번호</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
                                                     <div class="col-lg-8 fv-row">
@@ -2060,7 +2060,7 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">이름/회사(국문)</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">이름/회사(국문)</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
                                                     <div class="col-lg-8 fv-row">
@@ -2072,7 +2072,7 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">이름/회사(영문)</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">이름/회사(영문)</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
                                                     <div class="col-lg-8 fv-row">
@@ -2084,7 +2084,7 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">전화번호</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">전화번호</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
                                                     <div class="col-lg-8 fv-row">
@@ -2096,7 +2096,7 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">휴대전화</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">휴대전화</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
                                                     <div class="col-lg-8 fv-row">
@@ -2108,7 +2108,7 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">이메일</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">이메일</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
                                                     <div class="col-lg-8 fv-row">

@@ -2037,10 +2037,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-8">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">수상연도</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">수상연도</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <!--begin::Select2-->
                                                         <select id="awardYear" name="awardYear" class="form-select form-select-solid" data-control="select2"
                                                                 data-hide-search="true" data-placeholder="- 수상연도 -">
@@ -2062,7 +2062,7 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-8">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">분류</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">분류</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
                                                     <div class="col-lg-8 d-flex flex-wrap">
@@ -2123,10 +2123,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">업체명(국문)</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">업체명(국문)</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="companyNameKo" name="companyNameKo" class="form-control form-control-lg form-control-solid-bg"
                                                                value="${info.companyNameKo}" placeholder="업체명(국문)" maxlength="30"/>
                                                     </div>
@@ -2136,10 +2136,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">업체명(영문)</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">업체명(영문)</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="companyNameEn" name="companyNameEn" class="form-control form-control-lg form-control-solid-bg"
                                                                value="${info.companyNameEn}" placeholder="업체명(영문)" maxlength="30"/>
                                                     </div>
@@ -2149,10 +2149,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">제품명(국문)</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">제품명(국문)</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="productNameKo" name="productNameKo" class="form-control form-control-lg form-control-solid-bg"
                                                                value="${info.productNameKo}" placeholder="제품명(국문)" maxlength="50"/>
                                                     </div>
@@ -2162,10 +2162,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">제품명(영문)</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">제품명(영문)</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="productNameEn" name="productNameEn" class="form-control form-control-lg form-control-solid-bg"
                                                                value="${info.productNameEn}" placeholder="제품명(영문)" maxlength="50"/>
                                                     </div>
@@ -2175,10 +2175,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">제품사진</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">제품사진</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <!--begin::Row-->
                                                         <div class="row">
                                                             <!--begin::Col-->
@@ -2203,10 +2203,10 @@ if (document.documentElement) {
                                                     <!--begin::Input group-->
                                                     <div class="row mb-6">
                                                         <!--begin::Label-->
-                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">제품사진 파일목록</label>
+                                                        <label class="col-lg-2 col-form-label fw-semibold fs-6">제품사진 파일목록</label>
                                                         <!--end::Label-->
                                                         <!--begin::Col-->
-                                                        <div class="col-lg-8">
+                                                        <div class="col-lg-10">
                                                             <ul>
                                                                 <li class="productPhotoFile_li">
                                                                     <c:set var="productPhotoFileSrc" value="${fn:replace(productPhotoFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
@@ -2232,10 +2232,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">상세설명(국문)</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">상세설명(국문)</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <textarea type="text" id="productIntroKo" name="productIntroKo" class="form-control form-control-lg form-control-solid-bg h-225px" placeholder="상세설명(국문)">${info.productIntroKo}</textarea>
                                                     </div>
                                                     <!--end::Col-->
@@ -2244,10 +2244,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">상세설명(영문)</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">상세설명(영문)</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <textarea type="text" id="productIntroEn" name="productIntroEn" class="form-control form-control-lg form-control-solid-bg h-225px" placeholder="상세설명(영문)">${info.productIntroEn}</textarea>
                                                     </div>
                                                     <!--end::Col-->
@@ -2256,10 +2256,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">홈페이지</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">홈페이지</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="homepage" name="homepage" class="form-control form-control-lg form-control-solid-bg" value="${info.homepage}" placeholder="홈페이지주소 ex) https://"/>
                                                     </div>
                                                     <!--end::Col-->

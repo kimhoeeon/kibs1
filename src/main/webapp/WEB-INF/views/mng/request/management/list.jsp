@@ -2235,7 +2235,7 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="row mb-6">
                                 <!--begin::Label-->
-                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">진행 단계 변경 대상 목록</label>
+                                <label class="col-lg-2 col-form-label required fw-semibold fs-6">진행 단계 변경 대상 목록</label>
                                 <!--end::Label-->
                                 <!--begin::Col-->
                                 <div class="col-lg-8 d-flex align-items-center">
@@ -2247,7 +2247,7 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="row mb-6">
                                 <!--begin::Label-->
-                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">진행 단계</label>
+                                <label class="col-lg-2 col-form-label required fw-semibold fs-6">진행 단계</label>
                                 <!--end::Label-->
                                 <!--begin::Col-->
                                 <div class="col-lg-8 d-flex align-items-center">
@@ -2328,7 +2328,7 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="row mb-6">
                                 <!--begin::Label-->
-                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">처리 예상 일정 변경 대상 목록</label>
+                                <label class="col-lg-2 col-form-label required fw-semibold fs-6">처리 예상 일정 변경 대상 목록</label>
                                 <!--end::Label-->
                                 <!--begin::Col-->
                                 <div class="col-lg-8 d-flex align-items-center">
@@ -2340,7 +2340,7 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="row mb-6">
                                 <!--begin::Label-->
-                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">일정</label>
+                                <label class="col-lg-2 col-form-label required fw-semibold fs-6">일정</label>
                                 <!--end::Label-->
                                 <!--begin::Col-->
                                 <div class="col-lg-8 d-flex align-items-center">

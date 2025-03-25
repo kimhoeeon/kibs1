@@ -2031,10 +2031,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">언어</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6 required">언어</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <!--begin::Select2-->
                                                 <select id="lang" name="lang" class="form-select form-select-solid" data-control="select2" aria-label="- 언어 -" data-placeholder="- 언어 -" data-hide-search="true">
                                                     <option></option>
@@ -2050,10 +2050,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">제목</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6 required">제목</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <input type="text" id="title" value="${info.title}" class="form-control form-control-lg form-control-solid-bg" placeholder="제목"/>
                                             </div>
                                             <!--end::Col-->
@@ -2062,10 +2062,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 required">등록자</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6 required">등록자</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <input type="text" id="writer" value="${info.writer eq null ? '관리자' : info.writer}" class="form-control form-control-lg form-control-solid-bg" placeholder="작성자"/>
                                             </div>
                                             <!--end::Col-->
@@ -2074,7 +2074,7 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">사용 여부</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6">사용 여부</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
                                             <div class="col-lg-8 d-flex align-items-center">
@@ -2087,10 +2087,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">게시일시 - 만료일시</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6">게시일시 - 만료일시</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <input id="validDate" value="${info.publishedDate.concat(' - ').concat(info.expirationDate)}" class="form-control form-control-solid" placeholder="Pick date rage"/>
                                             </div>
                                             <!--end::Col-->
@@ -2099,10 +2099,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">너비</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6">너비</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <!--begin::Row-->
                                                 <div class="row">
                                                     <!--begin::Col-->
@@ -2124,10 +2124,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">정렬</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6">정렬</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <!--begin::Select2-->
                                                 <select id="align" name="align" class="form-select form-select-solid" data-control="select2" aria-label="- 정렬 -" data-placeholder="- 정렬 -" data-hide-search="true" onchange="f_center_popup_align_sel_set(this)">
                                                     <option></option>
@@ -2144,10 +2144,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">브라우저 상단으로부터의 위치</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6">브라우저 상단으로부터의 위치</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <!--begin::Row-->
                                                 <div class="row">
                                                     <!--begin::Col-->
@@ -2169,10 +2169,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-12">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">브라우저 왼/오른쪽으로부터의 위치</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6">브라우저 왼/오른쪽으로부터의 위치</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <!--begin::Row-->
                                                 <div class="row">
                                                     <!--begin::Col-->
@@ -2194,10 +2194,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6 h-375px">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">내용</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6">내용</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <div id="quill_editor_content" class="h-325px">${info.content}</div>
                                                 <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true" />">
                                             </div>
@@ -2207,10 +2207,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-3">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6">팝업 링크</label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6">팝업 링크</label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <input type="text" id="linkUrl" value="${info.linkUrl}" class="form-control form-control-lg form-control-solid-bg" placeholder="https://"/>
                                             </div>
                                             <!--end::Col-->
@@ -2219,10 +2219,10 @@ if (document.documentElement) {
                                         <!--begin::Input group-->
                                         <div class="row mb-6">
                                             <!--begin::Label-->
-                                            <label class="col-lg-4 col-form-label fw-semibold fs-6"></label>
+                                            <label class="col-lg-2 col-form-label fw-semibold fs-6"></label>
                                             <!--end::Label-->
                                             <!--begin::Col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-10">
                                                 <p>* 외부링크 - http:// 나 https:// 를 포함한 URL을 입력해주세요. ex) https://naver.com/</p>
                                                 * 사이트 내 링크 - 도메인을 뺀 경로URL을 입력해주세요. ex) /board/notice_list.do
                                             </div>

@@ -4,7 +4,7 @@
  * */
 
 $(function(){
-
+    $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
 });
 
 function f_board_dataroom_search(){
@@ -19,8 +19,8 @@ function f_board_dataroom_search(){
 
     /* 목록 데이터 조회 */
     let jsonObj = {
-        "condition": $('#search_box option:selected').val(),
-        "searchText": $('#search_text').val()
+        condition: $('#search_box option:selected').val(),
+        searchText: $('#search_text').val()
     }
 
     let resData = ajaxConnect('/mng/center/board/dataroom/selectList.do', 'post', jsonObj);

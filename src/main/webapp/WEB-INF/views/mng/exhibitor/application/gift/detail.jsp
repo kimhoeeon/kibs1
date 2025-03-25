@@ -2053,10 +2053,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">이름</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">이름</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" name="name" class="form-control form-control-lg form-control-solid-bg" placeholder="이름"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2065,10 +2065,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">전화번호</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">전화번호</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" name="tel" class="form-control form-control-lg form-control-solid-bg" placeholder="전화번호"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2077,10 +2077,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">휴대전화</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">휴대전화</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" name="phone" class="form-control form-control-lg form-control-solid-bg" placeholder="휴대전화"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2089,10 +2089,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">E-Mail</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">E-Mail</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" name="email" class="form-control form-control-lg form-control-solid-bg" placeholder="이메일"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2101,10 +2101,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Fax</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">Fax</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" name="fax" class="form-control form-control-lg form-control-solid-bg" placeholder="FAX"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2142,10 +2142,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">구분</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">구분</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="radio" class="form-check-input form-control-solid-bg" value="${gift.giftGbn}" checked/>
                                                         <label class="form-check-label ms-2">
                                                             ${gift.giftGbn}
@@ -2157,10 +2157,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">수량</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">수량</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" name="giftCnt" value="${gift.giftCnt}" class="form-control form-control-lg form-control-solid-bg" placeholder="수량"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2169,10 +2169,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">분류</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">분류</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" name="giftClassify" value="${gift.giftClassify}" class="form-control form-control-lg form-control-solid-bg" placeholder="분류"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2181,10 +2181,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">품목명</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">품목명</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" name="giftName" value="${gift.giftName}" class="form-control form-control-lg form-control-solid-bg" placeholder="품목명"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2193,10 +2193,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">경품설명</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">경품설명</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <textarea name="giftContent" class="form-control form-control-solid-bg resize-none h-100px" rows="3" placeholder="경품설명">${gift.giftContent}</textarea>
                                                     </div>
                                                     <!--end::Col-->
@@ -2205,10 +2205,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">경품 사진</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">경품 사진</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <!--begin::Row-->
                                                         <div class="row">
                                                             <!--begin::Col-->
@@ -2233,10 +2233,10 @@ if (document.documentElement) {
                                                     <!--begin::Input group-->
                                                     <div class="row mb-6 fileList">
                                                         <!--begin::Label-->
-                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">경품 사진 파일 목록</label>
+                                                        <label class="col-lg-2 col-form-label fw-semibold fs-6">경품 사진 파일 목록</label>
                                                         <!--end::Label-->
                                                         <!--begin::Col-->
-                                                        <div class="col-lg-8">
+                                                        <div class="col-lg-10">
                                                             <ul>
                                                             <c:forEach var="giftPhotoImageFile" items="${giftPhotoFileList}" begin="0" end="${giftPhotoFileList.size()}" step="1">
                                                                 <c:set var="idx" value="${status.index + 1}"/>
@@ -2260,10 +2260,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">경품 브랜드 회사 로고</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">경품 브랜드 회사 로고</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <!--begin::Row-->
                                                         <div class="row">
                                                             <!--begin::Col-->
@@ -2288,10 +2288,10 @@ if (document.documentElement) {
                                                     <!--begin::Input group-->
                                                     <div class="row mb-6 fileList">
                                                         <!--begin::Label-->
-                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">경품 브랜드 회사 로고 파일 목록</label>
+                                                        <label class="col-lg-2 col-form-label fw-semibold fs-6">경품 브랜드 회사 로고 파일 목록</label>
                                                         <!--end::Label-->
                                                         <!--begin::Col-->
-                                                        <div class="col-lg-8">
+                                                        <div class="col-lg-10">
                                                             <ul>
                                                                 <c:forEach var="giftCompanyLogoImageFile" items="${giftCompanyLogoList}" begin="0" end="${giftCompanyLogoList.size()}" step="1">
                                                                     <c:set var="idx" value="${status.index + 1}"/>
@@ -2315,10 +2315,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">소비자가</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">소비자가</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" name="giftPrice" value="${gift.giftPrice}" class="form-control form-control-lg form-control-solid-bg" placeholder="소비자가"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2327,10 +2327,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">협찬가</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">협찬가</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" name="giftSponsorPrice" value="${gift.giftSponsorPrice}" class="form-control form-control-lg form-control-solid-bg" placeholder="협찬가"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2339,10 +2339,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">비고</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">비고</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <textarea name="giftNote" class="form-control form-control-solid-bg resize-none h-100px" rows="3" placeholder="비고">${gift.giftNote}</textarea>
                                                     </div>
                                                     <!--end::Col-->

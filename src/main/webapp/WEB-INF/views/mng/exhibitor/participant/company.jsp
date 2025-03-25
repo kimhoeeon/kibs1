@@ -2362,7 +2362,7 @@ if (document.documentElement) {
                         <!--begin::Input group-->
                         <div class="row mb-6">
                             <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">참가 상태 변경할 업체 목록</label>
+                            <label class="col-lg-2 col-form-label required fw-semibold fs-6">참가 상태 변경할 업체 목록</label>
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 d-flex align-items-center">
@@ -2374,7 +2374,7 @@ if (document.documentElement) {
                         <!--begin::Input group-->
                         <div class="row mb-6">
                             <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">상태</label>
+                            <label class="col-lg-2 col-form-label required fw-semibold fs-6">상태</label>
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 d-flex align-items-center">
@@ -2399,7 +2399,7 @@ if (document.documentElement) {
                         <!--begin::Input group-->
                         <div class="row mb-8 d-none">
                             <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">참가취소-사유</label>
+                            <label class="col-lg-2 col-form-label required fw-semibold fs-6">참가취소-사유</label>
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 d-flex align-items-center">
@@ -2469,7 +2469,7 @@ if (document.documentElement) {
                         <!--begin::Input group-->
                         <div class="row mb-6">
                             <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">입금 상태 변경할 업체 목록</label>
+                            <label class="col-lg-2 col-form-label required fw-semibold fs-6">입금 상태 변경할 업체 목록</label>
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 d-flex align-items-center">
@@ -2481,7 +2481,7 @@ if (document.documentElement) {
                         <!--begin::Input group-->
                         <div class="row mb-6">
                             <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">상태</label>
+                            <label class="col-lg-2 col-form-label required fw-semibold fs-6">상태</label>
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 d-flex align-items-center">

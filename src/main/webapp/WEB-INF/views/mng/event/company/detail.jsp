@@ -2036,10 +2036,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-8">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">KIBS Year</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">KIBS Year</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <!--begin::Select2-->
                                                         <select id="kibsYear" name="kibsYear" class="form-select form-select-solid" data-control="select2"
                                                                 data-hide-search="true" data-placeholder="- KIBS Year -">
@@ -2061,10 +2061,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">Company</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">Company</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="companyName" name="companyName" class="form-control form-control-lg form-control-solid-bg"
                                                                value="${info.companyName}" placeholder="Company" maxlength="30"/>
                                                     </div>
@@ -2074,10 +2074,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Homepage</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">Homepage</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="homepage" name="homepage" class="form-control form-control-lg form-control-solid-bg" value="${info.homepage}" placeholder="홈페이지주소 ex) https://"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2086,10 +2086,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Exhibit Categories</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">Exhibit Categories</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="categories" name="categories" class="form-control form-control-lg form-control-solid-bg" value="${info.categories}" placeholder="전시 카테고리"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2098,10 +2098,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자명</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자명</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonName" name="chargePersonName" class="form-control form-control-lg form-control-solid-bg"
                                                                value="${info.chargePersonName}" placeholder="담당자명" maxlength="30"/>
                                                     </div>
@@ -2111,10 +2111,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 휴대전화</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 휴대전화</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonPhone" name="chargePersonPhone" class="form-control form-control-lg form-control-solid-bg"
                                                                value="${info.chargePersonPhone}" placeholder="담당자 휴대전화" maxlength="30"/>
                                                     </div>
@@ -2124,10 +2124,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 이메일</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 이메일</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonEmail" name="chargePersonEmail" class="form-control form-control-lg form-control-solid-bg"
                                                                value="${info.chargePersonEmail}" placeholder="담당자 이메일 ex) example@naver.com" maxlength="50"/>
                                                     </div>

@@ -2852,13 +2852,13 @@ public class KibsMngController {
 
     @RequestMapping(value = "/file/upload.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Map<String, String>> file_upload(HttpServletRequest uploadFile) throws UnsupportedEncodingException {
+    public ResponseEntity<JSONObject> file_upload(HttpServletRequest uploadFile) throws UnsupportedEncodingException {
         System.out.println("KibsMngController > file_upload");
         String gbn = uploadFile.getParameter("gbn");
         uploadFile.setCharacterEncoding("UTF-8");
         JSONObject response = new JSONObject();
 
-        int size = 1024 * 1024 * 100; // 100M
+        int size = 1024 * 1024 * 10; // 10M
         String file = "";
         String oriFile = "";
 
@@ -2888,53 +2888,35 @@ public class KibsMngController {
             //String uuid = UUID.randomUUID().toString();
 
             /* 폴더에 파일 업로드 */
-            MultipartRequest multi = new MultipartRequest(uploadFile, uploadPath.getPath()+"/", size,
-                    "UTF-8", new DefaultFileRenamePolicy());
-            Enumeration files = multi.getFileNames();
-            String str = (String)files.nextElement();
+            Collection<Part> parts = uploadFile.getParts();
+            for (Part part : parts) {
 
-            file = multi.getFilesystemName(str);
-            oriFile = multi.getOriginalFileName(str);
+                //편의 메서드
+                //System.out.println("submittedFiledName : " + part.getSubmittedFileName());
+                //System.out.println("size : " + part.getSize());
 
-            file = appendSuffixName(uploadPath.getPath() , file, 1);
+                //파일 저장하기
+                if (StringUtils.hasText(part.getSubmittedFileName())) {
+                    file = part.getSubmittedFileName();
+                    oriFile = part.getSubmittedFileName();
 
-            // 업로드된 파일 객체 생성
-            File oldFile = new File(uploadPath.getPath()  + File.separator + oriFile);
-
-            // 실제 저장될 파일 객체 생성
-            File newFile = new File(uploadPath.getPath() + File.separator + file);
-
-            // 파일명 rename
-            if(!oldFile.renameTo(newFile)){
-                int read = 0;
-                byte[] buf = new byte[1024];
-                FileInputStream fin = null;
-                FileOutputStream fout = null;
-                //rename이 되지 않을경우 강제로 파일을 복사하고 기존파일은 삭제
-                buf = new byte[1024];
-                fin = new FileInputStream(oldFile);
-                fout = new FileOutputStream(newFile);
-                read = 0;
-                while((read=fin.read(buf,0,buf.length))!=-1){
-                    fout.write(buf, 0, read);
+                    file = appendSuffixName(uploadPath.getPath() , file, 1);
+                    part.write(uploadPath.getPath() + File.separator + file);
                 }
-
-                fin.close();
-                fout.close();
-                oldFile.delete();
             }
 
             response.put("uploadPath", uploadPath.getPath());
             response.put("fileName", file);
             //response.put("fileNameOrigin", oriFile);
 
-            System.out.println("[full file path] : " + uploadPath + File.separator + file);
+            System.out.println("[file name] " + file + " / " + "[ori file name] " + oriFile);
+            System.out.println("[full file path] : " + uploadPath.getPath() + File.separator + file);
 
         } catch (Exception e) {
             System.out.println("[upload file save error] : " + e.getMessage());
         }
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/file/useYn/update.do", method = RequestMethod.POST)

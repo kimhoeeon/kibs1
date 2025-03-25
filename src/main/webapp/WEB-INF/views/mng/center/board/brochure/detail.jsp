@@ -2034,10 +2034,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">제목</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제목</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <input type="text" id="title" name="title" class="form-control form-control-lg form-control-solid-bg" placeholder="제목" value="${info.title}"/>
                                                 </div>
                                                 <!--end::Col-->
@@ -2046,11 +2046,11 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">작성자</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">작성자</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input type="text" id="writer" name="writer" class="form-control form-control-lg form-control-solid-bg" placeholder="작성자" value="${info.writer}"/>
+                                                <div class="col-lg-10">
+                                                    <input type="text" id="writer" name="writer" class="form-control form-control-lg form-control-solid-bg" placeholder="작성자" value="${info.writer eq null ? '관리자' : info.writer}"/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -2058,11 +2058,11 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">작성일</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">작성일</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input class="form-control form-control-solid" placeholder="Pick date & time" id="writeDate" name="writeDate" placeholder="작성일" value="${info.writeDate}"/>
+                                                <div class="col-lg-10">
+                                                    <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${info.writeDate}"/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -2070,7 +2070,7 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">사이트 분류</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">사이트 분류</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8 d-flex flex-wrap">
@@ -2105,7 +2105,7 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">추가 설정</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">추가 설정</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8 d-flex flex-wrap">
@@ -2125,10 +2125,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6 h-375px">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">내용</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <div id="quill_editor_content" class="h-325px">${info.content}</div>
                                                     <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true" />">
                                                 </div>
@@ -2138,10 +2138,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">첨부파일</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">첨부파일</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <!--begin::Excel import-->
                                                     <a href="" class="btn btn-primary btn-active-light-primary ms-auto" data-bs-toggle="modal" data-bs-target="#kt_modal_file_upload">
                                                         <i class="ki-duotone ki-exit-up fs-2">
@@ -2156,10 +2156,10 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">첨부파일 목록</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">첨부파일 목록</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-10">
                                                     <ul id="uploadFileList">
                                                         <c:forEach var="file" items="${fileList}">
                                                             <li class="mb-4">
@@ -2272,10 +2272,10 @@ if (document.documentElement) {
                         <!--begin::Input group-->
                         <div class="row mb-6">
                             <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label required fw-semibold fs-6">File</label>
+                            <label class="col-lg-2 col-form-label required fw-semibold fs-6">File</label>
                             <!--end::Label-->
                             <!--begin::Col-->
-                            <div class="col-lg-8">
+                            <div class="col-lg-10">
                                 <!--begin::Row-->
                                 <div class="row">
                                     <!--begin::Col-->

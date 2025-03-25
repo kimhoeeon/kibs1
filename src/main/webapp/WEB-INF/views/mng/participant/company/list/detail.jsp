@@ -2023,10 +2023,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">1차 담당자</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">1차 담당자</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonRep1" name="chargePersonRep1" class="form-control form-control-solid" value="${info.chargePersonRep1}" placeholder="1차 담당자"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2035,10 +2035,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">2차 담당자</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">2차 담당자</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonRep2" name="chargePersonRep2" class="form-control form-control-solid" value="${info.chargePersonRep2}" placeholder="2차 담당자"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2047,10 +2047,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">2024 예상 부스</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">2024 예상 부스</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="booth24" name="booth24" class="form-control form-control-solid" value="${info.booth24}" placeholder="2024 예상 부스"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2059,10 +2059,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">2024 TM</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">2024 TM</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="tmReference24" name="tmReference24" class="form-control form-control-solid" value="${info.tmReference24}" placeholder="2024 TM"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2071,10 +2071,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">2023 TM 참고</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">2023 TM 참고</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="tmReference23" name="tmReference23" class="form-control form-control-solid" value="${info.tmReference23}" placeholder="2023 TM 참고"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2083,10 +2083,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-4">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">참가의향</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">참가의향</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="partWantYn" name="partWantYn" class="form-control form-control-solid" value="${info.partWantYn}" placeholder="참가의향"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2098,7 +2098,7 @@ if (document.documentElement) {
                                                     <label class="col-lg-4 col-form-label"></label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <div class="fw-bold text-danger ps-2">
                                                             1 : 긍정<br>
                                                             2 : 고민중<br>
@@ -2111,10 +2111,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">2023 부스 수</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">2023 부스 수</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="boothCnt23" name="boothCnt23" class="form-control form-control-solid" value="${info.boothCnt23}" placeholder="2023 부스 수"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2123,10 +2123,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">출처/참가년도</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">출처/참가년도</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="prePartYear" name="prePartYear" class="form-control form-control-solid" value="${info.prePartYear}" placeholder="출처/참가년도"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2135,10 +2135,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">기업유형</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">기업유형</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="companyGbn" name="companyGbn" class="form-control form-control-solid" value="${info.companyGbn}" placeholder="기업유형"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2147,10 +2147,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">지역</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">지역</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="companyRegion" name="companyRegion" class="form-control form-control-solid" value="${info.companyRegion}" placeholder="지역"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2159,10 +2159,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">회사명</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">회사명</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="companyNameKo" name="companyNameKo" class="form-control form-control-solid" value="${info.companyNameKo}" placeholder="회사명"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2171,10 +2171,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">홈페이지</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">홈페이지</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="companyHomepage" name="companyHomepage" class="form-control form-control-solid" value="${info.companyHomepage}" placeholder="홈페이지"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2183,10 +2183,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">주소</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">주소</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="companyAddress" name="companyAddress" class="form-control form-control-solid" value="${info.companyAddress}" placeholder="주소"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2195,10 +2195,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">대표자명</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">대표자명</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="companyCeo" name="companyCeo" class="form-control form-control-solid" value="${info.companyCeo}" placeholder="대표자명"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2207,10 +2207,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">참가분야</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">참가분야</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="fieldPart" name="fieldPart" class="form-control form-control-solid" value="${info.fieldPart}" placeholder="참가분야"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2219,10 +2219,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">분류</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">분류</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="classify" name="classify" class="form-control form-control-solid" value="${info.classify}" placeholder="분류"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2231,10 +2231,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">전시품목</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">전시품목</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="displayItem" name="displayItem" class="form-control form-control-solid" value="${info.displayItem}" placeholder="전시품목"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2243,10 +2243,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">팩스</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">팩스</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="companyFax" name="companyFax" class="form-control form-control-solid" value="${info.companyFax}" placeholder="팩스"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2255,10 +2255,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자명 1</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자명 1</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonName1" name="chargePersonName1" class="form-control form-control-solid" value="${info.chargePersonName1}" placeholder="담당자명 1"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2267,10 +2267,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 직위 1</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 직위 1</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonPosition1" name="chargePersonPosition1" class="form-control form-control-solid" value="${info.chargePersonPosition1}" placeholder="담당자 직위 1"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2279,10 +2279,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 전화번호 1</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 전화번호 1</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonTel1" name="chargePersonTel1" class="form-control form-control-solid" value="${info.chargePersonTel1}" placeholder="담당자 전화번호 1"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2291,10 +2291,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 휴대전화 1</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 휴대전화 1</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonPhone1" name="chargePersonPhone1" class="form-control form-control-solid" value="${info.chargePersonPhone1}" placeholder="담당자 휴대전화 1"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2303,10 +2303,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 이메일 1</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 이메일 1</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonEmail1" name="chargePersonEmail1" class="form-control form-control-solid" value="${info.chargePersonEmail1}" placeholder="담당자 이메일 1"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2315,10 +2315,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자명 2</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자명 2</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonName2" name="chargePersonName2" class="form-control form-control-solid" value="${info.chargePersonName2}" placeholder="담당자명 2"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2327,10 +2327,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 직위 2</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 직위 2</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonPosition2" name="chargePersonPosition2" class="form-control form-control-solid" value="${info.chargePersonPosition2}" placeholder="담당자 직위 2"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2339,10 +2339,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 전화번호 2</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 전화번호 2</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonTel2" name="chargePersonTel2" class="form-control form-control-solid" value="${info.chargePersonTel2}" placeholder="담당자 전화번호 2"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2351,10 +2351,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 휴대전화 2</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 휴대전화 2</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonPhone2" name="chargePersonPhone2" class="form-control form-control-solid" value="${info.chargePersonPhone2}" placeholder="담당자 휴대전화 2"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2363,10 +2363,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 이메일 2</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 이메일 2</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonEmail2" name="chargePersonEmail2" class="form-control form-control-solid" value="${info.chargePersonEmail2}" placeholder="담당자 이메일 2"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2375,10 +2375,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자명 3</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자명 3</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonName3" name="chargePersonName3" class="form-control form-control-solid" value="${info.chargePersonName3}" placeholder="담당자명 3"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2387,10 +2387,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 직위 3</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 직위 3</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonPosition3" name="chargePersonPosition3" class="form-control form-control-solid" value="${info.chargePersonPosition3}" placeholder="담당자 직위 3"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2399,10 +2399,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 전화번호 3</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 전화번호 3</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonTel3" name="chargePersonTel3" class="form-control form-control-solid" value="${info.chargePersonTel3}" placeholder="담당자 전화번호 3"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2411,10 +2411,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 휴대전화 3</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 휴대전화 3</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonPhone3" name="chargePersonPhone3" class="form-control form-control-solid" value="${info.chargePersonPhone3}" placeholder="담당자 휴대전화 3"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2423,10 +2423,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">담당자 이메일 3</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 이메일 3</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="chargePersonEmail3" name="chargePersonEmail3" class="form-control form-control-solid" value="${info.chargePersonEmail3}" placeholder="담당자 이메일 3"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2435,10 +2435,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">비고</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">비고</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="companyNote" name="companyNote" class="form-control form-control-solid" value="${info.companyNote}" placeholder="비고"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2447,10 +2447,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-4">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">[업태 1] - 대분류</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">[업태 1] - 대분류</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="businessStatusLarge1" name="businessStatusLarge1" class="form-control form-control-lg form-control-solid-bg" value="${info.businessStatusLarge1}" placeholder="업태 1 - 대분류"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2462,7 +2462,7 @@ if (document.documentElement) {
                                                     <label class="col-lg-4 col-form-label"></label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <div class="fw-bold text-danger ps-2">
                                                             1 : 요트/보트<br>
                                                             2 : 무동력보트<br>
@@ -2481,10 +2481,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">[업태 1] - 중분류</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">[업태 1] - 중분류</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="businessStatusSmall1" name="businessStatusSmall1" class="form-control form-control-lg form-control-solid-bg" value="${info.businessStatusSmall1}" placeholder="업태 1 - 중분류"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2493,10 +2493,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-4">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">[업태 2] - 대분류</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">[업태 2] - 대분류</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="businessStatusLarge2" name="businessStatusLarge2" class="form-control form-control-lg form-control-solid-bg" value="${info.businessStatusLarge2}" placeholder="업태 2 - 대분류"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2508,7 +2508,7 @@ if (document.documentElement) {
                                                     <label class="col-lg-4 col-form-label"></label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <div class="fw-bold text-danger ps-2">
                                                             1 : 요트/보트<br>
                                                             2 : 무동력보트<br>
@@ -2527,10 +2527,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">[업태 2] - 중분류</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">[업태 2] - 중분류</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="businessStatusSmall2" name="businessStatusSmall2" class="form-control form-control-lg form-control-solid-bg" value="${info.businessStatusSmall2}" placeholder="업태 2 - 중분류"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2539,10 +2539,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-4">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">[업태 3] - 대분류</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">[업태 3] - 대분류</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="businessStatusLarge3" name="businessStatusLarge3" class="form-control form-control-lg form-control-solid-bg" value="${info.businessStatusLarge3}" placeholder="업태 3 - 대분류"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2554,7 +2554,7 @@ if (document.documentElement) {
                                                     <label class="col-lg-4 col-form-label"></label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <div class="fw-bold text-danger ps-2">
                                                             1 : 요트/보트<br>
                                                             2 : 무동력보트<br>
@@ -2573,10 +2573,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">[업태 3] - 중분류</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">[업태 3] - 중분류</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="businessStatusSmall3" name="businessStatusSmall3" class="form-control form-control-lg form-control-solid-bg" value="${info.businessStatusSmall3}" placeholder="업태 3 - 중분류"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2585,10 +2585,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">영위사업</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">영위사업</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="businessType" name="businessType" class="form-control form-control-lg form-control-solid-bg" value="${info.businessType}" placeholder="영위사업"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2597,10 +2597,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-4">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">수집 유형</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">수집 유형</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="collectionType" name="collectionType" class="form-control form-control-lg form-control-solid-bg onlyNum" maxlength="1" value="${info.collectionType}" placeholder="수집 유형"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2612,7 +2612,7 @@ if (document.documentElement) {
                                                     <label class="col-lg-4 col-form-label"></label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <div class="fw-bold text-danger ps-2">
                                                             1 : 기존 참여 기업<br>
                                                             2 : 23년 DB 구축 용역(커뮤니티/동호회)<br>
@@ -2626,10 +2626,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-4">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">의향 단계</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">의향 단계</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="intentionStep" name="intentionStep" class="form-control form-control-lg form-control-solid-bg onlyNum" maxlength="1" value="${info.intentionStep}" placeholder="의향 단계"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2641,7 +2641,7 @@ if (document.documentElement) {
                                                     <label class="col-lg-4 col-form-label"></label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <div class="fw-bold text-danger ps-2">
                                                             1 : 뉴스레터 수집<br>
                                                             2 : 단순 참관 의향<br>
@@ -2655,10 +2655,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-4">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">컨택 진행 여부</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">컨택 진행 여부</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="contactProgressYn" name="contactProgressYn" class="form-control form-control-lg form-control-solid-bg onlyNum" maxlength="1" value="${info.contactProgressYn}" placeholder="컨택 진행 여부"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2670,7 +2670,7 @@ if (document.documentElement) {
                                                     <label class="col-lg-4 col-form-label"></label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <div class="fw-bold text-danger ps-2">
                                                             1 : 컨택 성공<br>
                                                             2 : 담당자 부재<br>
@@ -2684,10 +2684,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">컨택 일자</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">컨택 일자</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="contactDttm" name="contactDttm" class="form-control form-control-lg form-control-solid-bg" value="${info.contactDttm}" placeholder="컨택 일자(YYYYMMDD)"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2696,10 +2696,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-4">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">컨택 결과</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">컨택 결과</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="contactResult" name="contactResult" class="form-control form-control-lg form-control-solid-bg onlyNum" maxlength="1" value="${info.contactResult}" placeholder="컨택 결과"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2711,7 +2711,7 @@ if (document.documentElement) {
                                                     <label class="col-lg-4 col-form-label"></label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <div class="fw-bold text-danger ps-2">
                                                             1 : 관심 전혀 없음<br>
                                                             2 : 설득 가능하면 설득 가능<br>
@@ -2724,10 +2724,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">컨택 대상자 성명</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">컨택 대상자 성명</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="contactTargetName" name="contactTargetName" class="form-control form-control-lg form-control-solid-bg" value="${info.contactTargetName}" placeholder="컨택 대상자 성명"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2736,10 +2736,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">컨택 대상자 연락처</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">컨택 대상자 연락처</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="contactTargetPhone" name="contactTargetPhone" class="form-control form-control-lg form-control-solid-bg" value="${info.contactTargetPhone}" placeholder="컨택 대상자 연락처"/>
                                                     </div>
                                                     <!--end::Col-->
@@ -2748,10 +2748,10 @@ if (document.documentElement) {
                                                 <!--begin::Input group-->
                                                 <div class="row mb-6">
                                                     <!--begin::Label-->
-                                                    <label class="col-lg-4 col-form-label fw-semibold fs-6 required">컨택 결과 세부 내용</label>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">컨택 결과 세부 내용</label>
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-10">
                                                         <input type="text" id="contactResultDetail" name="contactResultDetail" class="form-control form-control-lg form-control-solid-bg" value="${info.contactResultDetail}" placeholder="컨택 결과 세부 내용"/>
                                                     </div>
                                                     <!--end::Col-->
