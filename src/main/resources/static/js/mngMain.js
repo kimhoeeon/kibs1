@@ -4,7 +4,7 @@
 
 $(function(){
 
-    /*if (!window.location.href.includes('localhost')) {
+    if (!window.location.href.includes('localhost')) {
         if (window.location.protocol !== "https:") {
             window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
         }
@@ -12,7 +12,7 @@ $(function(){
         if (document.location.protocol === "http:") {
             document.location.href = document.location.href.replace('http:', 'https:');
         }
-    }*/
+    }
 
     // 숫자만 입력
     $('.onlyNum').on("blur keyup", function () {
@@ -214,6 +214,27 @@ function logout() {
         })
     }
 
+}
+
+function f_file_download(path, fileName){
+    let form = document.createElement('form');
+    form.setAttribute('method', 'POST'); //POST 메서드 적용
+    form.setAttribute('action', '/file/download.do');
+
+    let hiddenField_path = document.createElement('input');
+    hiddenField_path.setAttribute('type', 'hidden'); //값 입력
+    hiddenField_path.setAttribute('name', 'path');
+    hiddenField_path.setAttribute('value', path);
+    form.appendChild(hiddenField_path);
+
+    let hiddenField_fileName = document.createElement('input');
+    hiddenField_fileName.setAttribute('type', 'hidden'); //값 입력
+    hiddenField_fileName.setAttribute('name', 'fileName');
+    hiddenField_fileName.setAttribute('value', fileName);
+    form.appendChild(hiddenField_fileName);
+
+    document.body.appendChild(form);
+    form.submit();
 }
 
 function replaceText(value){
@@ -549,9 +570,27 @@ async function f_attach_file_upload(userId, formId, path) {
                         let li_el = document.createElement('li');
                         let a_el = document.createElement('a');
 
+                        li_el.style.marginBottom = '5px';
+
+                        if(fullFileName.toLowerCase().includes('.jpg')
+                            || fullFileName.toLowerCase().includes('.jpeg')
+                            || fullFileName.toLowerCase().includes('.png')) {
+                            let img_el = document.createElement('img');
+                            img_el.src = fullFilePath.replace('/usr/local/tomcat/webapps', '/../../../..');
+                            img_el.classList.add('w-250px', 'mr10');
+                            img_el.style.border = '1px solid #009ef7';
+
+                            li_el.append(img_el);
+                        }
+
                         /*a_el.href = 'javascript:f_file_download(' + '\'' + pureFileName + '\'' + ',' + '\'' + pureFilePath + '\'' +')';*/
-                        a_el.href = '/file/download.do?path=' + path + '&fileName=' + fullFileName;
+                        /*a_el.href = '/file/download.do?path=' + path + '&fileName=' + fullFileName;*/
+                        a_el.href = 'javascript:void(0);';
+                        a_el.onclick = function () {
+                            f_file_download(path, fullFileName);
+                        };
                         a_el.text = fullFileName;
+
                         li_el.append(a_el);
 
                         let hidden_el = document.createElement('input');
@@ -565,8 +604,8 @@ async function f_attach_file_upload(userId, formId, path) {
                         button_el.type = 'button';
                         button_el.className = 'ml10';
                         button_el.onclick = function () {
-                            f_file_remove(this, resData.fileId)
-                        }
+                            f_file_remove(this, resData.fileId);
+                        };
                         button_el.innerHTML = '<i class="ki-duotone ki-abstract-11">\n' +
                             '<i class="path1"></i>\n' +
                             '<i class="path2"></i>\n' +

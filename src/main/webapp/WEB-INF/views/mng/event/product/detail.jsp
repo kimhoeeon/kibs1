@@ -2213,7 +2213,8 @@ if (document.documentElement) {
                                                                     <c:if test="${not fn:contains(productPhotoFileSrc, '.ai') and not fn:contains(productPhotoFileSrc, '.pdf')}">
                                                                         <img src="${productPhotoFileSrc}" class="w-100px mr10" style="border: 1px solid #009ef7"/>
                                                                     </c:if>
-                                                                    <a href="/file/download.do?path=event/product/${productPhotoFile.folderPath}&fileName=${productPhotoFile.fullFileName}">${productPhotoFile.fileName}</a>
+                                                                    <%--<a href="/file/download.do?path=event/product/${productPhotoFile.folderPath}&fileName=${productPhotoFile.fullFileName}">${productPhotoFile.fileName}</a>--%>
+                                                                    <a href="javascript:void(0);" onclick="f_file_download('event/product/${productPhotoFile.folderPath}', '${productPhotoFile.fullFileName}')">${productPhotoFile.fileName}</a>
                                                                     <input type="hidden" name="productPhotoUploadFile" id="${productPhotoFile.id}" value="${productPhotoFile.fullFilePath}">
                                                                     <button type="button" class="ml10" onclick="f_file_remove(this,'${productPhotoFile.id}')">
                                                                         <i class="ki-duotone ki-abstract-11">

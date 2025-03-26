@@ -2749,7 +2749,8 @@ if (document.documentElement) {
                                                                     <c:if test="${not fn:contains(companyLicenseFileSrc, '.ai') and not fn:contains(companyLicenseFileSrc, '.pdf')}">
                                                                         <img src="${companyLicenseFileSrc}" class="w-100px mr10" style="border: 1px solid #009ef7"/>
                                                                     </c:if>
-                                                                    <a href="/file/download.do?path=exhibitor/company/${companyLicenseFile.folderPath}&fileName=${companyLicenseFile.fullFileName}">${companyLicenseFile.fileName}</a>
+                                                                    <%--<a href="/file/download.do?path=exhibitor/company/${companyLicenseFile.folderPath}&fileName=${companyLicenseFile.fullFileName}">${companyLicenseFile.fileName}</a>--%>
+                                                                    <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${companyLicenseFile.folderPath}', '${companyLicenseFile.fullFileName}')">${companyLicenseFile.fileName}</a>
                                                                     <input type="hidden" name="companyLicenseUploadFile" id="${companyLicenseFile.id}" value="${companyLicenseFile.fullFilePath}">
                                                                     <button type="button" class="ml10" onclick="f_file_remove(this,'${companyLicenseFile.id}')">
                                                                         <i class="ki-duotone ki-abstract-11">
@@ -3575,7 +3576,8 @@ if (document.documentElement) {
                                                                     <c:if test="${not fn:contains(logoFileSrc, '.ai') and not fn:contains(logoFileSrc, '.pdf')}">
                                                                         <img src="${logoFileSrc}" class="w-100px mr10" style="border: 1px solid #009ef7"/>
                                                                     </c:if>
-                                                                    <a href="/file/download.do?path=exhibitor/company/${logoFile.folderPath}&fileName=${logoFile.fullFileName}">${logoFile.fileName}</a>
+                                                                    <%--<a href="/file/download.do?path=exhibitor/company/${logoFile.folderPath}&fileName=${logoFile.fullFileName}">${logoFile.fileName}</a>--%>
+                                                                    <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${logoFile.folderPath}', '${logoFile.fullFileName}')">${logoFile.fileName}</a>
                                                                     <input type="hidden" name="logoUploadFile" id="${logoFile.id}" value="${logoFile.fullFilePath}">
                                                                     <button type="button" class="ml10" onclick="f_file_remove(this,'${logoFile.id}')">
                                                                         <i class="ki-duotone ki-abstract-11">
@@ -3705,7 +3707,8 @@ if (document.documentElement) {
                                                                     <li class="promotionImageFile_li mb-4">
                                                                         <c:set var="promotionImageSrc" value="${fn:replace(promotionImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                                         <img src="${promotionImageSrc}" class="w-100px mr10" style="border: 1px solid #009ef7"/>
-                                                                        <a href="/file/download.do?path=exhibitor/company/${promotionImageFile.folderPath}&fileName=${promotionImageFile.fullFileName}">${promotionImageFile.fileName}</a>
+                                                                        <%--<a href="/file/download.do?path=exhibitor/company/${promotionImageFile.folderPath}&fileName=${promotionImageFile.fullFileName}">${promotionImageFile.fileName}</a>--%>
+                                                                        <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${promotionImageFile.folderPath}', '${promotionImageFile.fullFileName}')">${promotionImageFile.fileName}</a>
                                                                         <input type="hidden" name="promotionImageUploadFile" id="${promotionImageFile.id}" value="${promotionImageFile.fullFilePath}">
                                                                         <button type="button" class="ml10" onclick="f_file_remove(this,'${promotionImageFile.id}')">
                                                                             <i class="ki-duotone ki-abstract-11">
@@ -4044,7 +4047,8 @@ if (document.documentElement) {
                                                                             <li class="productImageFile_li">
                                                                                 <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                                                 <img src="${productImageFileSrc}" class="w-100px mr10" style="border: 1px solid #009ef7"/>
-                                                                                <a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>
+                                                                                <%--<a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>--%>
+                                                                                <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${productImageFile.folderPath}', '${productImageFile.fullFileName}')">${productImageFile.fileName}</a>
                                                                                 <input type="hidden" name="productImageUploadFile" id="${productImageFile.id}" value="${productImageFile.fullFilePath}">
                                                                                 <button type="button" class="ml10" onclick="f_file_remove(this,'${productImageFile.id}')">
                                                                                     <i class="ki-duotone ki-abstract-11">

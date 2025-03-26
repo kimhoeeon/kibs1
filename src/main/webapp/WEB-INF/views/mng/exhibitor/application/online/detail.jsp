@@ -2171,7 +2171,8 @@ if (document.documentElement) {
                                                                             <li class="productImageFile_li">
                                                                                 <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                                                 <img src="${productImageFileSrc}" class="w-100px mr10" style="border: 1px solid #009ef7"/>
-                                                                                <a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>
+                                                                                <%--<a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>--%>
+                                                                                <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${productImageFile.folderPath}', '${productImageFile.fullFileName}')">${productImageFile.fileName}</a>
                                                                                 <input type="hidden" name="productImageUploadFile" id="${productImageFile.id}" value="${productImageFile.fullFilePath}">
                                                                                 <%--<button type="button" class="ml10" onclick="f_file_remove(this,'${productImageFile.id}')">
                                                                                     <i class="ki-duotone ki-abstract-11">

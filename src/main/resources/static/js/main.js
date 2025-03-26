@@ -2,7 +2,7 @@ var transferYear = (new Date().getFullYear()).toString();
 
 $(function() {
 
-    /*if (!window.location.href.includes('localhost')) {
+    if (!window.location.href.includes('localhost')) {
         if (window.location.protocol !== "https:") {
             window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
         }
@@ -10,7 +10,7 @@ $(function() {
         if (document.location.protocol === "http:") {
             document.location.href = document.location.href.replace('http:', 'https:');
         }
-    }*/
+    }
 
 })
 function home(){
@@ -108,6 +108,27 @@ function getCurrentDate() {
     seconds = seconds < 10 ? '0' + seconds.toString() : seconds.toString(); // 10초 미만 0 추가
 
     return year + month + day + hour + minites + seconds; // yyyymmddhhmmss 형식으로 리턴
+}
+
+function f_file_download(path, fileName){
+    let form = document.createElement('form');
+    form.setAttribute('method', 'POST'); //POST 메서드 적용
+    form.setAttribute('action', '/file/download.do');
+
+    let hiddenField_path = document.createElement('input');
+    hiddenField_path.setAttribute('type', 'hidden'); //값 입력
+    hiddenField_path.setAttribute('name', 'path');
+    hiddenField_path.setAttribute('value', path);
+    form.appendChild(hiddenField_path);
+
+    let hiddenField_fileName = document.createElement('input');
+    hiddenField_fileName.setAttribute('type', 'hidden'); //값 입력
+    hiddenField_fileName.setAttribute('name', 'fileName');
+    hiddenField_fileName.setAttribute('value', fileName);
+    form.appendChild(hiddenField_fileName);
+
+    document.body.appendChild(form);
+    form.submit();
 }
 
 function minCnt(el, cnt){
@@ -2664,7 +2685,8 @@ function f_gift_modal_set(jsonObj){
 
                     let fileBoxStr = '<div class="file_list" style="margin-top: 10px;">';
                     fileBoxStr += '<img src="' + giftFullFilePath + '" class="mr10" style="border: 1px solid #009ef7; margin: 0 5px 0 0; max-width: 150px;"/>';
-                    fileBoxStr += '<a href="/file/download.do?path=exhibitor/company/' + giftFolderPath + '&fileName=' + giftFullFileName + '">';
+                    /*fileBoxStr += '<a href="/file/download.do?path=exhibitor/company/' + giftFolderPath + '&fileName=' + giftFullFileName + '">';*/
+                    fileBoxStr += '<a href="javascript:void(0);" onClick="f_file_download(\'exhibitor/company/' + giftFolderPath + '\', \'' + giftFullFileName + '\')">';
                     fileBoxStr += giftFileName;
                     fileBoxStr += '</a>';
                     fileBoxStr += '<button type="button" onClick="f_file_remove(this,\'' + file_resData[i].id + '\')" style="cursor:pointer; margin-left: 10px;">';
@@ -2888,7 +2910,8 @@ function f_exhibitor_info_call(){
                 $('div.file_box').empty(); //비우기
                 let fileBoxStr = '<div class="file_list" style="margin-top: 10px; display: flex; align-items: center;">';
                     fileBoxStr += '<img src="' + licenseFullFilePath + '" class="mr10" style="border: 1px solid #009ef7; margin: 0 5px 0 0; max-width: 150px;"/>';
-                    fileBoxStr += '<a href="/file/download.do?path=exhibitor/company/' + licenseFolderPath + '&fileName=' + licenseFullFileName + '">';
+                    /*fileBoxStr += '<a href="/file/download.do?path=exhibitor/company/' + licenseFolderPath + '&fileName=' + licenseFullFileName + '">';*/
+                    fileBoxStr += '<a href="javascript:void(0);" onClick="f_file_download(\'exhibitor/company/' + licenseFolderPath + '\', \'' + licenseFullFileName + '\')">';
                     fileBoxStr += licenseFileName;
                     fileBoxStr += '</a>';
                     /*fileBoxStr += '<button type="button" onClick="f_file_remove(this,\'' + file_resData.id + '\')" style="cursor:pointer; margin-left: 10px;">';

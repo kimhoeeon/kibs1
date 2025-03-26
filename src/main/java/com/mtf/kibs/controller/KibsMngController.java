@@ -3029,7 +3029,7 @@ public class KibsMngController {
 
     /*********************** file download ***********************/
 
-    @RequestMapping(value = "/file/download.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/file/download.do", method = RequestMethod.POST)
     public void board_downloadFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("KibsMngController > board_downloadFile");
         String path = request.getParameter("path");
@@ -3048,6 +3048,8 @@ public class KibsMngController {
         // 서버에 실제 저장된 파일명
         //String filename = "20140819151221.zip" ;
         String fileName = request.getParameter("fileName");
+
+        //System.out.println(path + " / " + fileName);
 
         OutputStream out = response.getOutputStream();
         String downFile = file_repo + "/" + fileName;

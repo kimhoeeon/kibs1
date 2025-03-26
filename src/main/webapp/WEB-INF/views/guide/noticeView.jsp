@@ -116,17 +116,18 @@
                 <div class="board_view_file">
                     <c:if test="${not empty fileList}">
                         <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1" varStatus="status">
-                            <a href="/file/download.do?path=center/board/${fileInfo.folderPath}&fileName=${fileInfo.fullFileName}">${fileInfo.fileName}</a>
+                            <%--<a href="/file/download.do?path=center/board/${fileInfo.folderPath}&fileName=${fileInfo.fullFileName}">${fileInfo.fileName}</a>--%>
+                            <a href="javascript:void(0);" onclick="f_file_download('center/board/${fileInfo.folderPath}', '${fileInfo.fullFileName}')">${fileInfo.fileName}</a>
                         </c:forEach>
                     </c:if>
                 </div>
                 <div class="board_view_btn">
                     <c:if test="${noticeInfo.prevId ne null and noticeInfo.prevId ne ''}">
-                    <a href="/guide/noticeView.do?id=${noticeInfo.prevId}" class="prevBtn">이전글</a>
+                        <a href="/guide/noticeView.do?id=${noticeInfo.prevId}" class="prevBtn">이전글</a>
                     </c:if>
                     <a href="/guide/notice.do" class="listBtn">목록</a>
                     <c:if test="${noticeInfo.nextId ne null and noticeInfo.nextId ne ''}">
-                    <a href="/guide/noticeView.do?id=${noticeInfo.nextId}" class="nextBtn">다음글</a>
+                        <a href="/guide/noticeView.do?id=${noticeInfo.nextId}" class="nextBtn">다음글</a>
                     </c:if>
                 </div>
             </div>

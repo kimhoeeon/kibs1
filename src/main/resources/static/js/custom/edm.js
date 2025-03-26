@@ -365,8 +365,10 @@ async function f_mail_file_upload(userId, formId, path) {
                         li_el.append(img_el);
 
                         /*a_el.href = 'javascript:f_file_download(' + '\'' + pureFileName + '\'' + ',' + '\'' + pureFilePath + '\'' +')';*/
-                        a_el.href = '/file/download.do?path=' + path + '&fileName=' + fullFileName;
-                        a_el.text = fileName;
+                        /*a_el.href = '/file/download.do?path=' + path + '&fileName=' + fullFileName;*/
+                        a_el.href = 'javascript:void(0);';
+                        a_el.onclick = f_file_download(path, fullFileName);
+                        a_el.text = fullFileName;
                         li_el.append(a_el);
 
                         let hidden_el = document.createElement('input');

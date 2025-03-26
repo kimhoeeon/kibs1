@@ -713,7 +713,8 @@
                                                                 <c:if test="${not fn:contains(companyLicenseFileSrc, '.ai') and not fn:contains(companyLicenseFileSrc, '.pdf')}">
                                                                     <img src="${companyLicenseFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
                                                                 </c:if>
-                                                                <a href="/file/download.do?path=exhibitor/company/${companyLicenseFile.folderPath}&fileName=${companyLicenseFile.fullFileName}">${companyLicenseFile.fileName}</a>
+                                                                <%--<a href="/file/download.do?path=exhibitor/company/${companyLicenseFile.folderPath}&fileName=${companyLicenseFile.fullFileName}">${companyLicenseFile.fileName}</a>--%>
+                                                                <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${companyLicenseFile.folderPath}', '${companyLicenseFile.fullFileName}')">${companyLicenseFile.fileName}</a>
                                                                 <input type="hidden" name="companyLicenseUploadFile" id="${companyLicenseFile.id}" value="${companyLicenseFile.fullFilePath}">
                                                                 <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${companyLicenseFile.id}')">X</button>
                                                             </li>
@@ -1208,7 +1209,8 @@
                                                                 <c:if test="${not fn:contains(logoFileSrc, '.ai') and not fn:contains(logoFileSrc, '.pdf')}">
                                                                     <img src="${logoFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
                                                                 </c:if>
-                                                                <a href="/file/download.do?path=exhibitor/company/${logoFile.folderPath}&fileName=${logoFile.fullFileName}">${logoFile.fileName}</a>
+                                                                <%--<a href="/file/download.do?path=exhibitor/company/${logoFile.folderPath}&fileName=${logoFile.fullFileName}">${logoFile.fileName}</a>--%>
+                                                                <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${logoFile.folderPath}', '${logoFile.fullFileName}')">${logoFile.fileName}</a>
                                                                 <input type="hidden" name="logoUploadFile" id="${logoFile.id}" value="${logoFile.fullFilePath}">
                                                                 <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${logoFile.id}')">X</button>
                                                             </li>
@@ -1266,7 +1268,8 @@
                                                             <li class="promotionImageFile_li" style="margin-bottom: 5px; align-items: center;">
                                                                 <c:set var="promotionImageSrc" value="${fn:replace(promotionImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                                 <img src="${promotionImageSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                                <a href="/file/download.do?path=exhibitor/company/${promotionImageFile.folderPath}&fileName=${promotionImageFile.fullFileName}">${promotionImageFile.fileName}</a>
+                                                                <%--<a href="/file/download.do?path=exhibitor/company/${promotionImageFile.folderPath}&fileName=${promotionImageFile.fullFileName}">${promotionImageFile.fileName}</a>--%>
+                                                                <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${promotionImageFile.folderPath}', '${promotionImageFile.fullFileName}')">${promotionImageFile.fileName}</a>
                                                                 <input type="hidden" name="promotionImageUploadFile" id="${promotionImageFile.id}" value="${promotionImageFile.fullFilePath}"/>
                                                                 <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${promotionImageFile.id}')">X</button>
                                                             </li>
@@ -1464,7 +1467,8 @@
                                                                             <li class="productImageFile_li" style="align-items: center;">
                                                                                 <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                                                 <img src="${productImageFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                                                <a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>
+                                                                                <%--<a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>--%>
+                                                                                <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${productImageFile.folderPath}', '${productImageFile.fullFileName}')">${productImageFile.fileName}</a>
                                                                                 <input type="hidden" name="productImageUploadFile" id="${productImageFile.id}" value="${productImageFile.fullFilePath}">
                                                                                 <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${productImageFile.id}')">X</button>
                                                                             </li>
@@ -1767,7 +1771,7 @@
             </div>
 
             <!-- 전환페이지 설정 -->
-            <script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+            <script type="text/javascript" src="https://wcs.naver.net/wcslog.js"></script>
             <script type="text/javascript">
                 var _nasa={};
                 if(window.wcs) _nasa["cnv"] = wcs.cnv("4","10"); // 전환유형, 전환가치 설정해야함. 설치매뉴얼 참고

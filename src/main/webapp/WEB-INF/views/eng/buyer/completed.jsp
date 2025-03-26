@@ -111,7 +111,7 @@
 </div>
 
 <!-- NAVER SCRIPT START -->
-<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript" src="https://wcs.naver.net/wcslog.js"></script>
 <script type="text/javascript">
     var _nasa={};
     if (window.wcs)  _nasa["cnv"] = wcs.cnv("4","1");

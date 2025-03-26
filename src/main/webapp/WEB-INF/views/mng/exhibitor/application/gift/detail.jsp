@@ -2244,7 +2244,8 @@ if (document.documentElement) {
                                                                 <li class="giftPhotoImageFile_li" style="margin-bottom: 5px;">
                                                                     <c:set var="giftPhotoImageSrc" value="${fn:replace(giftPhotoImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                                     <img src="${giftPhotoImageSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                                    <a href="/file/download.do?path=exhibitor/company/${giftPhotoImageFile.folderPath}&fileName=${giftPhotoImageFile.fullFileName}">${giftPhotoImageFile.fileName}</a>
+                                                                    <%--<a href="/file/download.do?path=exhibitor/company/${giftPhotoImageFile.folderPath}&fileName=${giftPhotoImageFile.fullFileName}">${giftPhotoImageFile.fileName}</a>--%>
+                                                                    <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${giftPhotoImageFile.folderPath}', '${giftPhotoImageFile.fullFileName}')">${giftPhotoImageFile.fileName}</a>
                                                                     <input type="hidden" name="giftPhotoImageUploadFile" id="${giftPhotoImageFile.id}" value="${giftPhotoImageFile.fullFilePath}"/>
                                                                     <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${giftPhotoImageFile.id}')">X</button>
                                                                 </li>
@@ -2299,7 +2300,8 @@ if (document.documentElement) {
                                                                         <li class="giftCompanyLogoImageFile_li" style="margin-bottom: 5px;">
                                                                             <c:set var="giftCompanyLogoImageSrc" value="${fn:replace(giftCompanyLogoImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                                             <img src="${giftCompanyLogoImageSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                                            <a href="/file/download.do?path=exhibitor/company/${giftCompanyLogoImageFile.folderPath}&fileName=${giftCompanyLogoImageFile.fullFileName}">${giftCompanyLogoImageFile.fileName}</a>
+                                                                            <%--<a href="/file/download.do?path=exhibitor/company/${giftCompanyLogoImageFile.folderPath}&fileName=${giftCompanyLogoImageFile.fullFileName}">${giftCompanyLogoImageFile.fileName}</a>--%>
+                                                                            <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${giftCompanyLogoImageFile.folderPath}', '${giftCompanyLogoImageFile.fullFileName}')">${giftCompanyLogoImageFile.fileName}</a>
                                                                             <input type="hidden" name="giftCompanyLogoImageUploadFile" id="${giftCompanyLogoImageFile.id}" value="${giftCompanyLogoImageFile.fullFilePath}"/>
                                                                             <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${giftCompanyLogoImageFile.id}')">X</button>
                                                                         </li>

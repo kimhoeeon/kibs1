@@ -2143,7 +2143,8 @@ if (document.documentElement) {
                                                     <ul id="uploadFileList">
                                                         <c:forEach var="file" items="${fileList}">
                                                             <li class="mb-4">
-                                                                <a href="/file/download.do?path=center/board/${file.folderPath}&fileName=${file.fullFileName}">${file.fileName}</a>
+                                                                <%--<a href="/file/download.do?path=center/board/${file.folderPath}&fileName=${file.fullFileName}">${file.fileName}</a>--%>
+                                                                <a href="javascript:void(0);" onclick="f_file_download('center/board/${file.folderPath}', '${file.fullFileName}')">${file.fileName}</a>
                                                                 <input type="hidden" name="uploadFile" id="${file.id}" value="${file.fullFilePath}">
                                                                 <button type="button" class="ml10" onclick="f_file_remove(this, '${file.id}')">
                                                                     <i class="ki-duotone ki-abstract-11">

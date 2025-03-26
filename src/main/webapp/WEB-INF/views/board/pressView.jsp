@@ -120,7 +120,8 @@
                 <div class="board_view_file">
                     <c:if test="${not empty fileList}">
                         <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1" varStatus="status">
-                            <a href="/file/download.do?path=center/board/${fileInfo.folderPath}&fileName=${fileInfo.fullFileName}">${fileInfo.fileName}</a>
+                            <%--<a href="/file/download.do?path=center/board/${fileInfo.folderPath}&fileName=${fileInfo.fullFileName}">${fileInfo.fileName}</a>--%>
+                            <a href="javascript:void(0);" onclick="f_file_download('center/board/${fileInfo.folderPath}', '${fileInfo.fullFileName}')">${fileInfo.fileName}</a>
                         </c:forEach>
                     </c:if>
                 </div>

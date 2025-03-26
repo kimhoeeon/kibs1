@@ -9,8 +9,8 @@
 </head>
 <body>
 
-    잘못된 접근입니다.<br>
-    메인페이지로 이동해 주세요.
+    죄송합니다.<br>
+    서버에 오류가 발생했습니다.
 
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/jquery-migrate-3.3.0.js"></script>
@@ -18,7 +18,7 @@
 
     <script>
         $(function(){
-            alert('잘못된 접근입니다. 메인페이지로 이동합니다.');
+            alert('서버에 오류가 발생했습니다. 메인페이지로 이동합니다.');
             window.location.href='/main.do';
         })
     </script>
