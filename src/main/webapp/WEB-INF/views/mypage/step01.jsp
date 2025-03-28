@@ -87,7 +87,7 @@
                             <div class="txt">${sessionScope.id} 님 환영합니다!</div>
                             <div class="btn">
                                 <a href="javascript:void(0);" onclick="f_page_move('/mypage/modify.do','${info.seq}')" class="btnSt01">회원정보관리</a>
-                                <a href="javascript:void(0);" onclick="f_page_move('/mypage/index.do','${info.seq}')" class="btnSt01">마이페이지</a>
+                                <a href="javascript:void(0);" onclick="f_page_move('/mypage/index.do', {seq: `${info.seq}`})" class="btnSt01">마이페이지</a>
                             </div>
                         </div>
                         <div class="apply_nav_list">

@@ -132,7 +132,7 @@
 
                 <div class="video_box">
                     <div class="embed-container">
-                        <iframe src="https://www.youtube.com/embed/R-ZKqYY2zuA?autoplay=1&mute=1&controls=0&loop=1&playlist=R-ZKqYY2zuA" frameborder="0" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/uMN97io8RFA?autoplay=1&mute=1&controls=0&loop=1&playlist=uMN97io8RFA" frameborder="0" allowfullscreen></iframe>
                     </div>
                 </div>
 

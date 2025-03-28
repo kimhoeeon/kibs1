@@ -4773,17 +4773,17 @@ function my_step_03_check(exhibitorSeq){
 
 function exibitloginFormSubmit() {
     let form = document.getElementById("login_form");
-    let id = document.getElementById("exhibitId");
-    let password = document.getElementById("exhibitPw");
+    let id = $("#exhibitId").val();
+    let password = $("#exhibitPw").val();
 
-    if (id.value.trim() === "" || password.value.trim() === "") {
+    if (nvl(id,'') === "" || nvl(password,'') === "") {
         showMessage('', 'info', '입력 정보 확인', '아이디와 비밀번호를 입력해 주세요.', '');
         return false;
     }
 
     let jsonObj = {
-        id: id.value,
-        password: password.value,
+        id: id,
+        password: password,
         transferYear: transferYear
     };
 
@@ -4799,11 +4799,11 @@ function exibitloginFormSubmit() {
                 let hiddenField_id = document.createElement('input');
                 hiddenField_id.type = 'hidden';
                 hiddenField_id.name = 'id';
-                hiddenField_id.value = id.value;
+                hiddenField_id.value = id;
                 let hiddenField_pw = document.createElement('input');
                 hiddenField_pw.type = 'hidden';
                 hiddenField_pw.name = 'password';
-                hiddenField_pw.value = password.value;
+                hiddenField_pw.value = password;
                 let hiddenField_year = document.createElement('input');
                 hiddenField_year.type = 'hidden';
                 hiddenField_year.name = 'transferYear';
@@ -4815,7 +4815,7 @@ function exibitloginFormSubmit() {
 
                 document.body.appendChild(form);
 
-                sessionStorage.setItem('id', id.value);
+                sessionStorage.setItem('id', id);
 
                 form.submit(); // /mypage/index.do
             } else {

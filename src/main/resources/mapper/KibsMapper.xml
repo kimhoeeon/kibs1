@@ -976,8 +976,15 @@
              , IFNULL(prc_vat, 0) as prc_vat
              , IFNULL(prc_total, 0) as prc_total
         FROM exhibitor
-        WHERE id = #{id}
-        AND transfer_year = #{transferYear}
+        WHERE 1=1
+        <if test='id != null and id != ""'>
+          AND id = #{id}
+          AND transfer_year = #{transferYear}
+        </if>
+        <if test='seq != null and seq != ""'>
+          AND seq = #{seq}
+        </if>
+        LIMIT 1
     </select>
 
     <select id="selectExhibitorSingle" parameterType="com.mtf.kibs.dto.ExhibitorDTO" resultType="com.mtf.kibs.dto.ExhibitorDTO">

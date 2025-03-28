@@ -1379,25 +1379,13 @@ public class KibsController {
     // mypage Folder
     //***************************************************************************
 
-    @RequestMapping(value = "/mypage/index.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView mypage_index(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    @RequestMapping(value = "/mypage/index.do", method = RequestMethod.POST)
+    public ModelAndView mypage_index(ExhibitorDTO exhibitorDTO) {
         System.out.println("KibsController > mypage_index");
-        //System.out.println(exhibitorDTO.toString());
+        //System.out.println(exhibitorDTO.getSeq() + " / " + exhibitorDTO.getId() + " / " + exhibitorDTO.getTransferYear() );
         ModelAndView mv = new ModelAndView();
-        ExhibitorDTO exInfo = null;
-        if(exhibitorDTO.getId() != null && !"null".equals(exhibitorDTO.getId())){
-            exInfo = kibsService.processSelectExhibitorPrc(exhibitorDTO);
-        }else{
-            String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            ExhibitorDTO reqDTO = new ExhibitorDTO();
-            reqDTO.setId(id);
-            reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorPrc(reqDTO);
-        }
-
-        mv.addObject("info", exInfo);
-
+        ExhibitorDTO info = kibsService.processSelectExhibitorPrc(exhibitorDTO);
+        mv.addObject("info", info);
         mv.setViewName("/mypage/index");
         return mv;
     }

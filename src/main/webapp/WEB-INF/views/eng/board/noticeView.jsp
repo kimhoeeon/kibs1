@@ -93,8 +93,8 @@
         <div class="inner">
             <div class="board_view_box">
                 <div class="board_view_tit">${noticeInfo.title}</div>
-                <div class="board_view_info">
-                    <div class="write">${noticeInfo.writer}</div>
+                <div class="board_view_info eng">
+                    <div class="write">Administrator</div>
                     <div class="date">
                         <c:set var="writeDate" value="${fn:replace(fn:split(noticeInfo.writeDate,' ')[0],'-','.')}" />
                         ${writeDate}

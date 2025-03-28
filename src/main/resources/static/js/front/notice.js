@@ -137,7 +137,11 @@ function searchPosts(pageNum) {
                     str += title;
                 str += '</div>';
                 str += '<div class="write">';
-                    str += writer;
+                    if(lang === 'KO'){
+                        str += '관리자';
+                    }else{
+                        str += 'Administrator';
+                    }
                 str += '</div>';
                 str += '<div class="date">';
                     str += writeDate;

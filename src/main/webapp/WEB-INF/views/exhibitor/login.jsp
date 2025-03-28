@@ -119,7 +119,7 @@
                         <div class="loginInfo">
                             <label><input type="checkbox">로그인 상태 유지</label>
                         </div>
-                        <div class="btnLogin"><a href="javascript:exibitloginFormSubmit()" class="btnSt01">로그인</a></div>
+                        <div class="btnLogin"><a href="javascript:void(0);" onclick="exibitloginFormSubmit();" class="btnSt01">로그인</a></div>
                         <div class="btnJoin"><a href="/apply/step01.do" class="btnSt02">회원가입</a></div>
                         <div class="findPw">
                             비밀번호가 기억나지 않습니다. <a href="/exhibitor/findpw.do">비밀번호 찾기</a>
