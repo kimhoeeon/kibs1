@@ -157,7 +157,7 @@
                         </div>
                         <ul class="form_guide">
                             <li>Your banner will be posted on the main page of the Gyeonggi International Boat Show
-                                website(www.kibs.com).
+                                website(kibs.com).
                             </li>
                             <li><span class="em">Please send a high-resolution promotional image file(jpg/png) and a company logo AI file that meets the minimum standard(1200px X 1000px) for the yellow box.</span>
                             </li>

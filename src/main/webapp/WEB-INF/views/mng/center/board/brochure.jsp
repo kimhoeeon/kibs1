@@ -29,9 +29,9 @@ License: For each use you must have a valid license purchased only from above li
     <meta property="og:type" content="article"/>
     <meta property="og:title"
           content="KIBS"/>
-    <meta property="og:url" content="https://www.koreaboatshow.or.kr/"/>
+    <meta property="og:url" content="https://koreaboatshow.or.kr/"/>
     <meta property="og:site_name" content="2025 KIBS | 경기국제보트쇼"/>
-    <link rel="canonical" href="https://www.koreaboatshow.or.kr/"/>
+    <link rel="canonical" href="https://koreaboatshow.or.kr/"/>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />

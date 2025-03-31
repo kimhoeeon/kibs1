@@ -332,7 +332,7 @@ function f_progress_step_change_modal_btn(){
                                     body += '</p>';
                                     body += '<p><br/></p>';
                                     body += '<p>';
-                                    body += '<a href="https://www.kibs.com/mng/index.do" target="_blank">';
+                                    body += '<a href="https://kibs.com/mng/index.do" target="_blank">';
                                     body += '관리자 페이지 바로가기';
                                     body += '</a>';
                                     body += '</p>';
@@ -539,7 +539,7 @@ function f_request_list_save(seq){
                                         body += '</p>';
                                         body += '<p><br/></p>';
                                         body += '<p>';
-                                            body += '내용 : ' + form.content.replaceAll('/file','https://www.kibs.com/');
+                                            body += '내용 : ' + form.content.replaceAll('/file','https://kibs.com/');
                                         body += '</p>';
                                         body += '<p><br/></p>';
                                         body += '<p>';
@@ -765,7 +765,7 @@ function f_request_list_reply_sms_send(form){
     body += '</p>';
     body += '<p><br/></p>';
     body += '<p>';
-        body += '<a href="https://www.kibs.com/mng/index.do" target="_blank">';
+        body += '<a href="https://kibs.com/mng/index.do" target="_blank">';
             body += '관리자 페이지 바로가기';
         body += '</a>';
     body += '</p>';
@@ -817,7 +817,7 @@ function f_request_list_reply_sms_send2(form){
     body += '</p>';
     body += '<p><br/></p>';
     body += '<p>';
-    body += '<a href="https://www.kibs.com/mng/index.do" target="_blank">';
+    body += '<a href="https://kibs.com/mng/index.do" target="_blank">';
     body += '관리자 페이지 바로가기';
     body += '</a>';
     body += '</p>';

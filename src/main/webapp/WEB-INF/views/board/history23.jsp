@@ -40,7 +40,7 @@
 
     <span itemscope="" itemtype="http://schema.org/Organization">
     <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://www.koreaboatshow.or.kr/"></a>
+    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
     <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
     <a itemprop="sameAs" href="https://kibs-online.com"></a>
     <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>

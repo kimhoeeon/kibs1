@@ -51,7 +51,7 @@
 
     <span itemscope="" itemtype="http://schema.org/Organization">
     <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://www.koreaboatshow.or.kr/"></a>
+    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
     <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
     <a itemprop="sameAs" href="https://kibs-online.com"></a>
     <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
@@ -147,23 +147,23 @@
                                     <tr>
                                         <td>경기국제 보트쇼</td>
                                         <td>홈페이지 회원 목록</td>
-                                        <td>http://www.kibs.com</td>
+                                        <td>https://kibs.com</td>
                                     </tr>
                                     <tr>
                                         <td>경기국제웹툰페어</td>
                                         <td>홈페이지 회원 목록</td>
-                                        <td>http://www.webtoonfair.com</td>
+                                        <td>https://www.webtoonfair.com</td>
                                     </tr>
                                     <tr>
                                         <td>서울 국제 식품 산업대전</td>
                                         <td>홈페이지 회원 목록</td>
-                                        <td>http://www.seoulfood.or.kr</td>
+                                        <td>https://seoulfood.kotra.biz</td>
                                     </tr>
 
                                     <tr>
                                         <td>대한민국 명품특산물 페스티벌</td>
                                         <td>홈페이지 회원 목록, 현장 참관객 목록</td>
-                                        <td>http://www.koppex.com</td>
+                                        <td>https://www.koppex.com/</td>
                                     </tr>
                                     <tr>
                                         <td>코리아렌탈쇼</td>
@@ -184,7 +184,7 @@
                                     <tr>
                                         <td>한국국제전자담배박람회</td>
                                         <td>홈페이지 회원 목록, 현장 참관객 목록</td>
-                                        <td>http://www.vapekorea.co.kr/</td>
+                                        <td>https://www.vapekorea.co.kr/</td>
                                     </tr>
                                     <tr>
                                         <td>로보유니버스&amp;K드론&amp;VR 서밋</td>

@@ -40,7 +40,7 @@
 
     <span itemscope="" itemtype="http://schema.org/Organization">
     <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://www.koreaboatshow.or.kr/"></a>
+    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
     <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
     <a itemprop="sameAs" href="https://kibs-online.com"></a>
     <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
@@ -115,7 +115,7 @@
                             <div class="small">박람회 홈페이지 온라인 신청</div>
                             <div class="big">마감일 별도 공지 예정<%--~ 2025. 01. 12(일)--%></div>
                         </div>
-                        <div class="txt3">www.kibs.com</div>
+                        <div class="txt3">kibs.com</div>
                     </div>
                     <div class="cmnt">※ 부스 소진시, 조기마감 등 일정 추후 변동 가능</div>
                 </div>

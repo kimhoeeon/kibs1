@@ -88,7 +88,7 @@
     <!-- Google tag (gtag.js) -->
 
     <!-- swiper 외부 라이브러리 -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <link href="/css/reset.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
     <link href="/css/font.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
@@ -296,8 +296,8 @@
 
     </div>
     <!-- swiper 외부 라이브러리 -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
-    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
     <%--script

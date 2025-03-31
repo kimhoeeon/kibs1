@@ -4348,7 +4348,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             StringBuilder fileUrlSb = new StringBuilder();
             String file_url = null;
             String file_name = null;
-            String imageBaseUrl = "https://www.kibs.com/static/img/mail/";
+            String imageBaseUrl = "https://kibs.com/static/img/mail/";
             if(mailRequestDTO.getFileUrl() != null){
                 if(mailRequestDTO.getFileUrl().size() > 0){
                     for(int i=0; i<mailRequestDTO.getFileUrl().size(); i++){

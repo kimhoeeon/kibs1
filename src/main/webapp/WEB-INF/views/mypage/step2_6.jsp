@@ -40,7 +40,7 @@
 
     <span itemscope="" itemtype="http://schema.org/Organization">
     <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://www.koreaboatshow.or.kr/"></a>
+    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
     <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
     <a itemprop="sameAs" href="https://kibs-online.com"></a>
     <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
@@ -118,7 +118,7 @@
                                     <div class="big">웹배너 관련 사항</div>
                                 </div>
                                 <ul class="form_guide">
-                                    <li>귀사의 배너는 경기국제보트쇼 홈페이지 (www.kibs.com) 메인에 게재됩니다.</li>
+                                    <li>귀사의 배너는 경기국제보트쇼 홈페이지 (kibs.com) 메인에 게재됩니다.</li>
                                     <li><span class="em">노란 박스에 들어갈 최소규격 (1200px X 1000px) 에 맞는 고해상도 홍보 이미지 파일 (확장자 jpg/png) 과
                                             회사 로고AI 파일을 전송하여 주시기 바랍니다.</span></li>
                                     <li><span class="em">지정된 위치 외의 이미지 및 텍스트 사용은 불가하오니 제작 간 참고해주시기 바랍니다.<br>
