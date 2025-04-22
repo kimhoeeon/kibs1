@@ -2118,13 +2118,13 @@ if (document.documentElement) {
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="row mb-6 h-375px">
+                                            <div class="row mb-6 h-550px">
                                                 <!--begin::Label-->
                                                 <label class="col-lg-2 col-form-label fw-semibold fs-6">내용</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <div id="quill_editor_content" class="h-325px">${info.content}</div>
+                                                    <div id="quill_editor_content" class="h-500px">${info.content}</div>
                                                     <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true" />">
                                                 </div>
                                                 <!--end::Col-->
