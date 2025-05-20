@@ -97,7 +97,7 @@
                 <div class="nav">
                     <ul class="dept1">
                         <li>
-                            <a href="/eng/guide/summary.do"><span>KIBS 2025</span></a>
+                            <a href="/eng/guide/summary.do"><span>KIBS 2026</span></a>
                             <ul class="dept2">
                                 <li><a href="/eng/guide/summary.do"><span>Overview</span></a></li>
                                 <li><a href="/eng/guide/venue.do"><span>Venue</span></a></li>
@@ -105,6 +105,7 @@
                                 <li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>
                                 <li><a href="/eng/guide/certify.do"><span>International Certification&Awards</span></a></li>
                                 <li><a href="/eng/guide/contact.do"><span>Contact us</span></a></li>
+                                <li><a href="/eng/guide/conference.do"><span>Conference</span></a></li>
                                 <li><a href="/eng/guide/program.do"><span>Program</span></a></li>
                                 <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>Held Concurrently with KOFISH</span></a></li>
                             </ul>
@@ -180,6 +181,7 @@
                                 <li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>
                                 <li><a href="/eng/guide/certify.do"><span>International Certification&Awards</span></a></li>
                                 <li><a href="/eng/guide/contact.do"><span>Contact us</span></a></li>
+                                <li><a href="/eng/guide/conference.do"><span>Conference</span></a></li>
                                 <li><a href="/eng/guide/program.do"><span>Program</span></a></li>
                                 <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>Held Concurrently with KOFISH</span></a></li>
                             </ul>

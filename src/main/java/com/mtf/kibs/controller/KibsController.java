@@ -243,6 +243,33 @@ public class KibsController {
         return mv;
     }
 
+    // 최미나가 추가함
+    @RequestMapping(value = "/guide/program2025.do", method = RequestMethod.GET)
+    public ModelAndView guide_program2025() {
+        System.out.println("KibsController > guide_program2025");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/program2025");
+        return mv;
+    }
+
+    @RequestMapping(value = "/guide/conference.do", method = RequestMethod.GET)
+    public ModelAndView guide_conference() {
+        System.out.println("KibsController > guide_conference");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/conference");
+        return mv;
+    }
+
+    @RequestMapping(value = "/guide/conference2025.do", method = RequestMethod.GET)
+    public ModelAndView guide_conference2025() {
+        System.out.println("KibsController > guide_conference2025");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/conference2025");
+        return mv;
+    }
+
+
+
     //***************************************************************************
     // apply Folder
     //***************************************************************************
@@ -1159,6 +1186,15 @@ public class KibsController {
         System.out.println("KibsController > board_history24");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history24");
+        return mv;
+    }
+
+    // 최미나가 추가함
+    @RequestMapping(value = "/board/history25.do", method = RequestMethod.GET)
+    public ModelAndView board_history25() {
+        System.out.println("KibsController > board_history25");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/board/history25");
         return mv;
     }
 
@@ -2119,6 +2155,31 @@ public class KibsController {
         System.out.println("KibsController > eng_guide_program");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/guide/program");
+        return mv;
+    }
+    
+    // 최미나가 추가함
+    @RequestMapping(value = "/eng/guide/program2025.do", method = RequestMethod.GET)
+    public ModelAndView eng_guide_program2025() {
+        System.out.println("KibsController > eng_guide_program2025");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/eng/guide/program2025");
+        return mv;
+    }
+
+    @RequestMapping(value = "/eng/guide/conference.do", method = RequestMethod.GET)
+    public ModelAndView eng_guide_conference() {
+        System.out.println("KibsController > eng_guide_conference");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/eng/guide/conference");
+        return mv;
+    }
+
+    @RequestMapping(value = "/eng/guide/conference2025.do", method = RequestMethod.GET)
+    public ModelAndView eng_guide_conference2025() {
+        System.out.println("KibsController > eng_guide_conference2025");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/eng/guide/conference2025");
         return mv;
     }
 

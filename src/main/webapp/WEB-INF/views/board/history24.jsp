@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Kibs 2025">
+    <meta name="author" content="Kibs 2026">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="경기국제보트쇼">
     <meta property="og:title" content="경기국제보트쇼">
@@ -32,7 +32,7 @@
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
-    <title>2025 경기국제보트쇼</title>
+    <title>2026 경기국제보트쇼</title>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
@@ -58,7 +58,7 @@
         <div class="inner">
             <div class="sub_top_box">
                 <div class="sub_top_nav">
-                    <span>홈</span><span>자료실</span><span>지난 전시회</span>
+                    <span>홈</span><span>미디어센터</span><span>지난 전시회</span>
                 </div>
                 <div class="sub_top_tit">지난 전시회</div>
             </div>
@@ -73,21 +73,22 @@
                 <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">자료실</div>
+                        <div class="tabOptAct">미디어센터</div>
                         <div class="tabOptSel">
-                            <a href="/guide/notice.do">KIBS 안내</a>
+                            <a href="/guide/summary.do">KIBS 안내</a>
                             <a href="/exhibitor/guide.do">참가기업</a>
                             <a href="/visitor/guide_off.do">참관객</a>
-                            <a class="active" href="/board/gallery.do">자료실</a>
+                            <a class="active" href="/guide/notice.do">미디어센터</a>
                             <a href="/online/kibstv.do">온라인 전시관</a>
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
                         <div class="tabOptAct">지난 전시회</div>
                         <div class="tabOptSel">
+                            <a href="/guide/notice.do">공지사항</a>
                             <a href="/board/gallery.do">갤러리</a>
                             <a href="/board/press.do">기사 및 칼럼</a>
-                            <a class="active" href="/board/history24.do">지난 전시회</a>
+                            <a class="active" href="/board/history25.do">지난 전시회</a>
                             <a href="/board/newsletter.do">뉴스레터</a>
                             <a href="/board/bi.do">KIBS BI</a>
                             <a href="/board/cerify.do">인증 및 수상현황</a>
@@ -104,6 +105,7 @@
     <div class="year_tab padding_t">
         <div class="inner">
             <div class="year_tab_box">
+                <a href="/board/history25.do">2025</a>
                 <a href="/board/history24.do" class="active">2024</a>
                 <a href="/board/history23.do">2023</a>
                 <a href="/board/history22.do">2022</a>

@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Kibs 2025">
+    <meta name="author" content="Kibs 2026">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="경기국제보트쇼">
     <meta property="og:title" content="경기국제보트쇼">
@@ -32,7 +32,7 @@
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
-    <title>2025 KIBS</title>
+    <title>2026 KIBS</title>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
@@ -49,7 +49,7 @@
         <div class="inner">
             <div class="sub_top_box">
                 <div class="sub_top_nav">
-                    <span>Home</span><span>KIBS 2025</span><span>Overview</span>
+                    <span>Home</span><span>KIBS 2026</span><span>Overview</span>
                 </div>
                 <div class="sub_top_tit">Overview</div>
             </div>
@@ -64,9 +64,9 @@
                 <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">KIBS 2025</div>
+                        <div class="tabOptAct">KIBS 2026</div>
                         <div class="tabOptSel">
-                            <a class="active" href="/eng/guide/summary.do">KIBS 2025</a>
+                            <a class="active" href="/eng/guide/summary.do">KIBS 2026</a>
                             <a href="/eng/exhibitor/categories.do">Exhibitors</a>
                             <a href="/eng/buyer/apply.do">Buyer</a>
                             <a href="/eng/board/notice.do">News</a>
@@ -94,21 +94,21 @@
     <div class="summ_s summ_s1 padding_tb">
         <div class="inner">
             <div class="summ_box">
-                <div class="summ_poster"><img src="/img/keyvisual25_eng.jpg"></div>
+                <div class="summ_poster"><img src="/img/keyvisual26_eng.jpg"></div>
                 <div class="summ_info">
                     <ul class="infoBox">
                         <li>
                             <div class="icon"><img src="/img/summ_icon01.png"></div>
                             <div class="txt">
                                 <div class="gubun">Title</div>
-                                <div class="cont">Korea International Boat Show 2025</div>
+                                <div class="cont">Korea International Boat Show 2026</div>
                             </div>
                         </li>
                         <li>
                             <div class="icon"><img src="/img/summ_icon02.png"></div>
                             <div class="txt">
                                 <div class="gubun">Date</div>
-                                <div class="cont">2025.02.28(Fri) - 03.02(Sun)</div>
+                                <div class="cont">2026.03.06(Fri) - 03.08(Sun)</div>
                             </div>
                         </li>
                         <li>
@@ -221,48 +221,45 @@
                         <div class="subContTit">Exhibition Categories</div>
                         <ul class="eventFieldBox">
                             <li>
-                                <p class="icon"><img src="/img/summ_img01.png"></p>
-                                <p class="txt">Yacht & Boat</p>
+                                <p class="icon"><img src="/img/summ_img01.png?ver=20250423"></p>
+                                <p class="txt">Boat & Yacht</p>
                             </li>
                             <li>
-                                <p class="icon"><img src="/img/summ_img02.png"></p>
+                                <p class="icon"><img src="/img/summ_img02.png?ver=20250423"></p>
                                 <p class="txt">Paddler’s World</p>
                             </li>
                             <li>
-                                <p class="icon"><img src="/img/summ_img03.png"></p>
+                                <p class="icon"><img src="/img/summ_img03.png?ver=20250423"></p>
                                 <p class="txt">Work Boat</p>
                             </li>
-                            <%--<li>
-                                <p class="icon"><img src="/img/summ_img04.png"></p>
-                                <p class="txt">Ara-Marine Training / Experience Programs</p>
-                            </li>--%>
                             <li>
-                                <p class="icon"><img src="/img/summ_img07.png"></p>
-                                <p class="txt">
-                                    Marine Equipment,<br>
-                                    Safety & Marina Industry Show
-                                </p>
+                                <p class="icon"><img src="/img/summ_img04.png?ver=20250423"></p>
+                                <p class="txt">Parts & Equipment</p>
                             </li>
-                            <%--<li>
-                                <p class="icon"><img src="/img/summ_img08.png"></p>
-                                <p class="txt">Eco Friendly Marine</p>
-                            </li>--%>
                             <li>
-                                <p class="icon"><img src="/img/summ_img06.png"></p>
+                                <p class="icon"><img src="/img/summ_img05.png?ver=20250423"></p>
+                                <p class="txt">Safety & Marina</p>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img06.png?ver=20250423"></p>
                                 <p class="txt">Marine Tourism</p>
                             </li>
                             <li>
-                                <p class="icon"><img src="/img/summ_img09.png"></p>
-                                <p class="txt">Marine Leisure Hall</p>
+                                <p class="icon"><img src="/img/summ_img07.png?ver=20250423"></p>
+                                <p class="txt">Marine Leisure</p>
                             </li>
                             <li>
-                                <p class="icon"><img src="/img/summ_img05.png"></p>
-                                <p class="txt">Caravan Show</p>
+                                <p class="icon"><img src="/img/summ_img08.png?ver=20250423"></p>
+                                <p class="txt">Underwater Leisure</p>
                             </li>
-                            <%--<li>
-                                <p class="icon"><img src="/img/summ_img12.png"></p>
-                                <p class="txt">K-Diving Expo</p>
-                            </li>--%>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img09.png?ver=20250423"></p>
+                                <p class="txt">Surfing</p>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img10.png?ver=20250423"></p>
+                                <p class="txt">Caravan & Camping</p>
+                            </li>
                         </ul>
                     </div>
                 </div>

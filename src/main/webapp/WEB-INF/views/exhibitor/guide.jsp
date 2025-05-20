@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Kibs 2025">
+    <meta name="author" content="Kibs 2026">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="경기국제보트쇼">
     <meta property="og:title" content="경기국제보트쇼">
@@ -32,7 +32,7 @@
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
-    <title>2025 경기국제보트쇼</title>
+    <title>2026 경기국제보트쇼</title>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
@@ -75,10 +75,10 @@
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">참가기업</div>
                         <div class="tabOptSel">
-                            <a href="/guide/notice.do">KIBS 안내</a>
+                            <a href="/guide/summary.do">KIBS 안내</a>
                             <a class="active" href="/exhibitor/guide.do">참가기업</a>
                             <a href="/visitor/guide_off.do">참관객</a>
-                            <a href="/board/gallery.do">자료실</a>
+                            <a href="/guide/notice.do">미디어센터</a>
                             <a href="/online/kibstv.do">온라인 전시관</a>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                         <div class="tabOptAct">참가기업 안내</div>
                         <div class="tabOptSel">
                             <a class="active" href="/exhibitor/guide.do">참가기업 안내</a>
-                            <a href="/apply/step01.do">참가기업 신청</a>
+                            <a href="/apply/step01.do">참가신청</a>
                             <a href="/exhibitor/login.do">참가신청확인</a>
                             <a href="/exhibitor/faq.do">FAQ</a>
                         </div>
@@ -113,9 +113,9 @@
                         </div>
                         <div class="txt2">
                             <div class="small">박람회 홈페이지 온라인 신청</div>
-                            <div class="big">마감일 별도 공지 예정<%--~ 2025. 01. 12(일)--%></div>
+                            <div class="big">~ 2025. 12. 31(수)</div>
                         </div>
-                        <div class="txt3">kibs.com</div>
+                        <%--<div class="txt3">kibs.com</div>--%>
                     </div>
                     <div class="cmnt">※ 부스 소진시, 조기마감 등 일정 추후 변동 가능</div>
                 </div>
@@ -127,10 +127,10 @@
                             <div class="tit">참가비 납부</div>
                         </div>
                         <div class="txt2">
-                            <div class="small">인보이스 수령 후 7일 이내</div>
+                            <div class="small">인보이스 수령 후 14일 이내</div>
                             <div class="big">참가비 전액 납부</div>
                         </div>
-                        <div class="txt3">입금계좌 사무국 문의</div>
+                        <%--<div class="txt3">입금계좌 사무국 문의</div>--%>
                     </div>
                 </div>
                 <div class="exh_g1_box">
@@ -141,18 +141,18 @@
                             <div class="tit">부대시설비 납부</div>
                         </div>
                         <div class="txt2">
-                            <div class="small">별도 신청 부대시설비 완납 기한</div>
-                            <div class="big">~ 2025. 01. 24(금)</div>
+                            <div class="small">별도 신청 부대시설비 납부 기한</div>
+                            <div class="big">~ 2026. 02. 13(금)</div>
                         </div>
-                        <div class="txt3">잔금 납입 시, 계약 완료</div>
+                        <%--<div class="txt3">잔금 납입 시, 계약 완료</div>--%>
                     </div>
                     <div class="cmnt">부대시설은 홈페이지 통해 별도 신청</div>
                 </div>
             </div>
 
             <div class="btn_box">
-                <%--<a href="javascript:void(0);" onclick="alert('KIBS 2025 참가신청은 준비중입니다');return false;" class="btnSt01">KIBS 참가신청 바로가기</a>--%>
-                <a href="/apply/step01.do" class="btnSt01">참가기업 신청 바로가기</a>
+                <%--<a href="javascript:void(0);" onclick="alert('2026 경기국제보트쇼 참가신청은 준비중입니다');return false;" class="btnSt01">참가신청 바로가기</a>--%>
+                <a href="/apply/step01.do" class="btnSt01">참가신청 바로가기</a>
             </div>
         </div>
     </div>
@@ -193,7 +193,7 @@
                                 <div class="txtHp">※ 추가 부대시설은 별도신청</div>
                             </td>
                             <td rowspan="3">업체당 10만원</td>
-                            <td>1,800,000원</td>
+                            <td>-</td>
                         </tr>
                         <tr>
                             <td>조립부스</td>
@@ -206,7 +206,7 @@
                                 <div class="txtHp">전기 1kw (220V 콘센트)</div>
                                 <div class="txtHp">※ 추가 부대시설은 별도신청</div>
                             </td>
-                            <td>2,100,000원</td>
+                            <td>-</td>
                         </tr>
                         <tr>
                             <td>온라인부스</td>
@@ -215,7 +215,7 @@
                                 <div class="txtHp">업체 소개, 제품 소개 (텍스트, 이미지)</div>
                                 <div class="txtHp">독립부스 또는 조립부스 참가시 무료</div>
                             </td>
-                            <td>1,000,000원</td>
+                            <td>-</td>
                         </tr>
                         </tbody>
                     </table>
@@ -254,12 +254,12 @@
                         <tr>
                             <td>주간 단상 220v</td>
                             <td>70,000</td>
-                            <td>kw당 비용, 행사기간(2/28~3/2, 총 3일)동안 사용가능</td>
+                            <td>kw당 비용, 행사기간(3/6~3/8, 총 3일)동안 사용가능</td>
                         </tr>
                         <tr>
                             <td>24시간용 220v</td>
                             <td>80,000</td>
-                            <td>kw당 비용, 행사기간(2/28~3/2, 총 3일)동안 사용가능</td>
+                            <td>kw당 비용, 행사기간(3/6~3/8, 총 3일)동안 사용가능</td>
                         </tr>
                         <tr>
                             <td>압축공기 기본형</td>
@@ -289,7 +289,7 @@
                         <tr>
                             <td>참관객/바이어 바코드 리더기</td>
                             <td>200,000</td>
-                            <td>행사기간(2/28~3/2, 총 3일)동안 사용가능</td>
+                            <td>행사기간(3/6~3/8, 총 3일)동안 사용가능</td>
                         </tr>
                         </tbody>
                     </table>
@@ -300,6 +300,7 @@
     <!-- section -->
 
     <!-- section -->
+    <%--
     <div class="exh_g exh_g4 padding_b">
         <div class="inner">
             <div class="sub_cont_tit">
@@ -358,9 +359,11 @@
             </div>
         </div>
     </div>
+    --%>
     <!-- section -->
 
     <!-- section -->
+    <%--
     <div class="exh_g exh_g5 padding_b">
         <div class="inner">
             <div class="sub_cont_tit">
@@ -396,6 +399,7 @@
             </div>
         </div>
     </div>
+    --%>
     <!-- section -->
 
     <!-- section -->

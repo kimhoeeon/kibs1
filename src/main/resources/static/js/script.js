@@ -118,6 +118,14 @@ $(document).ready(function () {
         $('.apply_nav_list .list2').toggleClass('on');
     });
 
+    // 팝업 폼
+    $('*').click(function () {
+        var pop_id = $(this).attr('data-pop');
+        $("#" + pop_id).addClass('on');
+    });
+    $('.close').click(function(){
+        $(this).parents('.popup').removeClass('on');
+    });
 
     // 팝업닫기    
     $('.popup .close').on('click', function () {

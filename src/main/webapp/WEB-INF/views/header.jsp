@@ -152,19 +152,19 @@
                 <div class="nav">
                     <ul class="dept1">
                         <li>
-                            <a href="/guide/notice.do"><span>KIBS 안내</span></a>
+                            <a href="/guide/summary.do"><span>KIBS 안내</span></a>
                             <ul class="dept2">
-                                <li><a href="/guide/notice.do"><span>공지사항</span></a></li>
                                 <li><a href="/guide/summary.do"><span>행사소개</span></a></li>
-                                <li><a href="/guide/program.do"><span>2025 주요프로그램</span></a></li>
-                                <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>한국낚시박람회 동시개최</span></a></li>
+                                <li><a href="/guide/conference.do"><span>컨퍼런스</span></a></li>
+                                <li><a href="/guide/program.do"><span>체험 프로그램</span></a></li>
+                                <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>동시개최행사<br>[한국국제낚시박람회]</span></a></li>
                             </ul>
                         </li>
                         <li>
                             <a href="/exhibitor/guide.do"><span>참가기업</span></a>
                             <ul class="dept2">
                                 <li><a href="/exhibitor/guide.do"><span>참가기업 안내</span></a></li>
-                                <li><a href="/apply/step01.do"><span>참가기업 신청</span></a></li>
+                                <li><a href="/apply/step01.do"><span>참가신청</span></a></li>
                                 <li><a href="/exhibitor/login.do"><span>참가신청확인</span></a></li>
                                 <li><a href="/exhibitor/faq.do"><span>FAQ</span></a></li>
                             </ul>
@@ -179,11 +179,12 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="/board/gallery.do"><span>자료실</span></a>
+                            <a href="/guide/notice.do"><span>미디어센터</span></a>
                             <ul class="dept2">
+                                <li><a href="/guide/notice.do"><span>공지사항</span></a></li>
                                 <li><a href="/board/gallery.do"><span>갤러리</span></a></li>
                                 <li><a href="/board/press.do"><span>기사 및 칼럼</span></a></li>
-                                <li><a href="/board/history24.do"><span>지난 전시회</span></a></li>
+                                <li><a href="/board/history25.do"><span>지난 전시회</span></a></li>
                                 <li><a href="/board/newsletter.do"><span>뉴스레터</span></a></li>
                                 <li><a href="/board/bi.do"><span>KIBS BI</span></a></li>
                                 <li><a href="/board/cerify.do"><span>인증 및 수상현황</span></a></li>
@@ -230,12 +231,12 @@
                 <div class="site_map_nav">
                     <ul class="dept1">
                         <li>
-                            <a href="/guide/notice.do"><span>KIBS 안내</span></a>
+                            <a href="/guide/summary.do"><span>KIBS 안내</span></a>
                             <ul class="dept2">
-                                <li><a href="/guide/notice.do"><span>공지사항</span></a></li>
                                 <li><a href="/guide/summary.do"><span>행사소개</span></a></li>
-                                <li><a href="/guide/program.do"><span>2025 주요프로그램</span></a></li>
-                                <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>한국낚시박람회 동시개최</span></a></li>
+                                <li><a href="/guide/conference.do"><span>컨퍼런스</span></a></li>
+                                <li><a href="/guide/program.do"><span>체험 프로그램</span></a></li>
+                                <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>동시개최행사<br>[한국국제낚시박람회]</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -263,8 +264,9 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="/board/gallery.do"><span>자료실</span></a>
+                            <a href="/guide/notice.do"><span>미디어센터</span></a>
                             <ul class="dept2">
+                                <li><a href="/guide/notice.do"><span>공지사항</span></a></li>
                                 <li><a href="/board/gallery.do"><span>갤러리</span></a></li>
                                 <li>
                                     <a href="/board/press.do"><span>기사 및 칼럼</span></a>
@@ -273,7 +275,7 @@
                                         <li><a href="/board/column.do"><span>칼럼</span></a></li>
                                     </ul>
                                 </li>
-                                <li><a href="/board/history24.do"><span>지난 전시회</span></a></li>
+                                <li><a href="/board/history25.do"><span>지난 전시회</span></a></li>
                                 <li><a href="/board/newsletter.do"><span>뉴스레터</span></a></li>
                                 <li><a href="/board/bi.do"><span>KIBS BI</span></a></li>
                                 <li><a href="/board/cerify.do"><span>인증 및 수상현황</span></a></li>

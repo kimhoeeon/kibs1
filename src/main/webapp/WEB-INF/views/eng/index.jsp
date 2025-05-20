@@ -9,7 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Kibs 2025">
+    <meta name="author" content="Kibs 2026">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="경기국제보트쇼">
     <meta property="og:title" content="경기국제보트쇼">
@@ -34,7 +34,7 @@
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
-    <title>2025 KIBS</title>
+    <title>2026 KIBS</title>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
@@ -107,7 +107,7 @@
             </div>
             <div class="inner">
                 <div class="info_box">
-                    <div class="tit"><img src="/img/main_top_tit25_eng.png"></div>
+                    <div class="tit"><img src="/img/main_top_tit26_eng.png"></div>
                     <%--<ul class="proc">
                         <li>
                             <div class="txt">

@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Kibs 2025">
+    <meta name="author" content="Kibs 2026">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="경기국제보트쇼">
     <meta property="og:title" content="경기국제보트쇼">
@@ -32,7 +32,7 @@
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
-    <title>2025 경기국제보트쇼</title>
+    <title>2026 경기국제보트쇼</title>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
@@ -75,19 +75,19 @@
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">KIBS 안내</div>
                         <div class="tabOptSel">
-                            <a class="active" href="/guide/notice.do">KIBS 안내</a>
+                            <a class="active" href="/guide/summary.do">KIBS 안내</a>
                             <a href="/exhibitor/guide.do">참가기업</a>
                             <a href="/visitor/guide_off.do">참관객</a>
-                            <a href="/board/gallery.do">자료실</a>
+                            <a href="/guide/notice.do">미디어센터</a>
                             <a href="/online/kibstv.do">온라인 전시관</a>
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
                         <div class="tabOptAct">행사소개</div>
                         <div class="tabOptSel">
-                            <a href="/guide/notice.do">공지사항</a>
                             <a class="active" href="/guide/summary.do">행사소개</a>
-                            <a href="/guide/program.do">2025 주요프로그램</a>
+                            <a href="/guide/conference.do">컨퍼런스</a>
+                            <a href="/guide/program.do">체험 프로그램</a>
                         </div>
                     </div>
                 </div>
@@ -101,21 +101,21 @@
     <div class="summ_s summ_s1 padding_tb">
         <div class="inner">
             <div class="summ_box">
-                <div class="summ_poster"><img src="/img/keyvisual25_kor.jpg"></div>
+                <div class="summ_poster"><img src="/img/keyvisual26_kor.jpg"></div>
                 <div class="summ_info">
                     <ul class="infoBox">
                         <li>
                             <div class="icon"><img src="/img/summ_icon01.png"></div>
                             <div class="txt">
                                 <div class="gubun">행사명</div>
-                                <div class="cont">2025 경기국제보트쇼</div>
+                                <div class="cont">2026 경기국제보트쇼</div>
                             </div>
                         </li>
                         <li>
                             <div class="icon"><img src="/img/summ_icon02.png"></div>
                             <div class="txt">
                                 <div class="gubun">행사기간</div>
-                                <div class="cont">2025.02.28(금) - 03.02(일)</div>
+                                <div class="cont">2026.03.06(금) - 03.08(일)</div>
                             </div>
                         </li>
                         <li>
@@ -156,48 +156,49 @@
                         <div class="subContTit">전시분야</div>
                         <ul class="eventFieldBox">
                             <li>
-                                <p class="icon"><img src="/img/summ_img01.png"></p>
-                                <p class="txt">요트&보트전</p>
+                                <p class="icon"><img src="/img/summ_img01.png?ver=20250423"></p>
+                                <p class="txt">보트&요트</p>
                             </li>
                             <li>
-                                <p class="icon"><img src="/img/summ_img02.png"></p>
-                                <p class="txt">무동력보트전</p>
+                                <p class="icon"><img src="/img/summ_img02.png?ver=20250423"></p>
+                                <p class="txt">무동력보트</p>
                             </li>
                             <li>
-                                <p class="icon"><img src="/img/summ_img03.png"></p>
-                                <p class="txt">워크보트전</p>
-                            </li>
-                            <%--<li>
-                                <p class="icon"><img src="/img/summ_img04.png"></p>
-                                <p class="txt">아라마리나 교육 및 체험 프로그램</p>
-                            </li>--%>
-                            <li>
-                                <p class="icon"><img src="/img/summ_img07.png"></p>
-                                <p class="txt">해양부품, 안전&마리나산업전</p>
-                            </li>
-                            <%--<li>
-                                <p class="icon"><img src="/img/summ_img08.png"></p>
-                                <p class="txt">친환경 특별전</p>
-                            </li>--%>
-                            <li>
-                                <p class="icon"><img src="/img/summ_img06.png"></p>
-                                <p class="txt">한국해양관광전</p>
+                                <p class="icon"><img src="/img/summ_img03.png?ver=20250423"></p>
+                                <p class="txt">워크보트</p>
                             </li>
                             <li>
-                                <p class="icon"><img src="/img/summ_img09.png"></p>
-                                <p class="txt">해양레저관</p>
+                                <p class="icon"><img src="/img/summ_img04.png?ver=20250423"></p>
+                                <p class="txt">부품&장비</p>
                             </li>
                             <li>
-                                <p class="icon"><img src="/img/summ_img05.png"></p>
-                                <p class="txt">카라반쇼</p>
+                                <p class="icon"><img src="/img/summ_img05.png?ver=20250423"></p>
+                                <p class="txt">안전&마리나</p>
                             </li>
-                            <%--<li>
-                                <p class="icon"><img src="/img/summ_img12.png"></p>
-                                <p class="txt">한국다이빙엑스포</p>
-                            </li>--%>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img06.png?ver=20250423"></p>
+                                <p class="txt">해양관광</p>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img07.png?ver=20250423"></p>
+                                <p class="txt">해양레저</p>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img08.png?ver=20250423"></p>
+                                <p class="txt">수중레저</p>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img09.png?ver=20250423"></p>
+                                <p class="txt">서핑</p>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img10.png?ver=20250423"></p>
+                                <p class="txt">카라반&캠핑</p>
+                            </li>
                         </ul>
                     </div>
-                    <a class="downBtn btnSt01" href="/file/2025_경기국제보트쇼_브로슈어_국문.pdf" target="_blank">2025 브로슈어 다운로드</a>
+                    <a class="downBtn btnSt01" href="void(0);" onclick="alert('준비 중입니다');return false;">2026 브로슈어 다운로드</a>
+                    <%--<a class="downBtn btnSt01" href="/file/2025_경기국제보트쇼_브로슈어_국문.pdf" target="_blank">2025 브로슈어 다운로드</a>--%>
                 </div>
             </div>
 

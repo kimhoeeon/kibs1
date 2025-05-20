@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Kibs 2025">
+    <meta name="author" content="Kibs 2026">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="경기국제보트쇼">
     <meta property="og:title" content="경기국제보트쇼">
@@ -32,7 +32,7 @@
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
-    <title>2025 KIBS</title>
+    <title>2026 KIBS</title>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
@@ -95,6 +95,67 @@
         <div class="inner">
             <ul class="exh_cate_list">
                 <li>
+                    <div class="icon"><img src="/img/summ_img01.png?ver=20250423"></div>
+                    <div class="txtBox">
+                        <div class="tit">Boat & Yacht</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon"><img src="/img/summ_img02.png?ver=20250423"></div>
+                    <div class="txtBox">
+                        <div class="tit">Paddler’s World</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon"><img src="/img/summ_img03.png?ver=20250423"></div>
+                    <div class="txtBox">
+                        <div class="tit">Work Boat</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon"><img src="/img/summ_img04.png?ver=20250423"></div>
+                    <div class="txtBox">
+                        <div class="tit">Parts & Equipment</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon"><img src="/img/summ_img05.png?ver=20250423"></div>
+                    <div class="txtBox">
+                        <div class="tit">Safety & Marina</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon"><img src="/img/summ_img06.png?ver=20250423"></div>
+                    <div class="txtBox">
+                        <div class="tit">Marine Tourism</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon"><img src="/img/summ_img07.png?ver=20250423"></div>
+                    <div class="txtBox">
+                        <div class="tit">Marine Leisure</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon"><img src="/img/summ_img08.png?ver=20250423"></div>
+                    <div class="txtBox">
+                        <div class="tit">Underwater Leisure</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon"><img src="/img/summ_img09.png?ver=20250423"></div>
+                    <div class="txtBox">
+                        <div class="tit">Surfing</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon"><img src="/img/summ_img10.png?ver=20250423"></div>
+                    <div class="txtBox">
+                        <div class="tit">Caravan & Camping</div>
+                    </div>
+                </li>
+                <%--
+                <li>
                     <div class="icon"><img src="/img/summ_img01.png"></div>
                     <div class="txtBox">
                         <div class="tit">Yacht & Boat</div>
@@ -119,12 +180,12 @@
                         </div>
                     </div>
                 </li>
-                <%--<li>
+                <li>
                     <div class="icon"><img src="/img/summ_img04.png"></div>
                     <div class="txtBox">
                         <div class="tit">Ara-Marine Training / Experience Programs</div>
                     </div>
-                </li>--%>
+                </li>
                 <li class="w100">
                     <div class="icon"><img src="/img/summ_img07.png"></div>
                     <div class="txtBox">
@@ -138,12 +199,12 @@
                         </div>
                     </div>
                 </li>
-                <%--<li>
+                <li>
                     <div class="icon"><img src="/img/summ_img08.png"></div>
                     <div class="txtBox">
                         <div class="tit">Eco Friendly Marine</div>
                     </div>
-                </li>--%>
+                </li>
                 <li>
                     <div class="icon"><img src="/img/summ_img06.png"></div>
                     <div class="txtBox">
@@ -165,13 +226,13 @@
                         </div>
                     </div>
                 </li>
-                <%--<li>
+                <li>
                     <div class="icon"><img src="/img/summ_img12.png"></div>
                     <div class="txtBox">
                         <div class="tit">K-Diving Expo</div>
                     </div>
-                </li>--%>
-                <%--<li>
+                </li>
+                <li>
                     <div class="icon"><img src="/img/summ_img07.png"></div>
                     <div class="txtBox">
                         <div class="tit">KIBS afloat</div>
@@ -179,7 +240,8 @@
                             Experience, Demo run, Test run etc.
                         </div>
                     </div>
-                </li>--%>
+                </li>
+                --%>
             </ul>
         </div>
     </div>
