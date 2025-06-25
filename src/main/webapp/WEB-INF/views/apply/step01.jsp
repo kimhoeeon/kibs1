@@ -42,12 +42,12 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
     <span itemscope="" itemtype="http://schema.org/Organization">
-    <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-    <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-    <a itemprop="sameAs" href="https://kibs-online.com"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 </head>
 
@@ -62,14 +62,14 @@
     </c:when>
     <c:otherwise>
 
-        <c:if test="${status eq 'logon'}">
+        <c:if test="${sessionScope.get('status') eq 'logon'}">
             <script>
-                alert("이미 신청된 아이디로 로그인 중입니다.\n신규 참가신청은 로그아웃 후 시도해주세요.");
+                alert("이미 신청된 아이디로 로그인 중입니다.\n신규 참가신청은 로그아웃 후 시도해 주세요.");
                 window.location.href = '/';
             </script>
         </c:if>
 
-        <c:if test="${status ne 'logon'}">
+        <c:if test="${sessionScope.get('status') ne 'logon'}">
 
             <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
@@ -199,7 +199,7 @@
                                     <div class="form_pri">
                                         <div class="form_pri_box">
                                             <div class="form_pri_titt">제1조 (용어의 정의)</div>
-                                            1. “전시회”라 함은 “2025 경기국제보트쇼(KIBS 2025)"를 말한다.<br>
+                                            1. “전시회”라 함은 “2026 경기국제보트쇼(KIBS 2026)"를 말한다.<br>
                                             2. ‘주최자’라 함은 경기도 및 공동주최기관을 말한다.<br>
                                             3. “주관자”라 함은 전시회를 주관하는 ㈜킨텍스를 말한다.<br>
                                             4. “전시자”라 함은 전시회 참가를 위해 참가신청서 제출과 함께 계약금을 납부한 회사·조합· 단체 및 개인 등의 전시 참가자를 말한다.<br><br>
@@ -215,7 +215,7 @@
 
                                             <div class="form_pri_titt">제 3 조 (납입조건)</div>
                                             전시자는 참가비 50%에 해당하는 대금을 신청서 제출 후 15일 이내, 잔금은 신청서 제출 후 30일이내 / 신청마감일(2024년 12월 31일)까지 납입해야한다.<br>
-                                            단, 2025년 1월 1일 이후 참가신청 시에는 신청과 동시에 참가비를 100% 완납하여야 한다.<br><br>
+                                            단, 2026년 1월 1일 이후 참가신청 시에는 신청과 동시에 참가비를 100% 완납하여야 한다.<br><br>
 
                                             <div class="form_pri_titt">제 4 조 (전시면적 및 위치 배정)</div>
                                             1. 주관자는 참가신청 접수순서, 전시품목의 특성, 신청면적 및 기타 합리적인 기준에 의거하여 전시 위치를 배정하며, 전시자는 이에 이의를 제기할 수 없다.<br>
@@ -470,11 +470,11 @@
                                                     <p>아이디</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" id="id" name="id" value="${info.id}" maxlength="10" placeholder="사업자등록번호를 입력해주세요. (하이픈 제외)" class="w50 onlyNum" onkeyup="f_id_license_num_set(this)" autocomplete="false">
+                                                    <input type="text" id="id" name="id" value="${info.id}" maxlength="10" placeholder="사업자등록번호를 입력해 주세요. (하이픈 제외)" class="w50 onlyNum" onkeyup="f_id_license_num_set(this)" autocomplete="false">
                                                     <input type="button" onclick="f_id_duplicate_check(this)" style="margin-left: 10px;" value="중복검사">
                                                     <c:if test="${not empty info}"><input type="hidden" id="idCheck" value="true"></c:if>
                                                     <c:if test="${empty info}">
-                                                        <div class="cmnt" style="color: #AD1D1D;">아이디 중복 검사 버튼을 클릭해주세요.</div>
+                                                        <div class="cmnt" style="color: #AD1D1D;">아이디 중복 검사 버튼을 클릭해 주세요.</div>
                                                         <input type="hidden" id="idCheck" value="false">
                                                     </c:if>
                                                 </div>
@@ -485,11 +485,11 @@
                                                 </div>
                                                 <div class="input">
                                                     <input type="password" id="password" name="password" maxlength="16" value="${info.password}" onchange="f_pw_status_change(this)" placeholder="비밀번호 입력" class="w50" autocomplete="new-password">
-                                                    <input type="button" onclick="f_pw_check(this)" style="margin-left: 10px;" value="비밀번호 유효성 검사">
+                                                    <%--<input type="button" onclick="f_pw_check(this)" style="margin-left: 10px;" value="비밀번호 유효성 검사">--%>
                                                     <div class="cmnt">8 ~ 16자의 영문, 숫자, 특수문자를 사용해 주세요.</div>
                                                     <c:if test="${not empty info}"><input type="hidden" id="pwCheck" value="true"></c:if>
                                                     <c:if test="${empty info}">
-                                                        <div class="cmnt" style="color: #AD1D1D;">비밀번호 유효성을 검사해주세요.</div>
+                                                        <div class="cmnt" style="color: #AD1D1D;">비밀번호 유효성을 검사해 주세요.</div>
                                                         <input type="hidden" id="pwCheck" value="false">
                                                     </c:if>
                                                 </div>
@@ -502,82 +502,9 @@
                                                     <input type="password" id="passwordCheck" maxlength="16" onkeyup="f_pw_confirm_check(this)" placeholder="비밀번호 확인" class="w50">
                                                     <c:if test="${not empty info}"><input type="hidden" id="pwConfirmCheck" value="true"></c:if>
                                                     <c:if test="${empty info}">
-                                                        <div class="cmnt" style="color: #AD1D1D;">비밀번호를 다시 입력해주세요.</div>
+                                                        <div class="cmnt" style="color: #AD1D1D;">비밀번호를 다시 입력해 주세요.</div>
                                                         <input type="hidden" id="pwConfirmCheck" value="false">
                                                     </c:if>
-                                                </div>
-                                            </li>
-                                            <li class="form_in_tit">대표담당자</li>
-                                            <li>
-                                                <div class="item req">
-                                                    <p>성명</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="text" id="name" name="name" value="${info.name}" placeholder="성명" class="w50">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="item req">
-                                                    <p>직위</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="text" id="position" name="position" value="${info.position}" placeholder="직위" class="w50">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="item">
-                                                    <p>부서</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="text" id="depart" name="depart" value="${info.depart}" placeholder="부서" class="w50">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="item req">
-                                                    <p>이메일</p>
-                                                </div>
-                                                <div class="input email">
-                                                    <input type="email" id="email_input1" name="email1" value="${fn:split(info.email,'@')[0]}" placeholder="이메일" class="email_input1">
-                                                    <span>@</span>
-                                                    <input type="email" id="email_input2" name="email2" value="${fn:split(info.email,'@')[1]}" class="email_input2" placeholder="직접입력">
-                                                    <select id="email_select">
-                                                        <c:set var="domain" value="${fn:split(info.email,'@')[1]}"/>
-                                                        <option selected>직접입력</option>
-                                                        <option value="daum.net" <c:if test="${domain eq 'daum.net'}">selected</c:if> >daum.net</option>
-                                                        <option value="nate.com" <c:if test="${domain eq 'nate.com'}">selected</c:if> >nate.com</option>
-                                                        <option value="hanmail.net" <c:if test="${domain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
-                                                        <option value="naver.com" <c:if test="${domain eq 'naver.com'}">selected</c:if> >naver.com</option>
-                                                        <option value="hotmail.com" <c:if test="${domain eq 'hotmail.com'}">selected</c:if> >hotmail.com</option>
-                                                        <option value="yahoo.co.kr" <c:if test="${domain eq 'yahoo.co.kr'}">selected</c:if> >yahoo.co.kr</option>
-                                                        <option value="empal.com" <c:if test="${domain eq 'empal.com'}">selected</c:if> >empal.com</option>
-                                                        <option value="korea.com" <c:if test="${domain eq 'korea.com'}">selected</c:if> >korea.com</option>
-                                                        <option value="hanmir.com" <c:if test="${domain eq 'hanmir.com'}">selected</c:if> >hanmir.com</option>
-                                                        <option value="dreamwiz.com" <c:if test="${domain eq 'dreamwiz.com'}">selected</c:if> >dreamwiz.com</option>
-                                                        <option value="orgio.net" <c:if test="${domain eq 'orgio.net'}">selected</c:if> >orgio.net</option>
-                                                        <option value="korea.com" <c:if test="${domain eq 'korea.com'}">selected</c:if> >korea.com</option>
-                                                        <option value="hitel.net" <c:if test="${domain eq 'hitel.net'}">selected</c:if> >hitel.net</option>
-                                                    </select>
-                                                    <div class="check mktCheck">
-                                                        <p>E-mail 마케팅정보 수신동의</p>
-                                                        <label><input type="radio" name="email_marketing_yn" value="Y" <c:if test="${info.emailMarketingYn eq 'Y' or empty info}">checked</c:if>>수신동의</label>
-                                                        <label><input type="radio" name="email_marketing_yn" value="N" <c:if test="${info.emailMarketingYn eq 'N'}">checked</c:if>>동의 안함</label>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="w50">
-                                                <div class="item req">
-                                                    <p>전화번호</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
-                                                </div>
-                                            </li>
-                                            <li class="w50">
-                                                <div class="item req">
-                                                    <p>휴대전화</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="tel" id="phone" name="phone" value="${info.phone}" class="onlyTel" maxlength="13" onblur="f_phone_number_valid_check(this)" placeholder="숫자만 입력해 주세요.">
                                                 </div>
                                             </li>
                                         </ul>
@@ -585,10 +512,24 @@
 
                                     <!-- 참가업체 정보 -->
                                     <div class="form_wrap">
-                                        <div class="form_tit">
-                                            <div class="big">참가업체 정보</div>
+                                        <div class="form_top">
+                                            <div class="form_tit">
+                                                <div class="big">참가업체 정보</div>
+                                            </div>
+                                            <div class="rbox">
+                                                <a href="javascript:void(0);" class="form_info_load" data-pop="popFormInfoLoad">참가신청 정보 불러오기</a>
+                                                <a href="javascript:void(0);" onclick="f_pre_exhibitor_info_call_init();" class="form_reset">초기화</a>
+                                            </div>
                                         </div>
                                         <ul class="form_box">
+                                            <li>
+                                                <div class="item req">
+                                                    <p>사업자등록번호</p>
+                                                </div>
+                                                <div class="input" style="display: flex; align-items: center;">
+                                                    <input type="text" id="companyLicenseNum" name="companyLicenseNum" value="${info.companyLicenseNum}" class="onlyNum" placeholder="아이디와 동일한 값이 자동 입력됩니다." readonly>
+                                                </div>
+                                            </li>
                                             <li>
                                                 <div class="item req">
                                                     <p>회사명</p>
@@ -655,7 +596,7 @@
                                                     <p>Fax</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="tel" id="companyFax" name="companyFax" value="${info.companyFax}" class="onlyTel" maxlength="25" placeholder="숫자만 입력해 주세요.">
+                                                    <input type="tel" id="companyFax" name="companyFax" value="${info.companyFax}" class="onlyNumh" maxlength="25" placeholder="숫자만 입력해 주세요.">
                                                 </div>
                                             </li>
                                             <li class="w50">
@@ -664,6 +605,7 @@
                                                 </div>
                                                 <div class="input">
                                                     <select name="industryPart" id="industryPart">
+                                                        <option value="" selected>선택</option>
                                                         <option value="요트/보트 제조" <c:if test="${info.industryPart eq '요트/보트 제조'}">selected</c:if> >요트/보트 제조</option>
                                                         <option value="요트/보트 유통(수입 판매)" <c:if test="${info.industryPart eq '요트/보트 유통(수입 판매)'}">selected</c:if> >요트/보트 유통(수입 판매)</option>
                                                         <option value="해양 부품(엔진 및 구성품) 제조" <c:if test="${info.industryPart eq '해양 부품(엔진 및 구성품) 제조'}">selected</c:if> >해양 부품(엔진 및 구성품) 제조</option>
@@ -686,23 +628,22 @@
                                                     <p>임직원 수</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="tel" id="employeeCnt" name="employeeCnt" value="${info.employeeCnt}" class="onlyNum" placeholder="숫자만 입력해 주세요.">
+                                                    <input type="text" id="employeeCnt" name="employeeCnt" value="${info.employeeCnt}" class="onlyNum" maxlength="5" placeholder="숫자만 입력해 주세요.">
                                                 </div>
                                             </li>
-                                            <li class="w50">
+                                            <li>
                                                 <div class="item req">
                                                     <p>사업자등록증</p>
                                                 </div>
                                                 <div class="input file_box d-flex align-items-center">
-                                                    <input type="text" id="companyLicense" name="companyLicense" class="upload_name" value="" disabled="disabled">
+                                                    <input type="text" id="companyLicense" name="companyLicense" class="upload_name" value="" placeholder="File" disabled="disabled">
                                                     <input type="file" id="companyLicenseFile" class="upload_hidden" accept=".png, .jpg, .jpeg, .pdf">
                                                     <label for="companyLicenseFile">파일선택</label>
                                                     <div class="cmnt">PDF, JPG, PNG형식, 10MB 이하만 가능합니다.</div>
                                                 </div>
                                             </li>
-
                                             <c:if test="${companyLicenseFile ne null and not empty companyLicenseFile}">
-                                                <li class="w50">
+                                                <li>
                                                     <div class="item">
                                                         <p>사업자등록증 파일</p>
                                                     </div>
@@ -722,22 +663,45 @@
                                                     </div>
                                                 </li>
                                             </c:if>
-
-                                            <li class="w50">
+                                            <li>
                                                 <div class="item req">
-                                                    <p>사업자등록번호</p>
+                                                    <p>로고</p>
                                                 </div>
-                                                <div class="input" style="display: flex; align-items: center;">
-                                                    <input type="text" id="companyLicenseNum" name="companyLicenseNum" value="${info.companyLicenseNum}" class="onlyNum" placeholder="아이디와 동일한 값이 자동 입력됩니다." readonly>
+                                                <div class="input file_box">
+                                                    <input type="text" id="logo" class="upload_name" value="" placeholder="File" disabled="disabled">
+                                                    <input type="file" id="logoFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                                    <label for="logoFile">파일선택</label>
+                                                    <div class="cmnt">JPG, PNG형식, 10MB 이하만 가능합니다. (권장 사이즈 : 150x150px)</div>
                                                 </div>
                                             </li>
+                                            <c:if test="${logoFile ne null and not empty logoFile}">
+                                                <li class="w50">
+                                                    <div class="item">
+                                                        <p>로고 파일</p>
+                                                    </div>
+                                                    <div class="input file_box">
+                                                        <ul>
+                                                            <li class="logoFile_li" style="align-items: center;">
+                                                                <c:set var="logoFileSrc" value="${fn:replace(logoFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                <c:if test="${not fn:contains(logoFileSrc, '.ai') and not fn:contains(logoFileSrc, '.pdf')}">
+                                                                    <img src="${logoFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
+                                                                </c:if>
+                                                                    <%--<a href="/file/download.do?path=exhibitor/company/${logoFile.folderPath}&fileName=${logoFile.fullFileName}">${logoFile.fileName}</a>--%>
+                                                                <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${logoFile.folderPath}', '${logoFile.fullFileName}')">${logoFile.fileName}</a>
+                                                                <input type="hidden" name="logoUploadFile" id="${logoFile.id}" value="${logoFile.fullFilePath}">
+                                                                <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${logoFile.id}')">X</button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </c:if>
                                             <li>
-                                                <div class="item">
+                                                <div class="item req">
                                                     <p>기참가연도</p>
                                                 </div>
                                                 <div class="input check">
                                                     <label><input type="checkbox" name="prePartYear" value="first" <c:if test="${fn:contains(info.prePartYear, 'first')}">checked</c:if>/>첫 참가</label>
-                                                    <label><input type="checkbox" name="prePartYear" value="2014" <c:if test="${fn:contains(info.prePartYear, '2014')}">checked</c:if>/>2014</label>
+                                                    <label><input type="checkbox" name="prePartYear" value="2008~2014" <c:if test="${fn:contains(info.prePartYear, '2008~2014')}">checked</c:if>/>2008~2014</label>
                                                     <label><input type="checkbox" name="prePartYear" value="2015" <c:if test="${fn:contains(info.prePartYear, '2015')}">checked</c:if>/>2015</label>
                                                     <label><input type="checkbox" name="prePartYear" value="2016" <c:if test="${fn:contains(info.prePartYear, '2016')}">checked</c:if>/>2016</label>
                                                     <label><input type="checkbox" name="prePartYear" value="2017" <c:if test="${fn:contains(info.prePartYear, '2017')}">checked</c:if>/>2017</label>
@@ -748,17 +712,9 @@
                                                     <label><input type="checkbox" name="prePartYear" value="2022" <c:if test="${fn:contains(info.prePartYear, '2022')}">checked</c:if>/>2022</label>
                                                     <label><input type="checkbox" name="prePartYear" value="2023" <c:if test="${fn:contains(info.prePartYear, '2023')}">checked</c:if>/>2023</label>
                                                     <label><input type="checkbox" name="prePartYear" value="2024" <c:if test="${fn:contains(info.prePartYear, '2024')}">checked</c:if>/>2024</label>
+                                                    <label><input type="checkbox" name="prePartYear" value="2025" <c:if test="${fn:contains(info.prePartYear, '2025')}">checked</c:if>/>2025</label>
                                                 </div>
                                             </li>
-                                            <%--<li>
-                                                <div class="item">
-                                                    <p>참가의향</p>
-                                                </div>
-                                                <div class="input check">
-                                                    <label><input type="radio" name="memberKm" checked>지속적으로 보트쇼에 참가할 의향 있음</label>
-                                                    <label><input type="radio" name="memberKm">없음</label>
-                                                </div>
-                                            </li>--%>
                                             <li>
                                                 <div class="item req">
                                                     <p>한국해양레저산업협회 회원사 여부</p>
@@ -768,69 +724,31 @@
                                                     <label><input type="radio" name="memberCompanyYn" value="N" <c:if test="${info.memberCompanyYn eq 'N' or empty info}">checked</c:if> />아니요</label>
                                                 </div>
                                             </li>
-                                            <li class="form_in_tit">SNS (주소기입)</li>
-                                            <li class="w50">
-                                                <div class="item">
-                                                    <p>블로그</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="text" id="snsBlog" name="snsBlog" value="${info.snsBlog}" placeholder="https://">
-                                                </div>
-                                            </li>
-                                            <li class="w50">
-                                                <div class="item">
-                                                    <p>페이스북</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="text" id="snsFacebook" name="snsFacebook" value="${info.snsFacebook}" placeholder="https://">
-                                                </div>
-                                            </li>
-                                            <li class="w50">
-                                                <div class="item">
-                                                    <p>인스타그램</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="text" id="snsInstagram" name="snsInstagram" value="${info.snsInstagram}" placeholder="https://">
-                                                </div>
-                                            </li>
-                                            <li class="w50">
-                                                <div class="item">
-                                                    <p>기타</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="text" id="snsEtc" name="snsEtc" value="${info.snsEtc}" placeholder="https://">
-                                                </div>
-                                            </li>
                                         </ul>
                                     </div>
 
-                                    <!-- 부담당자 정보 -->
+                                    <!-- 담당자 정보 -->
                                     <div class="form_wrap">
                                         <div class="form_tit">
-                                            <div class="big">부담당자 정보</div>
-                                            <div class="small">최대 3명까지 등록 가능</div>
+                                            <div class="big">담당자 정보</div>
+                                            <div class="small">부담당자는 최대 3명까지 등록 가능합니다</div>
                                         </div>
-                                        <c:if test="${empty chargeList}">
-                                        <ul class="form_box managerInfoBox">
-                                            <li class="form_in_tit">
-                                                <input type="hidden" name="chargeSeq" value="">
-                                                부담당자 #<span class="managerInfoNum">1</span>
-                                                <span class="del_btn managerInfoDel">삭제</span>
-                                            </li>
+                                        <ul class="form_box">
+                                            <li class="form_in_tit">대표담당자</li>
                                             <li>
-                                                <div class="item">
+                                                <div class="item req">
                                                     <p>성명</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="chargePersonName" class="w50" placeholder="부담당자명">
+                                                    <input type="text" id="name" name="name" value="${info.name}" placeholder="성명" class="w50">
                                                 </div>
                                             </li>
                                             <li class="w50">
-                                                <div class="item">
+                                                <div class="item req">
                                                     <p>직위</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="chargePersonPosition" class="w50" placeholder="직위">
+                                                    <input type="text" id="position" name="position" value="${info.position}" placeholder="직위" class="w50">
                                                 </div>
                                             </li>
                                             <li class="w50">
@@ -838,60 +756,55 @@
                                                     <p>부서</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="chargePersonDepart" class="w50" placeholder="부서">
+                                                    <input type="text" id="depart" name="depart" value="${info.depart}" placeholder="부서" class="w50">
                                                 </div>
                                             </li>
                                             <li class="w50">
-                                                <div class="item">
+                                                <div class="item req">
                                                     <p>전화번호</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="tel" name="chargePersonTel" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
+                                                    <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
                                                 </div>
                                             </li>
                                             <li class="w50">
-                                                <div class="item">
+                                                <div class="item req">
                                                     <p>휴대전화</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="tel" name="chargePersonPhone" class="onlyTel" maxlength="13" onblur="f_phone_number_valid_check(this)" placeholder="숫자만 입력해 주세요.">
+                                                    <input type="tel" id="phone" name="phone" value="${info.phone}" class="onlyTel" maxlength="13" onblur="f_phone_number_valid_check(this)" placeholder="숫자만 입력해 주세요.">
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="item">
+                                                <div class="item req">
                                                     <p>이메일</p>
                                                 </div>
                                                 <div class="input email">
-                                                    <input type="email" name="chargePersonEmail" placeholder="이메일" class="email_input1">
+                                                    <input type="email" id="email1" name="email1" value="${fn:split(info.email,'@')[0]}" placeholder="이메일" class="email_input1">
                                                     <span>@</span>
-                                                    <input type="email" name="chargePersonDomain" placeholder="직접입력" class="email_input2">
-                                                    <select name="chargePersonEmail_sel">
-                                                        <option selected>직접입력</option>
-                                                        <option value="daum.net">daum.net</option>
-                                                        <option value="nate.com">nate.com</option>
-                                                        <option value="hanmail.net">hanmail.net</option>
-                                                        <option value="naver.com">naver.com</option>
-                                                        <option value="hotmail.com">hotmail.com</option>
-                                                        <option value="yahoo.co.kr">yahoo.co.kr</option>
-                                                        <option value="empal.com">empal.com</option>
-                                                        <option value="korea.com">korea.com</option>
-                                                        <option value="hanmir.com">hanmir.com</option>
-                                                        <option value="dreamwiz.com">dreamwiz.com</option>
-                                                        <option value="orgio.net">orgio.net</option>
-                                                        <option value="korea.com">korea.com</option>
-                                                        <option value="hitel.net">hitel.net</option>
+                                                    <input type="email" id="email2" name="email2" value="${fn:split(info.email,'@')[1]}" class="email_input2" placeholder="직접입력">
+                                                    <select id="email_select">
+                                                        <c:set var="domain" value="${fn:split(info.email,'@')[1]}"/>
+                                                        <option value="직접입력" selected>직접입력</option>
+                                                        <option value="naver.com" <c:if test="${domain eq 'naver.com'}">selected</c:if> >naver.com</option>
+                                                        <option value="daum.net" <c:if test="${domain eq 'daum.net'}">selected</c:if> >daum.net</option>
+                                                        <option value="nate.com" <c:if test="${domain eq 'nate.com'}">selected</c:if> >nate.com</option>
+                                                        <option value="hanmail.net" <c:if test="${domain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
+                                                        <option value="gmail.com" <c:if test="${domain eq 'gmail.com'}">selected</c:if> >gmail.com</option>
                                                     </select>
+                                                    <div class="check mktCheck">
+                                                        <p>E-mail 마케팅정보 수신동의</p>
+                                                        <label><input type="radio" name="emailMarketingYn" value="Y" <c:if test="${info.emailMarketingYn eq 'Y' or empty info}">checked</c:if>>수신동의</label>
+                                                        <label><input type="radio" name="emailMarketingYn" value="N" <c:if test="${info.emailMarketingYn eq 'N'}">checked</c:if>>동의 안함</label>
+                                                    </div>
                                                 </div>
                                             </li>
                                         </ul>
-                                        </c:if>
-
-                                        <c:if test="${not empty chargeList}">
-                                        <c:forEach var="charge" items="${chargeList}" begin="0" end="${chargeList.size()}" step="1" varStatus="status">
+                                        <c:if test="${empty chargeList}">
                                             <ul class="form_box managerInfoBox">
                                                 <li class="form_in_tit">
-                                                    <input type="hidden" name="chargeSeq" value="${charge.seq}">
-                                                    부담당자 #<span class="managerInfoNum">${status.index + 1}</span>
+                                                    <input type="hidden" name="chargeSeq" value="">
+                                                    부담당자 #<span class="managerInfoNum">1</span>
                                                     <span class="del_btn managerInfoDel">삭제</span>
                                                 </li>
                                                 <li>
@@ -899,7 +812,7 @@
                                                         <p>성명</p>
                                                     </div>
                                                     <div class="input">
-                                                        <input type="text" name="chargePersonName" value="${charge.chargePersonName}" maxlength="50" class="w50" placeholder="부담당자명">
+                                                        <input type="text" name="chargePersonName" class="w50" placeholder="부담당자명">
                                                     </div>
                                                 </li>
                                                 <li class="w50">
@@ -907,7 +820,7 @@
                                                         <p>직위</p>
                                                     </div>
                                                     <div class="input">
-                                                        <input type="text" name="chargePersonPosition" value="${charge.chargePersonPosition}" class="w50" placeholder="직위">
+                                                        <input type="text" name="chargePersonPosition" class="w50" placeholder="직위">
                                                     </div>
                                                 </li>
                                                 <li class="w50">
@@ -915,7 +828,7 @@
                                                         <p>부서</p>
                                                     </div>
                                                     <div class="input">
-                                                        <input type="text" name="chargePersonDepart" value="${charge.chargePersonDepart}" class="w50" placeholder="부서">
+                                                        <input type="text" name="chargePersonDepart" class="w50" placeholder="부서">
                                                     </div>
                                                 </li>
                                                 <li class="w50">
@@ -923,7 +836,7 @@
                                                         <p>전화번호</p>
                                                     </div>
                                                     <div class="input">
-                                                        <input type="tel" name="chargePersonTel" value="${charge.chargePersonTel}" class="onlyTel" maxlength="13" placeholder="숫자만 입력해주세요.">
+                                                        <input type="tel" name="chargePersonTel" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
                                                     </div>
                                                 </li>
                                                 <li class="w50">
@@ -931,7 +844,7 @@
                                                         <p>휴대전화</p>
                                                     </div>
                                                     <div class="input">
-                                                        <input type="tel" name="chargePersonPhone" value="${charge.chargePersonPhone}" class="onlyTel" maxlength="13" onblur="f_phone_number_valid_check(this)" placeholder="숫자만 입력해주세요.">
+                                                        <input type="tel" name="chargePersonPhone" class="onlyTel" maxlength="13" onblur="f_phone_number_valid_check(this)" placeholder="숫자만 입력해 주세요.">
                                                     </div>
                                                 </li>
                                                 <li>
@@ -939,186 +852,94 @@
                                                         <p>이메일</p>
                                                     </div>
                                                     <div class="input email">
-                                                        <input type="email" name="chargePersonEmail" value="${fn:split(charge.chargePersonEmail,'@')[0]}" placeholder="이메일" class="email_input1">
+                                                        <input type="email" name="chargePersonEmail" placeholder="이메일" class="email_input1">
                                                         <span>@</span>
-                                                        <input type="email" name="chargePersonDomain" value="${fn:split(charge.chargePersonEmail,'@')[1]}" class="email_input2" placeholder="직접입력">
+                                                        <input type="email" name="chargePersonDomain" placeholder="직접입력" class="email_input2">
                                                         <select name="chargePersonEmail_sel">
-                                                            <c:set var="chargePersonDomain" value="${fn:split(charge.chargePersonEmail,'@')[1]}"/>
-                                                            <option selected>직접입력</option>
-                                                            <option value="daum.net" <c:if test="${chargePersonDomain eq 'daum.net'}">selected</c:if> >daum.net</option>
-                                                            <option value="nate.com" <c:if test="${chargePersonDomain eq 'nate.com'}">selected</c:if> >nate.com</option>
-                                                            <option value="hanmail.net" <c:if test="${chargePersonDomain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
-                                                            <option value="naver.com" <c:if test="${chargePersonDomain eq 'naver.com'}">selected</c:if> >naver.com</option>
-                                                            <option value="hotmail.com" <c:if test="${chargePersonDomain eq 'hotmail.com'}">selected</c:if> >hotmail.com</option>
-                                                            <option value="yahoo.co.kr" <c:if test="${chargePersonDomain eq 'yahoo.co.kr'}">selected</c:if> >yahoo.co.kr</option>
-                                                            <option value="empal.com" <c:if test="${chargePersonDomain eq 'empal.com'}">selected</c:if> >empal.com</option>
-                                                            <option value="korea.com" <c:if test="${chargePersonDomain eq 'korea.com'}">selected</c:if> >korea.com</option>
-                                                            <option value="hanmir.com" <c:if test="${chargePersonDomain eq 'hanmir.com'}">selected</c:if> >hanmir.com</option>
-                                                            <option value="dreamwiz.com" <c:if test="${chargePersonDomain eq 'dreamwiz.com'}">selected</c:if> >dreamwiz.com</option>
-                                                            <option value="orgio.net" <c:if test="${chargePersonDomain eq 'orgio.net'}">selected</c:if> >orgio.net</option>
-                                                            <option value="korea.com" <c:if test="${chargePersonDomain eq 'korea.com'}">selected</c:if> >korea.com</option>
-                                                            <option value="hitel.net" <c:if test="${chargePersonDomain eq 'hitel.net'}">selected</c:if> >hitel.net</option>
+                                                            <option value="직접입력" selected>직접입력</option>
+                                                            <option value="naver.com">naver.com</option>
+                                                            <option value="daum.net">daum.net</option>
+                                                            <option value="nate.com">nate.com</option>
+                                                            <option value="hanmail.net">hanmail.net</option>
+                                                            <option value="gmail.com">gmail.com</option>
                                                         </select>
                                                     </div>
                                                 </li>
                                             </ul>
-                                        </c:forEach>
                                         </c:if>
 
-                                        <div class="formAddBtn"><span class="managerInfoAdd">추가</span></div>
-                                    </div>
-
-                                    <!-- 참가분야 -->
-                                    <div class="form_wrap">
-                                        <div class="form_tit">
-                                            <div class="big">참가분야</div>
-                                            <div class="small">최대 3개 선택 가능</div>
-                                        </div>
-                                        <ul class="form_box">
-                                            <li>
-                                                <div class="item req">
-                                                    <p>참가분야</p>
-                                                </div>
-                                                <div class="input check">
-                                                    <label>
-                                                        <input type="checkbox" name="fieldPart" value="요트·보트전 (Yacht & Boat World)" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '요트·보트전')}">checked</c:if>/>
-                                                        요트·보트전 (Yacht & Boat World)
-                                                    </label>
-                                                    <label>
-                                                        <input type="checkbox" name="fieldPart" value="무동력보트전 (Paddler’s World)" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '무동력보트전')}">checked</c:if>/>
-                                                        무동력보트전 (Paddler’s World)
-                                                    </label>
-                                                    <label>
-                                                        <input type="checkbox" name="fieldPart" value="워크보트전 (Workboat World)" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '워크보트전')}">checked</c:if>/>
-                                                        워크보트전 (Workboat World)
-                                                    </label>
-                                                    <label>
-                                                        <input type="checkbox" name="fieldPart" value="해양레저관 (Marine Leisure)" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '해양레저관')}">checked</c:if>/>
-                                                        해양레저관 (Marine Leisure)
-                                                    </label>
-                                                    <label>
-                                                        <input type="checkbox" name="fieldPart" value="카라반쇼 (Caravan Show)" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '카라반쇼')}">checked</c:if>/>
-                                                        카라반쇼 (Caravan Show)
-                                                    </label>
-                                                    <%--<label>
-                                                        <input type="checkbox" name="fieldPart" value="아라마리나 교육 및 체험 프로그램 (Aramarina Education and Experience Program)" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '아라마리나 교육 및 체험 프로그램')}">checked</c:if>/>
-                                                        아라마리나 교육 및 체험 프로그램 (Aramarina Education and Experience Program)
-                                                    </label>--%>
-                                                    <label>
-                                                        <input type="checkbox" name="fieldPart" value="해양부품·안전·마리나산업전 (Marine Equipment, Safety & Marina Industry Show)" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '해양부품·안전·마리나산업전')}">checked</c:if>/>
-                                                        해양부품·안전·마리나산업전 (Marine Equipment, Safety & Marina Industry Show)
-                                                    </label>
-                                                    <%--<label>
-                                                        <input type="checkbox" name="fieldPart" value="친환경 특별전 (Eco Friendly Marine)" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '친환경 특별전')}">checked</c:if>/>
-                                                        친환경 특별전 (Eco Friendly Marine)
-                                                    </label>--%>
-                                                    <label>
-                                                        <input type="checkbox" name="fieldPart" value="한국해양관광전 (Marine Tourism)" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '한국해양관광전')}">checked</c:if>/>
-                                                        한국해양관광전 (Marine Tourism)
-                                                    </label>
-                                                    <%--<label>
-                                                        <input type="checkbox" name="fieldPart" value="보트정비관 (Boat Maintenance)" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '보트정비관')}">checked</c:if>/>
-                                                        보트정비관 (Boat Maintenance)
-                                                    </label>--%>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <!-- 전시정보 -->
-                                    <div class="form_wrap">
-                                        <div class="form_tit">
-                                            <div class="big">전시정보</div>
-                                        </div>
-
-                                        <c:if test="${empty displayList}">
-                                        <ul class="form_box exhiInfoBox">
-                                            <li class="form_in_tit">
-                                                <input type="hidden" name="displayItemSeq" value="">
-                                                전시정보 #<span class="exhiInfoNum">1</span>
-                                                <span class="del_btn exhiInfoDel">삭제</span>
-                                            </li>
-                                            <li>
-                                                <div class="item req">
-                                                    <p>전시품목</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="text" name="displayItem" placeholder="전시품목명">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="item req">
-                                                    <p>전시품목<br>브랜드명</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="text" name="displayBrand" placeholder="전시품목 브랜드명">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="item req">
-                                                    <p>실물 보트수<br>(단위:척)</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="text" name="displayBoatCnt" class="onlyNum" placeholder="단위 제외, 숫자만 입력해 주세요.">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="item req">
-                                                    <p>전시품소개</p>
-                                                </div>
-                                                <div class="input">
-                                                    <textarea name="displayItemIntroKo" placeholder="국문">${info.displayItemIntroKo}</textarea>
-                                                    <textarea name="displayItemIntroEn" placeholder="영문" class="onlyNumEng">${info.displayItemIntroEn}</textarea>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        </c:if>
-
-                                        <c:if test="${not empty displayList}">
-                                            <c:forEach var="display" items="${displayList}" begin="0" end="${displayList.size()}" step="1" varStatus="status">
-                                                <ul class="form_box exhiInfoBox">
+                                        <c:if test="${not empty chargeList}">
+                                            <c:forEach var="charge" items="${chargeList}" begin="0" end="${chargeList.size()}" step="1" varStatus="status">
+                                                <ul class="form_box managerInfoBox">
                                                     <li class="form_in_tit">
-                                                        <input type="hidden" name="displayItemSeq" value="${display.seq}">
-                                                        전시정보 #<span class="exhiInfoNum">${status.index + 1}</span>
-                                                        <span class="del_btn exhiInfoDel">삭제</span>
+                                                        <input type="hidden" name="chargeSeq" value="${charge.seq}">
+                                                        부담당자 #<span class="managerInfoNum">${status.index + 1}</span>
+                                                        <span class="del_btn managerInfoDel">삭제</span>
                                                     </li>
                                                     <li>
-                                                        <div class="item req">
-                                                            <p>전시품목</p>
+                                                        <div class="item">
+                                                            <p>성명</p>
                                                         </div>
                                                         <div class="input">
-                                                            <input type="text" name="displayItem" value="${display.displayItem}" placeholder="전시품목">
+                                                            <input type="text" name="chargePersonName" value="${charge.chargePersonName}" maxlength="50" class="w50" placeholder="부담당자명">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item">
+                                                            <p>직위</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="chargePersonPosition" value="${charge.chargePersonPosition}" class="w50" placeholder="직위">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item">
+                                                            <p>부서</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="chargePersonDepart" value="${charge.chargePersonDepart}" class="w50" placeholder="부서">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item">
+                                                            <p>전화번호</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="tel" name="chargePersonTel" value="${charge.chargePersonTel}" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item">
+                                                            <p>휴대전화</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="tel" name="chargePersonPhone" value="${charge.chargePersonPhone}" class="onlyTel" maxlength="13" onblur="f_phone_number_valid_check(this)" placeholder="숫자만 입력해 주세요.">
                                                         </div>
                                                     </li>
                                                     <li>
-                                                        <div class="item req">
-                                                            <p>전시품목<br>브랜드명</p>
+                                                        <div class="item">
+                                                            <p>이메일</p>
                                                         </div>
-                                                        <div class="input">
-                                                            <input type="text" name="displayBrand" value="${display.displayBrand}" placeholder="전시품목 브랜드명">
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="item req">
-                                                            <p>실물 보트수<br>(단위:척)</p>
-                                                        </div>
-                                                        <div class="input">
-                                                            <input type="text" name="displayBoatCnt" value="${display.displayBoatCnt}" class="onlyNum" placeholder="실물 보트수">
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="item req">
-                                                            <p>전시품소개</p>
-                                                        </div>
-                                                        <div class="input">
-                                                            <textarea name="displayItemIntroKo" placeholder="국문">${display.displayItemIntroKo}</textarea>
-                                                            <textarea name="displayItemIntroEn" placeholder="영문" class="onlyNumEng">${display.displayItemIntroEn}</textarea>
+                                                        <div class="input email">
+                                                            <input type="email" name="chargePersonEmail" value="${fn:split(charge.chargePersonEmail,'@')[0]}" placeholder="이메일" class="email_input1">
+                                                            <span>@</span>
+                                                            <input type="email" name="chargePersonDomain" value="${fn:split(charge.chargePersonEmail,'@')[1]}" class="email_input2" placeholder="직접입력">
+                                                            <select name="chargePersonEmail_sel">
+                                                                <c:set var="chargePersonDomain" value="${fn:split(charge.chargePersonEmail,'@')[1]}"/>
+                                                                <option selected>직접입력</option>
+                                                                <option value="naver.com" <c:if test="${chargePersonDomain eq 'naver.com'}">selected</c:if> >naver.com</option>
+                                                                <option value="daum.net" <c:if test="${chargePersonDomain eq 'daum.net'}">selected</c:if> >daum.net</option>
+                                                                <option value="nate.com" <c:if test="${chargePersonDomain eq 'nate.com'}">selected</c:if> >nate.com</option>
+                                                                <option value="hanmail.net" <c:if test="${chargePersonDomain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
+                                                                <option value="gmail.com" <c:if test="${chargePersonDomain eq 'gmail.com'}">selected</c:if> >gmail.com</option>
+                                                            </select>
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </c:forEach>
                                         </c:if>
-                                        <div class="formAddBtn"><span class="exhiInfoAdd">추가</span></div>
+
+                                        <div class="formAddBtn"><span class="managerInfoAdd">추가</span></div>
                                     </div>
 
                                     <!-- 상세정보 -->
@@ -1128,12 +949,24 @@
                                         </div>
                                         <ul class="form_box">
                                             <li>
+                                                <div class="item">
+                                                    <p>회사소개영상</p>
+                                                </div>
+                                                <div class="input">
+                                                    <input type="text" id="companyIntroVideo" value="${info.companyIntroVideo}" placeholder="ex) https://www.youtube.com/watch?v=0X_Df4qvN-M">
+                                                    <div class="cmnt">온라인 전시관에 노출되는 항목입니다.</div>
+                                                    <div class="cmnt">유튜브에 업로드된 영상만 등록 가능합니다. (숏츠,릴스 게시 불가)</div>
+                                                    <div class="cmnt">유튜브 영상 하단의 [공유] 버튼을 클릭하여, 뜨는 링크를 복사/붙여넣기 해 주세요.</div>
+                                                </div>
+                                            </li>
+                                            <li>
                                                 <div class="item req">
                                                     <p>회사소개</p>
                                                 </div>
                                                 <div class="input">
                                                     <textarea id="companyIntroKo" name="companyIntroKo" placeholder="국문">${info.companyIntroKo}</textarea>
                                                     <textarea id="companyIntroEn" name="companyIntroEn" placeholder="영문" class="onlyNumEng">${info.companyIntroEn}</textarea>
+                                                    <div class="cmnt">온라인 전시관에 노출되는 항목입니다.</div>
                                                 </div>
                                             </li>
                                             <li>
@@ -1169,120 +1002,379 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="item req">
-                                                    <p>우리 기업 부스는 꼭 들려야 될 이유가 있다면?</p>
+                                                <div class="item">
+                                                    <p>프로모션 정보</p>
                                                 </div>
                                                 <div class="input">
-                                                    <textarea id="boothVisitReason" name="boothVisitReason" placeholder="우리 기업 부스는 꼭 들려야 될 이유가 있다면?">${info.boothVisitReason}</textarea>
+                                                    <textarea id="promotionPlan" name="promotionPlan" placeholder="-전시 기간 중 제품 할인이나 기타 이벤트 계획이 있다면 적어주세요.&#10;-사무국 검토 후 뉴스레터, SNS 콘텐츠 등 사전 홍보에 활용될 수 있습니다.">${info.promotionPlan}</textarea>
+                                                    <div class="cmnt">부스에서 진행 예정인 이벤트가 있다면 행사 전 반드시 사무국에 알려야 합니다.</div>
+                                                    <div class="cmnt">26년 2월 1일 이후 입력한 사항은 프로모션 홍보가 어려울 수 있습니다.</div>
                                                 </div>
                                             </li>
-                                            <li>
-                                                <div class="item req">
-                                                    <p>행사/이벤트 진행계획</p>
-                                                </div>
-                                                <div class="input">
-                                                    <textarea id="eventPlan" name="eventPlan" placeholder="행사/이벤트 진행계획">${info.eventPlan}</textarea>
-                                                    <div class="cmnt">2월 24일 자정부터는 신청 이후 수정이 불가합니다.</div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="item req">
-                                                    <p>로고</p>
-                                                </div>
-                                                <div class="input file_box">
-                                                    <input type="text" id="logo" class="upload_name" value="" disabled="disabled">
-                                                    <input type="file" id="logoFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
-                                                    <label for="logoFile">파일선택</label>
-                                                    <div class="cmnt">JPG, PNG형식, 10MB 이하만 가능합니다. (권장 사이즈 : 150x150px)</div>
-                                                </div>
-                                            </li>
-
-                                            <c:if test="${logoFile ne null and not empty logoFile}">
-                                                <li class="w50">
-                                                    <div class="item">
-                                                        <p>로고 파일</p>
-                                                    </div>
-                                                    <div class="input file_box">
-                                                        <ul>
-                                                            <li class="logoFile_li" style="align-items: center;">
-                                                                <c:set var="logoFileSrc" value="${fn:replace(logoFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
-                                                                <c:if test="${not fn:contains(logoFileSrc, '.ai') and not fn:contains(logoFileSrc, '.pdf')}">
-                                                                    <img src="${logoFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                                </c:if>
-                                                                <%--<a href="/file/download.do?path=exhibitor/company/${logoFile.folderPath}&fileName=${logoFile.fullFileName}">${logoFile.fileName}</a>--%>
-                                                                <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${logoFile.folderPath}', '${logoFile.fullFileName}')">${logoFile.fileName}</a>
-                                                                <input type="hidden" name="logoUploadFile" id="${logoFile.id}" value="${logoFile.fullFilePath}">
-                                                                <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${logoFile.id}')">X</button>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </li>
-                                            </c:if>
-
-                                            <li class="form_in_tit">홍보 이미지</li>
-                                            <li class="proImgBox">
-                                                <div class="item req">
-                                                    <p>홍보 이미지<span class="proImgNum">1</span></p>
-                                                </div>
-                                                <div class="input file_box">
-                                                    <input type="text" name="promotionImage" class="upload_name" value="" disabled="disabled">
-                                                    <input type="file" id="promotionImageFile1" name="promotionImageFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
-                                                    <label for="promotionImageFile1">파일선택</label>
-                                                    <span class="proImgDel file_box_del">삭제</span>
-                                                    <div class="cmnt">JPG, PNG형식, 10mb 이하만 가능합니다. (권장 사이즈 : 1000x250px)</div>
-                                                </div>
-                                            </li>
-                                            <li class="proImgBox">
-                                                <div class="item">
-                                                    <p>홍보 이미지<span class="proImgNum">2</span></p>
-                                                </div>
-                                                <div class="input file_box">
-                                                    <input type="text" name="promotionImage" class="upload_name" value="" disabled="disabled">
-                                                    <input type="file" id="promotionImageFile2" name="promotionImageFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
-                                                    <label for="promotionImageFile2">파일선택</label>
-                                                    <span class="proImgDel file_box_del">삭제</span>
-                                                    <div class="cmnt">JPG, PNG형식, 10mb 이하만 가능합니다. (권장 사이즈 : 1000x250px)</div>
-                                                </div>
-                                            </li>
-                                            <li class="proImgBox">
-                                                <div class="item">
-                                                    <p>홍보 이미지<span class="proImgNum">3</span></p>
-                                                </div>
-                                                <div class="input file_box">
-                                                    <input type="text" name="promotionImage" class="upload_name" value="" disabled="disabled">
-                                                    <input type="file" id="promotionImageFile3" name="promotionImageFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
-                                                    <label for="promotionImageFile3">파일선택</label>
-                                                    <span class="proImgDel file_box_del">삭제</span>
-                                                    <div class="cmnt">JPG, PNG형식, 10mb 이하만 가능합니다. (권장 사이즈 : 1000x250px)</div>
-                                                </div>
-                                            </li>
-
-                                            <c:if test="${promotionImageFileList ne null and not empty promotionImageFileList}">
-                                                <li>
-                                                    <div class="item">
-                                                        <p>홍보 이미지 파일</p>
-                                                    </div>
-                                                    <div class="input">
-                                                        <ul>
-                                                        <c:forEach var="promotionImageFile" items="${promotionImageFileList}" begin="0" end="${promotionImageFileList.size()}" step="1">
-                                                            <li class="promotionImageFile_li" style="margin-bottom: 5px; align-items: center;">
-                                                                <c:set var="promotionImageSrc" value="${fn:replace(promotionImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
-                                                                <img src="${promotionImageSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                                <%--<a href="/file/download.do?path=exhibitor/company/${promotionImageFile.folderPath}&fileName=${promotionImageFile.fullFileName}">${promotionImageFile.fileName}</a>--%>
-                                                                <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${promotionImageFile.folderPath}', '${promotionImageFile.fullFileName}')">${promotionImageFile.fileName}</a>
-                                                                <input type="hidden" name="promotionImageUploadFile" id="${promotionImageFile.id}" value="${promotionImageFile.fullFilePath}"/>
-                                                                <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${promotionImageFile.id}')">X</button>
-                                                            </li>
-                                                        </c:forEach>
-                                                        </ul>
-                                                    </div>
-                                                </li>
-                                            </c:if>
-
                                         </ul>
 
-                                        <div class="cmnt_bot">홍보 이미지는 경기국제보트쇼 뉴스레터에 사용될 수 있습니다.</div>
+                                    </div>
 
+                                    <!-- 참가분야 -->
+                                    <div class="form_wrap">
+                                        <div class="form_tit">
+                                            <div class="big">참가분야</div>
+                                            <div class="small">최대 3개 선택 가능</div>
+                                        </div>
+                                        <ul class="form_box">
+                                            <li>
+                                                <div class="item req">
+                                                    <p>참가분야</p>
+                                                </div>
+                                                <div class="input check">
+                                                    <label>
+                                                        <input type="checkbox" name="fieldPart" value="보트&요트" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '보트&요트')}">checked</c:if>/>
+                                                        보트&요트 (Boat & Yacht)
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" name="fieldPart" value="무동력보트" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '무동력보트')}">checked</c:if>/>
+                                                        무동력보트 (Paddling Boat)
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" name="fieldPart" value="워크보트" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '워크보트')}">checked</c:if>/>
+                                                        워크보트 (Work Boat)
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" name="fieldPart" value="부품&장비" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '부품&장비')}">checked</c:if>/>
+                                                        부품&장비 (Marine Equipment)
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" name="fieldPart" value="안전&마리나" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '안전&마리나')}">checked</c:if>/>
+                                                        안전&마리나 (Safety & Marina)
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" name="fieldPart" value="해양관광" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '해양관광')}">checked</c:if>/>
+                                                        해양관광 (Marine Tourism)
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" name="fieldPart" value="해양레저" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '해양레저')}">checked</c:if>/>
+                                                        해양레저 (Marine Leisure)
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" name="fieldPart" value="수중레저" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '수중레저')}">checked</c:if>/>
+                                                        수중레저 (Water Sports)
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" name="fieldPart" value="서핑" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '서핑')}">checked</c:if>/>
+                                                        서핑 (Surfing)
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" name="fieldPart" value="카라반&캠핑" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '카라반&캠핑')}">checked</c:if>/>
+                                                        카라반&캠핑 (Caravan & Camping)
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- 전시정보 -->
+                                    <script src="/js/product.js"></script>
+                                    <div class="form_wrap">
+                                        <div class="form_tit">
+                                            <div class="big">전시품 정보</div>
+                                            <div class="small">입력하신 전시품 정보는 온라인 전시관에 자동 노출됩니다.</div>
+                                        </div>
+
+                                        <c:if test="${empty productList}">
+                                            <ul class="form_box exhiInfoBox">
+                                                <li class="form_in_tit">
+                                                    <input type="hidden" name="productSeq" value="">
+                                                    전시품 정보 #<span class="exhiInfoNum">1</span>
+                                                    <span class="del_btn exhiInfoDel">삭제</span>
+                                                </li>
+                                                <li>
+                                                    <div class="item req">
+                                                        <p>제품 분류(품목)</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <select id="productOptionBig_1" name="productOptionBig" class="w50"></select>
+                                                        <select id="productOptionSmall_1" name="productOptionSmall" class="w50"></select>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="item req">
+                                                        <p>제품명</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="productNameKo" placeholder="제품명을 입력하세요.">
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="item req">
+                                                        <p>수량</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="productQty" class="onlyNum" maxlength="4" placeholder="숫자만 입력해 주세요.">
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="item req">
+                                                        <p>제조사(브랜드)</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="productBrand" placeholder="제품의 제조사(브랜드)를 입력하세요.">
+                                                    </div>
+                                                </li>
+                                                <li class="w50">
+                                                    <div class="item req">
+                                                        <p>길이(cm)</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="productLength" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                    </div>
+                                                </li>
+                                                <li class="w50">
+                                                    <div class="item req">
+                                                        <p>너비(cm)</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="productWidth" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                    </div>
+                                                </li>
+                                                <li class="w50">
+                                                    <div class="item req">
+                                                        <p>높이(cm)</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="productHeight" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                    </div>
+                                                </li>
+                                                <li class="w50">
+                                                    <div class="item req">
+                                                        <p>중량(kg)</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="productWeight" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                    </div>
+                                                </li>
+                                                <li class="w50">
+                                                    <div class="item req">
+                                                        <p>소재</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="productMaterial" placeholder="플라스틱, 알루미늄, FRP 등">
+                                                    </div>
+                                                </li>
+                                                <li class="w50">
+                                                    <div class="item req">
+                                                        <p>연식</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="productYear" class="onlyNum" maxlength="4" placeholder="숫자만 입력해 주세요.">
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="item">
+                                                        <p>제품 설명</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <textarea name="productIntroKo" placeholder="국문"></textarea>
+                                                        <textarea name="productIntroEn" placeholder="영문" class="onlyNumEng"></textarea>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="item req">
+                                                        <p>제품사진</p>
+                                                    </div>
+                                                    <div class="input file_box">
+                                                        <div class="cmnt2">1개 제품 당 제품사진 최대 5개 등록 가능</div>
+                                                        <div class="exhiPrdBox">
+                                                            <input type="text" id="productImage1_1" name="productImage" class="upload_name" value="" placeholder="File" disabled="disabled">
+                                                            <input type="file" id="productImageFile1_1" name="productImageFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                                            <label for="productImageFile1_1">파일선택</label>
+                                                            <span class="exhiPrdAdd" style="cursor: pointer">추가</span>
+                                                            <span class="exhiPrdDel" style="cursor: pointer">삭제</span>
+                                                            <div class="cmnt">JPG, PNG형식, 10mb 이하만 가능합니다. (권장 사이즈 : 1000x750px)</div>
+                                                            <div class="cmnt">첫 번째로 등록한 이미지가 메인 이미지로 적용됩니다.</div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="item">
+                                                        <p>제품링크</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="productLink" placeholder="http:// 나 https:// 를 포함한 제품 관련 URL을 입력해 주세요.">
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </c:if>
+
+                                        <c:if test="${not empty productList}">
+                                            <c:forEach var="product" items="${productList}" begin="0" end="${productList.size()}" step="1" varStatus="status">
+                                                <ul class="form_box exhiInfoBox">
+                                                    <li class="form_in_tit">
+                                                        <input type="hidden" name="productSeq" value="${product.seq}">
+                                                        전시정보 #<span class="exhiInfoNum">${status.index + 1}</span>
+                                                        <span class="del_btn exhiInfoDel">삭제</span>
+                                                    </li>
+                                                    <li>
+                                                        <div class="item req">
+                                                            <p>제품 분류(품목)</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <select id="productOptionBig_${status.index + 1}" name="productOptionBig" class="w50"></select>
+                                                            <select id="productOptionSmall_${status.index + 1}" name="productOptionSmall" class="w50"></select>
+                                                            <script>
+                                                                $(function(){
+                                                                    $('#productOptionBig_${status.index + 1}').val('${product.productOptionBig}').prop('selected', true).trigger('change');
+                                                                    $('#productOptionSmall_${status.index + 1}').val('${product.productOptionSmall}').prop('selected', true);
+                                                                })
+                                                            </script>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="item req">
+                                                            <p>제품명</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="productNameKo" value="${product.productNameKo}" placeholder="제품명을 입력하세요.">
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="item req">
+                                                            <p>수량</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="productQty" value="${product.productQty}" class="onlyNum" maxlength="4" placeholder="숫자만 입력해 주세요.">
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="item req">
+                                                            <p>제조사(브랜드)</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="productBrand" value="${product.productBrand}" placeholder="제품의 제조사(브랜드)를 입력하세요.">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item req">
+                                                            <p>길이(cm)</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="productLength" value="${product.productLength}" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item req">
+                                                            <p>너비(cm)</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="productWidth" value="${product.productWidth}" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item req">
+                                                            <p>높이(cm)</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="productHeight" value="${product.productHeight}" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item req">
+                                                            <p>중량(kg)</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="productWeight" value="${product.productWeight}" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item req">
+                                                            <p>소재</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="productMaterial" value="${product.productMaterial}" placeholder="플라스틱, 알루미늄, FRP 등">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item req">
+                                                            <p>연식</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="productYear" value="${product.productYear}" class="onlyNum" maxlength="4" placeholder="숫자만 입력해 주세요.">
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="item">
+                                                            <p>제품 설명</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <textarea name="productIntroKo" placeholder="국문">${product.productIntroKo}</textarea>
+                                                            <textarea name="productIntroEn" placeholder="영문" class="onlyNumEng">${product.productIntroEn}</textarea>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="item req">
+                                                            <p>제품사진</p>
+                                                        </div>
+                                                        <div class="input file_box">
+                                                            <div class="cmnt2">1개 제품 당 제품사진 최대 5개 등록 가능</div>
+                                                            <div class="exhiPrdBox">
+                                                                <c:set var="productImageNumIdx" value="0" />
+                                                                <c:forEach var="productImageFile" items="${productImageFileList}" begin="0" end="${productImageFileList.size()}" step="1">
+                                                                    <c:set var="productInfoNumIdx" value="${status.index + 1}"/>
+                                                                    <c:if test="${fn:contains(productImageFile.note , 'productImage'.concat(productInfoNumIdx.toString()).concat('_'))}">
+                                                                        <c:set var="productImageNumIdx" value="${productImageNumIdx + 1}" />
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                                <input type="text" id="productImage${productInfoNumIdx}_${productImageNumIdx + 1}" name="productImage" class="upload_name" value="" placeholder="File" disabled="disabled">
+                                                                <input type="file" id="productImageFile${productInfoNumIdx}_${productImageNumIdx + 1}" name="productImageFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                                                <label for="productImageFile${productInfoNumIdx}_${productImageNumIdx + 1}">파일선택</label>
+                                                                <span class="exhiPrdAdd" style="cursor: pointer">추가</span>
+                                                                <span class="exhiPrdDel" style="cursor: pointer">삭제</span>
+                                                                <div class="cmnt">JPG, PNG형식, 10mb 이하만 가능합니다. (권장 사이즈 : 1000x750px)</div>
+                                                                <div class="cmnt">첫 번째로 등록한 이미지가 메인 이미지로 적용됩니다.</div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <c:if test="${productImageFileList ne null and not empty productImageFileList}">
+                                                        <li class="preValueList">
+                                                            <div class="item">
+                                                                <p>제품사진 파일</p>
+                                                            </div>
+                                                            <div class="input file_box">
+                                                                <ul>
+                                                                    <c:forEach var="productImageFile" items="${productImageFileList}" begin="0" end="${productImageFileList.size()}" step="1">
+                                                                        <c:set var="idx" value="${status.index + 1}"/>
+                                                                        <c:if test="${fn:contains(productImageFile.note, 'productImage'.concat(idx.toString()).concat('_'))}">
+                                                                            <li class="productImageFile_li" style="align-items: center; margin-bottom: 5px;">
+                                                                                <c:if test="${fn:substring(productImageFile.note, fn:length(productImageFile.note)-2, fn:length(productImageFile.note)) eq '_1'}">
+                                                                                    <span style="color: #FF0083">메인 이미지 : </span>
+                                                                                </c:if>
+                                                                                <c:if test="${fn:substring(productImageFile.note, fn:length(productImageFile.note)-2, fn:length(productImageFile.note)) ne '_1'}">
+                                                                                <span style="color: #FF0083">
+                                                                                    <c:out value="${fn:substring(productImageFile.note, fn:indexOf(productImageFile.note, '_')+1, fn:length(productImageFile.note))}"/> : </span>
+                                                                                </c:if>
+                                                                                <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                                <img src="${productImageFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin: 0 10px;"/>
+                                                                                    <%--<a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>--%>
+                                                                                <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${productImageFile.folderPath}', '${productImageFile.fullFileName}')">${productImageFile.fileName}</a>
+                                                                                <input type="hidden" name="productImageUploadFile" id="${productImageFile.id}" value="${productImageFile.fullFilePath}">
+                                                                                <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${productImageFile.id}')">X</button>
+                                                                            </li>
+                                                                        </c:if>
+                                                                    </c:forEach>
+                                                                </ul>
+                                                            </div>
+                                                        </li>
+                                                    </c:if>
+                                                    <li>
+                                                        <div class="item">
+                                                            <p>제품링크</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="productLink" value="${product.productLink}" placeholder="http:// 나 https:// 를 포함한 제품 관련 URL을 입력해 주세요.">
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </c:forEach>
+                                        </c:if>
                                         <div class="formAddBtn">
                                             <!-- 이미지교체방법추가 231107 -->
                                             <div class="img_replace_cmnt">
@@ -1293,52 +1385,41 @@
                                                 </div>
                                             </div>
                                             <!-- //이미지교체방법추가 231107 -->
-                                            <%--<span class="proImgAdd">추가</span>--%>
+                                            <span class="exhiInfoAdd">추가</span>
                                         </div>
                                     </div>
 
                                     <!-- 온라인 전시관 정보 -->
-                                    <script src="/js/product.js"></script>
+                                    <script src="/js/online.js"></script>
                                     <div class="form_wrap">
-                                        <div class="form_tit"><div class="big">온라인 전시관 정보</div></div>
-                                        <!-- 추가 230810 -->
-                                        <ul class="form_box">
-                                            <li class="form_in_tit">회사#1</li>
-                                            <li>
-                                                <div class="item">
-                                                    <p>회사소개영상</p>
-                                                </div>
-                                                <div class="input">
-                                                    <input type="text" id="companyIntroVideo" name="companyIntroVideo" value="${info.companyIntroVideo}" placeholder="ex) https://www.youtube.com/watch?v=0X_Df4qvN-M">
-                                                    <div class="cmnt">유튜브에 업로드된 영상만 등록 가능합니다. (숏츠,릴스 게시 불가)</div>
-                                                    <div class="cmnt">유튜브 영상 하단의 [공유] 버튼을 클릭하여, 뜨는 링크를 복사/붙여넣기 해주세요.</div>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                        <div class="form_tit">
+                                            <div class="big">온라인 전시관 정보</div>
+                                            <div class="small">온라인 전시관에 추가 전시를 원하는 제품 정보를 입력해 주세요.</div>
+                                        </div>
 
                                         <c:if test="${empty onlineList}">
                                             <ul class="form_box onlineInfoBox">
                                                 <li class="form_in_tit">
-                                                    <input type="hidden" name="onlineItemSeq" value="">
+                                                    <input type="hidden" name="onlineSeq" value="">
                                                     제품 #<span class="onlineInfoNum">1</span>
                                                     <span class="del_btn onlineInfoDel">삭제</span>
-                                                </li>
-                                                <li>
-                                                    <div class="item req">
-                                                        <p>제품명</p>
-                                                    </div>
-                                                    <div class="input">
-                                                        <input type="text" name="productNameKo" placeholder="국문" class="w50">
-                                                        <input type="text" name="productNameEn" placeholder="영문" class="w50 onlyNumEng">
-                                                    </div>
                                                 </li>
                                                 <li>
                                                     <div class="item req">
                                                         <p>제품분류</p>
                                                     </div>
                                                     <div class="input">
-                                                        <select name="productOptionBig" id="productOptionBig" class="w50"></select>
-                                                        <select name="productOptionSmall" id="productOptionSmall" class="w50"></select>
+                                                        <select id="onlineOptionBig_1" name="onlineOptionBig" class="w50"></select>
+                                                        <select id="onlineOptionSmall_1" name="onlineOptionSmall" class="w50"></select>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="item req">
+                                                        <p>제품명</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="onlineNameKo" placeholder="국문" class="w50">
+                                                        <input type="text" name="onlineNameEn" placeholder="영문" class="w50 onlyNumEng">
                                                     </div>
                                                 </li>
                                                 <li>
@@ -1348,9 +1429,9 @@
                                                     <div class="input file_box">
                                                         <div class="cmnt2">1개 제품 당 제품사진 최대 5개 등록 가능</div>
                                                         <div class="onlinePrdBox">
-                                                            <input type="text" id="productImage1_1" name="productImage" class="upload_name" value="" disabled="disabled">
-                                                            <input type="file" id="productImageFile1_1" name="productImageFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
-                                                            <label for="productImageFile1_1">파일선택</label>
+                                                            <input type="text" id="onlineImage1_1" name="onlineImage" class="upload_name" value="" placeholder="File" disabled="disabled">
+                                                            <input type="file" id="onlineImageFile1_1" name="onlineImageFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                                            <label for="onlineImageFile1_1">파일선택</label>
                                                             <span class="onlinePrdAdd" style="cursor: pointer">추가</span>
                                                             <span class="onlinePrdDel" style="cursor: pointer">삭제</span>
                                                             <div class="cmnt">JPG, PNG형식, 10MB 이하만 가능합니다. (권장 사이즈 : 1000x750px)</div>
@@ -1363,8 +1444,8 @@
                                                         <p>제품 설명</p>
                                                     </div>
                                                     <div class="input">
-                                                        <textarea name="productIntroKo" placeholder="국문"></textarea>
-                                                        <textarea name="productIntroEn" placeholder="영문" class="onlyNumEng"></textarea>
+                                                        <textarea name="onlineIntroKo" placeholder="국문"></textarea>
+                                                        <textarea name="onlineIntroEn" placeholder="영문" class="onlyNumEng"></textarea>
                                                     </div>
                                                 </li>
                                                 <li>
@@ -1372,25 +1453,57 @@
                                                         <p>제품 영상</p>
                                                     </div>
                                                     <div class="input">
-                                                        <input type="text" name="productIntroVideo" placeholder="ex) https://www.youtube.com/watch?v=0X_Df4qvN-M">
+                                                        <input type="text" name="onlineLink" placeholder="ex) https://www.youtube.com/watch?v=0X_Df4qvN-M">
                                                         <div class="cmnt">유튜브에 업로드된 영상만 등록 가능합니다. (숏츠,릴스 게시 불가)</div>
-                                                        <div class="cmnt">유튜브 영상 하단의 [공유] 버튼을 클릭하여, 뜨는 링크를 복사/붙여넣기 해주세요.</div>
+                                                        <div class="cmnt">유튜브 영상 하단의 [공유] 버튼을 클릭하여, 뜨는 링크를 복사/붙여넣기 해 주세요.</div>
                                                     </div>
                                                 </li>
                                                 <li class="w50">
                                                     <div class="item">
-                                                        <p>전장(m)</p>
+                                                        <p>길이(cm)</p>
                                                     </div>
                                                     <div class="input">
-                                                        <input type="text" name="productWidth" class="onlyNumDec" placeholder="단위 제외, 숫자만 입력해주세요.">
+                                                        <input type="text" name="onlineLength" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
                                                     </div>
                                                 </li>
                                                 <li class="w50">
                                                     <div class="item">
-                                                        <p>마력</p>
+                                                        <p>너비(cm)</p>
                                                     </div>
                                                     <div class="input">
-                                                        <input type="text" name="productHorsePower" class="onlyNumDec" placeholder="단위 제외, 숫자만 입력해주세요.">
+                                                        <input type="text" name="onlineWidth" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                    </div>
+                                                </li>
+                                                <li class="w50">
+                                                    <div class="item">
+                                                        <p>높이(cm)</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="onlineHeight" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                    </div>
+                                                </li>
+                                                <li class="w50">
+                                                    <div class="item">
+                                                        <p>중량(kg)</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="onlineWeight" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                    </div>
+                                                </li>
+                                                <li class="w50">
+                                                    <div class="item">
+                                                        <p>소재</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="onlineMaterial" placeholder="플라스틱, 알루미늄, FRP 등">
+                                                    </div>
+                                                </li>
+                                                <li class="w50">
+                                                    <div class="item">
+                                                        <p>연식</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <input type="text" name="onlineYear" class="onlyNum" maxlength="4" placeholder="숫자만 입력해 주세요.">
                                                     </div>
                                                 </li>
                                             </ul>
@@ -1400,7 +1513,7 @@
                                             <c:forEach var="online" items="${onlineList}" begin="0" end="${onlineList.size()}" step="1" varStatus="status">
                                                 <ul class="form_box onlineInfoBox">
                                                     <li class="form_in_tit">
-                                                        <input type="hidden" name="onlineItemSeq" value="${online.seq}">
+                                                        <input type="hidden" name="onlineSeq" value="${online.seq}">
                                                         제품 #<span class="onlineInfoNum">${status.index + 1}</span>
                                                         <span class="del_btn onlineInfoDel">삭제</span>
                                                     </li>
@@ -1409,8 +1522,8 @@
                                                             <p>제품명</p>
                                                         </div>
                                                         <div class="input">
-                                                            <input type="text" name="productNameKo" value="${online.productNameKo}" placeholder="국문" class="w50">
-                                                            <input type="text" name="productNameEn" value="${online.productNameEn}" placeholder="영문" class="w50 onlyNumEng">
+                                                            <input type="text" name="onlineNameKo" value="${online.onlineNameKo}" placeholder="국문" class="w50">
+                                                            <input type="text" name="onlineNameEn" value="${online.onlineNameEn}" placeholder="영문" class="w50 onlyNumEng">
                                                         </div>
                                                     </li>
                                                     <li>
@@ -1418,15 +1531,21 @@
                                                             <p>제품분류</p>
                                                         </div>
                                                         <div class="input">
-                                                            <select name="productOptionBig" class="w50"></select>
-                                                            <select name="productOptionSmall" class="w50"></select>
-                                                            <c:if test="${online.productOptionBig ne null and online.productOptionBig ne '' and online.productOptionSmall ne null and online.productOptionSmall ne ''}">
+                                                            <select id="onlineOptionBig_${status.index + 1}" name="onlineOptionBig" class="w50"></select>
+                                                            <select id="onlineOptionSmall_${status.index + 1}" name="onlineOptionSmall" class="w50"></select>
+                                                            <script>
+                                                                $(function(){
+                                                                    $('#onlineOptionBig_${status.index + 1}').val('${online.onlineOptionBig}').prop('selected', true).trigger('change');
+                                                                    $('#onlineOptionSmall_${status.index + 1}').val('${online.onlineOptionSmall}').prop('selected', true);
+                                                                })
+                                                            </script>
+                                                            <%--<c:if test="${online.onlineOptionBig ne null and online.onlineOptionBig ne '' and online.onlineOptionSmall ne null and online.onlineOptionSmall ne ''}">
                                                                 <span class="preOptionList" style="margin-left: 10px; display: block;">
                                                                     저장된 제품 분류 값 : &nbsp;
-                                                                        <input type="text" name="preBigValue" value="${online.productOptionBig}" style="width: unset;" readonly="readonly"/>&nbsp;
-                                                                        <input type="text" name="preSmallValue" value="${online.productOptionSmall}" style="width: unset;" readonly="readonly"/>
+                                                                        <input type="text" name="preBigValue" value="${online.onlineOptionBig}" style="width: unset;" readonly="readonly"/>&nbsp;
+                                                                        <input type="text" name="preSmallValue" value="${online.onlineOptionSmall}" style="width: unset;" readonly="readonly"/>
                                                                 </span>
-                                                            </c:if>
+                                                            </c:if>--%>
                                                         </div>
                                                     </li>
                                                     <li>
@@ -1436,16 +1555,16 @@
                                                         <div class="input file_box">
                                                             <div class="cmnt2">1개 제품 당 제품사진 최대 5개 등록 가능</div>
                                                             <div class="onlinePrdBox">
-                                                                <c:set var="productImageNumIdx" value="0" />
-                                                                <c:forEach var="productImageFile" items="${productImageFileList}" begin="0" end="${productImageFileList.size()}" step="1">
+                                                                <c:set var="onlineImageNumIdx" value="0" />
+                                                                <c:forEach var="onlineImageFile" items="${onlineImageFileList}" begin="0" end="${onlineImageFileList.size()}" step="1">
                                                                     <c:set var="onlineInfoNumIdx" value="${status.index + 1}"/>
-                                                                    <c:if test="${fn:contains(productImageFile.note , 'productImage'.concat(onlineInfoNumIdx.toString()).concat('_'))}">
-                                                                        <c:set var="productImageNumIdx" value="${productImageNumIdx + 1}" />
+                                                                    <c:if test="${fn:contains(onlineImageFile.note , 'onlineImage'.concat(onlineInfoNumIdx.toString()).concat('_'))}">
+                                                                        <c:set var="onlineImageNumIdx" value="${onlineImageNumIdx + 1}" />
                                                                     </c:if>
                                                                 </c:forEach>
-                                                                <input type="text" id="productImage${status.index + 1}_${productImageNumIdx + 1}" name="productImage" class="upload_name" value="" disabled="disabled">
-                                                                <input type="file" id="productImageFile${status.index + 1}_${productImageNumIdx + 1}" name="productImageFile" accept=".png, .jpg, .jpeg" class="upload_hidden">
-                                                                <label for="productImageFile${status.index + 1}_${productImageNumIdx + 1}">파일선택</label>
+                                                                <input type="text" id="onlineImage${onlineInfoNumIdx}_${onlineImageNumIdx + 1}" name="onlineImage" class="upload_name" value="" disabled="disabled">
+                                                                <input type="file" id="onlineImageFile${onlineInfoNumIdx}_${onlineImageNumIdx + 1}" name="onlineImageFile" accept=".png, .jpg, .jpeg" class="upload_hidden">
+                                                                <label for="onlineImageFile${onlineInfoNumIdx}_${onlineImageNumIdx + 1}">파일선택</label>
                                                                 <span class="onlinePrdAdd" style="cursor: pointer">추가</span>
                                                                 <span class="onlinePrdDel" style="cursor: pointer">삭제</span>
                                                                 <div class="cmnt">JPG, PNG형식, 10MB 이하만 가능합니다. (권장 사이즈 : 1000x750px)</div>
@@ -1454,23 +1573,30 @@
                                                         </div>
                                                     </li>
 
-                                                    <c:if test="${productImageFileList ne null and not empty productImageFileList}">
+                                                    <c:if test="${onlineImageFileList ne null and not empty onlineImageFileList}">
                                                         <li class="preValueList">
                                                             <div class="item">
-                                                                <p>제품 사진 파일</p>
+                                                                <p>제품사진 파일</p>
                                                             </div>
                                                             <div class="input file_box">
                                                                 <ul>
-                                                                    <c:forEach var="productImageFile" items="${productImageFileList}" begin="0" end="${productImageFileList.size()}" step="1">
+                                                                    <c:forEach var="onlineImageFile" items="${onlineImageFileList}" begin="0" end="${onlineImageFileList.size()}" step="1">
                                                                         <c:set var="idx" value="${status.index + 1}"/>
-                                                                        <c:if test="${fn:contains(productImageFile.note, 'productImage'.concat(idx.toString()).concat('_'))}">
-                                                                            <li class="productImageFile_li" style="align-items: center;">
-                                                                                <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
-                                                                                <img src="${productImageFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                                                                <%--<a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>--%>
-                                                                                <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${productImageFile.folderPath}', '${productImageFile.fullFileName}')">${productImageFile.fileName}</a>
-                                                                                <input type="hidden" name="productImageUploadFile" id="${productImageFile.id}" value="${productImageFile.fullFilePath}">
-                                                                                <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${productImageFile.id}')">X</button>
+                                                                        <c:if test="${fn:contains(onlineImageFile.note, 'onlineImage'.concat(idx.toString()).concat('_'))}">
+                                                                            <li class="onlineImageFile_li" style="align-items: center; margin-bottom: 5px;">
+                                                                                <c:if test="${fn:substring(onlineImageFile.note, fn:length(onlineImageFile.note)-2, fn:length(onlineImageFile.note)) eq '_1'}">
+                                                                                    <span style="color: #FF0083">메인 이미지 : </span>
+                                                                                </c:if>
+                                                                                <c:if test="${fn:substring(onlineImageFile.note, fn:length(onlineImageFile.note)-2, fn:length(onlineImageFile.note)) ne '_1'}">
+                                                                                <span style="color: #FF0083">
+                                                                                    <c:out value="${fn:substring(onlineImageFile.note, fn:indexOf(onlineImageFile.note, '_')+1, fn:length(onlineImageFile.note))}"/> : </span>
+                                                                                </c:if>
+                                                                                <c:set var="onlineImageFileSrc" value="${fn:replace(onlineImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                                <img src="${onlineImageFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin: 0 10px;"/>
+                                                                                <%--<a href="/file/download.do?path=exhibitor/company/${onlineImageFile.folderPath}&fileName=${onlineImageFile.fullFileName}">${onlineImageFile.fileName}</a>--%>
+                                                                                <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${onlineImageFile.folderPath}', '${onlineImageFile.fullFileName}')">${onlineImageFile.fileName}</a>
+                                                                                <input type="hidden" name="onlineImageUploadFile" id="${onlineImageFile.id}" value="${onlineImageFile.fullFilePath}">
+                                                                                <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${onlineImageFile.id}')">X</button>
                                                                             </li>
                                                                         </c:if>
                                                                     </c:forEach>
@@ -1484,8 +1610,8 @@
                                                             <p>제품 설명</p>
                                                         </div>
                                                         <div class="input">
-                                                            <textarea name="productIntroKo" placeholder="국문">${online.productIntroKo}</textarea>
-                                                            <textarea name="productIntroEn" placeholder="영문" class="onlyNumEng">${online.productIntroEn}</textarea>
+                                                            <textarea name="onlineIntroKo" placeholder="국문">${online.onlineIntroKo}</textarea>
+                                                            <textarea name="onlineIntroEn" placeholder="영문" class="onlyNumEng">${online.onlineIntroEn}</textarea>
                                                         </div>
                                                     </li>
                                                     <li>
@@ -1493,25 +1619,57 @@
                                                             <p>제품 영상</p>
                                                         </div>
                                                         <div class="input">
-                                                            <input type="text" name="productIntroVideo" value="${online.productIntroVideo}" placeholder="ex) https://www.youtube.com/watch?v=0X_Df4qvN-M">
+                                                            <input type="text" name="onlineLink" value="${online.onlineLink}" placeholder="ex) https://www.youtube.com/watch?v=0X_Df4qvN-M">
                                                             <div class="cmnt">유튜브에 업로드된 영상만 등록 가능합니다. (숏츠,릴스 게시 불가)</div>
-                                                            <div class="cmnt">유튜브 영상 하단의 [공유] 버튼을 클릭하여, 뜨는 링크를 복사/붙여넣기 해주세요.</div>
+                                                            <div class="cmnt">유튜브 영상 하단의 [공유] 버튼을 클릭하여, 뜨는 링크를 복사/붙여넣기 해 주세요.</div>
                                                         </div>
                                                     </li>
                                                     <li class="w50">
                                                         <div class="item">
-                                                            <p>전장(m)</p>
+                                                            <p>길이(cm)</p>
                                                         </div>
                                                         <div class="input">
-                                                            <input type="text" name="productWidth" value="${online.productWidth}" class="onlyNumDec" placeholder="단위 제외, 숫자만 입력해주세요.">
+                                                            <input type="text" name="onlineLength" value="${online.onlineLength}" class="onlyNum" placeholder="숫자만 입력해 주세요.">
                                                         </div>
                                                     </li>
                                                     <li class="w50">
                                                         <div class="item">
-                                                            <p>마력</p>
+                                                            <p>너비(cm)</p>
                                                         </div>
                                                         <div class="input">
-                                                            <input type="text" name="productHorsePower" value="${online.productHorsePower}" class="onlyNumDec" placeholder="단위 제외, 숫자만 입력해주세요.">
+                                                            <input type="text" name="onlineWidth" value="${online.onlineWidth}" class="onlyNum" placeholder="숫자만 입력해 주세요.">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item">
+                                                            <p>높이(cm)</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="onlineHeight" value="${online.onlineHeight}" class="onlyNum" placeholder="숫자만 입력해 주세요.">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item">
+                                                            <p>중량(kg)</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="onlineWeight" value="${online.onlineWeight}" class="onlyNum" placeholder="숫자만 입력해 주세요.">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item">
+                                                            <p>소재</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="onlineMaterial" value="${online.onlineMaterial}" placeholder="플라스틱, 알루미늄, FRP 등">
+                                                        </div>
+                                                    </li>
+                                                    <li class="w50">
+                                                        <div class="item">
+                                                            <p>연식</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="onlineYear" value="${online.onlineYear}" class="onlyNum" placeholder="숫자만 입력해 주세요.">
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -1531,16 +1689,16 @@
                                         </div>
                                     </div>
 
-                                    <!-- 비즈니스 상담 -->
+                                    <!-- 수출상담회 -->
                                     <div class="form_wrap">
                                         <div class="form_tit">
-                                            <div class="big">비즈니스 상담</div>
-                                            <div class="small">2025 경기국제보트쇼에서는 국내외바이어 초청 및 1:1 비즈니스 상담을 진행합니다.</div>
+                                            <div class="big">수출상담회</div>
+                                            <div class="small">2026 경기국제보트쇼에서는 국내외바이어 초청 및 1:1 수출상담회를 진행합니다.</div>
                                         </div>
                                         <ul class="form_box">
                                             <li>
                                                 <div class="item req">
-                                                    <p>비즈니스 상담 참가 희망 여부</p>
+                                                    <p>수출상담회 참가 희망 여부</p>
                                                 </div>
                                                 <div class="input check">
                                                     <label>
@@ -1569,7 +1727,7 @@
                                                             <div class="gubun">${buyer.buyerCompanyCountry} / ${buyer.buyerCompanyLocation} / ${buyer.buyerCompanyDepart} ${buyer.buyerCompanyPosition}</div>
                                                         </div>
                                                         <div class="modifyFormBuyer modifyFormList" onclick="f_buyer_modify_modal('select','${buyer.seq}')">수정</div>
-                                                        <div class="delFormBuyer delFormList" onclick="f_buyer_remove('select', '${buyer.seq}')">삭제</div>
+                                                        <div class="delFormBuyer delFormList" onclick="f_buyer_remove('select', this, '${buyer.seq}')">삭제</div>
                                                         <input type="hidden" name="buyerCompanyName" value="${buyer.buyerCompanyName}">
                                                         <input type="hidden" name="buyerCompanyCountry" value="${buyer.buyerCompanyCountry}">
                                                         <input type="hidden" name="buyerCompanyLocation" value="${buyer.buyerCompanyLocation}">
@@ -1595,10 +1753,10 @@
                                     <div class="form_btn" style="justify-content:flex-end;">
                                     <%--href="/apply/step2_1.do#apply_s"--%>
                                         <a href="javascript:void(0);" onclick="f_apply_comp('01','${info.seq}')" class="form_btn_next">
-                                        <div class="big">다음</div>
-                                        <div class="small">전시부스 신청</div>
-                                    </a>
-                                </div>
+                                            <div class="big">다음</div>
+                                            <div class="small">전시부스 신청</div>
+                                        </a>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -1684,19 +1842,11 @@
                                                     <input type="text" id="buyer_email_input2" name="buyerCompanyDomain" class="email_input2" placeholder="직접입력"/>
                                                     <select id="buyer_email_select">
                                                         <option selected>직접입력</option>
+                                                        <option value="naver.com">naver.com</option>
                                                         <option value="daum.net">daum.net</option>
                                                         <option value="nate.com">nate.com</option>
                                                         <option value="hanmail.net">hanmail.net</option>
-                                                        <option value="naver.com">naver.com</option>
-                                                        <option value="hotmail.com">hotmail.com</option>
-                                                        <option value="yahoo.co.kr">yahoo.co.kr</option>
-                                                        <option value="empal.com">empal.com</option>
-                                                        <option value="korea.com">korea.com</option>
-                                                        <option value="hanmir.com">hanmir.com</option>
-                                                        <option value="dreamwiz.com">dreamwiz.com</option>
-                                                        <option value="orgio.net">orgio.net</option>
-                                                        <option value="korea.com">korea.com</option>
-                                                        <option value="hitel.net">hitel.net</option>
+                                                        <option value="gmail.com">gmail.com</option>
                                                     </select>
                                                 </div>
                                             </li>
@@ -1770,6 +1920,52 @@
                 </div>
             </div>
 
+            <!-- 참가신청 정보 불러오기 -->
+            <div class="popup" id="popFormInfoLoad">
+                <div class="popup_inner">
+                    <div class="popup_wrap">
+                        <div class="pop_tit">
+                            <div class="tit">참가기업 인증</div>
+                        </div>
+                        <div class="pop_box">
+                            <div class="pop_info_load">
+                                <div class="text">
+                                    인증번호 수신이 가능한 메일 주소를 확인하신 후,<br>
+                                    우측의 [발송] 버튼을 클릭해 주세요.
+                                </div>
+                                <div class="list">
+                                    <%--<div class="item">
+                                        <div class="mail">cm*****@m*********</div>
+                                        <input type="button" value="발송">
+                                    </div>
+                                    <div class="item">
+                                        <div class="mail">cm*****@m*********</div>
+                                        <input type="button" value="발송" disabled>
+                                    </div>
+                                    <div class="item">
+                                        <div class="mail">cm*****@m*********</div>
+                                        <input type="button" value="발송" disabled>
+                                    </div>--%>
+                                </div>
+                                <div id="certifyBox" class="input" style="display: none;">
+                                    <input type="text" id="certifyNum" class="onlyNum" maxlength="5" placeholder="인증번호를 입력해 주세요">
+                                    <input type="button" id="certifyBtn" onclick="f_certify_confirm(this);" value="확인">
+                                    <input type="hidden" id="certifyFlag" name="certifyFlag" value="false">
+                                    <div class="time">유효시간 <span id="remainMin">05</span><span id="colon">:</span><span id="remainSec">00</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pop_bot">
+                            <div class="pop_btn">
+                                <a href="javascript:void(0);" id="certifyCloseBtn" onclick="f_certify_close();" class="close btnSt04">닫기</a>
+                                <a href="javascript:void(0);" class="btnSt02" onclick="f_pre_exhibitor_info_call();">불러오기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- //참가신청 정보 불러오기 -->
+
             <!-- 전환페이지 설정 -->
             <script type="text/javascript" src="https://wcs.naver.net/wcslog.js"></script>
             <script type="text/javascript">
@@ -1791,8 +1987,8 @@
             <%--<script>
                 $(function () {
                     if (getCurrentDate() >= '20250224000000') {
-                        $('#eventPlan').prop('readonly', true);
-                        $('#eventPlan').on('keyup', function () {
+                        $('#promotionPlan').prop('readonly', true);
+                        $('#promotionPlan').on('keyup', function () {
                             alert('2월 24일 자정부터는 입력 및 수정이 불가합니다.');
                         })
                     }

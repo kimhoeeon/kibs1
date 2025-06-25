@@ -9,17 +9,92 @@ import java.util.Map;
 @Repository
 public interface KibsMapper {
 
-    Integer checkDuplicateId(ExhibitorDTO exhibitorDTO);
+    Integer checkDuplicateId(ExhibitorNewDTO exhibitorNewDTO);
 
-    Integer insertExhibitor(ExhibitorDTO exhibitorDTO);
+    Integer insertExhibitorNew(ExhibitorNewDTO exhibitorNewDTO);
 
     Integer insertDisplayInfo(DisplayDTO displayDTO);
-
-    Integer insertPromotionInfo(PromotionDTO promotionDTO);
 
     Integer insertOnlineInfo(OnlineDTO onlineDTO);
 
     Integer insertBuyerInfo(BuyerDTO buyerDTO);
+
+    Integer updateExhibitorNew(ExhibitorNewDTO exhibitorNewDTO);
+
+    ExhibitorNewDTO selectExhibitorNewSingle(ExhibitorNewDTO exhibitorNewDTO);
+
+    Integer updateExhibitorNewPassword(ExhibitorNewDTO updateExhibitorNewInfo);
+
+    Integer updateChargeNew(ChargeNewDTO chargeNewDTO);
+
+    Integer updateImageFileNote(FileDTO updFileDTO);
+
+    List<ChargeNewDTO> selectChargeNewList(ChargeNewDTO chargeNewDTO);
+
+    List<ProductNewDTO> selectProductNewList(ProductNewDTO productNewDTO);
+
+    List<OnlineNewDTO> selectOnlineNewList(OnlineNewDTO onlineNewDTO);
+
+    List<BuyerNewDTO> selectBuyerNewList(BuyerNewDTO buyerNewDTO);
+
+    Integer updateExhibitorNewBooth(ExhibitorNewDTO exhibitorNewDTO);
+
+    Integer updateExhibitorNewCompanySign(ExhibitorNewDTO exhibitorNewDTO);
+
+    Integer updateExhibitorNewUtility(ExhibitorNewDTO exhibitorNewDTO);
+
+    Integer updateExhibitorNewNote(ExhibitorNewDTO exhibitorNewDTO);
+
+    Integer updatePassNew(PassNewDTO passNewDTO);
+
+    Integer insertPassNew(PassNewDTO passNewDTO);
+
+    List<PassNewDTO> selectPassNewList(PassNewDTO passNewDTO);
+
+    String searchExhibitorNewSeq(ExhibitorNewDTO exhibitorNewDTO);
+
+    List<GiftNewDTO> selectGiftNewList(GiftNewDTO giftNewDTO);
+
+    Integer updateExhibitorNewApprovalStatus(ExhibitorNewDTO exhibitorNewDTO);
+
+    Integer updateGiftNew(GiftNewDTO giftNewDTO);
+
+    Integer insertGiftNew(GiftNewDTO giftNewDTO);
+
+    String getExhibitorNewSalt(ExhibitorNewDTO exhibitorNewDTO);
+
+    String checkLoginExhibitorNew(ExhibitorNewDTO exhibitorNewDTO);
+
+    ExhibitorNewDTO selectExhibitorNewPrc(ExhibitorNewDTO exhibitorNewDTO);
+
+    Integer updateExhibitorNewInfo(ExhibitorNewDTO exhibitorNewDTO);
+
+    String getExhibitorNewEmail(ExhibitorNewDTO exhibitorNewDTO);
+
+    List<String> preGetExhibitorEmail(ExhibitorDTO exhibitorDTO);
+
+    Integer deletePassNew(PassNewDTO passNewDTO);
+
+    Integer deleteChargeNew(ChargeNewDTO chargeNewDTO);
+
+    Integer deleteProductNew(ProductNewDTO productNewDTO);
+
+    Integer deleteOnlineNew(OnlineNewDTO onlineNewDTO);
+
+    Integer deleteFile(FileDTO fileDTO);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     Integer updateExhibitBooth(ExhibitorDTO exhibitorDTO);
 
@@ -45,11 +120,17 @@ public interface KibsMapper {
 
     ExhibitorDTO selectOnlineExhibitorInfo(String seq);
 
+    ExhibitorNewDTO selectOnlineExhibitorNewInfo(String seq);
+
     List<OnlineDTO> selectOnlineInfoList(String seq);
+
+    List<OnlineNewDTO> selectOnlineNewInfoList(String seq);
 
     List<FileDTO> selectFileList(String seq);
 
     OnlineDTO selectOnlineInfo(String seq);
+
+    OnlineNewDTO selectOnlineNewInfo(String seq);
 
     List<OnlineRelatedDTO> selectOnlineRelatedList(OnlineDTO onlineDTO);
 
@@ -95,9 +176,7 @@ public interface KibsMapper {
 
     List<KibstvDTO> selectMainKibstvList(String lang);
 
-    String getExhibitorSeq();
-
-    Integer insertChargePersonInfo(ChargePersonDTO chargePersonDTO);
+    String getExhibitorNewSeq();
 
     Integer updateExhibitNote(ExhibitorDTO exhibitorDTO);
 
@@ -133,13 +212,9 @@ public interface KibsMapper {
 
     List<BuyerDTO> selectBuyerListSeq(BuyerDTO buyerDTO);
 
-    BuyerDTO selectBuyerSingle(BuyerDTO buyerDTO);
+    BuyerNewDTO selectBuyerNewSingle(BuyerNewDTO buyerNewDTO);
 
-    Integer deleteBuyer(BuyerDTO buyerDTO);
-
-    Integer UpdateExhibitor(ExhibitorDTO exhibitorDTO);
-
-    Integer updateExhibitorCharge(ChargePersonDTO request);
+    Integer deleteBuyerNew(BuyerNewDTO buyerNewDTO);
 
     Integer updateExhibitorDisplay(DisplayDTO request);
 
@@ -167,23 +242,9 @@ public interface KibsMapper {
 
     DirectoryDTO selectDirectoryInfo(DirectoryDTO directoryDTO);
 
-    Integer deleteCharge(ChargePersonDTO chargePersonDTO);
-
-    Integer deleteDisplay(DisplayDTO displayDTO);
-
-    Integer deleteOnline(OnlineDTO onlineDTO);
-
-    Integer deleteFile(FileDTO fileDTO);
-
     Integer updateExhibitPersonalInfo(ExhibitorDTO exhibitorDTO);
 
     List<PopupDTO> selectPopupList(PopupDTO popupDTO);
-
-    Integer deleteExhibitPass(PassDTO passDTO);
-
-    String getExhibitorEmail(ExhibitorDTO exhibitorDTO);
-
-    Integer updateExhibitPasswordInit(ExhibitorDTO exhibitorDTO);
 
     String checkStatisticsAccessor(StatisticsDTO statisticsDTO);
 
@@ -204,10 +265,6 @@ public interface KibsMapper {
     Integer updateExhibitorOnlineViewYn(ExhibitorDTO exhibitorDTO);
 
     List<KibstvDTO> selectKibstvYearList(SearchDTO searchDTO);
-
-    List<String> selectFileSeq(FileDTO fileDTO);
-
-    Integer updateProductImageFileNote(FileDTO updFileDTO);
 
     InstaTokenDTO selectInstaRefresh();
 
@@ -238,4 +295,25 @@ public interface KibsMapper {
     void insertBusiness(BusinessDTO businessDTO);
 
     Integer checkBusiness(BusinessDTO businessDTO);
+
+    ExhibitorDTO selectPreExhibitorSingle(ExhibitorDTO exhibitorDTO);
+
+    Integer insertChargeNew(ChargeNewDTO chargeNewDTO);
+
+    Integer insertProductNew(ProductNewDTO productNewDTO);
+
+    Integer insertOnlineNew(OnlineNewDTO onlineNewDTO);
+
+    Integer insertBuyerNew(BuyerNewDTO buyerNewDTO);
+
+    Integer updateProductNew(ProductNewDTO productNew);
+
+    Integer updateOnlineNew(OnlineNewDTO onlineNew);
+
+    Integer updateBuyerNew(BuyerNewDTO buyerNew);
+
+    List<String> selectProductNewFileSeq(FileDTO fileDTO);
+
+    List<String> selectOnlineFileSeq(FileDTO fileDTO);
+
 }

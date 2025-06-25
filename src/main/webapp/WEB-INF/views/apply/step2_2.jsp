@@ -41,12 +41,12 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
     <span itemscope="" itemtype="http://schema.org/Organization">
-    <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-    <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-    <a itemprop="sameAs" href="https://kibs-online.com"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 </head>
 
@@ -169,7 +169,7 @@
                             <li>한글과 영어를 별도 표기하여 주십시오.</li>
                             <li>최대 글자 수 : 국문(64) , 영문(64)</li>
                             <li>쉼표, 마침표 등의 문장부호와 ‘(주)’, ‘CO.,LTD.' 등을 포함한 상호명을 정확하게 표기해 주십시오.</li>
-                            <li><span class="emRed">상호간판은 '조립부스' 신청 기업만 기입하여 주십시오.</span></li>
+                            <%--<li><span class="emRed">상호간판은 '조립부스' 신청 기업만 기입하여 주십시오.</span></li>--%>
                         </ul>
                     </div>
 
@@ -180,14 +180,14 @@
                         </div>
                         <ul class="form_box">
                             <li>
-                                <div class="item">
+                                <div class="item req">
                                     <p>상호간판명</p>
                                 </div>
                                 <div class="input">
-                                    <input type="hidden" id="standAloneBoothCnt" value="${info.standAloneBoothCnt}">
-                                    <input type="hidden" id="assemblyBoothCnt" value="${info.assemblyBoothCnt}">
-                                    <input type="text" id="company_sign_name_ko" value="${info.companySignNameKo}" placeholder="국문">
-                                    <input type="text" id="company_sign_name_en" value="${info.companySignNameEn}" placeholder="영문" class="onlyNumEng">
+                                    <%--<input type="hidden" id="standAloneBoothCnt" value="${info.standAloneBoothCnt}">
+                                    <input type="hidden" id="assemblyBoothCnt" value="${info.assemblyBoothCnt}">--%>
+                                    <input type="text" id="companySignNameKo" value="${info.companySignNameKo}" placeholder="국문">
+                                    <input type="text" id="companySignNameEn" value="${info.companySignNameEn}" placeholder="영문" class="onlyNumEng">
                                 </div>
                             </li>
                         </ul>

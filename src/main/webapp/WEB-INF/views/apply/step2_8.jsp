@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<% pageContext.setAttribute("CRLF", "\r\n"); %>
+<% pageContext.setAttribute("LF", "\n"); %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
@@ -41,12 +43,12 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
     <span itemscope="" itemtype="http://schema.org/Organization">
-    <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-    <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-    <a itemprop="sameAs" href="https://kibs-online.com"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 </head>
 
@@ -183,6 +185,14 @@
                             <div class="big">참가업체 정보</div>
                         </div>
                         <ul class="form_box">
+                            <li>
+                                <div class="item">
+                                    <p>사업자등록번호</p>
+                                </div>
+                                <div class="input" style="display: flex; align-items: center;">
+                                    ${info.companyLicenseNum}
+                                </div>
+                            </li>
                             <li class="w50">
                                 <div class="item">
                                     <p>회사명(국문)</p>
@@ -286,43 +296,16 @@
                             </li>
                             <li class="w50">
                                 <div class="item">
-                                    <p>사업자등록번호</p>
+                                    <p>로고</p>
                                 </div>
-                                <div class="input" style="display: flex; align-items: center;">
-                                    ${info.companyLicenseNum}
-                                </div>
-                            </li>
-                            <li class="form_in_tit">SNS (주소기입)</li>
-                            <li class="w50">
-                                <div class="item">
-                                    <p>블로그</p>
-                                </div>
-                                <div class="input">
-                                    ${info.snsBlog}
-                                </div>
-                            </li>
-                            <li class="w50">
-                                <div class="item">
-                                    <p>페이스북</p>
-                                </div>
-                                <div class="input">
-                                    ${info.snsFacebook}
-                                </div>
-                            </li>
-                            <li class="w50">
-                                <div class="item">
-                                    <p>인스타그램</p>
-                                </div>
-                                <div class="input">
-                                    ${info.snsInstagram}
-                                </div>
-                            </li>
-                            <li class="w50">
-                                <div class="item">
-                                    <p>기타</p>
-                                </div>
-                                <div class="input">
-                                    ${info.snsEtc}
+                                <div class="input file_box">
+                                    <c:set var="logoFileSrc" value="${fn:replace(logoFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                    <c:if test="${not fn:contains(logoFileSrc, '.ai') and not fn:contains(logoFileSrc, '.pdf')}">
+                                        <img src="${logoFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
+                                    </c:if>
+                                    <%--<a href="/file/download.do?path=exhibitor/company/${logoFile.folderPath}&fileName=${logoFile.fullFileName}">${logoFile.fileName}</a>--%>
+                                    <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${logoFile.folderPath}', '${logoFile.fullFileName}')">${logoFile.fileName}</a>
+                                    <input type="hidden" name="companyLicenseUploadFile" id="${logoFile.id}" value="${logoFile.fullFilePath}">
                                 </div>
                             </li>
                         </ul>
@@ -333,12 +316,63 @@
                         <div class="form_tit">
                             <div class="big">담당자 정보</div>
                         </div>
+                        <ul class="form_box">
+                            <li class="form_in_tit">대표담당자</li>
+                            <li>
+                                <div class="item">
+                                    <p>성명</p>
+                                </div>
+                                <div class="input">
+                                    ${info.name}
+                                </div>
+                            </li>
+                            <li class="w50">
+                                <div class="item">
+                                    <p>직위</p>
+                                </div>
+                                <div class="input">
+                                    ${info.position}
+                                </div>
+                            </li>
+                            <li class="w50">
+                                <div class="item">
+                                    <p>부서</p>
+                                </div>
+                                <div class="input">
+                                    ${info.depart}
+                                </div>
+                            </li>
+                            <li class="w50">
+                                <div class="item">
+                                    <p>전화번호</p>
+                                </div>
+                                <div class="input">
+                                    ${info.tel}
+                                </div>
+                            </li>
+                            <li class="w50">
+                                <div class="item">
+                                    <p>휴대전화</p>
+                                </div>
+                                <div class="input">
+                                    ${info.phone}
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item">
+                                    <p>이메일</p>
+                                </div>
+                                <div class="input email">
+                                    ${info.email}
+                                </div>
+                            </li>
+                        </ul>
 
                         <c:if test="${not empty chargeList}">
                             <c:forEach var="charge" items="${chargeList}" begin="0" end="${chargeList.size()}" step="1" varStatus="status">
                                 <ul class="form_box managerInfoBox">
                                     <li class="form_in_tit">
-                                        담당자 #<span class="managerInfoNum">${status.index + 1}</span>
+                                        부담당자 #<span class="managerInfoNum">${status.index + 1}</span>
                                     </li>
                                     <li>
                                         <div class="item">
@@ -394,62 +428,153 @@
                     </div>
                     <!-- //담당자정보 -->
 
-                    <!-- 전시정보 -->
+                    <!-- 전시품 정보 -->
                     <div class="form_wrap">
                         <div class="form_tit">
-                            <div class="big">전시정보</div>
+                            <div class="big">전시품 정보</div>
                         </div>
-                        <c:if test="${not empty displayList}">
-                            <c:forEach var="display" items="${displayList}" begin="0" end="${displayList.size()}" step="1" varStatus="status">
+                        <c:if test="${not empty productList}">
+                            <c:forEach var="product" items="${productList}" begin="0" end="${productList.size()}" step="1" varStatus="status">
                                 <ul class="form_box exhiInfoBox">
                                     <li class="form_in_tit">
-                                        전시정보 #<span class="exhiInfoNum">${status.index + 1}</span>
+                                        전시품 정보 #<span class="exhiInfoNum">${status.index + 1}</span>
                                     </li>
                                     <li>
                                         <div class="item">
-                                            <p>전시품목</p>
+                                            <p>제품 분류(품목)</p>
                                         </div>
                                         <div class="input">
-                                            ${display.displayItem}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="item">
-                                            <p>전시품목<br>브랜드명</p>
-                                        </div>
-                                        <div class="input">
-                                            ${display.displayBrand}
+                                            ${product.productOptionBig} / ${product.productOptionSmall}
                                         </div>
                                     </li>
                                     <li>
                                         <div class="item">
-                                            <p>실물 보트수<br>(단위:척)</p>
+                                            <p>제품명</p>
                                         </div>
                                         <div class="input">
-                                            ${display.displayBoatCnt}
+                                            ${product.productNameKo}
                                         </div>
                                     </li>
                                     <li>
                                         <div class="item">
-                                            <p>전시품소개(국문)</p>
+                                            <p>수량</p>
                                         </div>
                                         <div class="input">
-                                            ${display.displayItemIntroKo}
+                                            ${product.productQty}
                                         </div>
                                     </li>
                                     <li>
                                         <div class="item">
-                                            <p>전시품소개(영문)</p>
+                                            <p>제조사(브랜드)</p>
                                         </div>
                                         <div class="input">
-                                            ${display.displayItemIntroEn}
+                                            ${product.productBrand}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>길이(cm)</p>
+                                        </div>
+                                        <div class="input">
+                                            ${product.productLength}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>너비(cm)</p>
+                                        </div>
+                                        <div class="input">
+                                            ${product.productWidth}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>높이(cm)</p>
+                                        </div>
+                                        <div class="input">
+                                            ${product.productHeight}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>중량(kg)</p>
+                                        </div>
+                                        <div class="input">
+                                            ${product.productWeight}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>소재</p>
+                                        </div>
+                                        <div class="input">
+                                            ${product.productMaterial}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>연식</p>
+                                        </div>
+                                        <div class="input">
+                                            ${product.productYear}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>제품 설명(국문)</p>
+                                        </div>
+                                        <div class="input">
+                                            ${fn:replace(fn:replace(fn:escapeXml(product.productIntroKo), CRLF, '<br/>'), LF, '<br/>')}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>제품 설명(영문)</p>
+                                        </div>
+                                        <div class="input">
+                                            ${fn:replace(fn:replace(fn:escapeXml(product.productIntroEn), CRLF, '<br/>'), LF, '<br/>')}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>제품 사진</p>
+                                        </div>
+                                        <div class="input">
+                                            <ul>
+                                                <c:forEach var="productImageFile" items="${productImageFileList}" begin="0" end="${productImageFileList.size()}" step="1">
+                                                    <c:set var="idx" value="${status.index + 1}"/>
+                                                    <c:if test="${fn:contains(productImageFile.note, 'productImage'.concat(idx.toString()).concat('_'))}">
+                                                        <li class="productImageFile_li" style="align-items: center; margin-bottom: 5px;">
+                                                            <c:if test="${fn:substring(productImageFile.note, fn:length(productImageFile.note)-2, fn:length(productImageFile.note)) eq '_1'}">
+                                                                <span style="color: #FF0083">메인 이미지 : </span>
+                                                            </c:if>
+                                                            <c:if test="${fn:substring(productImageFile.note, fn:length(productImageFile.note)-2, fn:length(productImageFile.note)) ne '_1'}">
+                                                                <span style="color: #FF0083"><c:out value="${fn:substring(productImageFile.note, fn:indexOf(productImageFile.note, '_')+1, fn:length(productImageFile.note))}"/> : </span>
+                                                            </c:if>
+                                                            <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <img src="${productImageFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin: 0 10px;"/>
+                                                                <%--<a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>--%>
+                                                            <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${productImageFile.folderPath}', '${productImageFile.fullFileName}')">${productImageFile.fileName}</a>
+                                                            <input type="hidden" name="productImageUploadFile" id="${productImageFile.id}" value="${productImageFile.fullFilePath}">
+                                                        </li>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>제품링크</p>
+                                        </div>
+                                        <div class="input">
+                                            ${product.productLink}
                                         </div>
                                     </li>
                                 </ul>
                             </c:forEach>
                         </c:if>
                     </div>
-                    <!-- //전시정보 -->
+                    <!-- //전시품 정보 -->
 
                     <!-- 상세정보 -->
                     <div class="form_wrap">
@@ -457,12 +582,20 @@
                             <div class="big">상세정보</div>
                         </div>
                         <ul class="form_box">
+                            <li>
+                                <div class="item">
+                                    <p>회사소개영상</p>
+                                </div>
+                                <div class="input">
+                                    ${info.companyIntroVideo}
+                                </div>
+                            </li>
                             <li class="w50">
                                 <div class="item">
                                     <p>회사소개(국문)</p>
                                 </div>
                                 <div class="input">
-                                    ${info.companyIntroKo}
+                                    ${fn:replace(fn:replace(fn:escapeXml(info.companyIntroKo), CRLF, '<br/>'), LF, '<br/>')}
                                 </div>
                             </li>
                             <li class="w50">
@@ -470,7 +603,7 @@
                                     <p>회사소개(영문)</p>
                                 </div>
                                 <div class="input">
-                                    ${info.companyIntroEn}
+                                    ${fn:replace(fn:replace(fn:escapeXml(info.companyIntroEn), CRLF, '<br/>'), LF, '<br/>')}
                                 </div>
                             </li>
                             <li class="w50">
@@ -487,6 +620,30 @@
                                 </div>
                                 <div class="input">
                                     ${info.companyPurposeEn}
+                                </div>
+                            </li>
+                            <li class="w50">
+                                <div class="item">
+                                    <p>신제품출품 사항 소개(국문)</p>
+                                </div>
+                                <div class="input">
+                                    ${fn:replace(fn:replace(fn:escapeXml(info.newItemIntroKo), CRLF, '<br/>'), LF, '<br/>')}
+                                </div>
+                            </li>
+                            <li class="w50">
+                                <div class="item">
+                                    <p>신제품출품 사항 소개(영문)</p>
+                                </div>
+                                <div class="input">
+                                    ${fn:replace(fn:replace(fn:escapeXml(info.newItemIntroEn), CRLF, '<br/>'), LF, '<br/>')}
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item">
+                                    <p>프로모션 정보</p>
+                                </div>
+                                <div class="input">
+                                    ${fn:replace(fn:replace(fn:escapeXml(info.promotionPlan), CRLF, '<br/>'), LF, '<br/>')}
                                 </div>
                             </li>
                         </ul>

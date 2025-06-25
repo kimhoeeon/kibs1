@@ -41,25 +41,25 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
     <span itemscope="" itemtype="http://schema.org/Organization">
-    <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-    <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-    <a itemprop="sameAs" href="https://kibs-online.com"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 </head>
 
 <body>
 
-    <c:if test="${status ne 'logon'}">
+    <c:if test="${sessionScope.get('status') ne 'logon'}">
         <script>
             alert("로그인해 주세요.");
             location.href = '/login.do';
         </script>
     </c:if>
 
-    <c:if test="${status eq 'logon'}">
+    <c:if test="${sessionScope.get('status') eq 'logon'}">
 
         <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
@@ -124,10 +124,10 @@
                                         <div class="form_guide_comp">
                                             <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
                                             <div class="form_guide_comp_txt">
-                                                귀사는 2025 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
+                                                귀사는 2026 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
                                                 최종적으로 아래의 참가신청 버튼을 눌러 행사 담당자에게 참가승인을 요청하시기 바랍니다.
                                             </div>
-                                            <a href="javascript:f_apply_comp('03')" class="form_guide_comp_btn btnSt01">참가신청완료</a>
+                                            <a href="javascript:f_apply_comp('03','${info.seq}')" class="form_guide_comp_btn btnSt01">참가신청완료</a>
                                         </div>
                                     </div>
                                     <!-- 안내문구 -->
@@ -138,7 +138,7 @@
                                         <div class="form_guide_comp">
                                             <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
                                             <div class="form_guide_comp_txt">
-                                                귀사는 2025 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
+                                                귀사는 2026 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
                                                 <span class="txtRed">정상적으로 참가 접수가 완료</span>되었으며, 빠른 시일 내에 경기국제보트쇼 사무국에서 연락드리도록 하겠습니다.<br>
                                                 감사합니다.
                                             </div>
@@ -152,7 +152,7 @@
                                         <div class="form_guide_comp">
                                             <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
                                             <div class="form_guide_comp_txt">
-                                                귀사는 2025 경기국제보트쇼 <span class="txtRed">참가 취소</span> 되었습니다.<br>
+                                                귀사는 2026 경기국제보트쇼 <span class="txtRed">참가 취소</span> 되었습니다.<br>
                                                 관련 문의사항은 경기국제보트쇼 사무국으로 연락 주시면 안내해 드리도록 하겠습니다.
                                             </div>
                                         </div>

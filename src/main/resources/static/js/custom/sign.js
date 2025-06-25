@@ -2,7 +2,7 @@
  * mng/exhibitor/application/sign.js
  * 참가신청서 관리 > 상호간판 신청
  * */
-var transferYear = (new Date().getFullYear()).toString();
+var transferYear = '2025';
 $(function(){
 
 });
@@ -170,11 +170,11 @@ function f_application_sign_save(seq){
                             });
 
                         } else {
-                            showMessage('', 'error', '에러 발생', '상호 간판 신청 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                            showMessage('', 'error', '에러 발생', '상호 간판 신청 정보 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                         }
                     },
                     error: function (xhr, status) {
-                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                     }
                 })
             }

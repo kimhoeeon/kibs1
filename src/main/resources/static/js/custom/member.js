@@ -3,7 +3,7 @@
  * 전시회 > 참가자 관리 > 회원 목록
  * */
 
-var transferYear = (new Date().getFullYear()).toString();
+var transferYear = '2026';
 
 $(function(){
 
@@ -20,19 +20,17 @@ function f_member_search(){
     dataTbl.draw(false);
 
     /* 목록 데이터 조회 */
-    let now = new Date();
-    let now_year = transferYear;
     let jsonObj;
     let searchText = $('#search_text').val();
-    if(nullToEmpty(searchText) === ""){
+    if(nvl(searchText,'') === ''){
         jsonObj = {
-            "transferYear": now_year
+            transferYear: transferYear
         };
     }else{
         jsonObj = {
-            "transferYear": now_year,
-            "condition": $('#search_box option:selected').val(),
-            "searchText": searchText
+            transferYear: transferYear,
+            condition: $('#search_box option:selected').val(),
+            searchText: searchText
         }
     }
 
@@ -120,19 +118,19 @@ function f_search_condition_init(){
     f_member_search();
 }
 
-function f_member_detail(seq){
+function f_member_detail(seq, nameKo){
 
-    let infoMsg = '전시업체 상세보기 페이지로 이동합니다.';
+    let infoMsg = '<span style="font-size: 1.4em;">전시업체 목록 페이지로 이동합니다.</span>';
 
     let gbn = seq.substring(0,1);
     if(gbn === 'V'){
-        infoMsg = '참관객 상세보기 페이지로 이동합니다.';
+        infoMsg = '<span style="font-size: 1.4em;">참관객 목록 페이지로 이동합니다.</span>';
     }
 
     Swal.fire({
-        title: '상세보기',
-        html: infoMsg,
         icon: 'info',
+        title: '[ 회원 목록 ]',
+        html: infoMsg,
         allowOutsideClick: false,
         confirmButtonColor: '#3085d6',
         confirmButtonText: '확인'
@@ -140,10 +138,10 @@ function f_member_detail(seq){
         if (result.isConfirmed) {
             if(gbn === 'V'){
                 //참관객
-                window.location.href='/mng/exhibitor/participant/company/detail.do?seq=' + seq;
+                window.location.href = '/mng/exhibitor/participant/visitor.do?nameKo=' + nameKo;
             }else{
                 //전시업체
-                window.location.href='/mng/exhibitor/participant/company/detail.do?seq=' + seq;
+                window.location.href = '/mng/exhibitor/participant/company.do?nameKo=' + nameKo;
             }
         }
     });

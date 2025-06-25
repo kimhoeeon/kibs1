@@ -134,7 +134,7 @@ function f_board_faq_remove(rowId){
                     showMessage('', 'info', 'FAQ 삭제', 'FAQ가 삭제되었습니다.', '');
                     f_board_faq_search(); // 삭제 성공 후 재조회 수행
                 } else {
-                    showMessage('', 'error', '에러 발생', 'FAQ 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    showMessage('', 'error', '에러 발생', 'FAQ 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                 }
             }
         });
@@ -213,11 +213,11 @@ function f_board_faq_save(id){
                                     }
                                 });
                             } else {
-                                showMessage('', 'error', '에러 발생', 'FAQ 정보 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                showMessage('', 'error', '에러 발생', 'FAQ 정보 변경을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                             }
                         },
                         error: function (xhr, status) {
-                            alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                         }
                     })//ajax
                 }else { /* Insert */
@@ -243,11 +243,11 @@ function f_board_faq_save(id){
                                     }
                                 });
                             } else {
-                                showMessage('', 'error', '에러 발생', 'FAQ 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                showMessage('', 'error', '에러 발생', 'FAQ 정보 등록을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                             }
                         },
                         error: function (xhr, status) {
-                            alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                         }
                     })//ajax
                 }// id check

@@ -16,9 +16,13 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -39,11 +43,11 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public Integer checkDuplicateId(ExhibitorDTO exhibitorDTO) {
+    public Integer checkDuplicateId(ExhibitorNewDTO exhibitorNewDTO) {
         System.out.println("KibsServiceImpl > checkDuplicateId : ======");
         /*KibsMapper dm = sqlSession.getMapper(KibsMapper.class);
         return dm.checkDuplicateId(id);*/
-        return kibsMapper.checkDuplicateId(exhibitorDTO);
+        return kibsMapper.checkDuplicateId(exhibitorNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -80,29 +84,43 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public String getExhibitorEmail(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsServiceImpl > getExhibitorEmail : ======");
-        return kibsMapper.getExhibitorEmail(exhibitorDTO);
+    public String getExhibitorNewEmail(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > getExhibitorNewEmail : ======");
+        return kibsMapper.getExhibitorNewEmail(exhibitorNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public List<String> preGetExhibitorEmail(ExhibitorDTO exhibitorDTO) {
+        System.out.println("KibsServiceImpl > preGetExhibitorEmail : ======");
+        return kibsMapper.preGetExhibitorEmail(exhibitorDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processUpdateExhibitorPasswordInit(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsServiceImpl > processUpdateExhibitorPasswordInit : ======");
+    public ResponseDTO processUpdateExhibitorNewPasswordInit(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processUpdateExhibitorNewPasswordInit : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
 
         try {
-            exhibitorDTO.setPassword("aa134!@cc");
-            Integer result = kibsMapper.updateExhibitPasswordInit(exhibitorDTO);
+            // 새로 salt값 생성 & 새로운 비밀번호로 Update
+            String salt = Salt();
+            exhibitorNewDTO.setSalt(salt);
+
+            String initPw = "aa134!@cc";
+            String newPw_encrypt = SHA512(initPw, salt);
+            exhibitorNewDTO.setPassword(newPw_encrypt);
+
+            Integer result = kibsMapper.updateExhibitorNewPassword(exhibitorNewDTO);
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Update Fail]";
             }
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
-            String eMessage = "[Find PW] processUpdateExhibitorPasswordInit Error : ";
+            String eMessage = "[Find PW] processUpdateExhibitorNewPasswordInit Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
         }
 
@@ -172,204 +190,91 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processInsertExhibitor(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsServiceImpl > processInsertExhibitor : ======");
+    public ResponseDTO processInsertExhibitorNew(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processInsertExhibitorNew : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
 
         try {
-            Integer existCheck = kibsMapper.checkDuplicateId(exhibitorDTO);
+            Integer existCheck = kibsMapper.checkDuplicateId(exhibitorNewDTO);
             if(existCheck == 0){
 
                 String note = "step01";
 
-                exhibitorDTO.setApprovalStatus(CommConstants.APPROVAL_STATUS_ING); //작성중
-                exhibitorDTO.setApplyComplt("N"); //작성중
-                exhibitorDTO.setPrcYn("0"); //참가비수납여부
+                exhibitorNewDTO.setApprovalStatus(CommConstants.APPROVAL_STATUS_ING); //작성중
+                exhibitorNewDTO.setApplyComplt("N"); //작성중
+                exhibitorNewDTO.setPrcYn("0"); //참가비수납여부
 
-                exhibitorDTO.setNote(note);
+                exhibitorNewDTO.setNote(note);
 
-                String exhibitorSeq = kibsMapper.getExhibitorSeq();
-                exhibitorDTO.setSeq(exhibitorSeq);
+                String exhibitorNewSeq = kibsMapper.getExhibitorNewSeq();
+                exhibitorNewDTO.setSeq(exhibitorNewSeq);
 
-                exhibitorDTO.setBoothType("등록비");
-                exhibitorDTO.setBalance("110000");
-                exhibitorDTO.setRegistrationCnt(1);
-                exhibitorDTO.setRegistrationFee(100000);
-                exhibitorDTO.setBoothPrcSum(100000);
-                exhibitorDTO.setPrcSum(100000);
-                exhibitorDTO.setPrcVat(10000);
-                exhibitorDTO.setPrcTotal(110000);
+                exhibitorNewDTO.setBoothType("등록비");
+                exhibitorNewDTO.setDeposit("0");
+                exhibitorNewDTO.setBalance("110000");
+                exhibitorNewDTO.setRegistrationCnt(1);
+                exhibitorNewDTO.setRegistrationFee(100000);
+                exhibitorNewDTO.setBoothPrcSum(100000);
+                exhibitorNewDTO.setPrcSum(100000);
+                exhibitorNewDTO.setPrcVat(10000);
+                exhibitorNewDTO.setPrcTotal(110000);
 
-                Integer step01_ex_result = kibsMapper.insertExhibitor(exhibitorDTO);
+                //salt값 생성
+                String salt = Salt();
+                exhibitorNewDTO.setSalt(salt);
+
+                //암호화
+                String pw_encrypt = SHA512(exhibitorNewDTO.getPassword(), salt);
+                exhibitorNewDTO.setPassword(pw_encrypt);
+
+                Integer step01_ex_result = kibsMapper.insertExhibitorNew(exhibitorNewDTO);
                 if(step01_ex_result > 0){
 
-                    responseDTO.setCustomValue(exhibitorSeq);
+                    responseDTO.setCustomValue(exhibitorNewSeq);
 
-                    /* 담당자정보 insert */
-                    if(!StringUtil.isEmpty(exhibitorDTO.getChargePersonList())){
-                        for(int i=0; i<exhibitorDTO.getChargePersonList().size(); i++){
-                            ChargePersonDTO chargePersonDTO = exhibitorDTO.getChargePersonList().get(i);
-                            chargePersonDTO.setId(exhibitorSeq);
-                            chargePersonDTO.setNote(note);
-                            Integer step01_chg_result = kibsMapper.insertChargePersonInfo(chargePersonDTO);
+                    /* 부담당자정보 insert */
+                    if(!StringUtil.isEmpty(exhibitorNewDTO.getChargePersonList())){
+                        for(int i=0; i<exhibitorNewDTO.getChargePersonList().size(); i++){
+                            ChargeNewDTO chargeNewDTO = exhibitorNewDTO.getChargePersonList().get(i);
+                            chargeNewDTO.setExSeq(exhibitorNewSeq);
+                            Integer step01_chg_result = kibsMapper.insertChargeNew(chargeNewDTO);
                         }
                     }
 
-                    /* 전시정보 insert */
-                    if(!StringUtil.isEmpty(exhibitorDTO.getDisplayList())){
-                        for(int i=0; i<exhibitorDTO.getDisplayList().size(); i++){
-                            DisplayDTO displayDTO = exhibitorDTO.getDisplayList().get(i);
-                            displayDTO.setId(exhibitorSeq);
-                            displayDTO.setNote(note);
-                            Integer step01_dis_result = kibsMapper.insertDisplayInfo(displayDTO);
+                    /* 전시품 정보 insert */
+                    if(!StringUtil.isEmpty(exhibitorNewDTO.getProductList())){
+                        for(int i=0; i<exhibitorNewDTO.getProductList().size(); i++){
+                            ProductNewDTO productNewDTO = exhibitorNewDTO.getProductList().get(i);
+                            productNewDTO.setExSeq(exhibitorNewSeq);
+                            Integer step01_dis_result = kibsMapper.insertProductNew(productNewDTO);
                         }
                     }
 
-                    /* 온라인전시회 insert */
-                    if(!StringUtil.isEmpty(exhibitorDTO.getOnlineExhibitList())){
-                        for(int i=0; i<exhibitorDTO.getOnlineExhibitList().size(); i++){
-                            OnlineDTO onlineDTO = exhibitorDTO.getOnlineExhibitList().get(i);
-                            onlineDTO.setId(exhibitorSeq);
-                            Integer step01_online_result = kibsMapper.insertOnlineInfo(onlineDTO);
+                    /* 온라인 전시관 정보 insert */
+                    if(!StringUtil.isEmpty(exhibitorNewDTO.getOnlineList())){
+                        for(int i=0; i<exhibitorNewDTO.getOnlineList().size(); i++){
+                            OnlineNewDTO onlineNewDTO = exhibitorNewDTO.getOnlineList().get(i);
+                            onlineNewDTO.setExSeq(exhibitorNewSeq);
+                            Integer step01_online_result = kibsMapper.insertOnlineNew(onlineNewDTO);
                         }
 
                         /* 이전 참가한 업체라면 이전 정보 온라인전시회 노출 여부 'N'으로 변경 */
-                        Integer updOnlineViewYn = kibsMapper.updateExhibitorOnlineViewYn(exhibitorDTO);
+                        ExhibitorDTO preExhibitorDTO = new ExhibitorDTO();
+                        preExhibitorDTO.setCompanyName(exhibitorNewDTO.getCompanyName());
+                        preExhibitorDTO.setCompanyCeo(exhibitorNewDTO.getCompanyCeo());
+                        Integer updOnlineViewYn = kibsMapper.updateExhibitorOnlineViewYn(preExhibitorDTO);
                     }
 
                     /* 바이어 insert */
-                    if(!StringUtil.isEmpty(exhibitorDTO.getBuyerList())){
-                        for(int i=0; i<exhibitorDTO.getBuyerList().size(); i++){
-                            BuyerDTO buyerDTO = exhibitorDTO.getBuyerList().get(i);
-                            buyerDTO.setId(exhibitorSeq);
-                            buyerDTO.setUserId(exhibitorDTO.getId());
-                            buyerDTO.setNote(note);
-                            Integer step01_buyer_result = kibsMapper.insertBuyerInfo(buyerDTO);
+                    if(!StringUtil.isEmpty(exhibitorNewDTO.getBuyerList())){
+                        for(int i=0; i<exhibitorNewDTO.getBuyerList().size(); i++){
+                            BuyerNewDTO buyerNewDTO = exhibitorNewDTO.getBuyerList().get(i);
+                            buyerNewDTO.setExSeq(exhibitorNewSeq);
+                            Integer step01_buyer_result = kibsMapper.insertBuyerNew(buyerNewDTO);
                         }
                     }
-
-                    /* exhibitor_comp update */
-                    //exhibitor table check
-                    /*Integer exhibitorCompRst = 0;
-                    String companyNameKo = exhibitorDTO.getCompanyNameKo();
-                    String companyCeo = exhibitorDTO.getCompanyCeo();
-                    if((companyNameKo != null && !"".equals(companyNameKo)) && companyCeo != null && !"".equals(companyCeo)) {
-
-                        String match = "[^가-힣0-9a-zA-Z]";
-                        companyNameKo = companyNameKo.replaceAll(" ", "").replaceAll("(주)","").replaceAll(match, "");
-                        companyCeo = companyCeo.replaceAll(" ", "");
-
-                        String param = companyNameKo + "_" + companyCeo;
-
-                        //exhibitor_comp table check
-                        Map<String, String> paramMap = new HashMap<>();
-                        paramMap.put("transferYear", exhibitorDTO.getTransferYear());
-                        paramMap.put("paramVal", param);
-                        ParticipantCompanyDTO updExhibitorCompInfo = kibsMapper.getExhibitorCompInfo(paramMap);
-                        //seq , ex_seq , lang , id , transfer_year
-
-                        if(updExhibitorCompInfo != null){
-                            if("Y".equals(exhibitorDTO.getPartWantYn())){
-                                updExhibitorCompInfo.setPartWantYn("1");
-                            }else{
-                                updExhibitorCompInfo.setPartWantYn("3");
-                            }
-                            updExhibitorCompInfo.setPrePartYear(exhibitorDTO.getPrePartYear());
-                            updExhibitorCompInfo.setCompanyNameKo(exhibitorDTO.getCompanyNameKo());
-                            updExhibitorCompInfo.setCompanyHomepage(exhibitorDTO.getCompanyHomepage());
-                            updExhibitorCompInfo.setCompanyAddress(exhibitorDTO.getCompanyAddress() + " " + exhibitorDTO.getCompanyAddressDetail());
-                            updExhibitorCompInfo.setCompanyCeo(exhibitorDTO.getCompanyCeo());
-                            updExhibitorCompInfo.setCompanyFax(exhibitorDTO.getCompanyFax());
-
-                            *//* charge table update *//*
-                            List<ChargePersonDTO> chargeList_comp = exhibitorDTO.getChargePersonList();
-                            if(chargeList_comp != null){
-                                for(int i=0; i<chargeList_comp.size(); i++) {
-                                    ChargePersonDTO info = chargeList_comp.get(i);
-                                    if(i == 0){
-                                        updExhibitorCompInfo.setChargePersonName1(info.getChargePersonName());
-                                        updExhibitorCompInfo.setChargePersonPosition1(info.getChargePersonPosition());
-                                        updExhibitorCompInfo.setChargePersonTel1(info.getChargePersonTel());
-                                        updExhibitorCompInfo.setChargePersonPhone1(info.getChargePersonPhone());
-                                        updExhibitorCompInfo.setChargePersonEmail1(info.getChargePersonEmail());
-                                    }else if(i == 1){
-                                        updExhibitorCompInfo.setChargePersonName2(info.getChargePersonName());
-                                        updExhibitorCompInfo.setChargePersonPosition2(info.getChargePersonPosition());
-                                        updExhibitorCompInfo.setChargePersonTel2(info.getChargePersonTel());
-                                        updExhibitorCompInfo.setChargePersonPhone2(info.getChargePersonPhone());
-                                        updExhibitorCompInfo.setChargePersonEmail2(info.getChargePersonEmail());
-                                    }else if(i == 2){
-                                        updExhibitorCompInfo.setChargePersonName3(info.getChargePersonName());
-                                        updExhibitorCompInfo.setChargePersonPosition3(info.getChargePersonPosition());
-                                        updExhibitorCompInfo.setChargePersonTel3(info.getChargePersonTel());
-                                        updExhibitorCompInfo.setChargePersonPhone3(info.getChargePersonPhone());
-                                        updExhibitorCompInfo.setChargePersonEmail3(info.getChargePersonEmail());
-                                    }
-                                }
-                            }
-
-                            //exhibitor_comp table Update
-                            exhibitorCompRst = kibsMapper.updateExhibitorComp(updExhibitorCompInfo);
-                        }else{
-                            ParticipantCompanyDTO istExhibitorCompInfo = new ParticipantCompanyDTO();
-                            String exhibitorCompSeq = kibsMapper.getExhibitorCompSeq();
-
-                            istExhibitorCompInfo.setSeq(exhibitorCompSeq);
-                            istExhibitorCompInfo.setExSeq(exhibitorDTO.getSeq());
-                            istExhibitorCompInfo.setLang(exhibitorDTO.getLang());
-                            istExhibitorCompInfo.setId(exhibitorDTO.getId());
-                            istExhibitorCompInfo.setTransferYear(exhibitorDTO.getTransferYear());
-                            if("Y".equals(exhibitorDTO.getPartWantYn())){
-                                istExhibitorCompInfo.setPartWantYn("1");
-                            }else{
-                                istExhibitorCompInfo.setPartWantYn("3");
-                            }
-                            istExhibitorCompInfo.setPrePartYear(exhibitorDTO.getPrePartYear());
-                            istExhibitorCompInfo.setCompanyNameKo(exhibitorDTO.getCompanyNameKo());
-                            istExhibitorCompInfo.setCompanyHomepage(exhibitorDTO.getCompanyHomepage());
-                            istExhibitorCompInfo.setCompanyAddress(exhibitorDTO.getCompanyAddress() + " " + exhibitorDTO.getCompanyAddressDetail());
-                            istExhibitorCompInfo.setCompanyCeo(exhibitorDTO.getCompanyCeo());
-                            istExhibitorCompInfo.setCompanyFax(exhibitorDTO.getCompanyFax());
-
-                            *//* charge table update *//*
-                            List<ChargePersonDTO> chargeList_comp = exhibitorDTO.getChargePersonList();
-                            if(chargeList_comp != null){
-                                for(int i=0; i<chargeList_comp.size(); i++) {
-                                    ChargePersonDTO info = chargeList_comp.get(i);
-                                    if(i == 0){
-                                        istExhibitorCompInfo.setChargePersonName1(info.getChargePersonName());
-                                        istExhibitorCompInfo.setChargePersonPosition1(info.getChargePersonPosition());
-                                        istExhibitorCompInfo.setChargePersonTel1(info.getChargePersonTel());
-                                        istExhibitorCompInfo.setChargePersonPhone1(info.getChargePersonPhone());
-                                        istExhibitorCompInfo.setChargePersonEmail1(info.getChargePersonEmail());
-                                    }else if(i == 1){
-                                        istExhibitorCompInfo.setChargePersonName2(info.getChargePersonName());
-                                        istExhibitorCompInfo.setChargePersonPosition2(info.getChargePersonPosition());
-                                        istExhibitorCompInfo.setChargePersonTel2(info.getChargePersonTel());
-                                        istExhibitorCompInfo.setChargePersonPhone2(info.getChargePersonPhone());
-                                        istExhibitorCompInfo.setChargePersonEmail2(info.getChargePersonEmail());
-                                    }else if(i == 2){
-                                        istExhibitorCompInfo.setChargePersonName3(info.getChargePersonName());
-                                        istExhibitorCompInfo.setChargePersonPosition3(info.getChargePersonPosition());
-                                        istExhibitorCompInfo.setChargePersonTel3(info.getChargePersonTel());
-                                        istExhibitorCompInfo.setChargePersonPhone3(info.getChargePersonPhone());
-                                        istExhibitorCompInfo.setChargePersonEmail3(info.getChargePersonEmail());
-                                    }
-                                }
-                            }
-
-                            //exhibitor_comp table Insert
-                            exhibitorCompRst = kibsMapper.insertExhibitorComp(istExhibitorCompInfo);
-                        }
-
-                        if(exhibitorCompRst == 0){
-                            resultCode = CommConstants.RESULT_CODE_FAIL;
-                            resultMessage = "[step01] processInsertExhibitor exhibitor_comp Table DB ERROR] " + CommConstants.RESULT_MSG_FAIL + " , DB 작업이 수행 실패하였습니다.";
-                        }
-
-                    }*/
 
                 }
             }
@@ -387,8 +292,8 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processUpdateExhibitor(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsServiceImpl > processUpdateExhibitor");
+    public ResponseDTO processUpdateExhibitorNew(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processUpdateExhibitorNew");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -399,52 +304,77 @@ public class KibsServiceImpl implements KibsService {
             String note = "step01";
 
             /* exhibitor table seq get */
-            String exhibitorSeq = exhibitorDTO.getSeq();
+            String exhibitorNewSeq = exhibitorNewDTO.getSeq();
+            
+            if("Y".equals(exhibitorNewDTO.getPasswordYn())){    //비밀번호 항목 존재 여부
+                String inputPw = exhibitorNewDTO.getPassword();
+                if(!Objects.equals(inputPw, "암호화된비밀번호복사불가능")){
+                    // 비밀번호칸 입력 O , 기존 비밀번호와 비교
+                    ExhibitorNewDTO exhibitorNewInfo = kibsMapper.selectExhibitorNewSingle(exhibitorNewDTO);
+                    String preSalt = exhibitorNewInfo.getSalt();
+                    String prePw = exhibitorNewInfo.getPassword();
+    
+                    String afPw = SHA512(inputPw, preSalt);
+                    if(!Objects.equals(prePw, afPw)){
+    
+                        ExhibitorNewDTO updateExhibitorNewInfo = new ExhibitorNewDTO();
+                        updateExhibitorNewInfo.setSeq(exhibitorNewSeq);
+    
+                        // 새로 salt값 생성 & 새로운 비밀번호로 Update
+                        String salt = Salt();
+                        updateExhibitorNewInfo.setSalt(salt);
+    
+                        String afPw_encrypt = SHA512(inputPw, salt);
+                        updateExhibitorNewInfo.setPassword(afPw_encrypt);
+    
+                        kibsMapper.updateExhibitorNewPassword(updateExhibitorNewInfo);
+    
+                    }
+                }
+            }
 
             /* exhibitor table update */
-            result = kibsMapper.UpdateExhibitor(exhibitorDTO);
+            result = kibsMapper.updateExhibitorNew(exhibitorNewDTO);
 
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Update Fail]";
             }else {
-                /* charge table update */
-                List<ChargePersonDTO> chargeList = exhibitorDTO.getChargePersonList();
-                if(chargeList != null){
-                    for(ChargePersonDTO request : chargeList) {
-                        String chargeSeq = request.getSeq();
-                        if (chargeSeq != null & !Objects.equals(chargeSeq, "")) {
-                            Integer updateResult = kibsMapper.updateExhibitorCharge(request);
+                /* charge_new table update */
+                List<ChargeNewDTO> chargeNewList = exhibitorNewDTO.getChargePersonList();
+                if(chargeNewList != null){
+                    for(ChargeNewDTO chargeNew : chargeNewList) {
+                        String chargeNewSeq = chargeNew.getSeq();
+                        if (chargeNewSeq != null & !Objects.equals(chargeNewSeq, "")) {
+                            Integer updateResult = kibsMapper.updateChargeNew(chargeNew);
                         } else {
-                            request.setNote(note);
-                            Integer insertResult = kibsMapper.insertChargePersonInfo(request);
+                            Integer insertResult = kibsMapper.insertChargeNew(chargeNew);
                         }
                     }
                 }
 
-                /* display table update */
-                List<DisplayDTO> displayList = exhibitorDTO.getDisplayList();
-                if (displayList != null) {
-                    for (DisplayDTO request : displayList) {
-                        String displaySeq = request.getSeq();
-                        if (displaySeq != null & !Objects.equals(displaySeq, "")) {
-                            Integer updateResult = kibsMapper.updateExhibitorDisplay(request);
+                /* product_new table update */
+                List<ProductNewDTO> productNewList = exhibitorNewDTO.getProductList();
+                if (productNewList != null) {
+                    for (ProductNewDTO productNew : productNewList) {
+                        String productNewSeq = productNew.getSeq();
+                        if (productNewSeq != null & !Objects.equals(productNewSeq, "")) {
+                            Integer updateResult = kibsMapper.updateProductNew(productNew);
                         } else {
-                            request.setNote(note);
-                            Integer insertResult = kibsMapper.insertDisplayInfo(request);
+                            Integer insertResult = kibsMapper.insertProductNew(productNew);
                         }
                     }
                 }
 
                 /* online table update */
-                List<OnlineDTO> onlineList = exhibitorDTO.getOnlineExhibitList();
-                if (onlineList != null) {
-                    for (OnlineDTO request : onlineList) {
-                        String displaySeq = request.getSeq();
-                        if (displaySeq != null & !Objects.equals(displaySeq, "")) {
-                            Integer updateResult = kibsMapper.updateExhibitorOnline(request);
+                List<OnlineNewDTO> onlineNewList = exhibitorNewDTO.getOnlineList();
+                if (onlineNewList != null) {
+                    for (OnlineNewDTO onlineNew : onlineNewList) {
+                        String onlineNewSeq = onlineNew.getSeq();
+                        if (onlineNewSeq != null & !Objects.equals(onlineNewSeq, "")) {
+                            Integer updateResult = kibsMapper.updateOnlineNew(onlineNew);
                         } else {
-                            Integer insertResult = kibsMapper.insertOnlineInfo(request);
+                            Integer insertResult = kibsMapper.insertOnlineNew(onlineNew);
                         }
 
                         /* File Note */
@@ -453,146 +383,28 @@ public class KibsServiceImpl implements KibsService {
                     }
 
                     /* 이전 참가한 업체라면 이전 정보 온라인전시회 노출 여부 'N'으로 변경 */
-                    Integer updOnlineViewYn = kibsMapper.updateExhibitorOnlineViewYn(exhibitorDTO);
+                    ExhibitorDTO preExhibitorDTO = new ExhibitorDTO();
+                    preExhibitorDTO.setTransferYear(exhibitorNewDTO.getTransferYear());
+                    preExhibitorDTO.setCompanyName(exhibitorNewDTO.getCompanyName());
+                    preExhibitorDTO.setCompanyCeo(exhibitorNewDTO.getCompanyCeo());
+                    Integer updOnlineViewYn = kibsMapper.updateExhibitorOnlineViewYn(preExhibitorDTO);
                 }
 
                 /* buyer table update */
-                List<BuyerDTO> buyerList = exhibitorDTO.getBuyerList();
-                if (buyerList != null) {
-                    for (BuyerDTO request : buyerList) {
-                        String buyerSeq = request.getSeq();
-                        if (buyerSeq != null & !Objects.equals(buyerSeq, "")) {
-                            Integer updateResult = kibsMapper.updateExhibitorBuyer(request);
+                List<BuyerNewDTO> buyerNewList = exhibitorNewDTO.getBuyerList();
+                if (buyerNewList != null) {
+                    for (BuyerNewDTO buyerNew : buyerNewList) {
+                        String buyerNewSeq = buyerNew.getSeq();
+                        if (buyerNewSeq != null & !Objects.equals(buyerNewSeq, "")) {
+                            Integer updateResult = kibsMapper.updateBuyerNew(buyerNew);
                         } else {
-                            request.setNote(note);
-                            Integer insertResult = kibsMapper.insertBuyerInfo(request);
+                            Integer insertResult = kibsMapper.insertBuyerNew(buyerNew);
                         }
                     }
                 }
 
-                /* exhibitor_comp update */
-                //exhibitor table check
-                /*Integer exhibitorCompRst = 0;
-                String companyNameKo = exhibitorDTO.getCompanyNameKo();
-                String companyCeo = exhibitorDTO.getCompanyCeo();
-                if((companyNameKo != null && !"".equals(companyNameKo)) && companyCeo != null && !"".equals(companyCeo)) {
-
-                    String match = "[^가-힣0-9a-zA-Z]";
-                    companyNameKo = companyNameKo.replaceAll(" ", "").replaceAll("(주)","").replaceAll(match, "");
-                    companyCeo = companyCeo.replaceAll(" ", "");
-
-                    String param = companyNameKo + "_" + companyCeo;
-
-                    //exhibitor_comp table check
-                    Map<String, String> paramMap = new HashMap<>();
-                    paramMap.put("transferYear", exhibitorDTO.getTransferYear());
-                    paramMap.put("paramVal", param);
-                    ParticipantCompanyDTO updExhibitorCompInfo = kibsMapper.getExhibitorCompInfo(paramMap);
-                    //seq , ex_seq , lang , id , transfer_year
-
-                    if(updExhibitorCompInfo != null){
-                        if("Y".equals(exhibitorDTO.getPartWantYn())){
-                            updExhibitorCompInfo.setPartWantYn("1");
-                        }else{
-                            updExhibitorCompInfo.setPartWantYn("3");
-                        }
-                        updExhibitorCompInfo.setPrePartYear(exhibitorDTO.getPrePartYear());
-                        updExhibitorCompInfo.setCompanyNameKo(exhibitorDTO.getCompanyNameKo());
-                        updExhibitorCompInfo.setCompanyHomepage(exhibitorDTO.getCompanyHomepage());
-                        updExhibitorCompInfo.setCompanyAddress(exhibitorDTO.getCompanyAddress() + " " + exhibitorDTO.getCompanyAddressDetail());
-                        updExhibitorCompInfo.setCompanyCeo(exhibitorDTO.getCompanyCeo());
-                        updExhibitorCompInfo.setCompanyFax(exhibitorDTO.getCompanyFax());
-
-                        *//* charge table update *//*
-                        List<ChargePersonDTO> chargeList_comp = exhibitorDTO.getChargePersonList();
-                        if(chargeList_comp != null){
-                            for(int i=0; i<chargeList_comp.size(); i++) {
-                                ChargePersonDTO info = chargeList_comp.get(i);
-                                if(i == 0){
-                                    updExhibitorCompInfo.setChargePersonName1(info.getChargePersonName());
-                                    updExhibitorCompInfo.setChargePersonPosition1(info.getChargePersonPosition());
-                                    updExhibitorCompInfo.setChargePersonTel1(info.getChargePersonTel());
-                                    updExhibitorCompInfo.setChargePersonPhone1(info.getChargePersonPhone());
-                                    updExhibitorCompInfo.setChargePersonEmail1(info.getChargePersonEmail());
-                                }else if(i == 1){
-                                    updExhibitorCompInfo.setChargePersonName2(info.getChargePersonName());
-                                    updExhibitorCompInfo.setChargePersonPosition2(info.getChargePersonPosition());
-                                    updExhibitorCompInfo.setChargePersonTel2(info.getChargePersonTel());
-                                    updExhibitorCompInfo.setChargePersonPhone2(info.getChargePersonPhone());
-                                    updExhibitorCompInfo.setChargePersonEmail2(info.getChargePersonEmail());
-                                }else if(i == 2){
-                                    updExhibitorCompInfo.setChargePersonName3(info.getChargePersonName());
-                                    updExhibitorCompInfo.setChargePersonPosition3(info.getChargePersonPosition());
-                                    updExhibitorCompInfo.setChargePersonTel3(info.getChargePersonTel());
-                                    updExhibitorCompInfo.setChargePersonPhone3(info.getChargePersonPhone());
-                                    updExhibitorCompInfo.setChargePersonEmail3(info.getChargePersonEmail());
-                                }
-                            }
-                        }
-
-                        //exhibitor_comp table Update
-                        exhibitorCompRst = kibsMapper.updateExhibitorComp(updExhibitorCompInfo);
-                    }else{
-                        ParticipantCompanyDTO istExhibitorCompInfo = new ParticipantCompanyDTO();
-                        String exhibitorCompSeq = kibsMapper.getExhibitorCompSeq();
-
-                        istExhibitorCompInfo.setSeq(exhibitorCompSeq);
-                        istExhibitorCompInfo.setExSeq(exhibitorDTO.getSeq());
-                        istExhibitorCompInfo.setLang(exhibitorDTO.getLang());
-                        istExhibitorCompInfo.setId(exhibitorDTO.getId());
-                        istExhibitorCompInfo.setTransferYear(exhibitorDTO.getTransferYear());
-                        if("Y".equals(exhibitorDTO.getPartWantYn())){
-                            istExhibitorCompInfo.setPartWantYn("1");
-                        }else{
-                            istExhibitorCompInfo.setPartWantYn("3");
-                        }
-                        istExhibitorCompInfo.setPrePartYear(exhibitorDTO.getPrePartYear());
-                        istExhibitorCompInfo.setCompanyNameKo(exhibitorDTO.getCompanyNameKo());
-                        istExhibitorCompInfo.setCompanyHomepage(exhibitorDTO.getCompanyHomepage());
-                        istExhibitorCompInfo.setCompanyAddress(exhibitorDTO.getCompanyAddress() + " " + exhibitorDTO.getCompanyAddressDetail());
-                        istExhibitorCompInfo.setCompanyCeo(exhibitorDTO.getCompanyCeo());
-                        istExhibitorCompInfo.setCompanyFax(exhibitorDTO.getCompanyFax());
-
-                        *//* charge table update *//*
-                        List<ChargePersonDTO> chargeList_comp = exhibitorDTO.getChargePersonList();
-                        if(chargeList_comp != null){
-                            for(int i=0; i<chargeList_comp.size(); i++) {
-                                ChargePersonDTO info = chargeList_comp.get(i);
-                                if(i == 0){
-                                    istExhibitorCompInfo.setChargePersonName1(info.getChargePersonName());
-                                    istExhibitorCompInfo.setChargePersonPosition1(info.getChargePersonPosition());
-                                    istExhibitorCompInfo.setChargePersonTel1(info.getChargePersonTel());
-                                    istExhibitorCompInfo.setChargePersonPhone1(info.getChargePersonPhone());
-                                    istExhibitorCompInfo.setChargePersonEmail1(info.getChargePersonEmail());
-                                }else if(i == 1){
-                                    istExhibitorCompInfo.setChargePersonName2(info.getChargePersonName());
-                                    istExhibitorCompInfo.setChargePersonPosition2(info.getChargePersonPosition());
-                                    istExhibitorCompInfo.setChargePersonTel2(info.getChargePersonTel());
-                                    istExhibitorCompInfo.setChargePersonPhone2(info.getChargePersonPhone());
-                                    istExhibitorCompInfo.setChargePersonEmail2(info.getChargePersonEmail());
-                                }else if(i == 2){
-                                    istExhibitorCompInfo.setChargePersonName3(info.getChargePersonName());
-                                    istExhibitorCompInfo.setChargePersonPosition3(info.getChargePersonPosition());
-                                    istExhibitorCompInfo.setChargePersonTel3(info.getChargePersonTel());
-                                    istExhibitorCompInfo.setChargePersonPhone3(info.getChargePersonPhone());
-                                    istExhibitorCompInfo.setChargePersonEmail3(info.getChargePersonEmail());
-                                }
-                            }
-                        }
-
-                        //exhibitor_comp table Insert
-                        exhibitorCompRst = kibsMapper.insertExhibitorComp(istExhibitorCompInfo);
-                    }
-
-                    if(exhibitorCompRst == 0){
-                        resultCode = CommConstants.RESULT_CODE_FAIL;
-                        resultMessage = "[processUpdateExhibitor exhibitor_comp Table DB ERROR] " + CommConstants.RESULT_MSG_FAIL + " , DB 작업이 수행 실패하였습니다.";
-                    }
-
-                }*/
-
             }
-            responseDTO.setCustomValue(exhibitorSeq);
+            responseDTO.setCustomValue(exhibitorNewSeq);
             //System.out.println(result);
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -607,33 +419,85 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public void processUpdateOnlineFileNote(String exhibitorSeq, String onlineNote) {
+    public void processUpdateProductNewFileNote(String exhibitorSeq, String productNote) {
         FileDTO fileDTO = new FileDTO();
         fileDTO.setUserId(exhibitorSeq);
-        fileDTO.setNote(onlineNote);
-        List<String> onlineSeqList = kibsMapper.selectFileSeq(fileDTO);
-        for(int i=0; i<onlineSeqList.size(); i++){
+        fileDTO.setNote(productNote);
+        List<String> productNewSeqList = kibsMapper.selectProductNewFileSeq(fileDTO);
+        for(int i=0; i<productNewSeqList.size(); i++){
             FileDTO updFileDTO = new FileDTO();
-            updFileDTO.setId(onlineSeqList.get(i));
-            updFileDTO.setNote("productImage" + onlineNote + "_" + (i+1));
-            Integer updFileNote = kibsMapper.updateProductImageFileNote(updFileDTO);
+            updFileDTO.setId(productNewSeqList.get(i));
+            updFileDTO.setNote("productImage" + productNote + "_" + (i+1));
+            Integer updFileNote = kibsMapper.updateImageFileNote(updFileDTO);
         }
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processUpdateExhibitPersonalInfo(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsServiceImpl > processUpdateExhibitPersonalInfo : ======");
+    public void processUpdateOnlineNewFileNote(String exhibitorSeq, String onlineNote) {
+        FileDTO fileDTO = new FileDTO();
+        fileDTO.setUserId(exhibitorSeq);
+        fileDTO.setNote(onlineNote);
+        List<String> onlineNewSeqList = kibsMapper.selectOnlineFileSeq(fileDTO);
+        for(int i=0; i<onlineNewSeqList.size(); i++){
+            FileDTO updFileDTO = new FileDTO();
+            updFileDTO.setId(onlineNewSeqList.get(i));
+            updFileDTO.setNote("onlineImage" + onlineNote + "_" + (i+1));
+            Integer updFileNote = kibsMapper.updateImageFileNote(updFileDTO);
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ExhibitorNewDTO processSelectExhibitorNewSingle(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processSelectExhibitorNewSingle");
+        return kibsMapper.selectExhibitorNewSingle(exhibitorNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<ChargeNewDTO> processSelectChargeNewList(ChargeNewDTO chargeNewDTO) {
+        System.out.println("KibsServiceImpl > processSelectChargeNewList");
+        return kibsMapper.selectChargeNewList(chargeNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<ProductNewDTO> processSelectProductNewList(ProductNewDTO productNewDTO) {
+        System.out.println("KibsServiceImpl > processSelectProductNewList");
+        return kibsMapper.selectProductNewList(productNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<OnlineNewDTO> processSelectOnlineNewList(OnlineNewDTO onlineNewDTO) {
+        System.out.println("KibsServiceImpl > processSelectOnlineNewList");
+        return kibsMapper.selectOnlineNewList(onlineNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<BuyerNewDTO> processSelectBuyerNewList(BuyerNewDTO buyerNewDTO) {
+        System.out.println("KibsServiceImpl > processSelectBuyerNewList");
+        return kibsMapper.selectBuyerNewList(buyerNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateExhibitorNewBooth(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processUpdateExhibitorNewBooth : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
 
         try {
-            Integer ex_result = kibsMapper.updateExhibitPersonalInfo(exhibitorDTO);
+            String note = "step2_1";
+            exhibitorNewDTO.setNote(note);
+            Integer step2_1_ex_result = kibsMapper.updateExhibitorNewBooth(exhibitorNewDTO);
 
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
-            String eMessage = "[exhibitor mypage] processUpdateExhibitPersonalInfo Error : ";
+            String eMessage = "[step2_1] processUpdateExhibitorNewBooth Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
         }
 
@@ -641,6 +505,476 @@ public class KibsServiceImpl implements KibsService {
         responseDTO.setResultMessage(resultMessage);
         return responseDTO;
     }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateExhibitorNewCompanySign(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processUpdateExhibitorNewCompanySign : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            String note = "step2_2";
+            exhibitorNewDTO.setNote(note);
+            Integer step2_2_ex_result = kibsMapper.updateExhibitorNewCompanySign(exhibitorNewDTO);
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[step2_2] processUpdateExhibitorNewCompanySign Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateExhibitorNewUtility(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processUpdateExhibitorNewUtility : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            String note = "step2_3";
+            exhibitorNewDTO.setNote(note);
+            Integer step2_3_ex_result = kibsMapper.updateExhibitorNewUtility(exhibitorNewDTO);
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[step2_3] processUpdateExhibitorNewUtility Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertPassNew(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processInsertPassNew : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            List<PassNewDTO> passList = exhibitorNewDTO.getPassList();
+            if(!passList.isEmpty()){
+                for(PassNewDTO passDTO : passList){
+                    passDTO.setExSeq(exhibitorNewDTO.getSeq());
+
+                    if(passDTO.getSeq() != null && !passDTO.getSeq().isEmpty()){
+                        Integer upd_pass_result = kibsMapper.updatePassNew(passDTO);
+                    }else{
+                        Integer ist_pass_result = kibsMapper.insertPassNew(passDTO);
+                    }
+                }
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[step2_4] processInsertPassNew Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<PassNewDTO> processSelectPassNewList(PassNewDTO passNewDTO) {
+        System.out.println("KibsServiceImpl > processSelectPassNewList");
+        return kibsMapper.selectPassNewList(passNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public String processSearchExhibitorNewSeq(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processSearchExhibitorNewSeq");
+        return kibsMapper.searchExhibitorNewSeq(exhibitorNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<GiftNewDTO> processSelectGiftNewList(GiftNewDTO giftNewDTO) {
+        System.out.println("KibsServiceImpl > processSelectGiftNewList");
+        return kibsMapper.selectGiftNewList(giftNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertGiftNew(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processInsertGiftNew : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            String exhibitorNewSeq = exhibitorNewDTO.getSeq();
+            List<GiftNewDTO> giftList = exhibitorNewDTO.getGiftList();
+            if(!giftList.isEmpty()){
+                for(GiftNewDTO giftDTO : giftList){
+                    giftDTO.setExSeq(exhibitorNewSeq);
+                    if(giftDTO.getSeq() != null && !giftDTO.getSeq().isEmpty()){
+                        Integer upd_pass_result = kibsMapper.updateGiftNew(giftDTO);
+                    }else{
+                        Integer ist_pass_result = kibsMapper.insertGiftNew(giftDTO);
+                    }
+                }
+            }
+
+            responseDTO.setCustomValue(exhibitorNewSeq);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[step2_5] processInsertGiftNew Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertDirectory(DirectoryDTO directoryDTO) {
+        System.out.println("KibsServiceImpl > processInsertDirectory : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            /*
+            Integer directoryCheck = kibsMapper.checkDirectory(directoryDTO);
+            directoryDTO.setNote(note);
+            if(directoryCheck > 0){
+                Integer step2_8_dir_upd_result = kibsMapper.updateDirectory(directoryDTO);
+            }else{
+                Integer step2_8_dir_ist_result = kibsMapper.insertDirectory(directoryDTO);
+            }
+
+            if(!StringUtil.isEmpty(directoryDTO.getChargeList())){
+                for(int i=0; i<directoryDTO.getChargeList().size(); i++){
+                    ChargePersonDTO chargePersonDTO = directoryDTO.getChargeList().get(i);
+                    chargePersonDTO.setId(directoryDTO.getId());
+                    chargePersonDTO.setUserId(directoryDTO.getUserId());
+                    chargePersonDTO.setTransferYear(directoryDTO.getTransferYear());
+                    chargePersonDTO.setNote(note);
+                    Integer step2_8_chr_result = kibsMapper.updateChargePersonInfo(chargePersonDTO);
+                }
+            }
+
+            if(!StringUtil.isEmpty(directoryDTO.getDisplayList())){
+                for(int i=0; i<directoryDTO.getDisplayList().size(); i++){
+                    DisplayDTO displayDTO = directoryDTO.getDisplayList().get(i);
+                    displayDTO.setId(directoryDTO.getId());
+                    displayDTO.setUserId(directoryDTO.getUserId());
+                    displayDTO.setTransferYear(directoryDTO.getTransferYear());
+                    displayDTO.setNote(note);
+                    Integer step2_8_dis_result = kibsMapper.updateDisplayInfo(displayDTO);
+                }
+            }*/
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[step2_8] processInsertDirectory Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateExhibitorNewApprovalStatus(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processUpdateExhibitorNewApprovalStatus : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            String note = "step03";
+            exhibitorNewDTO.setNote(note);
+            Integer step03_ex_result = kibsMapper.updateExhibitorNewApprovalStatus(exhibitorNewDTO);
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[step03] processUpdateExhibitorNewApprovalStatus Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
+    @Override
+    public ResponseDTO processLoginExhibitorNew(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processLoginExhibitorNew : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            String getSalt = kibsMapper.getExhibitorNewSalt(exhibitorNewDTO);
+            //암호화
+            String pw_encrypt = SHA512(exhibitorNewDTO.getPassword(), getSalt);
+            exhibitorNewDTO.setPassword(pw_encrypt);
+
+            String seq = kibsMapper.checkLoginExhibitorNew(exhibitorNewDTO);
+            if(seq == null || seq.isEmpty()){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "ID not found";
+            }
+
+            responseDTO.setCustomValue(seq);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[login] processLoginExhibitorNew Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ExhibitorNewDTO processSelectExhibitorNewPrc(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processSelectExhibitorNewPrc");
+        return kibsMapper.selectExhibitorNewPrc(exhibitorNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateExhibitorNewInfo(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processUpdateExhibitorNewInfo : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+
+            String exhibitorNewSeq = exhibitorNewDTO.getSeq();
+
+            String inputPw = exhibitorNewDTO.getPassword();
+            if(!Objects.equals(inputPw, "암호화된비밀번호복사불가능")){
+                // 비밀번호칸 입력 O , 기존 비밀번호와 비교
+                ExhibitorNewDTO exhibitorNewInfo = kibsMapper.selectExhibitorNewSingle(exhibitorNewDTO);
+                String preSalt = exhibitorNewInfo.getSalt();
+                String prePw = exhibitorNewInfo.getPassword();
+
+                String afPw = SHA512(inputPw, preSalt);
+                if(!Objects.equals(prePw, afPw)){
+
+                    ExhibitorNewDTO updateExhibitorNewInfo = new ExhibitorNewDTO();
+                    updateExhibitorNewInfo.setSeq(exhibitorNewSeq);
+
+                    // 새로 salt값 생성 & 새로운 비밀번호로 Update
+                    String salt = Salt();
+                    updateExhibitorNewInfo.setSalt(salt);
+
+                    String afPw_encrypt = SHA512(inputPw, salt);
+                    updateExhibitorNewInfo.setPassword(afPw_encrypt);
+
+                    kibsMapper.updateExhibitorNewPassword(updateExhibitorNewInfo);
+
+                }
+            }
+
+            Integer ex_result = kibsMapper.updateExhibitorNewInfo(exhibitorNewDTO);
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[EXHIBITOR mypage] processUpdateExhibitorNewInfo Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeletePassNew(PassNewDTO passNewDTO) {
+        System.out.println("KibsServiceImpl > processDeletePassNew");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            result = kibsMapper.deletePassNew(passNewDTO);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Delete Fail] Seq : " + passNewDTO.getSeq();
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeletePassNew ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteChargeNew(ChargeNewDTO chargeNewDTO) {
+        System.out.println("KibsServiceImpl > processDeleteChargeNew");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(chargeNewDTO.getSeq() != null){
+
+                result = kibsMapper.deleteChargeNew(chargeNewDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + chargeNewDTO.getSeq();
+                }
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteChargeNew ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteProductNew(ProductNewDTO productNewDTO) {
+        System.out.println("KibsServiceImpl > processDeleteProductNew");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(productNewDTO.getSeq() != null){
+
+                result = kibsMapper.deleteProductNew(productNewDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + productNewDTO.getSeq();
+                }
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteProductNew ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteOnlineNew(OnlineNewDTO onlineNewDTO) {
+        System.out.println("KibsServiceImpl > processDeleteOnlineNew");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(onlineNewDTO.getSeq() != null){
+
+                result = kibsMapper.deleteOnlineNew(onlineNewDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + onlineNewDTO.getSeq();
+                }
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteOnlineNew ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteFile(FileDTO fileDTO) {
+        System.out.println("KibsServiceImpl > processDeleteFile");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(fileDTO.getId() != null){
+
+                result = kibsMapper.deleteFile(fileDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Id : " + fileDTO.getId();
+                }
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Id Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteFile ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ExhibitorDTO processSelectPreExhibitorSingle(ExhibitorDTO exhibitorDTO) {
+        System.out.println("KibsServiceImpl > processSelectPreExhibitorSingle");
+        return kibsMapper.selectPreExhibitorSingle(exhibitorDTO);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
@@ -876,25 +1210,25 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public BuyerDTO processSelectBuyerSingle(BuyerDTO buyerDTO) {
-        System.out.println("KibsServiceImpl > processSelectBuyerSingle");
-        return kibsMapper.selectBuyerSingle(buyerDTO);
+    public BuyerNewDTO processSelectBuyerNewSingle(BuyerNewDTO buyerNewDTO) {
+        System.out.println("KibsServiceImpl > processSelectBuyerNewSingle");
+        return kibsMapper.selectBuyerNewSingle(buyerNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processDeleteBuyer(BuyerDTO buyerDTO) {
-        System.out.println("KibsServiceImpl > processDeleteBuyer");
+    public ResponseDTO processDeleteBuyerNew(BuyerNewDTO buyerNewDTO) {
+        System.out.println("KibsServiceImpl > processDeleteBuyerNew");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
-            if(buyerDTO.getSeq() != null){
-                result = kibsMapper.deleteBuyer(buyerDTO);
+            if(buyerNewDTO.getSeq() != null){
+                result = kibsMapper.deleteBuyerNew(buyerNewDTO);
                 if(result == 0){
                     resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Id : " + buyerDTO.getSeq();
+                    resultMessage = "[Data Delete Fail] Id : " + buyerNewDTO.getSeq();
                 }
                 //System.out.println(result);
             }else{
@@ -903,7 +1237,7 @@ public class KibsServiceImpl implements KibsService {
             }
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteBuyer ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            resultMessage = "[processDeleteBuyerNew ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
         }
 
@@ -931,64 +1265,6 @@ public class KibsServiceImpl implements KibsService {
     public FileDTO processSelectFileInfo(FileDTO fileDTO) {
         System.out.println("KibsServiceImpl > processSelectFileInfo");
         return kibsMapper.selectFileInfo(fileDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processInsertDirectory(DirectoryDTO directoryDTO) {
-        System.out.println("KibsServiceImpl > processInsertDirectory : ======");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-
-        try {
-            String note = "step2_8";
-            ExhibitorDTO exhibitorDTO = new ExhibitorDTO();
-            exhibitorDTO.setId(directoryDTO.getUserId());
-            exhibitorDTO.setTransferYear(directoryDTO.getTransferYear());
-            exhibitorDTO.setNote(note);
-            Integer step2_8_ex_result = kibsMapper.updateExhibitNote(exhibitorDTO);
-
-            /*
-            Integer directoryCheck = kibsMapper.checkDirectory(directoryDTO);
-            directoryDTO.setNote(note);
-            if(directoryCheck > 0){
-                Integer step2_8_dir_upd_result = kibsMapper.updateDirectory(directoryDTO);
-            }else{
-                Integer step2_8_dir_ist_result = kibsMapper.insertDirectory(directoryDTO);
-            }
-
-            if(!StringUtil.isEmpty(directoryDTO.getChargeList())){
-                for(int i=0; i<directoryDTO.getChargeList().size(); i++){
-                    ChargePersonDTO chargePersonDTO = directoryDTO.getChargeList().get(i);
-                    chargePersonDTO.setId(directoryDTO.getId());
-                    chargePersonDTO.setUserId(directoryDTO.getUserId());
-                    chargePersonDTO.setTransferYear(directoryDTO.getTransferYear());
-                    chargePersonDTO.setNote(note);
-                    Integer step2_8_chr_result = kibsMapper.updateChargePersonInfo(chargePersonDTO);
-                }
-            }
-
-            if(!StringUtil.isEmpty(directoryDTO.getDisplayList())){
-                for(int i=0; i<directoryDTO.getDisplayList().size(); i++){
-                    DisplayDTO displayDTO = directoryDTO.getDisplayList().get(i);
-                    displayDTO.setId(directoryDTO.getId());
-                    displayDTO.setUserId(directoryDTO.getUserId());
-                    displayDTO.setTransferYear(directoryDTO.getTransferYear());
-                    displayDTO.setNote(note);
-                    Integer step2_8_dis_result = kibsMapper.updateDisplayInfo(displayDTO);
-                }
-            }*/
-
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            String eMessage = "[step2_8] processInsertDirectory Error : ";
-            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -1045,9 +1321,23 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ExhibitorNewDTO processSelectOnlineExhibitorNewInfo(String seq) {
+        System.out.println("KibsServiceImpl > processSelectOnlineExhibitorNewInfo");
+        return kibsMapper.selectOnlineExhibitorNewInfo(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<OnlineDTO> processSelectOnlineInfoList(String seq) {
         System.out.println("KibsServiceImpl > processSelectOnlineInfoList");
         return kibsMapper.selectOnlineInfoList(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<OnlineNewDTO> processSelectOnlineNewInfoList(String seq) {
+        System.out.println("KibsServiceImpl > processSelectOnlineNewInfoList");
+        return kibsMapper.selectOnlineNewInfoList(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -1062,6 +1352,13 @@ public class KibsServiceImpl implements KibsService {
     public OnlineDTO processSelectOnlineInfo(String seq) {
         System.out.println("KibsServiceImpl > processSelectOnlineInfo");
         return kibsMapper.selectOnlineInfo(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public OnlineNewDTO processSelectOnlineNewInfo(String seq) {
+        System.out.println("KibsServiceImpl > processSelectOnlineNewInfo");
+        return kibsMapper.selectOnlineNewInfo(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -1367,32 +1664,6 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processDeleteExhibitPass(PassDTO passDTO) {
-        System.out.println("KibsServiceImpl > processDeleteExhibitPass");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            result = kibsMapper.deleteExhibitPass(passDTO);
-            if(result == 0){
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Delete Fail] Seq : " + passDTO.getSeq();
-            }
-            //System.out.println(result);
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteExhibitPass ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
     public ResponseDTO processUpdateExhibitPassSeq(ExhibitorDTO exhibitorDTO) {
         System.out.println("KibsServiceImpl > processUpdateExhibitPassSeq : ======");
         ResponseDTO responseDTO = new ResponseDTO();
@@ -1505,130 +1776,6 @@ public class KibsServiceImpl implements KibsService {
     public DirectoryDTO processSelectDirectoryInfo(DirectoryDTO directoryDTO) {
         System.out.println("KibsServiceImpl > processSelectDirectoryInfo");
         return kibsMapper.selectDirectoryInfo(directoryDTO);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processDeleteCharge(ChargePersonDTO chargePersonDTO) {
-        System.out.println("KibsServiceImpl > processDeleteCharge");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(chargePersonDTO.getSeq() != null){
-
-                result = kibsMapper.deleteCharge(chargePersonDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + chargePersonDTO.getSeq();
-                }
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteCharge ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processDeleteDisplay(DisplayDTO displayDTO) {
-        System.out.println("KibsServiceImpl > processDeleteDisplay");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(displayDTO.getSeq() != null){
-
-                result = kibsMapper.deleteDisplay(displayDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + displayDTO.getSeq();
-                }
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteDisplay ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processDeleteOnline(OnlineDTO onlineDTO) {
-        System.out.println("KibsServiceImpl > processDeleteOnline");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(onlineDTO.getSeq() != null){
-
-                result = kibsMapper.deleteOnline(onlineDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + onlineDTO.getSeq();
-                }
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Seq Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteOnline ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processDeleteFile(FileDTO fileDTO) {
-        System.out.println("KibsServiceImpl > processDeleteFile");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(fileDTO.getId() != null){
-
-                result = kibsMapper.deleteFile(fileDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Id : " + fileDTO.getId();
-                }
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Id Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteFile ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -1810,4 +1957,33 @@ public class KibsServiceImpl implements KibsService {
         return responseDTO;
     }
 
+    public String Salt() {
+
+        String salt="";
+        try {
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            byte[] bytes = new byte[16];
+            random.nextBytes(bytes);
+            salt = new String(Base64.getEncoder().encode(bytes));
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return salt;
+    }
+
+    public String SHA512(String password, String hash) {
+        String salt = hash+password;
+        String hex = null;
+        try {
+            MessageDigest msg = MessageDigest.getInstance("SHA-512");
+            msg.update(salt.getBytes());
+
+            hex = String.format("%128x", new BigInteger(1, msg.digest()));
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hex;
+    }
 }

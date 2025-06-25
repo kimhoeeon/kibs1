@@ -41,25 +41,25 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
     <span itemscope="" itemtype="http://schema.org/Organization">
-    <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-    <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-    <a itemprop="sameAs" href="https://kibs-online.com"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 </head>
 
 <body>
 
-    <c:if test="${status ne 'logon'}">
+    <c:if test="${sessionScope.get('status') ne 'logon'}">
         <script>
             alert("로그인해 주세요.");
             location.href = '/login.do';
         </script>
     </c:if>
 
-    <c:if test="${status eq 'logon'}">
+    <c:if test="${sessionScope.get('status') eq 'logon'}">
 
         <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
@@ -125,19 +125,17 @@
                                         <div class="item req">
                                             <p>아이디</p>
                                         </div>
-                                        <div class="input">
-                                            ${info.id}
-                                        </div>
+                                        <div class="input">${info.id}</div>
                                     </li>
                                     <li>
                                         <div class="item req">
                                             <p>비밀번호 변경</p>
                                         </div>
                                         <div class="input">
-                                            <input type="password" id="password" name="password" value="${info.password}" onchange="f_pw_status_change(this)" placeholder="비밀번호 입력" class="w50">
+                                            <input type="password" id="password" name="password" value="암호화된비밀번호복사불가능" onchange="f_pw_status_change(this)" placeholder="비밀번호 입력" class="w50">
                                             <input type="button" onclick="f_pw_check(this)" style="margin-left: 10px;" value="비밀번호 유효성 검사">
                                             <div class="cmnt">8 ~ 16자의 영문, 숫자, 특수문자를 사용해 주세요.</div>
-                                            <div class="cmnt">비밀번호 유효성을 검사해주세요.</div>
+                                            <div class="cmnt">비밀번호 유효성을 검사해 주세요.</div>
                                             <c:if test="${not empty info}"><input type="hidden" id="pwCheck" value="true"></c:if>
                                             <c:if test="${empty info}"><input type="hidden" id="pwCheck" value="false"></c:if>
                                         </div>
@@ -148,7 +146,7 @@
                                         </div>
                                         <div class="input">
                                             <input type="password" id="passwordCheck" onchange="f_pw_confirm_check(this)" placeholder="비밀번호 확인" class="w50">
-                                            <div class="cmnt">비밀번호를 다시 입력해주세요.</div>
+                                            <div class="cmnt">비밀번호를 다시 입력해 주세요.</div>
                                             <c:if test="${not empty info}"><input type="hidden" id="pwConfirmCheck" value="true"></c:if>
                                             <c:if test="${empty info}"><input type="hidden" id="pwConfirmCheck" value="false"></c:if>
                                         </div>
@@ -178,38 +176,6 @@
                                             <input type="text" id="depart" name="depart" value="${info.depart}" placeholder="부서" class="w50">
                                         </div>
                                     </li>
-                                    <li>
-                                        <div class="item req">
-                                            <p>이메일</p>
-                                        </div>
-                                        <div class="input email">
-                                            <input type="email" id="email_input1" name="email1" value="${fn:split(info.email,'@')[0]}" placeholder="이메일" class="email_input1">
-                                            <span>@</span>
-                                            <input type="email" id="email_input2" name="email2" value="${fn:split(info.email,'@')[1]}" class="email_input2">
-                                            <select id="email_select">
-                                                <c:set var="domain" value="${fn:split(info.email,'@')[1]}"/>
-                                                <option selected>직접입력</option>
-                                                <option <c:if test="${domain eq 'daum.net'}">selected</c:if> >daum.net</option>
-                                                <option <c:if test="${domain eq 'nate.com'}">selected</c:if> >nate.com</option>
-                                                <option <c:if test="${domain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
-                                                <option <c:if test="${domain eq 'naver.com'}">selected</c:if> >naver.com</option>
-                                                <option <c:if test="${domain eq 'hotmail.com'}">selected</c:if> >hotmail.com</option>
-                                                <option <c:if test="${domain eq 'yahoo.co.kr'}">selected</c:if> >yahoo.co.kr</option>
-                                                <option <c:if test="${domain eq 'empal.com'}">selected</c:if> >empal.com</option>
-                                                <option <c:if test="${domain eq 'korea.com'}">selected</c:if> >korea.com</option>
-                                                <option <c:if test="${domain eq 'hanmir.com'}">selected</c:if> >hanmir.com</option>
-                                                <option <c:if test="${domain eq 'dreamwiz.com'}">selected</c:if> >dreamwiz.com</option>
-                                                <option <c:if test="${domain eq 'orgio.net'}">selected</c:if> >orgio.net</option>
-                                                <option <c:if test="${domain eq 'korea.com'}">selected</c:if> >korea.com</option>
-                                                <option <c:if test="${domain eq 'hitel.net'}">selected</c:if> >hitel.net</option>
-                                            </select>
-                                            <div class="check mktCheck">
-                                                <p>E-mail 마케팅정보 수신동의</p>
-                                                <label><input type="radio" name="email_marketing_yn" value="Y" <c:if test="${info.emailMarketingYn eq 'Y'}">checked</c:if>>수신동의</label>
-                                                <label><input type="radio" name="email_marketing_yn" value="N" <c:if test="${info.emailMarketingYn eq 'N'}">checked</c:if>>동의 안함</label>
-                                            </div>
-                                        </div>
-                                    </li>
                                     <li class="w50">
                                         <div class="item req">
                                             <p>전화번호</p>
@@ -224,6 +190,30 @@
                                         </div>
                                         <div class="input">
                                             <input type="tel" id="phone" name="phone" value="${info.phone}" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item req">
+                                            <p>이메일</p>
+                                        </div>
+                                        <div class="input email">
+                                            <input type="email" id="email_input1" name="email1" value="${fn:split(info.email,'@')[0]}" placeholder="이메일" class="email_input1">
+                                            <span>@</span>
+                                            <input type="email" id="email_input2" name="email2" value="${fn:split(info.email,'@')[1]}" class="email_input2">
+                                            <select id="email_select">
+                                                <c:set var="domain" value="${fn:split(info.email,'@')[1]}"/>
+                                                <option selected>직접입력</option>
+                                                <option <c:if test="${domain eq 'naver.com'}">selected</c:if> >naver.com</option>
+                                                <option <c:if test="${domain eq 'daum.net'}">selected</c:if> >daum.net</option>
+                                                <option <c:if test="${domain eq 'nate.com'}">selected</c:if> >nate.com</option>
+                                                <option <c:if test="${domain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
+                                                <option <c:if test="${domain eq 'gmail.com'}">selected</c:if> >gmail.com</option>
+                                            </select>
+                                            <div class="check mktCheck">
+                                                <p>E-mail 마케팅정보 수신동의</p>
+                                                <label><input type="radio" name="emailMarketingYn" value="Y" <c:if test="${info.emailMarketingYn eq 'Y'}">checked</c:if>>수신동의</label>
+                                                <label><input type="radio" name="emailMarketingYn" value="N" <c:if test="${info.emailMarketingYn eq 'N'}">checked</c:if>>동의 안함</label>
+                                            </div>
                                         </div>
                                     </li>
                                 </ul>

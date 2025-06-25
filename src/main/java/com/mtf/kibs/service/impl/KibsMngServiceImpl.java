@@ -162,6 +162,20 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public StatisticsDTO processSelectProductCount(StatisticsDTO statisticsDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectProductCount");
+        return kibsMngMapper.selectProductCount(statisticsDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public StatisticsDTO processSelectProductQtyCount(StatisticsDTO statisticsDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectProductQtyCount");
+        return kibsMngMapper.selectProductQtyCount(statisticsDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<StatisticsDTO> processSelectStatisticsAccessorDay(StatisticsDTO statisticsDTO) {
         System.out.println("KibsMngServiceImpl > processSelectStatisticsAccessorDay");
         return kibsMngMapper.selectStatisticsAccessorDay(statisticsDTO);
@@ -1915,9 +1929,23 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<ExhibitorNewDTO> processSelectListExhibitorNew(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectListExhibitorNew");
+        return kibsMngMapper.selectListExhibitorNew(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public ExhibitorDTO processSelectExhibitorSingle(ExhibitorDTO exhibitorDTO) {
         System.out.println("KibsMngServiceImpl > processSelectExhibitorSingle");
         return kibsMngMapper.selectExhibitorSingle(exhibitorDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ExhibitorNewDTO processSelectExhibitorNewSingle(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewSingle");
+        return kibsMngMapper.selectExhibitorNewSingle(exhibitorNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -2563,6 +2591,13 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<ProductNewDTO> processSelectProductNewList(ProductNewDTO productNewDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectProductNewList");
+        return kibsMngMapper.selectProductNewList(productNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<OnlineDTO> processSelectOnlineList(OnlineDTO onlineDTO) {
         System.out.println("KibsMngServiceImpl > processSelectOnlineList");
         return kibsMngMapper.selectOnlineList(onlineDTO);
@@ -2570,9 +2605,23 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<OnlineNewDTO> processSelectOnlineNewList(OnlineNewDTO onlineNewDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectOnlineNewList");
+        return kibsMngMapper.selectOnlineNewList(onlineNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<ExhibitorDTO> processSelectMngOnlineList(SearchDTO searchDTO) {
         System.out.println("KibsMngServiceImpl > processSelectMngOnlineList");
         return kibsMngMapper.selectMngOnlineList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<ExhibitorNewDTO> processSelectMngOnlineNewList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectMngOnlineNewList");
+        return kibsMngMapper.selectMngOnlineNewList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -2610,9 +2659,56 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ResponseDTO processUpdateExhibitorNewOnlineViewYn(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewOnlineViewYn");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(exhibitorNewDTO.getSeq() != null && !exhibitorNewDTO.getSeq().isEmpty()){
+
+                result = kibsMngMapper.updateExhibitorNewOnlineViewYn(exhibitorNewDTO);
+
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + exhibitorNewDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewOnlineViewYn ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<MngProductDTO> processSelectMngProductNewList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectMngProductNewList");
+        return kibsMngMapper.selectMngProductNewList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<BuyerDTO> processSelectBuyerList(BuyerDTO buyerDTO) {
         System.out.println("KibsMngServiceImpl > processSelectBuyerList");
         return kibsMngMapper.selectBuyerList(buyerDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<BuyerNewDTO> processSelectBuyerNewList(BuyerNewDTO buyerNewDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectBuyerNewList");
+        return kibsMngMapper.selectBuyerNewList(buyerNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -3157,6 +3253,13 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<ChargeNewDTO> processSelectChargeNewList(ChargeNewDTO chargeNewDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectChargeNewList");
+        return kibsMngMapper.selectChargeNewList(chargeNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<ExhibitorDTO> processSelectBoothList(SearchDTO searchDTO) {
         System.out.println("KibsMngServiceImpl > processSelectBoothList");
         return kibsMngMapper.selectBoothList(searchDTO);
@@ -3164,9 +3267,23 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<ExhibitorNewDTO> processSelectExhibitorNewBoothList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBoothList");
+        return kibsMngMapper.selectExhibitorNewBoothList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public ExhibitorDTO processSelectBoothSingle(String seq) {
         System.out.println("KibsMngServiceImpl > processSelectBoothSingle");
         return kibsMngMapper.selectBoothSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ExhibitorNewDTO processSelectExhibitorNewBoothSingle(String seq) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBoothSingle");
+        return kibsMngMapper.selectExhibitorNewBoothSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -3201,6 +3318,36 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ResponseDTO processUpdateExhibitorNewBooth(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewBooth");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+
+            /* exhibitor table update */
+            result = kibsMngMapper.UpdateExhibitorNewBooth(exhibitorNewDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Update Fail]";
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewBooth ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<ExhibitorDTO> processSelectSignList(SearchDTO searchDTO) {
         System.out.println("KibsMngServiceImpl > processSelectSignList");
         return kibsMngMapper.selectSignList(searchDTO);
@@ -3208,9 +3355,23 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<ExhibitorNewDTO> processSelectExhibitorNewSignList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewSignList");
+        return kibsMngMapper.selectExhibitorNewSignList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public ExhibitorDTO processSelectSignSingle(String seq) {
         System.out.println("KibsMngServiceImpl > processSelectSignSingle");
         return kibsMngMapper.selectSignSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ExhibitorNewDTO processSelectExhibitorNewSignSingle(String seq) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewSignSingle");
+        return kibsMngMapper.selectExhibitorNewSignSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -3245,6 +3406,36 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ResponseDTO processUpdateExhibitorNewSign(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewSign");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+
+            /* exhibitor table update */
+            result = kibsMngMapper.updateExhibitorNewSign(exhibitorNewDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Update Fail]";
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewSign ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<ExhibitorDTO> processSelectUtilityList(SearchDTO searchDTO) {
         System.out.println("KibsMngServiceImpl > processSelectUtilityList");
         return kibsMngMapper.selectUtilityList(searchDTO);
@@ -3252,9 +3443,23 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<ExhibitorNewDTO> processSelectExhibitorNewUtilityList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewUtilityList");
+        return kibsMngMapper.selectExhibitorNewUtilityList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public ExhibitorDTO processSelectUtilitySingle(String seq) {
         System.out.println("KibsMngServiceImpl > processSelectUtilitySingle");
         return kibsMngMapper.selectUtilitySingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ExhibitorNewDTO processSelectExhibitorNewUtilitySingle(String seq) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewUtilitySingle");
+        return kibsMngMapper.selectExhibitorNewUtilitySingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -3289,6 +3494,36 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ResponseDTO processUpdateExhibitorNewUtility(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewUtility");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+
+            /* exhibitor table update */
+            result = kibsMngMapper.updateExhibitorNewUtility(exhibitorNewDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Update Fail]";
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewUtility ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<MngPassDTO> processSelectPassList(SearchDTO searchDTO) {
         System.out.println("KibsMngServiceImpl > processSelectPassList");
         return kibsMngMapper.selectPassList(searchDTO);
@@ -3296,9 +3531,23 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<MngPassDTO> processSelectExhibitorNewPassList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewPassList");
+        return kibsMngMapper.selectExhibitorNewPassList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<MngPassDTO> processSelectPassDetailList(String seq) {
         System.out.println("KibsMngServiceImpl > processSelectPassDetailList");
         return kibsMngMapper.selectPassDetailList(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<MngPassDTO> processSelectExhibitorNewPassDetailList(String seq) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewPassDetailList");
+        return kibsMngMapper.selectExhibitorNewPassDetailList(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -3343,6 +3592,42 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ResponseDTO processUpdateExhibitorNewPass(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewPass");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+
+            String exhibitorSeq = exhibitorNewDTO.getSeq();
+
+            List<PassNewDTO> passList = exhibitorNewDTO.getPassList();
+            if(!passList.isEmpty()){
+                for(PassNewDTO passDTO : passList){
+                    passDTO.setExSeq(exhibitorSeq);
+                    if(passDTO.getSeq() != null && !passDTO.getSeq().isEmpty()){
+                        Integer upd_result = kibsMngMapper.updateExhibitorNewPass(passDTO);
+                    }else{
+                        Integer ist_result = kibsMngMapper.insertExhibitorNewPass(passDTO);
+                    }
+                }
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewPass ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public ResponseDTO processDeletePass(PassDTO passDTO) {
         System.out.println("KibsMngServiceImpl > processDeletePass");
         ResponseDTO responseDTO = new ResponseDTO();
@@ -3369,6 +3654,32 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ResponseDTO processDeleteExhibitorNewPass(PassNewDTO passNewDTO) {
+        System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewPass");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            result = kibsMngMapper.deleteExhibitorNewPass(passNewDTO);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Delete Fail] Seq : " + passNewDTO.getSeq();
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteExhibitorNewPass ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<MngBuyerDTO> processSelectMngBuyerList(SearchDTO searchDTO) {
         System.out.println("KibsMngServiceImpl > processSelectMngBuyerList");
         return kibsMngMapper.selectMngBuyerList(searchDTO);
@@ -3376,9 +3687,23 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<MngBuyerDTO> processSelectExhibitorNewBuyerList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBuyerList");
+        return kibsMngMapper.selectExhibitorNewBuyerList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<MngBuyerDTO> processSelectBuyerDetailList(String seq) {
         System.out.println("KibsMngServiceImpl > processSelectBuyerDetailList");
         return kibsMngMapper.selectBuyerDetailList(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<MngBuyerDTO> processSelectExhibitorNewBuyerDetailList(String seq) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBuyerDetailList");
+        return kibsMngMapper.selectExhibitorNewBuyerDetailList(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -3423,6 +3748,73 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ResponseDTO processUpdateExhibitorNewBuyer(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewBuyer");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+
+            String exhibitorSeq = exhibitorNewDTO.getSeq();
+
+            List<BuyerNewDTO> buyerList = exhibitorNewDTO.getBuyerList();
+            if(!buyerList.isEmpty()){
+                for(BuyerNewDTO buyerDTO : buyerList){
+                    buyerDTO.setExSeq(exhibitorSeq);
+                    if(buyerDTO.getSeq() != null && !buyerDTO.getSeq().isEmpty()){
+                        Integer upd_result = kibsMngMapper.updateExhibitorNewBuyer(buyerDTO);
+                    }else{
+                        Integer ist_result = kibsMngMapper.insertExhibitorNewBuyer(buyerDTO);
+                    }
+                }
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewBuyer ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteExhibitorNewBuyer(BuyerNewDTO buyerNewDTO) {
+        System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewBuyer");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(buyerNewDTO.getSeq() != null){
+                result = kibsMngMapper.deleteExhibitorNewBuyer(buyerNewDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Id : " + buyerNewDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteExhibitorNewBuyer ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<MngGiftDTO> processSelectMngGiftList(SearchDTO searchDTO) {
         System.out.println("KibsMngServiceImpl > processSelectMngGiftList");
         return kibsMngMapper.selectMngGiftList(searchDTO);
@@ -3430,9 +3822,23 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<MngGiftDTO> processSelectExhibitorNewGiftList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewGiftList");
+        return kibsMngMapper.selectExhibitorNewGiftList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<MngGiftDTO> processSelectGiftDetailList(String seq) {
         System.out.println("KibsMngServiceImpl > processSelectGiftDetailList");
         return kibsMngMapper.selectGiftDetailList(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<MngGiftDTO> processSelectExhibitorNewGiftDetailList(String seq) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewGiftDetailList");
+        return kibsMngMapper.selectExhibitorNewGiftDetailList(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -3467,6 +3873,42 @@ public class KibsMngServiceImpl implements KibsMngService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processUpdateGift ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateExhibitorNewGift(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewGift");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+
+            String exhibitorSeq = exhibitorNewDTO.getSeq();
+
+            List<GiftNewDTO> giftList = exhibitorNewDTO.getGiftList();
+            if(!giftList.isEmpty()){
+                for(GiftNewDTO giftDTO : giftList){
+                    giftDTO.setExSeq(exhibitorSeq);
+                    if(giftDTO.getSeq() != null && !giftDTO.getSeq().isEmpty()){
+                        Integer upd_result = kibsMngMapper.updateGiftNew(giftDTO);
+                    }else{
+                        Integer ist_result = kibsMngMapper.insertGiftNew(giftDTO);
+                    }
+                }
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewGift ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
         }
 
@@ -3518,6 +3960,47 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ResponseDTO processDeleteExhibitorNewGift(GiftNewDTO giftNewDTO) {
+        System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewGift");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            result = kibsMngMapper.deleteExhibitorNewGift(giftNewDTO);
+
+            if(giftNewDTO.getGiftPhoto() != null && !giftNewDTO.getGiftPhoto().isEmpty()){
+                FileDTO photoReq = new FileDTO();
+                photoReq.setUserId(giftNewDTO.getExSeq());
+                photoReq.setNote(giftNewDTO.getGiftPhoto());
+                Integer upd_photo_result = kibsMngMapper.updateFileYn(photoReq);
+            }
+
+            if(giftNewDTO.getGiftCompanyLogo() != null && !giftNewDTO.getGiftCompanyLogo().isEmpty()){
+                FileDTO photoReq = new FileDTO();
+                photoReq.setUserId(giftNewDTO.getExSeq());
+                photoReq.setNote(giftNewDTO.getGiftCompanyLogo());
+                Integer upd_photo_result = kibsMngMapper.updateFileYn(photoReq);
+            }
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Delete Fail] Seq : " + giftNewDTO.getSeq();
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteExhibitorNewGift ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public  List<PopupDTO> processSelectPopupList(SearchDTO searchDTO) {
         System.out.println("KibsMngServiceImpl > processSelectPopupList");
         return kibsMngMapper.selectPopupList(searchDTO);
@@ -3556,7 +4039,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                         updFlag = true;
                     }else{
                         resultCode = CommConstants.RESULT_CODE_FAIL;
-                        resultMessage = "사용 가능한 팝업의 갯수는 최대 3개입니다. 팝업을 새로 추가하시려면 사용중인 팝업을 미사용으로 변경해주세요.";
+                        resultMessage = "사용 가능한 팝업의 갯수는 최대 3개입니다. 팝업을 새로 추가하시려면 사용중인 팝업을 미사용으로 변경해 주세요.";
                     }
                 }else{
                     updFlag = true;
@@ -3612,7 +4095,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                     istFlag = true;
                 }else{
                     resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "사용 가능한 팝업의 갯수는 최대 3개입니다. 팝업을 새로 추가하시려면 사용중인 팝업을 미사용으로 변경해주세요.";
+                    resultMessage = "사용 가능한 팝업의 갯수는 최대 3개입니다. 팝업을 새로 추가하시려면 사용중인 팝업을 미사용으로 변경해 주세요.";
                 }
             }else{
                 istFlag = true;
@@ -3750,6 +4233,43 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ResponseDTO processUpdateExhibitorNewApprovalStatus(List<ExhibitorNewDTO> exhibitorList) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewApprovalStatus");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            for(ExhibitorNewDTO exhibitorInfo : exhibitorList){
+                if(!StringUtil.isEmpty(exhibitorInfo.getSeq())){
+
+                    result = kibsMngMapper.updateExhibitorNewApprovalStatus(exhibitorInfo);
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Update Fail] Seq : " + exhibitorInfo.getSeq();
+                        break;
+                    }
+                    //System.out.println(result);
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewApprovalStatus ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public ResponseDTO processUpdatePrcYn(List<ExhibitorDTO> exhibitorList) {
         System.out.println("KibsMngServiceImpl > processUpdatePrcYn");
         ResponseDTO responseDTO = new ResponseDTO();
@@ -3777,6 +4297,43 @@ public class KibsMngServiceImpl implements KibsMngService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processUpdatePrcYn ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateExhibitorNewPrcYn(List<ExhibitorNewDTO> exhibitorList) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewPrcYn");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            for(ExhibitorNewDTO exhibitorInfo : exhibitorList){
+                if(!StringUtil.isEmpty(exhibitorInfo.getSeq())){
+
+                    result = kibsMngMapper.updateExhibitorNewPrcYn(exhibitorInfo);
+                    if(result == 0){
+                        resultCode = CommConstants.RESULT_CODE_FAIL;
+                        resultMessage = "[Data Update Fail] Seq : " + exhibitorInfo.getSeq();
+                        break;
+                    }
+                    //System.out.println(result);
+
+                }else{
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Seq Not Found Error]";
+                }
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewPrcYn ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
         }
 
@@ -4296,7 +4853,9 @@ public class KibsMngServiceImpl implements KibsMngService {
                 MailRequestDTO.Receiver receiverInfo = mailRequestDTO.getReceiver().get(i);
 //                jsonObject.addProperty("name", receiverInfo.getName());
                 jsonObject.addProperty("email", receiverInfo.getEmail());
-//                jsonObject.addProperty("phone", receiverInfo.getPhone());
+                if(receiverInfo.getNote1() != null) {
+                    jsonObject.addProperty("note1", receiverInfo.getNote1());
+                }
                 jsonArray.add(jsonObject);
             }
             String receiver = "{\"email\":\"" + mailRequestDTO.getReceiver().get(0).getEmail() + "\"}";

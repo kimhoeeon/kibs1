@@ -250,7 +250,7 @@ function f_request_list_remove(seq){
                     })
 
                 } else {
-                    showMessage('', 'error', '[ 오류 발생 ]', '요청사항 & 문의 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    showMessage('', 'error', '[ 오류 발생 ]', '요청사항 & 문의 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                 }
 
             }
@@ -293,7 +293,7 @@ function f_progress_step_change_modal_btn(){
                     let resData = ajaxConnect('/mng/request/management/list/progress/step/update.do', 'post', jsonArr);
 
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '[ 오류 발생 ]', '진행 단계 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                        showMessage('', 'error', '[ 오류 발생 ]', '진행 단계 변경을 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                         return false;
                     }else{
 
@@ -347,7 +347,7 @@ function f_progress_step_change_modal_btn(){
                                     };
                                     let resData1 = ajaxConnect('/mail/send.do', 'post', requestMakeMailFormat(mailJson));
                                     if (resData1.resultCode !== "0") {
-                                        showMessage('', 'error', '에러 발생', '요청사항 & 문의 접수 담당자 메일 전송에 실패하였습니다. 관리자에게 문의해주세요. ' + resData1.resultMessage, '');
+                                        showMessage('', 'error', '에러 발생', '요청사항 & 문의 접수 담당자 메일 전송에 실패하였습니다. 관리자에게 문의해 주세요. ' + resData1.resultMessage, '');
                                     }
                                 }
                             }
@@ -415,7 +415,7 @@ function f_complete_expect_change_modal_btn(){
                     let resData = ajaxConnect('/mng/request/management/list/complete/expect/update.do', 'post', jsonArr);
 
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '[ 오류 발생 ]', '처리 예정 일시 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                        showMessage('', 'error', '[ 오류 발생 ]', '처리 예정 일시 변경을 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                         return false;
                     }else{
 
@@ -563,17 +563,17 @@ function f_request_list_save(seq){
                                         if (resData1.resultCode === "0") {
                                             window.location.href = '/mng/request/management/list.do';
                                         }else{
-                                            showMessage('', 'error', '[ 오류 발생 ]', '요청사항 & 문의 접수 담당자 메일 전송에 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                            showMessage('', 'error', '[ 오류 발생 ]', '요청사항 & 문의 접수 담당자 메일 전송에 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                                         }
                                     }
                                 }
                             });
                         } else {
-                            showMessage('', 'error', '[ 오류 발생 ]', '요청사항 & 문의 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                            showMessage('', 'error', '[ 오류 발생 ]', '요청사항 & 문의 정보 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                         }
                     },
                     error: function (xhr, status) {
-                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                     }
                 })//ajax
 
@@ -714,11 +714,11 @@ function f_request_list_reply_save(requestSeq){
                                 f_request_list_detail_set(requestSeq); // 재조회
 
                             } else {
-                                showMessage('', 'error', '[ 오류 발생 ]', '댓글 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                showMessage('', 'error', '[ 오류 발생 ]', '댓글 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                             }
                         },
                         error: function (xhr, status) {
-                            alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                         }
                     })//ajax
 
@@ -780,7 +780,7 @@ function f_request_list_reply_sms_send(form){
     };
     let resData1 = ajaxConnect('/mail/send.do', 'post', requestMakeMailFormat(mailJson));
     if (resData1.resultCode !== "0") {
-        showMessage('', 'error', '에러 발생', '요청사항 & 문의 접수 담당자 메일 전송에 실패하였습니다. 관리자에게 문의해주세요. ' + resData1.resultMessage, '');
+        showMessage('', 'error', '에러 발생', '요청사항 & 문의 접수 담당자 메일 전송에 실패하였습니다. 관리자에게 문의해 주세요. ' + resData1.resultMessage, '');
     }
 }
 
@@ -838,7 +838,7 @@ function f_request_list_reply_sms_send2(form){
 
     let resData1 = ajaxConnect('/mail/send.do', 'post', returnJsonObj);
     if (resData1.resultCode !== "0") {
-        showMessage('', 'error', '에러 발생', '요청사항 & 문의 접수 담당자 메일 전송에 실패하였습니다. 관리자에게 문의해주세요. ' + resData1.resultMessage, '');
+        showMessage('', 'error', '에러 발생', '요청사항 & 문의 접수 담당자 메일 전송에 실패하였습니다. 관리자에게 문의해 주세요. ' + resData1.resultMessage, '');
     }
 }
 
@@ -874,7 +874,7 @@ function f_request_list_reply_remove(seq, requestSeq){
                     });
 
                 } else {
-                    showMessage('', 'error', '[ 오류 발생 ]', '댓글 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    showMessage('', 'error', '[ 오류 발생 ]', '댓글 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                 }
 
             }

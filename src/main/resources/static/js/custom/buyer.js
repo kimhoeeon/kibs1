@@ -2,7 +2,7 @@
  * mng/exhibitor/application/buyer.js
  * 참가신청서 관리 > 초청희망바이어 신청
  * */
-var transferYear = (new Date().getFullYear()).toString();
+var transferYear = '2025';
 $(function(){
 
     // 바이어 정보 input 이메일
@@ -63,7 +63,7 @@ $(function(){
                     };
                     let resData = ajaxConnect('/mng/exhibitor/application/buyer/delete.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '바이어 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', '바이어 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                     }
                 }
 
@@ -246,11 +246,11 @@ function f_application_buyer_save(seq){
                             });
 
                         } else {
-                            showMessage('', 'error', '에러 발생', '바이어 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                            showMessage('', 'error', '에러 발생', '바이어 정보 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                         }
                     },
                     error: function (xhr, status) {
-                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                     }
                 })
 

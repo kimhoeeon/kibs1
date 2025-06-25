@@ -11,13 +11,76 @@ import java.util.List;
 
 public interface KibsService {
 
-    Integer checkDuplicateId(ExhibitorDTO exhibitorDTO);
+    Integer checkDuplicateId(ExhibitorNewDTO exhibitorNewDTO);
 
     ResponseDTO processLoginExhibit(ExhibitorDTO exhibitorDTO);
 
     void logoutCheck(HttpSession session);
 
-    ResponseDTO processInsertExhibitor(ExhibitorDTO exhibitorDTO);
+    ResponseDTO processInsertExhibitorNew(ExhibitorNewDTO exhibitorNewDTO);
+
+    ResponseDTO processUpdateExhibitorNew(ExhibitorNewDTO exhibitorNewDTO);
+
+    void processUpdateProductNewFileNote(String exhibitorSeq, String productNote);
+
+    void processUpdateOnlineNewFileNote(String exhibitorSeq, String onlineNote);
+
+    ExhibitorNewDTO processSelectExhibitorNewSingle(ExhibitorNewDTO exhibitorNewDTO);
+
+    List<ChargeNewDTO> processSelectChargeNewList(ChargeNewDTO chargeNewDTO);
+
+    List<ProductNewDTO> processSelectProductNewList(ProductNewDTO productNewDTO);
+
+    List<OnlineNewDTO> processSelectOnlineNewList(OnlineNewDTO onlineNewDTO);
+
+    List<BuyerNewDTO> processSelectBuyerNewList(BuyerNewDTO buyerNewReq);
+
+    ResponseDTO processUpdateExhibitorNewBooth(ExhibitorNewDTO exhibitorNewDTO);
+
+    ResponseDTO processUpdateExhibitorNewCompanySign(ExhibitorNewDTO exhibitorNewDTO);
+
+    ResponseDTO processUpdateExhibitorNewUtility(ExhibitorNewDTO exhibitorNewDTO);
+
+    ResponseDTO processInsertPassNew(ExhibitorNewDTO exhibitorNewDTO);
+
+    List<PassNewDTO> processSelectPassNewList(PassNewDTO passNewDTO);
+
+    String processSearchExhibitorNewSeq(ExhibitorNewDTO exhibitorNewDTO);
+
+    List<GiftNewDTO> processSelectGiftNewList(GiftNewDTO giftNewDTO);
+
+    ResponseDTO processInsertDirectory(DirectoryDTO directoryDTO);
+
+    ResponseDTO processUpdateExhibitorNewApprovalStatus(ExhibitorNewDTO exhibitorNewDTO);
+
+    ResponseDTO processInsertGiftNew(ExhibitorNewDTO exhibitorNewDTO);
+
+    ResponseDTO processLoginExhibitorNew(ExhibitorNewDTO exhibitorNewDTO);
+
+    ExhibitorNewDTO processSelectExhibitorNewPrc(ExhibitorNewDTO exhibitorNewDTO);
+
+    ResponseDTO processUpdateExhibitorNewInfo(ExhibitorNewDTO exhibitorNewDTO);
+
+    String getExhibitorNewEmail(ExhibitorNewDTO exhibitorNewDTO);
+
+    List<String> preGetExhibitorEmail(ExhibitorDTO exhibitorDTO);
+
+    ResponseDTO processUpdateExhibitorNewPasswordInit(ExhibitorNewDTO exhibitorNewDTO);
+
+    ResponseDTO processDeletePassNew(PassNewDTO passNewDTO);
+
+    ResponseDTO processDeleteChargeNew(ChargeNewDTO chargeNewDTO);
+
+    ResponseDTO processDeleteProductNew(ProductNewDTO productNewDTO);
+
+    ResponseDTO processDeleteOnlineNew(OnlineNewDTO onlineNewDTO);
+
+    ResponseDTO processDeleteFile(FileDTO fileDTO);
+
+    ExhibitorDTO processSelectPreExhibitorSingle(ExhibitorDTO exhibitorDTO);
+
+
+
 
     ResponseDTO processUpdateExhibitBooth(ExhibitorDTO exhibitorDTO);
 
@@ -31,8 +94,6 @@ public interface KibsService {
 
     ResponseDTO processUpdateWebbanner(ExhibitorDTO exhibitorDTO);
 
-    ResponseDTO processInsertDirectory(DirectoryDTO directoryDTO);
-
     ResponseDTO processUpdateExhibitApprovalStatus(ExhibitorDTO exhibitorDTO);
 
     List<MainOnlineDTO> processSelectOnlineList(String transferYear);
@@ -41,11 +102,17 @@ public interface KibsService {
 
     ExhibitorDTO processSelectOnlineExhibitorInfo(String seq);
 
+    ExhibitorNewDTO processSelectOnlineExhibitorNewInfo(String seq);
+
     List<OnlineDTO> processSelectOnlineInfoList(String seq);
+
+    List<OnlineNewDTO> processSelectOnlineNewInfoList(String seq);
 
     List<FileDTO> processSelectFileList(String seq);
 
     OnlineDTO processSelectOnlineInfo(String seq);
+
+    OnlineNewDTO processSelectOnlineNewInfo(String seq);
 
     List<OnlineRelatedDTO> processSelectOnlineRelatedList(OnlineDTO onlineDTO);
 
@@ -115,11 +182,9 @@ public interface KibsService {
 
     List<BuyerDTO> processSelectBuyerListSeq(BuyerDTO buyerReq);
 
-    BuyerDTO processSelectBuyerSingle(BuyerDTO buyerDTO);
+    BuyerNewDTO processSelectBuyerNewSingle(BuyerNewDTO buyerNewDTO);
 
-    ResponseDTO processDeleteBuyer(BuyerDTO buyerDTO);
-
-    ResponseDTO processUpdateExhibitor(ExhibitorDTO exhibitorDTO);
+    ResponseDTO processDeleteBuyerNew(BuyerNewDTO buyerNewDTO);
 
     ResponseDTO processUpdateExhibitBoothSeq(ExhibitorDTO exhibitorDTO);
 
@@ -141,31 +206,13 @@ public interface KibsService {
 
     DirectoryDTO processSelectDirectoryInfo(DirectoryDTO info);
 
-    ResponseDTO processDeleteCharge(ChargePersonDTO chargePersonDTO);
-
-    ResponseDTO processDeleteDisplay(DisplayDTO displayDTO);
-
-    ResponseDTO processDeleteOnline(OnlineDTO onlineDTO);
-
-    ResponseDTO processDeleteFile(FileDTO fileDTO);
-
-    ResponseDTO processUpdateExhibitPersonalInfo(ExhibitorDTO exhibitorDTO);
-
     List<PopupDTO> processSelectPopupList(PopupDTO popupDTO);
-
-    ResponseDTO processDeleteExhibitPass(PassDTO passDTO);
-
-    String getExhibitorEmail(ExhibitorDTO exhibitorDTO);
-
-    ResponseDTO processUpdateExhibitorPasswordInit(ExhibitorDTO exhibitorDTO);
 
     void processStatisticsAccessor();
 
     List<ChargePersonDTO> processSelectChargeEmail(ChargePersonDTO chargePersonDTO);
 
     List<KibstvDTO> processSelectKibstvYearList(SearchDTO searchDTO);
-
-    void processUpdateOnlineFileNote(String exhibitorSeq, String onlineNote);
 
     InstaTokenDTO processSelectInstaRefresh();
 
@@ -184,4 +231,5 @@ public interface KibsService {
     ResponseDTO processDeletePartner(PartnerDTO partnerDTO);
 
     void insertBusiness(BusinessDTO businessDTO);
+
 }

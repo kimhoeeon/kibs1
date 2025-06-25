@@ -41,12 +41,12 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
     <span itemscope="" itemtype="http://schema.org/Organization">
-    <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-    <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-    <a itemprop="sameAs" href="https://kibs-online.com"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 </head>
 
@@ -169,10 +169,10 @@
                         <div class="form_guide_comp">
                             <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
                             <div class="form_guide_comp_txt">
-                                귀사는 2025 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
+                                귀사는 2026 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
                                 최종적으로 아래의 참가신청 버튼을 눌러 행사 담당자에게 참가승인을 요청하시기 바랍니다.
                             </div>
-                            <a href="javascript:f_apply_comp('03')" class="form_guide_comp_btn btnSt01">참가신청완료</a>
+                            <a href="javascript:f_apply_comp('03','${info.seq}')" class="form_guide_comp_btn btnSt01">참가신청완료</a>
                         </div>
                     </div>
                     <!-- 안내문구 -->

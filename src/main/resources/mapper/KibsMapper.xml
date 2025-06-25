@@ -20,26 +20,45 @@
         WHERE gbn = 'token'
     </update>
 
-    <select id="checkDuplicateId" parameterType="com.mtf.kibs.dto.ExhibitorDTO" resultType="java.lang.Integer">
+    <select id="checkDuplicateId" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="java.lang.Integer">
         /* com.mtf.kibs.mapper.KibsMapper.checkDuplicateId */
         SELECT COUNT(1)
-        FROM exhibitor
+        FROM exhibitor_new
         WHERE id = #{id}
         AND transfer_year = #{transferYear}
     </select>
 
-    <select id="getExhibitorEmail" parameterType="com.mtf.kibs.dto.ExhibitorDTO" resultType="java.lang.String">
-        /* com.mtf.kibs.mapper.KibsMapper.getExhibitorEmail */
+    <select id="getExhibitorNewEmail" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.KibsMapper.getExhibitorNewEmail */
         SELECT email
-        FROM exhibitor
+        FROM exhibitor_new
         WHERE id = #{id}
         AND transfer_year = #{transferYear}
+    </select>
+
+    <select id="preGetExhibitorEmail" parameterType="com.mtf.kibs.dto.ExhibitorDTO" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.KibsMapper.preGetExhibitorNewEmail */
+        SELECT distinct r.email
+        FROM ( SELECT e.email as email
+               FROM exhibitor e
+               WHERE e.id = #{id}
+                 AND e.email IS NOT NULL
+               UNION ALL
+               SELECT c.charge_person_email as email
+               FROM charge c
+               WHERE c.charge_person_email IS NOT NULL
+                 AND c.id IN ( SELECT e.seq
+                               FROM exhibitor e
+                               WHERE e.id = #{id} )
+               ) r
+        WHERE r.email != ''
     </select>
 
     <update id="updateExhibitPasswordInit" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMapper.updateExhibitPasswordInit */
-        UPDATE exhibitor
-        SET password = <![CDATA[#{password}]]>
+        UPDATE exhibitor_new
+        SET salt = <![CDATA[#{salt}]]>
+          , password = <![CDATA[#{password}]]>
         WHERE id = #{id}
           AND transfer_year = #{transferYear}
     </update>
@@ -53,9 +72,9 @@
         AND transfer_year = #{transferYear}
     </select>
 
-    <select id="getExhibitorSeq" resultType="java.lang.String">
+    <select id="getExhibitorNewSeq" resultType="java.lang.String">
         /* com.mtf.kibs.mapper.kibsMapper.getExhibitorSeq */
-        SELECT CONCAT('E', LPAD(next_val('exhibitor_seq'), '7', '0'))
+        SELECT CONCAT('EN', LPAD(next_val('exhibitor_new_seq'), '7', '0'))
         FROM DUAL
     </select>
 
@@ -113,24 +132,16 @@
         )
     </insert>
 
-    <insert id="insertExhibitor" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
-        /* com.mtf.kibs.mapper.KibsMapper.insertExhibitor */
-        INSERT INTO exhibitor
+    <insert id="insertExhibitorNew" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.insertExhibitorNew */
+        INSERT INTO exhibitor_new
         ( seq
         , lang
-        , transfer_year
-        , approval_status
-        , apply_complt
-        , prc_yn
         , id
+        , transfer_year
+        , salt
         , password
-        , name
-        , position
-        , depart
-        , email
-        , email_marketing_yn
-        , tel
-        , phone
+        , company_license_num
         , company_name_ko
         , company_name_en
         , company_address
@@ -144,27 +155,29 @@
         , industry_part
         , industry_part_etc
         , employee_cnt
-        , company_license_num
         , pre_part_year
-        , part_want_yn
         , member_company_yn
-        , sns_blog
-        , sns_facebook
-        , sns_instagram
-        , sns_etc
-        , field_part
+        , name
+        , position
+        , depart
+        , tel
+        , phone
+        , email
+        , email_marketing_yn
+        , company_intro_video
         , company_intro_ko
         , company_intro_en
         , company_purpose_ko
         , company_purpose_en
         , new_item_intro_ko
         , new_item_intro_en
-        , booth_visit_reason
-        , event_plan
-        , office_request
-        , company_intro_video
+        , promotion_plan
+        , field_part
         , export_meeting_yn
+        , apply_complt
+        , prc_yn
         , booth_type
+        , deposit
         , balance
         , registration_cnt
         , registration_fee
@@ -176,159 +189,466 @@
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        ) VALUES
-          ( #{seq}
-          , #{lang}
-          , #{transferYear}
-          , #{approvalStatus}
-          , #{applyComplt}
-          , #{prcYn}
-          , #{id}
-          , #{password}
-          , #{name}
-          , #{position}
-          , #{depart}
-          , #{email}
-          , #{emailMarketingYn}
-          , #{tel}
-          , #{phone}
-          , #{companyNameKo}
-          , #{companyNameEn}
-          , #{companyAddress}
-          , #{companyAddressDetail}
-          , #{factoryAddress}
-          , #{factoryAddressDetail}
-          , #{companyCeo}
-          , #{companyTel}
-          , #{companyHomepage}
-          , #{companyFax}
-          , #{industryPart}
-          , #{industryPartEtc}
-          , #{employeeCnt}
-          , #{companyLicenseNum}
-          , #{prePartYear}
-          , #{partWantYn}
-          , #{memberCompanyYn}
-          , #{snsBlog}
-          , #{snsFacebook}
-          , #{snsInstagram}
-          , #{snsEtc}
-          , #{fieldPart}
-          , #{companyIntroKo}
-          , #{companyIntroEn}
-          , #{companyPurposeKo}
-          , #{companyPurposeEn}
-          , #{newItemIntroKo}
-          , #{newItemIntroEn}
-          , #{boothVisitReason}
-          , #{eventPlan}
-          , #{officeRequest}
-          , #{companyIntroVideo}
-          , #{exportMeetingYn}
-          , #{boothType}
-          , #{balance}
-          , #{registrationCnt}
-          , #{registrationFee}
-          , #{boothPrcSum}
-          , #{prcSum}
-          , #{prcVat}
-          , #{prcTotal}
-          , #{note}
-          , 'EXHIBITOR'
-          , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-          , 'EXHIBITOR'
-          , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-          )
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{lang}
+               , #{id}
+               , #{transferYear}
+               , #{salt}
+               , #{password}
+               , #{companyLicenseNum}
+               , <![CDATA[#{companyNameKo}]]>
+               , <![CDATA[#{companyNameEn}]]>
+               , #{companyAddress}
+               , <![CDATA[#{companyAddressDetail}]]>
+               , #{factoryAddress}
+               , <![CDATA[#{factoryAddressDetail}]]>
+               , #{companyCeo}
+               , #{companyTel}
+               , #{companyHomepage}
+               , #{companyFax}
+               , #{industryPart}
+               , <![CDATA[#{industryPartEtc}]]>
+               , #{employeeCnt}
+               , #{prePartYear}
+               , #{memberCompanyYn}
+               , #{name}
+               , <![CDATA[#{position}]]>
+               , <![CDATA[#{depart}]]>
+               , #{tel}
+               , #{phone}
+               , #{email}
+               , #{emailMarketingYn}
+               , <![CDATA[#{companyIntroVideo}]]>
+               , <![CDATA[#{companyIntroKo}]]>
+               , <![CDATA[#{companyIntroEn}]]>
+               , #{companyPurposeKo}
+               , #{companyPurposeEn}
+               , <![CDATA[#{newItemIntroKo}]]>
+               , <![CDATA[#{newItemIntroEn}]]>
+               , #{promotionPlan}
+               , #{fieldPart}
+               , #{exportMeetingYn}
+               , #{applyComplt}
+               , #{prcYn}
+               , #{boothType}
+               , #{deposit}
+               , #{balance}
+               , #{registrationCnt}
+               , #{registrationFee}
+               , #{boothPrcSum}
+               , #{prcSum}
+               , #{prcVat}
+               , #{prcTotal}
+               , #{note}
+               , 'EXHIBITOR'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'EXHIBITOR'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
-    <update id="UpdateExhibitor" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
-        /* com.mtf.kibs.mapper.kibsMapper.UpdateExhibitor */
+    <insert id="insertChargeNew" parameterType="com.mtf.kibs.dto.ChargeNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.insertChargeNew */
+        INSERT INTO charge_new
+        ( seq
+        , ex_seq
+        , charge_person_name
+        , charge_person_position
+        , charge_person_depart
+        , charge_person_tel
+        , charge_person_phone
+        , charge_person_email
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm)
+        VALUES ( CONCAT('CN', LPAD(next_val('charge_new_seq'), '7', '0'))
+               , #{exSeq}
+               , #{chargePersonName}
+               , <![CDATA[#{chargePersonPosition}]]>
+               , <![CDATA[#{chargePersonDepart}]]>
+               , #{chargePersonTel}
+               , #{chargePersonPhone}
+               , #{chargePersonEmail}
+               , #{note}
+               , 'CHARGE'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'CHARGE'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+    </insert>
+
+    <insert id="insertProductNew" parameterType="com.mtf.kibs.dto.ProductNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.insertProductNew */
+        INSERT INTO product_new
+        ( seq
+        , ex_seq
+        , product_option_big
+        , product_option_small
+        , product_name_ko
+        , product_name_en
+        , product_qty
+        , product_brand
+        , product_length
+        , product_width
+        , product_height
+        , product_weight
+        , product_material
+        , product_year
+        , product_intro_ko
+        , product_intro_en
+        , product_link
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm)
+        VALUES ( CONCAT('PN', LPAD(next_val('product_new_seq'), '7', '0'))
+               , #{exSeq}
+               , #{productOptionBig}
+               , #{productOptionSmall}
+               , <![CDATA[#{productNameKo}]]>
+               , #{productNameEn}
+               , #{productQty}
+               , <![CDATA[#{productBrand}]]>
+               , #{productLength}
+               , #{productWidth}
+               , #{productHeight}
+               , #{productWeight}
+               , <![CDATA[#{productMaterial}]]>
+               , #{productYear}
+               , <![CDATA[#{productIntroKo}]]>
+               , <![CDATA[#{productIntroEn}]]>
+               , <![CDATA[#{productLink}]]>
+               , #{note}
+               , 'PRODUCT'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'PRODUCT'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+    </insert>
+
+    <insert id="insertOnlineNew" parameterType="com.mtf.kibs.dto.OnlineNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.insertOnlineNew */
+        INSERT INTO online_new
+        ( seq
+        , ex_seq
+        , online_option_big
+        , online_option_small
+        , online_name_ko
+        , online_name_en
+        , online_intro_ko
+        , online_intro_en
+        , online_link
+        , online_length
+        , online_width
+        , online_height
+        , online_weight
+        , online_material
+        , online_year
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm)
+        VALUES ( CONCAT('ON', LPAD(next_val('online_new_seq'), '7', '0'))
+               , #{exSeq}
+               , #{onlineOptionBig}
+               , #{onlineOptionSmall}
+               , <![CDATA[#{onlineNameKo}]]>
+               , #{onlineNameEn}
+               , <![CDATA[#{onlineIntroKo}]]>
+               , <![CDATA[#{onlineIntroEn}]]>
+               , <![CDATA[#{onlineLink}]]>
+               , #{onlineLength}
+               , #{onlineWidth}
+               , #{onlineHeight}
+               , #{onlineWeight}
+               , <![CDATA[#{onlineMaterial}]]>
+               , #{onlineYear}
+               , #{note}
+               , 'ONLINE'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'ONLINE'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+    </insert>
+
+    <update id="updateExhibitorOnlineViewYn" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.updateExhibitorOnlineViewYn */
         UPDATE exhibitor
-        SET company_name_ko = #{companyNameKo}
-          , company_name_en = #{companyNameEn}
+        SET company_online_view_yn = 'N'
+        WHERE transfer_year <![CDATA[<]]> #{transferYear}
+          AND CONCAT(REGEXP_REPLACE(company_name_ko, '[^[:alnum:][:space:]]+', ''), '_', REGEXP_REPLACE(company_ceo, '[^[:alnum:][:space:]]+', ''))
+            = CONCAT(REGEXP_REPLACE(#{companyNameKo}, '[^[:alnum:][:space:]]+', ''),'_', REGEXP_REPLACE(#{companyCeo}, '[^[:alnum:][:space:]]+', ''))
+          AND company_online_view_yn = 'Y'
+    </update>
+
+    <insert id="insertBuyerNew" parameterType="com.mtf.kibs.dto.BuyerNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.insertBuyerNew */
+        INSERT INTO buyer_new
+        ( seq
+        , ex_seq
+        , buyer_company_name
+        , buyer_company_country
+        , buyer_company_location
+        , buyer_company_homepage
+        , buyer_company_depart
+        , buyer_company_position
+        , buyer_company_email
+        , buyer_company_tel
+        , buyer_company_phone
+        , buyer_company_fax
+        , buyer_company_item
+        , buyer_company_invite_reason
+        , buyer_company_progress_yn
+        , buyer_company_hope
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm)
+        VALUES ( CONCAT('BN', LPAD(next_val('buyer_new_seq'), '7', '0'))
+               , #{exSeq}
+               , #{buyerCompanyName}
+               , #{buyerCompanyCountry}
+               , #{buyerCompanyLocation}
+               , #{buyerCompanyHomepage}
+               , #{buyerCompanyDepart}
+               , #{buyerCompanyPosition}
+               , #{buyerCompanyEmail}
+               , #{buyerCompanyTel}
+               , #{buyerCompanyPhone}
+               , #{buyerCompanyFax}
+               , #{buyerCompanyItem}
+               , #{buyerCompanyInviteReason}
+               , #{buyerCompanyProgressYn}
+               , #{buyerCompanyHope}
+               , #{note}
+               , 'BUYER'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'BUYER'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+    </insert>
+
+    <select id="selectExhibitorNewSingle" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectExhibitorNewSingle */
+        SELECT seq
+             , lang
+             , id
+             , transfer_year
+             , salt
+             , password
+             , booth_type
+             , company_license_num
+             , company_name_ko
+             , company_name_en
+             , company_address
+             , company_address_detail
+             , factory_address
+             , factory_address_detail
+             , company_ceo
+             , company_tel
+             , company_homepage
+             , company_fax
+             , industry_part
+             , industry_part_etc
+             , employee_cnt
+             , pre_part_year
+             , member_company_yn
+             , name
+             , position
+             , depart
+             , tel
+             , phone
+             , email
+             , email_marketing_yn
+             , company_intro_video
+             , company_intro_ko
+             , company_intro_en
+             , company_purpose_ko
+             , company_purpose_en
+             , new_item_intro_ko
+             , new_item_intro_en
+             , promotion_plan
+             , field_part
+             , export_meeting_yn
+             , part_want_yn
+             , company_online_view_yn
+             , company_badge
+             , discount_yn
+             , apply_complt
+             , cancel_yn
+             , refund_yn
+             , approval_status
+             , approval_status_cancel_reason
+             , participation_status
+             , discount_type
+             , registration_cnt
+             , registration_fee
+             , stand_alone_booth_cnt
+             , stand_alone_booth_fee
+             , assembly_booth_cnt
+             , assembly_booth_fee
+             , online_booth_cnt
+             , online_booth_fee
+             , booth_prc_sum
+             , discount_early_1
+             , discount_early_2
+             , discount_re_1
+             , discount_re_2
+             , discount_re_3
+             , discount_re_all
+             , discount_scale_1
+             , discount_scale_2
+             , discount_scale_3
+             , discount_first
+             , discount_leisure
+             , discount_prc_sum
+             , company_sign_name_ko
+             , company_sign_name_en
+             , utility_jugan_cnt
+             , utility_jugan_fee
+             , utility_day_cnt
+             , utility_day_fee
+             , utility_compressed_air_cnt
+             , utility_compressed_air_fee
+             , utility_water_basic_cnt
+             , utility_water_basic_fee
+             , utility_internet_cnt
+             , utility_internet_fee
+             , utility_pytex_new_cnt
+             , utility_pytex_new_fee
+             , utility_pytex_re_cnt
+             , utility_pytex_re_fee
+             , utility_barcode_cnt
+             , utility_barcode_fee
+             , utility_prc_sum
+             , prc_sum
+             , prc_vat
+             , prc_total
+             , webbanner_content
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM exhibitor_new
+        WHERE 1=1
+        <if test='seq != null and seq != ""'>
+            AND seq = #{seq}
+        </if>
+        <if test='seq == null or seq == ""'>
+            AND id = #{id}
+            AND transfer_year = #{transferYear}
+        </if>
+    </select>
+
+    <update id="updateExhibitorNewPassword" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.webtoonfair.mapper.WebtoonfairMapper.updateExhibitorNewPassword */
+        UPDATE exhibitor_new
+        SET salt = <![CDATA[#{salt}]]>
+          , password = <![CDATA[#{password}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateExhibitorNew" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.updateExhibitorNew */
+        UPDATE exhibitor_new
+        SET company_license_num = #{companyLicenseNum}
+          , company_name_ko =  <![CDATA[#{companyNameKo}]]>
+          , company_name_en =  <![CDATA[#{companyNameEn}]]>
           , company_address = #{companyAddress}
-          , company_address_detail = #{companyAddressDetail}
+          , company_address_detail = <![CDATA[#{companyAddressDetail}]]>
           , factory_address = #{factoryAddress}
-          , factory_address_detail = #{factoryAddressDetail}
+          , factory_address_detail = <![CDATA[#{factoryAddressDetail}]]>
           , company_ceo = #{companyCeo}
           , company_tel = #{companyTel}
           , company_homepage = <![CDATA[#{companyHomepage}]]>
           , company_fax = #{companyFax}
           , industry_part = #{industryPart}
-          , industry_part_etc = #{industryPartEtc}
+          , industry_part_etc = <![CDATA[#{industryPartEtc}]]>
           , employee_cnt = #{employeeCnt}
-          , company_license_num = #{companyLicenseNum}
           , pre_part_year = #{prePartYear}
           , member_company_yn = #{memberCompanyYn}
-          , sns_blog = <![CDATA[#{snsBlog}]]>
-          , sns_facebook = <![CDATA[#{snsFacebook}]]>
-          , sns_instagram = <![CDATA[#{snsInstagram}]]>
-          , sns_etc = <![CDATA[#{snsEtc}]]>
-          , field_part = #{fieldPart}
+          , name = #{name}
+          , position = #{position}
+          , depart = #{depart}
+          , tel = #{tel}
+          , phone = #{phone}
+          , email = #{email}
+          , email_marketing_yn = #{emailMarketingYn}
+          , company_intro_video = <![CDATA[#{companyIntroVideo}]]>
           , company_intro_ko = <![CDATA[#{companyIntroKo}]]>
           , company_intro_en = <![CDATA[#{companyIntroEn}]]>
           , company_purpose_ko = <![CDATA[#{companyPurposeKo}]]>
           , company_purpose_en = <![CDATA[#{companyPurposeEn}]]>
           , new_item_intro_ko = <![CDATA[#{newItemIntroKo}]]>
           , new_item_intro_en = <![CDATA[#{newItemIntroEn}]]>
-          , booth_visit_reason = <![CDATA[#{boothVisitReason}]]>
-          , event_plan = <![CDATA[#{eventPlan}]]>
-          , office_request = <![CDATA[#{officeRequest}]]>
-          , company_intro_video = <![CDATA[#{companyIntroVideo}]]>
+          , promotion_plan = <![CDATA[#{promotionPlan}]]>
+          , field_part = #{fieldPart}
           , export_meeting_yn = #{exportMeetingYn}
-          , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
-    <update id="updateExhibitorCharge" parameterType="com.mtf.kibs.dto.ChargePersonDTO">
-        /* com.mtf.kibs.mapper.kibsMapper.updateExhibitorCharge */
-        UPDATE charge
+    <update id="updateChargeNew" parameterType="com.mtf.kibs.dto.ChargeNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.updateChargeNew */
+        UPDATE charge_new
         SET charge_person_name = #{chargePersonName}
-          , charge_person_position = #{chargePersonPosition}
-          , charge_person_depart = #{chargePersonDepart}
+          , charge_person_position = <![CDATA[#{chargePersonPosition}]]>
+          , charge_person_depart = <![CDATA[#{chargePersonDepart}]]>
           , charge_person_tel = #{chargePersonTel}
           , charge_person_phone = #{chargePersonPhone}
           , charge_person_email = #{chargePersonEmail}
-          , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
-    <update id="updateExhibitorDisplay" parameterType="com.mtf.kibs.dto.DisplayDTO">
-        /* com.mtf.kibs.mapper.kibsMapper.updateExhibitorDisplay */
-        UPDATE display
-        SET display_item = #{displayItem}
-          , display_brand = #{displayBrand}
-          , display_boat_cnt = #{displayBoatCnt}
-          , display_item_intro_ko = <![CDATA[#{displayItemIntroKo}]]>
-          , display_item_intro_en = <![CDATA[#{displayItemIntroEn}]]>
-          , note = #{note}
-          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        WHERE seq = #{seq}
-    </update>
-
-    <update id="updateExhibitorOnline" parameterType="com.mtf.kibs.dto.OnlineDTO">
-        /* com.mtf.kibs.mapper.kibsMapper.updateExhibitorOnline */
-        UPDATE online
-        SET product_name_ko = <![CDATA[#{productNameKo}]]>
-          , product_name_en = <![CDATA[#{productNameEn}]]>
-          , product_option_big = #{productOptionBig}
+    <update id="updateProductNew" parameterType="com.mtf.kibs.dto.ProductNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.updateProductNew */
+        UPDATE product_new
+        SET product_option_big = #{productOptionBig}
           , product_option_small = #{productOptionSmall}
+          , product_name_ko = <![CDATA[#{productNameKo}]]>
+          , product_name_en = <![CDATA[#{productNameEn}]]>
+          , product_qty = #{productQty}
+          , product_brand = <![CDATA[#{productBrand}]]>
+          , product_length = #{productLength}
+          , product_width = #{productWidth}
+          , product_height = #{productHeight}
+          , product_weight = #{productWeight}
+          , product_material = #{productMaterial}
+          , product_year = #{productYear}
           , product_intro_ko = <![CDATA[#{productIntroKo}]]>
           , product_intro_en = <![CDATA[#{productIntroEn}]]>
-          , product_intro_video = <![CDATA[#{productIntroVideo}]]>
-          , product_width = #{productWidth}
-          , product_horse_power = #{productHorsePower}
-          , note = #{note}
+          , product_link = <![CDATA[#{productLink}]]>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
-    <update id="updateExhibitorBuyer" parameterType="com.mtf.kibs.dto.BuyerDTO">
-        /* com.mtf.kibs.mapper.kibsMapper.updateExhibitorBuyer */
-        UPDATE buyer
+    <update id="updateOnlineNew" parameterType="com.mtf.kibs.dto.OnlineNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.updateOnlineNew */
+        UPDATE online_new
+        SET online_option_big = #{onlineOptionBig}
+          , online_option_small = #{onlineOptionSmall}
+          , online_name_ko = <![CDATA[#{onlineNameKo}]]>
+          , online_name_en = <![CDATA[#{onlineNameEn}]]>
+          , online_intro_ko = <![CDATA[#{onlineIntroKo}]]>
+          , online_intro_en = <![CDATA[#{onlineIntroEn}]]>
+          , online_link = <![CDATA[#{onlineLink}]]>
+          , online_length = #{onlineLength}
+          , online_width = #{onlineWidth}
+          , online_height = #{onlineHeight}
+          , online_weight = #{onlineWeight}
+          , online_material = #{onlineMaterial}
+          , online_year = #{onlineYear}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateBuyerNew" parameterType="com.mtf.kibs.dto.BuyerNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.updateBuyerNew */
+        UPDATE buyer_new
         SET buyer_company_name = #{buyerCompanyName}
           , buyer_company_country = #{buyerCompanyCountry}
           , buyer_company_location = #{buyerCompanyLocation}
@@ -343,109 +663,566 @@
           , buyer_company_invite_reason = #{buyerCompanyInviteReason}
           , buyer_company_progress_yn = #{buyerCompanyProgressYn}
           , buyer_company_hope = #{buyerCompanyHope}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectChargeNewList" parameterType="com.mtf.kibs.dto.ChargeNewDTO" resultType="com.mtf.kibs.dto.ChargeNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.selectChargeNewList */
+        SELECT seq
+             , ex_seq
+             , charge_person_name
+             , charge_person_position
+             , charge_person_depart
+             , charge_person_tel
+             , charge_person_phone
+             , charge_person_email
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM charge_new
+        WHERE ex_seq = #{exSeq}
+    </select>
+
+    <select id="selectProductNewList" parameterType="com.mtf.kibs.dto.ProductNewDTO" resultType="com.mtf.kibs.dto.ProductNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.selectProductNewList */
+        SELECT seq
+             , ex_seq
+             , product_option_big
+             , product_option_small
+             , product_name_ko
+             , product_name_en
+             , product_qty
+             , product_brand
+             , product_length
+             , product_width
+             , product_height
+             , product_weight
+             , product_material
+             , product_year
+             , product_intro_ko
+             , product_intro_en
+             , product_link
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM product_new
+        WHERE ex_seq = #{exSeq}
+    </select>
+
+    <select id="selectOnlineNewList" parameterType="com.mtf.kibs.dto.OnlineNewDTO" resultType="com.mtf.kibs.dto.OnlineNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.selectOnlineNewList */
+        SELECT seq
+             , ex_seq
+             , online_option_big
+             , online_option_small
+             , online_name_ko
+             , online_name_en
+             , online_intro_ko
+             , online_intro_en
+             , online_link
+             , online_length
+             , online_width
+             , online_height
+             , online_weight
+             , online_material
+             , online_year
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM online_new
+        WHERE ex_seq = #{exSeq}
+    </select>
+
+    <select id="selectBuyerNewList" parameterType="com.mtf.kibs.dto.BuyerNewDTO" resultType="com.mtf.kibs.dto.BuyerNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.selectBuyerNewList */
+        SELECT seq
+             , ex_seq
+             , buyer_company_name
+             , buyer_company_country
+             , buyer_company_location
+             , buyer_company_homepage
+             , buyer_company_depart
+             , buyer_company_position
+             , buyer_company_email
+             , buyer_company_tel
+             , buyer_company_phone
+             , buyer_company_fax
+             , buyer_company_item
+             , buyer_company_invite_reason
+             , buyer_company_progress_yn
+             , buyer_company_hope
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM buyer_new
+        WHERE ex_seq = #{exSeq}
+    </select>
+
+    <update id="updateExhibitorNewBooth" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.updateExhibitorNewBooth */
+        UPDATE exhibitor_new
+        SET booth_type = #{boothType}
+          , discount_type = #{discountType}
+          , registration_cnt = #{registrationCnt}
+          , registration_fee = #{registrationFee}
+          , stand_alone_booth_cnt = #{standAloneBoothCnt}
+          , stand_alone_booth_fee = #{standAloneBoothFee}
+          , assembly_booth_cnt = #{assemblyBoothCnt}
+          , assembly_booth_fee = #{assemblyBoothFee}
+          , online_booth_cnt = #{onlineBoothCnt}
+          , online_booth_fee = #{onlineBoothFee}
+          , discount_early_1 = #{discountEarly1}
+          , discount_early_2 = #{discountEarly2}
+          , discount_re_all = #{discountReAll}
+          , discount_scale_1 = 0
+          , discount_scale_2 = #{discountScale2}
+          , discount_scale_3 = #{discountScale3}
+          , discount_leisure = #{discountLeisure}
+          , booth_prc_sum = #{boothPrcSum}
+          , discount_prc_sum = #{discountPrcSum}
+          , discount_yn = #{discountYn}
+          , prc_sum = ((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum)
+          , prc_vat = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1)
+          , prc_total = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) + (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
+          , balance = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) + (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
-    <insert id="insertChargePersonInfo" parameterType="com.mtf.kibs.dto.ChargePersonDTO">
-        /* com.mtf.kibs.mapper.KibsMapper.insertChargePersonInfo */
-        INSERT INTO charge
+    <update id="updateExhibitorNewCompanySign" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.updateExhibitorNewCompanySign */
+        UPDATE exhibitor_new
+        SET company_sign_name_ko = <![CDATA[#{companySignNameKo}]]>
+          , company_sign_name_en = <![CDATA[#{companySignNameEn}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          , note = #{note}
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateExhibitorNewUtility" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.updateExhibitorNewUtility */
+        UPDATE exhibitor_new
+        SET utility_jugan_cnt          = IFNULL(#{utilityJuganCnt}, 0)
+          , utility_jugan_fee          = IFNULL(#{utilityJuganFee}, 0)
+          , utility_day_cnt            = IFNULL(#{utilityDayCnt}, 0)
+          , utility_day_fee            = IFNULL(#{utilityDayFee}, 0)
+          , utility_compressed_air_cnt = IFNULL(#{utilityCompressedAirCnt}, 0)
+          , utility_compressed_air_fee = IFNULL(#{utilityCompressedAirFee}, 0)
+          , utility_water_basic_cnt    = IFNULL(#{utilityWaterBasicCnt}, 0)
+          , utility_water_basic_fee    = IFNULL(#{utilityWaterBasicFee}, 0)
+          , utility_internet_cnt       = IFNULL(#{utilityInternetCnt}, 0)
+          , utility_internet_fee       = IFNULL(#{utilityInternetFee}, 0)
+          , utility_pytex_new_cnt      = IFNULL(#{utilityPytexNewCnt}, 0)
+          , utility_pytex_new_fee      = IFNULL(#{utilityPytexNewFee}, 0)
+          , utility_pytex_re_cnt       = IFNULL(#{utilityPytexReCnt}, 0)
+          , utility_pytex_re_fee       = IFNULL(#{utilityPytexReFee}, 0)
+          , utility_barcode_cnt        = IFNULL(#{utilityBarcodeCnt}, 0)
+          , utility_barcode_fee        = IFNULL(#{utilityBarcodeFee}, 0)
+          , utility_prc_sum            = IFNULL(#{utilityPrcSum}, 0)
+          , prc_sum                    = ((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0))
+          , prc_vat                    = (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1)
+          , prc_total                  = (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) +
+                                          (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1))
+          , balance                    = (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) +
+                                          (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1))
+          , note                       = #{note}
+          , final_regi_dttm            = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateExhibitorNewNote" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.updateExhibitorNewNote */
+        UPDATE exhibitor_new
+        SET note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updatePassNew" parameterType="com.mtf.kibs.dto.PassNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.updatePassNew */
+        UPDATE pass_new
+        SET pass_name = #{passName}
+          , pass_first_name = #{passFirstName}
+          , pass_last_name = #{passLastName}
+          , pass_position_ko = #{passPositionKo}
+          , pass_position_en = #{passPositionEn}
+          , pass_note = #{passNote}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <insert id="insertPassNew" parameterType="com.mtf.kibs.dto.PassNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.insertPassNew */
+        INSERT INTO pass_new
         ( seq
-        , id
-        , user_id
-        , transfer_year
-        , charge_person_name
-        , charge_person_position
-        , charge_person_depart
-        , charge_person_tel
-        , charge_person_phone
-        , charge_person_email
+        , ex_seq
+        , pass_name
+        , pass_first_name
+        , pass_last_name
+        , pass_position_ko
+        , pass_position_en
+        , pass_note
         , note
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
         , final_regi_dttm
         ) VALUES
-        ( CONCAT('C', LPAD(next_val('charge_seq'), '7', '0'))
-        , #{id}
-        , #{userId}
-        , #{transferYear}
-        , #{chargePersonName}
-        , #{chargePersonPosition}
-        , #{chargePersonDepart}
-        , #{chargePersonTel}
-        , #{chargePersonPhone}
-        , #{chargePersonEmail}
+        ( CONCAT('PN', LPAD(next_val('pass_new_seq'), '7', '0'))
+        , #{exSeq}
+        , TRIM(#{passName})
+        , TRIM(#{passFirstName})
+        , TRIM(#{passLastName})
+        , TRIM(#{passPositionKo})
+        , TRIM(#{passPositionEn})
+        , #{passNote}
         , #{note}
-        , 'CHARGE'
+        , 'PASS'
         , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        , 'CHARGE'
+        , 'PASS'
         , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         )
     </insert>
 
-    <update id="updateChargePersonInfo" parameterType="com.mtf.kibs.dto.ChargePersonDTO">
-        /* com.mtf.kibs.mapper.KibsMapper.updateChargePersonInfo */
-        UPDATE charge
-        SET charge_person_name = #{chargePersonName}
-          , charge_person_position = #{chargePersonPosition}
-          , charge_person_depart = #{chargePersonDepart}
-          , charge_person_tel = #{chargePersonTel}
-          , charge_person_phone = #{chargePersonPhone}
-          , charge_person_email = #{chargePersonEmail}
-          , note = #{note}
+    <select id="selectPassNewList" parameterType="com.mtf.kibs.dto.PassNewDTO" resultType="com.mtf.kibs.dto.PassNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectPassNewList */
+        SELECT seq
+             , ex_seq
+             , pass_name
+             , pass_first_name
+             , pass_last_name
+             , pass_position_ko
+             , pass_position_en
+             , pass_note
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM pass_new
+        WHERE ex_seq = #{exSeq}
+    </select>
+
+    <select id="searchExhibitorNewSeq" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.kibsMapper.searchExhibitorNewSeq */
+        SELECT seq
+        FROM exhibitor_new
+        WHERE id = #{id}
+          AND transfer_year = #{transferYear}
+    </select>
+
+    <select id="selectGiftNewList" parameterType="com.mtf.kibs.dto.GiftNewDTO" resultType="com.mtf.kibs.dto.GiftNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectGiftNewList */
+        SELECT seq
+             , ex_seq
+             , gift_gbn
+             , gift_cnt
+             , gift_classify
+             , gift_name
+             , gift_content
+             , gift_photo
+             , gift_company_logo
+             , gift_price
+             , gift_sponsor_price
+             , gift_note
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM gift_new
+        WHERE ex_seq = #{exSeq}
+    </select>
+
+    <update id="updateGiftNew" parameterType="com.mtf.kibs.dto.GiftNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.updateGiftNew */
+        UPDATE gift_new
+        SET gift_gbn = #{giftGbn}
+          , gift_cnt = #{giftCnt}
+          , gift_classify = #{giftClassify}
+          , gift_name = #{giftName}
+          , gift_content = #{giftContent}
+          , gift_price = #{giftPrice}
+          , gift_sponsor_price = #{giftSponsorPrice}
+          , gift_note = #{giftNote}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
-    <insert id="insertDisplayInfo" parameterType="com.mtf.kibs.dto.DisplayDTO">
-        /* com.mtf.kibs.mapper.KibsMapper.insertDisplayInfo */
-        INSERT INTO display
+    <insert id="insertGiftNew" parameterType="com.mtf.kibs.dto.GiftNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.insertGiftNew */
+        INSERT INTO gift_new
         ( seq
-        , id
-        , user_id
-        , transfer_year
-        , display_item
-        , display_brand
-        , display_boat_cnt
-        , display_item_intro_ko
-        , display_item_intro_en
+        , ex_seq
+        , gift_gbn
+        , gift_cnt
+        , gift_classify
+        , gift_name
+        , gift_content
+        , gift_photo
+        , gift_company_logo
+        , gift_price
+        , gift_sponsor_price
+        , gift_note
         , note
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        ) VALUES
-              ( CONCAT('D', LPAD(next_val('display_seq'), '7', '0'))
-              , #{id}
-              , #{userId}
-              , #{transferYear}
-              , #{displayItem}
-              , #{displayBrand}
-              , #{displayBoatCnt}
-              , <![CDATA[#{displayItemIntroKo}]]>
-              , <![CDATA[#{displayItemIntroEn}]]>
-              , #{note}
-              , 'DISPLAY'
-              , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-              , 'DISPLAY'
-              , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-              )
+        , final_regi_dttm)
+        VALUES ( CONCAT('GN', LPAD(next_val('gift_new_seq'), '7', '0'))
+               , #{exSeq}
+               , #{giftGbn}
+               , #{giftCnt}
+               , #{giftClassify}
+               , #{giftName}
+               , #{giftContent}
+               , #{giftPhoto}
+               , #{giftCompanyLogo}
+               , #{giftPrice}
+               , #{giftSponsorPrice}
+               , #{giftNote}
+               , #{note}
+               , 'GIFT'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'GIFT'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
-    <update id="updateDisplayInfo" parameterType="com.mtf.kibs.dto.DisplayDTO">
-        /* com.mtf.kibs.mapper.KibsMapper.updateDisplayInfo */
-        UPDATE display
-        SET display_item = #{displayItem}
-          , display_brand = #{displayBrand}
-          , display_boat_cnt = #{displayBoatCnt}
-          , display_item_intro_ko = <![CDATA[#{displayItemIntroKo}]]>
-          , display_item_intro_en = <![CDATA[#{displayItemIntroEn}]]>
+    <update id="updateExhibitorNewApprovalStatus" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.updateExhibitorNewApprovalStatus */
+        UPDATE exhibitor_new
+        SET approval_status = #{approvalStatus}
+          , apply_complt = #{applyComplt}
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
+
+    <select id="getExhibitorNewSalt" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.KibsMapper.getExhibitorNewSalt */
+        SELECT salt
+        FROM exhibitor_new
+        WHERE id = #{id}
+          AND transfer_year = #{transferYear}
+    </select>
+
+    <select id="checkLoginExhibitorNew" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.KibsMapper.checkLoginExhibitorNew */
+        SELECT seq
+        FROM exhibitor_new
+        WHERE id = #{id}
+          AND password = <![CDATA[#{password}]]>
+          AND transfer_year = #{transferYear}
+    </select>
+
+    <select id="selectExhibitorNewPrc" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectExhibitorNewPrc */
+        SELECT seq
+             , prc_yn
+             , IFNULL(booth_prc_sum, 0) as booth_prc_sum
+             , IFNULL(discount_prc_sum, 0) as discount_prc_sum
+             , IFNULL(utility_prc_sum, 0) as utility_prc_sum
+             , IFNULL(prc_sum, 0) as prc_sum
+             , IFNULL(prc_vat, 0) as prc_vat
+             , IFNULL(prc_total, 0) as prc_total
+        FROM exhibitor_new
+        WHERE 1=1
+        <if test='id != null and id != ""'>
+            AND id = #{id}
+            AND transfer_year = #{transferYear}
+        </if>
+        <if test='seq != null and seq != ""'>
+            AND seq = #{seq}
+        </if>
+    </select>
+
+    <update id="updateExhibitorNewInfo" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.updateExhibitorNewInfo */
+        UPDATE exhibitor_new
+        SET name = #{name}
+          , position = #{position}
+          , depart = #{depart}
+          , tel = #{tel}
+          , phone = #{phone}
+          , email = #{email}
+          , email_marketing_yn = #{emailMarketingYn}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <delete id="deletePassNew" parameterType="com.mtf.kibs.dto.PassNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.deletePassNew */
+        DELETE FROM pass_new
+        WHERE seq = #{seq}
+    </delete>
+
+    <delete id="deleteChargeNew" parameterType="com.mtf.kibs.dto.ChargeNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.deleteChargeNew */
+        DELETE FROM charge_new
+        WHERE seq = #{seq}
+    </delete>
+
+    <delete id="deleteProductNew" parameterType="com.mtf.kibs.dto.ProductNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.deleteProductNew */
+        DELETE FROM product_new
+        WHERE seq = #{seq}
+    </delete>
+
+    <delete id="deleteOnlineNew" parameterType="com.mtf.kibs.dto.OnlineNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.deleteOnlineNew */
+        DELETE FROM online_new
+        WHERE seq = #{seq}
+    </delete>
+
+    <select id="selectPreExhibitorSingle" parameterType="com.mtf.kibs.dto.ExhibitorDTO" resultType="com.mtf.kibs.dto.ExhibitorDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectPreExhibitorSingle */
+        SELECT seq
+             , id
+             , transfer_year
+             , company_license_num
+             , company_name_ko
+             , company_name_en
+             , company_address
+             , company_address_detail
+             , factory_address
+             , factory_address_detail
+             , company_ceo
+             , company_tel
+             , company_homepage
+             , company_fax
+             , industry_part
+             , industry_part_etc
+             , employee_cnt
+             , pre_part_year
+             , member_company_yn
+             , name
+             , position
+             , depart
+             , tel
+             , phone
+             , email
+             , email_marketing_yn
+             , company_intro_video
+             , company_intro_ko
+             , company_intro_en
+             , company_purpose_ko
+             , company_purpose_en
+             , new_item_intro_ko
+             , new_item_intro_en
+             , event_plan
+             , field_part
+             , export_meeting_yn
+        FROM exhibitor
+        WHERE id = #{id}
+        ORDER BY cast(transfer_year as unsigned) DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectOnlineList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.MainOnlineDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectOnlineList */
+        SELECT r.*
+        FROM ( SELECT e.seq
+                    , e.id
+                    , e.company_name_ko
+                    , e.company_name_en
+                    , e.company_badge
+                    , e.transfer_year
+                    , ( SELECT f.full_file_path
+                        FROM file f
+                        WHERE f.user_id = e.seq
+                          AND f.file_yn = 'Y'
+                          AND f.note = 'logo'
+                        LIMIT 1) AS logoFilePath
+                    , ( SELECT f.full_file_path
+                        FROM file f
+                        WHERE f.user_id = e.seq
+                          AND f.file_yn = 'Y'
+                          AND f.note LIKE CONCAT('promotionImage','%')
+                        ORDER BY f.note
+                        LIMIT 1) AS promotionImageFilePath
+               FROM exhibitor e
+               WHERE 1=1
+                 AND e.transfer_year in (#{transferYear}-1, #{transferYear}-2)
+                 AND e.apply_complt = 'Y'
+                 AND e.approval_status = '참가승인'
+                 AND e.company_online_view_yn = 'Y'
+                 AND EXISTS ( SELECT 1
+                                FROM online o
+                                WHERE o.id = e.seq)
+               UNION ALL
+               SELECT en.seq
+                    , en.id
+                    , en.company_name_ko
+                    , en.company_name_en
+                    , en.company_badge
+                    , en.transfer_year
+                    , ( SELECT f.full_file_path
+                        FROM file f
+                        WHERE f.user_id = en.seq
+                          AND f.file_yn = 'Y'
+                          AND f.note = 'logo'
+                        LIMIT 1) AS logoFilePath
+                    , ( SELECT f.full_file_path
+                        FROM file f
+                        WHERE f.user_id = en.seq
+                          AND f.file_yn = 'Y'
+                          AND f.note LIKE CONCAT('onlineImage','%')
+                        ORDER BY f.note
+                        LIMIT 1) AS promotionImageFilePath
+               FROM exhibitor_new en
+               WHERE 1=1
+                 AND en.transfer_year in (#{transferYear})
+                 AND en.apply_complt = 'Y'
+                 AND en.approval_status = '참가승인'
+                 AND en.company_online_view_yn = 'Y'
+                 AND EXISTS ( SELECT 1
+                                 FROM online_new oln
+                                 WHERE oln.ex_seq = en.seq)
+               ) r
+        ORDER BY r.transfer_year DESC, LENGTH (r.company_badge) DESC, RAND()
+        LIMIT 15;
+    </select>
+    <!-- /////////////////////////////////////////////////////////////// -->
+    <!-- /////////////////////////////////////////////////////////////// -->
+    <!-- /////////////////////////////////////////////////////////////// -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <insert id="insertPromotionInfo" parameterType="com.mtf.kibs.dto.PromotionDTO">
         /* com.mtf.kibs.mapper.KibsMapper.insertPromotionInfo */
@@ -470,102 +1247,6 @@
         , 'PROMOTION'
         , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         , 'PROMOTION'
-        , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        )
-    </insert>
-
-    <insert id="insertOnlineInfo" parameterType="com.mtf.kibs.dto.OnlineDTO">
-        /* com.mtf.kibs.mapper.KibsMapper.insertOnlineInfo */
-        INSERT INTO online
-        ( seq
-        , id
-        , user_id
-        , transfer_year
-        , product_name_ko
-        , product_name_en
-        , product_option_big
-        , product_option_small
-        , product_intro_ko
-        , product_intro_en
-        , product_intro_video
-        , product_width
-        , product_horse_power
-        , note
-        , init_regi_pic
-        , init_regi_dttm
-        , final_regi_pic
-        , final_regi_dttm
-        ) VALUES
-        ( CONCAT('O', LPAD(next_val('online_seq'), '7', '0'))
-        , #{id}
-        , #{userId}
-        , #{transferYear}
-        , #{productNameKo}
-        , #{productNameEn}
-        , #{productOptionBig}
-        , #{productOptionSmall}
-        , #{productIntroKo}
-        , #{productIntroEn}
-        , #{productIntroVideo}
-        , #{productWidth}
-        , #{productHorsePower}
-        , #{note}
-        , 'ONLINE'
-        , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        , 'ONLINE'
-        , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        )
-    </insert>
-
-    <insert id="insertBuyerInfo" parameterType="com.mtf.kibs.dto.BuyerDTO">
-        /* com.mtf.kibs.mapper.KibsMapper.insertBuyerInfo */
-        INSERT INTO buyer
-        ( seq
-        , id
-        , user_id
-        , transfer_year
-        , buyer_company_name
-        , buyer_company_country
-        , buyer_company_location
-        , buyer_company_homepage
-        , buyer_company_depart
-        , buyer_company_position
-        , buyer_company_email
-        , buyer_company_tel
-        , buyer_company_phone
-        , buyer_company_fax
-        , buyer_company_item
-        , buyer_company_invite_reason
-        , buyer_company_progress_yn
-        , buyer_company_hope
-        , note
-        , init_regi_pic
-        , init_regi_dttm
-        , final_regi_pic
-        , final_regi_dttm
-        ) VALUES
-        ( CONCAT('B', LPAD(next_val('buyer_seq'), '7', '0'))
-        , #{id}
-        , #{userId}
-        , #{transferYear}
-        , #{buyerCompanyName}
-        , #{buyerCompanyCountry}
-        , #{buyerCompanyLocation}
-        , #{buyerCompanyHomepage}
-        , #{buyerCompanyDepart}
-        , #{buyerCompanyPosition}
-        , #{buyerCompanyEmail}
-        , #{buyerCompanyTel}
-        , #{buyerCompanyPhone}
-        , #{buyerCompanyFax}
-        , #{buyerCompanyItem}
-        , #{buyerCompanyInviteReason}
-        , #{buyerCompanyProgressYn}
-        , #{buyerCompanyHope}
-        , #{note}
-        , 'BUYER'
-        , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        , 'BUYER'
         , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         )
     </insert>
@@ -749,12 +1430,6 @@
         WHERE id = #{id}
         AND transfer_year = #{transferYear}
     </update>
-
-    <delete id="deleteExhibitPass" parameterType="com.mtf.kibs.dto.PassDTO">
-        /* com.mtf.kibs.mapper.KibsMapper.deleteExhibitPass */
-        DELETE FROM pass
-        WHERE seq = #{seq}
-    </delete>
 
     <insert id="insertExhibitPass" parameterType="com.mtf.kibs.dto.PassDTO">
         /* com.mtf.kibs.mapper.KibsMapper.insertExhibitPass */
@@ -1216,10 +1891,10 @@
         WHERE id = #{id}
     </select>
 
-    <select id="selectBuyerSingle" parameterType="com.mtf.kibs.dto.BuyerDTO" resultType="com.mtf.kibs.dto.BuyerDTO">
-        /* com.mtf.kibs.mapper.kibsMapper.selectBuyerSingle */
+    <select id="selectBuyerNewSingle" parameterType="com.mtf.kibs.dto.BuyerNewDTO" resultType="com.mtf.kibs.dto.BuyerNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.selectBuyerNewSingle */
         SELECT seq
-             , id
+             , ex_seq
              , buyer_company_name
              , buyer_company_country
              , buyer_company_location
@@ -1239,14 +1914,14 @@
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
-        FROM buyer
+        FROM buyer_new
         WHERE seq = #{seq}
     </select>
 
-    <delete id="deleteBuyer" parameterType="com.mtf.kibs.dto.BuyerDTO">
-        /* com.mtf.kibs.mapper.kibsMapper.deleteBuyer */
+    <delete id="deleteBuyerNew" parameterType="com.mtf.kibs.dto.BuyerNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.deleteBuyerNew */
         DELETE
-        FROM buyer
+        FROM buyer_new
         WHERE seq = #{seq}
     </delete>
 
@@ -1350,7 +2025,7 @@
             AND transfer_year = #{transferYear}
         </if>
     </select>
-    
+
     <update id="updateDirectory" parameterType="com.mtf.kibs.dto.DirectoryDTO">
         /* com.mtf.kibs.mapper.KibsMapper.updateDirectory */
         UPDATE directory
@@ -1448,113 +2123,155 @@
         WHERE id = #{id}
     </update>
 
-    <select id="selectOnlineList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.MainOnlineDTO">
-        /* com.mtf.kibs.mapper.KibsMapper.selectOnlineList */
-        SELECT e.seq
-             , e.id
-             , e.company_name_ko
-             , e.company_name_en
-             , e.company_badge
-             , e.transfer_year
-             , ( SELECT f.full_file_path
-                 FROM file f
-                 WHERE f.user_id = e.seq
-                   AND f.file_yn = 'Y'
-                   AND f.note = 'logo'
-                 LIMIT 1) AS logoFilePath
-             , ( SELECT f.full_file_path
-                 FROM file f
-                 WHERE f.user_id = e.seq
-                   AND f.file_yn = 'Y'
-                   AND f.note LIKE CONCAT('promotionImage','%')
-                   ORDER BY f.note
-                 LIMIT 1) AS promotionImageFilePath
-        FROM exhibitor e
-        WHERE 1=1
-          AND e.transfer_year in (#{value}, #{value}-1)
-          AND e.apply_complt = 'Y'
-          AND e.approval_status = '참가승인'
-          AND e.company_online_view_yn = 'Y'
-          /*AND NULLIF(e.company_badge,'') IS NOT NULL*/
-          AND e.seq IN ( SELECT DISTINCT o.id
-                         FROM online o)
-        ORDER BY e.transfer_year DESC, LENGTH (e.company_badge) DESC, RAND()
-    </select>
-
     <select id="selectOnlineListPaging" parameterType="com.mtf.kibs.dto.MainOnlineDTO" resultType="com.mtf.kibs.dto.MainOnlineDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectOnlineListPaging */
         SELECT r.*
-        FROM
-        (SELECT e.seq
-             , e.id
-             , e.transfer_year
-             , e.company_name_ko
-             , e.company_name_en
-             , e.company_badge
-             , ( SELECT f.full_file_path
-                 FROM file f
-                 WHERE f.user_id = e.seq
-                   AND f.file_yn = 'Y'
-                   AND f.note = 'logo'
-                 LIMIT 1) AS logoFilePath
-             , ( SELECT f.full_file_path
-                 FROM file f
-                 WHERE f.user_id = e.seq
-                   AND f.file_yn = 'Y'
-                   AND f.note LIKE CONCAT('promotionImage','%')
-                ORDER BY f.note
-                 LIMIT 1) AS promotionImageFilePath
-             , ( SELECT COUNT(*)
-                 FROM exhibitor e1
+        FROM ( ( SELECT e.seq
+                      , e.id
+                      , e.transfer_year
+                      , e.company_name_ko
+                      , e.company_name_en
+                      , e.company_badge
+                      , ( SELECT f.full_file_path
+                          FROM file f
+                          WHERE f.user_id = e.seq
+                            AND f.file_yn = 'Y'
+                            AND f.note = 'logo'
+                          LIMIT 1) AS logoFilePath
+                      , ( SELECT f.full_file_path
+                          FROM file f
+                          WHERE f.user_id = e.seq
+                            AND f.file_yn = 'Y'
+                            AND f.note LIKE CONCAT('promotionImage','%')
+                          ORDER BY f.note
+                          LIMIT 1) AS promotionImageFilePath
+                      , ( SELECT COUNT(*)
+                          FROM exhibitor e1
+                          WHERE 1=1
+                            AND e1.transfer_year in (#{transferYear}-1, #{transferYear}-2)
+                            AND e1.company_online_view_yn = 'Y'
+                            AND e1.apply_complt = 'Y'
+                            AND e1.approval_status = '참가승인'
+                            <if test='searchText != null and searchText != ""'>
+                                AND e1.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                            </if>
+                            <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
+                                <foreach collection="companyBadgeList" item="item" index="index">
+                                    AND e1.company_badge LIKE CONCAT('%', #{item}, '%')
+                                </foreach>
+                            <!--AND e.company_badge REGEXP (REGEXP_REPLACE(
+                                <foreach collection="companyBadge" item="item" index="index" separator="|">
+                                    #{item}
+                                </foreach>
+                            ,''|'',''))-->
+                            </if>
+                            AND EXISTS ( SELECT 1
+                                         FROM online o
+                                         WHERE 1=1
+                                           AND o.id = e1.seq
+                                           <if test='productOptionBig != null and productOptionBig != ""'>
+                                            AND o.product_option_big = #{productOptionBig}
+                                           </if>
+                                        )
+                          ) AS totalRecords
+                 FROM exhibitor e
                  WHERE 1=1
-                   AND e1.transfer_year in ((#{transferYear}), #{transferYear}-1, (#{transferYear}-2))
-                   AND e1.company_online_view_yn = 'Y'
-                   AND e1.apply_complt = 'Y'
-                   AND e1.approval_status = '참가승인'
+                   AND e.transfer_year in (#{transferYear}-1, #{transferYear}-2)
+                   AND e.company_online_view_yn = 'Y'
+                   AND e.apply_complt = 'Y'
+                   AND e.approval_status = '참가승인'
                    <if test='searchText != null and searchText != ""'>
-                   AND e1.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                    AND e.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
                    </if>
                    <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
-                       <foreach collection="companyBadgeList" item="item" index="index" >
-                           AND e1.company_badge LIKE CONCAT('%', #{item}, '%')
-                       </foreach>
-                       <!--AND e.company_badge REGEXP (REGEXP_REPLACE(
-                       <foreach collection="companyBadge" item="item" index="index" separator="|">
-                            #{item}
-                       </foreach>
-                       ,''|'',''))-->
+                        <foreach collection="companyBadgeList" item="item" index="index">
+                            AND e.company_badge LIKE CONCAT('%', #{item}, '%')
+                        </foreach>
                    </if>
-                   AND e1.seq IN ( SELECT DISTINCT o.id
+                   AND EXISTS ( SELECT 1
                                   FROM online o
                                   WHERE 1=1
+                                    AND o.id = e.seq
                                     <if test='productOptionBig != null and productOptionBig != ""'>
-                                    AND o.product_option_big = #{productOptionBig}
+                                        AND o.product_option_big = #{productOptionBig}
                                     </if>
-                                  )
-                 ) AS totalRecords
-        FROM exhibitor e
-        WHERE 1=1
-          AND e.transfer_year in ((#{transferYear}), #{transferYear}-1, (#{transferYear}-2))
-          AND e.company_online_view_yn = 'Y'
-          AND e.apply_complt = 'Y'
-          AND e.approval_status = '참가승인'
-        <if test='searchText != null and searchText != ""'>
-            AND e.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
-        </if>
-        <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
-            <foreach collection="companyBadgeList" item="item" index="index" >
-                AND e.company_badge LIKE CONCAT('%', #{item}, '%')
-            </foreach>
-        </if>
-        AND e.seq IN ( SELECT DISTINCT o.id
-                       FROM online o
-                       WHERE 1=1
-                         <if test='productOptionBig != null and productOptionBig != ""'>
-                         AND o.product_option_big = #{productOptionBig}
-                         </if>
-                       )
-        ORDER BY LENGTH (e.company_badge) DESC, init_regi_dttm DESC
-        ) r
+                              )
+                 ORDER BY LENGTH (e.company_badge) DESC, e.init_regi_dttm DESC
+                )
+        UNION ALL
+                ( SELECT en.seq
+                       , en.id
+                       , en.transfer_year
+                       , en.company_name_ko
+                       , en.company_name_en
+                       , en.company_badge
+                       , ( SELECT f.full_file_path
+                           FROM file f
+                           WHERE f.user_id = en.seq
+                             AND f.file_yn = 'Y'
+                             AND f.note = 'logo'
+                           LIMIT 1) AS logoFilePath
+                       , ( SELECT f.full_file_path
+                           FROM file f
+                           WHERE f.user_id = en.seq
+                             AND f.file_yn = 'Y'
+                             AND f.note LIKE CONCAT('onlineImage','%')
+                           ORDER BY f.note
+                           LIMIT 1) AS promotionImageFilePath
+                       , ( SELECT COUNT(*)
+                           FROM exhibitor_new en1
+                           WHERE 1=1
+                             AND en1.transfer_year in (#{transferYear})
+                             AND en1.company_online_view_yn = 'Y'
+                             AND en1.apply_complt = 'Y'
+                             AND en1.approval_status = '참가승인'
+                             <if test='searchText != null and searchText != ""'>
+                                AND en1.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                             </if>
+                             <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
+                                <foreach collection="companyBadgeList" item="item" index="index">
+                                    AND en1.company_badge LIKE CONCAT('%', #{item}, '%')
+                                </foreach>
+                             <!--AND en.company_badge REGEXP (REGEXP_REPLACE(
+                                 <foreach collection="companyBadge" item="item" index="index" separator="|">
+                                    #{item}
+                                 </foreach>
+                             ,''|'',''))-->
+                             </if>
+                             AND EXISTS ( SELECT 1
+                                          FROM online_new oln
+                                          WHERE 1=1
+                                            AND oln.ex_seq = en1.seq
+                                            <if test='productOptionBig != null and productOptionBig != ""'>
+                                                AND oln.online_option_big = #{productOptionBig}
+                                            </if>
+                                          )
+                           ) AS totalRecords
+                  FROM exhibitor_new en
+                  WHERE 1=1
+                    AND en.transfer_year in (#{transferYear})
+                    AND en.company_online_view_yn = 'Y'
+                    AND en.apply_complt = 'Y'
+                    AND en.approval_status = '참가승인'
+                    <if test='searchText != null and searchText != ""'>
+                        AND en.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                    <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
+                        <foreach collection="companyBadgeList" item="item" index="index">
+                            AND en.company_badge LIKE CONCAT('%', #{item}, '%')
+                        </foreach>
+                    </if>
+                    AND EXISTS ( SELECT 1
+                                 FROM online_new oln
+                                 WHERE 1=1
+                                   AND oln.ex_seq = en.seq
+                                   <if test='productOptionBig != null and productOptionBig != ""'>
+                                    AND oln.online_option_big = #{productOptionBig}
+                                    </if>
+                                 )
+                  ORDER BY LENGTH (en.company_badge) DESC, en.init_regi_dttm DESC
+                )
+            ) r
         ORDER BY r.transfer_year desc , LENGTH (r.company_badge) DESC, RAND()
         LIMIT #{pageNum} , #{rows}
     </select>
@@ -1571,6 +2288,21 @@
              , company_homepage
              , company_intro_video
         FROM exhibitor
+        WHERE seq = #{value}
+    </select>
+
+    <select id="selectOnlineExhibitorNewInfo" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectOnlineExhibitorNewInfo */
+        SELECT seq
+             , lang
+             , company_name_ko
+             , company_name_en
+             , company_intro_ko
+             , company_intro_en
+             , company_tel
+             , company_homepage
+             , company_intro_video
+        FROM exhibitor_new
         WHERE seq = #{value}
     </select>
 
@@ -1594,6 +2326,34 @@
              , final_regi_dttm
         FROM online
         WHERE id = #{value}
+        ORDER BY CAST(note as unsigned)
+    </select>
+
+    <select id="selectOnlineNewInfoList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.OnlineNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectOnlineNewInfoList */
+        SELECT seq
+             , ex_seq
+             , online_option_big
+             , online_option_small
+             , online_name_ko
+             , online_name_en
+             , online_intro_ko
+             , online_intro_en
+             , online_link
+             , online_length
+             , online_width
+             , online_height
+             , online_weight
+             , online_material
+             , online_year
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM online_new
+        WHERE ex_seq = #{value}
+        ORDER BY CAST(note as unsigned)
     </select>
 
     <select id="selectFileList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.FileDTO">
@@ -1640,24 +2400,61 @@
         WHERE seq = #{value}
     </select>
 
+    <select id="selectOnlineNewInfo" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.OnlineNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectOnlineNewInfo */
+        SELECT seq
+             , ex_seq
+             , online_option_big
+             , online_option_small
+             , online_name_ko
+             , online_name_en
+             , online_intro_ko
+             , online_intro_en
+             , online_link
+             , online_length
+             , online_width
+             , online_height
+             , online_weight
+             , online_material
+             , online_year
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM online_new
+        WHERE seq = #{value}
+    </select>
+
     <select id="selectOnlineRelatedList" parameterType="com.mtf.kibs.dto.OnlineDTO" resultType="com.mtf.kibs.dto.OnlineRelatedDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectOnlineRelatedList */
         SELECT e.company_name_ko
              , e.company_name_en
              , ot.*
-        FROM (
-            SELECT o.seq
-                 , o.id
-                 , o.product_name_ko
-                 , o.product_name_en
-                 , o.product_option_big
-                 , o.product_option_small
-                 , o.note
-            FROM online o
-            WHERE o.id != #{id}
-              AND o.product_option_big = #{productOptionBig}
-              AND o.product_option_small = #{productOptionSmall}
-            ) ot
+        FROM ( SELECT o.seq
+                    , o.id
+                    , o.product_name_ko
+                    , o.product_name_en
+                    , o.product_option_big
+                    , o.product_option_small
+                    , o.note
+               FROM online o
+               WHERE o.id != #{id}
+                 AND o.product_option_big = #{productOptionBig}
+                 AND o.product_option_small = #{productOptionSmall}
+               UNION ALL
+               SELECT oln.seq
+                    , oln.ex_seq AS id
+                    , oln.online_name_ko AS productNameKo
+                    , oln.online_name_en AS productNameEn
+                    , oln.online_option_big AS productOptionBig
+                    , oln.online_option_small AS productOptionSmall
+                    , oln.note
+               FROM online_new oln
+               WHERE oln.ex_seq != #{id}
+                 AND oln.online_option_big = #{productOptionBig}
+                 AND oln.online_option_small = #{productOptionSmall}
+               ) ot
         JOIN exhibitor e
         ON e.seq = ot.id
         WHERE e.company_online_view_yn = 'Y'
@@ -1688,23 +2485,23 @@
     <select id="selectLogoFileInfo" parameterType="com.mtf.kibs.dto.FileDTO" resultType="com.mtf.kibs.dto.FileDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectLogoFileInfo */
         SELECT id
-        , user_id
-        , full_file_path
-        , full_path
-        , folder_path
-        , full_file_name
-        , uuid
-        , file_name
-        , file_yn
-        , note
-        , init_regi_pic
-        , init_regi_dttm
-        , final_regi_pic
-        , final_regi_dttm
+             , user_id
+             , full_file_path
+             , full_path
+             , folder_path
+             , full_file_name
+             , uuid
+             , file_name
+             , file_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
         FROM file
         WHERE user_id = #{userId}
-        AND note = 'logo'
-        AND file_yn = 'Y'
+          AND note = 'logo'
+          AND file_yn = 'Y'
         ORDER BY final_regi_dttm DESC
         LIMIT 1
     </select>
@@ -1712,30 +2509,30 @@
     <select id="selectFileInfo" parameterType="com.mtf.kibs.dto.FileDTO" resultType="com.mtf.kibs.dto.FileDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectFileInfo */
         SELECT id
-        , user_id
-        , full_file_path
-        , full_path
-        , folder_path
-        , full_file_name
-        , uuid
-        , file_name
-        , file_yn
-        , note
-        , init_regi_pic
-        , init_regi_dttm
-        , final_regi_pic
-        , final_regi_dttm
+             , user_id
+             , full_file_path
+             , full_path
+             , folder_path
+             , full_file_name
+             , uuid
+             , file_name
+             , file_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
         FROM file
         WHERE user_id = #{userId}
-        AND note = #{note}
-        AND file_yn = 'Y'
+          AND note = #{note}
+          AND file_yn = 'Y'
         LIMIT 1
     </select>
 
     <select id="selectOnlineProductListPaging" parameterType="com.mtf.kibs.dto.OnlineRelatedDTO" resultType="com.mtf.kibs.dto.OnlineRelatedDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectOnlineProductListPaging */
         SELECT tta.*
-             , (SELECT COUNT(*)
+             , ((SELECT COUNT(*)
                 FROM ( SELECT o.id
                        FROM online o
                        WHERE 1=1
@@ -1765,15 +2562,53 @@
                 JOIN exhibitor e
                 ON e.seq = ot.id
                 WHERE 1=1
-                  AND e.transfer_year in (#{transferYear}, (#{transferYear}-1))
+                  AND e.transfer_year in (#{transferYear}-1, #{transferYear}-2)
                   <if test='searchText != null and searchText != ""'>
                     <if test='condition == "companyName"'>
                         AND e.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
                     </if>
                   </if>
-                  AND e.company_online_view_yn = 'Y') AS totalRecords
+                  AND e.apply_complt = 'Y'
+                  AND e.approval_status = '참가승인'
+                  AND e.company_online_view_yn = 'Y') + (
+                      SELECT COUNT(*)
+                      FROM ( SELECT oln.ex_seq
+                             FROM online_new oln
+                             WHERE 1=1
+                               AND TRIM(oln.online_name_ko) != '-'
+                               <if test='productOptionBig != null and productOptionBig != "" and productOptionBig != "선택"'>
+                                   AND oln.online_option_big = #{productOptionBig}
+                               </if>
+                               <if test='productOptionSmall != null and productOptionSmall != "" and productOptionBig != "선택"'>
+                                   AND oln.online_option_small = #{productOptionSmall}
+                               </if>
+                               <if test='productWidthMin != "" and productWidthMax != ""'>
+                                   <if test='productWidthMin != "0" or productWidthMax != "40"'>
+                                       AND oln.online_width BETWEEN #{productWidthMin} AND #{productWidthMax}
+                                   </if>
+                               </if>
+                               <if test='searchText != null and searchText != ""'>
+                                   <if test='condition == "productName"'>
+                                       AND oln.online_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                                   </if>
+                               </if>
+                       ) ot
+                      JOIN exhibitor_new en
+                      ON en.seq = ot.ex_seq
+                      WHERE 1=1
+                        AND en.transfer_year in (#{transferYear})
+                        <if test='searchText != null and searchText != ""'>
+                            <if test='condition == "companyName"'>
+                                AND en.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                            </if>
+                        </if>
+                        AND en.apply_complt = 'Y'
+                        AND en.approval_status = '참가승인'
+                        AND en.company_online_view_yn = 'Y'
+                      ) ) AS totalRecords
         FROM ( SELECT e.company_name_ko
                     , e.company_name_en
+                    , e.transfer_year
                     , ot.*
                FROM ( SELECT o.seq
                            , o.id
@@ -1810,14 +2645,61 @@
                JOIN exhibitor e
                ON e.seq = ot.id
                WHERE 1=1
-                 AND e.transfer_year in (#{transferYear}, (#{transferYear}-1))
+                 AND e.transfer_year in (#{transferYear}-1, (#{transferYear}-2))
                  <if test='searchText != null and searchText != ""'>
                     <if test='condition == "companyName"'>
                         AND e.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
                     </if>
                  </if>
+                 AND e.apply_complt = 'Y'
+                 AND e.approval_status = '참가승인'
                  AND e.company_online_view_yn = 'Y'
+               UNION ALL /**/
+               SELECT en.company_name_ko
+                    , en.company_name_en
+                    , en.transfer_year
+                    , ot.*
+               FROM ( SELECT oln.seq
+                           , oln.ex_seq
+                           , oln.online_name_ko
+                           , oln.online_name_en
+                           , oln.online_option_big
+                           , oln.online_option_small
+                           , oln.note
+                      FROM online_new oln
+                      WHERE 1=1
+                        AND TRIM(oln.online_name_ko) != '-'
+                        <if test='productOptionBig != null and productOptionBig != "" and productOptionBig != "선택"'>
+                            AND oln.online_option_big = #{productOptionBig}
+                        </if>
+                        <if test='productOptionSmall != null and productOptionSmall != "" and productOptionBig != "선택"'>
+                            AND oln.online_option_small = #{productOptionSmall}
+                        </if>
+                        <if test='productWidthMin != "" and productWidthMax != ""'>
+                            <if test='productWidthMin != "0" or productWidthMax != "40"'>
+                            AND oln.online_width BETWEEN #{productWidthMin} AND #{productWidthMax}
+                            </if>
+                        </if>
+                        <if test='searchText != null and searchText != ""'>
+                            <if test='condition == "productName"'>
+                                AND oln.online_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                            </if>
+                        </if>
+                      ) ot
+               JOIN exhibitor_new en
+               ON en.seq = ot.ex_seq
+               WHERE 1=1
+                 AND en.transfer_year in (#{transferYear})
+                 <if test='searchText != null and searchText != ""'>
+                    <if test='condition == "companyName"'>
+                        AND en.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                 </if>
+                 AND en.apply_complt = 'Y'
+                 AND en.approval_status = '참가승인'
+                 AND en.company_online_view_yn = 'Y'
                ) tta
+        ORDER BY tta.transfer_year desc
         LIMIT #{pageNum} , #{rows}
     </select>
 
@@ -2379,21 +3261,9 @@
         </if>
     </select>
 
-    <delete id="deleteCharge" parameterType="com.mtf.kibs.dto.ChargePersonDTO">
-        /* com.mtf.kibs.mapper.kibsMapper.deleteCharge */
-        DELETE FROM charge
-        WHERE seq = #{seq}
-    </delete>
-
     <delete id="deleteDisplay" parameterType="com.mtf.kibs.dto.DisplayDTO">
         /* com.mtf.kibs.mapper.kibsMapper.deleteDisplay */
         DELETE FROM display
-        WHERE seq = #{seq}
-    </delete>
-
-    <delete id="deleteOnline" parameterType="com.mtf.kibs.dto.OnlineDTO">
-        /* com.mtf.kibs.mapper.kibsMapper.deleteOnline */
-        DELETE FROM online
         WHERE seq = #{seq}
     </delete>
 
@@ -2649,18 +3519,8 @@
             )
     </insert>
 
-    <update id="updateExhibitorOnlineViewYn" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
-        /* com.mtf.kibs.mapper.kibsMapper.updateExhibitorOnlineViewYn */
-        UPDATE exhibitor
-        SET company_online_view_yn = 'N'
-        WHERE transfer_year <![CDATA[<]]> #{transferYear}
-          AND CONCAT(REGEXP_REPLACE(company_name_ko, '[^[:alnum:][:space:]]+', ''), '_', REGEXP_REPLACE(company_ceo, '[^[:alnum:][:space:]]+', ''))
-            = CONCAT(REGEXP_REPLACE(#{companyNameKo}, '[^[:alnum:][:space:]]+', ''),'_', REGEXP_REPLACE(#{companyCeo}, '[^[:alnum:][:space:]]+', ''))
-          AND company_online_view_yn = 'Y'
-    </update>
-
-    <select id="selectFileSeq" parameterType="com.mtf.kibs.dto.FileDTO" resultType="java.lang.String">
-        /* com.mtf.kibs.mapper.kibsMapper.selectFileSeq */
+    <select id="selectProductNewFileSeq" parameterType="com.mtf.kibs.dto.FileDTO" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.kibsMapper.selectProductNewFileSeq */
         SELECT id
         FROM file
         WHERE user_id = #{userId}
@@ -2669,8 +3529,18 @@
         ORDER BY id
     </select>
 
-    <update id="updateProductImageFileNote" parameterType="com.mtf.kibs.dto.FileDTO">
-        /* com.mtf.kibs.mapper.kibsMapper.updateProductImageFileNote */
+    <select id="selectOnlineFileSeq" parameterType="com.mtf.kibs.dto.FileDTO" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.kibsMapper.selectOnlineFileSeq */
+        SELECT id
+        FROM file
+        WHERE user_id = #{userId}
+        AND note LIKE CONCAT('onlineImage', #{note}, '\\_', '%') ESCAPE '\\'
+        AND file_yn = 'Y'
+        ORDER BY id
+    </select>
+
+    <update id="updateImageFileNote" parameterType="com.mtf.kibs.dto.FileDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.updateImageFileNote */
         UPDATE file
         SET note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')

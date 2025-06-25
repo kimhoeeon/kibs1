@@ -12,6 +12,7 @@ import java.util.List;
 public class DirectoryDTO {
     String seq; //SEQ
     String lang; //언어
+    String exSeq;
     String id; //ID
     String userId; //User ID
     String transferYear; //연도

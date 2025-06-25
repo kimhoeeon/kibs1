@@ -41,25 +41,25 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
     <span itemscope="" itemtype="http://schema.org/Organization">
-    <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-    <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-    <a itemprop="sameAs" href="https://kibs-online.com"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 </head>
 
 <body>
 
-    <c:if test="${status ne 'logon'}">
+    <c:if test="${sessionScope.get('status') ne 'logon'}">
         <script>
             alert("로그인해 주세요.");
             location.href = '/login.do';
         </script>
     </c:if>
 
-    <c:if test="${status eq 'logon'}">
+    <c:if test="${sessionScope.get('status') eq 'logon'}">
 
         <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
@@ -147,7 +147,7 @@
                                         <tr>
                                             <td>행사용 경품</td>
                                             <td>
-                                                <p>2/28~3/2 보트쇼 행사 간 경품 추첨용</p>
+                                                <p>3/6~3/8 보트쇼 행사 간 경품 추첨용</p>
                                             </td>
                                             <td>
                                                 <p>보트쇼 전 참관객에게 배포되는 경품 응모권과 응모함에 경품협찬 업체의 회사로고 삽입</p>
@@ -310,7 +310,7 @@
                                             </div>
                                         </li>
                                     </ul>
-                                    <a class="btnSave" onclick="f_gift_add()">등록 및 수정</a>
+                                    <a class="btnSave" onclick="f_gift_add('${info.seq}')">등록 및 수정</a>
                                 </div>
                             </div>
                                 <!-- //폼박스 -->

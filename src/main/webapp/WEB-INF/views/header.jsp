@@ -134,12 +134,12 @@
                     </a>
                 </h1>
                 <div class="hd_top_right">
-                    <c:if test="${empty status}">
+                    <c:if test="${empty sessionScope.get('status')}">
                         <a href="/login.do" class="login">LOGIN</a>
                     </c:if>
-                    <c:if test="${not empty status}">
+                    <c:if test="${not empty sessionScope.get('status')}">
                         <a href="/logout.do" class="logout">LOGOUT</a>
-                        <a href="javascript:void(0);" onclick="f_page_move('/mypage/index.do',{ id: `${sessionScope.id}` , transferYear: new Date().getFullYear().toString() })" class="mypage">MYPAGE</a>
+                        <a href="javascript:void(0);" onclick="f_page_move('/mypage/index.do',{ id: `${sessionScope.id}` , transferYear: '2026' })" class="mypage">MYPAGE</a>
                     </c:if>
                     <a href="/eng/index.do" class="language">ENG</a>
                     <a href="#a" class="m_menu">

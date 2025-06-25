@@ -41,12 +41,12 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
     <span itemscope="" itemtype="http://schema.org/Organization">
-    <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-    <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-    <a itemprop="sameAs" href="https://kibs-online.com"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 </head>
 
@@ -283,25 +283,25 @@
                                             <div class="discount">할인</div>
                                             <div class="note">비고</div>
                                         </li>
-                                        <li style="color: #8c8c8c">
-                                            <div class="select"><label><input type="checkbox" id="discount1" name="discount" value="300000" onchange="autoDiscountSum(this, '300000');" <c:if test="${info.discountEarly1}">checked</c:if> disabled></label></div>
-                                            <div class="cate">1차 조기신청 (종료)</div>
+                                        <li<%-- style="color: #8c8c8c"--%>>
+                                            <div class="select"><label><input type="checkbox" id="discount1" name="discount" value="300000" onchange="autoDiscountSum(this, '300000');" <c:if test="${info.discountEarly1}">checked</c:if> <%--disabled--%>></label></div>
+                                            <div class="cate">1차 조기신청<%-- (종료)--%></div>
                                             <div class="discount">1 부스당 300,000 원 할인</div>
-                                            <%--<div class="note">1차 조기신청 할인 / ~ 2024.11.15 (금)까지 신청 시</div>--%>
-                                            <div class="note">1차 조기신청 할인이 종료되었습니다.</div>
+                                            <div class="note">1차 조기신청 할인 / ~ 2025.11.21 (금)까지 신청 시</div>
+                                            <%--<div class="note">1차 조기신청 할인이 종료되었습니다.</div>--%>
                                         </li>
-                                        <li style="color: #8c8c8c">
-                                            <div class="select"><label><input type="checkbox" id="discount2" name="discount" value="200000" onchange="autoDiscountSum(this, '200000');" <c:if test="${info.discountEarly2}">checked</c:if> disabled></label></div>
-                                            <div class="cate">2차 조기신청 (종료)</div>
+                                        <li<%-- style="color: #8c8c8c"--%>>
+                                            <div class="select"><label><input type="checkbox" id="discount2" name="discount" value="200000" onchange="autoDiscountSum(this, '200000');" <c:if test="${info.discountEarly2}">checked</c:if> <%--disabled--%>></label></div>
+                                            <div class="cate">2차 조기신청<%-- (종료)--%></div>
                                             <div class="discount">1 부스당 200,000 원 할인</div>
-                                            <%--<div class="note">2차 조기신청 할인 / ~ 2024.12.13 (금)까지 신청 시</div>--%>
-                                            <div class="note">2차 조기신청 할인이 종료되었습니다.</div>
+                                            <div class="note">2차 조기신청 할인 / ~ 2025.12.19 (금)까지 신청 시</div>
+                                            <%--<div class="note">2차 조기신청 할인이 종료되었습니다.</div>--%>
                                         </li>
                                         <li>
                                             <div class="select"><label><input type="checkbox" id="discount3" name="discount" value="200000" onchange="autoDiscountSum(this, '200000');" <c:if test="${info.discountReAll}">checked</c:if> ></label></div>
                                             <div class="cate">재참가할인</div>
                                             <div class="discount">1 부스당 200,000 원 할인</div>
-                                            <div class="note">2014년 ~ 2024년 경기국제보트쇼 참가기업</div>
+                                            <div class="note">2015년 ~ 2025년 경기국제보트쇼 참가기업</div>
                                         </li>
                                         <li>
                                             <div class="select"><label><input type="checkbox" id="discount5" name="discount" value="300000" onchange="autoDiscountSum(this, '300000');" <c:if test="${info.discountScale2}">checked</c:if> ></label></div>
@@ -315,13 +315,14 @@
                                             <div class="discount">1 부스당 450,000 원 할인</div>
                                             <div class="note">40부스 이상 참가기업</div>
                                         </li>
-                                        <li>
+                                        <%--<li>
                                             <div class="select"><label><input type="checkbox" id="discount7" name="discount" value="500000" onchange="autoDiscountSum(this, '500000');" <c:if test="${info.discountFirst}">checked</c:if> ></label></div>
                                             <div class="cate">첫 참가 할인</div>
                                             <div class="discount">1 부스당 500,000 원 할인</div>
                                             <div class="note">경기국제보트쇼 최초 참가기업</div>
-                                        </li>
+                                        </li>--%>
                                         <li>
+                                            <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}"/>
                                             <div class="select"><label><input type="checkbox" id="discount8" name="discount" value="200000" onchange="autoDiscountSum(this, '200000');" <c:if test="${info.discountLeisure}">checked</c:if> ></label></div>
                                             <div class="cate">한국해양레저산업협회 할인</div>
                                             <div class="discount">1 부스당 200,000 원 할인</div>
@@ -368,6 +369,18 @@
             if(nvl(prcSum,'') === '' || parseInt(prcSum) === 0){
                 $('#form_add_total').val($('.booth_cost')[0].innerText); // 초기 총액 : 등록비 합계 Set
             }
+
+            /*let prePartYear = '${info.prePartYear}';
+            if(nvl(prePartYear,'first') !== 'first'){
+                $('#discount3').prop('checked', true).trigger('change'); //재참가할인
+            }
+
+            let memberCompanyYn = '${info.memberCompanyYn}';
+            if(nvl(memberCompanyYn,'') !== ''){
+                if(memberCompanyYn === 'Y'){
+                    $('#discount8').prop('checked', true).trigger('change'); //한국해양레저산업협회 할인
+                }
+            }*/
         });
     </script>
 

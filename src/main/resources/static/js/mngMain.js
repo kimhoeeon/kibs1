@@ -180,14 +180,14 @@ function loginFormSubmit() {
             if (data !== "") {
                 form.submit(); // /mng/main.do
             } else {
-                showMessage('', 'info', '로그인 실패', '관리자 아이디와 비밀번호를 확인해주세요.', '');
+                showMessage('', 'info', '로그인 실패', '관리자 아이디와 비밀번호를 확인해 주세요.', '');
             }
         })
         .fail(function (xhr, status, errorThrown) {
             /*$('body').html("오류가 발생했습니다.")
                 .append("<br>오류명: " + errorThrown)
                 .append("<br>상태: " + status);*/
-            alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
         })
 
 }
@@ -203,14 +203,14 @@ function logout() {
             if (data !== "") {
                 window.location.href = '/mng/index.do';
             } else {
-                showMessage('', 'info', '로그아웃 실패', '관리자에게 문의해주세요.', '');
+                showMessage('', 'info', '로그아웃 실패', '관리자에게 문의해 주세요.', '');
             }
         })
         .fail(function (xhr, status, errorThrown) {
             /*$('body').html("오류가 발생했습니다.")
                 .append("<br>오류명: " + errorThrown)
                 .append("<br>상태: " + status);*/
-            alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
         })
     }
 
@@ -259,7 +259,7 @@ function showMessage(selector, icon, title, msg, confirmButtonColor) {
     Swal.fire({
         icon: icon,
         title: title,
-        html: '<span style="font-size: 1.1em;">' + msg + '</span>',
+        html: '<span style="font-size: 1.4em;">' + msg + '</span>',
         allowOutsideClick: false,
         confirmButtonColor: confirmButtonColor
     })
@@ -290,7 +290,7 @@ function ajaxConnect(url, method, jsonStr) {
                 .append("<br>오류명: " + errorThrown)
                 .append("<br>상태: " + status);*/
 
-            alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
         })
     return result;
 }

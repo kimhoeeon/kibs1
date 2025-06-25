@@ -41,12 +41,12 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
     <span itemscope="" itemtype="http://schema.org/Organization">
-    <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-    <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-    <a itemprop="sameAs" href="https://kibs-online.com"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 </head>
 
@@ -204,7 +204,7 @@
                                                     <input type="text" id="utility_jugan_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityJuganFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
                                                 </p>
                                             </div>
-                                            <div class="note">행사기간(2/28~3/2, 총 3일)동안 사용가능</div>
+                                            <div class="note">행사기간(3/6~3/8, 총 3일)동안 사용가능</div>
                                         </li>
                                         <li>
                                             <div class="cate">24시간용 220v</div>
@@ -219,7 +219,7 @@
                                                     <input type="text" id="utility_day_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
                                                 </p>
                                             </div>
-                                            <div class="note">행사기간(2/28~3/2, 총 3일)동안 사용가능</div>
+                                            <div class="note">행사기간(3/6~3/8, 총 3일)동안 사용가능</div>
                                         </li>
                                         <li>
                                             <div class="cate">압축공기 기본형</div>
@@ -309,7 +309,7 @@
                                                     <input type="text" id="utility_barcode_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityBarcodeFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
                                                 </p>
                                             </div>
-                                            <div class="note">행사기간(2/28~3/2, 총 3일)동안 사용가능</div>
+                                            <div class="note">행사기간(3/6~3/8, 총 3일)동안 사용가능</div>
                                         </li>
                                     </ul>
                                 </div>

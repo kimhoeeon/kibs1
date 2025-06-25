@@ -677,7 +677,7 @@
                     <div class="form_wrap">
                         <div class="form_tit">
                             <div class="big">An Export Consultation Meeting</div>
-                            <div class="small">The 2025 Gyeonggi International Boat Show will invite domestic and
+                            <div class="small">The 2026 Gyeonggi International Boat Show will invite domestic and
                                 foreign buyers and hold 1:1 export consultations.
                             </div>
                         </div>

@@ -41,17 +41,18 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
     <span itemscope="" itemtype="http://schema.org/Organization">
-    <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-    <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-    <a itemprop="sameAs" href="https://kibs-online.com"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 </head>
 
 <body>
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
+
+    <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
     <div id="container">
 
@@ -204,23 +205,24 @@
 
     </div>
 
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
+    <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-<script>
-    $(function(){
-        let companyNameKo = '${companyNameKo}';
-        if(nvl(companyNameKo,'') !== ''){
-            $('#searchText').val(companyNameKo);
-        }
-
-        document.addEventListener("keyup", function(event) {
-            if (event.key === 'Enter') {
-                onlineExhibitorList(1);
+    <script>
+        $(function(){
+            let companyNameKo = '${companyNameKo}';
+            if(nvl(companyNameKo,'') !== ''){
+                $('#searchText').val(companyNameKo);
             }
-        });
-    })
-</script>
 
-<script src="/js/front/online.js?ver=<%=System.currentTimeMillis()%>"></script>
+            document.addEventListener("keyup", function(event) {
+                if (event.key === 'Enter') {
+                    onlineExhibitorList(1);
+                }
+            });
+        })
+    </script>
+
+    <script src="/js/front/online.js?ver=<%=System.currentTimeMillis()%>"></script>
+
 </body>
 </html>

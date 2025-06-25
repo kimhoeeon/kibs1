@@ -81,7 +81,7 @@ function f_board_notice_remove(rowId){
                     showMessage('', 'info', '공지사항 삭제', '공지사항이 삭제되었습니다.', '');
                     f_board_notice_search(); // 삭제 성공 후 재조회 수행
                 } else {
-                    showMessage('', 'error', '에러 발생', '공지사항 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    showMessage('', 'error', '에러 발생', '공지사항 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                 }
             }
         });
@@ -151,11 +151,11 @@ function f_application_banner_save(seq){
                             });
 
                         } else {
-                            showMessage('', 'error', '에러 발생', '전시 업체 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                            showMessage('', 'error', '에러 발생', '전시 업체 정보 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                         }
                     },
                     error: function (xhr, status) {
-                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                     }
                 })
 
@@ -189,7 +189,7 @@ function f_banner_form_valid_check(gbn){
 
     let companyAddress = $('#companyAddress').val();
     if (nvl(companyAddress,"") === "") {
-        showMessage('', 'info', '입력 정보 확인', '주소를 검색해주세요.', '');
+        showMessage('', 'info', '입력 정보 확인', '주소를 검색해 주세요.', '');
         return false;
     }
 
@@ -214,7 +214,7 @@ function f_banner_form_valid_check(gbn){
     if(gbn === 'C') { // insert
         let companyLicense = $('#companyLicense').val();
         if (nvl(companyLicense,"") === "") {
-            showMessage('', 'info', '입력 정보 확인', '사업자등록증을 첨부해주세요.', '');
+            showMessage('', 'info', '입력 정보 확인', '사업자등록증을 첨부해 주세요.', '');
             return false;
         }
     }else{
@@ -222,7 +222,7 @@ function f_banner_form_valid_check(gbn){
         if(companyLicenseFile_li === 0){
             let companyLicense = $('#companyLicense').val();
             if (nvl(companyLicense,"") === "") {
-                showMessage('', 'info', '입력 정보 확인', '사업자등록증을 첨부해주세요.', '');
+                showMessage('', 'info', '입력 정보 확인', '사업자등록증을 첨부해 주세요.', '');
                 return false;
             }
         }
@@ -236,7 +236,7 @@ function f_banner_form_valid_check(gbn){
 
     let memberCompanyYn = $('input[type=radio][name=memberCompanyYn]:checked').val();
     if(nvl(memberCompanyYn,"") === ""){
-        showMessage('', 'info', '입력 정보 확인', '회원사 여부를 체크해주세요.', '');
+        showMessage('', 'info', '입력 정보 확인', '회원사 여부를 체크해 주세요.', '');
         return false;
     }
 
@@ -273,7 +273,7 @@ function f_banner_form_valid_check(gbn){
 
     let fieldPart = $('input[type=checkbox][name=fieldPart]').is(':checked');
     if (!fieldPart) {
-        showMessage('', 'info', '입력 정보 확인', '참가분야를 하나 이상 체크해주세요.', '');
+        showMessage('', 'info', '입력 정보 확인', '참가분야를 하나 이상 체크해 주세요.', '');
         return false;
     }
 
@@ -349,7 +349,7 @@ function f_banner_form_valid_check(gbn){
     if(gbn === 'C') {
         let logo = $('#logo').val();
         if (nvl(logo,"") === "") {
-            showMessage('', 'info', '입력 정보 확인', '로고 이미지를 첨부해주세요.', '');
+            showMessage('', 'info', '입력 정보 확인', '로고 이미지를 첨부해 주세요.', '');
             return false;
         }
     }else{
@@ -357,7 +357,7 @@ function f_banner_form_valid_check(gbn){
         if(logoFile_li === 0){
             let logo = $('#logo').val();
             if (nvl(logo,"") === "") {
-                showMessage('', 'info', '입력 정보 확인', '로고 이미지를 첨부해주세요.', '');
+                showMessage('', 'info', '입력 정보 확인', '로고 이미지를 첨부해 주세요.', '');
                 return false;
             }
         }
@@ -367,14 +367,14 @@ function f_banner_form_valid_check(gbn){
         let promotionImageList = $('input[type=text][name=promotionImage]');
         let promotionImage = promotionImageList.eq(0).val();
         if (nvl(promotionImage,"") === "") {
-            showMessage('', 'info', '입력 정보 확인', '홍보 이미지1 은 필수로 첨부해주세요.', '');
+            showMessage('', 'info', '입력 정보 확인', '홍보 이미지1 은 필수로 첨부해 주세요.', '');
             return false;
         }
     }else{
         let promotionImageFile_li = $('.promotionImageFile_li').length;
         let promotionImageListVal = $('input[type=text][name=promotionImage]').eq(0).val();
         if( (promotionImageFile_li === 0) && nvl(promotionImageListVal,"") === ""){
-            showMessage('', 'info', '입력 정보 확인', '홍보 이미지1 은 필수로 첨부해주세요.', '');
+            showMessage('', 'info', '입력 정보 확인', '홍보 이미지1 은 필수로 첨부해 주세요.', '');
             return false;
         }
     }
@@ -384,7 +384,7 @@ function f_banner_form_valid_check(gbn){
         for(let i=0; i<productImageList.length; i++){
             let productImage = productImageList.eq(i).val();
             if (nvl(productImage,"") === "") {
-                showMessage('', 'info', '입력 정보 확인', '제품 사진을 첨부해주세요.', '');
+                showMessage('', 'info', '입력 정보 확인', '제품 사진을 첨부해 주세요.', '');
                 return false;
             }
         }
@@ -401,7 +401,7 @@ function f_banner_form_valid_check(gbn){
         }
 
         if((productImageFile_li+productImageFileCnt) !== onlineInfoBoxLen){
-            showMessage('', 'info', '입력 정보 확인', '제품 사진을 첨부해주세요.', '');
+            showMessage('', 'info', '입력 정보 확인', '제품 사진을 첨부해 주세요.', '');
             return false;
         }
     }
@@ -484,7 +484,7 @@ function f_banner_form_valid_check(gbn){
     if(exportMeetingYn === "Y"){
         let formChugaListLen = $('.form_chuga_list').length;
         if(formChugaListLen === 0){
-            showMessage('', 'info', '입력 정보 확인', '수출상담회 참가를 희망하실 경우 바이어를 등록해주세요.', '');
+            showMessage('', 'info', '입력 정보 확인', '수출상담회 참가를 희망하실 경우 바이어를 등록해 주세요.', '');
             return false;
         }
     }*/

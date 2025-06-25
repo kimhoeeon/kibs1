@@ -19,19 +19,16 @@ License: For each use you must have a valid license purchased only from above li
 <!--begin::Head-->
 <head>
     <base href="/mng/"/>
-    <title>2025 경기국제보트쇼 관리자</title>
+    <title>2026 경기국제보트쇼 관리자</title>
     <meta charset="utf-8"/>
-    <meta name="description"
-          content="2025 경기국제보트쇼 홈페이지"/>
-    <meta name="keywords"
-          content="KIBS"/>
+    <meta name="description" content="2026 경기국제보트쇼 홈페이지"/>
+    <meta name="keywords" content="KIBS"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta property="og:locale" content="ko_KR"/>
     <meta property="og:type" content="article"/>
-    <meta property="og:title"
-          content="KIBS"/>
+    <meta property="og:title" content="KIBS"/>
     <meta property="og:url" content="https://koreaboatshow.or.kr/"/>
-    <meta property="og:site_name" content="2025 KIBS | 경기국제보트쇼"/>
+    <meta property="og:site_name" content="2026 KIBS | 경기국제보트쇼"/>
     <link rel="canonical" href="https://koreaboatshow.or.kr/"/>
 
     <%-- favicon --%>
@@ -43,12 +40,10 @@ License: For each use you must have a valid license purchased only from above li
     <!--end::Fonts-->
     <!--begin::Vendor Stylesheets(used for this page only)-->
 
-    <link href="/assets/plugins/custom/datatables/datatables.bundle.css"
-          rel="stylesheet" type="text/css"/>
+    <link href="/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css"/>
     <!--end::Vendor Stylesheets-->
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet"
-          type="text/css"/>
+    <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
     <!--end::Global Stylesheets Bundle-->
 
@@ -83,14 +78,14 @@ if (document.documentElement) {
 <!--end::Theme mode setup on page load-->
 
 <!--begin::login check-->
-<c:if test="${status ne 'logon'}">
+<c:if test="${sessionScope.get('status') ne 'logon'}">
     <script>
         alert("로그인해 주세요.");
         location.href = '/mng/index.do';
     </script>
 </c:if>
 
-<c:if test="${status eq 'logon'}">
+<c:if test="${sessionScope.get('status') eq 'logon'}">
 
     <!--begin::App-->
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
@@ -300,7 +295,7 @@ if (document.documentElement) {
                                                 <ul class="nav nav-stretch nav-line-tabs fw-bold fs-6 p-0 p-lg-10 flex-nowrap flex-grow-1">
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 active text-active-primary"
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary"
                                                            onclick=""
                                                            data-bs-toggle="tab"
                                                            data-bs-target="#kt_app_header_menu_pages_visitor">참가자 관리</a>
@@ -315,9 +310,16 @@ if (document.documentElement) {
                                                     <!--end:Nav item-->
                                                     <!--begin:Nav item-->
                                                     <li class="nav-item mx-lg-1">
-                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" onclick=""
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
                                                            data-bs-toggle="tab"
-                                                           data-bs-target="#kt_app_header_menu_pages_application">참가신청서관리</a>
+                                                           data-bs-target="#kt_app_header_menu_pages_application_new">참가신청서 관리 (2026~)</a>
+                                                    </li>
+                                                    <!--end:Nav item-->
+                                                    <!--begin:Nav item-->
+                                                    <li class="nav-item mx-lg-1">
+                                                        <a class="nav-link py-3 py-lg-6 text-active-primary active" onclick=""
+                                                           data-bs-toggle="tab"
+                                                           data-bs-target="#kt_app_header_menu_pages_application">참가신청서 관리 (~2025)</a>
                                                     </li>
                                                     <!--end:Nav item-->
                                                 </ul>
@@ -326,8 +328,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane active w-lg-350px"
-                                                     id="kt_app_header_menu_pages_visitor">
+                                                <div class="tab-pane w-lg-350px" id="kt_app_header_menu_pages_visitor">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -350,7 +351,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitor/participant/visitor.do"
-                                                                           class="menu-link active">
+                                                                           class="menu-link">
                                                                             <span class="menu-title">참관객 목록</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -417,8 +418,107 @@ if (document.documentElement) {
                                                 </div>
                                                 <!--end:Tab pane-->
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-350px"
-                                                     id="kt_app_header_menu_pages_application">
+                                                <div class="tab-pane w-lg-350px" id="kt_app_header_menu_pages_application_new">
+                                                    <!--begin:Row-->
+                                                    <div class="row">
+                                                        <!--begin:Col-->
+                                                        <div class="col-lg-12 mb-6 mb-lg-0">
+                                                            <!--begin:Row-->
+                                                            <div class="row">
+                                                                <!--begin:Col-->
+                                                                <div class="col-lg-12">
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/exhibitorNew/application/booth.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">전시부스 신청</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/exhibitorNew/application/sign.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">상호간판 신청</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/exhibitorNew/application/utility.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">유틸리티 신청</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/exhibitorNew/application/pass.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">출입증 신청</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/exhibitorNew/application/buyer.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">초청 희망 바이어</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/exhibitorNew/application/gift.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">경품제공 신청</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/exhibitorNew/application/online.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">온라인 전시관</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/exhibitorNew/application/product.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">전시품 신청</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                </div>
+                                                                <!--end:Col-->
+                                                            </div>
+                                                            <!--end:Row-->
+                                                        </div>
+                                                        <!--end:Col-->
+                                                    </div>
+                                                    <!--end:Row-->
+                                                </div>
+                                                <!--end:Tab pane-->
+                                                <!--begin:Tab pane-->
+                                                <div class="tab-pane w-lg-350px active" id="kt_app_header_menu_pages_application">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -431,7 +531,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitor/application/booth.do"
-                                                                           class="menu-link">
+                                                                           class="menu-link active">
                                                                             <span class="menu-title">전시부스 신청</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -1406,21 +1506,137 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <!--begin:Menu link-->
+                                    <span class="menu-link">
+                                        <span class="menu-icon">
+                                            <i class="ki-duotone ki-some-files fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <span class="menu-title">참가신청서 관리 (2026~)</span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <!--end:Menu link-->
+                                    <!--begin:Menu sub-->
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/exhibitorNew/application/booth.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">전시부스 신청</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/exhibitorNew/application/sign.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">상호간판 신청</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/exhibitorNew/application/utility.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">유틸리티 신청</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/exhibitorNew/application/pass.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">출입증 신청</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/exhibitorNew/application/buyer.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">초청 희망 바이어</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/exhibitorNew/application/gift.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">경품제공 신청</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/exhibitorNew/application/online.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">온라인 전시관</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/exhibitorNew/application/product.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">전시품 신청</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                    </div>
+                                    <!--end:Menu sub-->
+                                </div>
+                                <!--end:Menu item-->
+                                <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
-                                    <span class="menu-icon">
-                                        <i class="ki-duotone ki-file fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                            <span class="path3"></span>
-                                            <span class="path4"></span>
-                                            <span class="path5"></span>
-                                        </i>
+                                        <span class="menu-icon">
+                                            <i class="ki-duotone ki-file fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                        </span>
+                                        <span class="menu-title">참가신청서 관리 (~2025)</span>
+                                        <span class="menu-arrow"></span>
                                     </span>
-                                    <span class="menu-title">참가신청서 관리</span>
-                                    <span class="menu-arrow"></span>
-                                </span>
                                     <!--end:Menu link-->
                                     <!--begin:Menu sub-->
                                     <div class="menu-sub menu-sub-accordion">
@@ -1428,9 +1644,9 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link active" href="/mng/exhibitor/application/booth.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">전시부스 신청</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1440,9 +1656,9 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/exhibitor/application/sign.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">상호간판 신청</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1452,9 +1668,9 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/exhibitor/application/utility.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">유틸리티 신청</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1464,9 +1680,9 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/exhibitor/application/pass.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">출입증 신청</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1476,9 +1692,9 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/exhibitor/application/buyer.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">초청 희망 바이어</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1488,33 +1704,21 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/exhibitor/application/gift.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">경품제공 신청</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
-                                        <%--<!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/exhibitor/application/banner.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                                <span class="menu-title">웹 배너 신청</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->--%>
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/exhibitor/application/online.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">온라인 전시관</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1978,7 +2182,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">참가신청서 관리</li>
+                                        <li class="breadcrumb-item text-muted">참가신청서 관리 (~2025)</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -2245,7 +2449,7 @@ if (document.documentElement) {
                                                                     <span class="fw-semibold d-block fs-7">1 부스당 300,000 원 할인</span>
                                                                 </td>
                                                                 <td>
-                                                                    <span class="fw-semibold d-block fs-7">1차 조기신청 할인 / ~ 2024.11.15 (금)까지 신청 시</span>
+                                                                    <span class="fw-semibold d-block fs-7">1차 조기신청 할인 / ~ 2025.11.21 (금)까지 신청 시</span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="text-center align-middle">
@@ -2261,7 +2465,7 @@ if (document.documentElement) {
                                                                     <span class="fw-semibold d-block fs-7">1 부스당 200,000 원 할인</span>
                                                                 </td>
                                                                 <td>
-                                                                    <span class="fw-semibold d-block fs-7">2차 조기신청 할인 / ~ 2024.12.13 (금)까지 신청 시</span>
+                                                                    <span class="fw-semibold d-block fs-7">2차 조기신청 할인 / ~ 2025.12.19 (금)까지 신청 시</span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="text-center align-middle">
@@ -2277,7 +2481,7 @@ if (document.documentElement) {
                                                                     <span class="fw-semibold d-block fs-7">1 부스당 200,000 원 할인</span>
                                                                 </td>
                                                                 <td>
-                                                                    <span class="fw-semibold d-block fs-7">2014년 ~ 2024년 경기국제보트쇼 참가기업</span>
+                                                                    <span class="fw-semibold d-block fs-7">2015년 ~ 2025년 경기국제보트쇼 참가기업</span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="text-center align-middle">

@@ -66,7 +66,7 @@ $.ajax({
                     /*$('body').html("오류가 발생했습니다.")
                         .append("<br>오류명: " + errorThrown)
                         .append("<br>상태: " + status);*/
-                    alert('Insta Token Refresh 오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+                    alert('Insta Token Refresh 오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
                 })
 
             },
@@ -83,7 +83,7 @@ $.ajax({
     /*$('body').html("오류가 발생했습니다.")
         .append("<br>오류명: " + errorThrown)
         .append("<br>상태: " + status);*/
-    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+    alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
 })
 
 function insta_set(token){

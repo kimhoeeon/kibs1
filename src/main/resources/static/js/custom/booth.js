@@ -2,7 +2,7 @@
  * mng/exhibitor/application/booth.js
  * 참가신청서 관리 > 전시부스 신청
  * */
-var transferYear = (new Date().getFullYear()).toString();
+var transferYear = '2025';
 
 $(function(){
 
@@ -80,9 +80,9 @@ function f_application_booth_search(){
         let check = /^[0-9]+$/;
         if (!check.test(search_text)) {
             Swal.fire({
-                title: '검색 조건 확인',
-                html: '검색 조건이 신청갯수일 경우<br>숫자로만 검색 가능합니다.',
                 icon: 'info',
+                title: '[ 검색 조건 확인 ]',
+                html: '<span style="font-size: 1.4em;">검색 조건이 신청갯수일 경우<br>숫자로만 검색 가능합니다.</span>',
                 allowOutsideClick: false,
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: '확인'
@@ -251,11 +251,11 @@ function f_application_booth_save(seq){
                         });
 
                     } else {
-                        showMessage('', 'error', '에러 발생', '전시 부스 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', '전시 부스 정보 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                     }
                 },
                 error: function (xhr, status) {
-                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                    alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                 }
             })
 

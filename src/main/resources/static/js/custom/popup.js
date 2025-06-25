@@ -178,7 +178,7 @@ function f_center_popup_remove(rowId){
                     showMessage('', 'info', '팝업 삭제', '팝업이 삭제되었습니다.', '');
                     f_center_popup_search(); // 삭제 성공 후 재조회 수행
                 } else {
-                    showMessage('', 'error', '에러 발생', '팝업 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    showMessage('', 'error', '에러 발생', '팝업 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                 }
             }
         });
@@ -247,7 +247,7 @@ function f_center_popup_save(id){
                         }
                     },
                     error: function (xhr, status) {
-                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                     }
                 })//ajax
 

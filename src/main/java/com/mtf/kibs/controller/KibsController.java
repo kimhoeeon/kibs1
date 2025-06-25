@@ -117,8 +117,7 @@ public class KibsController {
         }
 
         // 참가업체 보기
-        LocalDate now = LocalDate.now();
-        String transferYear = String.valueOf(now.getYear());
+        String transferYear = "2026";
         List<MainOnlineDTO> mainOnlineList = kibsService.processSelectOnlineList(transferYear);
         mv.addObject("mainOnlineList", mainOnlineList);
 
@@ -275,7 +274,7 @@ public class KibsController {
     //***************************************************************************
 
     @RequestMapping(value = "/apply/step01.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView apply_step01(String mode, ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView apply_step01(String mode, ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > apply_step01");
         ModelAndView mv = new ModelAndView();
 
@@ -285,84 +284,81 @@ public class KibsController {
             mv.addObject("mode", "end");
         }
 
-        if(mode != null && !"".equals(mode)){
+        if(mode != null && !mode.isEmpty()){
             mv.addObject("mode", mode);
         }
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            if(id != null && !id.equals("null") && !id.equals("")) {
-                ExhibitorDTO reqDTO = new ExhibitorDTO();
+            if(id != null && !id.equals("null") && !id.isEmpty()) {
+                ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
                 reqDTO.setId(id);
                 reqDTO.setTransferYear(transferYear);
-                exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+                exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
                 if (exInfo != null) {
-                    exhibitor_seq = exInfo.getSeq();
+                    exhibitor_new_seq = exInfo.getSeq();
                 }
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
 
-            /* 담당자정보*/
-            ChargePersonDTO chargeReq = new ChargePersonDTO();
-            chargeReq.setId(exhibitor_seq);
-            List<ChargePersonDTO> chargeList = kibsService.processSelectChargeListSeq(chargeReq);
+            /* 부담당자 정보*/
+            ChargeNewDTO chargeNewReq = new ChargeNewDTO();
+            chargeNewReq.setExSeq(exhibitor_new_seq);
+            List<ChargeNewDTO> chargeList = kibsService.processSelectChargeNewList(chargeNewReq);
             mv.addObject("chargeList", chargeList);
 
-            /* 전시정보 */
-            DisplayDTO displayReq = new DisplayDTO();
-            displayReq.setId(exhibitor_seq);
-            List<DisplayDTO> displayList = kibsService.processSelectDisplayListSeq(displayReq);
-            mv.addObject("displayList", displayList);
+            /* 전시품 정보 */
+            ProductNewDTO productNewReq = new ProductNewDTO();
+            productNewReq.setExSeq(exhibitor_new_seq);
+            List<ProductNewDTO> productList = kibsService.processSelectProductNewList(productNewReq);
+            mv.addObject("productList", productList);
 
             /* 온라인정보 */
-            OnlineDTO onlineReq = new OnlineDTO();
-            onlineReq.setId(exhibitor_seq);
-            List<OnlineDTO> onlineList = kibsService.processSelectOnlineListSeq(onlineReq);
+            OnlineNewDTO onlineNewReq = new OnlineNewDTO();
+            onlineNewReq.setExSeq(exhibitor_new_seq);
+            List<OnlineNewDTO> onlineList = kibsService.processSelectOnlineNewList(onlineNewReq);
             mv.addObject("onlineList", onlineList);
 
             /* 바이어정보 */
-            BuyerDTO buyerReq = new BuyerDTO();
-            buyerReq.setId(exhibitor_seq);
-            List<BuyerDTO> buyerList = kibsService.processSelectBuyerListSeq(buyerReq);
+            BuyerNewDTO buyerNewReq = new BuyerNewDTO();
+            buyerNewReq.setExSeq(exhibitor_new_seq);
+            List<BuyerNewDTO> buyerList = kibsService.processSelectBuyerNewList(buyerNewReq);
             mv.addObject("buyerList", buyerList);
 
             /* 파일정보 */
-            FileDTO fileReq = new FileDTO();
-            fileReq.setUserId(exhibitor_seq);
-            List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_seq);
-            List<FileDTO> promotionImageFileList = new ArrayList<>();
+            List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_new_seq);
             List<FileDTO> productImageFileList = new ArrayList<>();
-            for(int i=0; i<fileList.size(); i++){
-                FileDTO fileInfo = fileList.get(i);
+            List<FileDTO> onlineImageFileList = new ArrayList<>();
+            for (FileDTO fileInfo : fileList) {
                 String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
-                switch (fileNote){
+                switch (fileNote) {
                     case "companyLicense":
                         mv.addObject("companyLicenseFile", fileInfo);
                         break;
                     case "logo":
                         mv.addObject("logoFile", fileInfo);
                         break;
-                    case "promotionImage":
-                        promotionImageFileList.add(fileInfo);
-                        break;
                     case "productImage":
                         productImageFileList.add(fileInfo);
+                        break;
+                    case "onlineImage":
+                        onlineImageFileList.add(fileInfo);
                         break;
                     default:
                         break;
                 }
             }
-            mv.addObject("promotionImageFileList", promotionImageFileList);
             mv.addObject("productImageFileList", productImageFileList);
+            mv.addObject("onlineImageFileList", onlineImageFileList);
         }
 
         mv.setViewName("/apply/step01");
@@ -370,28 +366,28 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/apply/step2_1.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView apply_step2_1(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView apply_step2_1(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > apply_step2_1");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            ExhibitorDTO reqDTO = new ExhibitorDTO();
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
             if(exInfo != null){
-                exhibitor_seq = exInfo.getSeq();
+                exhibitor_new_seq = exInfo.getSeq();
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
         }else{
             session.invalidate(); //세션 초기화
@@ -401,28 +397,28 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/apply/step2_2.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView apply_step2_2(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView apply_step2_2(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > apply_step2_2");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            ExhibitorDTO reqDTO = new ExhibitorDTO();
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
             if(exInfo != null){
-                exhibitor_seq = exInfo.getSeq();
+                exhibitor_new_seq = exInfo.getSeq();
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
         }
 
@@ -431,28 +427,28 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/apply/step2_3.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView apply_step2_3(ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step2_3");
+    public ModelAndView apply_step2_3(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > apply_step2_3");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            ExhibitorDTO reqDTO = new ExhibitorDTO();
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
             if(exInfo != null){
-                exhibitor_seq = exInfo.getSeq();
+                exhibitor_new_seq = exInfo.getSeq();
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
         }
 
@@ -461,37 +457,36 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/apply/step2_4.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView apply_step2_4(ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step2_4");
+    public ModelAndView apply_step2_4(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > apply_step2_4");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        List<PassDTO> passList = new ArrayList<>();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            PassDTO passDTO = new PassDTO();
-            passDTO.setId(exhibitor_seq);
-            passList = kibsService.processSelectPassList(passDTO);
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        List<PassNewDTO> passList = new ArrayList<>();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            PassNewDTO passNewDTO = new PassNewDTO();
+            passNewDTO.setExSeq(exhibitor_new_seq);
+            passList = kibsService.processSelectPassNewList(passNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
 
-            ExhibitorDTO exDTO = new ExhibitorDTO();
+            ExhibitorNewDTO exDTO = new ExhibitorNewDTO();
             exDTO.setId(id);
             exDTO.setTransferYear(transferYear);
-            exhibitor_seq = kibsService.processSearchExhibitorSeq(exDTO);
+            exhibitor_new_seq = kibsService.processSearchExhibitorNewSeq(exDTO);
 
-            PassDTO reqDTO = new PassDTO();
-            reqDTO.setUserId(id);
-            reqDTO.setTransferYear(transferYear);
-            passList = kibsService.processSelectPassList(reqDTO);
+            PassNewDTO reqDTO = new PassNewDTO();
+            reqDTO.setExSeq(exhibitor_new_seq);
+            passList = kibsService.processSelectPassNewList(reqDTO);
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            mv.addObject("info", exhibitorDTO);
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            mv.addObject("info", exhibitorNewDTO);
             mv.addObject("passList", passList);
 
-            ExhibitorDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorInfo(exhibitor_seq);
+            ExhibitorNewDTO exhibitorInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
             mv.addObject("exhibitorInfo", exhibitorInfo);
         }
 
@@ -500,34 +495,33 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/apply/step2_5.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView apply_step2_5(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView apply_step2_5(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > apply_step2_5");
 
         ModelAndView mv = new ModelAndView();
         /* 기본정보 - 참가업체 정보 */
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        List<GiftDTO> giftList = new ArrayList<>();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            GiftDTO giftDTO = new GiftDTO();
-            giftDTO.setId(exhibitor_seq);
-            giftList = kibsService.processSelectGiftList(giftDTO);
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        List<GiftNewDTO> giftList = new ArrayList<>();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            GiftNewDTO giftNewDTO = new GiftNewDTO();
+            giftNewDTO.setExSeq(exhibitor_new_seq);
+            giftList = kibsService.processSelectGiftNewList(giftNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
 
-            ExhibitorDTO exDTO = new ExhibitorDTO();
+            ExhibitorNewDTO exDTO = new ExhibitorNewDTO();
             exDTO.setId(id);
             exDTO.setTransferYear(transferYear);
-            exhibitor_seq = kibsService.processSearchExhibitorSeq(exDTO);
+            exhibitor_new_seq = kibsService.processSearchExhibitorNewSeq(exDTO);
 
-            GiftDTO reqDTO = new GiftDTO();
-            reqDTO.setUserId(id);
-            reqDTO.setTransferYear(transferYear);
-            giftList = kibsService.processSelectGiftList(reqDTO);
+            GiftNewDTO reqDTO = new GiftNewDTO();
+            reqDTO.setExSeq(exhibitor_new_seq);
+            giftList = kibsService.processSelectGiftNewList(reqDTO);
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            mv.addObject("info", exhibitorDTO);
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            mv.addObject("info", exhibitorNewDTO);
             mv.addObject("giftList", giftList);
         }
 
@@ -552,53 +546,81 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/apply/step2_8.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView apply_step2_8(ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step2_8");
+    public ModelAndView apply_step2_8(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > apply_step2_8");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.equals("")){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            if(id != null && !id.equals("null") && !id.equals("")) {
-                ExhibitorDTO reqDTO = new ExhibitorDTO();
+            if(id != null && !id.equals("null") && !id.isEmpty()) {
+                ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
                 reqDTO.setId(id);
                 reqDTO.setTransferYear(transferYear);
-                exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+                exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
                 if (exInfo != null) {
-                    exhibitor_seq = exInfo.getSeq();
+                    exhibitor_new_seq = exInfo.getSeq();
                 }
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
 
-            /* 담당자정보*/
-            ChargePersonDTO chargeReq = new ChargePersonDTO();
-            chargeReq.setId(exhibitor_seq);
-            List<ChargePersonDTO> chargeList = kibsService.processSelectChargeListSeq(chargeReq);
+            /* 부담당자 정보*/
+            ChargeNewDTO chargeNewReq = new ChargeNewDTO();
+            chargeNewReq.setExSeq(exhibitor_new_seq);
+            List<ChargeNewDTO> chargeList = kibsService.processSelectChargeNewList(chargeNewReq);
             mv.addObject("chargeList", chargeList);
 
-            /* 전시정보 */
-            DisplayDTO displayReq = new DisplayDTO();
-            displayReq.setId(exhibitor_seq);
-            List<DisplayDTO> displayList = kibsService.processSelectDisplayListSeq(displayReq);
-            mv.addObject("displayList", displayList);
+            /* 전시품 정보 */
+            ProductNewDTO productNewReq = new ProductNewDTO();
+            productNewReq.setExSeq(exhibitor_new_seq);
+            List<ProductNewDTO> productList = kibsService.processSelectProductNewList(productNewReq);
+            mv.addObject("productList", productList);
+
+            /* 온라인정보 */
+            OnlineNewDTO onlineNewReq = new OnlineNewDTO();
+            onlineNewReq.setExSeq(exhibitor_new_seq);
+            List<OnlineNewDTO> onlineList = kibsService.processSelectOnlineNewList(onlineNewReq);
+            mv.addObject("onlineList", onlineList);
+
+            /* 바이어정보 */
+            BuyerNewDTO buyerNewReq = new BuyerNewDTO();
+            buyerNewReq.setExSeq(exhibitor_new_seq);
+            List<BuyerNewDTO> buyerList = kibsService.processSelectBuyerNewList(buyerNewReq);
+            mv.addObject("buyerList", buyerList);
 
             /* 파일정보 */
-            List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_seq);
-            for(int i=0; i<fileList.size(); i++){
-                FileDTO fileInfo = fileList.get(i);
+            List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_new_seq);
+            List<FileDTO> productImageFileList = new ArrayList<>();
+            List<FileDTO> onlineImageFileList = new ArrayList<>();
+            for (FileDTO fileInfo : fileList) {
                 String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
-                if(fileNote.equals("companyLicense")){
-                    mv.addObject("companyLicenseFile", fileInfo);
+                switch (fileNote) {
+                    case "companyLicense":
+                        mv.addObject("companyLicenseFile", fileInfo);
+                        break;
+                    case "logo":
+                        mv.addObject("logoFile", fileInfo);
+                        break;
+                    case "productImage":
+                        productImageFileList.add(fileInfo);
+                        break;
+                    case "onlineImage":
+                        onlineImageFileList.add(fileInfo);
+                        break;
+                    default:
+                        break;
                 }
             }
+            mv.addObject("productImageFileList", productImageFileList);
+            mv.addObject("onlineImageFileList", onlineImageFileList);
         }
 
         mv.setViewName("/apply/step2_8");
@@ -606,28 +628,28 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/apply/step03.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView apply_step03(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView apply_step03(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > apply_step03");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            ExhibitorDTO reqDTO = new ExhibitorDTO();
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
             if(exInfo != null){
-                exhibitor_seq = exInfo.getSeq();
+                exhibitor_new_seq = exInfo.getSeq();
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
         }
 
@@ -737,7 +759,7 @@ public class KibsController {
     @RequestMapping(value = "/visitor/preApplyCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<VisitorDTO> visitor_preApplyCheck(@RequestBody VisitorDTO visitorDTO) {
-        System.out.println("KibsController > checkDuplicateId");
+        System.out.println("KibsController > visitor_preApplyCheck");
         VisitorDTO result = kibsService.processSelectPreVisitorCheck(visitorDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -1291,14 +1313,28 @@ public class KibsController {
         System.out.println("KibsController > online_company_view");
         ModelAndView mv = new ModelAndView();
 
-        ExhibitorDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorInfo(seq);
-        mv.addObject("exhibitorInfo", exhibitorInfo);
+        if(seq != null && !seq.isEmpty()) {
+            if (seq.contains("EN")) {
+                mv.addObject("gbn", "EN");
 
-        List<OnlineDTO> onlineList = kibsService.processSelectOnlineInfoList(seq);
-        mv.addObject("onlineList", onlineList);
+                ExhibitorNewDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorNewInfo(seq);
+                mv.addObject("exhibitorInfo", exhibitorInfo);
 
-        List<FileDTO> fileList = kibsService.processSelectFileList(seq);
-        mv.addObject("fileList", fileList);
+                List<OnlineNewDTO> onlineList = kibsService.processSelectOnlineNewInfoList(seq);
+                mv.addObject("onlineList", onlineList);
+            } else {
+                mv.addObject("gbn", "E");
+
+                ExhibitorDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorInfo(seq);
+                mv.addObject("exhibitorInfo", exhibitorInfo);
+
+                List<OnlineDTO> onlineList = kibsService.processSelectOnlineInfoList(seq);
+                mv.addObject("onlineList", onlineList);
+            }
+
+            List<FileDTO> fileList = kibsService.processSelectFileList(seq);
+            mv.addObject("fileList", fileList);
+        }
 
         mv.setViewName("/online/company_view");
         return mv;
@@ -1336,19 +1372,19 @@ public class KibsController {
 
         //List<FileDTO> productFileList = new ArrayList<>();
         List<OnlineRelatedDTO> relatedItemList = kibsService.processSelectOnlineProductListPaging(onlineRelatedDTO);
-        for(int i=0; i<relatedItemList.size(); i++){
+        for (OnlineRelatedDTO relatedDTO : relatedItemList) {
             FileDTO relatedItemFileRequestDto = new FileDTO();
-            relatedItemFileRequestDto.setUserId(relatedItemList.get(i).getId());
-            relatedItemFileRequestDto.setNote(relatedItemList.get(i).getNote());
+            relatedItemFileRequestDto.setUserId(relatedDTO.getId());
+            relatedItemFileRequestDto.setNote(relatedDTO.getNote());
 
             List<FileDTO> productFileResponseDto = kibsService.processSelectProductFileInfo(relatedItemFileRequestDto);
-            if(productFileResponseDto != null && !productFileResponseDto.isEmpty()){
-                relatedItemList.get(i).setProductFullFilePath(productFileResponseDto.get(0).getFullFilePath());
+            if (productFileResponseDto != null && !productFileResponseDto.isEmpty()) {
+                relatedDTO.setProductFullFilePath(productFileResponseDto.get(0).getFullFilePath());
             }
 
             FileDTO logoFileResponseDto = kibsService.processSelectLogoFileInfo(relatedItemFileRequestDto);
-            if(logoFileResponseDto != null){
-                relatedItemList.get(i).setLogoFullFilePath(logoFileResponseDto.getFullFilePath());
+            if (logoFileResponseDto != null) {
+                relatedDTO.setLogoFullFilePath(logoFileResponseDto.getFullFilePath());
             }
 
             //productFileList.add(relatedItemFileResponseDto);
@@ -1372,41 +1408,82 @@ public class KibsController {
         System.out.println("KibsController > online_product_view");
         //System.out.println(seq);
         ModelAndView mv = new ModelAndView();
+        if (seq != null && !seq.isEmpty()) {
+            if (seq.contains("ON")) {
 
-        OnlineDTO onlineInfo = kibsService.processSelectOnlineInfo(seq);
-        mv.addObject("onlineInfo", onlineInfo);
+                mv.addObject("gbn", "ON");
 
-        if(onlineInfo != null){
-            String id = onlineInfo.getId();
-            List<FileDTO> fileList = kibsService.processSelectFileList(id);
-            mv.addObject("fileList", fileList);
+                OnlineNewDTO onlineInfo = kibsService.processSelectOnlineNewInfo(seq);
+                mv.addObject("onlineInfo", onlineInfo);
 
-            ExhibitorDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorInfo(id);
-            mv.addObject("exhibitorInfo", exhibitorInfo);
+                if (onlineInfo != null) {
+                    String id = onlineInfo.getExSeq();
+                    List<FileDTO> fileList = kibsService.processSelectFileList(id);
+                    mv.addObject("fileList", fileList);
 
-            /* 같은 회사 제품 */
-            List<OnlineDTO> onlineItemList = kibsService.processSelectOnlineInfoList(id);
-            mv.addObject("onlineItemList", onlineItemList);
+                    ExhibitorNewDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorNewInfo(id);
+                    mv.addObject("exhibitorInfo", exhibitorInfo);
 
-            /* 관련 제품 */
-            OnlineDTO relatedRequestDto = new OnlineDTO();
-            relatedRequestDto.setProductOptionBig(onlineInfo.getProductOptionBig());
-            relatedRequestDto.setProductOptionSmall(onlineInfo.getProductOptionSmall());
-            relatedRequestDto.setId(onlineInfo.getId());
-            List<List<FileDTO>> productFileList = new ArrayList<>();
-            List<OnlineRelatedDTO> relatedItemList = kibsService.processSelectOnlineRelatedList(relatedRequestDto);
-            for(int i=0; i<relatedItemList.size(); i++){
-                FileDTO relatedItemFileRequestDto = new FileDTO();
-                relatedItemFileRequestDto.setUserId(relatedItemList.get(i).getId());
-                relatedItemFileRequestDto.setNote(relatedItemList.get(i).getNote());
-                List<FileDTO> relatedItemFileResponseList = kibsService.processSelectProductFileInfo(relatedItemFileRequestDto);
-                productFileList.add(relatedItemFileResponseList);
+                    /* 같은 회사 제품 */
+                    List<OnlineNewDTO> onlineItemList = kibsService.processSelectOnlineNewInfoList(id);
+                    mv.addObject("onlineItemList", onlineItemList);
+
+                    /* 관련 제품 */
+                    OnlineDTO relatedRequestDto = new OnlineDTO();
+                    relatedRequestDto.setProductOptionBig(onlineInfo.getOnlineOptionBig());
+                    relatedRequestDto.setProductOptionSmall(onlineInfo.getOnlineOptionSmall());
+                    relatedRequestDto.setId(onlineInfo.getExSeq());
+                    List<List<FileDTO>> productFileList = new ArrayList<>();
+                    List<OnlineRelatedDTO> relatedItemList = kibsService.processSelectOnlineRelatedList(relatedRequestDto);
+                    for (OnlineRelatedDTO onlineRelatedDTO : relatedItemList) {
+                        FileDTO relatedItemFileRequestDto = new FileDTO();
+                        relatedItemFileRequestDto.setUserId(onlineRelatedDTO.getId());
+                        relatedItemFileRequestDto.setNote(onlineRelatedDTO.getNote());
+                        List<FileDTO> relatedItemFileResponseList = kibsService.processSelectProductFileInfo(relatedItemFileRequestDto);
+                        productFileList.add(relatedItemFileResponseList);
+                    }
+                    mv.addObject("relatedItemList", relatedItemList);
+                    mv.addObject("relatedItemFileList", productFileList);
+                }
+            } else {
+
+                mv.addObject("gbn", "O");
+
+                OnlineDTO onlineInfo = kibsService.processSelectOnlineInfo(seq);
+                mv.addObject("onlineInfo", onlineInfo);
+
+                if (onlineInfo != null) {
+                    String id = onlineInfo.getId();
+                    List<FileDTO> fileList = kibsService.processSelectFileList(id);
+                    mv.addObject("fileList", fileList);
+
+                    ExhibitorDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorInfo(id);
+                    mv.addObject("exhibitorInfo", exhibitorInfo);
+
+                    /* 같은 회사 제품 */
+                    List<OnlineDTO> onlineItemList = kibsService.processSelectOnlineInfoList(id);
+                    mv.addObject("onlineItemList", onlineItemList);
+
+                    /* 관련 제품 */
+                    OnlineDTO relatedRequestDto = new OnlineDTO();
+                    relatedRequestDto.setProductOptionBig(onlineInfo.getProductOptionBig());
+                    relatedRequestDto.setProductOptionSmall(onlineInfo.getProductOptionSmall());
+                    relatedRequestDto.setId(onlineInfo.getId());
+                    List<List<FileDTO>> productFileList = new ArrayList<>();
+                    List<OnlineRelatedDTO> relatedItemList = kibsService.processSelectOnlineRelatedList(relatedRequestDto);
+                    for (OnlineRelatedDTO onlineRelatedDTO : relatedItemList) {
+                        FileDTO relatedItemFileRequestDto = new FileDTO();
+                        relatedItemFileRequestDto.setUserId(onlineRelatedDTO.getId());
+                        relatedItemFileRequestDto.setNote(onlineRelatedDTO.getNote());
+                        List<FileDTO> relatedItemFileResponseList = kibsService.processSelectProductFileInfo(relatedItemFileRequestDto);
+                        productFileList.add(relatedItemFileResponseList);
+                    }
+                    mv.addObject("relatedItemList", relatedItemList);
+                    mv.addObject("relatedItemFileList", productFileList);
+                }
             }
-            mv.addObject("relatedItemList", relatedItemList);
-            mv.addObject("relatedItemFileList", productFileList);
-
         }
-        
+
         mv.setViewName("/online/product_view");
         return mv;
     }
@@ -1416,11 +1493,11 @@ public class KibsController {
     //***************************************************************************
 
     @RequestMapping(value = "/mypage/index.do", method = RequestMethod.POST)
-    public ModelAndView mypage_index(ExhibitorDTO exhibitorDTO) {
+    public ModelAndView mypage_index(ExhibitorNewDTO exhibitorNewDTO) {
         System.out.println("KibsController > mypage_index");
         //System.out.println(exhibitorDTO.getSeq() + " / " + exhibitorDTO.getId() + " / " + exhibitorDTO.getTransferYear() );
         ModelAndView mv = new ModelAndView();
-        ExhibitorDTO info = kibsService.processSelectExhibitorPrc(exhibitorDTO);
+        ExhibitorNewDTO info = kibsService.processSelectExhibitorNewPrc(exhibitorNewDTO);
         mv.addObject("info", info);
         mv.setViewName("/mypage/index");
         return mv;
@@ -1428,49 +1505,49 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/step/selectBuyerSingle.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<BuyerDTO> mypage_step_selectBuyerSingle(@RequestBody BuyerDTO buyerDTO) {
-        System.out.println("KibsController > mypage_step_selectBuyerSingle");
+    public ResponseEntity<BuyerNewDTO> mypage_step_selectBuyerNewSingle(@RequestBody BuyerNewDTO buyerNewDTO) {
+        System.out.println("KibsController > mypage_step_selectBuyerNewSingle");
         //System.out.println(buyerDTO.toString());
 
-        BuyerDTO responseDTO = kibsService.processSelectBuyerSingle(buyerDTO);
+        BuyerNewDTO responseDTO = kibsService.processSelectBuyerNewSingle(buyerNewDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mypage/step/deleteBuyer.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_step_deleteBuyer(@RequestBody BuyerDTO buyerDTO) {
-        System.out.println("KibsController > mypage_step_deleteBuyer");
+    public ResponseEntity<ResponseDTO> mypage_step_deleteBuyerNew(@RequestBody BuyerNewDTO buyerNewDTO) {
+        System.out.println("KibsController > mypage_step_deleteBuyerNew");
         //System.out.println(buyerDTO.toString());
 
-        ResponseDTO responseDTO = kibsService.processDeleteBuyer(buyerDTO);
+        ResponseDTO responseDTO = kibsService.processDeleteBuyerNew(buyerNewDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mypage/modify.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView mypage_modify(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView mypage_modify(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > mypage_modify");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            ExhibitorDTO reqDTO = new ExhibitorDTO();
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
             if(exInfo != null){
-                exhibitor_seq = exInfo.getSeq();
+                exhibitor_new_seq = exInfo.getSeq();
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
         }
 
@@ -1478,94 +1555,91 @@ public class KibsController {
         return mv;
     }
 
-    @RequestMapping(value = "/mypage/step/exhibitor/updatePersonalInfo.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/mypage/step/exhibitorNew/updateInfo.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_step_exhibitor_updatePersonalInfo(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > mypage_step_exhibitor_updatePersonalInfo");
+    public ResponseEntity<ResponseDTO> mypage_step_exhibitor_updateInfo(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > mypage_step_exhibitor_updateInfo");
         //System.out.println(exhibitorDTO.toString());
 
-        ResponseDTO responseDTO = kibsService.processUpdateExhibitPersonalInfo(exhibitorDTO);
+        ResponseDTO responseDTO = kibsService.processUpdateExhibitorNewInfo(exhibitorNewDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mypage/step01.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView mypage_step01(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView mypage_step01(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > mypage_step01");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            ExhibitorDTO reqDTO = new ExhibitorDTO();
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
             if(exInfo != null){
-                exhibitor_seq = exInfo.getSeq();
+                exhibitor_new_seq = exInfo.getSeq();
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
 
-            /* 담당자정보*/
-            ChargePersonDTO chargeReq = new ChargePersonDTO();
-            chargeReq.setId(exhibitor_seq);
-            List<ChargePersonDTO> chargeList = kibsService.processSelectChargeListSeq(chargeReq);
+            /* 부담당자 정보*/
+            ChargeNewDTO chargeNewReq = new ChargeNewDTO();
+            chargeNewReq.setExSeq(exhibitor_new_seq);
+            List<ChargeNewDTO> chargeList = kibsService.processSelectChargeNewList(chargeNewReq);
             mv.addObject("chargeList", chargeList);
 
-            /* 전시정보 */
-            DisplayDTO displayReq = new DisplayDTO();
-            displayReq.setId(exhibitor_seq);
-            List<DisplayDTO> displayList = kibsService.processSelectDisplayListSeq(displayReq);
-            mv.addObject("displayList", displayList);
+            /* 전시품 정보 */
+            ProductNewDTO productNewReq = new ProductNewDTO();
+            productNewReq.setExSeq(exhibitor_new_seq);
+            List<ProductNewDTO> productList = kibsService.processSelectProductNewList(productNewReq);
+            mv.addObject("productList", productList);
 
             /* 온라인정보 */
-            OnlineDTO onlineReq = new OnlineDTO();
-            onlineReq.setId(exhibitor_seq);
-            List<OnlineDTO> onlineList = kibsService.processSelectOnlineListSeq(onlineReq);
+            OnlineNewDTO onlineNewReq = new OnlineNewDTO();
+            onlineNewReq.setExSeq(exhibitor_new_seq);
+            List<OnlineNewDTO> onlineList = kibsService.processSelectOnlineNewList(onlineNewReq);
             mv.addObject("onlineList", onlineList);
 
             /* 바이어정보 */
-            BuyerDTO buyerReq = new BuyerDTO();
-            buyerReq.setId(exhibitor_seq);
-            List<BuyerDTO> buyerList = kibsService.processSelectBuyerListSeq(buyerReq);
+            BuyerNewDTO buyerNewReq = new BuyerNewDTO();
+            buyerNewReq.setExSeq(exhibitor_new_seq);
+            List<BuyerNewDTO> buyerList = kibsService.processSelectBuyerNewList(buyerNewReq);
             mv.addObject("buyerList", buyerList);
 
             /* 파일정보 */
-            FileDTO fileReq = new FileDTO();
-            fileReq.setUserId(exhibitor_seq);
-            List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_seq);
-            List<FileDTO> promotionImageFileList = new ArrayList<>();
+            List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_new_seq);
             List<FileDTO> productImageFileList = new ArrayList<>();
-            for(int i=0; i<fileList.size(); i++){
-                FileDTO fileInfo = fileList.get(i);
+            List<FileDTO> onlineImageFileList = new ArrayList<>();
+            for (FileDTO fileInfo : fileList) {
                 String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
-                switch (fileNote){
+                switch (fileNote) {
                     case "companyLicense":
                         mv.addObject("companyLicenseFile", fileInfo);
                         break;
                     case "logo":
                         mv.addObject("logoFile", fileInfo);
                         break;
-                    case "promotionImage":
-                        promotionImageFileList.add(fileInfo);
-                        break;
                     case "productImage":
                         productImageFileList.add(fileInfo);
+                        break;
+                    case "onlineImage":
+                        onlineImageFileList.add(fileInfo);
                         break;
                     default:
                         break;
                 }
             }
-            mv.addObject("promotionImageFileList", promotionImageFileList);
             mv.addObject("productImageFileList", productImageFileList);
+            mv.addObject("onlineImageFileList", onlineImageFileList);
         }else{
             session.invalidate(); //세션 초기화
         }
@@ -1574,23 +1648,23 @@ public class KibsController {
         return mv;
     }
 
-    @RequestMapping(value = "/mypage/step/updateExhibitor.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/mypage/step/updateExhibitorNew.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_step_updateExhibitor(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > mypage_step_updateExhibitor");
+    public ResponseEntity<ResponseDTO> mypage_step_updateExhibitorNew(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > mypage_step_updateExhibitorNew");
 
-        ResponseDTO responseDTO = kibsService.processUpdateExhibitor(exhibitorDTO);
+        ResponseDTO responseDTO = kibsService.processUpdateExhibitorNew(exhibitorNewDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/mypage/step/updateOnlineFileNote.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/mypage/step/updateProductNewFileNote.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_step_updateOnlineFileNote(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > mypage_step_updateOnlineFileNote");
+    public ResponseEntity<ResponseDTO> mypage_step_updateProductFileNote(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > mypage_step_updateProductFileNote");
 
-        for(OnlineDTO online: exhibitorDTO.getOnlineExhibitList()){
-            kibsService.processUpdateOnlineFileNote(exhibitorDTO.getSeq(), online.getNote());
+        for(ProductNewDTO productNew: exhibitorNewDTO.getProductList()){
+            kibsService.processUpdateProductNewFileNote(exhibitorNewDTO.getSeq(), productNew.getNote());
         }
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setResultCode(CommConstants.RESULT_CODE_SUCCESS);
@@ -1599,35 +1673,50 @@ public class KibsController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/mypage/step/deleteCharge.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/mypage/step/updateOnlineNewFileNote.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_step_deleteCharge(@RequestBody ChargePersonDTO chargePersonDTO) {
-        System.out.println("KibsController > mypage_step_deleteCharge");
-        //System.out.println(onlineDTO.toString());
+    public ResponseEntity<ResponseDTO> mypage_step_updateOnlineFileNote(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > mypage_step_updateOnlineFileNote");
 
-        ResponseDTO responseDTO = kibsService.processDeleteCharge(chargePersonDTO);
+        for(OnlineNewDTO onlineNew: exhibitorNewDTO.getOnlineList()){
+            kibsService.processUpdateOnlineNewFileNote(exhibitorNewDTO.getSeq(), onlineNew.getNote());
+        }
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setResultCode(CommConstants.RESULT_CODE_SUCCESS);
+        responseDTO.setResultMessage(CommConstants.RESULT_MSG_SUCCESS);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/mypage/step/deleteDisplay.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/mypage/step/deleteChargeNew.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_step_deleteDisplay(@RequestBody DisplayDTO displayDTO) {
-        System.out.println("KibsController > mypage_step_deleteDisplay");
+    public ResponseEntity<ResponseDTO> mypage_step_deleteChargeNew(@RequestBody ChargeNewDTO ChargeNewDTO) {
+        System.out.println("KibsController > mypage_step_deleteChargeNew");
+        //System.out.println(onlineDTO.toString());
+
+        ResponseDTO responseDTO = kibsService.processDeleteChargeNew(ChargeNewDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/step/deleteProductNew.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mypage_step_deleteProductNew(@RequestBody ProductNewDTO productNewDTO) {
+        System.out.println("KibsController > mypage_step_deleteProductNew");
         //System.out.println(displayDTO.toString());
 
-        ResponseDTO responseDTO = kibsService.processDeleteDisplay(displayDTO);
+        ResponseDTO responseDTO = kibsService.processDeleteProductNew(productNewDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/mypage/step/deleteOnline.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/mypage/step/deleteOnlineNew.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_step_deleteOnline(@RequestBody OnlineDTO onlineDTO) {
-        System.out.println("KibsController > mypage_step_deleteOnline");
+    public ResponseEntity<ResponseDTO> mypage_step_deleteOnlineNew(@RequestBody OnlineNewDTO onlineNewDTO) {
+        System.out.println("KibsController > mypage_step_deleteOnlineNew");
         //System.out.println(onlineDTO.toString());
 
-        ResponseDTO responseDTO = kibsService.processDeleteOnline(onlineDTO);
+        ResponseDTO responseDTO = kibsService.processDeleteOnlineNew(onlineNewDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -1644,28 +1733,28 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/mypage/step2_1.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView mypage_step2_1(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView mypage_step2_1(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > mypage_step2_1");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            ExhibitorDTO reqDTO = new ExhibitorDTO();
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
             if(exInfo != null){
-                exhibitor_seq = exInfo.getSeq();
+                exhibitor_new_seq = exInfo.getSeq();
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
         }else{
             session.invalidate(); //세션 초기화
@@ -1685,28 +1774,28 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/mypage/step2_2.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView mypage_step2_2(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView mypage_step2_2(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > mypage_step2_2");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            ExhibitorDTO reqDTO = new ExhibitorDTO();
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
             if(exInfo != null){
-                exhibitor_seq = exInfo.getSeq();
+                exhibitor_new_seq = exInfo.getSeq();
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
         }else{
             session.invalidate(); //세션 초기화
@@ -1726,28 +1815,28 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/mypage/step2_3.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView mypage_step2_3(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView mypage_step2_3(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > mypage_step2_3");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            ExhibitorDTO reqDTO = new ExhibitorDTO();
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
             if(exInfo != null){
-                exhibitor_seq = exInfo.getSeq();
+                exhibitor_new_seq = exInfo.getSeq();
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
         }else{
             session.invalidate(); //세션 초기화
@@ -1767,37 +1856,36 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/mypage/step2_4.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView mypage_step2_4(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView mypage_step2_4(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > mypage_step2_4");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        List<PassDTO> passList = new ArrayList<>();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            PassDTO passDTO = new PassDTO();
-            passDTO.setId(exhibitor_seq);
-            passList = kibsService.processSelectPassList(passDTO);
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        List<PassNewDTO> passList = new ArrayList<>();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            PassNewDTO passNewDTO = new PassNewDTO();
+            passNewDTO.setExSeq(exhibitor_new_seq);
+            passList = kibsService.processSelectPassNewList(passNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
 
-            ExhibitorDTO exDTO = new ExhibitorDTO();
+            ExhibitorNewDTO exDTO = new ExhibitorNewDTO();
             exDTO.setId(id);
             exDTO.setTransferYear(transferYear);
-            exhibitor_seq = kibsService.processSearchExhibitorSeq(exDTO);
+            exhibitor_new_seq = kibsService.processSearchExhibitorNewSeq(exDTO);
 
-            PassDTO reqDTO = new PassDTO();
-            reqDTO.setUserId(id);
-            reqDTO.setTransferYear(transferYear);
-            passList = kibsService.processSelectPassList(reqDTO);
+            PassNewDTO reqDTO = new PassNewDTO();
+            reqDTO.setExSeq(exhibitor_new_seq);
+            passList = kibsService.processSelectPassNewList(reqDTO);
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            mv.addObject("info", exhibitorDTO);
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            mv.addObject("info", exhibitorNewDTO);
             mv.addObject("passList", passList);
 
-            ExhibitorDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorInfo(exhibitor_seq);
+            ExhibitorNewDTO exhibitorInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
             mv.addObject("exhibitorInfo", exhibitorInfo);
         }else{
             session.invalidate(); //세션 초기화
@@ -1807,61 +1895,42 @@ public class KibsController {
         return mv;
     }
 
-    @RequestMapping(value = "/mypage/step/deleteExhibitPass.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/mypage/step/deletePassNew.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_step_deleteExhibitPass(@RequestBody PassDTO passDTO) {
-        System.out.println("KibsController > mypage_step_deleteExhibitPass");
-        ResponseDTO response = kibsService.processDeleteExhibitPass(passDTO);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mypage/step/updateExhibitPass.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mypage_step_updateExhibitPass(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step_updateExhibitPass");
-        //System.out.println(exhibitorDTO.toString());
-        if(exhibitorDTO.getId() == null){
-            exhibitorDTO.setId(String.valueOf(session.getAttribute("id")));
-            List<PassDTO> passList = new ArrayList<>();
-            for(PassDTO pass : exhibitorDTO.getPassList()){
-                pass.setUserId(String.valueOf(session.getAttribute("id")));
-                passList.add(pass);
-            }
-            exhibitorDTO.setPassList(passList);
-        }
-        ResponseDTO response = kibsService.processUpdateExhibitPassSeq(exhibitorDTO);
+    public ResponseEntity<ResponseDTO> mypage_step_deletePassNew(@RequestBody PassNewDTO passNewDTO) {
+        System.out.println("KibsController > mypage_step_deletePassNew");
+        ResponseDTO response = kibsService.processDeletePassNew(passNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mypage/step2_5.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView mypage_step2_5(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView mypage_step2_5(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > mypage_step2_5");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        List<GiftDTO> giftList = new ArrayList<>();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            GiftDTO giftDTO = new GiftDTO();
-            giftDTO.setId(exhibitor_seq);
-            giftList = kibsService.processSelectGiftList(giftDTO);
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        List<GiftNewDTO> giftList = new ArrayList<>();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            GiftNewDTO giftDTO = new GiftNewDTO();
+            giftDTO.setExSeq(exhibitor_new_seq);
+            giftList = kibsService.processSelectGiftNewList(giftDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
 
-            ExhibitorDTO exDTO = new ExhibitorDTO();
+            ExhibitorNewDTO exDTO = new ExhibitorNewDTO();
             exDTO.setId(id);
             exDTO.setTransferYear(transferYear);
-            exhibitor_seq = kibsService.processSearchExhibitorSeq(exDTO);
+            exhibitor_new_seq = kibsService.processSearchExhibitorNewSeq(exDTO);
 
-            GiftDTO reqDTO = new GiftDTO();
-            reqDTO.setUserId(id);
-            reqDTO.setTransferYear(transferYear);
-            giftList = kibsService.processSelectGiftList(reqDTO);
+            GiftNewDTO reqDTO = new GiftNewDTO();
+            reqDTO.setExSeq(exhibitor_new_seq);
+            giftList = kibsService.processSelectGiftNewList(reqDTO);
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            mv.addObject("info", exhibitorDTO);
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            mv.addObject("info", exhibitorNewDTO);
             mv.addObject("giftList", giftList);
         }else{
             session.invalidate(); //세션 초기화
@@ -1897,53 +1966,81 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/mypage/step2_8.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView mypage_step2_8(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView mypage_step2_8(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > mypage_step2_8");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            if(id != null && !id.equals("null") && !id.equals("")) {
-                ExhibitorDTO reqDTO = new ExhibitorDTO();
+            if(id != null && !id.equals("null") && !id.isEmpty()) {
+                ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
                 reqDTO.setId(id);
                 reqDTO.setTransferYear(transferYear);
-                exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+                exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
                 if (exInfo != null) {
-                    exhibitor_seq = exInfo.getSeq();
+                    exhibitor_new_seq = exInfo.getSeq();
                 }
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
 
-            /* 담당자정보*/
-            ChargePersonDTO chargeReq = new ChargePersonDTO();
-            chargeReq.setId(exhibitor_seq);
-            List<ChargePersonDTO> chargeList = kibsService.processSelectChargeListSeq(chargeReq);
+            /* 부담당자 정보*/
+            ChargeNewDTO chargeNewReq = new ChargeNewDTO();
+            chargeNewReq.setExSeq(exhibitor_new_seq);
+            List<ChargeNewDTO> chargeList = kibsService.processSelectChargeNewList(chargeNewReq);
             mv.addObject("chargeList", chargeList);
 
-            /* 전시정보 */
-            DisplayDTO displayReq = new DisplayDTO();
-            displayReq.setId(exhibitor_seq);
-            List<DisplayDTO> displayList = kibsService.processSelectDisplayListSeq(displayReq);
-            mv.addObject("displayList", displayList);
+            /* 전시품 정보 */
+            ProductNewDTO productNewReq = new ProductNewDTO();
+            productNewReq.setExSeq(exhibitor_new_seq);
+            List<ProductNewDTO> productList = kibsService.processSelectProductNewList(productNewReq);
+            mv.addObject("productList", productList);
+
+            /* 온라인정보 */
+            OnlineNewDTO onlineNewReq = new OnlineNewDTO();
+            onlineNewReq.setExSeq(exhibitor_new_seq);
+            List<OnlineNewDTO> onlineList = kibsService.processSelectOnlineNewList(onlineNewReq);
+            mv.addObject("onlineList", onlineList);
+
+            /* 바이어정보 */
+            BuyerNewDTO buyerNewReq = new BuyerNewDTO();
+            buyerNewReq.setExSeq(exhibitor_new_seq);
+            List<BuyerNewDTO> buyerList = kibsService.processSelectBuyerNewList(buyerNewReq);
+            mv.addObject("buyerList", buyerList);
 
             /* 파일정보 */
-            List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_seq);
-            for(int i=0; i<fileList.size(); i++){
-                FileDTO fileInfo = fileList.get(i);
+            List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_new_seq);
+            List<FileDTO> productImageFileList = new ArrayList<>();
+            List<FileDTO> onlineImageFileList = new ArrayList<>();
+            for (FileDTO fileInfo : fileList) {
                 String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
-                if(fileNote.equals("companyLicense")){
-                    mv.addObject("companyLicenseFile", fileInfo);
+                switch (fileNote) {
+                    case "companyLicense":
+                        mv.addObject("companyLicenseFile", fileInfo);
+                        break;
+                    case "logo":
+                        mv.addObject("logoFile", fileInfo);
+                        break;
+                    case "productImage":
+                        productImageFileList.add(fileInfo);
+                        break;
+                    case "onlineImage":
+                        onlineImageFileList.add(fileInfo);
+                        break;
+                    default:
+                        break;
                 }
             }
+            mv.addObject("productImageFileList", productImageFileList);
+            mv.addObject("onlineImageFileList", onlineImageFileList);
         }
 
         mv.setViewName("/mypage/step2_8");
@@ -1951,28 +2048,28 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/mypage/step03.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView mypage_step03(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView mypage_step03(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > mypage_step03");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            ExhibitorDTO reqDTO = new ExhibitorDTO();
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
             if(exInfo != null){
-                exhibitor_seq = exInfo.getSeq();
+                exhibitor_new_seq = exInfo.getSeq();
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
         }else{
             session.invalidate(); //세션 초기화
@@ -1983,30 +2080,29 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/mypage/total.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView mypage_total(ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ModelAndView mypage_total(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > mypage_total");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
-        ExhibitorDTO exInfo = null;
-        String exhibitor_seq = exhibitorDTO.getSeq();
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
-            exInfo = kibsService.processSelectExhibitorSingle(exhibitorDTO);
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
             String transferYear = String.valueOf(session.getAttribute("transferYear"));
-            ExhibitorDTO reqDTO = new ExhibitorDTO();
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorSingle(reqDTO);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
             if(exInfo != null){
-                exhibitor_seq = exInfo.getSeq();
+                exhibitor_new_seq = exInfo.getSeq();
             }
         }
 
-        if(exhibitor_seq != null && !exhibitor_seq.equals("null") && !exhibitor_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
-
 
             /*BuyerDTO buyerDTO = new BuyerDTO();
             buyerDTO.setId(exhibitor_seq);
@@ -2015,7 +2111,6 @@ public class KibsController {
         }else{
             session.invalidate(); //세션 초기화
         }
-
 
         mv.setViewName("/mypage/total");
         return mv;
@@ -2703,109 +2798,108 @@ public class KibsController {
 
     @RequestMapping(value = "/checkDuplicateId.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Integer> checkDuplicateId(@RequestBody ExhibitorDTO exhibitorDTO) {
+    public ResponseEntity<Integer> checkDuplicateId(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
         System.out.println("KibsController > checkDuplicateId");
-        Integer result = kibsService.checkDuplicateId(exhibitorDTO);
+        Integer result = kibsService.checkDuplicateId(exhibitorNewDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getExhibitorEmail.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/searchExhibitorNewSeq.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> getExhibitorEmail(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > getExhibitorEmail");
-        String result = kibsService.getExhibitorEmail(exhibitorDTO);
+    public ResponseEntity<String> searchExhibitorNewSeq(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > searchExhibitorNewSeq");
+        String seq = kibsService.processSearchExhibitorNewSeq(exhibitorNewDTO);
+        return new ResponseEntity<>(seq, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getExhibitorNewEmail.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> getExhibitorNewEmail(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > getExhibitorNewEmail");
+        String result = kibsService.getExhibitorNewEmail(exhibitorNewDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/updateExhibitorPasswordInit.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/preGetExhibitorEmail.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> updateExhibitorPasswordInit(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > updateExhibitorPasswordInit");
-        ResponseDTO response = kibsService.processUpdateExhibitorPasswordInit(exhibitorDTO);
+    public ResponseEntity<List<String>> preGetExhibitorEmail(@RequestBody ExhibitorDTO exhibitorDTO) {
+        System.out.println("KibsController > preGetExhibitorEmail");
+        List<String> result = kibsService.preGetExhibitorEmail(exhibitorDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/updateExhibitorNewPasswordInit.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> updateExhibitorNewPasswordInit(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > updateExhibitorNewPasswordInit");
+        ResponseDTO response = kibsService.processUpdateExhibitorNewPasswordInit(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/exhibit/loginForm.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> exhibit_loginForm(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
+    public ResponseEntity<ResponseDTO> exhibit_loginForm(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > exhibit_loginForm");
-        ResponseDTO response = kibsService.processLoginExhibit(exhibitorDTO);
+        ResponseDTO response = kibsService.processLoginExhibitorNew(exhibitorNewDTO);
         if(response.getResultCode().equals("0")){
             session.setAttribute("status", "logon");
             session.setAttribute("lang", "KO");
-            session.setAttribute("id", exhibitorDTO.getId());
-            session.setAttribute("transferYear", exhibitorDTO.getTransferYear());
+            session.setAttribute("seq", exhibitorNewDTO.getSeq());
+            session.setAttribute("id", exhibitorNewDTO.getId());
+            session.setAttribute("transferYear", exhibitorNewDTO.getTransferYear());
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/apply/step/insertExhibitor.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/apply/step/insertExhibitorNew.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> insertExhibitor(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > insertExhibitor");
+    public ResponseEntity<ResponseDTO> insertExhibitorNew(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > insertExhibitorNew");
         //System.out.println(exhibitorDTO.toString());
-        ResponseDTO response = kibsService.processInsertExhibitor(exhibitorDTO);
+        ResponseDTO response = kibsService.processInsertExhibitorNew(exhibitorNewDTO);
         if(response.getResultCode().equals("0")){
-            session.setAttribute("id", exhibitorDTO.getId());
+            session.setAttribute("id", exhibitorNewDTO.getId());
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/apply/step/updateExhibitBooth.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/apply/step/updateExhibitorNewBooth.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> updateExhibitBooth(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > updateExhibitBooth");
-        ResponseDTO response = kibsService.processUpdateExhibitBooth(exhibitorDTO);
+    public ResponseEntity<ResponseDTO> updateExhibitorNewBooth(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > updateExhibitorNewBooth");
+        ResponseDTO response = kibsService.processUpdateExhibitorNewBooth(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/apply/step/updateCompanySign.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/apply/step/updateExhibitorNewCompanySign.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> updateCompanySign(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > updateCompanySign");
-        if(exhibitorDTO.getId() == null){
-            exhibitorDTO.setId(String.valueOf(session.getAttribute("id")));
-        }
-        ResponseDTO response = kibsService.processUpdateCompanySign(exhibitorDTO);
+    public ResponseEntity<ResponseDTO> updateExhibitorNewCompanySign(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > updateExhibitorNewCompanySign");
+        ResponseDTO response = kibsService.processUpdateExhibitorNewCompanySign(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/apply/step/updateExhibitUtility.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/apply/step/updateExhibitorNewUtility.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> updateExhibitUtility(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > updateExhibitUtility");
-        if(exhibitorDTO.getId() == null){
-            exhibitorDTO.setId(String.valueOf(session.getAttribute("id")));
-        }
-        ResponseDTO response = kibsService.processUpdateExhibitUtility(exhibitorDTO);
+    public ResponseEntity<ResponseDTO> updateExhibitorNewUtility(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > updateExhibitorNewUtility");
+        ResponseDTO response = kibsService.processUpdateExhibitorNewUtility(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/apply/step/insertExhibitPass.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/apply/step/insertPassNew.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> insertExhibitPass(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > insertExhibitPass");
-        if(exhibitorDTO.getId() == null){
-            exhibitorDTO.setId(String.valueOf(session.getAttribute("id")));
-            List<PassDTO> passList = new ArrayList<>();
-            for(PassDTO pass : exhibitorDTO.getPassList()){
-                pass.setUserId(String.valueOf(session.getAttribute("id")));
-                passList.add(pass);
-            }
-            exhibitorDTO.setPassList(passList);
-        }
-        ResponseDTO response = kibsService.processInsertExhibitPass(exhibitorDTO);
+    public ResponseEntity<ResponseDTO> insertPassNew(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > insertPassNew");
+        ResponseDTO response = kibsService.processInsertPassNew(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/apply/step/insertExhibitGift.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/apply/step/insertGiftNew.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> insertExhibitGift(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > insertExhibitGift");
-        if(exhibitorDTO.getId() == null){
-            exhibitorDTO.setId(String.valueOf(session.getAttribute("id")));
-        }
-        ResponseDTO response = kibsService.processInsertExhibitGift(exhibitorDTO);
+    public ResponseEntity<ResponseDTO> insertGiftNew(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > insertGiftNew");
+        ResponseDTO response = kibsService.processInsertGiftNew(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -2878,6 +2972,17 @@ public class KibsController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/apply/step/directory/selectChargeNewInfo.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ChargeNewDTO>> selectChargeNewInfo(@RequestBody ChargeNewDTO chargeNewDTO) {
+        System.out.println("KibsController > selectChargeNewInfo");
+        //System.out.println(searchDTO.toString());
+
+        List<ChargeNewDTO> responseList = kibsService.processSelectChargeNewList(chargeNewDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/apply/step/directory/selectChargeInfo.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ChargePersonDTO>> selectChargeInfo(@RequestBody ChargePersonDTO chargePersonDTO) {
@@ -2915,30 +3020,15 @@ public class KibsController {
     @ResponseBody
     public ResponseEntity<ResponseDTO> insertDirectory(@RequestBody DirectoryDTO directoryDTO, HttpSession session) {
         System.out.println("KibsController > insertDirectory");
-        if(session.getAttribute("id") != null) {
-            directoryDTO.setUserId(String.valueOf(session.getAttribute("id")));
-        }
-
-        ExhibitorDTO exhibitorDTO = new ExhibitorDTO();
-        exhibitorDTO.setId(directoryDTO.getUserId());
-        exhibitorDTO.setTransferYear(directoryDTO.getTransferYear());
-        String exhibitorSeq = kibsService.processSearchExhibitorSeq(exhibitorDTO);
-        directoryDTO.setId(exhibitorSeq); // 업체 ID
-
         ResponseDTO response = kibsService.processInsertDirectory(directoryDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/apply/step/updateExhibitStatus.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/apply/step/updateExhibitorNewStatus.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> updateExhibitApprovalStatus(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > updateExhibitApprovalStatus");
-        if(session.getAttribute("id") != null) {
-            exhibitorDTO.setId(String.valueOf(session.getAttribute("id")));
-        }else{
-            exhibitorDTO.setId(exhibitorDTO.getId());
-        }
-        ResponseDTO response = kibsService.processUpdateExhibitApprovalStatus(exhibitorDTO);
+    public ResponseEntity<ResponseDTO> updateExhibitorNewStatus(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > updateExhibitorNewStatus");
+        ResponseDTO response = kibsService.processUpdateExhibitorNewApprovalStatus(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -2951,6 +3041,17 @@ public class KibsController {
         List<FileDTO> response = kibsService.processSelectFileList(fileDTO.getUserId());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/exhibitor/pre/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ExhibitorDTO> apply_exhibitor_pre_selectSingle(@RequestBody ExhibitorDTO exhibitorDTO) {
+        System.out.println("KibsController > apply_exhibitor_pre_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        ExhibitorDTO info = kibsService.processSelectPreExhibitorSingle(exhibitorDTO);
+
+        return new ResponseEntity<>(info, HttpStatus.OK);
     }
 
     //***************************************************************************

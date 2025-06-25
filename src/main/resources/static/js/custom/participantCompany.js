@@ -313,7 +313,7 @@ function f_exhibitor_comp_remove(){
                         }
                     });
                 } else {
-                    showMessage('', 'error', '에러 발생', '참가 업체 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    showMessage('', 'error', '에러 발생', '참가 업체 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                 }
             }
         });
@@ -375,11 +375,11 @@ function f_participant_company_save(seq){
                             }
                         });
                     } else {
-                        showMessage('', 'error', '에러 발생', '참가 업체 정보 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', '참가 업체 정보 변경을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                     }
                 },
                 error: function (xhr, status) {
-                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                    alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                 }
             })
         }

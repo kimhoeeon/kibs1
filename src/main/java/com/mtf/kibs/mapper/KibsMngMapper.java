@@ -130,7 +130,11 @@ public interface KibsMngMapper {
 
     List<ExhibitorDTO> selectListExhibitor(SearchDTO searchDTO);
 
+    List<ExhibitorNewDTO> selectListExhibitorNew(SearchDTO searchDTO);
+
     ExhibitorDTO selectExhibitorSingle(ExhibitorDTO exhibitorDTO);
+
+    ExhibitorNewDTO selectExhibitorNewSingle(ExhibitorNewDTO exhibitorNewDTO);
 
     String getExhibitorSeq();
 
@@ -144,9 +148,21 @@ public interface KibsMngMapper {
 
     List<DisplayDTO> selectDisplayList(DisplayDTO displayDTO);
 
+    List<ProductNewDTO> selectProductNewList(ProductNewDTO productNewDTO);
+
     List<OnlineDTO> selectOnlineList(OnlineDTO onlineDTO);
 
+    List<OnlineNewDTO> selectOnlineNewList(OnlineNewDTO onlineNewDTO);
+
     List<BuyerDTO> selectBuyerList(BuyerDTO buyerDTO);
+
+    List<BuyerNewDTO> selectBuyerNewList(BuyerNewDTO buyerNewDTO);
+
+    Integer updateExhibitorNewBuyer(BuyerNewDTO buyerDTO);
+
+    Integer insertExhibitorNewBuyer(BuyerNewDTO buyerDTO);
+
+    Integer deleteExhibitorNewBuyer(BuyerNewDTO buyerDTO);
 
     Integer updateParticipantCompany(ExhibitorDTO exhibitorDTO);
 
@@ -210,6 +226,8 @@ public interface KibsMngMapper {
 
     List<ChargePersonDTO> selectChargeList(ChargePersonDTO chargePersonDTO);
 
+    List<ChargeNewDTO> selectChargeNewList(ChargeNewDTO chargeNewDTO);
+
     Integer deleteCharge(ChargePersonDTO chargePersonDTO);
 
     Integer checkParticipantCompanyCharge(ChargePersonDTO request);
@@ -220,51 +238,99 @@ public interface KibsMngMapper {
 
     List<ExhibitorDTO> selectBoothList(SearchDTO searchDTO);
 
+    List<ExhibitorNewDTO> selectExhibitorNewBoothList(SearchDTO searchDTO);
+
     ExhibitorDTO selectBoothSingle(String seq);
+
+    ExhibitorNewDTO selectExhibitorNewBoothSingle(String seq);
 
     Integer UpdateBooth(ExhibitorDTO exhibitorDTO);
 
+    Integer UpdateExhibitorNewBooth(ExhibitorNewDTO exhibitorNewDTO);
+
     List<ExhibitorDTO> selectMngOnlineList(SearchDTO searchDTO);
+
+    List<ExhibitorNewDTO> selectMngOnlineNewList(SearchDTO searchDTO);
 
     Integer updateViewYn(ExhibitorDTO exhibitorDTO);
 
+    Integer updateExhibitorNewOnlineViewYn(ExhibitorNewDTO exhibitorNewDTO);
+
+    List<MngProductDTO> selectMngProductNewList(SearchDTO searchDTO);
+
     List<ExhibitorDTO> selectSignList(SearchDTO searchDTO);
+
+    List<ExhibitorNewDTO> selectExhibitorNewSignList(SearchDTO searchDTO);
 
     ExhibitorDTO selectSignSingle(String seq);
 
+    ExhibitorNewDTO selectExhibitorNewSignSingle(String seq);
+
     Integer updateSign(ExhibitorDTO exhibitorDTO);
+
+    Integer updateExhibitorNewSign(ExhibitorNewDTO exhibitorNewDTO);
 
     List<ExhibitorDTO> selectUtilityList(SearchDTO searchDTO);
 
+    List<ExhibitorNewDTO> selectExhibitorNewUtilityList(SearchDTO searchDTO);
+
     ExhibitorDTO selectUtilitySingle(String seq);
+
+    ExhibitorNewDTO selectExhibitorNewUtilitySingle(String seq);
 
     Integer updateUtility(ExhibitorDTO exhibitorDTO);
 
+    Integer updateExhibitorNewUtility(ExhibitorNewDTO exhibitorNewDTO);
+
     List<MngPassDTO> selectPassList(SearchDTO searchDTO);
 
+    List<MngPassDTO> selectExhibitorNewPassList(SearchDTO searchDTO);
+
     List<MngPassDTO> selectPassDetailList(String seq);
+
+    List<MngPassDTO> selectExhibitorNewPassDetailList(String seq);
 
     ExhibitorDTO getExhibitorId(String exhibitorSeq);
 
     Integer updatePass(PassDTO passDTO);
 
+    Integer updateExhibitorNewPass(PassNewDTO passNewDTO);
+
     Integer insertPass(PassDTO passDTO);
+
+    Integer insertExhibitorNewPass(PassNewDTO passNewDTO);
 
     Integer deletePass(PassDTO passDTO);
 
+    Integer deleteExhibitorNewPass(PassNewDTO passNewDTO);
+
     List<MngBuyerDTO> selectMngBuyerList(SearchDTO searchDTO);
+
+    List<MngBuyerDTO> selectExhibitorNewBuyerList(SearchDTO searchDTO);
 
     List<MngBuyerDTO> selectBuyerDetailList(String seq);
 
+    List<MngBuyerDTO> selectExhibitorNewBuyerDetailList(String seq);
+
     List<MngGiftDTO> selectMngGiftList(SearchDTO searchDTO);
+
+    List<MngGiftDTO> selectExhibitorNewGiftList(SearchDTO searchDTO);
 
     List<MngGiftDTO> selectGiftDetailList(String seq);
 
+    List<MngGiftDTO> selectExhibitorNewGiftDetailList(String seq);
+
     Integer updateExhibitGift(GiftDTO giftDTO);
+
+    Integer updateGiftNew(GiftNewDTO giftNewDTO);
 
     Integer insertExhibitGift(GiftDTO giftDTO);
 
+    Integer insertGiftNew(GiftNewDTO giftNewDTO);
+
     Integer deleteGift(GiftDTO giftDTO);
+
+    Integer deleteExhibitorNewGift(GiftNewDTO giftNewDTO);
 
     Integer updateFileYn(FileDTO photoReq);
 
@@ -287,6 +353,10 @@ public interface KibsMngMapper {
     StatisticsDTO selectCompanyCount(StatisticsDTO statisticsDTO);
 
     StatisticsDTO selectVisitorCount(StatisticsDTO statisticsDTO);
+
+    StatisticsDTO selectProductCount(StatisticsDTO statisticsDTO);
+
+    StatisticsDTO selectProductQtyCount(StatisticsDTO statisticsDTO);
 
     List<StatisticsDTO> selectStatisticsAccessorDay(StatisticsDTO statisticsDTO);
 
@@ -311,6 +381,8 @@ public interface KibsMngMapper {
     StatisticsDTO selectStatisticsCompanyFieldPart(StatisticsDTO statisticsDTO);
 
     Integer updateApprovalStatus(ExhibitorDTO exhibitorInfo);
+
+    Integer updateExhibitorNewApprovalStatus(ExhibitorNewDTO exhibitorInfo);
 
     ExhibitorDTO getExhibitorInfo(Map<String,String> paramMap);
 
@@ -349,6 +421,8 @@ public interface KibsMngMapper {
     Integer deleteEventCompany(CompanyDTO companyDTO);
 
     Integer updatePrcYn(ExhibitorDTO exhibitorInfo);
+
+    Integer updateExhibitorNewPrcYn(ExhibitorNewDTO exhibitorNewDTO);
 
     Integer checkVisitor(VisitorDTO visitorDTO);
 
@@ -417,4 +491,5 @@ public interface KibsMngMapper {
     Integer updateRequestProgressStep(RequestDTO info);
 
     Integer updateRequestCompleteExpect(RequestDTO info);
+
 }

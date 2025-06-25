@@ -1,9 +1,8 @@
 var pageNum = 1; // 페이지 번호 생성 시점에 따른 변수 초기화
-var transferYear = (new Date().getFullYear()).toString();
+var transferYear = '2026';
 $(function(){
     //페이지 오픈 시 default ()
     onlineExhibitorList(pageNum);
-
 });
 
 const showPageCnt = 6; // 화면에 보일 페이지 번호 개수
@@ -215,11 +214,11 @@ function searchPosts(pageNum) {
 
             let emptyStr = '';
             emptyStr += '<li>';
-            emptyStr += '<div>';
-            emptyStr += '<p style="font-size: 18px; font-weight: bold;">';
-            emptyStr += '해당 조건으로 검색된 제품이 없습니다.';
-            emptyStr += '</p>';
-            emptyStr += '</div>';
+                emptyStr += '<div>';
+                    emptyStr += '<p style="font-size: 18px; font-weight: bold;">';
+                        emptyStr += '해당 조건으로 검색된 제품이 없습니다.';
+                    emptyStr += '</p>';
+                emptyStr += '</div>';
             emptyStr += '</li>';
 
             $('.exhList').empty();

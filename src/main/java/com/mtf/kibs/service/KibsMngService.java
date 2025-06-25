@@ -141,7 +141,11 @@ public interface KibsMngService {
 
     List<ExhibitorDTO> processSelectListExhibitor(SearchDTO searchDTO);
 
+    List<ExhibitorNewDTO> processSelectListExhibitorNew(SearchDTO searchDTO);
+
     ExhibitorDTO processSelectExhibitorSingle(ExhibitorDTO exhibitorDTO);
+
+    ExhibitorNewDTO processSelectExhibitorNewSingle(ExhibitorNewDTO exhibitorNewDTO);
 
     ResponseDTO processUpdateFileUserId(FileDTO fileDTO);
 
@@ -153,9 +157,15 @@ public interface KibsMngService {
 
     List<DisplayDTO> processSelectDisplayList(DisplayDTO displayDTO);
 
+    List<ProductNewDTO> processSelectProductNewList(ProductNewDTO productNewDTO);
+
     List<OnlineDTO> processSelectOnlineList(OnlineDTO onlineDTO);
 
+    List<OnlineNewDTO> processSelectOnlineNewList(OnlineNewDTO onlineNewDTO);
+
     List<BuyerDTO> processSelectBuyerList(BuyerDTO buyerDTO);
+
+    List<BuyerNewDTO> processSelectBuyerNewList(BuyerNewDTO buyerNewDTO);
 
     BuyerDTO processSelectBuyerSingle(BuyerDTO buyerDTO);
 
@@ -181,51 +191,101 @@ public interface KibsMngService {
 
     List<ChargePersonDTO> processSelectChargeList(ChargePersonDTO chargePersonDTO);
 
+    List<ChargeNewDTO> processSelectChargeNewList(ChargeNewDTO chargeNewDTO);
+
     ResponseDTO processDeleteCharge(ChargePersonDTO chargePersonDTO);
 
     List<ExhibitorDTO> processSelectBoothList(SearchDTO searchDTO);
 
+    List<ExhibitorNewDTO> processSelectExhibitorNewBoothList(SearchDTO searchDTO);
+
     ExhibitorDTO processSelectBoothSingle(String seq);
+
+    ExhibitorNewDTO processSelectExhibitorNewBoothSingle(String seq);
 
     ResponseDTO processUpdateBooth(ExhibitorDTO exhibitorDTO);
 
+    ResponseDTO processUpdateExhibitorNewBooth(ExhibitorNewDTO exhibitorNewDTO);
+
     List<ExhibitorDTO> processSelectMngOnlineList(SearchDTO searchDTO);
+
+    List<ExhibitorNewDTO> processSelectMngOnlineNewList(SearchDTO searchDTO);
 
     ResponseDTO processUpdateViewYn(ExhibitorDTO exhibitorDTO);
 
+    ResponseDTO processUpdateExhibitorNewOnlineViewYn(ExhibitorNewDTO exhibitorNewDTO);
+
+    List<MngProductDTO> processSelectMngProductNewList(SearchDTO searchDTO);
+
     List<ExhibitorDTO> processSelectSignList(SearchDTO searchDTO);
+
+    List<ExhibitorNewDTO> processSelectExhibitorNewSignList(SearchDTO searchDTO);
 
     ExhibitorDTO processSelectSignSingle(String seq);
 
+    ExhibitorNewDTO processSelectExhibitorNewSignSingle(String seq);
+
     ResponseDTO processUpdateSign(ExhibitorDTO exhibitorDTO);
+
+    ResponseDTO processUpdateExhibitorNewSign(ExhibitorNewDTO exhibitorNewDTO);
 
     List<ExhibitorDTO> processSelectUtilityList(SearchDTO searchDTO);
 
+    List<ExhibitorNewDTO> processSelectExhibitorNewUtilityList(SearchDTO searchDTO);
+
     ExhibitorDTO processSelectUtilitySingle(String seq);
+
+    ExhibitorNewDTO processSelectExhibitorNewUtilitySingle(String seq);
 
     ResponseDTO processUpdateUtility(ExhibitorDTO exhibitorDTO);
 
+    ResponseDTO processUpdateExhibitorNewUtility(ExhibitorNewDTO exhibitorNewDTO);
+
     List<MngPassDTO> processSelectPassList(SearchDTO searchDTO);
+
+    List<MngPassDTO> processSelectExhibitorNewPassList(SearchDTO searchDTO);
 
     List<MngPassDTO> processSelectPassDetailList(String seq);
 
+    List<MngPassDTO> processSelectExhibitorNewPassDetailList(String seq);
+
     ResponseDTO processUpdatePass(ExhibitorDTO exhibitorDTO);
+
+    ResponseDTO processUpdateExhibitorNewPass(ExhibitorNewDTO exhibitorNewDTO);
 
     ResponseDTO processDeletePass(PassDTO passDTO);
 
+    ResponseDTO processDeleteExhibitorNewPass(PassNewDTO passNewDTO);
+
     List<MngBuyerDTO> processSelectMngBuyerList(SearchDTO searchDTO);
+
+    List<MngBuyerDTO> processSelectExhibitorNewBuyerList(SearchDTO searchDTO);
 
     List<MngBuyerDTO> processSelectBuyerDetailList(String seq);
 
+    List<MngBuyerDTO> processSelectExhibitorNewBuyerDetailList(String seq);
+
     ResponseDTO processUpdateBuyer(ExhibitorDTO exhibitorDTO);
+
+    ResponseDTO processUpdateExhibitorNewBuyer(ExhibitorNewDTO exhibitorNewDTO);
+
+    ResponseDTO processDeleteExhibitorNewBuyer(BuyerNewDTO buyerNewDTO);
 
     List<MngGiftDTO> processSelectMngGiftList(SearchDTO searchDTO);
 
+    List<MngGiftDTO> processSelectExhibitorNewGiftList(SearchDTO searchDTO);
+
     List<MngGiftDTO> processSelectGiftDetailList(String seq);
+
+    List<MngGiftDTO> processSelectExhibitorNewGiftDetailList(String seq);
 
     ResponseDTO processUpdateGift(ExhibitorDTO exhibitorDTO);
 
+    ResponseDTO processUpdateExhibitorNewGift(ExhibitorNewDTO exhibitorNewDTO);
+
     ResponseDTO processDeleteGift(GiftDTO giftDTO);
+
+    ResponseDTO processDeleteExhibitorNewGift(GiftNewDTO giftNewDTO);
 
     List<PopupDTO> processSelectPopupList(SearchDTO searchDTO);
 
@@ -242,6 +302,10 @@ public interface KibsMngService {
     StatisticsDTO processSelectCompanyCount(StatisticsDTO statisticsDTO);
 
     StatisticsDTO processSelectVisitorCount(StatisticsDTO statisticsDTO);
+
+    StatisticsDTO processSelectProductCount(StatisticsDTO statisticsDTO);
+
+    StatisticsDTO processSelectProductQtyCount(StatisticsDTO statisticsDTO);
 
     List<StatisticsDTO> processSelectStatisticsAccessorDay(StatisticsDTO statisticsDTO);
 
@@ -267,6 +331,8 @@ public interface KibsMngService {
 
     ResponseDTO processUpdateApprovalStatus(List<ExhibitorDTO> exhibitorList);
 
+    ResponseDTO processUpdateExhibitorNewApprovalStatus(List<ExhibitorNewDTO> exhibitorList);
+
     List<ExhibitorDetailDTO> processSelectExhibitorDetailList(ExhibitorDetailDTO exhibitorDetailDTO);
 
     List<MemberDTO> processSelectMemberList(SearchDTO searchDTO);
@@ -290,6 +356,8 @@ public interface KibsMngService {
     ResponseDTO processDeleteEventCompany(CompanyDTO companyDTO);
 
     ResponseDTO processUpdatePrcYn(List<ExhibitorDTO> exhibitorList);
+
+    ResponseDTO processUpdateExhibitorNewPrcYn(List<ExhibitorNewDTO> exhibitorList);
 
     ResponseDTO processUpdateVisitor(VisitorDTO visitorDTO);
 

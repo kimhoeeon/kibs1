@@ -52,28 +52,57 @@
 
     <select id="selectCompanyCount" parameterType="com.mtf.kibs.dto.StatisticsDTO" resultType="com.mtf.kibs.dto.StatisticsDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectCompanyCount */
-        SELECT GROUP_CONCAT(r.cancel_yn) as customValue
+        SELECT GROUP_CONCAT(r.cancel_yn)    as customValue
              , GROUP_CONCAT(r.cancel_count) as inCount
-        FROM ( SELECT e.cancel_yn
-                    , COUNT(e.cancel_yn) as cancel_count
-               FROM exhibitor e
-               WHERE e.transfer_year = #{transferYear}
-               GROUP BY e.cancel_yn
-               ORDER BY e.cancel_yn asc
-               ) r
+        FROM (SELECT e.cancel_yn
+                   , COUNT(e.cancel_yn) as cancel_count
+              FROM exhibitor_new e
+              WHERE e.transfer_year = #{transferYear}
+              GROUP BY e.cancel_yn
+              ORDER BY e.cancel_yn asc) r
     </select>
 
     <select id="selectVisitorCount" parameterType="com.mtf.kibs.dto.StatisticsDTO" resultType="com.mtf.kibs.dto.StatisticsDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectVisitorCount */
-        SELECT GROUP_CONCAT(r.join_yn) as customValue
+        SELECT GROUP_CONCAT(r.join_yn)    as customValue
              , GROUP_CONCAT(r.join_count) as inCount
-        FROM ( SELECT v.join_yn
-                    , COUNT(v.join_yn) as join_count
-               FROM visitor v
-               WHERE v.join_year = #{transferYear}
-               GROUP BY v.join_yn
-               ORDER BY v.join_yn desc
-             ) r
+        FROM (SELECT v.join_yn
+                   , COUNT(v.join_yn) as join_count
+              FROM visitor v
+              WHERE v.join_year = #{transferYear}
+              GROUP BY v.join_yn
+              ORDER BY v.join_yn desc) r
+    </select>
+
+    <select id="selectProductCount" parameterType="com.mtf.kibs.dto.StatisticsDTO" resultType="com.mtf.kibs.dto.StatisticsDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectProductCount */
+        SELECT GROUP_CONCAT(r.x) AS inCount
+        FROM ( SELECT COUNT(*) AS x /* 참가완료 */
+               FROM product_new pn
+               WHERE EXISTS ( SELECT 1
+                              FROM exhibitor_new en
+                              WHERE en.seq = pn.ex_seq
+                                AND en.transfer_year = #{transferYear}
+                                AND en.cancel_yn = 'N' )
+              UNION ALL
+              SELECT COUNT(*) AS x /* 참가취소 */
+              FROM product_new pn
+              WHERE EXISTS ( SELECT 1
+                             FROM exhibitor_new en
+                             WHERE en.seq = pn.ex_seq
+                               AND en.transfer_year = #{transferYear}
+                               AND en.cancel_yn = 'Y' ) ) r
+    </select>
+
+    <select id="selectProductQtyCount" parameterType="com.mtf.kibs.dto.StatisticsDTO" resultType="com.mtf.kibs.dto.StatisticsDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectProductQtyCount */
+        SELECT SUM(pn.product_qty) as inCount
+        FROM product_new pn
+        WHERE EXISTS ( SELECT 1
+                       FROM exhibitor_new en
+                       WHERE en.seq = pn.ex_seq
+                         AND en.transfer_year = #{transferYear}
+                         AND en.cancel_yn = 'N' )
     </select>
 
     <select id="selectStatisticsAccessorDay" parameterType="com.mtf.kibs.dto.StatisticsDTO" resultType="com.mtf.kibs.dto.StatisticsDTO">
@@ -1689,6 +1718,68 @@
         ORDER BY init_regi_dttm desc, company_name_ko asc
     </select>
 
+    <select id="selectListExhibitorNew" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectListExhibitorNew */
+        SELECT seq
+             , approval_status
+             , booth_type
+             , company_name_ko
+             , company_name_en
+             , id
+             , prc_total
+             , deposit
+             , balance
+             , prc_yn
+             , final_regi_dttm
+        FROM exhibitor_new
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "companyNameKo"'>
+                AND company_name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "companyNameEn"'>
+                AND company_name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "boothNumber"'>
+                AND booth_num LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "id"'>
+                AND id LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='boothType != null and boothType != ""'>
+            AND INSTR(booth_type,#{boothType}) <![CDATA[>]]> 0
+        </if>
+        <if test='discountYn != null and discountYn != ""'>
+            AND discount_yn = #{discountYn}
+        </if>
+        <if test='taxYn != null and taxYn != ""'>
+            AND tax_yn = #{taxYn}
+        </if>
+        <if test='prcYn != null and prcYn != ""'>
+            AND prc_yn = #{prcYn}
+        </if>
+        <if test='lang != null and lang != ""'>
+            AND lang = #{lang}
+        </if>
+        <if test='applyComplt != null and applyComplt != ""'>
+            AND apply_complt = #{applyComplt}
+        </if>
+        <if test='approvalStatus != null and approvalStatus != ""'>
+            AND approval_status = #{approvalStatus}
+        </if>
+        <if test='cancelYn != null and cancelYn != ""'>
+            AND cancel_yn = #{cancelYn}
+        </if>
+        <if test='refundYn != null and refundYn != ""'>
+            AND refund_yn = #{refundYn}
+        </if>
+        <if test='transferYear != null and transferYear != ""'>
+            AND transfer_year = #{transferYear}
+        </if>
+        ORDER BY init_regi_dttm desc, company_name_ko asc
+    </select>
+
     <select id="selectExhibitorSingle" parameterType="com.mtf.kibs.dto.ExhibitorDTO" resultType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorSingle */
         SELECT seq
@@ -1767,6 +1858,68 @@
              , final_regi_pic
              , final_regi_dttm
         FROM exhibitor
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectExhibitorNewSingle" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewSingle */
+        SELECT seq
+             , lang
+             , id
+             , transfer_year
+             , salt
+             , password
+             , booth_type
+             , company_license_num
+             , company_name_ko
+             , company_name_en
+             , company_address
+             , company_address_detail
+             , factory_address
+             , factory_address_detail
+             , company_ceo
+             , company_tel
+             , company_homepage
+             , company_fax
+             , industry_part
+             , industry_part_etc
+             , employee_cnt
+             , pre_part_year
+             , member_company_yn
+             , name
+             , position
+             , depart
+             , tel
+             , phone
+             , email
+             , email_marketing_yn
+             , company_intro_video
+             , company_intro_ko
+             , company_intro_en
+             , company_purpose_ko
+             , company_purpose_en
+             , new_item_intro_ko
+             , new_item_intro_en
+             , promotion_plan
+             , field_part
+             , export_meeting_yn
+             , part_want_yn
+             , company_online_view_yn
+             , company_badge
+             , discount_yn
+             , apply_complt
+             , prc_yn
+             , cancel_yn
+             , refund_yn
+             , approval_status
+             , approval_status_cancel_reason
+             , participation_status
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM exhibitor_new
         WHERE seq = #{seq}
     </select>
 
@@ -2136,6 +2289,34 @@
         WHERE id = #{id}
     </select>
 
+    <select id="selectProductNewList" parameterType="com.mtf.kibs.dto.ProductNewDTO" resultType="com.mtf.kibs.dto.ProductNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectProductNewList */
+        SELECT seq
+             , ex_seq
+             , product_option_big
+             , product_option_small
+             , product_name_ko
+             , product_name_en
+             , product_qty
+             , product_brand
+             , product_length
+             , product_width
+             , product_height
+             , product_weight
+             , product_material
+             , product_year
+             , product_intro_ko
+             , product_intro_en
+             , product_link
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM product_new
+        WHERE ex_seq = #{exSeq}
+    </select>
+
     <select id="selectOnlineList" parameterType="com.mtf.kibs.dto.OnlineDTO" resultType="com.mtf.kibs.dto.OnlineDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectOnlineList */
         SELECT seq
@@ -2156,6 +2337,32 @@
              , final_regi_dttm
         FROM online
         WHERE id = #{id}
+    </select>
+
+    <select id="selectOnlineNewList" parameterType="com.mtf.kibs.dto.OnlineNewDTO" resultType="com.mtf.kibs.dto.OnlineNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectOnlineNewList */
+        SELECT seq
+             , ex_seq
+             , online_option_big
+             , online_option_small
+             , online_name_ko
+             , online_name_en
+             , online_intro_ko
+             , online_intro_en
+             , online_link
+             , online_length
+             , online_width
+             , online_height
+             , online_weight
+             , online_material
+             , online_year
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM online_new
+        WHERE ex_seq = #{exSeq}
     </select>
 
     <select id="selectBuyerList" parameterType="com.mtf.kibs.dto.BuyerDTO" resultType="com.mtf.kibs.dto.BuyerDTO">
@@ -2183,6 +2390,33 @@
              , final_regi_dttm
         FROM buyer
         WHERE id = #{id}
+    </select>
+
+    <select id="selectBuyerNewList" parameterType="com.mtf.kibs.dto.BuyerNewDTO" resultType="com.mtf.kibs.dto.BuyerNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectBuyerNewList */
+        SELECT seq
+             , ex_seq
+             , buyer_company_name
+             , buyer_company_country
+             , buyer_company_location
+             , buyer_company_homepage
+             , buyer_company_depart
+             , buyer_company_position
+             , buyer_company_email
+             , buyer_company_tel
+             , buyer_company_phone
+             , buyer_company_fax
+             , buyer_company_item
+             , buyer_company_invite_reason
+             , buyer_company_progress_yn
+             , buyer_company_hope
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM buyer_new
+        WHERE ex_seq = #{exSeq}
     </select>
 
     <update id="updateParticipantCompany" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
@@ -2981,6 +3215,25 @@
         WHERE id = #{id}
     </select>
 
+    <select id="selectChargeNewList" parameterType="com.mtf.kibs.dto.ChargeNewDTO" resultType="com.mtf.kibs.dto.ChargeNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectChargeNewList */
+        SELECT seq
+             , ex_seq
+             , charge_person_name
+             , charge_person_position
+             , charge_person_depart
+             , charge_person_tel
+             , charge_person_phone
+             , charge_person_email
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM charge_new
+        WHERE ex_seq = #{exSeq}
+    </select>
+
     <select id="selectBoothList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectBoothList */
         SELECT seq
@@ -3009,6 +3262,93 @@
              , init_regi_dttm
              , final_regi_dttm
         FROM exhibitor
+        WHERE 1=1
+        <if test='transferYear != null and transferYear != ""'>
+            AND transfer_year = #{transferYear}
+        </if>
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "companyNameKo"'>
+                AND company_name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "companyNameEn"'>
+                AND company_name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "boothCnt"'>
+                AND ( stand_alone_booth_cnt + assembly_booth_cnt + online_booth_cnt ) = #{searchText}
+            </if>
+        </if>
+        <if test='dateFrom != null and dateFrom != "" and dateTo != null and dateTo != ""'>
+            AND init_regi_dttm <![CDATA[>=]]> #{dateFrom} and init_regi_dttm <![CDATA[<=]]> #{dateTo}
+        </if>
+        <if test='lang != null and lang != ""'>
+            AND lang = #{lang}
+        </if>
+        <if test='approvalStatus != null and approvalStatus != ""'>
+            AND approval_status = #{approvalStatus}
+        </if>
+        <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
+            AND cancel_yn = #{cancelYn}
+        </if>
+        <if test='boothType != null and boothType != ""'>
+            AND INSTR(booth_type,#{boothType}) <![CDATA[>]]> 0
+        </if>
+        <if test='discountYn != null and discountYn != ""'>
+            <if test='discountYn eq "discountEarly1"'>
+                AND discount_early_1 <![CDATA[>]]> 0
+            </if>
+            <if test='discountYn eq "discountEarly2"'>
+                AND discount_early_2 <![CDATA[>]]> 0
+            </if>
+            <if test='discountYn eq "discountReAll"'>
+                AND discount_re_all <![CDATA[>]]> 0
+            </if>
+            <if test='discountYn eq "discountScale1"'>
+                AND discount_scale_1 <![CDATA[>]]> 0
+            </if>
+            <if test='discountYn eq "discountScale2"'>
+                AND discount_scale_2 <![CDATA[>]]> 0
+            </if>
+            <if test='discountYn eq "discountScale3"'>
+                AND discount_scale_3 <![CDATA[>]]> 0
+            </if>
+            <if test='discountYn eq "discountFirst"'>
+                AND discount_first <![CDATA[>]]> 0
+            </if>
+            <if test='discountYn eq "discountLeisure"'>
+                AND discount_leisure <![CDATA[>]]> 0
+            </if>
+        </if>
+        ORDER BY init_regi_dttm DESC, company_name_ko ASC
+    </select>
+
+    <select id="selectExhibitorNewBoothList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewBoothList */
+        SELECT seq
+             , company_name_ko
+             , company_name_en
+             , booth_type
+             , discount_type
+             , discount_yn
+             , registration_cnt
+             , registration_fee
+             , stand_alone_booth_cnt
+             , stand_alone_booth_fee
+             , assembly_booth_cnt
+             , assembly_booth_fee
+             , online_booth_cnt
+             , online_booth_fee
+             , discount_early_1
+             , discount_early_2
+             , discount_re_all
+             , discount_scale_1
+             , discount_scale_2
+             , discount_scale_3
+             , discount_first
+             , discount_leisure
+             , booth_prc_sum
+             , init_regi_dttm
+             , final_regi_dttm
+        FROM exhibitor_new
         WHERE 1=1
         <if test='transferYear != null and transferYear != ""'>
             AND transfer_year = #{transferYear}
@@ -3101,6 +3441,38 @@
         WHERE seq = #{value}
     </select>
 
+    <select id="selectExhibitorNewBoothSingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewBoothSingle */
+        SELECT seq
+             , company_name_ko
+             , company_name_en
+             , booth_type
+             , discount_type
+             , discount_yn
+             , registration_cnt
+             , registration_fee
+             , stand_alone_booth_cnt
+             , stand_alone_booth_fee
+             , assembly_booth_cnt
+             , assembly_booth_fee
+             , online_booth_cnt
+             , online_booth_fee
+             , discount_early_1
+             , discount_early_2
+             , discount_re_all
+             , discount_scale_1
+             , discount_scale_2
+             , discount_scale_3
+             , discount_leisure
+             , booth_prc_sum
+             , discount_prc_sum
+             , prc_sum
+             , prc_vat
+             , prc_total
+        FROM exhibitor_new
+        WHERE seq = #{value}
+    </select>
+
     <update id="UpdateBooth" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.UpdateBooth */
         UPDATE exhibitor
@@ -3121,6 +3493,37 @@
           , discount_scale_2 = #{discountScale2}
           , discount_scale_3 = #{discountScale3}
           , discount_first = #{discountFirst}
+          , discount_leisure = #{discountLeisure}
+          , booth_prc_sum = #{boothPrcSum}
+          , discount_prc_sum = #{discountPrcSum}
+          , discount_yn = #{discountYn}
+          , prc_sum = ((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum)
+          , prc_vat = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1)
+          , prc_total = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) + (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
+          , balance = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) + (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="UpdateExhibitorNewBooth" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.UpdateExhibitorNewBooth */
+        UPDATE exhibitor_new
+        SET booth_type = #{boothType}
+          , discount_type = #{discountType}
+          , registration_cnt = #{registrationCnt}
+          , registration_fee = #{registrationFee}
+          , stand_alone_booth_cnt = #{standAloneBoothCnt}
+          , stand_alone_booth_fee = #{standAloneBoothFee}
+          , assembly_booth_cnt = #{assemblyBoothCnt}
+          , assembly_booth_fee = #{assemblyBoothFee}
+          , online_booth_cnt = #{onlineBoothCnt}
+          , online_booth_fee = #{onlineBoothFee}
+          , discount_early_1 = #{discountEarly1}
+          , discount_early_2 = #{discountEarly2}
+          , discount_re_all = #{discountReAll}
+          , discount_scale_1 = #{discountScale1}
+          , discount_scale_2 = #{discountScale2}
+          , discount_scale_3 = #{discountScale3}
           , discount_leisure = #{discountLeisure}
           , booth_prc_sum = #{boothPrcSum}
           , discount_prc_sum = #{discountPrcSum}
@@ -3169,6 +3572,42 @@
                , init_regi_dttm DESC
     </select>
 
+    <select id="selectExhibitorNewSignList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewSignList */
+        SELECT seq
+             , company_name_ko
+             , company_name_en
+             , company_sign_name_ko
+             , company_sign_name_en
+             , init_regi_dttm
+             , final_regi_dttm
+        FROM exhibitor_new
+        WHERE 1=1
+        <if test='transferYear != null and transferYear != ""'>
+            AND transfer_year = #{transferYear}
+        </if>
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "companyNameKo"'>
+                AND company_name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "companyNameEn"'>
+                AND company_name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='lang != null and lang != ""'>
+            AND lang = #{lang}
+        </if>
+        <if test='approvalStatus != null and approvalStatus != ""'>
+            AND approval_status = #{approvalStatus}
+        </if>
+        <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
+            AND cancel_yn = #{cancelYn}
+        </if>
+        ORDER BY NULLIF(company_sign_name_ko, '') IS NOT NULL DESC
+               , NULLIF(company_sign_name_en, '') IS NOT NULL DESC
+               , init_regi_dttm DESC
+    </select>
+
     <select id="selectSignSingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectSignSingle */
         SELECT seq
@@ -3180,9 +3619,29 @@
         WHERE seq = #{value}
     </select>
 
+    <select id="selectExhibitorNewSignSingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewSignSingle */
+        SELECT seq
+             , company_name_ko
+             , company_name_en
+             , company_sign_name_ko
+             , company_sign_name_en
+        FROM exhibitor_new
+        WHERE seq = #{value}
+    </select>
+
     <update id="updateSign" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateSign */
         UPDATE exhibitor
+        SET company_sign_name_ko = <![CDATA[#{companySignNameKo}]]>
+          , company_sign_name_en = <![CDATA[#{companySignNameEn}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateExhibitorNewSign" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorNewSign */
+        UPDATE exhibitor_new
         SET company_sign_name_ko = <![CDATA[#{companySignNameKo}]]>
           , company_sign_name_en = <![CDATA[#{companySignNameEn}]]>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -3265,6 +3724,82 @@
                , init_regi_dttm DESC
     </select>
 
+    <select id="selectExhibitorNewUtilityList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewUtilityList */
+        SELECT seq
+             , company_name_ko
+             , company_name_en
+             , IFNULL(utility_jugan_cnt,0) as utility_jugan_cnt
+             , IFNULL(utility_jugan_fee,0) as utility_jugan_fee
+             , IFNULL(utility_day_cnt,0) as utility_day_cnt
+             , IFNULL(utility_day_fee,0) as utility_day_fee
+             , IFNULL(utility_compressed_air_cnt,0) as utility_compressed_air_cnt
+             , IFNULL(utility_compressed_air_fee,0) as utility_compressed_air_fee
+             , IFNULL(utility_water_basic_cnt,0) as utility_water_basic_cnt
+             , IFNULL(utility_water_basic_fee,0) as utility_water_basic_fee
+             , IFNULL(utility_internet_cnt,0) as utility_internet_cnt
+             , IFNULL(utility_internet_fee,0) as utility_internet_fee
+             , IFNULL(utility_pytex_new_cnt,0) as utility_pytex_new_cnt
+             , IFNULL(utility_pytex_new_fee,0) as utility_pytex_new_fee
+             , IFNULL(utility_pytex_re_cnt,0) as utility_pytex_re_cnt
+             , IFNULL(utility_pytex_re_fee,0) as utility_pytex_re_fee
+             , IFNULL(utility_barcode_cnt,0) as utility_barcode_cnt
+             , IFNULL(utility_barcode_fee,0) as utility_barcode_fee
+             , IFNULL(utility_prc_sum,0) as utility_prc_sum
+             , init_regi_dttm
+             , final_regi_dttm
+        FROM exhibitor_new
+        WHERE 1=1
+        <if test='transferYear != null and transferYear != ""'>
+          AND transfer_year = #{transferYear}
+        </if>
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "companyNameKo"'>
+                AND company_name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "companyNameEn"'>
+                AND company_name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='lang != null and lang != ""'>
+            AND lang = #{lang}
+        </if>
+        <if test='approvalStatus != null and approvalStatus != ""'>
+            AND approval_status = #{approvalStatus}
+        </if>
+        <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
+            AND cancel_yn = #{cancelYn}
+        </if>
+        <if test='utilityGbn != null and utilityGbn != ""'>
+            <if test='utilityGbn eq "JUGAN"'>
+                AND utility_jugan_cnt <![CDATA[>]]> 0
+            </if>
+            <if test='utilityGbn eq "ALLDAY"'>
+                AND utility_day_cnt <![CDATA[>]]> 0
+            </if>
+            <if test='utilityGbn eq "COMPRESSEDAIR"'>
+                AND utility_compressed_air_cnt <![CDATA[>]]> 0
+            </if>
+            <if test='utilityGbn eq "WATERBASIC"'>
+                AND utility_water_basic_cnt <![CDATA[>]]> 0
+            </if>
+            <if test='utilityGbn eq "INTERNET"'>
+                AND utility_internet_cnt <![CDATA[>]]> 0
+            </if>
+            <if test='utilityGbn eq "PYTEXNEW"'>
+                AND utility_pytex_new_cnt <![CDATA[>]]> 0
+            </if>
+            <if test='utilityGbn eq "PYTEXRE"'>
+                AND utility_pytex_re_cnt <![CDATA[>]]> 0
+            </if>
+            <if test='utilityGbn eq "BARCODE"'>
+                AND utility_barcode_cnt <![CDATA[>]]> 0
+            </if>
+        </if>
+        ORDER BY (utility_jugan_cnt + utility_day_cnt + utility_compressed_air_cnt + utility_water_basic_cnt + utility_internet_cnt + utility_pytex_new_cnt + utility_pytex_re_cnt + utility_barcode_cnt) DESC
+               , init_regi_dttm DESC
+    </select>
+
     <select id="selectUtilitySingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectUtilitySingle */
         SELECT seq
@@ -3291,9 +3826,65 @@
         WHERE seq = #{value}
     </select>
 
+    <select id="selectExhibitorNewUtilitySingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewUtilitySingle */
+        SELECT seq
+             , company_name_ko
+             , company_name_en
+             , IFNULL(utility_jugan_cnt,0) as utility_jugan_cnt
+             , IFNULL(utility_jugan_fee,0) as utility_jugan_fee
+             , IFNULL(utility_day_cnt,0) as utility_day_cnt
+             , IFNULL(utility_day_fee,0) as utility_day_fee
+             , IFNULL(utility_compressed_air_cnt,0) as utility_compressed_air_cnt
+             , IFNULL(utility_compressed_air_fee,0) as utility_compressed_air_fee
+             , IFNULL(utility_water_basic_cnt,0) as utility_water_basic_cnt
+             , IFNULL(utility_water_basic_fee,0) as utility_water_basic_fee
+             , IFNULL(utility_internet_cnt,0) as utility_internet_cnt
+             , IFNULL(utility_internet_fee,0) as utility_internet_fee
+             , IFNULL(utility_pytex_new_cnt,0) as utility_pytex_new_cnt
+             , IFNULL(utility_pytex_new_fee,0) as utility_pytex_new_fee
+             , IFNULL(utility_pytex_re_cnt,0) as utility_pytex_re_cnt
+             , IFNULL(utility_pytex_re_fee,0) as utility_pytex_re_fee
+             , IFNULL(utility_barcode_cnt,0) as utility_barcode_cnt
+             , IFNULL(utility_barcode_fee,0) as utility_barcode_fee
+             , IFNULL(utility_prc_sum,0) as utility_prc_sum
+        FROM exhibitor_new
+        WHERE seq = #{value}
+    </select>
+
     <update id="updateUtility" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.KibsMapper.updateUtility */
         UPDATE exhibitor
+        SET utility_jugan_cnt          = IFNULL(#{utilityJuganCnt}, 0)
+          , utility_jugan_fee          = IFNULL(#{utilityJuganFee}, 0)
+          , utility_day_cnt            = IFNULL(#{utilityDayCnt}, 0)
+          , utility_day_fee            = IFNULL(#{utilityDayFee}, 0)
+          , utility_compressed_air_cnt = IFNULL(#{utilityCompressedAirCnt}, 0)
+          , utility_compressed_air_fee = IFNULL(#{utilityCompressedAirFee}, 0)
+          , utility_water_basic_cnt    = IFNULL(#{utilityWaterBasicCnt}, 0)
+          , utility_water_basic_fee    = IFNULL(#{utilityWaterBasicFee}, 0)
+          , utility_internet_cnt       = IFNULL(#{utilityInternetCnt}, 0)
+          , utility_internet_fee       = IFNULL(#{utilityInternetFee}, 0)
+          , utility_pytex_new_cnt      = IFNULL(#{utilityPytexNewCnt}, 0)
+          , utility_pytex_new_fee      = IFNULL(#{utilityPytexNewFee}, 0)
+          , utility_pytex_re_cnt       = IFNULL(#{utilityPytexReCnt}, 0)
+          , utility_pytex_re_fee       = IFNULL(#{utilityPytexReFee}, 0)
+          , utility_barcode_cnt        = IFNULL(#{utilityBarcodeCnt}, 0)
+          , utility_barcode_fee        = IFNULL(#{utilityBarcodeFee}, 0)
+          , utility_prc_sum            = IFNULL(#{utilityPrcSum}, 0)
+          , prc_sum                    = ((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0))
+          , prc_vat                    = (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1)
+          , prc_total                  = (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) +
+                                          (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1))
+          , balance                    = (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) +
+                                          (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1))
+          , final_regi_dttm            = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateExhibitorNewUtility" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.updateExhibitorNewUtility */
+        UPDATE exhibitor_new
         SET utility_jugan_cnt          = IFNULL(#{utilityJuganCnt}, 0)
           , utility_jugan_fee          = IFNULL(#{utilityJuganFee}, 0)
           , utility_day_cnt            = IFNULL(#{utilityDayCnt}, 0)
@@ -3367,6 +3958,52 @@
         , p.init_regi_dttm DESC
     </select>
 
+    <select id="selectExhibitorNewPassList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.MngPassDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewPassList */
+        SELECT e.seq
+             , p.seq AS id
+             , e.company_name_ko
+             , e.company_name_en
+             , p.pass_name
+             , p.pass_first_name
+             , p.pass_last_name
+             , p.pass_position_ko
+             , p.pass_position_en
+             , p.pass_note
+             , p.init_regi_dttm
+             , p.final_regi_dttm
+        FROM exhibitor_new e
+        LEFT JOIN pass_new p
+        ON e.seq = p.ex_seq
+        WHERE 1=1
+        <if test='transferYear != null and transferYear != ""'>
+            AND e.transfer_year = #{transferYear}
+        </if>
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "companyNameKo"'>
+                AND e.company_name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "companyNameEn"'>
+                AND e.company_name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "passName"'>
+                AND p.pass_name LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='lang != null and lang != ""'>
+            AND e.lang = #{lang}
+        </if>
+        <if test='approvalStatus != null and approvalStatus != ""'>
+            AND e.approval_status = #{approvalStatus}
+        </if>
+        <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
+            AND e.cancel_yn = #{cancelYn}
+        </if>
+        ORDER BY NULLIF(p.pass_name, '') IS NOT NULL DESC
+        , e.company_name_ko DESC
+        , p.init_regi_dttm DESC
+    </select>
+
     <select id="selectPassDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.MngPassDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectPassDetailList */
         SELECT e.seq
@@ -3387,6 +4024,26 @@
         WHERE e.seq = #{value}
     </select>
 
+    <select id="selectExhibitorNewPassDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.MngPassDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewPassDetailList */
+        SELECT e.seq
+             , p.seq AS id
+             , e.company_name_ko
+             , e.company_name_en
+             , p.pass_name
+             , p.pass_first_name
+             , p.pass_last_name
+             , p.pass_position_ko
+             , p.pass_position_en
+             , p.pass_note
+             , p.init_regi_dttm
+             , p.final_regi_dttm
+        FROM exhibitor_new e
+        LEFT JOIN pass_new p
+        ON e.seq = p.ex_seq
+        WHERE e.seq = #{value}
+    </select>
+
     <select id="getExhibitorId" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.getExhibitorId */
         SELECT id
@@ -3398,6 +4055,19 @@
     <update id="updatePass" parameterType="com.mtf.kibs.dto.PassDTO">
         /* com.mtf.kibs.mapper.KibsMapper.updatePass */
         UPDATE pass
+        SET pass_name = #{passName}
+          , pass_first_name = #{passFirstName}
+          , pass_last_name = #{passLastName}
+          , pass_position_ko = #{passPositionKo}
+          , pass_position_en = #{passPositionEn}
+          , pass_note = #{passNote}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateExhibitorNewPass" parameterType="com.mtf.kibs.dto.PassNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.updateExhibitorNewPass */
+        UPDATE pass_new
         SET pass_name = #{passName}
           , pass_first_name = #{passFirstName}
           , pass_last_name = #{passLastName}
@@ -3445,9 +4115,46 @@
         )
     </insert>
 
+    <insert id="insertExhibitorNewPass" parameterType="com.mtf.kibs.dto.PassNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.insertExhibitorNewPass */
+        INSERT INTO pass_new
+        ( seq
+        , ex_seq
+        , pass_name
+        , pass_first_name
+        , pass_last_name
+        , pass_position_ko
+        , pass_position_en
+        , pass_note
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm)
+        VALUES ( CONCAT('PN', LPAD(next_val('pass_new_seq'), '7', '0'))
+               , #{exSeq}
+               , TRIM(#{passName})
+               , TRIM(#{passFirstName})
+               , TRIM(#{passLastName})
+               , TRIM(#{passPositionKo})
+               , TRIM(#{passPositionEn})
+               , #{passNote}
+               , #{note}
+               , 'PASS'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'PASS'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+    </insert>
+
     <delete id="deletePass" parameterType="com.mtf.kibs.dto.PassDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.deletePass */
         DELETE FROM pass
+        WHERE seq = #{seq}
+    </delete>
+
+    <delete id="deleteExhibitorNewPass" parameterType="com.mtf.kibs.dto.PassNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteExhibitorNewPass */
+        DELETE FROM pass_new
         WHERE seq = #{seq}
     </delete>
 
@@ -3471,6 +4178,55 @@
         FROM exhibitor e
         LEFT JOIN buyer b
         ON e.seq = b.id
+        WHERE 1=1
+        <if test='transferYear != null and transferYear != ""'>
+            AND e.transfer_year = #{transferYear}
+        </if>
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "buyerCompanyName"'>
+                AND b.buyer_company_name LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "companyNameKo"'>
+                AND e.company_name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "companyNameEn"'>
+                AND e.company_name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='lang != null and lang != ""'>
+            AND e.lang = #{lang}
+        </if>
+        <if test='approvalStatus != null and approvalStatus != ""'>
+            AND e.approval_status = #{approvalStatus}
+        </if>
+        <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
+            AND e.cancel_yn = #{cancelYn}
+        </if>
+        ORDER BY NULLIF(b.buyer_company_name, '') IS NOT NULL DESC
+        , e.company_name_ko ASC
+        , b.init_regi_dttm DESC
+    </select>
+
+    <select id="selectExhibitorNewBuyerList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.MngBuyerDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewBuyerList */
+        SELECT e.seq
+             , b.seq AS id
+             , e.company_name_ko
+             , e.company_name_en
+             , b.buyer_company_country
+             , b.buyer_company_location
+             , b.buyer_company_name
+             , b.buyer_company_homepage
+             , b.buyer_company_depart
+             , b.buyer_company_position
+             , b.buyer_company_email
+             , b.buyer_company_tel
+             , b.buyer_company_phone
+             , b.buyer_company_fax
+             , b.init_regi_dttm
+        FROM exhibitor_new e
+        JOIN buyer_new b
+        ON e.seq = b.ex_seq
         WHERE 1=1
         <if test='transferYear != null and transferYear != ""'>
             AND e.transfer_year = #{transferYear}
@@ -3528,6 +4284,113 @@
         WHERE e.seq = #{value}
     </select>
 
+    <select id="selectExhibitorNewBuyerDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.MngBuyerDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewBuyerDetailList */
+        SELECT e.seq
+             , b.seq as id
+             , e.company_name_ko
+             , e.company_name_en
+             , b.buyer_company_name
+             , b.buyer_company_country
+             , b.buyer_company_location
+             , b.buyer_company_homepage
+             , b.buyer_company_depart
+             , b.buyer_company_position
+             , b.buyer_company_email
+             , b.buyer_company_tel
+             , b.buyer_company_phone
+             , b.buyer_company_fax
+             , b.buyer_company_item
+             , b.buyer_company_invite_reason
+             , b.buyer_company_progress_yn
+             , b.buyer_company_hope
+             , b.init_regi_dttm
+             , b.final_regi_dttm
+        FROM exhibitor_new e
+        JOIN buyer_new b
+        ON e.seq = b.ex_seq
+        WHERE e.seq = #{value}
+    </select>
+
+    <insert id="insertExhibitorNewBuyer" parameterType="com.mtf.kibs.dto.BuyerNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.insertExhibitorNewBuyer */
+        INSERT INTO buyer_new
+        ( seq
+        , ex_seq
+        , buyer_company_name
+        , buyer_company_country
+        , buyer_company_location
+        , buyer_company_homepage
+        , buyer_company_depart
+        , buyer_company_position
+        , buyer_company_email
+        , buyer_company_tel
+        , buyer_company_phone
+        , buyer_company_fax
+        , buyer_company_item
+        , buyer_company_invite_reason
+        , buyer_company_progress_yn
+        , buyer_company_hope
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( CONCAT('BN', LPAD(next_val('buyer_new_seq'), '7', '0'))
+            , #{exSeq}
+            , #{buyerCompanyName}
+            , #{buyerCompanyCountry}
+            , #{buyerCompanyLocation}
+            , #{buyerCompanyHomepage}
+            , #{buyerCompanyDepart}
+            , #{buyerCompanyPosition}
+            , #{buyerCompanyEmail}
+            , #{buyerCompanyTel}
+            , #{buyerCompanyPhone}
+            , #{buyerCompanyFax}
+            , #{buyerCompanyItem}
+            , #{buyerCompanyInviteReason}
+            , #{buyerCompanyProgressYn}
+            , #{buyerCompanyHope}
+            , #{note}
+            , 'BUYER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'BUYER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <update id="updateExhibitorNewBuyer" parameterType="com.mtf.kibs.dto.BuyerNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorNewBuyer */
+        UPDATE buyer_new
+        SET buyer_company_name = #{buyerCompanyName}
+          , buyer_company_country = #{buyerCompanyCountry}
+          , buyer_company_location = #{buyerCompanyLocation}
+          , buyer_company_homepage = #{buyerCompanyHomepage}
+          , buyer_company_depart = #{buyerCompanyDepart}
+          , buyer_company_position = #{buyerCompanyPosition}
+          , buyer_company_email = #{buyerCompanyEmail}
+          , buyer_company_tel = #{buyerCompanyTel}
+          , buyer_company_phone = #{buyerCompanyPhone}
+          , buyer_company_fax = #{buyerCompanyFax}
+          , buyer_company_item = #{buyerCompanyItem}
+          , buyer_company_invite_reason = #{buyerCompanyInviteReason}
+          , buyer_company_progress_yn = #{buyerCompanyProgressYn}
+          , buyer_company_hope = #{buyerCompanyHope}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <delete id="deleteExhibitorNewBuyer" parameterType="com.mtf.kibs.dto.BuyerNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteExhibitorNewBuyer */
+        DELETE
+        FROM buyer_new
+        WHERE seq = #{seq}
+    </delete>
+
     <select id="selectMngOnlineList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectMngOnlineList */
         SELECT e.seq
@@ -3561,9 +4424,88 @@
         ORDER BY e.company_online_view_yn DESC , e.transfer_year DESC , e.company_name_ko ASC , e.company_name_en ASC
     </select>
 
+    <select id="selectMngOnlineNewList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectMngOnlineNewList */
+        SELECT e.seq
+             , e.transfer_year
+             , e.company_name_ko
+             , e.company_name_en
+             , e.company_online_view_yn
+             , e.field_part
+             , e.init_regi_dttm
+             , e.final_regi_dttm
+             , (SELECT GROUP_CONCAT(DISTINCT COALESCE(o1.online_option_small,'') SEPARATOR '^')
+                FROM online_new o1
+                WHERE o1.ex_seq = e.seq) AS productOptionSmall
+        FROM exhibitor_new e
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "companyNameKo"'>
+                AND e.company_name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "companyNameEn"'>
+                AND e.company_name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='transferYear != null and transferYear != ""'>
+            AND e.transfer_year = #{transferYear}
+        </if>
+        <if test='companyOnlineViewYn != null and companyOnlineViewYn != ""'>
+            AND e.company_online_view_yn = #{companyOnlineViewYn}
+        </if>
+        AND EXISTS (SELECT 1 FROM online_new o WHERE o.ex_seq = e.seq)
+        ORDER BY e.company_online_view_yn DESC , e.transfer_year DESC , e.company_name_ko ASC , e.company_name_en ASC
+    </select>
+
+    <select id="selectMngProductNewList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.MngProductDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectMngProductNewList */
+        SELECT e.seq
+             , e.transfer_year
+             , e.company_name_ko
+             , e.company_name_en
+             , p.product_option_big
+             , p.product_option_small
+             , p.product_name_ko
+             , p.product_name_en
+             , p.product_qty
+             , p.product_brand
+             , p.product_length
+             , p.product_width
+             , p.product_height
+             , p.product_weight
+             , p.product_material
+             , p.product_year
+             , e.init_regi_dttm
+             , e.final_regi_dttm
+        FROM exhibitor_new e
+        JOIN product_new p
+        ON e.seq = p.ex_seq
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "companyNameKo"'>
+                AND e.company_name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "companyNameEn"'>
+                AND e.company_name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='transferYear != null and transferYear != ""'>
+            AND e.transfer_year = #{transferYear}
+        </if>
+        ORDER BY e.company_online_view_yn DESC , e.transfer_year DESC , e.company_name_ko ASC , e.company_name_en ASC
+    </select>
+
     <update id="updateViewYn" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateViewYn */
         UPDATE exhibitor
+        SET company_online_view_yn = #{companyOnlineViewYn}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateExhibitorNewOnlineViewYn" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorNewOnlineViewYn */
+        UPDATE exhibitor_new
         SET company_online_view_yn = #{companyOnlineViewYn}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -3583,9 +4525,31 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updateExhibitorNewApprovalStatus" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorNewApprovalStatus */
+        UPDATE exhibitor_new
+        SET apply_complt = #{applyComplt}
+          , approval_status = #{approvalStatus}
+          , approval_status_cancel_reason = #{approvalStatusCancelReason}
+          , cancel_yn = #{cancelYn}
+          <if test='cancelYn eq "Y"'>
+          , company_online_view_yn = 'N'
+          </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <update id="updatePrcYn" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updatePrcYn */
         UPDATE exhibitor
+        SET prc_yn = #{prcYn}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateExhibitorNewPrcYn" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorNewPrcYn */
+        UPDATE exhibitor_new
         SET prc_yn = #{prcYn}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -3625,6 +4589,40 @@
         , g.init_regi_dttm DESC
     </select>
 
+    <select id="selectExhibitorNewGiftList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.MngGiftDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewGiftList */
+        SELECT e.seq
+             , g.seq as id
+             , e.company_name_ko
+             , e.company_name_en
+             , g.gift_gbn
+             , g.gift_cnt
+             , g.gift_classify
+             , g.gift_name
+             , g.gift_price
+             , g.gift_sponsor_price
+             , g.init_regi_dttm
+             , g.final_regi_dttm
+        FROM exhibitor_new e
+        JOIN gift_new g
+        ON e.seq = g.ex_seq
+        WHERE 1=1
+        <if test='transferYear != null and transferYear != ""'>
+            AND e.transfer_year = #{transferYear}
+        </if>
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "companyNameKo"'>
+                AND e.company_name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "companyNameEn"'>
+                AND e.company_name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        ORDER BY NULLIF(g.gift_gbn, '') IS NOT NULL DESC
+        , e.company_name_ko ASC
+        , g.init_regi_dttm DESC
+    </select>
+
     <select id="selectGiftDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.MngGiftDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectGiftDetailList */
         SELECT e.seq
@@ -3646,6 +4644,30 @@
         FROM exhibitor e
         LEFT JOIN gift g
         ON e.seq = g.id
+        WHERE e.seq = #{value}
+    </select>
+
+    <select id="selectExhibitorNewGiftDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.MngGiftDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewGiftDetailList */
+        SELECT e.seq
+             , g.seq as id
+             , e.company_name_ko
+             , e.company_name_en
+             , g.gift_gbn
+             , g.gift_cnt
+             , g.gift_classify
+             , g.gift_name
+             , g.gift_content
+             , g.gift_photo
+             , g.gift_company_logo
+             , g.gift_price
+             , g.gift_sponsor_price
+             , g.gift_note
+             , g.init_regi_dttm
+             , g.final_regi_dttm
+        FROM exhibitor_new e
+        JOIN gift_new g
+        ON e.seq = g.ex_seq
         WHERE e.seq = #{value}
     </select>
 
@@ -3694,6 +4716,45 @@
         )
     </insert>
 
+    <insert id="insertGiftNew" parameterType="com.mtf.kibs.dto.GiftNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.insertGiftNew */
+        INSERT INTO gift_new
+        ( seq
+        , ex_seq
+        , gift_gbn
+        , gift_cnt
+        , gift_classify
+        , gift_name
+        , gift_content
+        , gift_photo
+        , gift_company_logo
+        , gift_price
+        , gift_sponsor_price
+        , gift_note
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm)
+        VALUES ( CONCAT('GN', LPAD(next_val('gift_new_seq'), '7', '0'))
+               , #{exSeq}
+               , #{giftGbn}
+               , #{giftCnt}
+               , #{giftClassify}
+               , #{giftName}
+               , #{giftContent}
+               , #{giftPhoto}
+               , #{giftCompanyLogo}
+               , #{giftPrice}
+               , #{giftSponsorPrice}
+               , #{giftNote}
+               , #{note}
+               , 'GIFT'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'GIFT'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+    </insert>
+
     <update id="updateExhibitGift" parameterType="com.mtf.kibs.dto.GiftDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitGift */
         UPDATE gift
@@ -3711,9 +4772,32 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updateGiftNew" parameterType="com.mtf.kibs.dto.GiftNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateGiftNew */
+        UPDATE gift_new
+        SET gift_gbn = #{giftGbn}
+          , gift_cnt = #{giftCnt}
+          , gift_classify = #{giftClassify}
+          , gift_name = #{giftName}
+          , gift_content = #{giftContent}
+          , gift_photo = #{giftPhoto}
+          , gift_company_logo = #{giftCompanyLogo}
+          , gift_price = #{giftPrice}
+          , gift_sponsor_price = #{giftSponsorPrice}
+          , gift_note = #{giftNote}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <delete id="deleteGift" parameterType="com.mtf.kibs.dto.GiftDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.deleteGift */
         DELETE FROM gift
+        WHERE seq = #{seq}
+    </delete>
+
+    <delete id="deleteExhibitorNewGift" parameterType="com.mtf.kibs.dto.GiftNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteExhibitorNewGift */
+        DELETE FROM gift_new
         WHERE seq = #{seq}
     </delete>
 
@@ -4169,7 +5253,7 @@
                  , e.company_name_en as nameEn /*업체명(영문)*/
                  , e.email as email /*이메일*/
                  , e.init_regi_dttm as initRegiDttm /*가입일자*/
-            FROM exhibitor e
+            FROM exhibitor_new e
             WHERE e.transfer_year = #{transferYear}
             <if test='searchText != null and searchText != ""'>
                 <if test='condition eq "id"'>

@@ -5773,3 +5773,5 @@ position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-w
 .g_p_box .top .date { line-height: 1; margin-top: 5px;}
 .g_p_box .cont .tit {font-weight: 700; font-size: 1.6rem; margin-bottom: 5px; color: var(--mainColor1);}
 .g_p_box .cont .nae {padding-top: 5px; font-size: 1.4rem;}
+
+.swal2-container { z-index: 99999; }

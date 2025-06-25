@@ -119,15 +119,70 @@ $(document).ready(function () {
     });
 
     // 팝업 폼
-    $('*').click(function () {
+    $('*').on('click', function () {
+        let onFlag = true;
         var pop_id = $(this).attr('data-pop');
-        $("#" + pop_id).addClass('on');
+        if(pop_id === 'popFormInfoLoad'){ // 참가신청 정보 불러오기
+            let id = $('#id').val();
+            if(nvl(id,'') === ''){
+                showMessage('', 'info', '[ 참가신청 정보 불러오기 ]', '아이디(사업자등록번호)를 입력해 주세요.', '');
+                onFlag = false;
+            }else{
+                let paramObj = {
+                    id: id
+                }
+                $.ajax({
+                    url: '/preGetExhibitorEmail.do',
+                    method: 'POST',
+                    async: false,
+                    data: JSON.stringify(paramObj),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (nvl(data,'') === '') {
+                            showMessage('', 'info', '[ 참가신청 정보 불러오기 ]', '해당 아이디(사업자등록번호)로<br>등록된 정보가 없습니다.', '');
+                            onFlag = false;
+                        } else {
+                            let emailList_length = 0;
+                            let emailList_form = $('#popFormInfoLoad .list');
+                            let emailList_html = '';
+                            $.each(data , function(i){
+                                let email = data[i];
+                                if(emailCheck(email)){
+                                    emailList_html = '<div class="item">';
+                                        emailList_html += '<div class="mail">';
+                                            emailList_html += maskingEmail(email);
+                                        emailList_html += '</div>';
+                                        emailList_html += '<input type="button" id="' + email + '" onclick="certificateEmail(this);" value="발송">';
+                                    emailList_html += '</div>';
+                                    emailList_length++;
+                                }
+                            });
+
+                            if(emailList_length > 0){
+                                emailList_form.html(emailList_html);
+                            }else{
+                                showMessage('', 'info', '[ 참가신청 정보 불러오기 ]', '해당 아이디(사업자등록번호)로<br>등록된 정보가 없습니다.', '');
+                                onFlag = false;
+                            }
+                        }
+                    },
+                    error: function (xhr, status) {
+                        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                        onFlag = false;
+                    }
+                })//ajax
+            }
+        }
+        if(onFlag){
+            $("#" + pop_id).addClass('on');
+        }
     });
-    $('.close').click(function(){
+    $('.close').on('click', function () {
         $(this).parents('.popup').removeClass('on');
     });
 
-    // 팝업닫기    
+    // 팝업닫기
     $('.popup .close').on('click', function () {
         $('.popup').removeClass('on');
         $('body').removeClass('lock_scroll');
@@ -153,7 +208,6 @@ $(document).ready(function () {
         $('.popShare').toggleClass('on');
         $('body').toggleClass('lock_scroll');
     });
-
 
     // kibstv
     $(document).on("click", ".viewKibsTv", function() {
@@ -227,23 +281,13 @@ $(document).ready(function () {
             let fileInputName = fileName.split('\\').pop().toLowerCase();
             fileInputName = fileInputName.slice(0,fileInputName.lastIndexOf(".")).toLowerCase();
 
-            //console.log(fileInputName, fileExt);
-            /*let empty_reg = /[\s]/g;
-            if(empty_reg.test(fileInputName)) {
-                alert("파일명에 사용할 수 없는 공백이 포함되어 있습니다.\n파일명에 구분이 필요한 경우 언더바 _ 로 변경해 주세요.");
-                $(this).val(''); //업로드한 파일 제거
-                let fileNameInput = $(this).siblings('.upload_name');
-                fileNameInput.val('');
-                return;
-            }*/
-
             //특수문자가 속해있는지 확인하는 정규식
-            let reg =   /[\{\}\/?,.;:|\[\]*~`!^\+<>@\#$%&\\\=\'\"]/gi;
-            if(reg.test(fileInputName)){
+            let pattern= /[^ㄱ-힣a-zA-Z0-9-_()\s]/;
+            if(pattern.test(fileInputName)){
                 alert('파일명에 허용되지 않는 특수문자가 포함되어 있습니다.\n허용된 특수문자는 - _ ( ) 입니다.');
                 $(this).val(''); //업로드한 파일 제거
                 let fileNameInput = $(this).siblings('.upload_name');
-                fileNameInput.val('');
+                fileNameInput.val('File');
                 return;
             }
 
@@ -253,7 +297,7 @@ $(document).ready(function () {
                 alert(alertMsg);
                 $(this).val(''); //업로드한 파일 제거
                 let fileNameInput = $(this).siblings('.upload_name');
-                fileNameInput.val('');
+                fileNameInput.val('File');
                 return;
             }
 
@@ -264,8 +308,7 @@ $(document).ready(function () {
                     alert("파일 첨부는 10MB 이내 파일만 가능합니다.");
                     $(this).val(''); //업로드한 파일 제거
                     let fileNameInput = $(this).siblings('.upload_name');
-                    fileNameInput.val('');
-                    return;
+                    fileNameInput.val('File');
                 } else {
                     let fileName = $(this).val().split('\\').pop();
                     let fileNameInput = $(this).siblings('.upload_name');
@@ -276,7 +319,7 @@ $(document).ready(function () {
         }else{
             $(this).val(''); //업로드한 파일 제거
             let fileNameInput = $(this).siblings('.upload_name');
-            fileNameInput.val('');
+            fileNameInput.val('File');
         }
     });
 
@@ -315,34 +358,36 @@ $(document).ready(function () {
         $(this).val(sanitizedValue); // 처리된 값을 다시 입력 필드에 설정
     });
 
-    // 회원 계정 정보 input 이메일
-    $('.form_s .email #email_select').on('change', function () {
-        var selectedOption = $(this).val();
-        var emailInput2 = $('.form_s .email #email_input2');
+    // 대표 담당자 input 이메일
+    $('#email_select').on('change', function () {
+        let selectedOption = $(this).val();
+        let emailInput2 = $(this).prev('.email_input2');
 
         if (selectedOption === '직접입력') {
             emailInput2.prop('disabled', false).val('');
         } else {
             emailInput2.prop('disabled', true).val(selectedOption);
         }
+
     });
 
-    // 담당자 정보 input 이메일
-    $('.form_s .email #charge_person_email_select').on('change', function () {
-        var selectedOption = $(this).val();
-        var emailInput2 = $('.form_s .email #charge_person_email_input2');
+    // 부담당자 input 이메일
+    $('select[name=chargePersonEmail_sel]').on('change', function () {
+        let selectedOption = $(this).val();
+        let emailInput2 = $(this).prev('.email_input2');
 
         if (selectedOption === '직접입력') {
             emailInput2.prop('disabled', false).val('');
         } else {
             emailInput2.prop('disabled', true).val(selectedOption);
         }
+
     });
 
     // 바이어 정보 input 이메일
     $('.form_s .email #buyer_email_select').on('change', function () {
-        var selectedOption = $(this).val();
-        var emailInput2 = $('.form_s .email #buyer_email_input2');
+        let selectedOption = $(this).val();
+        let emailInput2 = $('.form_s .email #buyer_email_input2');
 
         if (selectedOption === '직접입력') {
             emailInput2.prop('disabled', false).val('');
@@ -350,33 +395,6 @@ $(document).ready(function () {
             emailInput2.prop('disabled', true).val(selectedOption);
         }
     });
-
-    // input 이메일
-    $('#email_select').on('change', function () {
-        var selectedOption = $(this).val();
-        var emailInput2 = $(this).prev('.email_input2');
-
-        if (selectedOption === '직접입력') {
-            emailInput2.prop('disabled', false).val('');
-        } else {
-            emailInput2.prop('disabled', true).val(selectedOption);
-        }
-
-    });
-
-    // input 이메일
-    $('select[name=chargePersonEmail_sel]').on('change', function () {
-        var selectedOption = $(this).val();
-        var emailInput2 = $(this).prev('.email_input2');
-
-        if (selectedOption === '직접입력') {
-            emailInput2.prop('disabled', false).val('');
-        } else {
-            emailInput2.prop('disabled', true).val(selectedOption);
-        }
-
-    });
-
 
     // 출입증신청에서 추가 버튼 클릭 시
     $('.form_add_btn').on('click', function () {
@@ -398,30 +416,31 @@ $(document).ready(function () {
 
             updatePassNum(); // .addNum 값 업데이트
         }else{
-            alert('출입증 신청은 최대 50명까지만 등록 가능합니다.');
+            showMessage('', 'info', '[ 출입증 신청 ]', '출입증은 최대 50명까지만 등록 가능합니다.', '');
         }
     });
 
     $('.addDel').on('click', function () {
         Swal.fire({
-            title: '해당 출입증 신청 정보를 삭제하시겠습니까?',
             icon: 'warning',
+            title: '[ 출입증 신청 ]',
+            html: '<span style="font-size: 1.4em;">해당 출입증 신청 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
+            confirmButtonText: '삭제',
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'
         }).then((result) => {
             if (result.isConfirmed) {
                 let seq = $(this).siblings('input[type=hidden]').val();
-                if(nvl(seq,"") !== ""){
+                if(nvl(seq,'') !== ''){
                     let jsonObj = {
-                        "seq": seq
+                        seq: seq
                     };
-                    let resData = ajaxConnect('/mypage/step/deleteExhibitPass.do','post',jsonObj);
+                    let resData = ajaxConnect('/mypage/step/deletePassNew.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '출입증 신청 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', '출입증 신청 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                     }
                 }
 
@@ -521,7 +540,6 @@ $(document).ready(function () {
         var item2 = parseInt($("#utility_day_cnt").val() || 0);
         var item3 = parseInt($("#utility_compressed_air_cnt").val() || 0);
         var item4 = parseInt($("#utility_water_basic_cnt").val() || 0);
-        var item5 = parseInt($("#form_add_item5").val() || 0);
         var item6 = parseInt($("#utility_internet_cnt").val() || 0);
         var item7 = parseInt($("#utility_pytex_new_cnt").val() || 0);
         var item8 = parseInt($("#utility_pytex_re_cnt").val() || 0);
@@ -531,12 +549,11 @@ $(document).ready(function () {
         var price2 = item2 * 80000;
         var price3 = item3 * 180000;
         var price4 = item4 * 180000;
-        var price5 = item5 * 60000;
         var price6 = item6 * 160000;
         var price7 = item7 * 80000;
         var price8 = item8 * 50000;
         var price9 = item9 * 200000;
-        var total = price1 + price2 + price3 + price4 + price5 + price6 + price7 + price8 + price9;
+        var total = price1 + price2 + price3 + price4 + price6 + price7 + price8 + price9;
         // var vat = total * 10 / 100;
         // var sum = total + vat;
 
@@ -545,7 +562,6 @@ $(document).ready(function () {
         $("#utility_day_fee").val("￦ " + comma(price2));
         $("#utility_compressed_air_fee").val("￦ " + comma(price3));
         $("#utility_water_basic_fee").val("￦ " + comma(price4));
-        $("#form_add_price5").val("￦ " + comma(price5));
         $("#utility_internet_fee").val("￦ " + comma(price6));
         $("#utility_pytex_new_fee").val("￦ " + comma(price7));
         $("#utility_pytex_re_fee").val("￦ " + comma(price8));
@@ -559,7 +575,7 @@ $(document).ready(function () {
 
 
     ///////////////// 담당자정보 추가 /////////////////
-    let managerInfoCount = $('.managerInfoBox:last .managerInfoNum').text();
+    let managerInfoCount = Number.parseInt($('.managerInfoNum:last').text());
 
     // .managerInfoBox를 추가하는 이벤트 핸들러 추가
     $('.managerInfoAdd').on('click', function () {
@@ -570,7 +586,7 @@ $(document).ready(function () {
             newManagerInfoBox.find('input[type="hidden"]').val('');
             newManagerInfoBox.find('input[type="text"]').val('');
             newManagerInfoBox.find('input[type="tel"]').val('');
-            newManagerInfoBox.find('input[type="email"]').val('');
+            newManagerInfoBox.find('input[type="email"]').prop('disabled', false).val('');
             newManagerInfoBox.find('select option').prop('selected',false);
 
             // 복제된 .managerInfoBox 내의 삭제 버튼 보이기
@@ -582,19 +598,20 @@ $(document).ready(function () {
             $('.managerInfoBox:last').after(newManagerInfoBox);
             updateManagerInfoNum();
         }else{
-            alert('담당자 정보는 최대 3명까지만 등록 가능합니다.');
+            showMessage('', 'error', '[ 담당자 정보 ]', '최대 3명까지만 등록 가능합니다.', '');
         }
     });
 
     // .managerInfoBox를 삭제하는 이벤트 핸들러
     function deleteManagerInfoBox(el) {
         Swal.fire({
-            title: '해당 담당자 정보를 삭제하시겠습니까?',
             icon: 'warning',
+            title: '[ 부담당자 ]',
+            html: '<span style="font-size: 1.4em;">해당 담당자 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
+            confirmButtonText: '삭제',
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'
         }).then((result) => {
@@ -602,11 +619,11 @@ $(document).ready(function () {
                 let seq = $(el).siblings('input[type=hidden]').val();
                 if(nvl(seq,"") !== ""){
                     let jsonObj = {
-                        "seq": seq
+                        seq: seq
                     };
-                    let resData = ajaxConnect('/mypage/step/deleteCharge.do','post',jsonObj);
+                    let resData = ajaxConnect('/mypage/step/deleteChargeNew.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '담당자 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', '담당자 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                     }
                 }
 
@@ -633,20 +650,56 @@ $(document).ready(function () {
     });
 
     ///////////////// 전시정보 추가 /////////////////
-    let exhiInfoCount = $('.exhiInfoBox:last .exhiInfoNum').text();
+    let exhiInfoCount = Number.parseInt($('.exhiInfoNum:last').text());
 
     // .exhiInfoBox를 추가하는 이벤트 핸들러 추가
     $('.exhiInfoAdd').on('click', function () {
         if(exhiInfoCount < 20){
             let newExhiInfoBox = $('.exhiInfoBox:first').clone(true);
             exhiInfoCount++;
-            newExhiInfoBox.find('.exhiInfoNum').text(exhiInfoCount);
-            newExhiInfoBox.find('input[type="text"]').val('');
-            newExhiInfoBox.find('textarea').val('');
             newExhiInfoBox.find('input[type="hidden"]').val('');
+            newExhiInfoBox.find('.exhiInfoNum').text(exhiInfoCount);
+            newExhiInfoBox.find('textarea').val('');
+            newExhiInfoBox.find('input[type="text"]').val('');
+
+            // 복제된 .onlineInfoBox 는 제품 사진 하나만 남기기
+            let exhiPrdBoxList = newExhiInfoBox.find('.exhiPrdBox');
+            for (let i = 0; i <= exhiPrdBoxList.length; i++) {
+                if (i !== 0) {
+                    exhiPrdBoxList.eq(i).remove();
+                }
+            }
+
+            // 복제된 .onlineInfoBox 는 제품 기존 값 목록 제거
+            newExhiInfoBox.find('.preValueList').remove();
+            newExhiInfoBox.find('.preOptionList').remove();
 
             // 복제된 .exhiInfoBox 내의 삭제 버튼 보이기
             newExhiInfoBox.find('.exhiInfoDel').show();
+
+            // 새로 추가한 .onlineInfoBox 내에서 select 요소 및 id, name 설정
+            let select1 = newExhiInfoBox.find('select[name="productOptionBig"]');
+            let select2 = newExhiInfoBox.find('select[name="productOptionSmall"]');
+
+            let productOptionBigId = 'productOptionBig_' + exhiInfoCount;
+            let productOptionSmallId = 'productOptionSmall_' + exhiInfoCount;
+            let productOptionBigName = 'productOptionBig';
+            let productOptionSmallName = 'productOptionSmall';
+
+            select1.attr('id', productOptionBigId);
+            select2.attr('id', productOptionSmallId);
+            select1.attr('name', productOptionBigName);
+            select2.attr('name', productOptionSmallName);
+
+            // 파일 입력 초기화 및 비활성화 속성 제거
+            let exhiPrdBoxes = $(this).closest('.exhiInfoBox').find('.exhiPrdBox');
+            let exhiPrdBoxCount = exhiPrdBoxes.length;
+            let newIdSuffix = exhiPrdBoxCount + 1;
+            let fileInput = newExhiInfoBox.find('.upload_hidden');
+            let fileNameInput = newExhiInfoBox.find('.upload_name');
+            fileInput.val('').attr('id', 'productImageFile' + exhiInfoCount + '_' + newIdSuffix);
+            fileNameInput.val('').attr('disabled', true).attr('id', 'productImage' + exhiInfoCount + '_' + newIdSuffix);
+            newExhiInfoBox.find('label').attr('for', 'productImageFile' + exhiInfoCount + '_' + newIdSuffix);
 
             newExhiInfoBox.find('.exhiInfoDel').on('click', function () {
                 deleteExhiInfoBox(this);
@@ -654,19 +707,20 @@ $(document).ready(function () {
             $('.exhiInfoBox:last').after(newExhiInfoBox);
             updateExhiInfoNum(this);
         }else{
-            alert('전시정보는 최대 20개까지만 등록 가능합니다.');
+            showMessage('', 'info', '[ 전시품 정보 ]', '전시정보는 최대 20개까지만 등록 가능합니다.', '');
         }
     });
 
     // .exhiInfoBox를 삭제하는 이벤트 핸들러
     function deleteExhiInfoBox(el) {
         Swal.fire({
-            title: '해당 전시 정보를 삭제하시겠습니까?',
             icon: 'warning',
+            title: '[ 전시품 정보 ]',
+            html: '<span style="font-size: 1.4em;">해당 전시품 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
+            confirmButtonText: '삭제',
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'
         }).then((result) => {
@@ -674,11 +728,27 @@ $(document).ready(function () {
                 let seq = $(el).siblings('input[type=hidden]').val();
                 if(nvl(seq,"") !== ""){
                     let jsonObj = {
-                        "seq": seq
+                        seq: seq
                     };
-                    let resData = ajaxConnect('/mypage/step/deleteDisplay.do','post',jsonObj);
+                    let resData = ajaxConnect('/mypage/step/deleteProductNew.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '전시 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', '전시품 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                    }
+
+                    let fileList = $(el).parent().parent().find('.preValueList').find('.file_box ul .productImageFile_li').find('input[type=hidden][name=productImageUploadFile]');
+                    if(nvl(fileList, "") !== ""){
+                        for(let i=0; i<fileList.length; i++){
+                            let file_id = fileList[i].id;
+                            if(nvl(file_id,"") !== ""){
+                                let file_jsonObj = {
+                                    id: file_id
+                                };
+                                let resData = ajaxConnect('/mypage/step/deleteFile.do','post',file_jsonObj);
+                                if(resData.resultCode !== "0"){
+                                    showMessage('', 'error', '에러 발생', '파일 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -704,165 +774,95 @@ $(document).ready(function () {
         deleteExhiInfoBox(this);
     });
 
+    // .exhiPrdAdd 클릭 시 새로운 .exhiPrdBox 추가
+    $('.exhiPrdAdd').on('click', function () {
+        let exhiPrdBoxes = $(this).closest('.exhiInfoBox').find('.exhiPrdBox');
+        let exhiPrdBoxCount = parseInt(exhiPrdBoxes.length) + parseInt($(this).closest('.exhiInfoBox').find('li.productImageFile_li').length);
 
-    ///////////////// 홍보이미지 추가 /////////////////
-    let proImgCount = $('.proImgBox:last .proImgNum').text();
+        if (exhiPrdBoxCount < 5) {
+            // 복제할 .exhiPrdBox 요소를 선택합니다.
+            let newExhiPrdBox = $('.exhiPrdBox:first').clone(true, true);
 
-    // .proImgBox를 추가하는 이벤트 핸들러 추가
-    $('.proImgAdd').on('click', function () {
-        if(proImgCount < 3){
-            let newProImgBox = $('.proImgBox:first').clone(true);
-            proImgCount++;
-            newProImgBox.find('item').find('p').text(newProImgBox.find('item').find('p').text().replaceAll(' (메인)'), '');
-            newProImgBox.find('.proImgNum').text(proImgCount);
-            newProImgBox.find('input[type="text"]').val('');
-            newProImgBox.find('input[type="hidden"]').val('');
+            // 아이디명 변경
+            let exhiInfoCount = parseInt($(this).closest('.exhiInfoBox').find('.exhiInfoNum').text());
+            /*let newIdSuffix = parseInt($(this).closest('.exhiInfoBox').find('li.productImageFile_li').length === 0 ? 0 : $(this).closest('.exhiInfoBox').find('li.productImageFile_li').length)
+                + parseInt($(this).closest('.exhiInfoBox').find('input[type=text][name=productImage]').length === 0 ? 0 : $(this).closest('.exhiInfoBox').find('input[type=text][name=productImage]').length)
+                + 1;*/
+            let lastPrdTextInputID = $(this).closest('.exhiPrdBox').nextAll().last().find('.upload_name').attr('id');
+            let newIdSuffix = 0;
+            if(nvl(lastPrdTextInputID,'') !== ''){
+                newIdSuffix = parseInt(lastPrdTextInputID.split('_')[1])+1;
+            }else{
+                lastPrdTextInputID = $(this).closest('.exhiPrdBox').find('.upload_name').attr('id');
+                newIdSuffix = parseInt(lastPrdTextInputID.split('_')[1])+1;
+            }
 
-            // 복제된 .proImgBox에서 삭제 버튼 보이기
-            newProImgBox.find('.proImgDel').show();
+            newExhiPrdBox.find('.upload_hidden').attr('id', 'productImageFile' + exhiInfoCount + '_' + newIdSuffix).attr('name', 'productImageFile');
+            newExhiPrdBox.find('.upload_name').attr('name', 'productImage').attr('id', 'productImage' + exhiInfoCount + '_' + newIdSuffix);
+            newExhiPrdBox.find('label').attr('for', 'productImageFile' + exhiInfoCount + '_' + newIdSuffix);
 
-            // 파일 입력 초기화 및 비활성화 속성 제거
-            let fileInput = newProImgBox.find('.upload_hidden');
-            let fileNameInput = newProImgBox.find('.upload_name');
-            fileInput.val('').attr('id', 'promotionImageFile' + proImgCount);
-            fileNameInput.val('').attr('disabled', true).attr('id', 'promotionImage' + proImgCount).attr('name', 'promotionImage');
-            newProImgBox.find('label').attr('for', 'promotionImageFile' + proImgCount);
+            // 새로운 .exhiPrdBox를 추가합니다.
+            $(this).closest('.exhiInfoBox').find('.exhiPrdBox:last').after(newExhiPrdBox);
 
-            newProImgBox.find('.proImgDel').on('click', function () {
-                deleteProImgBox(this);
+            // 새로 추가한 .exhiPrdBox의 .upload_name와 .upload_hidden 초기화
+            newExhiPrdBox.find('.upload_name').val('');
+            newExhiPrdBox.find('.upload_hidden').val('');
+
+            // 새로 추가한 .exhiPrdBox의 .exhiPrdDel 이벤트 핸들러 설정
+            newExhiPrdBox.find('.exhiPrdDel').on('click', function () {
+                $(this).closest('.exhiPrdBox').remove();
+                updateExhiPrdBox();
             });
-            $('.proImgBox:last').after(newProImgBox);
-            updateProImgNum(this);
+
+            // 업데이트 후 최대 5개까지 보이도록 제한
+            updateExhiPrdBox();
         }else{
-            alert('홍보이미지는 최대 3개까지 등록 가능합니다.');
+            showMessage('', 'info', '[ 전시품 정보 ]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
         }
+
     });
 
-    // .proImgBox를 삭제하는 이벤트 핸들러
-    function deleteProImgBox(el) {
-        $(el).closest('.proImgBox').remove();
-        proImgCount--;
-        updateProImgNum(el);
-    }
+    // .exhiPrdDel 이벤트 핸들러
+    $('.exhiPrdDel').on('click', function () {
+        $(this).closest('.exhiPrdBox').remove();
+        updateExhiPrdBox();
+    });
 
-    // 각 .proImgBox의 .proImgNum 번호 업데이트
-    function updateProImgNum(el) {
-        $('.proImgBox').each(function (index) {
-            $(el).find('.proImgNum').text(index + 1);
+    // 초기 상태에서는 모든 .onlinePrdDel를 숨김
+    $('.exhiPrdBox .exhiPrdDel').hide();
+
+    // .onlinePrdBox 갯수를 업데이트하고 최대 5개까지 제한
+    function updateExhiPrdBox() {
+        $('.exhiInfoBox').each(function () {
+            let exhiPrdBoxes = $(this).find('.exhiPrdBox');
+
+            // 모든 .exhiPrdBox의 .exhiPrdDel를 숨기고 .exhiPrdAdd를 표시
+            exhiPrdBoxes.find('.exhiPrdDel').hide();
+            exhiPrdBoxes.find('.exhiPrdAdd').show();
+
+            // 첫 번째 .exhiPrdBox에서 .exhiPrdAdd만 표시하고 .exhiPrdDel를 숨김
+            exhiPrdBoxes.first().find('.exhiPrdAdd').show();
+            exhiPrdBoxes.first().find('.exhiPrdDel').hide();
+
+            // 나머지 .exhiPrdBox에서 .exhiPrdDel만 표시하고 .exhiPrdAdd를 숨김
+            exhiPrdBoxes.not(':first').find('.exhiPrdAdd').hide();
+            exhiPrdBoxes.not(':first').find('.exhiPrdDel').show();
         });
     }
-
-    // 첫 번째 .proImgBox 내의 삭제 버튼 숨기기
-    $('.proImgBox:lt(3) .proImgDel').hide();
-
-    // 첫 번째 .proImgBox의 삭제 버튼에 초기 이벤트 핸들러 추가
-    $('.proImgDel').on('click', function () {
-        deleteProImgBox(this);
-    });
-
-    ///////////////// 참관객 동반자 추가 /////////////////
-
-    //  참관객 동반자 여부 라디오 버튼 변경 시
-    $('.visitPartnerBox, .visitPartnerAdd').hide();
-    $('input[name="partnerYn"]').on('change', function () {
-        if ($(this).is(':checked') && $(this).attr('id') === 'Y') {
-            $('.visitPartnerBox, .visitPartnerAdd').show(); // .form_chuga 요소를 보여줌
-        } else {
-            $('.visitPartnerBox, .visitPartnerAdd').hide(); // .form_chuga 요소를 숨김
-        }
-    });
-
-    let visitPartnerCount = $('.visitPartnerBox:last .visitPartnerNum').text();
-
-    // .visitPartnerBox를 추가하는 이벤트 핸들러 추가
-    $('.visitPartnerAdd').on('click', function () {
-        if(visitPartnerCount < 3){
-            let newVisitPartner = $('.visitPartnerBox:first').clone(true);
-            visitPartnerCount++;
-            newVisitPartner.find('.visitPartnerNum').text(visitPartnerCount);
-            newVisitPartner.find('input[type="text"]').val('');
-            newVisitPartner.find('input[type="hidden"]').val('');
-
-            // 복제된 .visitPartnerBox 내의 삭제 버튼 보이기
-            newVisitPartner.find('.visitPartnerDel').show();
-
-            newVisitPartner.find('.visitPartnerDel').on('click', function () {
-                deleteVisitPartner(this);
-            });
-            $('.visitPartnerBox:last').after(newVisitPartner);
-            updateExhiInfoNum();
-        }else{
-            alert('동반자는 최대 3명까지 등록 가능합니다.\nUp to 3 people can register');
-        }
-    });
-
-    // .visitPartnerBox를 삭제하는 이벤트 핸들러
-    function deleteVisitPartner(el) {
-        Swal.fire({
-            title: '[동반자 삭제]',
-            html: '해당 동반자 정보를 삭제하시겠습니까?',
-            icon: 'warning',
-            allowOutsideClick: false,
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
-            cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let seq = $(el).siblings('input[type=hidden]').val();
-                if(nvl(seq,'') !== ''){
-                    let jsonObj = {
-                        seq: seq
-                    };
-                    let resData = ajaxConnect('/visitor/mypage/deletePartner.do','post',jsonObj);
-                    if(resData.resultCode !== '0'){
-                        showMessage('', 'error', '에러 발생', '전시 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
-                    }
-                }
-
-                $(el).closest('.visitPartnerBox').remove();
-                visitPartnerCount--;
-                updateExhiInfoNum();
-            }//isConfirmed
-        }); //swal
-    }
-
-    // 각 .visitPartnerBox의 .visitPartnerNum 번호 업데이트
-    function updateExhiInfoNum() {
-        $('.visitPartnerBox').each(function (index) {
-            $(this).find('.visitPartnerNum').text(index + 1);
-        });
-    }
-
-    // 첫 번째 .visitPartnerBox 내의 삭제 버튼 숨기기
-    $('.visitPartnerBox:first .visitPartnerDel').hide();
-
-    // 첫 번째 .visitPartnerBox의 삭제 버튼에 대한 초기 이벤트 핸들러 추가
-    $('.visitPartnerDel').on('click', function () {
-        deleteVisitPartner(this);
-    });
-
 
     ///////////////// 온라인 전시관 정보 추가 /////////////////
     // 온라인 전시관 정보 추가 시 사용할 카운터 변수
-    let onlineInfoCount = $('.onlineInfoBox:last .onlineInfoNum').text();
+    let onlineInfoCount = Number.parseInt($('.onlineInfoNum:last').text());
 
     // .onlineInfoBox를 추가하는 이벤트 핸들러 추가
     $('.onlineInfoAdd').on('click', function () {
         if(onlineInfoCount < 30) {
-            let onlinePrdBoxes = $(this).closest('.onlineInfoBox').find('.onlinePrdBox');
-            let onlinePrdBoxCount = onlinePrdBoxes.length;
-            // 아이디명 변경
-            let newIdSuffix = onlinePrdBoxCount + 1;
-
             let newOnlineInfoBox = $('.onlineInfoBox:first').clone(true);
-
             onlineInfoCount++;
+            newOnlineInfoBox.find('input[type=hidden]').val('');
             newOnlineInfoBox.find('.onlineInfoNum').text(onlineInfoCount);
             newOnlineInfoBox.find('textarea').val('');
             newOnlineInfoBox.find('input[type=text]').val('');
-            newOnlineInfoBox.find('input[type=hidden]').val('');
 
             // 복제된 .onlineInfoBox 는 제품 사진 하나만 남기기
             let onlinePrdBoxList = newOnlineInfoBox.find('.onlinePrdBox');
@@ -879,61 +879,47 @@ $(document).ready(function () {
             // 복제된 .onlineInfoBox에서 삭제 버튼 보이기
             newOnlineInfoBox.find('.onlineInfoDel').show();
 
-            newOnlineInfoBox.find('.onlyNumEng').on("blur keyup", function () {
-                let exp = /[^A-Za-z0-9_\`\~\!\@\#\$\%\^\&\*\(\)\-\=\+\\\{\}\[\]\'\"\;\:\<\,\>\.\?\/\s]/gm;
-                $(this).val($(this).val().replaceAll(exp, ''));
-            });
-
-            newOnlineInfoBox.find('.onlyNumDec').on("blur keyup", function () {
-                var sanitizedValue = $(this).val().replace(/[^0-9.]/g, ''); // 숫자와 소수점 이외의 문자 제거
-                var decimalParts = sanitizedValue.split("."); // 소수점을 기준으로 분할
-
-                // 소수점이 하나 이상일 경우 마지막 소수점만 남기고 제거
-                if (decimalParts.length > 2) {
-                    decimalParts.pop(); // 마지막 요소(소수점 이후 내용) 제거
-                    sanitizedValue = decimalParts.join(".");
-                }
-
-                $(this).val(sanitizedValue); // 처리된 값을 다시 입력 필드에 설정
-            });
-
             // 새로 추가한 .onlineInfoBox 내에서 select 요소 및 id, name 설정
-            let select1 = newOnlineInfoBox.find('select[name="productOptionBig"]');
-            let select2 = newOnlineInfoBox.find('select[name="productOptionSmall"]');
+            let select1 = newOnlineInfoBox.find('select[name="onlineOptionBig"]');
+            let select2 = newOnlineInfoBox.find('select[name="onlineOptionSmall"]');
 
-            let productOptionBigId = 'productOptionBig_' + onlineInfoCount;
-            let productOptionSmallId = 'productOptionSmall_' + onlineInfoCount;
-            let productOptionBigName = 'productOptionBig';
-            let productOptionSmallName = 'productOptionSmall';
+            let onlineOptionBigId = 'onlineOptionBig_' + onlineInfoCount;
+            let onlineOptionSmallId = 'onlineOptionSmall_' + onlineInfoCount;
+            let onlineOptionBigName = 'onlineOptionBig';
+            let onlineOptionSmallName = 'onlineOptionSmall';
 
-            select1.attr('id', productOptionBigId);
-            select2.attr('id', productOptionSmallId);
-            select1.attr('name', productOptionBigName);
-            select2.attr('name', productOptionSmallName);
+            select1.attr('id', onlineOptionBigId);
+            select2.attr('id', onlineOptionSmallId);
+            select1.attr('name', onlineOptionBigName);
+            select2.attr('name', onlineOptionSmallName);
 
             // 파일 입력 초기화 및 비활성화 속성 제거
+            let onlinePrdBoxes = $(this).closest('.onlineInfoBox').find('.onlinePrdBox');
+            let onlinePrdBoxCount = onlinePrdBoxes.length;
+            let newIdSuffix = onlinePrdBoxCount + 1;
             let fileInput = newOnlineInfoBox.find('.upload_hidden');
             let fileNameInput = newOnlineInfoBox.find('.upload_name');
-            fileInput.val('').attr('id', 'productImageFile' + onlineInfoCount + '_' + newIdSuffix);
-            fileNameInput.val('').attr('disabled', true).attr('id', 'productImage' + onlineInfoCount + '_' + newIdSuffix);
-            newOnlineInfoBox.find('label').attr('for', 'productImageFile' + onlineInfoCount + '_' + newIdSuffix);
+            fileInput.val('').attr('id', 'onlineImageFile' + onlineInfoCount + '_' + newIdSuffix);
+            fileNameInput.val('').attr('disabled', true).attr('id', 'onlineImage' + onlineInfoCount + '_' + newIdSuffix);
+            newOnlineInfoBox.find('label').attr('for', 'onlineImageFile' + onlineInfoCount + '_' + newIdSuffix);
 
             $('.onlineInfoBox:last').after(newOnlineInfoBox);
             updateOnlineInfoNum(this);
         }else{
-            alert('온라인 전시관 제품 정보는 최대 30개까지만 등록 가능합니다.');
+            showMessage('', 'info', '[ 온라인 전시관 정보 ]', '제품 정보는 최대 30개까지만 등록 가능합니다.', '');
         }
     });
 
     // .onlineInfoBox를 삭제하는 이벤트 핸들러
     function deleteOnlineInfoBox(el) {
         Swal.fire({
-            title: '해당 제품 정보를 삭제하시겠습니까?',
             icon: 'warning',
+            title: '[ 온라인 전시관 정보 ]',
+            html: '<span style="font-size: 1.4em;">해당 제품 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
+            confirmButtonText: '삭제',
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'
         }).then((result) => {
@@ -941,24 +927,24 @@ $(document).ready(function () {
                 let seq = $(el).siblings('input').val();
                 if(nvl(seq,"") !== ""){
                     let jsonObj = {
-                        "seq": seq
+                        seq: seq
                     };
-                    let resData = ajaxConnect('/mypage/step/deleteOnline.do','post',jsonObj);
+                    let resData = ajaxConnect('/mypage/step/deleteOnlineNew.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '제품 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', '제품 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                     }
 
-                    let fileList = $(el).parent().parent().find('.preValueList').find('.file_box ul .productImageFile_li').find('input[type=hidden][name=productImageUploadFile]');
+                    let fileList = $(el).parent().parent().find('.preValueList').find('.file_box ul .onlineImageFile_li').find('input[type=hidden][name=onlineImageUploadFile]');
                     if(nvl(fileList, "") !== ""){
                         for(let i=0; i<fileList.length; i++){
                             let file_id = fileList[i].id;
                             if(nvl(file_id,"") !== ""){
                                 let file_jsonObj = {
-                                    "id": file_id
+                                    id: file_id
                                 };
                                 let resData = ajaxConnect('/mypage/step/deleteFile.do','post',file_jsonObj);
                                 if(resData.resultCode !== "0"){
-                                    showMessage('', 'error', '에러 발생', '파일 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                                    showMessage('', 'error', '에러 발생', '파일 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                                 }
                             }
                         }
@@ -1011,9 +997,9 @@ $(document).ready(function () {
                 newIdSuffix = parseInt(lastPrdTextInputID.split('_')[1])+1;
             }
 
-            newOnlinePrdBox.find('.upload_hidden').attr('id', 'productImageFile' + onlineInfoCount + '_' + newIdSuffix).attr('name', 'productImageFile');
-            newOnlinePrdBox.find('.upload_name').attr('name', 'productImage').attr('id', 'productImage' + onlineInfoCount + '_' + newIdSuffix);
-            newOnlinePrdBox.find('label').attr('for', 'productImageFile' + onlineInfoCount + '_' + newIdSuffix);
+            newOnlinePrdBox.find('.upload_hidden').attr('id', 'onlineImageFile' + onlineInfoCount + '_' + newIdSuffix).attr('name', 'onlineImageFile');
+            newOnlinePrdBox.find('.upload_name').attr('name', 'onlineImage').attr('id', 'onlineImage' + onlineInfoCount + '_' + newIdSuffix);
+            newOnlinePrdBox.find('label').attr('for', 'onlineImageFile' + onlineInfoCount + '_' + newIdSuffix);
 
             // 새로운 .onlinePrdBox를 추가합니다.
             $(this).closest('.onlineInfoBox').find('.onlinePrdBox:last').after(newOnlinePrdBox);
@@ -1065,6 +1051,89 @@ $(document).ready(function () {
         });
     }
 
+    ///////////////// 참관객 동반자 추가 /////////////////
+
+    //  참관객 동반자 여부 라디오 버튼 변경 시
+    $('.visitPartnerBox, .visitPartnerAdd').hide();
+    $('input[name="partnerYn"]').on('change', function () {
+        if ($(this).is(':checked') && $(this).attr('id') === 'Y') {
+            $('.visitPartnerBox, .visitPartnerAdd').show(); // .form_chuga 요소를 보여줌
+        } else {
+            $('.visitPartnerBox, .visitPartnerAdd').hide(); // .form_chuga 요소를 숨김
+        }
+    });
+
+    let visitPartnerCount = $('.visitPartnerBox:last .visitPartnerNum').text();
+
+    // .visitPartnerBox를 추가하는 이벤트 핸들러 추가
+    $('.visitPartnerAdd').on('click', function () {
+        if(visitPartnerCount < 3){
+            let newVisitPartner = $('.visitPartnerBox:first').clone(true);
+            visitPartnerCount++;
+            newVisitPartner.find('.visitPartnerNum').text(visitPartnerCount);
+            newVisitPartner.find('input[type="text"]').val('');
+            newVisitPartner.find('input[type="hidden"]').val('');
+
+            // 복제된 .visitPartnerBox 내의 삭제 버튼 보이기
+            newVisitPartner.find('.visitPartnerDel').show();
+
+            newVisitPartner.find('.visitPartnerDel').on('click', function () {
+                deleteVisitPartner(this);
+            });
+            $('.visitPartnerBox:last').after(newVisitPartner);
+            updateExhiInfoNum();
+        }else{
+            alert('동반자는 최대 3명까지 등록 가능합니다.\nUp to 3 people can register');
+        }
+    });
+
+    // .visitPartnerBox를 삭제하는 이벤트 핸들러
+    function deleteVisitPartner(el) {
+        Swal.fire({
+            title: '[ 동반자 삭제 ]',
+            html: '해당 동반자 정보를 삭제하시겠습니까?',
+            icon: 'warning',
+            allowOutsideClick: false,
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: '삭제',
+            cancelButtonColor: '#A1A5B7',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let seq = $(el).siblings('input[type=hidden]').val();
+                if(nvl(seq,'') !== ''){
+                    let jsonObj = {
+                        seq: seq
+                    };
+                    let resData = ajaxConnect('/visitor/mypage/deletePartner.do','post',jsonObj);
+                    if(resData.resultCode !== '0'){
+                        showMessage('', 'error', '에러 발생', '전시 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                    }
+                }
+
+                $(el).closest('.visitPartnerBox').remove();
+                visitPartnerCount--;
+                updateExhiInfoNum();
+            }//isConfirmed
+        }); //swal
+    }
+
+    // 각 .visitPartnerBox의 .visitPartnerNum 번호 업데이트
+    function updateExhiInfoNum() {
+        $('.visitPartnerBox').each(function (index) {
+            $(this).find('.visitPartnerNum').text(index + 1);
+        });
+    }
+
+    // 첫 번째 .visitPartnerBox 내의 삭제 버튼 숨기기
+    $('.visitPartnerBox:first .visitPartnerDel').hide();
+
+    // 첫 번째 .visitPartnerBox의 삭제 버튼에 대한 초기 이벤트 핸들러 추가
+    $('.visitPartnerDel').on('click', function () {
+        deleteVisitPartner(this);
+    });
+
     //기참가연도
     $('input[type=checkbox][name=prePartYear]').on('change', function(){
         let prePartYear = $(this).val();
@@ -1089,7 +1158,7 @@ $(document).ready(function () {
         let industryPart = $(this).val();
         if(industryPart === '기타'){
             $('#industryPartEtc').prop('disabled', false).val('');
-            $('#industryPartEtc').focus();
+            $('#industryPartEtc').trigger('focus');
         }else{
             $('#industryPartEtc').prop('disabled', true).val('');
         }

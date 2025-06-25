@@ -77,7 +77,7 @@ function f_edm_hst_remove(rowId){
                     showMessage('', 'info', '메일 발송 이력 삭제', '메일 발송 이력이 삭제되었습니다.', '');
                     f_edm_hst_search(); // 삭제 성공 후 재조회 수행
                 } else {
-                    showMessage('', 'error', '에러 발생', '메일 발송 이력 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    showMessage('', 'error', '에러 발생', '메일 발송 이력 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                 }
             }
         });
@@ -167,11 +167,11 @@ function f_edm_detail_mail_send(){
                                 }
                             });
                         } else {
-                            showMessage('', 'error', '에러 발생', '메일 발송 결과 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                            showMessage('', 'error', '에러 발생', '메일 발송 결과 등록을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                         }
                     },
                     error: function (xhr, status) {
-                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                     }
                 })//ajax
             }

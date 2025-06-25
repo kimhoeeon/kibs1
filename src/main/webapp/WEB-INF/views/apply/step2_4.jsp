@@ -41,12 +41,12 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
     <span itemscope="" itemtype="http://schema.org/Organization">
-    <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-    <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-    <a itemprop="sameAs" href="https://kibs-online.com"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 </head>
 
@@ -206,19 +206,19 @@
 
                             <c:if test="${not empty passList}">
                                 <c:forEach var="pass" items="${passList}" begin="0" end="${passList.size()}" step="1" varStatus="status">
-                                <ul class="formPassBd formTbBd">
-                                    <input type="hidden" name="passSeq" value="${pass.seq}">
-                                    <li class="passNum addNum">${status.index + 1}</li>
-                                    <li class="passNameK"><input type="text" name="pass_name" value="${pass.passName}" placeholder="성명"></li>
-                                    <li class="passNameE">
-                                        <input type="text" name="pass_first_name" class="onlyNumEng w50" value="${pass.passFirstName}" placeholder="이름">
-                                        <input type="text" name="pass_last_name" class="onlyNumEng w50" value="${pass.passLastName}" placeholder="성">
-                                    </li>
-                                    <li class="passPosK"><input type="text" name="pass_position_ko" value="${pass.passPositionKo}" placeholder="직책(국문)"></li>
-                                    <li class="passPosE"><input type="text" name="pass_position_en" class="onlyNumEng" value="${pass.passPositionEn}" placeholder="직책(영문)"></li>
-                                    <li class="passNote"><input type="text" name="pass_note" value="${pass.passNote}" placeholder="비고"></li>
-                                    <li class="passDel addDel"><img src="/img/icon_del.png"></li>
-                                </ul>
+                                    <ul class="formPassBd formTbBd">
+                                        <input type="hidden" name="passSeq" value="${pass.seq}">
+                                        <li class="passNum addNum">${status.index + 1}</li>
+                                        <li class="passNameK"><input type="text" name="pass_name" value="${pass.passName}" placeholder="성명"></li>
+                                        <li class="passNameE">
+                                            <input type="text" name="pass_first_name" class="onlyNumEng w50" value="${pass.passFirstName}" placeholder="이름">
+                                            <input type="text" name="pass_last_name" class="onlyNumEng w50" value="${pass.passLastName}" placeholder="성">
+                                        </li>
+                                        <li class="passPosK"><input type="text" name="pass_position_ko" value="${pass.passPositionKo}" placeholder="직책(국문)"></li>
+                                        <li class="passPosE"><input type="text" name="pass_position_en" class="onlyNumEng" value="${pass.passPositionEn}" placeholder="직책(영문)"></li>
+                                        <li class="passNote"><input type="text" name="pass_note" value="${pass.passNote}" placeholder="비고"></li>
+                                        <li class="passDel addDel"><img src="/img/icon_del.png"></li>
+                                    </ul>
                                 </c:forEach>
                             </c:if>
                             <div class="form_tb_btn form_add_btn">추가</div>

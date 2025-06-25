@@ -41,12 +41,12 @@ function f_application_online_search(){
 
     /* TM 및 잠재DB 목록 데이터 조회 */
     let jsonObj;
-    if(nullToEmpty(search_text) === ""){
+    if(nvl(search_text,'') === ""){
         jsonObj = {};
     }else{
         jsonObj = {
-            "condition": search_box,
-            "searchText": search_text
+            condition: search_box,
+            searchText: search_text
         }
     }
 
@@ -92,10 +92,10 @@ function f_search_condition_sel_change(){
     let searchText = $('#search_text').val();
 
     let jsonObj = {
-        "transferYear": transferYear,
-        "companyOnlineViewYn": companyOnlineViewYn,
-        "condition": condition,
-        "searchText": searchText
+        transferYear: transferYear,
+        companyOnlineViewYn: companyOnlineViewYn,
+        condition: condition,
+        searchText: searchText
     }
 
     //console.log(jsonObj);
@@ -131,7 +131,7 @@ function f_application_online_modify_init_set(id){
 
 function f_online_view_yn(seq, viewYn){
     if(nvl(seq,"") === ""){
-        showMessage('', 'info', '노출 상태 변경', '상태를 변경할 데이터를 선택 후 클릭해주세요.', '');
+        showMessage('', 'info', '노출 상태 변경', '상태를 변경할 데이터를 선택 후 클릭해 주세요.', '');
     }else{
         let companyOnlineViewYn = 'N';
         let viewStatus = '<span style="font-weight: bold; color: #009ef7;">노출</span>';
@@ -159,7 +159,7 @@ function f_online_view_yn(seq, viewYn){
                 let resData = ajaxConnect('/mng/exhibitor/application/online/updateViewYn.do', 'post', jsonObj);
 
                 if(resData.resultCode !== "0"){
-                    showMessage('', 'error', '에러 발생', '노출 상태 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    showMessage('', 'error', '에러 발생', '노출 상태 변경을 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                 }else{
                     showMessage('', 'info', '노출 상태 변경', '노출 상태 변경이 정상 완료되었습니다.', '');
 

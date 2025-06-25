@@ -220,11 +220,11 @@ function f_application_utility_save(seq){
                         });
 
                     } else {
-                        showMessage('', 'error', '에러 발생', '유틸리티 신청 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', '유틸리티 신청 정보 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                     }
                 },
                 error: function (xhr, status) {
-                    alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                    alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                 }
             })
 

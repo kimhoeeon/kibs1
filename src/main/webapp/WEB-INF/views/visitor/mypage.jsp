@@ -41,12 +41,12 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
     <span itemscope="" itemtype="http://schema.org/Organization">
-    <link itemprop="url" href="https://kibs.com/">
-    <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-    <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-    <a itemprop="sameAs" href="https://kibs-online.com"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-    <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 
     <style>
@@ -306,7 +306,7 @@
                 </div>
                 <div class="form_pri">
                     <div class="form_pri_box">
-                        ① 개인정보를 제공받는 자 : 2025 경기국제보트쇼 온라인 전시관 참가 업체<br>
+                        ① 개인정보를 제공받는 자 : 2026 경기국제보트쇼 온라인 전시관 참가 업체<br>
                         ② 개인정보를 제공받는 자의 개인정보 이용 목적 : 고객 관리 및 상담 서비스 제공, 마케팅 및 영업 활동, 고객층 분석(성별, 연령, 관심 정보 등)<br>
                         ③ 제공하는 개인정보의 항목 : 성명, 전화번호, E-mail, 소속 회사명, 지역, 성별, 연령대, 관심 품목, 홈페이지 이용기록, 쿠키 등<br>
                         ④ 개인정보를 제공받는 자의 개인정보 보유 및 이용 기간 : 제공 시점으로부터 2년<br>
@@ -631,6 +631,7 @@
                                 <label><input type="checkbox" name="preObservationGbn" value="2022" <c:if test="${fn:contains(info.preObservationGbn, '2022')}">checked</c:if> >2022</label>
                                 <label><input type="checkbox" name="preObservationGbn" value="2023" <c:if test="${fn:contains(info.preObservationGbn, '2023')}">checked</c:if> >2023</label>
                                 <label><input type="checkbox" name="preObservationGbn" value="2024" <c:if test="${fn:contains(info.preObservationGbn, '2024')}">checked</c:if> >2024</label>
+                                <label><input type="checkbox" name="preObservationGbn" value="2025" <c:if test="${fn:contains(info.preObservationGbn, '2025')}">checked</c:if> >2025</label>
                             </div>
                         </li>
                     </ul>

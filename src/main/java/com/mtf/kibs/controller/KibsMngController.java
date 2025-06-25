@@ -89,7 +89,7 @@ public class KibsMngController {
         LocalDate now = LocalDate.now();
 
         // 연도, 월(문자열, 숫자), 일, 일(year 기준), 요일(문자열, 숫자)
-        String fullYear = String.valueOf(now.getYear());
+        String fullYear = "2026";
 
         /* 참가기업 (취소) */
         StatisticsDTO companyReq = new StatisticsDTO();
@@ -102,6 +102,18 @@ public class KibsMngController {
         visitorReq.setTransferYear(fullYear);
         StatisticsDTO visitorStat = kibsMngService.processSelectVisitorCount(visitorReq);
         mv.addObject("visitorStat", visitorStat);
+
+        /* 전시품 수 */
+        StatisticsDTO productReq = new StatisticsDTO();
+        productReq.setTransferYear(fullYear);
+        StatisticsDTO productStat = kibsMngService.processSelectProductCount(productReq);
+        mv.addObject("productStat", productStat);
+
+        /* 전시품 수 */
+        StatisticsDTO productQtyReq = new StatisticsDTO();
+        productQtyReq.setTransferYear(fullYear);
+        StatisticsDTO productQtyStat = kibsMngService.processSelectProductQtyCount(productQtyReq);
+        mv.addObject("productQtyStat", productQtyStat);
 
         mv.setViewName("/mng/main");
         return mv;
@@ -439,9 +451,12 @@ public class KibsMngController {
     //***************************************************************************
 
     @RequestMapping(value = "/mng/exhibitor/participant/company.do", method = RequestMethod.GET)
-    public ModelAndView mng_exhibitor_participant_company() {
+    public ModelAndView mng_exhibitor_participant_company(String nameKo) {
         System.out.println("KibsMngController > mng_exhibitor_company");
         ModelAndView mv = new ModelAndView();
+        if(nameKo != null){
+            mv.addObject("nameKo", nameKo);
+        }
         mv.setViewName("/mng/exhibitor/participant/company");
         return mv;
     }
@@ -453,6 +468,17 @@ public class KibsMngController {
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorDTO> responseList = kibsMngService.processSelectListExhibitor(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/participant/company/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_participant_company_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_participant_company_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<ExhibitorNewDTO> responseList = kibsMngService.processSelectListExhibitorNew(searchDTO);
 
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
@@ -522,6 +548,82 @@ public class KibsMngController {
             }
             mv.addObject("promotionImageFileList", promotionImageFileList);
             mv.addObject("productImageFileList", productImageFileList);
+        }
+        mv.setViewName("/mng/exhibitor/participant/company/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/participant/company/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_company_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitorNew_company_detail");
+        //System.out.println(seq);
+        ModelAndView mv = new ModelAndView();
+        //seq == notice table id
+        if(seq != null && !seq.isEmpty()){
+            /* 전시업체정보 */
+            ExhibitorNewDTO requestDto = new ExhibitorNewDTO();
+            requestDto.setSeq(seq);
+            ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewSingle(requestDto);
+            mv.addObject("info", info);
+
+            if(info != null){
+                mv.addObject("info", info);
+
+                String exhibitor_new_seq = info.getSeq();
+
+                /* 부담당자 정보*/
+                ChargeNewDTO chargeNewReq = new ChargeNewDTO();
+                chargeNewReq.setExSeq(exhibitor_new_seq);
+                List<ChargeNewDTO> chargeList = kibsMngService.processSelectChargeNewList(chargeNewReq);
+                mv.addObject("chargeList", chargeList);
+
+                /* 전시품 정보 */
+                ProductNewDTO productNewReq = new ProductNewDTO();
+                productNewReq.setExSeq(exhibitor_new_seq);
+                List<ProductNewDTO> productList = kibsMngService.processSelectProductNewList(productNewReq);
+                mv.addObject("productList", productList);
+
+                /* 온라인정보 */
+                OnlineNewDTO onlineNewReq = new OnlineNewDTO();
+                onlineNewReq.setExSeq(exhibitor_new_seq);
+                List<OnlineNewDTO> onlineList = kibsMngService.processSelectOnlineNewList(onlineNewReq);
+                mv.addObject("onlineList", onlineList);
+
+                /* 바이어정보 */
+                BuyerNewDTO buyerNewReq = new BuyerNewDTO();
+                buyerNewReq.setExSeq(exhibitor_new_seq);
+                List<BuyerNewDTO> buyerList = kibsMngService.processSelectBuyerNewList(buyerNewReq);
+                mv.addObject("buyerList", buyerList);
+
+                /* 파일정보 */
+                FileDTO fileReq = new FileDTO();
+                fileReq.setUserId(exhibitor_new_seq);
+                List<FileDTO> fileList = kibsMngService.processSelectFileList(fileReq);
+                List<FileDTO> productImageFileList = new ArrayList<>();
+                List<FileDTO> onlineImageFileList = new ArrayList<>();
+                for (FileDTO fileInfo : fileList) {
+                    String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
+                    switch (fileNote) {
+                        case "companyLicense":
+                            mv.addObject("companyLicenseFile", fileInfo);
+                            break;
+                        case "logo":
+                            mv.addObject("logoFile", fileInfo);
+                            break;
+                        case "productImage":
+                            productImageFileList.add(fileInfo);
+                            break;
+                        case "onlineImage":
+                            onlineImageFileList.add(fileInfo);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                mv.addObject("productImageFileList", productImageFileList);
+                mv.addObject("onlineImageFileList", onlineImageFileList);
+            }
+
         }
         mv.setViewName("/mng/exhibitor/participant/company/detail");
         return mv;
@@ -616,9 +718,12 @@ public class KibsMngController {
     }
 
     @RequestMapping(value = "/mng/exhibitor/participant/visitor.do", method = RequestMethod.GET)
-    public ModelAndView mng_exhibitor_visitor() {
+    public ModelAndView mng_exhibitor_visitor(String nameKo) {
         System.out.println("KibsMngController > mng_exhibitor_visitor");
         ModelAndView mv = new ModelAndView();
+        if(nameKo != null){
+            mv.addObject("nameKo", nameKo);
+        }
         mv.setViewName("/mng/exhibitor/participant/visitor");
         return mv;
     }
@@ -861,6 +966,409 @@ public class KibsMngController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    //***************************************************************************
+    // exhibitor/application Folder
+    //***************************************************************************
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/booth.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_booth() {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_booth");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/exhibitorNew/application/booth");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/booth/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_booth_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<ExhibitorNewDTO> responseList = kibsMngService.processSelectExhibitorNewBoothList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/booth/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_booth_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_detail");
+        ModelAndView mv = new ModelAndView();
+        if(seq != null){
+            ExhibitorNewDTO exhibitorInfo = kibsMngService.processSelectExhibitorNewBoothSingle(seq);
+            mv.addObject("info", exhibitorInfo);
+        }
+        mv.setViewName("/mng/exhibitorNew/application/booth/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/booth/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > mng_exhibitorNew_application_booth_update");
+        ResponseDTO response = kibsMngService.processUpdateExhibitorNewBooth(exhibitorNewDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/sign.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_sign() {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_sign");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/exhibitorNew/application/sign");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/sign/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_sign_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_sign_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<ExhibitorNewDTO> responseList = kibsMngService.processSelectExhibitorNewSignList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/sign/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_sign_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_sign_detail");
+        ModelAndView mv = new ModelAndView();
+        if(seq != null){
+            ExhibitorNewDTO exhibitorInfo = kibsMngService.processSelectExhibitorNewSignSingle(seq);
+            mv.addObject("info", exhibitorInfo);
+        }
+        mv.setViewName("/mng/exhibitorNew/application/sign/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/sign/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_sign_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > mng_exhibitorNew_application_sign_update");
+        ResponseDTO response = kibsMngService.processUpdateExhibitorNewSign(exhibitorNewDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/utility.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_utility() {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_utility");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/exhibitorNew/application/utility");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/utility/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_utility_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<ExhibitorNewDTO> responseList = kibsMngService.processSelectExhibitorNewUtilityList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/utility/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_utility_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_detail");
+        ModelAndView mv = new ModelAndView();
+        if(seq != null){
+            ExhibitorNewDTO exhibitorInfo = kibsMngService.processSelectExhibitorNewUtilitySingle(seq);
+            mv.addObject("info", exhibitorInfo);
+        }
+        mv.setViewName("/mng/exhibitorNew/application/utility/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/utility/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > mng_exhibitorNew_application_utility_update");
+        ResponseDTO response = kibsMngService.processUpdateExhibitorNewUtility(exhibitorNewDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/pass.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_pass() {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_pass");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/exhibitorNew/application/pass");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/pass/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<MngPassDTO>> mng_exhibitorNew_application_pass_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_pass_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<MngPassDTO> responseList = kibsMngService.processSelectExhibitorNewPassList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/pass/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_pass_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_pass_detail");
+        ModelAndView mv = new ModelAndView();
+        if(seq != null){
+            List<MngPassDTO> passList = kibsMngService.processSelectExhibitorNewPassDetailList(seq);
+            mv.addObject("passList", passList);
+            mv.addObject("exSeq", seq);
+        }
+        mv.setViewName("/mng/exhibitorNew/application/pass/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/pass/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_pass_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > mng_exhibitorNew_application_pass_update");
+        ResponseDTO response = kibsMngService.processUpdateExhibitorNewPass(exhibitorNewDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/pass/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_pass_delete(@RequestBody PassNewDTO passNewDTO) {
+        System.out.println("KibsController > mng_exhibitorNew_application_pass_delete");
+        ResponseDTO response = kibsMngService.processDeleteExhibitorNewPass(passNewDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/buyer.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_buyer() {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_buyer");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/exhibitorNew/application/buyer");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/buyer/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<MngBuyerDTO>> mng_exhibitorNew_application_buyer_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<MngBuyerDTO> responseList = kibsMngService.processSelectExhibitorNewBuyerList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/buyer/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_buyer_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_detail");
+        ModelAndView mv = new ModelAndView();
+        if(seq != null){
+            List<MngBuyerDTO> buyerList = kibsMngService.processSelectExhibitorNewBuyerDetailList(seq);
+            mv.addObject("buyerList", buyerList);
+            mv.addObject("exSeq", seq);
+        }
+        mv.setViewName("/mng/exhibitorNew/application/buyer/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/buyer/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_buyer_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > mng_exhibitorNew_application_buyer_update");
+        ResponseDTO response = kibsMngService.processUpdateExhibitorNewBuyer(exhibitorNewDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/buyer/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_buyer_delete(@RequestBody BuyerNewDTO buyerNewDTO) {
+        System.out.println("KibsController > mng_exhibitorNew_application_buyer_delete");
+        ResponseDTO response = kibsMngService.processDeleteExhibitorNewBuyer(buyerNewDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/gift.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_gift() {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_gift");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/exhibitorNew/application/gift");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/gift/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<MngGiftDTO>> mng_exhibitorNew_application_gift_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_gift_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<MngGiftDTO> responseList = kibsMngService.processSelectExhibitorNewGiftList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/gift/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_gift_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_gift_detail");
+        ModelAndView mv = new ModelAndView();
+        if(seq != null){
+            List<MngGiftDTO> giftList = kibsMngService.processSelectExhibitorNewGiftDetailList(seq);
+            mv.addObject("giftList", giftList);
+            mv.addObject("exSeq", seq);
+
+            // 파일정보
+            FileDTO fileReq = new FileDTO();
+            fileReq.setUserId(seq);
+            List<FileDTO> fileList = kibsMngService.processSelectFileList(fileReq);
+            List<FileDTO> giftPhotoFileList = new ArrayList<>();
+            List<FileDTO> giftCompanyLogoList = new ArrayList<>();
+            for (FileDTO fileInfo : fileList) {
+                String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
+                switch (fileNote) {
+                    case "giftPhoto":
+                        giftPhotoFileList.add(fileInfo);
+                        break;
+                    case "giftCompanyLogo":
+                        giftCompanyLogoList.add(fileInfo);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            mv.addObject("giftPhotoFileList", giftPhotoFileList);
+            mv.addObject("giftCompanyLogoList", giftCompanyLogoList);
+        }
+        mv.setViewName("/mng/exhibitorNew/application/gift/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/gift/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_gift_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > mng_exhibitorNew_application_gift_update");
+        ResponseDTO response = kibsMngService.processUpdateExhibitorNewGift(exhibitorNewDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/gift/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_gift_delete(@RequestBody GiftNewDTO giftNewDTO) {
+        System.out.println("KibsController > mng_exhibitorNew_application_gift_delete");
+        ResponseDTO response = kibsMngService.processDeleteExhibitorNewGift(giftNewDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/online.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_online() {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_online");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/exhibitorNew/application/online");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/online/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_online_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_online_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<ExhibitorNewDTO> responseList = kibsMngService.processSelectMngOnlineNewList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/online/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_online_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitor_application_online_detail");
+        ModelAndView mv = new ModelAndView();
+        if(seq != null){
+            /* 전시업체정보 */
+            ExhibitorNewDTO requestDto = new ExhibitorNewDTO();
+            requestDto.setSeq(seq);
+            ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewSingle(requestDto);
+            mv.addObject("info", info);
+
+            /* 온라인정보 */
+            OnlineNewDTO onlineReq = new OnlineNewDTO();
+            onlineReq.setExSeq(seq);
+            List<OnlineNewDTO> onlineList = kibsMngService.processSelectOnlineNewList(onlineReq);
+            mv.addObject("onlineList", onlineList);
+
+            /* 파일정보 */
+            FileDTO fileReq = new FileDTO();
+            fileReq.setUserId(seq);
+            List<FileDTO> fileList = kibsMngService.processSelectFileList(fileReq);
+            List<FileDTO> onlineImageFileList = new ArrayList<>();
+            for (FileDTO fileInfo : fileList) {
+                String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
+                if ("onlineImage".equals(fileNote)) {
+                    onlineImageFileList.add(fileInfo);
+                }
+            }
+            mv.addObject("onlineImageFileList", onlineImageFileList);
+        }
+        mv.setViewName("/mng/exhibitorNew/application/online/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/online/updateViewYn.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_online_updateViewYn(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_online_updateViewYn");
+        //System.out.println(exhibitorNewDTO.getSeq());
+
+        ResponseDTO responseDTO = kibsMngService.processUpdateExhibitorNewOnlineViewYn(exhibitorNewDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/product.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_product() {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_product");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/exhibitorNew/application/product");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/product/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<MngProductDTO>> mng_exhibitorNew_application_product_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_product_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<MngProductDTO> responseList = kibsMngService.processSelectMngProductNewList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/product/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_product_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_product_detail");
+        ModelAndView mv = new ModelAndView();
+        if(seq != null){
+            /* 전시업체정보 */
+            ExhibitorNewDTO requestDto = new ExhibitorNewDTO();
+            requestDto.setSeq(seq);
+            ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewSingle(requestDto);
+            mv.addObject("info", info);
+
+            /* 전시품정보 */
+            ProductNewDTO productReq = new ProductNewDTO();
+            productReq.setExSeq(seq);
+            List<ProductNewDTO> productList = kibsMngService.processSelectProductNewList(productReq);
+            mv.addObject("productList", productList);
+
+            /* 파일정보 */
+            FileDTO fileReq = new FileDTO();
+            fileReq.setUserId(seq);
+            List<FileDTO> fileList = kibsMngService.processSelectFileList(fileReq);
+            List<FileDTO> productImageFileList = new ArrayList<>();
+            for (FileDTO fileInfo : fileList) {
+                String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
+                if ("productImage".equals(fileNote)) {
+                    productImageFileList.add(fileInfo);
+                }
+            }
+            mv.addObject("productImageFileList", productImageFileList);
+        }
+        mv.setViewName("/mng/exhibitorNew/application/product/detail");
+        return mv;
+    }
 
     //***************************************************************************
     // exhibitor/application Folder
@@ -1241,12 +1749,32 @@ public class KibsMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mng/exhibitorNew/participant/company/updateExhibitorNewApprovalStatus.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_participant_company_updateExhibitorNewApprovalStatus(@RequestBody List<ExhibitorNewDTO> exhibitorList) {
+        System.out.println("KibsMngController > mng_exhibitorNew_participant_company_updateExhibitorNewApprovalStatus");
+
+        ResponseDTO responseDTO = kibsMngService.processUpdateExhibitorNewApprovalStatus(exhibitorList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/mng/exhibitor/participant/company/updatePrcYn.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_participant_company_updatePrcYn(@RequestBody List<ExhibitorDTO> exhibitorList) {
         System.out.println("KibsMngController > mng_exhibitor_participant_company_updatePrcYn");
 
         ResponseDTO responseDTO = kibsMngService.processUpdatePrcYn(exhibitorList);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/participant/company/updateExhibitorNewPrcYn.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_participant_company_updateExhibitorNewPrcYn(@RequestBody List<ExhibitorNewDTO> exhibitorList) {
+        System.out.println("KibsMngController > mng_exhibitorNew_participant_company_updateExhibitorNewPrcYn");
+
+        ResponseDTO responseDTO = kibsMngService.processUpdateExhibitorNewPrcYn(exhibitorList);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

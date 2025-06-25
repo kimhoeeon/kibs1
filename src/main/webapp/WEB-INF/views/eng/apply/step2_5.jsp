@@ -174,7 +174,7 @@
                                 <tr>
                                     <td>An Event Prize</td>
                                     <td>
-                                        <p>2/28~3/2 For prize draw during the boat show event</p>
+                                        <p>3/6~3/8 For prize draw during the boat show event</p>
                                     </td>
                                     <td>
                                         <p>Insert the company logo of the prize sponsor into the application box and the

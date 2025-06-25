@@ -2,7 +2,7 @@
  * mng/exhibitor/transfer/transferCompany.js
  * 전시회 > 이관정보 > 지난행사 전시업체
  * */
-var transferYear = (new Date().getFullYear()).toString();
+var transferYear = '2026';
 $(function(){
     //이관년도
     $("select[name^=transferYear]").each(function () {
@@ -133,8 +133,9 @@ $(function(){
     // .display_info_box를 삭제하는 이벤트 핸들러
     function deleteChargeInfoBox() {
         Swal.fire({
-            title: '해당 담당자 정보를 삭제하시겠습니까?',
             icon: 'warning',
+            title: '[ 부담당자 ]',
+            html: '<span style="font-size: 1.4em;">해당 담당자 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -146,11 +147,11 @@ $(function(){
                 let seq = $(this).siblings('input').val();
                 if(nvl(seq,"") !== ""){
                     let jsonObj = {
-                        "seq": seq
+                        seq: seq
                     };
                     let resData = ajaxConnect('/mng/exhibitor/participant/company/deleteCharge.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '담당자 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', '담당자 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                     }
                 }
 
@@ -201,8 +202,9 @@ $(function(){
     // .display_info_box를 삭제하는 이벤트 핸들러
     function deleteExhiInfoBox() {
         Swal.fire({
-            title: '해당 전시 정보를 삭제하시겠습니까?',
             icon: 'warning',
+            title: '[ 전시 정보 ]',
+            html: '<span style="font-size: 1.4em;">해당 전시 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -214,11 +216,11 @@ $(function(){
                 let seq = $(this).siblings('input').val();
                 if(nvl(seq,"") !== ""){
                     let jsonObj = {
-                        "seq": seq
+                        seq: seq
                     };
                     let resData = ajaxConnect('/mng/exhibitor/participant/company/deleteDisplay.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '전시 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', '전시 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                     }
                 }
 
@@ -359,8 +361,9 @@ $(function(){
     // .onlineInfoBox를 삭제하는 이벤트 핸들러
     function deleteOnlineInfoBox() {
         Swal.fire({
-            title: '해당 제품 정보를 삭제하시겠습니까?',
             icon: 'warning',
+            title: '[ 제품 정보 ]',
+            html: '<span style="font-size: 1.4em;">해당 제품 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -372,21 +375,21 @@ $(function(){
                 let seq = $(this).siblings('input').val();
                 if(nvl(seq,"") !== ""){
                     let jsonObj = {
-                        "seq": seq
+                        seq: seq
                     };
                     let resData = ajaxConnect('/mng/exhibitor/participant/company/deleteOnline.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '제품 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', '제품 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                     }
 
                     let file_id = $(this).parent('h4').parent('div').parent('div').find('input[type=hidden][name=productImageUploadFile]').attr('id');
                     if(nvl(file_id,"") !== ""){
                         let file_jsonObj = {
-                            "id": file_id
+                            id: file_id
                         };
                         let resData = ajaxConnect('/mng/exhibitor/participant/company/deleteFile.do','post',file_jsonObj);
                         if(resData.resultCode !== "0"){
-                            showMessage('', 'error', '에러 발생', '파일 정보 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                            showMessage('', 'error', '에러 발생', '파일 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                         }
                     }
                 }
@@ -504,7 +507,7 @@ $(function(){
             // 업데이트 후 최대 5개까지 보이도록 제한
             updateOnlinePrdBox();
         }else{
-            showMessage('', 'info', '[온라인 전시관 정보]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
+            showMessage('', 'info', '[ 온라인 전시관 정보 ]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
         }
     });
 
@@ -547,7 +550,7 @@ function check_count(obj){
         }
     }
     if(chkCnt > 3){
-        showMessage('', 'error', '[참가분야]', '최대 3개까지만 선택할 수 있습니다.', '');
+        showMessage('', 'error', '[ 참가분야 ]', '최대 3개까지만 선택할 수 있습니다.', '');
         obj.checked = false;
         return false;
     }
@@ -835,20 +838,20 @@ function f_buyer_modify_modal(gbn, value){
     }else{
         let row_el = $(value).parent('div');
         let jsonObj = {
-            "buyerCompanyName": row_el.find('input[type=hidden][name=buyerCompanyName]').val(),
-            "buyerCompanyCountry": row_el.find('input[type=hidden][name=buyerCompanyCountry]').val(),
-            "buyerCompanyLocation": row_el.find('input[type=hidden][name=buyerCompanyLocation]').val(),
-            "buyerCompanyHomepage": row_el.find('input[type=hidden][name=buyerCompanyHomepage]').val(),
-            "buyerCompanyDepart": row_el.find('input[type=hidden][name=buyerCompanyDepart]').val(),
-            "buyerCompanyPosition": row_el.find('input[type=hidden][name=buyerCompanyPosition]').val(),
-            "buyerCompanyEmail": row_el.find('input[type=hidden][name=buyerCompanyEmail]').val(),
-            "buyerCompanyTel": row_el.find('input[type=hidden][name=buyerCompanyTel]').val(),
-            "buyerCompanyPhone": row_el.find('input[type=hidden][name=buyerCompanyPhone]').val(),
-            "buyerCompanyFax": row_el.find('input[type=hidden][name=buyerCompanyFax]').val(),
-            "buyerCompanyItem": row_el.find('input[type=hidden][name=buyerCompanyItem]').val(),
-            "buyerCompanyInviteReason": row_el.find('input[type=hidden][name=buyerCompanyInviteReason]').val(),
-            "buyerCompanyProgressYn": row_el.find('input[type=hidden][name=buyerCompanyProgressYn]').val(),
-            "buyerCompanyHope": row_el.find('input[type=hidden][name=buyerCompanyHope]').val()
+            buyerCompanyName: row_el.find('input[type=hidden][name=buyerCompanyName]').val(),
+            buyerCompanyCountry: row_el.find('input[type=hidden][name=buyerCompanyCountry]').val(),
+            buyerCompanyLocation: row_el.find('input[type=hidden][name=buyerCompanyLocation]').val(),
+            buyerCompanyHomepage: row_el.find('input[type=hidden][name=buyerCompanyHomepage]').val(),
+            buyerCompanyDepart: row_el.find('input[type=hidden][name=buyerCompanyDepart]').val(),
+            buyerCompanyPosition: row_el.find('input[type=hidden][name=buyerCompanyPosition]').val(),
+            buyerCompanyEmail: row_el.find('input[type=hidden][name=buyerCompanyEmail]').val(),
+            buyerCompanyTel: row_el.find('input[type=hidden][name=buyerCompanyTel]').val(),
+            buyerCompanyPhone: row_el.find('input[type=hidden][name=buyerCompanyPhone]').val(),
+            buyerCompanyFax: row_el.find('input[type=hidden][name=buyerCompanyFax]').val(),
+            buyerCompanyItem: row_el.find('input[type=hidden][name=buyerCompanyItem]').val(),
+            buyerCompanyInviteReason: row_el.find('input[type=hidden][name=buyerCompanyInviteReason]').val(),
+            buyerCompanyProgressYn: row_el.find('input[type=hidden][name=buyerCompanyProgressYn]').val(),
+            buyerCompanyHope: row_el.find('input[type=hidden][name=buyerCompanyHope]').val()
         }
 
         f_buyer_modal_set(jsonObj);
@@ -898,8 +901,9 @@ function f_buyer_remove(gbn, el){
     //console.log(gbn, el);
 
     Swal.fire({
-        title: '선택한 바이어 정보를 삭제하시겠습니까?',
         icon: 'warning',
+        title: '[ 바이어 정보 ]',
+        html: '<span style="font-size: 1.4em;">선택한 바이어 정보를 삭제하시겠습니까?</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -911,7 +915,7 @@ function f_buyer_remove(gbn, el){
 
             if(gbn === 'select'){
                 let jsonObj = {
-                    "seq": value
+                    seq: value
                 };
                 let resData = ajaxConnect('/mng/participant/company/list/deleteBuyer.do','post',jsonObj);
                 if(resData.resultCode === "0"){
@@ -1047,8 +1051,9 @@ function f_transfer_exhibitor_save(seq){
         let url = '/mng/exhibitor/transfer/company/update.do';
 
         Swal.fire({
-            title: '입력된 정보를 저장하시겠습니까?',
             icon: 'info',
+            title: '[ 참가업체 정보 ]',
+            html: '<span style="font-size: 1.4em;">입력된 정보를 저장하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#00a8ff',
@@ -1080,9 +1085,9 @@ function f_transfer_exhibitor_save(seq){
                             let timerInterval;
                             Swal.fire({
                                 title: "정보 저장 중",
-                                html: "입력하신 정보를 저장 중입니다.<br><b></b> milliseconds.<br>현재 화면을 유지해주세요.",
+                                html: "입력하신 정보를 저장 중입니다.<br><b></b> milliseconds.<br>현재 화면을 유지해 주세요.",
                                 allowOutsideClick: false,
-                                timer: 10000,
+                                timer: 5000,
                                 timerProgressBar: true,
                                 didOpen: () => {
                                     Swal.showLoading();
@@ -1098,9 +1103,9 @@ function f_transfer_exhibitor_save(seq){
                                 /* Read more about handling dismissals below */
                                 if (result.dismiss === Swal.DismissReason.timer) {
                                     Swal.fire({
-                                        title: '전시 업체 정보 저장',
-                                        html: '전시 업체 정보가 저장되었습니다.',
                                         icon: 'info',
+                                        title: '[ 참가업체 정보 ]',
+                                        html: '<span style="font-size: 1.4em;">참가업체 정보가 저장되었습니다.</span>',
                                         allowOutsideClick: false,
                                         confirmButtonColor: '#3085d6',
                                         confirmButtonText: '확인'
@@ -1113,18 +1118,18 @@ function f_transfer_exhibitor_save(seq){
                             });
 
                         } else {
-                            showMessage('', 'error', '에러 발생', '전시 업체 정보 저장을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                            showMessage('', 'error', '에러 발생', '전시 업체 정보 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                         }
                     },
                     error: function (xhr, status) {
-                        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                     }
                 })
 
             }//isConfirmed
         })//then
     }else{
-        alert('오류가 발생했습니다. 관리자에게 문의해주세요.\n오류명 : NOT FOUND EXHIBITOR SEQ');
+        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : NOT FOUND EXHIBITOR SEQ');
     }
 }
 
@@ -1392,10 +1397,10 @@ function f_company_uploadFile(formId, elementId, path) {
 
 function f_transfer_company_excel_export(){
     Swal.fire({
-        title: '전시업체 상세 다운로드',
+        icon: 'info',
+        title: '[ 전시업체 상세 다운로드 ]',
         html: '전시업체 상세를 다운로드하시겠습니까 ?<br><span style="font-weight: bold; font-size: 1rem;">' +
             '( 데이터가 많을 경우 시간이 소요될 수 있습니다. )<br>( 해당 창이 닫혀도 다운로드가 완료될 때까지<br>대기해 주세요. )</span>',
-        icon: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         confirmButtonText: '확인',

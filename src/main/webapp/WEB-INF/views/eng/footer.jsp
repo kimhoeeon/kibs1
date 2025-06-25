@@ -140,7 +140,7 @@
                     </p>
                     <p class="address"><span>KINTEX, 217-60 Kintex-ro, Ilsanseo-gu, Goyang, Gyeonggi Province, 10390 Republic of Korea</span></p>
                 </div>
-                <p class="copyright">Copyright(c) KIBS 2025. All rights reserved</p>
+                <p class="copyright">Copyright(c) KIBS 2026. All rights reserved</p>
             </div>
         </div>
     </div>
