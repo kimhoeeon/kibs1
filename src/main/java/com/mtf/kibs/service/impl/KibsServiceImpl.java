@@ -32,14 +32,8 @@ public class KibsServiceImpl implements KibsService {
 
     private static final String STR_RESULT_H = "%s - %s";
 
-    //private final SqlSession sqlSession;
-
     @Setter(onMethod_ = {@Autowired})
     private KibsMapper kibsMapper;
-
-    /*public KibsServiceImpl(SqlSession ss) {
-        this.sqlSession = ss;
-    }*/
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
@@ -67,11 +61,11 @@ public class KibsServiceImpl implements KibsService {
 
         try {
             Integer result = kibsMapper.updateInstaRefresh(instaTokenDTO);
-            if(result == 0){
+            if (result == 0) {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Update Fail]";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[ERROR] processUpdateInstaRefresh Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -114,11 +108,11 @@ public class KibsServiceImpl implements KibsService {
             exhibitorNewDTO.setPassword(newPw_encrypt);
 
             Integer result = kibsMapper.updateExhibitorNewPassword(exhibitorNewDTO);
-            if(result == 0){
+            if (result == 0) {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Update Fail]";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[Find PW] processUpdateExhibitorNewPasswordInit Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -139,11 +133,11 @@ public class KibsServiceImpl implements KibsService {
 
         try {
             Integer loginCheck = kibsMapper.checkLoginExhibit(exhibitorDTO);
-            if(loginCheck == 0){
+            if (loginCheck == 0) {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "ID not found";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[login] processLoginExhibit Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -173,15 +167,15 @@ public class KibsServiceImpl implements KibsService {
             reqDto.setTransferYear(transferYear);
             reqDto.setInDttm(inDttm);
             String id = kibsMapper.checkStatisticsAccessor(reqDto);
-            if(id != null){ /* update */
+            if (id != null) { /* update */
                 reqDto.setId(id);
                 kibsMapper.updateStatisticsAccessor(reqDto);
-            }else{ /* insert */
+            } else { /* insert */
                 reqDto.setInCount("1");
                 kibsMapper.insertStatisticsAccessor(reqDto);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             String eMessage = "[main] processStatisticsAccessor Error : ";
             System.out.println(e.getMessage() == null ? "" : e.getMessage());
         }
@@ -198,7 +192,7 @@ public class KibsServiceImpl implements KibsService {
 
         try {
             Integer existCheck = kibsMapper.checkDuplicateId(exhibitorNewDTO);
-            if(existCheck == 0){
+            if (existCheck == 0) {
 
                 String note = "step01";
 
@@ -230,13 +224,13 @@ public class KibsServiceImpl implements KibsService {
                 exhibitorNewDTO.setPassword(pw_encrypt);
 
                 Integer step01_ex_result = kibsMapper.insertExhibitorNew(exhibitorNewDTO);
-                if(step01_ex_result > 0){
+                if (step01_ex_result > 0) {
 
                     responseDTO.setCustomValue(exhibitorNewSeq);
 
                     /* 부담당자정보 insert */
-                    if(!StringUtil.isEmpty(exhibitorNewDTO.getChargePersonList())){
-                        for(int i=0; i<exhibitorNewDTO.getChargePersonList().size(); i++){
+                    if (!StringUtil.isEmpty(exhibitorNewDTO.getChargePersonList())) {
+                        for (int i = 0; i < exhibitorNewDTO.getChargePersonList().size(); i++) {
                             ChargeNewDTO chargeNewDTO = exhibitorNewDTO.getChargePersonList().get(i);
                             chargeNewDTO.setExSeq(exhibitorNewSeq);
                             Integer step01_chg_result = kibsMapper.insertChargeNew(chargeNewDTO);
@@ -244,8 +238,8 @@ public class KibsServiceImpl implements KibsService {
                     }
 
                     /* 전시품 정보 insert */
-                    if(!StringUtil.isEmpty(exhibitorNewDTO.getProductList())){
-                        for(int i=0; i<exhibitorNewDTO.getProductList().size(); i++){
+                    if (!StringUtil.isEmpty(exhibitorNewDTO.getProductList())) {
+                        for (int i = 0; i < exhibitorNewDTO.getProductList().size(); i++) {
                             ProductNewDTO productNewDTO = exhibitorNewDTO.getProductList().get(i);
                             productNewDTO.setExSeq(exhibitorNewSeq);
                             Integer step01_dis_result = kibsMapper.insertProductNew(productNewDTO);
@@ -253,8 +247,8 @@ public class KibsServiceImpl implements KibsService {
                     }
 
                     /* 온라인 전시관 정보 insert */
-                    if(!StringUtil.isEmpty(exhibitorNewDTO.getOnlineList())){
-                        for(int i=0; i<exhibitorNewDTO.getOnlineList().size(); i++){
+                    if (!StringUtil.isEmpty(exhibitorNewDTO.getOnlineList())) {
+                        for (int i = 0; i < exhibitorNewDTO.getOnlineList().size(); i++) {
                             OnlineNewDTO onlineNewDTO = exhibitorNewDTO.getOnlineList().get(i);
                             onlineNewDTO.setExSeq(exhibitorNewSeq);
                             Integer step01_online_result = kibsMapper.insertOnlineNew(onlineNewDTO);
@@ -268,8 +262,8 @@ public class KibsServiceImpl implements KibsService {
                     }
 
                     /* 바이어 insert */
-                    if(!StringUtil.isEmpty(exhibitorNewDTO.getBuyerList())){
-                        for(int i=0; i<exhibitorNewDTO.getBuyerList().size(); i++){
+                    if (!StringUtil.isEmpty(exhibitorNewDTO.getBuyerList())) {
+                        for (int i = 0; i < exhibitorNewDTO.getBuyerList().size(); i++) {
                             BuyerNewDTO buyerNewDTO = exhibitorNewDTO.getBuyerList().get(i);
                             buyerNewDTO.setExSeq(exhibitorNewSeq);
                             Integer step01_buyer_result = kibsMapper.insertBuyerNew(buyerNewDTO);
@@ -279,7 +273,7 @@ public class KibsServiceImpl implements KibsService {
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step01] processInsertExhibitor Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -305,30 +299,30 @@ public class KibsServiceImpl implements KibsService {
 
             /* exhibitor table seq get */
             String exhibitorNewSeq = exhibitorNewDTO.getSeq();
-            
-            if("Y".equals(exhibitorNewDTO.getPasswordYn())){    //비밀번호 항목 존재 여부
+
+            if ("Y".equals(exhibitorNewDTO.getPasswordYn())) {    //비밀번호 항목 존재 여부
                 String inputPw = exhibitorNewDTO.getPassword();
-                if(!Objects.equals(inputPw, "암호화된비밀번호복사불가능")){
+                if (!Objects.equals(inputPw, "암호화된비밀번호복사불가능")) {
                     // 비밀번호칸 입력 O , 기존 비밀번호와 비교
                     ExhibitorNewDTO exhibitorNewInfo = kibsMapper.selectExhibitorNewSingle(exhibitorNewDTO);
                     String preSalt = exhibitorNewInfo.getSalt();
                     String prePw = exhibitorNewInfo.getPassword();
-    
+
                     String afPw = SHA512(inputPw, preSalt);
-                    if(!Objects.equals(prePw, afPw)){
-    
+                    if (!Objects.equals(prePw, afPw)) {
+
                         ExhibitorNewDTO updateExhibitorNewInfo = new ExhibitorNewDTO();
                         updateExhibitorNewInfo.setSeq(exhibitorNewSeq);
-    
+
                         // 새로 salt값 생성 & 새로운 비밀번호로 Update
                         String salt = Salt();
                         updateExhibitorNewInfo.setSalt(salt);
-    
+
                         String afPw_encrypt = SHA512(inputPw, salt);
                         updateExhibitorNewInfo.setPassword(afPw_encrypt);
-    
+
                         kibsMapper.updateExhibitorNewPassword(updateExhibitorNewInfo);
-    
+
                     }
                 }
             }
@@ -336,14 +330,14 @@ public class KibsServiceImpl implements KibsService {
             /* exhibitor table update */
             result = kibsMapper.updateExhibitorNew(exhibitorNewDTO);
 
-            if(result == 0){
+            if (result == 0) {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Update Fail]";
-            }else {
+            } else {
                 /* charge_new table update */
                 List<ChargeNewDTO> chargeNewList = exhibitorNewDTO.getChargePersonList();
-                if(chargeNewList != null){
-                    for(ChargeNewDTO chargeNew : chargeNewList) {
+                if (chargeNewList != null) {
+                    for (ChargeNewDTO chargeNew : chargeNewList) {
                         String chargeNewSeq = chargeNew.getSeq();
                         if (chargeNewSeq != null & !Objects.equals(chargeNewSeq, "")) {
                             Integer updateResult = kibsMapper.updateChargeNew(chargeNew);
@@ -406,7 +400,7 @@ public class KibsServiceImpl implements KibsService {
             }
             responseDTO.setCustomValue(exhibitorNewSeq);
             //System.out.println(result);
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processUpdateExhibitor ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
@@ -424,10 +418,10 @@ public class KibsServiceImpl implements KibsService {
         fileDTO.setUserId(exhibitorSeq);
         fileDTO.setNote(productNote);
         List<String> productNewSeqList = kibsMapper.selectProductNewFileSeq(fileDTO);
-        for(int i=0; i<productNewSeqList.size(); i++){
+        for (int i = 0; i < productNewSeqList.size(); i++) {
             FileDTO updFileDTO = new FileDTO();
             updFileDTO.setId(productNewSeqList.get(i));
-            updFileDTO.setNote("productImage" + productNote + "_" + (i+1));
+            updFileDTO.setNote("productImage" + productNote + "_" + (i + 1));
             Integer updFileNote = kibsMapper.updateImageFileNote(updFileDTO);
         }
     }
@@ -439,10 +433,10 @@ public class KibsServiceImpl implements KibsService {
         fileDTO.setUserId(exhibitorSeq);
         fileDTO.setNote(onlineNote);
         List<String> onlineNewSeqList = kibsMapper.selectOnlineFileSeq(fileDTO);
-        for(int i=0; i<onlineNewSeqList.size(); i++){
+        for (int i = 0; i < onlineNewSeqList.size(); i++) {
             FileDTO updFileDTO = new FileDTO();
             updFileDTO.setId(onlineNewSeqList.get(i));
-            updFileDTO.setNote("onlineImage" + onlineNote + "_" + (i+1));
+            updFileDTO.setNote("onlineImage" + onlineNote + "_" + (i + 1));
             Integer updFileNote = kibsMapper.updateImageFileNote(updFileDTO);
         }
     }
@@ -495,7 +489,7 @@ public class KibsServiceImpl implements KibsService {
             exhibitorNewDTO.setNote(note);
             Integer step2_1_ex_result = kibsMapper.updateExhibitorNewBooth(exhibitorNewDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_1] processUpdateExhibitorNewBooth Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -519,7 +513,7 @@ public class KibsServiceImpl implements KibsService {
             exhibitorNewDTO.setNote(note);
             Integer step2_2_ex_result = kibsMapper.updateExhibitorNewCompanySign(exhibitorNewDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_2] processUpdateExhibitorNewCompanySign Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -543,7 +537,7 @@ public class KibsServiceImpl implements KibsService {
             exhibitorNewDTO.setNote(note);
             Integer step2_3_ex_result = kibsMapper.updateExhibitorNewUtility(exhibitorNewDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_3] processUpdateExhibitorNewUtility Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -564,19 +558,19 @@ public class KibsServiceImpl implements KibsService {
 
         try {
             List<PassNewDTO> passList = exhibitorNewDTO.getPassList();
-            if(!passList.isEmpty()){
-                for(PassNewDTO passDTO : passList){
+            if (!passList.isEmpty()) {
+                for (PassNewDTO passDTO : passList) {
                     passDTO.setExSeq(exhibitorNewDTO.getSeq());
 
-                    if(passDTO.getSeq() != null && !passDTO.getSeq().isEmpty()){
+                    if (passDTO.getSeq() != null && !passDTO.getSeq().isEmpty()) {
                         Integer upd_pass_result = kibsMapper.updatePassNew(passDTO);
-                    }else{
+                    } else {
                         Integer ist_pass_result = kibsMapper.insertPassNew(passDTO);
                     }
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_4] processInsertPassNew Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -619,19 +613,19 @@ public class KibsServiceImpl implements KibsService {
         try {
             String exhibitorNewSeq = exhibitorNewDTO.getSeq();
             List<GiftNewDTO> giftList = exhibitorNewDTO.getGiftList();
-            if(!giftList.isEmpty()){
-                for(GiftNewDTO giftDTO : giftList){
+            if (!giftList.isEmpty()) {
+                for (GiftNewDTO giftDTO : giftList) {
                     giftDTO.setExSeq(exhibitorNewSeq);
-                    if(giftDTO.getSeq() != null && !giftDTO.getSeq().isEmpty()){
+                    if (giftDTO.getSeq() != null && !giftDTO.getSeq().isEmpty()) {
                         Integer upd_pass_result = kibsMapper.updateGiftNew(giftDTO);
-                    }else{
+                    } else {
                         Integer ist_pass_result = kibsMapper.insertGiftNew(giftDTO);
                     }
                 }
             }
 
             responseDTO.setCustomValue(exhibitorNewSeq);
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_5] processInsertGiftNew Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -682,7 +676,7 @@ public class KibsServiceImpl implements KibsService {
                 }
             }*/
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_8] processInsertDirectory Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -706,7 +700,7 @@ public class KibsServiceImpl implements KibsService {
             exhibitorNewDTO.setNote(note);
             Integer step03_ex_result = kibsMapper.updateExhibitorNewApprovalStatus(exhibitorNewDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step03] processUpdateExhibitorNewApprovalStatus Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -732,13 +726,13 @@ public class KibsServiceImpl implements KibsService {
             exhibitorNewDTO.setPassword(pw_encrypt);
 
             String seq = kibsMapper.checkLoginExhibitorNew(exhibitorNewDTO);
-            if(seq == null || seq.isEmpty()){
+            if (seq == null || seq.isEmpty()) {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "ID not found";
             }
 
             responseDTO.setCustomValue(seq);
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[login] processLoginExhibitorNew Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -769,14 +763,14 @@ public class KibsServiceImpl implements KibsService {
             String exhibitorNewSeq = exhibitorNewDTO.getSeq();
 
             String inputPw = exhibitorNewDTO.getPassword();
-            if(!Objects.equals(inputPw, "암호화된비밀번호복사불가능")){
+            if (!Objects.equals(inputPw, "암호화된비밀번호복사불가능")) {
                 // 비밀번호칸 입력 O , 기존 비밀번호와 비교
                 ExhibitorNewDTO exhibitorNewInfo = kibsMapper.selectExhibitorNewSingle(exhibitorNewDTO);
                 String preSalt = exhibitorNewInfo.getSalt();
                 String prePw = exhibitorNewInfo.getPassword();
 
                 String afPw = SHA512(inputPw, preSalt);
-                if(!Objects.equals(prePw, afPw)){
+                if (!Objects.equals(prePw, afPw)) {
 
                     ExhibitorNewDTO updateExhibitorNewInfo = new ExhibitorNewDTO();
                     updateExhibitorNewInfo.setSeq(exhibitorNewSeq);
@@ -795,7 +789,7 @@ public class KibsServiceImpl implements KibsService {
 
             Integer ex_result = kibsMapper.updateExhibitorNewInfo(exhibitorNewDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[EXHIBITOR mypage] processUpdateExhibitorNewInfo Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -816,12 +810,12 @@ public class KibsServiceImpl implements KibsService {
         Integer result = 0;
         try {
             result = kibsMapper.deletePassNew(passNewDTO);
-            if(result == 0){
+            if (result == 0) {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Data Delete Fail] Seq : " + passNewDTO.getSeq();
             }
             //System.out.println(result);
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processDeletePassNew ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
@@ -841,18 +835,18 @@ public class KibsServiceImpl implements KibsService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
-            if(chargeNewDTO.getSeq() != null){
+            if (chargeNewDTO.getSeq() != null) {
 
                 result = kibsMapper.deleteChargeNew(chargeNewDTO);
-                if(result == 0){
+                if (result == 0) {
                     resultCode = CommConstants.RESULT_CODE_FAIL;
                     resultMessage = "[Data Delete Fail] Seq : " + chargeNewDTO.getSeq();
                 }
-            }else{
+            } else {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Seq Not Found Error]";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processDeleteChargeNew ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
@@ -872,18 +866,18 @@ public class KibsServiceImpl implements KibsService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
-            if(productNewDTO.getSeq() != null){
+            if (productNewDTO.getSeq() != null) {
 
                 result = kibsMapper.deleteProductNew(productNewDTO);
-                if(result == 0){
+                if (result == 0) {
                     resultCode = CommConstants.RESULT_CODE_FAIL;
                     resultMessage = "[Data Delete Fail] Seq : " + productNewDTO.getSeq();
                 }
-            }else{
+            } else {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Seq Not Found Error]";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processDeleteProductNew ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
@@ -903,18 +897,18 @@ public class KibsServiceImpl implements KibsService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
-            if(onlineNewDTO.getSeq() != null){
+            if (onlineNewDTO.getSeq() != null) {
 
                 result = kibsMapper.deleteOnlineNew(onlineNewDTO);
-                if(result == 0){
+                if (result == 0) {
                     resultCode = CommConstants.RESULT_CODE_FAIL;
                     resultMessage = "[Data Delete Fail] Seq : " + onlineNewDTO.getSeq();
                 }
-            }else{
+            } else {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Seq Not Found Error]";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processDeleteOnlineNew ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
@@ -934,18 +928,18 @@ public class KibsServiceImpl implements KibsService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
-            if(fileDTO.getId() != null){
+            if (fileDTO.getId() != null) {
 
                 result = kibsMapper.deleteFile(fileDTO);
-                if(result == 0){
+                if (result == 0) {
                     resultCode = CommConstants.RESULT_CODE_FAIL;
                     resultMessage = "[Data Delete Fail] Id : " + fileDTO.getId();
                 }
-            }else{
+            } else {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Id Not Found Error]";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processDeleteFile ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
@@ -964,18 +958,6 @@ public class KibsServiceImpl implements KibsService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitBooth(ExhibitorDTO exhibitorDTO) {
@@ -989,7 +971,7 @@ public class KibsServiceImpl implements KibsService {
             exhibitorDTO.setNote(note);
             Integer step2_1_ex_result = kibsMapper.updateExhibitBooth(exhibitorDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_1] processUpdateExhibitBooth Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1013,7 +995,7 @@ public class KibsServiceImpl implements KibsService {
             exhibitorDTO.setNote(note);
             Integer step2_2_ex_result = kibsMapper.updateCompanySign(exhibitorDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_2] processUpdateCompanySign Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1037,7 +1019,7 @@ public class KibsServiceImpl implements KibsService {
             exhibitorDTO.setNote(note);
             Integer step2_3_ex_result = kibsMapper.updateExhibitUtility(exhibitorDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_3] processUpdateExhibitUtility Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1064,20 +1046,20 @@ public class KibsServiceImpl implements KibsService {
             Integer step2_4_ex_result = kibsMapper.updateExhibitNote(exhibitorDTO);
 
             List<PassDTO> passList = exhibitorDTO.getPassList();
-            if(!passList.isEmpty()){
-                for(PassDTO passDTO : passList){
+            if (!passList.isEmpty()) {
+                for (PassDTO passDTO : passList) {
                     passDTO.setNote(note);
                     passDTO.setId(exhibitorSeq);
 
-                    if(passDTO.getSeq() != null && !"".equals(passDTO.getSeq())){
+                    if (passDTO.getSeq() != null && !"".equals(passDTO.getSeq())) {
                         Integer upd_pass_result = kibsMapper.updateExhibitPass(passDTO);
-                    }else{
+                    } else {
                         Integer ist_pass_result = kibsMapper.insertExhibitPass(passDTO);
                     }
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_4] processInsertExhibitPass Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1104,20 +1086,20 @@ public class KibsServiceImpl implements KibsService {
             Integer step2_5_ex_result = kibsMapper.updateExhibitNote(exhibitorDTO);
 
             List<GiftDTO> giftList = exhibitorDTO.getGiftList();
-            if(!giftList.isEmpty()){
-                for(GiftDTO giftDTO : giftList){
+            if (!giftList.isEmpty()) {
+                for (GiftDTO giftDTO : giftList) {
                     giftDTO.setNote(note);
                     giftDTO.setId(exhibitorSeq);
-                    if(giftDTO.getSeq() != null && !giftDTO.getSeq().equals("")){
+                    if (giftDTO.getSeq() != null && !giftDTO.getSeq().equals("")) {
                         Integer upd_pass_result = kibsMapper.updateExhibitGift(giftDTO);
-                    }else{
+                    } else {
                         Integer ist_pass_result = kibsMapper.insertExhibitGift(giftDTO);
                     }
                 }
             }
 
             responseDTO.setCustomValue(exhibitorSeq);
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_5] processInsertExhibitGift Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1141,7 +1123,7 @@ public class KibsServiceImpl implements KibsService {
             exhibitorDTO.setNote(note);
             Integer step2_6_ex_result = kibsMapper.updateWebbanner(exhibitorDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_6] processUpdateWebbanner Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1224,18 +1206,18 @@ public class KibsServiceImpl implements KibsService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
-            if(buyerNewDTO.getSeq() != null){
+            if (buyerNewDTO.getSeq() != null) {
                 result = kibsMapper.deleteBuyerNew(buyerNewDTO);
-                if(result == 0){
+                if (result == 0) {
                     resultCode = CommConstants.RESULT_CODE_FAIL;
                     resultMessage = "[Data Delete Fail] Id : " + buyerNewDTO.getSeq();
                 }
                 //System.out.println(result);
-            }else{
+            } else {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Seq Not Found Error]";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processDeleteBuyerNew ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
@@ -1280,7 +1262,7 @@ public class KibsServiceImpl implements KibsService {
             exhibitorDTO.setNote(note);
             Integer step03_ex_result = kibsMapper.updateExhibitApprovalStatus(exhibitorDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step03] processUpdateExhibitApprovalStatus Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1335,6 +1317,13 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<ProductNewDTO> processSelectProductNewInfoList(String seq) {
+        System.out.println("KibsServiceImpl > processSelectProductNewInfoList");
+        return kibsMapper.selectProductNewInfoList(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<OnlineNewDTO> processSelectOnlineNewInfoList(String seq) {
         System.out.println("KibsServiceImpl > processSelectOnlineNewInfoList");
         return kibsMapper.selectOnlineNewInfoList(seq);
@@ -1352,6 +1341,13 @@ public class KibsServiceImpl implements KibsService {
     public OnlineDTO processSelectOnlineInfo(String seq) {
         System.out.println("KibsServiceImpl > processSelectOnlineInfo");
         return kibsMapper.selectOnlineInfo(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ProductNewDTO processSelectProductNewInfo(String seq) {
+        System.out.println("KibsServiceImpl > processSelectProductNewInfo");
+        return kibsMapper.selectProductNewInfo(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -1428,7 +1424,7 @@ public class KibsServiceImpl implements KibsService {
         try {
             Integer result = kibsMapper.updateNoticeViewCnt(id);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[ERROR] processUpdateNoticeViewCnt : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1471,7 +1467,7 @@ public class KibsServiceImpl implements KibsService {
         try {
             Integer result = kibsMapper.updatePressViewCnt(id);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[ERROR] processUpdatePressViewCnt : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1507,7 +1503,7 @@ public class KibsServiceImpl implements KibsService {
         try {
             Integer result = kibsMapper.updateColumnViewCnt(id);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[ERROR] processUpdateColumnViewCnt : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1543,7 +1539,7 @@ public class KibsServiceImpl implements KibsService {
         try {
             Integer result = kibsMapper.updateNewsletterViewCnt(id);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[ERROR] processUpdateNewsletterViewCnt : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1600,7 +1596,7 @@ public class KibsServiceImpl implements KibsService {
         try {
             Integer step2_1_ex_result = kibsMapper.updateExhibitBoothSeq(exhibitorDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[my_step2_1] processUpdateExhibitBoothSeq Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1622,7 +1618,7 @@ public class KibsServiceImpl implements KibsService {
         try {
             Integer step2_2_ex_result = kibsMapper.updateCompanySignSeq(exhibitorDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_2] processUpdateCompanySignSeq Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1644,7 +1640,7 @@ public class KibsServiceImpl implements KibsService {
         try {
             Integer step2_3_ex_result = kibsMapper.updateExhibitUtilitySeq(exhibitorDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_3] processUpdateExhibitUtilitySeq Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1673,17 +1669,17 @@ public class KibsServiceImpl implements KibsService {
         try {
 
             List<PassDTO> passList = exhibitorDTO.getPassList();
-            if(!passList.isEmpty()){
-                for(PassDTO passDTO : passList){
-                    if(passDTO.getSeq() != null && !passDTO.getSeq().equals("")){
+            if (!passList.isEmpty()) {
+                for (PassDTO passDTO : passList) {
+                    if (passDTO.getSeq() != null && !passDTO.getSeq().equals("")) {
                         Integer upd_pass_result = kibsMapper.updateExhibitPass(passDTO);
-                    }else{
+                    } else {
                         Integer ist_pass_result = kibsMapper.insertExhibitPass(passDTO);
                     }
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[my_step2_4] processUpdateExhibitPassSeq Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1719,17 +1715,17 @@ public class KibsServiceImpl implements KibsService {
         try {
 
             List<GiftDTO> giftList = exhibitorDTO.getGiftList();
-            if(!giftList.isEmpty()){
-                for(GiftDTO giftDTO : giftList){
-                    if(giftDTO.getSeq() != null && !giftDTO.getSeq().equals("")){
+            if (!giftList.isEmpty()) {
+                for (GiftDTO giftDTO : giftList) {
+                    if (giftDTO.getSeq() != null && !giftDTO.getSeq().equals("")) {
                         Integer upd_pass_result = kibsMapper.updateExhibitGift(giftDTO);
-                    }else{
+                    } else {
                         Integer ist_pass_result = kibsMapper.insertExhibitGift(giftDTO);
                     }
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[my_step2_5] processUpdateExhibitGiftSeq Error : ";
             resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
@@ -1749,18 +1745,18 @@ public class KibsServiceImpl implements KibsService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
-            if(giftDTO.getSeq() != null){
+            if (giftDTO.getSeq() != null) {
                 result = kibsMapper.deleteExhibitGift(giftDTO);
-                if(result == 0){
+                if (result == 0) {
                     resultCode = CommConstants.RESULT_CODE_FAIL;
                     resultMessage = "[Data Delete Fail] Seq : " + giftDTO.getSeq();
                 }
                 //System.out.println(result);
-            }else{
+            } else {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Seq Not Found Error]";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processDeleteGift ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
@@ -1785,6 +1781,13 @@ public class KibsServiceImpl implements KibsService {
         return kibsMapper.selectPopupList(popupDTO);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public PopupDTO processSelectPopupSingle(PopupDTO popupDTO) {
+        System.out.println("KibsServiceImpl > processSelectPopupSingle");
+        return kibsMapper.selectPopupSingle(popupDTO);
+    }
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public VisitorDTO processSelectPreVisitorCheck(VisitorDTO visitorDTO) {
@@ -1804,30 +1807,30 @@ public class KibsServiceImpl implements KibsService {
             //업체 존재 여부 체크
             Integer result = 0;
 
-            if(visitorDTO.getSeq() != null && !"".equals(visitorDTO.getSeq())){
+            if (visitorDTO.getSeq() != null && !"".equals(visitorDTO.getSeq())) {
                 //visitor table Update
                 result = kibsMapper.updateVisitor(visitorDTO);
 
-                if("N".equals(visitorDTO.getPartnerYn())){
+                if ("N".equals(visitorDTO.getPartnerYn())) {
                     Integer deleteResult = kibsMapper.deletePartnerAll(visitorDTO.getSeq());
                 }
-            }else{
+            } else {
                 //visitor table Insert
                 String seq = kibsMapper.getVisitorSeq();
                 visitorDTO.setSeq(seq);
                 result = kibsMapper.insertVisitor(visitorDTO);
             }
 
-            if(result == 0){
+            if (result == 0) {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[processSaveVisitor Table DB ERROR] " + CommConstants.RESULT_MSG_FAIL + " , DB 작업이 수행 실패하였습니다.";
-            }else{
+            } else {
                 List<PartnerDTO> partnerList = visitorDTO.getPartner();
-                if(!partnerList.isEmpty()){
-                    for(PartnerDTO partnerDTO : partnerList){
-                        if(partnerDTO.getSeq() != null && !"".equals(partnerDTO.getSeq())){
+                if (!partnerList.isEmpty()) {
+                    for (PartnerDTO partnerDTO : partnerList) {
+                        if (partnerDTO.getSeq() != null && !"".equals(partnerDTO.getSeq())) {
                             Integer updPartnerResult = kibsMapper.updatePartner(partnerDTO);
-                        }else{
+                        } else {
                             String partSeq = kibsMapper.getPartnerSeq();
                             partnerDTO.setSeq(partSeq);
                             partnerDTO.setVisitorSeq(visitorDTO.getSeq());
@@ -1838,7 +1841,7 @@ public class KibsServiceImpl implements KibsService {
             }
 
             responseDTO.setCustomValue(visitorDTO.getSeq());
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processSaveVisitor ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
@@ -1854,14 +1857,14 @@ public class KibsServiceImpl implements KibsService {
     public SearchCompanyResponseDTO processSearchCompany(SearchCompanyRequestDTO searchCompanyRequestDTO) {
         System.out.println("KibsServiceImpl > processSearchCompany");
         SearchCompanyResponseDTO response = new SearchCompanyResponseDTO();
-        try{
+        try {
 
             StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B552015/NpsBplcInfoInqireService/getBassInfoSearch"); /*URL*/
-            urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + "nngY%2FlASnTg%2FKJlWdupohRX699RJx6xxaPIsfw3WMoP74fL3ElwqhwmIWWYrlYYABP%2B7SUiOfhPGiVY%2BRDSxdg%3D%3D"); /*Service Key*/
+            urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + "nngY%2FlASnTg%2FKJlWdupohRX699RJx6xxaPIsfw3WMoP74fL3ElwqhwmIWWYrlYYABP%2B7SUiOfhPGiVY%2BRDSxdg%3D%3D"); /*Service Key*/
             //urlBuilder.append("&" + URLEncoder.encode("ldong_addr_mgpl_dg_cd","UTF-8") + "=" + URLEncoder.encode("41", "UTF-8")); /*시도(행정자치부 법정동 주소코드 참조)*/
             //urlBuilder.append("&" + URLEncoder.encode("ldong_addr_mgpl_sggu_cd","UTF-8") + "=" + URLEncoder.encode("117", "UTF-8")); /*시군구(행정자치부 법정동 주소코드 참조)*/
             //urlBuilder.append("&" + URLEncoder.encode("ldong_addr_mgpl_sggu_emd_cd","UTF-8") + "=" + URLEncoder.encode("101", "UTF-8")); /*읍면동(행정자치부 법정동 주소코드 참조)*/
-            urlBuilder.append("&" + URLEncoder.encode("wkpl_nm","UTF-8") + "=" + URLEncoder.encode(searchCompanyRequestDTO.getWkplNm(), "UTF-8")); /*사업장명*/
+            urlBuilder.append("&" + URLEncoder.encode("wkpl_nm", "UTF-8") + "=" + URLEncoder.encode(searchCompanyRequestDTO.getWkplNm(), "UTF-8")); /*사업장명*/
             //urlBuilder.append("&" + URLEncoder.encode("bzowr_rgst_no","UTF-8") + "=" + URLEncoder.encode("124815", "UTF-8")); /*사업자등록번호(앞에서 6자리)*/
             URL url = new URL(urlBuilder.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -1869,7 +1872,7 @@ public class KibsServiceImpl implements KibsService {
             conn.setRequestProperty("Content-type", "application/json");
             System.out.println("Response code: " + conn.getResponseCode());
             BufferedReader rd;
-            if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
                 rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             } else {
                 rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
@@ -1886,13 +1889,13 @@ public class KibsServiceImpl implements KibsService {
             String xmlData = sb.toString();
 
             StringReader sr = new StringReader(xmlData);
-            if(!xmlData.contains("OpenAPI_")){
+            if (!xmlData.contains("OpenAPI_")) {
                 JAXBContext jaxbContext = JAXBContext.newInstance(SearchCompanyResponseDTO.class);
                 Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
                 response = (SearchCompanyResponseDTO) unmarshaller.unmarshal(sr);
             }
 
-        }catch (IOException ioe){
+        } catch (IOException ioe) {
 
             System.out.println(ioe.getMessage());
         } catch (JAXBException e) {
@@ -1907,7 +1910,7 @@ public class KibsServiceImpl implements KibsService {
     public void insertBusiness(BusinessDTO businessDTO) {
         System.out.println("KibsServiceImpl > insertBusiness");
         Integer dupCheck = kibsMapper.checkBusiness(businessDTO);
-        if(dupCheck == 0){
+        if (dupCheck == 0) {
             kibsMapper.insertBusiness(businessDTO);
         }
     }
@@ -1935,18 +1938,18 @@ public class KibsServiceImpl implements KibsService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
-            if(partnerDTO.getSeq() != null){
+            if (partnerDTO.getSeq() != null) {
 
                 result = kibsMapper.deletePartner(partnerDTO);
-                if(result == 0){
+                if (result == 0) {
                     resultCode = CommConstants.RESULT_CODE_FAIL;
                     resultMessage = "[Data Delete Fail] Seq : " + partnerDTO.getSeq();
                 }
-            }else{
+            } else {
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Seq Not Found Error]";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processDeletePartner ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
@@ -1959,7 +1962,7 @@ public class KibsServiceImpl implements KibsService {
 
     public String Salt() {
 
-        String salt="";
+        String salt = "";
         try {
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
             byte[] bytes = new byte[16];
@@ -1973,7 +1976,7 @@ public class KibsServiceImpl implements KibsService {
     }
 
     public String SHA512(String password, String hash) {
-        String salt = hash+password;
+        String salt = hash + password;
         String hex = null;
         try {
             MessageDigest msg = MessageDigest.getInstance("SHA-512");

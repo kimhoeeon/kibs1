@@ -1407,6 +1407,7 @@ label:last-child {
     width: 100%;
     font-size: 1.8rem;
     padding: 15px 30px 15px 15px;
+    height: auto;
 }
 
 .prd_sh_select .input_box {width: 100%; display: flex;}
@@ -2033,6 +2034,7 @@ label:last-child {
 
 .exh_sh_select select {
     width: 100%;
+    height: auto;
     font-size: 1.8rem;
     padding: 15px 30px 15px 15px;
 }

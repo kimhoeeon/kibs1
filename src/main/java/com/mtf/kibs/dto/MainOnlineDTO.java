@@ -26,4 +26,7 @@ public class MainOnlineDTO extends AbstractPagingRequestVo {
     Integer totalRecords;
     String searchText; //검색어
 
+    /*정렬조건*/
+    int orderSeq;
+
 }

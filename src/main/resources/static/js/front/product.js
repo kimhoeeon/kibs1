@@ -127,7 +127,7 @@ function searchPosts(pageNum) {
                 logoFullFilePath = '';
             }
             let productNameKo = results[i].productNameKo;
-            let productNameEn = results[i].productNameEn;
+            let productNameEn = nvl(results[i].productNameEn,'');
             let productOptionBig = results[i].productOptionBig;
             let productOptionSmall = results[i].productOptionSmall;
 

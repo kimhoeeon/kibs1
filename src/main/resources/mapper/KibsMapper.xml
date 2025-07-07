@@ -175,6 +175,7 @@
         , field_part
         , export_meeting_yn
         , apply_complt
+        , approval_status
         , prc_yn
         , booth_type
         , deposit
@@ -230,6 +231,7 @@
                , #{fieldPart}
                , #{exportMeetingYn}
                , #{applyComplt}
+               , #{approvalStatus}
                , #{prcYn}
                , #{boothType}
                , #{deposit}
@@ -1153,9 +1155,9 @@
                FROM exhibitor e
                WHERE 1=1
                  AND e.transfer_year in (#{transferYear}-1, #{transferYear}-2)
+                 AND e.company_online_view_yn = 'Y'
                  AND e.apply_complt = 'Y'
                  AND e.approval_status = '참가승인'
-                 AND e.company_online_view_yn = 'Y'
                  AND EXISTS ( SELECT 1
                                 FROM online o
                                 WHERE o.id = e.seq)
@@ -1176,53 +1178,22 @@
                         FROM file f
                         WHERE f.user_id = en.seq
                           AND f.file_yn = 'Y'
-                          AND f.note LIKE CONCAT('onlineImage','%')
+                          AND f.note LIKE CONCAT('productImage','%')
                         ORDER BY f.note
                         LIMIT 1) AS promotionImageFilePath
                FROM exhibitor_new en
                WHERE 1=1
                  AND en.transfer_year in (#{transferYear})
+                 AND en.company_online_view_yn = 'Y'
                  AND en.apply_complt = 'Y'
                  AND en.approval_status = '참가승인'
-                 AND en.company_online_view_yn = 'Y'
                  AND EXISTS ( SELECT 1
-                                 FROM online_new oln
-                                 WHERE oln.ex_seq = en.seq)
+                                 FROM product_new pdn
+                                 WHERE pdn.ex_seq = en.seq)
                ) r
         ORDER BY r.transfer_year DESC, LENGTH (r.company_badge) DESC, RAND()
         LIMIT 15;
     </select>
-    <!-- /////////////////////////////////////////////////////////////// -->
-    <!-- /////////////////////////////////////////////////////////////// -->
-    <!-- /////////////////////////////////////////////////////////////// -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     <insert id="insertPromotionInfo" parameterType="com.mtf.kibs.dto.PromotionDTO">
         /* com.mtf.kibs.mapper.KibsMapper.insertPromotionInfo */
@@ -2126,7 +2097,9 @@
     <select id="selectOnlineListPaging" parameterType="com.mtf.kibs.dto.MainOnlineDTO" resultType="com.mtf.kibs.dto.MainOnlineDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectOnlineListPaging */
         SELECT r.*
-        FROM ( ( SELECT e.seq
+        FROM ( /* ~2025 전시업체 Start */
+               ( SELECT 1 as orderSeq
+                      , e.seq
                       , e.id
                       , e.transfer_year
                       , e.company_name_ko
@@ -2197,9 +2170,86 @@
                                     </if>
                               )
                  ORDER BY LENGTH (e.company_badge) DESC, e.init_regi_dttm DESC
-                )
+                ) /* ~2025 전시업체 End */
         UNION ALL
-                ( SELECT en.seq
+                /* 2026~ 전시업체 전시품 Start */
+                ( SELECT 1 as orderSeq
+                       , en.seq
+                       , en.id
+                       , en.transfer_year
+                       , en.company_name_ko
+                       , en.company_name_en
+                       , en.company_badge
+                       , ( SELECT f.full_file_path
+                           FROM file f
+                           WHERE f.user_id = en.seq
+                             AND f.file_yn = 'Y'
+                             AND f.note = 'logo'
+                           LIMIT 1) AS logoFilePath
+                       , ( SELECT f.full_file_path
+                           FROM file f
+                           WHERE f.user_id = en.seq
+                             AND f.file_yn = 'Y'
+                             AND f.note LIKE CONCAT('productImage','%')
+                           ORDER BY f.note
+                           LIMIT 1) AS promotionImageFilePath
+                       , ( SELECT COUNT(*)
+                           FROM exhibitor_new en1
+                           WHERE 1=1
+                             AND en1.transfer_year in (#{transferYear})
+                             AND en1.company_online_view_yn = 'Y'
+                             AND en1.apply_complt = 'Y'
+                             AND en1.approval_status = '참가승인'
+                             <if test='searchText != null and searchText != ""'>
+                                AND en1.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                             </if>
+                             <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
+                                <foreach collection="companyBadgeList" item="item" index="index">
+                                    AND en1.company_badge LIKE CONCAT('%', #{item}, '%')
+                                </foreach>
+                             <!--AND en.company_badge REGEXP (REGEXP_REPLACE(
+                                 <foreach collection="companyBadge" item="item" index="index" separator="|">
+                                    #{item}
+                                 </foreach>
+                             ,''|'',''))-->
+                             </if>
+                             AND EXISTS ( SELECT 1
+                                          FROM product_new pdn
+                                          WHERE 1=1
+                                            AND pdn.ex_seq = en1.seq
+                                            <if test='productOptionBig != null and productOptionBig != ""'>
+                                                AND pdn.product_option_big = #{productOptionBig}
+                                            </if>
+                                          )
+                           ) AS totalRecords
+                  FROM exhibitor_new en
+                  WHERE 1=1
+                    AND en.transfer_year in (#{transferYear})
+                    AND en.company_online_view_yn = 'Y'
+                    AND en.apply_complt = 'Y'
+                    AND en.approval_status = '참가승인'
+                    <if test='searchText != null and searchText != ""'>
+                        AND en.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                    <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
+                        <foreach collection="companyBadgeList" item="item" index="index">
+                            AND en.company_badge LIKE CONCAT('%', #{item}, '%')
+                        </foreach>
+                    </if>
+                    AND EXISTS ( SELECT 1
+                                 FROM product_new pdn
+                                 WHERE 1=1
+                                   AND pdn.ex_seq = en.seq
+                                   <if test='productOptionBig != null and productOptionBig != ""'>
+                                    AND pdn.product_option_big = #{productOptionBig}
+                                    </if>
+                                 )
+                  ORDER BY LENGTH (en.company_badge) DESC, en.init_regi_dttm DESC
+                ) /* 2026~ 전시업체 전시품 End */
+        UNION ALL
+                /* 2026~ 전시업체 온라인 Start */
+                ( SELECT 2 as orderSeq
+                       , en.seq
                        , en.id
                        , en.transfer_year
                        , en.company_name_ko
@@ -2270,9 +2320,9 @@
                                     </if>
                                  )
                   ORDER BY LENGTH (en.company_badge) DESC, en.init_regi_dttm DESC
-                )
+                ) /* 2026~ 전시업체 온라인 End */
             ) r
-        ORDER BY r.transfer_year desc , LENGTH (r.company_badge) DESC, RAND()
+        ORDER BY r.transfer_year DESC, r.orderSeq, LENGTH (r.company_badge) DESC, RAND()
         LIMIT #{pageNum} , #{rows}
     </select>
 
@@ -2326,6 +2376,35 @@
              , final_regi_dttm
         FROM online
         WHERE id = #{value}
+        ORDER BY CAST(note as unsigned)
+    </select>
+
+    <select id="selectProductNewInfoList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ProductNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectProductNewInfoList */
+        SELECT seq
+             , ex_seq
+             , product_option_big
+             , product_option_small
+             , product_name_ko
+             , product_name_en
+             , product_qty
+             , product_brand
+             , product_length
+             , product_width
+             , product_height
+             , product_weight
+             , product_material
+             , product_year
+             , product_intro_ko
+             , product_intro_en
+             , product_link
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM product_new
+        WHERE ex_seq = #{value}
         ORDER BY CAST(note as unsigned)
     </select>
 
@@ -2400,6 +2479,34 @@
         WHERE seq = #{value}
     </select>
 
+    <select id="selectProductNewInfo" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ProductNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectProductNewInfo */
+        SELECT seq
+             , ex_seq
+             , product_option_big
+             , product_option_small
+             , product_name_ko
+             , product_name_en
+             , product_qty
+             , product_brand
+             , product_length
+             , product_width
+             , product_height
+             , product_weight
+             , product_material
+             , product_year
+             , product_intro_ko
+             , product_intro_en
+             , product_link
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM product_new
+        WHERE seq = #{value}
+    </select>
+
     <select id="selectOnlineNewInfo" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.OnlineNewDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectOnlineNewInfo */
         SELECT seq
@@ -2443,6 +2550,18 @@
                  AND o.product_option_big = #{productOptionBig}
                  AND o.product_option_small = #{productOptionSmall}
                UNION ALL
+               SELECT pdn.seq
+                    , pdn.ex_seq AS id
+                    , pdn.product_name_ko AS productNameKo
+                    , pdn.product_name_en AS productNameEn
+                    , pdn.product_option_big AS productOptionBig
+                    , pdn.product_option_small AS productOptionSmall
+                    , pdn.note
+               FROM product_new pdn
+               WHERE pdn.ex_seq != #{id}
+                 AND pdn.product_option_big = #{productOptionBig}
+                 AND pdn.product_option_small = #{productOptionSmall}
+               UNION ALL
                SELECT oln.seq
                     , oln.ex_seq AS id
                     , oln.online_name_ko AS productNameKo
@@ -2458,6 +2577,8 @@
         JOIN exhibitor e
         ON e.seq = ot.id
         WHERE e.company_online_view_yn = 'Y'
+          AND e.apply_complt = 'Y'
+          AND e.approval_status = '참가승인'
     </select>
 
     <select id="selectProductFileInfo" parameterType="com.mtf.kibs.dto.FileDTO" resultType="com.mtf.kibs.dto.FileDTO">
@@ -2479,7 +2600,12 @@
         FROM file
         WHERE user_id = #{userId}
           AND file_yn = 'Y'
-          AND note LIKE CONCAT('productImage', #{note}, '\\_', '%') ESCAPE '\\'
+          <if test="note != null and note.contains('ON')">
+            AND note LIKE CONCAT('onlineImage', #{note}, '\\_', '%') ESCAPE '\\'
+          </if>
+          <if test="note != null and !note.contains('ON')">
+            AND note LIKE CONCAT('productImage', #{note}, '\\_', '%') ESCAPE '\\'
+          </if>
     </select>
 
     <select id="selectLogoFileInfo" parameterType="com.mtf.kibs.dto.FileDTO" resultType="com.mtf.kibs.dto.FileDTO">
@@ -2532,80 +2658,114 @@
     <select id="selectOnlineProductListPaging" parameterType="com.mtf.kibs.dto.OnlineRelatedDTO" resultType="com.mtf.kibs.dto.OnlineRelatedDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectOnlineProductListPaging */
         SELECT tta.*
-             , ((SELECT COUNT(*)
-                FROM ( SELECT o.id
-                       FROM online o
+             , ( ( SELECT COUNT(*)
+                   FROM ( SELECT o.id
+                          FROM online o
+                          WHERE 1=1
+                            AND TRIM(o.product_name_ko) != '-'
+                            <if test='productOptionBig != null and productOptionBig != "" and productOptionBig != "선택"'>
+                                AND o.product_option_big = #{productOptionBig}
+                            </if>
+                            <if test='productOptionSmall != null and productOptionSmall != "" and productOptionBig != "선택"'>
+                                AND o.product_option_small = #{productOptionSmall}
+                            </if>
+                            <if test='productWidthMin != "" and productWidthMax != ""'>
+                                <if test='productWidthMin != "0" or productWidthMax != "40"'>
+                                    AND o.product_width BETWEEN #{productWidthMin} AND #{productWidthMax}
+                                </if>
+                            </if>
+                            <if test='productHorsePowerMin != "" and productHorsePowerMax != ""'>
+                                <if test='productHorsePowerMin != "0" or productHorsePowerMax != "500"'>
+                                    AND o.product_horse_power BETWEEN #{productHorsePowerMin} AND #{productHorsePowerMax}
+                                </if>
+                            </if>
+                            <if test='searchText != null and searchText != ""'>
+                                <if test='condition == "productName"'>
+                                    AND o.product_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                                </if>
+                            </if>
+                          ) ot
+                       JOIN exhibitor e
+                       ON e.seq = ot.id
                        WHERE 1=1
-                         AND TRIM(o.product_name_ko) != '-'
-                         <if test='productOptionBig != null and productOptionBig != "" and productOptionBig != "선택"'>
-                         AND o.product_option_big = #{productOptionBig}
-                         </if>
-                         <if test='productOptionSmall != null and productOptionSmall != "" and productOptionBig != "선택"'>
-                         AND o.product_option_small = #{productOptionSmall}
-                         </if>
-                         <if test='productWidthMin != "" and productWidthMax != ""'>
-                             <if test='productWidthMin != "0" or productWidthMax != "40"'>
-                             AND o.product_width BETWEEN #{productWidthMin} AND #{productWidthMax}
-                             </if>
-                         </if>
-                         <if test='productHorsePowerMin != "" and productHorsePowerMax != ""'>
-                             <if test='productHorsePowerMin != "0" or productHorsePowerMax != "500"'>
-                             AND o.product_horse_power BETWEEN #{productHorsePowerMin} AND #{productHorsePowerMax}
-                             </if>
-                         </if>
+                         AND e.transfer_year in (#{transferYear}-1, #{transferYear}-2)
                          <if test='searchText != null and searchText != ""'>
-                            <if test='condition == "productName"'>
-                                AND o.product_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                            <if test='condition == "companyName"'>
+                                AND e.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
                             </if>
                          </if>
-                       ) ot
-                JOIN exhibitor e
-                ON e.seq = ot.id
-                WHERE 1=1
-                  AND e.transfer_year in (#{transferYear}-1, #{transferYear}-2)
-                  <if test='searchText != null and searchText != ""'>
-                    <if test='condition == "companyName"'>
-                        AND e.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
-                    </if>
-                  </if>
-                  AND e.apply_complt = 'Y'
-                  AND e.approval_status = '참가승인'
-                  AND e.company_online_view_yn = 'Y') + (
-                      SELECT COUNT(*)
-                      FROM ( SELECT oln.ex_seq
-                             FROM online_new oln
-                             WHERE 1=1
-                               AND TRIM(oln.online_name_ko) != '-'
-                               <if test='productOptionBig != null and productOptionBig != "" and productOptionBig != "선택"'>
-                                   AND oln.online_option_big = #{productOptionBig}
-                               </if>
-                               <if test='productOptionSmall != null and productOptionSmall != "" and productOptionBig != "선택"'>
-                                   AND oln.online_option_small = #{productOptionSmall}
-                               </if>
-                               <if test='productWidthMin != "" and productWidthMax != ""'>
-                                   <if test='productWidthMin != "0" or productWidthMax != "40"'>
-                                       AND oln.online_width BETWEEN #{productWidthMin} AND #{productWidthMax}
-                                   </if>
-                               </if>
-                               <if test='searchText != null and searchText != ""'>
-                                   <if test='condition == "productName"'>
-                                       AND oln.online_name_ko LIKE CONCAT('%', #{searchText}, '%')
-                                   </if>
-                               </if>
-                       ) ot
-                      JOIN exhibitor_new en
-                      ON en.seq = ot.ex_seq
-                      WHERE 1=1
-                        AND en.transfer_year in (#{transferYear})
-                        <if test='searchText != null and searchText != ""'>
+                         AND e.company_online_view_yn = 'Y'
+                         AND e.apply_complt = 'Y'
+                         AND e.approval_status = '참가승인' ) +
+                 ( SELECT COUNT(*)
+                   FROM ( SELECT pdn.ex_seq
+                          FROM product_new pdn
+                          WHERE 1=1
+                            AND TRIM(pdn.product_name_ko) != '-'
+                            <if test='productOptionBig != null and productOptionBig != "" and productOptionBig != "선택"'>
+                                AND pdn.product_option_big = #{productOptionBig}
+                            </if>
+                            <if test='productOptionSmall != null and productOptionSmall != "" and productOptionBig != "선택"'>
+                                AND pdn.product_option_small = #{productOptionSmall}
+                            </if>
+                            <if test='productWidthMin != "" and productWidthMax != ""'>
+                                <if test='productWidthMin != "0" or productWidthMax != "40"'>
+                                    AND pdn.product_width BETWEEN #{productWidthMin} AND #{productWidthMax}
+                                </if>
+                            </if>
+                            <if test='searchText != null and searchText != ""'>
+                                <if test='condition == "productName"'>
+                                    AND pdn.product_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                                </if>
+                            </if>
+                          ) ot
+                       JOIN exhibitor_new en
+                       ON en.seq = ot.ex_seq
+                       WHERE 1=1
+                         AND en.transfer_year in (#{transferYear})
+                         <if test='searchText != null and searchText != ""'>
                             <if test='condition == "companyName"'>
                                 AND en.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
                             </if>
-                        </if>
-                        AND en.apply_complt = 'Y'
-                        AND en.approval_status = '참가승인'
-                        AND en.company_online_view_yn = 'Y'
-                      ) ) AS totalRecords
+                         </if>
+                         AND en.company_online_view_yn = 'Y'
+                         AND en.apply_complt = 'Y'
+                         AND en.approval_status = '참가승인' ) +
+                 ( SELECT COUNT(*)
+                   FROM ( SELECT oln.ex_seq
+                          FROM online_new oln
+                          WHERE 1=1
+                            AND TRIM(oln.online_name_ko) != '-'
+                            <if test='productOptionBig != null and productOptionBig != "" and productOptionBig != "선택"'>
+                                AND oln.online_option_big = #{productOptionBig}
+                            </if>
+                            <if test='productOptionSmall != null and productOptionSmall != "" and productOptionBig != "선택"'>
+                                AND oln.online_option_small = #{productOptionSmall}
+                            </if>
+                            <if test='productWidthMin != "" and productWidthMax != ""'>
+                                <if test='productWidthMin != "0" or productWidthMax != "40"'>
+                                    AND oln.online_width BETWEEN #{productWidthMin} AND #{productWidthMax}
+                                </if>
+                            </if>
+                            <if test='searchText != null and searchText != ""'>
+                                <if test='condition == "productName"'>
+                                    AND oln.online_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                                </if>
+                            </if>
+                          ) ot
+                       JOIN exhibitor_new en
+                       ON en.seq = ot.ex_seq
+                       WHERE 1=1
+                         AND en.transfer_year in (#{transferYear})
+                         <if test='searchText != null and searchText != ""'>
+                            <if test='condition == "companyName"'>
+                                AND en.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                            </if>
+                         </if>
+                         AND en.company_online_view_yn = 'Y'
+                         AND en.apply_complt = 'Y'
+                         AND en.approval_status = '참가승인' )
+                 ) AS totalRecords
         FROM ( SELECT e.company_name_ko
                     , e.company_name_en
                     , e.transfer_year
@@ -2621,19 +2781,19 @@
                       WHERE 1=1
                         AND TRIM(o.product_name_ko) != '-'
                         <if test='productOptionBig != null and productOptionBig != "" and productOptionBig != "선택"'>
-                        AND o.product_option_big = #{productOptionBig}
+                            AND o.product_option_big = #{productOptionBig}
                         </if>
                         <if test='productOptionSmall != null and productOptionSmall != "" and productOptionBig != "선택"'>
-                        AND o.product_option_small = #{productOptionSmall}
+                            AND o.product_option_small = #{productOptionSmall}
                         </if>
                         <if test='productWidthMin != "" and productWidthMax != ""'>
                             <if test='productWidthMin != "0" or productWidthMax != "40"'>
-                            AND o.product_width BETWEEN #{productWidthMin} AND #{productWidthMax}
+                                AND o.product_width BETWEEN #{productWidthMin} AND #{productWidthMax}
                             </if>
                         </if>
                         <if test='productHorsePowerMin != "" and productHorsePowerMax != ""'>
                             <if test='productHorsePowerMin != "0" or productHorsePowerMax != "500"'>
-                            AND o.product_horse_power BETWEEN #{productHorsePowerMin} AND #{productHorsePowerMax}
+                                AND o.product_horse_power BETWEEN #{productHorsePowerMin} AND #{productHorsePowerMax}
                             </if>
                         </if>
                         <if test='searchText != null and searchText != ""'>
@@ -2642,63 +2802,107 @@
                             </if>
                         </if>
                       ) ot
-               JOIN exhibitor e
-               ON e.seq = ot.id
-               WHERE 1=1
-                 AND e.transfer_year in (#{transferYear}-1, (#{transferYear}-2))
-                 <if test='searchText != null and searchText != ""'>
-                    <if test='condition == "companyName"'>
-                        AND e.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
-                    </if>
-                 </if>
-                 AND e.apply_complt = 'Y'
-                 AND e.approval_status = '참가승인'
-                 AND e.company_online_view_yn = 'Y'
-               UNION ALL /**/
-               SELECT en.company_name_ko
-                    , en.company_name_en
-                    , en.transfer_year
-                    , ot.*
-               FROM ( SELECT oln.seq
-                           , oln.ex_seq
-                           , oln.online_name_ko
-                           , oln.online_name_en
-                           , oln.online_option_big
-                           , oln.online_option_small
-                           , oln.note
-                      FROM online_new oln
-                      WHERE 1=1
-                        AND TRIM(oln.online_name_ko) != '-'
-                        <if test='productOptionBig != null and productOptionBig != "" and productOptionBig != "선택"'>
-                            AND oln.online_option_big = #{productOptionBig}
+                   JOIN exhibitor e
+                   ON e.seq = ot.id
+                   WHERE 1=1
+                     AND e.transfer_year in (#{transferYear}-1, (#{transferYear}-2))
+                     <if test='searchText != null and searchText != ""'>
+                        <if test='condition == "companyName"'>
+                            AND e.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
                         </if>
-                        <if test='productOptionSmall != null and productOptionSmall != "" and productOptionBig != "선택"'>
-                            AND oln.online_option_small = #{productOptionSmall}
-                        </if>
-                        <if test='productWidthMin != "" and productWidthMax != ""'>
-                            <if test='productWidthMin != "0" or productWidthMax != "40"'>
-                            AND oln.online_width BETWEEN #{productWidthMin} AND #{productWidthMax}
+                     </if>
+                     AND e.company_online_view_yn = 'Y'
+                     AND e.apply_complt = 'Y'
+                     AND e.approval_status = '참가승인'
+                   UNION ALL /**/
+                    SELECT en.company_name_ko
+                         , en.company_name_en
+                         , en.transfer_year
+                         , ot.*
+                    FROM ( SELECT pdn.seq
+                                , pdn.ex_seq
+                                , pdn.product_name_ko
+                                , pdn.product_name_en
+                                , pdn.product_option_big
+                                , pdn.product_option_small
+                                , pdn.note
+                           FROM product_new pdn
+                           WHERE 1=1
+                             AND TRIM(pdn.product_name_ko) != '-'
+                             <if test='productOptionBig != null and productOptionBig != "" and productOptionBig != "선택"'>
+                                AND pdn.product_option_big = #{productOptionBig}
+                             </if>
+                             <if test='productOptionSmall != null and productOptionSmall != "" and productOptionBig != "선택"'>
+                                AND pdn.product_option_small = #{productOptionSmall}
+                             </if>
+                             <if test='productWidthMin != "" and productWidthMax != ""'>
+                                <if test='productWidthMin != "0" or productWidthMax != "40"'>
+                                    AND pdn.product_width BETWEEN #{productWidthMin} AND #{productWidthMax}
+                                </if>
+                             </if>
+                             <if test='searchText != null and searchText != ""'>
+                                <if test='condition == "productName"'>
+                                    AND pdn.product_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                                </if>
                             </if>
-                        </if>
-                        <if test='searchText != null and searchText != ""'>
-                            <if test='condition == "productName"'>
-                                AND oln.online_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                           ) ot
+                        JOIN exhibitor_new en
+                        ON en.seq = ot.ex_seq
+                        WHERE 1=1
+                          AND en.transfer_year in (#{transferYear})
+                          <if test='searchText != null and searchText != ""'>
+                            <if test='condition == "companyName"'>
+                                AND en.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
                             </if>
-                        </if>
-                      ) ot
-               JOIN exhibitor_new en
-               ON en.seq = ot.ex_seq
-               WHERE 1=1
-                 AND en.transfer_year in (#{transferYear})
-                 <if test='searchText != null and searchText != ""'>
-                    <if test='condition == "companyName"'>
-                        AND en.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
-                    </if>
-                 </if>
-                 AND en.apply_complt = 'Y'
-                 AND en.approval_status = '참가승인'
-                 AND en.company_online_view_yn = 'Y'
-               ) tta
+                          </if>
+                          AND en.company_online_view_yn = 'Y'
+                          AND en.apply_complt = 'Y'
+                          AND en.approval_status = '참가승인'
+                    UNION ALL /**/
+                    SELECT en.company_name_ko
+                         , en.company_name_en
+                         , en.transfer_year
+                         , ot.*
+                    FROM ( SELECT oln.seq
+                                , oln.ex_seq
+                                , oln.online_name_ko
+                                , oln.online_name_en
+                                , oln.online_option_big
+                                , oln.online_option_small
+                                , oln.note
+                           FROM online_new oln
+                           WHERE 1=1
+                             AND TRIM(oln.online_name_ko) != '-'
+                             <if test='productOptionBig != null and productOptionBig != "" and productOptionBig != "선택"'>
+                                AND oln.online_option_big = #{productOptionBig}
+                             </if>
+                             <if test='productOptionSmall != null and productOptionSmall != "" and productOptionBig != "선택"'>
+                                AND oln.online_option_small = #{productOptionSmall}
+                             </if>
+                             <if test='productWidthMin != "" and productWidthMax != ""'>
+                                <if test='productWidthMin != "0" or productWidthMax != "40"'>
+                                    AND oln.online_width BETWEEN #{productWidthMin} AND #{productWidthMax}
+                                </if>
+                             </if>
+                             <if test='searchText != null and searchText != ""'>
+                                <if test='condition == "productName"'>
+                                    AND oln.online_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                                </if>
+                            </if>
+                           ) ot
+                        JOIN exhibitor_new en
+                        ON en.seq = ot.ex_seq
+                        WHERE 1=1
+                          AND en.transfer_year in (#{transferYear})
+                          <if test='searchText != null and searchText != ""'>
+                            <if test='condition == "companyName"'>
+                                AND en.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
+                            </if>
+                          </if>
+                          AND en.company_online_view_yn = 'Y'
+                          AND en.apply_complt = 'Y'
+                          AND en.approval_status = '참가승인'
+                        ) tta
         ORDER BY tta.transfer_year desc
         LIMIT #{pageNum} , #{rows}
     </select>
@@ -2726,6 +2930,7 @@
                                , ( SELECT COUNT(*)
                                    FROM notice
                                    WHERE lang = #{lang}
+                                     AND temp_save_yn = 'N'
                                      <if test='searchText != null and searchText != ""'>
                                          <if test='condition == "title"'>
                                          AND title LIKE CONCAT('%',#{searchText},'%')
@@ -2740,6 +2945,7 @@
                                      </if> ) AS totalRecords
                           FROM notice
                           WHERE lang = #{lang}
+                            AND temp_save_yn = 'N'
                             <if test='searchText != null and searchText != ""'>
                                 <if test='condition == "title"'>
                                 AND title LIKE CONCAT('%',#{searchText},'%')
@@ -2797,6 +3003,7 @@
              , ( SELECT COUNT(*)
                  FROM faq
                  WHERE lang = #{lang}
+                   AND temp_save_yn = 'N'
                    AND notice_gbn = #{noticeGbn}
                    <if test='searchText != null and searchText != ""'>
                        <if test='condition == "title"'>
@@ -2813,6 +3020,7 @@
                  ) AS totalRecords
         FROM faq
         WHERE lang = #{lang}
+        AND temp_save_yn = 'N'
         AND notice_gbn = #{noticeGbn}
         <if test='searchText != null and searchText != ""'>
             <if test='condition == "title"'>
@@ -3025,6 +3233,7 @@
                                   , ( SELECT COUNT(*)
                                       FROM newsletter
                                       WHERE lang = #{lang}
+                                        AND temp_save_yn = 'N'
                                         <if test='searchText != null and searchText != ""'>
                                         <if test='condition == "title"'>
                                         AND title LIKE CONCAT('%',#{searchText},'%')
@@ -3040,6 +3249,7 @@
                                       ) AS totalRecords
                              FROM newsletter
                              WHERE lang = #{lang}
+                               AND temp_save_yn = 'N'
                                <if test='searchText != null and searchText != ""'>
                                <if test='condition == "title"'>
                                AND title LIKE CONCAT('%',#{searchText},'%')
@@ -3202,6 +3412,7 @@
              , write_date
         FROM notice
         WHERE lang = #{value}
+        AND temp_save_yn = 'N'
         ORDER BY write_date DESC, final_regi_dttm DESC
         LIMIT 3
     </select>
@@ -3311,6 +3522,30 @@
         AND lang = #{lang}
         AND published_date <![CDATA[<=]]> #{today}
         AND expiration_date <![CDATA[>=]]> #{today}
+    </select>
+
+    <select id="selectPopupSingle" parameterType="com.mtf.kibs.dto.PopupDTO" resultType="com.mtf.kibs.dto.PopupDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.selectPopupSingle */
+        SELECT id
+             , lang
+             , use_yn
+             , title
+             , published_date
+             , expiration_date
+             , width_pixel
+             , left_pixel
+             , top_pixel
+             , align
+             , writer
+             , content
+             , link_url
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM popup
+        WHERE id = #{id}
     </select>
 
     <select id="getExhibitorCompInfo" parameterType="java.util.HashMap" resultType="com.mtf.kibs.dto.ParticipantCompanyDTO">

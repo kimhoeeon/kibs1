@@ -681,7 +681,7 @@
                         <div class="form_wrap">
                             <div class="form_tit">
                                 <div class="big">참가분야</div>
-                                <div class="small">최대 3개 선택 가능</div>
+                                <div class="small">최대 3개 선택 가능합니다.</div>
                             </div>
                             <ul class="form_box">
                                 <li>

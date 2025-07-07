@@ -279,10 +279,10 @@ function f_board_press_valid(){
     let writeDate = document.querySelector('#writeDate').value;
     let content = document.querySelector('#quill_content').value;
 
-    if(nvl(title,"") === ""){ showMessage('#title', 'error', '[글 등록 정보]', '제목을 입력해 주세요.', ''); return false; }
-    if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[글 등록 정보]', '작성자를 입력해 주세요.', ''); return false; }
-    if(nvl(writeDate,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '작성일을 입력해 주세요.', ''); return false; }
-    if(nvl(content,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '내용을 입력해 주세요.', ''); return false; }
+    if(nvl(title,"") === ""){ showMessage('#title', 'error', '[ 글 등록 정보 ]', '제목을 입력해 주세요.', ''); return false; }
+    if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[ 글 등록 정보 ]', '작성자를 입력해 주세요.', ''); return false; }
+    if(nvl(writeDate,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', '작성일을 입력해 주세요.', ''); return false; }
+    if(nvl(content,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', '내용을 입력해 주세요.', ''); return false; }
 
     return true;
 }

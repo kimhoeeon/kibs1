@@ -13,6 +13,7 @@ public class NewsletterDTO extends AbstractPagingRequestVo {
     Integer rownum; //연번
     String lang; //언어
     String id; //ID
+    String tempSaveYn; //임시저장여부
     String noticeGbn; //공지사항 구분
     String gbn1; //홈페이지
     String gbn2; //무역관

@@ -774,51 +774,49 @@ let KTAppExhibitorNewApplicationBooth = function () {
                 },
                 {
                     'targets': 2,
-                    'data': 'actions',
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
                     'targets': 4,
-                    'data': 'actions',
-                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderInvoiceYnCell(data, type, row); }
                 },
                 {
                     'targets': 5,
-                    'data': 'actions',
-                    'render': function (data, type, row) { return renderBoothCntCell(data, type, row); }
+                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'data': 'actions',
-                    'render': function (data, type, row) { return renderBoothPrcCell(data, type, row); }
+                    'render': function (data, type, row) { return renderBoothCntCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'data': 'actions',
-                    'render': function (data, type, row) { return renderDiscountTypeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderBoothPrcCell(data, type, row); }
                 },
                 {
                     'targets': 8,
-                    'data': 'actions',
-                    'render': function (data, type, row) { return renderDiscountPrcCell(data, type, row); }
+                    'render': function (data, type, row) { return renderDiscountTypeCell(data, type, row); }
                 },
                 {
                     'targets': 9,
-                    'data': 'actions',
+                    'render': function (data, type, row) { return renderDiscountPrcCell(data, type, row); }
+                },
+                {
+                    'targets': 10,
                     'render': function (data, type, row) { return renderBoothPrcSumCell(data, type, row); }
                 },
                 {
-                    'targets': 12,
+                    'targets': 13,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,3,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29] }
+                { visible: false, targets: [1,3,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
                 { data: 'seq'}, //seq
                 { data: 'companyNameKo' }, //회사명(국문)
                 { data: 'companyNameEn' }, //회사명(영문)
+                { data: 'invoiceYn' }, //인보이스존재여부
                 { data: 'boothType' }, //부스타입
                 { data: 'boothCnt' }, //부스수량
                 { data: 'boothPrc' }, //부스가격
@@ -847,6 +845,15 @@ let KTAppExhibitorNewApplicationBooth = function () {
                 { data: 'discountFirst' } //첫 참가할인
             ]
         });
+    }
+
+    function renderInvoiceYnCell(data, type, row){
+        let invoiceYn = row.invoiceYn;
+        let renderHTML = 'X';
+        if(invoiceYn === 'Y'){
+            renderHTML = 'O';
+        }
+        return renderHTML;
     }
 
     function renderBoothPrcSumCell(data, type, row){
@@ -1126,7 +1133,7 @@ let KTAppExhibitorApplicationBooth = function () {
         let renderHTML = '<span class="fw-bold">';
         renderHTML += '<a href="/mng/exhibitor/application/booth/detail.do?seq=' + row.seq + '"';
         renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
-        renderHTML += companyNameKo + '<br>' + companyNameEn;
+            renderHTML += companyNameKo + '<br>' + companyNameEn;
         renderHTML += '</a>';
         renderHTML += '</span>';
         return renderHTML;
@@ -1398,25 +1405,30 @@ let KTAppExhibitorNewApplicationUtility = function () {
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 20,
-                    'render': function (data, type, row) { return renderUtilityGbnCell(data, type, row); }
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderInvoiceYnCell(data, type, row); }
                 },
                 {
                     'targets': 21,
+                    'render': function (data, type, row) { return renderUtilityGbnCell(data, type, row); }
+                },
+                {
+                    'targets': 22,
                     'render': function (data, type, row) { return renderUtilityPrcSumCell(data, type, row); }
                 },
                 {
-                    'targets': 24,
+                    'targets': 25,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19] }
+                { visible: false, targets: [1,3,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
                 { data: 'seq'}, //seq
                 { data: 'companyNameKo' }, //회사명(국문)
                 { data: 'companyNameEn' }, //회사명(영문)
+                { data: 'invoiceYn' }, //인보이스존재여부
                 { data: 'utilityJuganCnt' },
                 { data: 'utilityJuganFee' },
                 { data: 'utilityDayCnt' },
@@ -1445,7 +1457,22 @@ let KTAppExhibitorNewApplicationUtility = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return companyNameKo + '<br>' + companyNameEn;
+        let renderHTML = '<span class="fw-bold">';
+        renderHTML += '<a href="/mng/exhibitorNew/application/utility/detail.do?seq=' + row.seq + '"';
+        renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
+            renderHTML += companyNameKo + '<br>' + companyNameEn;
+        renderHTML += '</a>';
+        renderHTML += '</span>';
+        return renderHTML;
+    }
+
+    function renderInvoiceYnCell(data, type, row){
+        let invoiceYn = row.invoiceYn;
+        let renderHTML = 'X';
+        if(invoiceYn === 'Y'){
+            renderHTML = 'O';
+        }
+        return renderHTML;
     }
 
     function renderUtilityPrcSumCell(data, type, row){
@@ -3698,7 +3725,11 @@ let KTAppCenterBoardNotice = function () {
                     }
                 },
                 {
-                    'targets': [3,4,5,6],
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderTempSaveCell(data, type, row); }
+                },
+                {
+                    'targets': [4,5,6,7],
                     'render': function (data) {
                         if (data === '1') {
                             return 'V'
@@ -3708,7 +3739,17 @@ let KTAppCenterBoardNotice = function () {
                     }
                 },
                 {
-                    'targets': 12,
+                    'targets': 8,
+                    'render': function (data) {
+                        if (nvl(data,'') === '') {
+                            return '-'
+                        }else{
+                            return data;
+                        }
+                    }
+                },
+                {
+                    'targets': 13,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -3718,6 +3759,7 @@ let KTAppCenterBoardNotice = function () {
                 { data: 'rownum' },
                 { data: 'id'},
                 { data: 'lang'},
+                { data: 'tempSave'},
                 { data: 'noticeGbn' },
                 { data: 'gbn1' },
                 { data: 'gbn2' },
@@ -3732,6 +3774,21 @@ let KTAppCenterBoardNotice = function () {
         });
     }
 
+    function renderTempSaveCell(data, type, row){
+        let tempSaveYn = row.tempSaveYn;
+        let renderHTML = '';
+        if(tempSaveYn === 'Y'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold mr10">';
+                renderHTML += '임시저장';
+            renderHTML += '</div>';
+        }else{
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += '완료';
+            renderHTML += '</div>';
+        }
+        return renderHTML;
+    }
+    
     function renderActionsCell(data, type, row){
         //console.log(row.id);
         let rowId = row.id;
@@ -3798,7 +3855,11 @@ let KTAppCenterBoardNewsletterKo = function () {
             'order': [[0, 'desc']],
             'columnDefs': [
                 {
-                    'targets': [2,3,4,5],
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': [3,4,5,6],
                     'render': function (data) {
                         if (data === '1') {
                             return 'V'
@@ -3808,11 +3869,21 @@ let KTAppCenterBoardNewsletterKo = function () {
                     }
                 },
                 {
-                    'targets': '_all',
-                    'className': 'text-center'
+                    'targets': 2,
+                    'render': function (data, type, row) { return renderTempSaveCell(data, type, row); }
                 },
                 {
-                    'targets': 11,
+                    'targets': 7,
+                    'render': function (data) {
+                        if (nvl(data,'') === '') {
+                            return '-'
+                        }else{
+                            return data;
+                        }
+                    }
+                },
+                {
+                    'targets': 12,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -3821,6 +3892,7 @@ let KTAppCenterBoardNewsletterKo = function () {
             columns: [
                 { data: 'rownum' },
                 { data: 'id'},
+                { data: 'tempSave' },
                 { data: 'noticeGbn' },
                 { data: 'gbn1' },
                 { data: 'gbn2' },
@@ -3833,6 +3905,21 @@ let KTAppCenterBoardNewsletterKo = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderTempSaveCell(data, type, row){
+        let tempSaveYn = row.tempSaveYn;
+        let renderHTML = '';
+        if(tempSaveYn === 'Y'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold mr10">';
+                renderHTML += '임시저장';
+            renderHTML += '</div>';
+        }else{
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += '완료';
+            renderHTML += '</div>';
+        }
+        return renderHTML;
     }
 
     function renderActionsCell(data, type, row){
@@ -4104,6 +4191,10 @@ let KTAppCenterBoardFaq = function () {
                 },
                 {
                     'targets': 2,
+                    'render': function (data, type, row) { return renderTempSaveCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
                     'render': function (data) {
                         if (data === 'E') {
                             return '참가업체'
@@ -4113,7 +4204,7 @@ let KTAppCenterBoardFaq = function () {
                     }
                 },
                 {
-                    'targets': 3,
+                    'targets': 4,
                     'render': function (data) {
                         if (data === 'KO') {
                             return '국문'
@@ -4123,7 +4214,17 @@ let KTAppCenterBoardFaq = function () {
                     }
                 },
                 {
-                    'targets': 9,
+                    'targets': 5,
+                    'render': function (data) {
+                        if (nvl(data,'') === '') {
+                            return '-'
+                        }else{
+                            return data;
+                        }
+                    }
+                },
+                {
+                    'targets': 10,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -4132,6 +4233,7 @@ let KTAppCenterBoardFaq = function () {
             columns: [
                 { data: 'rownum' },
                 { data: 'id'},
+                { data: 'tempSave'},
                 { data: 'noticeGbn' },
                 { data: 'lang' },
                 { data: 'title' },
@@ -4142,6 +4244,21 @@ let KTAppCenterBoardFaq = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderTempSaveCell(data, type, row){
+        let tempSaveYn = row.tempSaveYn;
+        let renderHTML = '';
+        if(tempSaveYn === 'Y'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold mr10">';
+                renderHTML += '임시저장';
+            renderHTML += '</div>';
+        }else{
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += '완료';
+            renderHTML += '</div>';
+        }
+        return renderHTML;
     }
 
     function renderActionsCell(data, type, row){

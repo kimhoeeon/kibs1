@@ -18,6 +18,8 @@ public class MailRequestDTO {
     private String template; //템플릿
     private List<Receiver> receiver;
     private List<FileUrl> fileUrl;
+    private String gbn;
+    private String folderPath;
 
     @Getter
     @Setter

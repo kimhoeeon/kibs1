@@ -120,11 +120,11 @@ function f_search_condition_init(){
 
 function f_member_detail(seq, nameKo){
 
-    let infoMsg = '<span style="font-size: 1.4em;">전시업체 목록 페이지로 이동합니다.</span>';
+    let infoMsg = '<span style="font-size: 1.2em;">전시업체 목록 페이지로 이동합니다.</span>';
 
     let gbn = seq.substring(0,1);
     if(gbn === 'V'){
-        infoMsg = '<span style="font-size: 1.4em;">참관객 목록 페이지로 이동합니다.</span>';
+        infoMsg = '<span style="font-size: 1.2em;">참관객 목록 페이지로 이동합니다.</span>';
     }
 
     Swal.fire({

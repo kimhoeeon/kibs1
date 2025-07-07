@@ -206,7 +206,7 @@
             <div class="pop_box">
                 <div class="pop_cont">
                     <!-- 비디오 -->
-                    <div class='embed-container'>
+                    <div class="embed-container">
                         <iframe src='' frameborder='0' allowfullscreen></iframe>
                     </div>
                     <!-- //비디오 -->

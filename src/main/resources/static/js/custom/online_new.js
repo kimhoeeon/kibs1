@@ -143,7 +143,7 @@ function f_online_view_yn(seq, viewYn){
         Swal.fire({
             icon: 'info',
             title: '[ 노출 상태 변경 ]',
-            html: '<span style="font-size: 1.4em;">노출 상태를 변경하시겠습니까 ?<br>현재 노출 상태 : ' + viewStatus + '</span>',
+            html: '<span style="font-size: 1.2em;">노출 상태를 변경하시겠습니까 ?<br>현재 노출 상태 : ' + viewStatus + '</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

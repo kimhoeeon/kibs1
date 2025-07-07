@@ -2270,6 +2270,7 @@ if (document.documentElement) {
                                                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th class="text-center">ID</th>
+                                                    <th class="text-center min-w-50px">작성상태</th>
                                                     <th class="text-center min-w-50px">중요공지</th>
                                                     <th class="text-center min-w-50px">홈페이지</th>
                                                     <th class="text-center min-w-50px">무역관</th>
@@ -2284,6 +2285,7 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>

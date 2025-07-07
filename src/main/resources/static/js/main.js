@@ -110,7 +110,7 @@ function f_pre_exhibitor_info_call(){
         Swal.fire({
             icon: 'info',
             title: '[ 참가신청 정보 불러오기 ]',
-            html: '<span style="font-size: 1.4em;">' + transferYear + ' 년도 신청정보를 조회하였습니다.<br>입력되지 않은 정보는 직접 입력해 주세요.</span>',
+            html: '<span style="font-size: 1.2em;">' + transferYear + ' 년도 신청정보를 조회하였습니다.<br>입력되지 않은 정보는 직접 입력해 주세요.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -318,6 +318,84 @@ function generateRandomCode(n) {
     return str
 }
 
+function f_show_main_popup(param){
+    let popupObj = JSON.parse(JSON.stringify(param));
+    let id = popupObj.id;
+    let lang = popupObj.lang;
+    let widthPixel = popupObj.widthPixel;
+    let heightPixel = (window.outerHeight - window.innerHeight);
+    let leftPixel = popupObj.leftPixel;
+    let topPixel = popupObj.topPixel;
+    let align = popupObj.align;
+
+    let features = 'toolbar=no, menubar=no, status=no, location=no, resizable=no, directories=no,';
+    features += 'width=' + widthPixel + ', height=' + heightPixel + ', top=' + topPixel;
+    if(align === 'B_LEFT'){
+        features += ', left=' + leftPixel;
+    }else{
+        features += ', left=' + (window.innerWidth - leftPixel);
+    }
+
+    //console.log(features);
+    let cookie_name = 'popup_' + id;
+    if( getStorage(cookie_name)){
+        return;
+    }
+
+    window.open('', 'id_popup_' + id, features);
+
+    let form = document.createElement("form");
+    form.setAttribute("charset", "UTF-8");
+    form.setAttribute("method", "POST");
+    form.setAttribute("target", 'id_popup_'+ id);
+    form.setAttribute("action", "/popup.do");
+
+    let hiddenField_id = document.createElement("input");
+    hiddenField_id.setAttribute("type", "hidden");
+    hiddenField_id.setAttribute("name", "id");
+    hiddenField_id.setAttribute("id", "id");
+    hiddenField_id.setAttribute("value", id);
+    form.appendChild(hiddenField_id);
+
+    let hiddenField_lang = document.createElement("input");
+    hiddenField_lang.setAttribute("type", "hidden");
+    hiddenField_lang.setAttribute("name", "lang");
+    hiddenField_lang.setAttribute("id", "lang");
+    hiddenField_lang.setAttribute("value", lang);
+    form.appendChild(hiddenField_lang);
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function closeMainPopup(pop_id) {
+    let id_today_name	= 'id_today_' + pop_id;
+    let cookie_name		= 'popup_' + pop_id;
+    if( $(":input:checkbox[id='" + id_today_name + "']:checked").size() > 0 ){
+        setStorage(cookie_name, 1);
+    }
+
+    window.close();
+}
+
+function setStorage(name, exp){
+    // 만료 시간 구하기(exp를 ms단위로 변경)
+    let date = new Date();
+    date = date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+
+    // 로칼 스토리지에 저장하기
+    // (값을 따로 저장하지 않고 만료 시간을 저장)
+    localStorage.setItem(name, date);
+}
+
+function getStorage(name){
+    let now = new Date();
+    now = now.setTime(now.getTime());
+    // 현재 시각과 스토리지에 저장된 시각을 각각 비교하여
+    // 시간이 남아 있으면 true, 아니면 false 리턴
+    return parseInt(localStorage.getItem(name)) > now
+}
+
 function ajaxConnect(url, method, jsonStr){
     let result;
     $.ajax({
@@ -376,7 +454,7 @@ function showMessage(selector, icon, title, msg, confirmButtonColor) {
     Swal.fire({
         icon: icon,
         title: title,
-        html: '<span style="font-size: 1.4em;">' + msg + '</span>',
+        html: '<span style="font-size: 1.2em;">' + msg + '</span>',
         allowOutsideClick: false,
         confirmButtonColor: confirmButtonColor
     })
@@ -704,7 +782,7 @@ function f_pw_init(){
         Swal.fire({
             icon: 'warning',
             title: '[ 회원 정보 ]',
-            html: '<span style="font-size: 1.4em;">해당 ID [ ' + id + ' ] 의<br>비밀번호 초기화를 요청하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">해당 ID [ ' + id + ' ] 의<br>비밀번호 초기화를 요청하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -736,7 +814,7 @@ function f_pw_init(){
                             Swal.fire({
                                 icon: 'info',
                                 title: '[ 회원 정보 ]',
-                                html: '<span style="font-size: 1.4em;">해당 ID의 비밀번호가 초기화되었습니다.<br>초기화 정보는 [ ' + email + ' ] 로 전송되었습니다.<br>로그인하신 후 비밀번호를 변경하여 이용해 주세요.</span>',
+                                html: '<span style="font-size: 1.2em;">해당 ID의 비밀번호가 초기화되었습니다.<br>초기화 정보는 [ ' + email + ' ] 로 전송되었습니다.<br>로그인하신 후 비밀번호를 변경하여 이용해 주세요.</span>',
                                 allowOutsideClick: false,
                                 confirmButtonColor: '#3085d6',
                                 confirmButtonText: '확인'
@@ -747,7 +825,7 @@ function f_pw_init(){
                         Swal.fire({
                             icon: 'info',
                             title: '[ 회원 정보 ]',
-                            html: '<span style="font-size: 1.4em;">해당 ID에 등록된 Email 주소로 메일 전송이 실패하였습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 1670-8785</span>',
+                            html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소로 메일 전송이 실패하였습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 1670-8785</span>',
                             allowOutsideClick: false,
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: '확인'
@@ -758,7 +836,7 @@ function f_pw_init(){
                     Swal.fire({
                         icon: 'info',
                         title: '[ 회원 정보 ]',
-                        html: '<span style="font-size: 1.4em;">해당 ID에 등록된 Email 주소가 없습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 1670-8785</span>',
+                        html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소가 없습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 1670-8785</span>',
                         allowOutsideClick: false,
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: '확인'
@@ -1055,7 +1133,7 @@ function step_01_check(exhibitorSeq){
     let companyHomepage = $('#companyHomepage').val();
     if(nvl(companyHomepage,'') !== ''){
         if(!checkUrl(companyHomepage)){
-            showMessage('', 'error', '[ 참가업체 정보 ]', '홈페이지 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+            showMessage('#companyHomepage', 'error', '[ 참가업체 정보 ]', '홈페이지 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
             return false;
         }
     }
@@ -1284,6 +1362,11 @@ function step_01_check(exhibitorSeq){
     let chargePersonCnt = Number.parseInt($('.managerInfoNum:last').text());
     if(chargePersonCnt > 0){
         for(let i=0; i<chargePersonCnt; i++){
+            let chargePersonEmail_val = charge_person_email_el.eq(i).val();
+            let chargePersonEmail = '';
+            if(nvl(chargePersonEmail_val,'') !== ''){
+                chargePersonEmail = chargePersonEmail_val + '@' + charge_person_domain_el.eq(i).val();
+            }
             let chargePersonList_json_obj = {
                 seq: $('input[type=hidden][name=chargeSeq]').eq(i).val(),
                 exSeq: exhibitorSeq,
@@ -1292,7 +1375,7 @@ function step_01_check(exhibitorSeq){
                 chargePersonDepart: charge_person_depart_el.eq(i).val(),
                 chargePersonTel: charge_person_tel_el.eq(i).val(),
                 chargePersonPhone: charge_person_phone_el.eq(i).val(),
-                chargePersonEmail: charge_person_email_el.eq(i).val() + '@' + charge_person_domain_el.eq(i).val(),
+                chargePersonEmail: chargePersonEmail,
             };
             chargePersonList_json_arr.push(chargePersonList_json_obj);
         }
@@ -1573,9 +1656,10 @@ function step_01_check(exhibitorSeq){
 
     // 제품링크
     let product_link_el = $('input[type=text][name=productLink]');
-    if(nvl(product_link_el,'') !== ''){
-        for(let i=0; i<product_link_el.length; i++){
-            if(!checkUrl(product_link_el.eq(i).val())){
+    for(let i=0; i<product_link_el.length; i++){
+        let product_link = product_link_el.eq(i).val();
+        if(nvl(product_link,'') !== ''){
+            if(!checkUrl(product_link)){
                 showMessage('', 'error', '[ 전시품 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
                 return false;
             }
@@ -1727,9 +1811,10 @@ function step_01_check(exhibitorSeq){
 
     // 제품링크
     let online_link_el = $('input[type=text][name=onlineLink]');
-    if(nvl(online_link_el,'') !== ''){
-        for(let i=0; i<online_link_el.length; i++){
-            if(!checkUrl(online_link_el.eq(i).val())){
+    for(let i=0; i<online_link_el.length; i++){
+        let online_link = online_link_el.eq(i).val();
+        if(nvl(online_link,'') !== ''){
+            if(!checkUrl(online_link)){
                 showMessage('', 'error', '[ 온라인 전시관 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
                 return false;
             }
@@ -1903,7 +1988,7 @@ function step_01_check(exhibitorSeq){
                     Swal.fire({
                         icon: 'info',
                         title: '[ 참가업체 정보 ]',
-                        html: '<span style="font-size: 1.4em;">기본 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                        html: '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
                         allowOutsideClick: false,
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: '확인'
@@ -2323,7 +2408,7 @@ function f_buyer_remove(gbn, el, seq){
     Swal.fire({
         icon: 'warning',
         title: '[ 바이어 정보 ]',
-        html: '<span style="font-size: 1.4em;">선택한 바이어 정보를 삭제하시겠습니까?</span>',
+        html: '<span style="font-size: 1.2em;">선택한 바이어 정보를 삭제하시겠습니까?</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -2518,7 +2603,7 @@ function step_2_1_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 전시부스 신청 ]',
-            html: '<span style="font-size: 1.4em;">부스 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">부스 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -2586,7 +2671,7 @@ function step_2_2_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 상호간판 신청 ]',
-            html: '<span style="font-size: 1.4em;">상호간판 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">상호간판 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -2686,7 +2771,7 @@ function step_2_3_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 유틸리티 신청 ]',
-            html: '<span style="font-size: 1.4em;">유틸리티 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">유틸리티 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -2811,7 +2896,7 @@ function step_2_4_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 출입증 신청 ]',
-            html: '<span style="font-size: 1.4em;">출입증 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">출입증 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -2848,7 +2933,7 @@ function step_2_5_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 경품제공 신청 ]',
-            html: '<span style="font-size: 1.4em;">경품제공 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">경품제공 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -3691,7 +3776,7 @@ function step_2_8_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 디렉토리 정보 ]',
-            html: '<span style="font-size: 1.4em;">디렉토리 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">디렉토리 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -3727,7 +3812,7 @@ function step_03_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 참가업체 정보 ]',
-            html: '<span style="font-size: 1.4em;">참가 신청이 정상 완료되었습니다.<br>등록하신 담당자 메일로 신청완료 및 안내 메일이 발송됩니다.</span>',
+            html: '<span style="font-size: 1.2em;">참가 신청이 정상 완료되었습니다.<br>등록하신 담당자 메일로 신청완료 및 안내 메일이 발송됩니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -3889,7 +3974,7 @@ function f_personal_info_save(exhibitorSeq){
             Swal.fire({
                 icon: 'info',
                 title: '[ 회원 계정 정보 ]',
-                html: '<span style="font-size: 1.4em;">회원 계정 정보가 저장되었습니다.</span>',
+                html: '<span style="font-size: 1.2em;">회원 계정 정보가 저장되었습니다.</span>',
                 allowOutsideClick: false,
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: '확인'
@@ -3964,7 +4049,7 @@ function my_step_01_check(exhibitorSeq){
     let companyHomepage = $('#companyHomepage').val();
     if(nvl(companyHomepage,'') !== ''){
         if(!checkUrl(companyHomepage)){
-            showMessage('', 'error', '[ 참가업체 정보 ]', '홈페이지 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+            showMessage('#companyHomepage', 'error', '[ 참가업체 정보 ]', '홈페이지 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
             return false;
         }
     }
@@ -4193,6 +4278,11 @@ function my_step_01_check(exhibitorSeq){
     let chargePersonCnt = Number.parseInt($('.managerInfoNum:last').text());
     if(chargePersonCnt > 0){
         for(let i=0; i<chargePersonCnt; i++){
+            let chargePersonEmail_val = charge_person_email_el.eq(i).val();
+            let chargePersonEmail = '';
+            if(nvl(chargePersonEmail_val,'') !== ''){
+                chargePersonEmail = chargePersonEmail_val + '@' + charge_person_domain_el.eq(i).val();
+            }
             let chargePersonList_json_obj = {
                 seq: $('input[type=hidden][name=chargeSeq]').eq(i).val(),
                 exSeq: exhibitorSeq,
@@ -4201,7 +4291,7 @@ function my_step_01_check(exhibitorSeq){
                 chargePersonDepart: charge_person_depart_el.eq(i).val(),
                 chargePersonTel: charge_person_tel_el.eq(i).val(),
                 chargePersonPhone: charge_person_phone_el.eq(i).val(),
-                chargePersonEmail: charge_person_email_el.eq(i).val() + '@' + charge_person_domain_el.eq(i).val(),
+                chargePersonEmail: chargePersonEmail,
             };
             chargePersonList_json_arr.push(chargePersonList_json_obj);
         }
@@ -4209,7 +4299,7 @@ function my_step_01_check(exhibitorSeq){
 
     /******************** 상세정보 ********************/
 
-        // 회사소개영상
+    // 회사소개영상
     let companyIntroVideo = $('#companyIntroVideo').val();
     if(nvl(companyIntroVideo,'') !== ''){
         if(!checkUrl(companyIntroVideo)){
@@ -4482,9 +4572,10 @@ function my_step_01_check(exhibitorSeq){
 
     // 제품링크
     let product_link_el = $('input[type=text][name=productLink]');
-    if(nvl(product_link_el,'') !== ''){
-        for(let i=0; i<product_link_el.length; i++){
-            if(!checkUrl(product_link_el.eq(i).val())){
+    for(let i=0; i<product_link_el.length; i++){
+        let product_link = product_link_el.eq(i).val();
+        if(nvl(product_link,'') !== ''){
+            if(!checkUrl(product_link)){
                 showMessage('', 'error', '[ 전시품 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
                 return false;
             }
@@ -4636,9 +4727,10 @@ function my_step_01_check(exhibitorSeq){
 
     // 제품링크
     let online_link_el = $('input[type=text][name=onlineLink]');
-    if(nvl(online_link_el,'') !== ''){
-        for(let i=0; i<online_link_el.length; i++){
-            if(!checkUrl(online_link_el.eq(i).val())){
+    for(let i=0; i<online_link_el.length; i++){
+        let online_link = online_link_el.eq(i).val();
+        if(nvl(online_link,'') !== ''){
+            if(!checkUrl(online_link)){
                 showMessage('', 'error', '[ 온라인 전시관 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
                 return false;
             }
@@ -4828,9 +4920,9 @@ function my_step_01_check(exhibitorSeq){
                 /* Read more about handling dismissals below */
                 if (result.dismiss === Swal.DismissReason.timer) {
 
-                    let swal_html = '<span style="font-size: 1.4em;">기본 정보가 저장되었습니다.';
+                    let swal_html = '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.';
                     if(!link.includes('/mng/')){
-                        swal_html = '<span style="font-size: 1.4em;">기본 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>';
+                        swal_html = '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>';
                     }
 
                     Swal.fire({
@@ -5032,7 +5124,7 @@ function my_step_2_1_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 전시부스 신청 ]',
-            html: '<span style="font-size: 1.4em;">부스 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">부스 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -5096,7 +5188,7 @@ function my_step_2_2_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 상호간판 신청 ]',
-            html: '<span style="font-size: 1.4em;">상호간판 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">상호간판 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -5196,7 +5288,7 @@ function my_step_2_3_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 유틸리티 신청 ]',
-            html: '<span style="font-size: 1.4em;">유틸리티 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">유틸리티 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -5320,7 +5412,7 @@ function my_step_2_4_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 출입증 신청 ]',
-            html: '<span style="font-size: 1.4em;">출입증 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">출입증 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -5357,7 +5449,7 @@ function my_step_2_5_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 경품제공 신청 ]',
-            html: '<span style="font-size: 1.4em;">경품제공 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">경품제공 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -5390,7 +5482,7 @@ function my_step_2_8_check(exhibitorSeq){
         Swal.fire({
             icon: 'info',
             title: '[ 디렉토리 정보 ]',
-            html: '<span style="font-size: 1.4em;">디렉토리 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">디렉토리 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -5517,7 +5609,7 @@ function f_pre_apply_check_login(){
         Swal.fire({
             icon: 'info',
             title: '[ 참관 신청 확인 ]',
-            html: '<span style="font-size: 1.4em;">참관 신청 확인 되었습니다.<br>참관신청확인페이지로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">참관 신청 확인 되었습니다.<br>참관신청확인페이지로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'
@@ -5530,7 +5622,7 @@ function f_pre_apply_check_login(){
         Swal.fire({
             icon: 'info',
             title: '[ 참관 신청 확인 ]',
-            html: '<span style="font-size: 1.4em;">참관 신청 정보가 없습니다.<br>사전등록페이지로 이동합니다.</span>',
+            html: '<span style="font-size: 1.2em;">참관 신청 정보가 없습니다.<br>사전등록페이지로 이동합니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#3085d6',
             confirmButtonText: '확인'

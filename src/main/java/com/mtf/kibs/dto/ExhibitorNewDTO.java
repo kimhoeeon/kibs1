@@ -182,4 +182,6 @@ public class ExhibitorNewDTO {
     String companyBadge; //기업 뱃지
     String companyOnlineViewYn; //온라인전시회 노출여부
     String productOptionSmall;
+ 
+    String invoiceYn; //인보이스존재여부
 }

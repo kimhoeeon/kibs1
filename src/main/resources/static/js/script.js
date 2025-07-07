@@ -424,7 +424,7 @@ $(document).ready(function () {
         Swal.fire({
             icon: 'warning',
             title: '[ 출입증 신청 ]',
-            html: '<span style="font-size: 1.4em;">해당 출입증 신청 정보를 삭제하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">해당 출입증 신청 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -607,7 +607,7 @@ $(document).ready(function () {
         Swal.fire({
             icon: 'warning',
             title: '[ 부담당자 ]',
-            html: '<span style="font-size: 1.4em;">해당 담당자 정보를 삭제하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">해당 담당자 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -654,7 +654,7 @@ $(document).ready(function () {
 
     // .exhiInfoBox를 추가하는 이벤트 핸들러 추가
     $('.exhiInfoAdd').on('click', function () {
-        if(exhiInfoCount < 20){
+        if(exhiInfoCount < 40){
             let newExhiInfoBox = $('.exhiInfoBox:first').clone(true);
             exhiInfoCount++;
             newExhiInfoBox.find('input[type="hidden"]').val('');
@@ -707,7 +707,7 @@ $(document).ready(function () {
             $('.exhiInfoBox:last').after(newExhiInfoBox);
             updateExhiInfoNum(this);
         }else{
-            showMessage('', 'info', '[ 전시품 정보 ]', '전시정보는 최대 20개까지만 등록 가능합니다.', '');
+            showMessage('', 'info', '[ 전시품 정보 ]', '전시정보는 최대 40개까지만 등록 가능합니다.', '');
         }
     });
 
@@ -716,7 +716,7 @@ $(document).ready(function () {
         Swal.fire({
             icon: 'warning',
             title: '[ 전시품 정보 ]',
-            html: '<span style="font-size: 1.4em;">해당 전시품 정보를 삭제하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">해당 전시품 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -856,7 +856,7 @@ $(document).ready(function () {
 
     // .onlineInfoBox를 추가하는 이벤트 핸들러 추가
     $('.onlineInfoAdd').on('click', function () {
-        if(onlineInfoCount < 30) {
+        if(onlineInfoCount < 40) {
             let newOnlineInfoBox = $('.onlineInfoBox:first').clone(true);
             onlineInfoCount++;
             newOnlineInfoBox.find('input[type=hidden]').val('');
@@ -906,7 +906,7 @@ $(document).ready(function () {
             $('.onlineInfoBox:last').after(newOnlineInfoBox);
             updateOnlineInfoNum(this);
         }else{
-            showMessage('', 'info', '[ 온라인 전시관 정보 ]', '제품 정보는 최대 30개까지만 등록 가능합니다.', '');
+            showMessage('', 'info', '[ 온라인 전시관 정보 ]', '제품 정보는 최대 40개까지만 등록 가능합니다.', '');
         }
     });
 
@@ -915,7 +915,7 @@ $(document).ready(function () {
         Swal.fire({
             icon: 'warning',
             title: '[ 온라인 전시관 정보 ]',
-            html: '<span style="font-size: 1.4em;">해당 제품 정보를 삭제하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">해당 제품 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',

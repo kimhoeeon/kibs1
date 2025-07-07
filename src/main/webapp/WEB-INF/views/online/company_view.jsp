@@ -101,20 +101,22 @@
         <div class="inner">
             <div class="exh_view_box">
                 <div class="view_type">
-                    <c:if test="${not empty onlineList}">
-                        <c:choose>
-                            <c:when test="${gbn eq 'E'}">
+                    <c:choose>
+                        <c:when test="${gbn eq 'E'}">
+                            <c:if test="${not empty onlineList}">
                                 <c:if test="${onlineList.get(0).productOptionBig ne null and onlineList.get(0).productOptionBig ne ''}">
                                     ${onlineList.get(0).productOptionBig}전
                                 </c:if>
-                            </c:when>
-                            <c:otherwise>
-                                <c:if test="${onlineList.get(0).onlineOptionBig ne null and onlineList.get(0).onlineOptionBig ne ''}">
-                                    ${onlineList.get(0).onlineOptionBig}전
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${not empty productList}">
+                                <c:if test="${productList.get(0).productOptionBig ne null and productList.get(0).productOptionBig ne ''}">
+                                    ${productList.get(0).productOptionBig}전
                                 </c:if>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:if>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
 
                 <div class="exh_view_img">
@@ -145,11 +147,11 @@
                                 </c:when>
                                 <c:otherwise>
                                     <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
-                                        <c:if test="${fn:contains(fileInfo.note, 'onlineImage1_1')}">
+                                        <c:if test="${fn:contains(fileInfo.note, 'productImage1_1')}">
                                             <c:choose>
                                                 <c:when test="${fileInfo.fullFilePath ne null and fileInfo.fullFilePath ne '' and not fn:contains(fileInfo.fullFilePath, '.ai')}">
-                                                    <c:set var="onlineImageFilePathSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
-                                                    <img src="${onlineImageFilePathSrc}" class="thumbImg">
+                                                    <c:set var="productImageFilePathSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                    <img src="${productImageFilePathSrc}" class="thumbImg">
                                                 </c:when>
                                                 <c:otherwise>
                                                     <!-- 랜덤 숫자 설정 -->
@@ -229,7 +231,7 @@
                             <div class="exh_view_video">
                                 <div class="view_tit">기업 영상</div>
                                 <div class="video_wrap">
-                                    <div class='embed-container'>
+                                    <div class="embed-container">
                                         <iframe src="https://www.youtube.com/embed/${exhibitorInfo.companyIntroVideo}?autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
                                     </div>
                                 </div>
@@ -242,7 +244,7 @@
                             <div class="exh_view_video">
                                 <div class="view_tit">기업 영상</div>
                                 <div class="video_wrap">
-                                    <div class='embed-container'>
+                                    <div class="embed-container">
                                         <iframe src="https://www.youtube.com/embed/${companyIntroVideo}?autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
                                     </div>
                                 </div>
@@ -265,13 +267,13 @@
             <div class="exh_view_prd">
                 <div class="view_tit">제품소개</div>
                 <ul class="prdList">
-                    <c:forEach var="onlineInfo" items="${onlineList}" begin="0" end="${onlineList.size()}" step="1" varStatus="status">
-                        <c:choose>
-                            <c:when test="${gbn eq 'E'}">
+                    <c:choose>
+                        <c:when test="${gbn eq 'E'}">
+                            <c:forEach var="onlineInfo" items="${onlineList}" begin="0" end="${onlineList.size()}" step="1" varStatus="status">
                                 <c:if test="${fn:trim(onlineInfo.productNameKo) ne '-' and fn:trim(onlineInfo.productNameKo) ne '' and fn:trim(onlineInfo.productNameEn) ne '-' and fn:trim(onlineInfo.productNameEn) ne ''}">
                                     <li>
                                         <%--<div class="btnLike"><img src="/img/icon_like.png" class="likeImg"></div>--%>
-                                        <a href="/online/product_view.do?seq=${onlineInfo.seq}">
+                                        <a href="<c:url value="/online/product_view.do?seq=${onlineInfo.seq}"/>">
                                             <div class="thumbnail">
                                                 <div class="thumb75 thumbBox">
                                                     <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
@@ -290,12 +292,38 @@
                                         </a>
                                     </li>
                                 </c:if>
-                            </c:when>
-                            <c:otherwise>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="productInfo" items="${productList}" begin="0" end="${productList.size()}" step="1" varStatus="status">
+                                <c:if test="${fn:trim(productInfo.productNameKo) ne '-' and fn:trim(productInfo.productNameKo) ne ''}">
+                                    <li>
+                                        <%--<div class="btnLike"><img src="/img/icon_like.png" class="likeImg"></div>--%>
+                                        <a href="<c:url value="/online/product_view.do?seq=${productInfo.seq}"/>">
+                                            <div class="thumbnail">
+                                                <div class="thumb75 thumbBox">
+                                                    <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
+                                                        <c:if test="${fileInfo.note eq 'productImage'.concat(status.index+1).concat('_1')}">
+                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <img src="${productImageFileSrc}" class="thumbImg">
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                            <div class="prdTxt">
+                                                <div class="name">${exhibitorInfo.companyNameKo} / ${exhibitorInfo.companyNameEn}</div>
+                                                <div class="prdName">${productInfo.productNameKo}</div>
+                                                <div class="type">${productInfo.productOptionBig} > ${productInfo.productOptionSmall}</div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </c:forEach>
+                            <c:forEach var="onlineInfo" items="${onlineList}" begin="0" end="${onlineList.size()}" step="1" varStatus="status">
                                 <c:if test="${fn:trim(onlineInfo.onlineNameKo) ne '-' and fn:trim(onlineInfo.onlineNameKo) ne '' and fn:trim(onlineInfo.onlineNameEn) ne '-' and fn:trim(onlineInfo.onlineNameEn) ne ''}">
                                     <li>
                                         <%--<div class="btnLike"><img src="/img/icon_like.png" class="likeImg"></div>--%>
-                                        <a href="/online/product_view.do?seq=${onlineInfo.seq}">
+                                        <a href="<c:url value="/online/product_view.do?seq=${onlineInfo.seq}"/>">
                                             <div class="thumbnail">
                                                 <div class="thumb75 thumbBox">
                                                     <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
@@ -314,9 +342,9 @@
                                         </a>
                                     </li>
                                 </c:if>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
                     <%--<li>
                         <div class="btnLike"><img src="/img/icon_like.png" class="likeImg"></div>
                         <a href="/online/product_view.do">

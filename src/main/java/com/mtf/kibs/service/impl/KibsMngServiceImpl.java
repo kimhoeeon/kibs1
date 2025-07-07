@@ -8,7 +8,7 @@ import com.mtf.kibs.service.KibsMngService;
 import com.mtf.kibs.util.StringUtil;
 import lombok.Setter;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -3288,6 +3290,34 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<InvoiceBoothDTO> processSelectInvoiceBoothExSeqList(InvoiceBoothDTO invoiceBoothDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectInvoiceBoothExSeqList");
+        return kibsMngMapper.selectInvoiceBoothExSeqList(invoiceBoothDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public InvoiceBoothDTO processSelectInvoiceBoothSingle(String seq) {
+        System.out.println("KibsMngServiceImpl > processSelectInvoiceBoothSingle");
+        return kibsMngMapper.selectInvoiceBoothSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public InvoiceUtilityDTO processSelectInvoiceUtilitySingle(String seq) {
+        System.out.println("KibsMngServiceImpl > processSelectInvoiceUtilitySingle");
+        return kibsMngMapper.selectInvoiceUtilitySingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ExhibitorNewDTO getExhibitorNewInfo(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngServiceImpl > getExhibitorNewInfo");
+        return kibsMngMapper.getExhibitorNewInfo(exhibitorNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public ResponseDTO processUpdateBooth(ExhibitorDTO exhibitorDTO) {
         System.out.println("KibsMngServiceImpl > processUpdateBooth");
         ResponseDTO responseDTO = new ResponseDTO();
@@ -3298,7 +3328,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         try {
 
             /* exhibitor table update */
-            result = kibsMngMapper.UpdateBooth(exhibitorDTO);
+            result = kibsMngMapper.updateBooth(exhibitorDTO);
 
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -3328,7 +3358,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         try {
 
             /* exhibitor table update */
-            result = kibsMngMapper.UpdateExhibitorNewBooth(exhibitorNewDTO);
+            result = kibsMngMapper.updateExhibitorNewBooth(exhibitorNewDTO);
 
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -3338,6 +3368,298 @@ public class KibsMngServiceImpl implements KibsMngService {
         }catch (Exception e){
             resultCode = CommConstants.RESULT_CODE_FAIL;
             resultMessage = "[processUpdateExhibitorNewBooth ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertExhibitorNewBoothInvoice(InvoiceBoothDTO invoiceBoothDTO) {
+        System.out.println("KibsMngServiceImpl > processInsertExhibitorNewBoothInvoice");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+            /* 업체 정보 */
+            ExhibitorNewDTO exhibitorNewDTO = new ExhibitorNewDTO();
+            exhibitorNewDTO.setSeq(invoiceBoothDTO.getExSeq());
+            ExhibitorNewDTO exhibitorNewInfo = kibsMngMapper.selectExhibitorNewSingle(exhibitorNewDTO);
+            String companyNameKo = exhibitorNewInfo.getCompanyNameKo();
+            String email = exhibitorNewInfo.getEmail();
+
+            ExhibitorNewDTO exhibitorNewBoothInfo = kibsMngMapper.selectExhibitorNewBoothSingle(invoiceBoothDTO.getExSeq());
+
+            String invoiceSeq = kibsMngMapper.getInvoiceBoothSeq();
+            invoiceBoothDTO.setSeq(invoiceSeq);
+            invoiceBoothDTO.setSendStatus("미발송");
+            invoiceBoothDTO.setTitle("2026 보트쇼 인보이스 [ " + companyNameKo + " ]");
+            invoiceBoothDTO.setEmail(email);
+            invoiceBoothDTO.setDiscountType(exhibitorNewBoothInfo.getDiscountType());
+            invoiceBoothDTO.setRegistrationCnt(exhibitorNewBoothInfo.getRegistrationCnt());
+            invoiceBoothDTO.setRegistrationFee(exhibitorNewBoothInfo.getRegistrationFee());
+            invoiceBoothDTO.setStandAloneBoothCnt(exhibitorNewBoothInfo.getStandAloneBoothCnt());
+            invoiceBoothDTO.setStandAloneBoothFee(exhibitorNewBoothInfo.getStandAloneBoothFee());
+            invoiceBoothDTO.setAssemblyBoothCnt(exhibitorNewBoothInfo.getAssemblyBoothCnt());
+            invoiceBoothDTO.setAssemblyBoothFee(exhibitorNewBoothInfo.getAssemblyBoothFee());
+            invoiceBoothDTO.setOnlineBoothCnt(exhibitorNewBoothInfo.getOnlineBoothCnt());
+            invoiceBoothDTO.setOnlineBoothFee(exhibitorNewBoothInfo.getOnlineBoothFee());
+            invoiceBoothDTO.setBoothPrcSum(exhibitorNewBoothInfo.getBoothPrcSum());
+            invoiceBoothDTO.setDiscountEarly1(exhibitorNewBoothInfo.getDiscountEarly1());
+            invoiceBoothDTO.setDiscountEarly2(exhibitorNewBoothInfo.getDiscountEarly2());
+            invoiceBoothDTO.setDiscountReAll(exhibitorNewBoothInfo.getDiscountReAll());
+            invoiceBoothDTO.setDiscountScale2(exhibitorNewBoothInfo.getDiscountScale2());
+            invoiceBoothDTO.setDiscountScale3(exhibitorNewBoothInfo.getDiscountScale3());
+            invoiceBoothDTO.setDiscountLeisure(exhibitorNewBoothInfo.getDiscountLeisure());
+            invoiceBoothDTO.setDiscountPrcSum(exhibitorNewBoothInfo.getDiscountPrcSum());
+
+            result = kibsMngMapper.insertInvoiceBooth(invoiceBoothDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+
+            responseDTO.setCustomValue(invoiceSeq);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertExhibitorNewBoothInvoice ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertExhibitorNewUtilityInvoice(InvoiceUtilityDTO invoiceUtilityDTO) {
+        System.out.println("KibsMngServiceImpl > processInsertExhibitorNewUtilityInvoice");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+            /* 업체 정보 */
+            ExhibitorNewDTO exhibitorNewDTO = new ExhibitorNewDTO();
+            exhibitorNewDTO.setSeq(invoiceUtilityDTO.getExSeq());
+            ExhibitorNewDTO exhibitorNewInfo = kibsMngMapper.selectExhibitorNewSingle(exhibitorNewDTO);
+            String companyNameKo = exhibitorNewInfo.getCompanyNameKo();
+            String email = exhibitorNewInfo.getEmail();
+
+            ExhibitorNewDTO exhibitorNewUtilityInfo = kibsMngMapper.selectExhibitorNewUtilitySingle(invoiceUtilityDTO.getExSeq());
+
+            String invoiceSeq = kibsMngMapper.getInvoiceUtilitySeq();
+            invoiceUtilityDTO.setSeq(invoiceSeq);
+            invoiceUtilityDTO.setSendStatus("미발송");
+            invoiceUtilityDTO.setTitle("2026 보트쇼 인보이스 [ " + companyNameKo + " ]");
+            invoiceUtilityDTO.setEmail(email);
+            invoiceUtilityDTO.setUtilityJuganCnt(exhibitorNewUtilityInfo.getUtilityJuganCnt());
+            invoiceUtilityDTO.setUtilityJuganFee(exhibitorNewUtilityInfo.getUtilityJuganFee());
+            invoiceUtilityDTO.setUtilityDayCnt(exhibitorNewUtilityInfo.getUtilityDayCnt());
+            invoiceUtilityDTO.setUtilityDayFee(exhibitorNewUtilityInfo.getUtilityDayFee());
+            invoiceUtilityDTO.setUtilityCompressedAirCnt(exhibitorNewUtilityInfo.getUtilityCompressedAirCnt());
+            invoiceUtilityDTO.setUtilityCompressedAirFee(exhibitorNewUtilityInfo.getUtilityCompressedAirFee());
+            invoiceUtilityDTO.setUtilityWaterBasicCnt(exhibitorNewUtilityInfo.getUtilityWaterBasicCnt());
+            invoiceUtilityDTO.setUtilityWaterBasicFee(exhibitorNewUtilityInfo.getUtilityWaterBasicFee());
+            invoiceUtilityDTO.setUtilityInternetCnt(exhibitorNewUtilityInfo.getUtilityInternetCnt());
+            invoiceUtilityDTO.setUtilityInternetFee(exhibitorNewUtilityInfo.getUtilityInternetFee());
+            invoiceUtilityDTO.setUtilityPytexNewCnt(exhibitorNewUtilityInfo.getUtilityPytexNewCnt());
+            invoiceUtilityDTO.setUtilityPytexNewFee(exhibitorNewUtilityInfo.getUtilityPytexNewFee());
+            invoiceUtilityDTO.setUtilityPytexReCnt(exhibitorNewUtilityInfo.getUtilityPytexReCnt());
+            invoiceUtilityDTO.setUtilityPytexReFee(exhibitorNewUtilityInfo.getUtilityPytexReFee());
+            invoiceUtilityDTO.setUtilityBarcodeCnt(exhibitorNewUtilityInfo.getUtilityBarcodeCnt());
+            invoiceUtilityDTO.setUtilityBarcodeFee(exhibitorNewUtilityInfo.getUtilityBarcodeFee());
+            invoiceUtilityDTO.setUtilityPrcSum(exhibitorNewUtilityInfo.getUtilityPrcSum());
+
+            result = kibsMngMapper.insertInvoiceUtility(invoiceUtilityDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+
+            responseDTO.setCustomValue(invoiceSeq);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertExhibitorNewUtilityInvoice ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteExhibitorNewBoothInvoice(InvoiceBoothDTO invoiceBoothDTO) {
+        System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewBoothInvoice");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+
+            result = kibsMngMapper.updateInvoiceBoothDelYn(invoiceBoothDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Delete Fail]";
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteExhibitorNewBoothInvoice ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteExhibitorNewUtilityInvoice(InvoiceUtilityDTO invoiceUtilityDTO) {
+        System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewUtilityInvoice");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+
+            result = kibsMngMapper.updateInvoiceUtilityDelYn(invoiceUtilityDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Delete Fail]";
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteExhibitorNewUtilityInvoice ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateExhibitorNewBoothInvoiceFilePath(InvoiceBoothDTO invoiceBoothDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewBoothInvoiceFilePath");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+            result = kibsMngMapper.updateInvoiceBoothFilePath(invoiceBoothDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Delete Fail]";
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewBoothInvoiceFilePath ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateExhibitorNewUtilityInvoiceFilePath(InvoiceUtilityDTO invoiceUtilityDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewUtilityInvoiceFilePath");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+            result = kibsMngMapper.updateInvoiceUtilityFilePath(invoiceUtilityDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Delete Fail]";
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewUtilityInvoiceFilePath ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateExhibitorNewBoothInvoiceSendResult(InvoiceBoothDTO invoiceBoothDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewBoothInvoiceSendResult");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+            result = kibsMngMapper.updateInvoiceBoothSendResult(invoiceBoothDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Delete Fail]";
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewBoothInvoiceSendResult ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateExhibitorNewUtilityInvoiceSendResult(InvoiceUtilityDTO invoiceUtilityDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewUtilityInvoiceSendResult");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+            result = kibsMngMapper.updateInvoiceUtilitySendResult(invoiceUtilityDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Delete Fail]";
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewUtilityInvoiceSendResult ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
             e.printStackTrace();
         }
 
@@ -3464,6 +3786,13 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<InvoiceUtilityDTO> processSelectInvoiceUtilityExSeqList(InvoiceUtilityDTO invoiceUtilityDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectInvoiceUtilityExSeqList");
+        return kibsMngMapper.selectInvoiceUtilityExSeqList(invoiceUtilityDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public ResponseDTO processUpdateUtility(ExhibitorDTO exhibitorDTO) {
         System.out.println("KibsMngServiceImpl > processUpdateUtility");
         ResponseDTO responseDTO = new ResponseDTO();
@@ -3520,6 +3849,26 @@ public class KibsMngServiceImpl implements KibsMngService {
         responseDTO.setResultCode(resultCode);
         responseDTO.setResultMessage(resultMessage);
         return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public void processUpdateInvoiceMailOpen(MailOpenDTO mailOpenDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateInvoiceMailOpen");
+        Integer result = 0;
+
+        if("IB".equals(mailOpenDTO.getGbn())){
+            InvoiceBoothDTO invoiceBoothDTO = kibsMngMapper.selectInvoiceBoothSingle(mailOpenDTO.getSeq());
+            if("미열람".equals(invoiceBoothDTO.getSendStatus())){
+                result = kibsMngMapper.updateInvoiceBoothMailOpen(mailOpenDTO);
+            }
+        }else if("IU".equals(mailOpenDTO.getGbn())){
+            InvoiceUtilityDTO invoiceUtilityDTO = kibsMngMapper.selectInvoiceUtilitySingle(mailOpenDTO.getSeq());
+            if("미열람".equals(invoiceUtilityDTO.getSendStatus())) {
+                result = kibsMngMapper.updateInvoiceUtilityMailOpen(mailOpenDTO);
+            }
+        }
+
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -4171,6 +4520,13 @@ public class KibsMngServiceImpl implements KibsMngService {
     public List<ExhibitorDetailDTO> processSelectExhibitorDetailList(ExhibitorDetailDTO exhibitorDetailDTO) {
         System.out.println("KibsMngServiceImpl > processSelectExhibitorDetailList");
         return kibsMngMapper.selectExhibitorDetailList(exhibitorDetailDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<ExhibitorNewDetailDTO> processSelectExhibitorNewDetailList(ExhibitorNewDetailDTO exhibitorNewDetailDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewDetailList");
+        return kibsMngMapper.selectExhibitorNewDetailList(exhibitorNewDetailDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -4908,6 +5264,11 @@ public class KibsMngServiceImpl implements KibsMngService {
             String file_url = null;
             String file_name = null;
             String imageBaseUrl = "https://kibs.com/static/img/mail/";
+            if(mailRequestDTO.getGbn() != null){
+                if("BOOTH".equals(mailRequestDTO.getGbn()) || "UTILITY".equals(mailRequestDTO.getGbn())){
+                    imageBaseUrl = "https://kibs.com/" + mailRequestDTO.getFolderPath();
+                }
+            }
             if(mailRequestDTO.getFileUrl() != null){
                 if(mailRequestDTO.getFileUrl().size() > 0){
                     for(int i=0; i<mailRequestDTO.getFileUrl().size(); i++){
@@ -4923,7 +5284,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                 StringBuilder fileNameSb = new StringBuilder();
                 if(mailRequestDTO.getFileUrl().size() > 0){
                     for(int i=0; i<mailRequestDTO.getFileUrl().size(); i++){
-                        fileNameSb.append(mailRequestDTO.getFileUrl().get(i).getName().substring(mailRequestDTO.getFileUrl().get(i).getName().indexOf('_') + 1));
+                        fileNameSb.append(mailRequestDTO.getFileUrl().get(i).getName());
                         if((i+1) != mailRequestDTO.getFileUrl().size()){
                             fileNameSb.append("|");
                         }
@@ -4941,7 +5302,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                     + ", \"username\":\"" + username + "\" "
                     + ", \"receiver\":" + receiver;
 
-                    if(mailRequestDTO.getTemplate() != null && !"".equals(mailRequestDTO.getTemplate())){
+                    if(mailRequestDTO.getTemplate() != null && !mailRequestDTO.getTemplate().isEmpty()){
                         urlParameters += ", \"template\":\"" + mailRequestDTO.getTemplate() + "\" ";		//템플릿 사용할 경우 주석 해제  //발송 할 템플릿 번호
                     }
                     //+ ", \"address_books\":\"" + address_books + "\" "	//주소록 사용할 경우 주석 해제
@@ -4975,9 +5336,9 @@ public class KibsMngServiceImpl implements KibsMngService {
                     //+ ", \"option_return_url\":\"" + option_return_url + "\" "
 
                     // 첨부 파일이 있는 경우 주석 해제
-                    if(file_url != null && !"".equals(file_url)) {
+                    if(file_url != null && !file_url.isEmpty()) {
                         urlParameters += ", \"file_url\":\"" + file_url + "\" "
-                                + ", \"file_name\":\"" + file_name + "\" ";
+                                + ", \"file_name\":\"" + URLDecoder.decode(file_name, "UTF-8") + "\" ";
                     }
 
             urlParameters +=  ", \"key\":\"" + key + "\" ";

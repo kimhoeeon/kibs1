@@ -2339,7 +2339,6 @@ if (document.documentElement) {
                                                     <option disabled>- 정렬 -</option>
                                                     <option value="B_LEFT" <c:if test="${info.align eq 'B_LEFT' or empty info}">selected</c:if> >브라우저 왼쪽</option>
                                                     <option value="B_RIGHT" <c:if test="${info.align eq 'B_RIGHT'}">selected</c:if> >브라우저 오른쪽</option>
-                                                    <option value="CENTER" <c:if test="${info.align eq 'CENTER'}">selected</c:if> >가운데</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>

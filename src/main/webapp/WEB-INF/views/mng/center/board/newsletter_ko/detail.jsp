@@ -2240,6 +2240,29 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">작성상태</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <c:set var="tempSaveStatus" value="작성중"/>
+                                                    <c:if test="${info ne null}">
+                                                        <c:choose>
+                                                            <c:when test="${info.tempSaveYn eq 'Y'}">
+                                                                <c:set var="tempSaveStatus" value="임시저장중 ( 페이지 미노출 상태 )"/>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <c:set var="tempSaveStatus" value="저장완료 ( 페이지 노출 상태 )"/>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:if>
+                                                    <input type="text" class="form-control form-control-lg form-control-solid-bg" placeholder="작성상태" value="${tempSaveStatus}" disabled/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
                                                 <label class="col-lg-2 col-form-label fw-semibold fs-6">제목</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
@@ -2268,7 +2291,10 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${info.writeDate}"/>
+                                                    <c:set var="now" value="<%=new java.util.Date()%>"/>
+                                                    <fmt:formatDate var="fmNow" value="${now}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                                    <c:set var="sysdate" value="${info.writeDate eq null or info.writeDate eq '' ? fmNow : info.writeDate}"/>
+                                                    <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${sysdate}"/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -2399,7 +2425,8 @@ if (document.documentElement) {
                                             <a href="/mng/center/board/newsletter_ko.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
                                         </div>
                                         <div>
-                                            <button type="button" onclick="f_board_newsletter_ko_modify_init_set('${info.id}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
+                                            <button type="button" onclick="f_board_newsletter_ko_modify_init_set('${info.id}')" class="btn btn-danger btn-active-light-danger">변경내용취소</button>
+                                            <button type="button" onclick="f_board_newsletter_ko_temp_save('${info.id}')" class="btn btn-secondary btn-active-light-secondary ms-2 me-2">임시저장</button>
                                             <button type="button" onclick="f_board_newsletter_ko_save('${info.id}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
                                         </div>
                                     </div>

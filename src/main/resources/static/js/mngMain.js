@@ -259,7 +259,7 @@ function showMessage(selector, icon, title, msg, confirmButtonColor) {
     Swal.fire({
         icon: icon,
         title: title,
-        html: '<span style="font-size: 1.4em;">' + msg + '</span>',
+        html: '<span style="font-size: 1.2em;">' + msg + '</span>',
         allowOutsideClick: false,
         confirmButtonColor: confirmButtonColor
     })
@@ -315,6 +315,41 @@ function getCurrentDate() {
     seconds = seconds < 10 ? '0' + seconds.toString() : seconds.toString(); // 10초 미만 0 추가
 
     return year + month + day + hour + minites + seconds; // yyyymmddhhmmss 형식으로 리턴
+}
+
+function getCurrentDate_notime() {
+    let date = new Date(); // Data 객체 생성
+    let year = date.getFullYear().toString(); // 년도 구하기
+
+    let month = date.getMonth() + 1; // 월 구하기
+    month = month < 10 ? '0' + month.toString() : month.toString(); // 10월 미만 0 추가
+
+    let day = date.getDate(); // 날짜 구하기
+    day = day < 10 ? '0' + day.toString() : day.toString(); // 10일 미만 0 추가
+
+    return year + month + day; // yyyymmdd 형식으로 리턴
+}
+
+function getCurrentDate_dateFormat() {
+    let date = new Date(); // Data 객체 생성
+    let year = date.getFullYear().toString(); // 년도 구하기
+
+    let month = date.getMonth() + 1; // 월 구하기
+    month = month < 10 ? '0' + month.toString() : month.toString(); // 10월 미만 0 추가
+
+    let day = date.getDate(); // 날짜 구하기
+    day = day < 10 ? '0' + day.toString() : day.toString(); // 10일 미만 0 추가
+
+    let hour = date.getHours(); // 시간 구하기
+    hour = hour < 10 ? '0' + hour.toString() : hour.toString(); // 10시 미만 0 추가
+
+    let minites = date.getMinutes(); // 분 구하기
+    minites = minites < 10 ? '0' + minites.toString() : minites.toString(); // 10분 미만 0 추가
+
+    let seconds = date.getSeconds(); // 초 구하기
+    seconds = seconds < 10 ? '0' + seconds.toString() : seconds.toString(); // 10초 미만 0 추가
+
+    return year + '-' + month + '-' + day + ' ' + hour  + ':' + minites + ':' + seconds; // yyyy-mm-dd hh:mm:ss 형식으로 리턴
 }
 
 function nullToEmpty(nullStr){

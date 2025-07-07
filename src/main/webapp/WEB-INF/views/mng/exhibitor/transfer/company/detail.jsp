@@ -3057,7 +3057,7 @@ if (document.documentElement) {
                                             <!--begin::Card title-->
                                             <div class="card-title m-0">
                                                 <h3 class="fw-bold m-0">참가분야</h3>
-                                                <h4 class="ml15 text-gray-500">최대 3개 선택가능</h4>
+                                                <h4 class="ml15 text-gray-500">최대 3개 선택 가능합니다.</h4>
                                             </div>
                                             <!--end::Card title-->
                                         </div>

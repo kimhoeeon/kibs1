@@ -43,7 +43,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             title: '[ 동반자 정보 ]',
-            html: '<span style="font-size: 1.4em;">해당 동반자 정보를 삭제하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">해당 동반자 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -222,7 +222,7 @@ function f_participant_visitor_remove(rowId){
         Swal.fire({
             icon: 'warning',
             title: '[ 참관객 정보 ]',
-            html: '<span style="font-size: 1.4em;">선택한 참관객을 삭제하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">선택한 참관객을 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -259,7 +259,7 @@ function f_participant_visitor_save(seq){
     Swal.fire({
         icon: 'info',
         title: '[ 참관객 정보 ]',
-        html: '<span style="font-size: 1.4em;">입력된 정보를 저장하시겠습니까?</span>',
+        html: '<span style="font-size: 1.2em;">입력된 정보를 저장하시겠습니까?</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
@@ -294,7 +294,7 @@ function f_participant_visitor_save(seq){
                             Swal.fire({
                                 icon: 'info',
                                 title: '[ 참관객 정보 ]',
-                                html: '<span style="font-size: 1.4em;">참관객 정보가 저장되었습니다.</span>',
+                                html: '<span style="font-size: 1.2em;">참관객 정보가 저장되었습니다.</span>',
                                 allowOutsideClick: false,
                                 confirmButtonColor: '#3085d6',
                                 confirmButtonText: '확인'

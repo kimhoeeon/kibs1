@@ -12,6 +12,7 @@ public class NoticeDTO extends AbstractPagingRequestVo {
     Integer totalRecords;
     Integer rownum; //연번
     String id; //ID
+    String tempSaveYn; //임시저장여부
     String lang; //언어
     String noticeGbn; //구분
     String gbn1; //홈페이지

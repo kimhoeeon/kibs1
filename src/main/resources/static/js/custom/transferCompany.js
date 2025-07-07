@@ -135,7 +135,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             title: '[ 부담당자 ]',
-            html: '<span style="font-size: 1.4em;">해당 담당자 정보를 삭제하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">해당 담당자 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -204,7 +204,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             title: '[ 전시 정보 ]',
-            html: '<span style="font-size: 1.4em;">해당 전시 정보를 삭제하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">해당 전시 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -363,7 +363,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             title: '[ 제품 정보 ]',
-            html: '<span style="font-size: 1.4em;">해당 제품 정보를 삭제하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">해당 제품 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -903,7 +903,7 @@ function f_buyer_remove(gbn, el){
     Swal.fire({
         icon: 'warning',
         title: '[ 바이어 정보 ]',
-        html: '<span style="font-size: 1.4em;">선택한 바이어 정보를 삭제하시겠습니까?</span>',
+        html: '<span style="font-size: 1.2em;">선택한 바이어 정보를 삭제하시겠습니까?</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -1053,7 +1053,7 @@ function f_transfer_exhibitor_save(seq){
         Swal.fire({
             icon: 'info',
             title: '[ 참가업체 정보 ]',
-            html: '<span style="font-size: 1.4em;">입력된 정보를 저장하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">입력된 정보를 저장하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#00a8ff',
@@ -1105,7 +1105,7 @@ function f_transfer_exhibitor_save(seq){
                                     Swal.fire({
                                         icon: 'info',
                                         title: '[ 참가업체 정보 ]',
-                                        html: '<span style="font-size: 1.4em;">참가업체 정보가 저장되었습니다.</span>',
+                                        html: '<span style="font-size: 1.2em;">참가업체 정보가 저장되었습니다.</span>',
                                         allowOutsideClick: false,
                                         confirmButtonColor: '#3085d6',
                                         confirmButtonText: '확인'

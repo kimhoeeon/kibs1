@@ -230,13 +230,13 @@ function f_board_kibstv_valid(){
     let content = document.querySelector('#quill_content').value;
     let youtubeUrl = document.querySelector('#youtubeUrl').value;
 
-    if(nvl(category,"") === ""){ showMessage('#title', 'error', '[글 등록 정보]', '카테고리를 선택해 주세요.', ''); return false; }
-    if(nvl(title,"") === ""){ showMessage('#title', 'error', '[글 등록 정보]', '제목을 입력해 주세요.', ''); return false; }
-    if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[글 등록 정보]', '작성자를 입력해 주세요.', ''); return false; }
-    if(nvl(writeDate,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '작성일을 입력해 주세요.', ''); return false; }
-    if(nvl(lang,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '언어를 선택해 주세요.', ''); return false; }
-    if(nvl(content,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '내용을 입력해 주세요.', ''); return false; }
-    if(nvl(youtubeUrl,"") === ""){ showMessage('', 'error', '[글 등록 정보]', 'YouTube 주소를 입력해 주세요.', ''); return false; }
+    if(nvl(category,"") === ""){ showMessage('#title', 'error', '[ 글 등록 정보 ]', '카테고리를 선택해 주세요.', ''); return false; }
+    if(nvl(title,"") === ""){ showMessage('#title', 'error', '[ 글 등록 정보 ]', '제목을 입력해 주세요.', ''); return false; }
+    if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[ 글 등록 정보 ]', '작성자를 입력해 주세요.', ''); return false; }
+    if(nvl(writeDate,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', '작성일을 입력해 주세요.', ''); return false; }
+    if(nvl(lang,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', '언어를 선택해 주세요.', ''); return false; }
+    if(nvl(content,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', '내용을 입력해 주세요.', ''); return false; }
+    if(nvl(youtubeUrl,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', 'YouTube 주소를 입력해 주세요.', ''); return false; }
 
     return true;
 }

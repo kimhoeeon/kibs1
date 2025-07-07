@@ -203,9 +203,33 @@ public interface KibsMngService {
 
     ExhibitorNewDTO processSelectExhibitorNewBoothSingle(String seq);
 
+    List<InvoiceBoothDTO> processSelectInvoiceBoothExSeqList(InvoiceBoothDTO invoiceBoothDTO);
+
     ResponseDTO processUpdateBooth(ExhibitorDTO exhibitorDTO);
 
     ResponseDTO processUpdateExhibitorNewBooth(ExhibitorNewDTO exhibitorNewDTO);
+
+    ResponseDTO processInsertExhibitorNewBoothInvoice(InvoiceBoothDTO invoiceBoothDTO);
+
+    ResponseDTO processInsertExhibitorNewUtilityInvoice(InvoiceUtilityDTO invoiceUtilityDTO);
+
+    InvoiceBoothDTO processSelectInvoiceBoothSingle(String seq);
+
+    InvoiceUtilityDTO processSelectInvoiceUtilitySingle(String seq);
+
+    ResponseDTO processDeleteExhibitorNewBoothInvoice(InvoiceBoothDTO invoiceBoothDTO);
+
+    ResponseDTO processDeleteExhibitorNewUtilityInvoice(InvoiceUtilityDTO invoiceUtilityDTO);
+
+    ResponseDTO processUpdateExhibitorNewBoothInvoiceFilePath(InvoiceBoothDTO invoiceBoothDTO);
+
+    ResponseDTO processUpdateExhibitorNewUtilityInvoiceFilePath(InvoiceUtilityDTO invoiceUtilityDTO);
+
+    ResponseDTO processUpdateExhibitorNewBoothInvoiceSendResult(InvoiceBoothDTO invoiceBoothDTO);
+
+    ResponseDTO processUpdateExhibitorNewUtilityInvoiceSendResult(InvoiceUtilityDTO invoiceUtilityDTO);
+
+    ExhibitorNewDTO getExhibitorNewInfo(ExhibitorNewDTO exhibitorNewDTO);
 
     List<ExhibitorDTO> processSelectMngOnlineList(SearchDTO searchDTO);
 
@@ -237,9 +261,13 @@ public interface KibsMngService {
 
     ExhibitorNewDTO processSelectExhibitorNewUtilitySingle(String seq);
 
+    List<InvoiceUtilityDTO> processSelectInvoiceUtilityExSeqList(InvoiceUtilityDTO invoiceUtilityDTO);
+
     ResponseDTO processUpdateUtility(ExhibitorDTO exhibitorDTO);
 
     ResponseDTO processUpdateExhibitorNewUtility(ExhibitorNewDTO exhibitorNewDTO);
+
+    void processUpdateInvoiceMailOpen(MailOpenDTO mailOpenDTO);
 
     List<MngPassDTO> processSelectPassList(SearchDTO searchDTO);
 
@@ -334,6 +362,8 @@ public interface KibsMngService {
     ResponseDTO processUpdateExhibitorNewApprovalStatus(List<ExhibitorNewDTO> exhibitorList);
 
     List<ExhibitorDetailDTO> processSelectExhibitorDetailList(ExhibitorDetailDTO exhibitorDetailDTO);
+
+    List<ExhibitorNewDetailDTO> processSelectExhibitorNewDetailList(ExhibitorNewDetailDTO exhibitorNewDetailDTO);
 
     List<MemberDTO> processSelectMemberList(SearchDTO searchDTO);
 

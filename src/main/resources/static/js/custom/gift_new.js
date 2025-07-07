@@ -45,7 +45,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             title: '[ 경품제공 신청 ]',
-            html: '<span style="font-size: 1.4em;">해당 경품 정보를 삭제하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">해당 경품 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -153,7 +153,7 @@ function f_application_gift_new_save(seq){
     Swal.fire({
         icon: 'info',
         title: '[ 경품제공 정보 ]',
-        html: '<span style="font-size: 1.4em;">입력된 정보를 저장하시겠습니까?</span>',
+        html: '<span style="font-size: 1.2em;">입력된 정보를 저장하시겠습니까?</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
@@ -187,7 +187,7 @@ function f_application_gift_new_save(seq){
                             Swal.fire({
                                 icon: 'info',
                                 title: '[ 경품제공 정보 ]',
-                                html: '<span style="font-size: 1.4em;">경품 신청 정보가 저장되었습니다.</span>',
+                                html: '<span style="font-size: 1.2em;">경품 신청 정보가 저장되었습니다.</span>',
                                 allowOutsideClick: false,
                                 confirmButtonColor: '#3085d6',
                                 confirmButtonText: '확인'

@@ -2379,6 +2379,7 @@ if (document.documentElement) {
                                                 <th>SEQ</th>
                                                 <th class="text-center min-w-150px">회사명</th>
                                                 <th>companyNameEn</th>
+                                                <th class="text-center min-w-100px">인보이스</th>
                                                 <th class="text-center min-w-100px">부스구분</th>
                                                 <th class="text-center min-w-100px">부스수량</th>
                                                 <th class="text-center min-w-100px">부스가격</th>
@@ -2409,6 +2410,7 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                             <tr>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>

@@ -403,7 +403,7 @@ function f_exhibitor_remove(seq){
         Swal.fire({
             icon: 'warning',
             title: '[ 참가업체 정보 ]',
-            html: '<span style="font-size: 1.4em;">선택한 참가업체 정보를 삭제하시겠습니까?<br/>삭제한 정보는 복구할 수 없습니다.</span>',
+            html: '<span style="font-size: 1.2em;">선택한 참가업체 정보를 삭제하시겠습니까?<br/>삭제한 정보는 복구할 수 없습니다.</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -1367,9 +1367,9 @@ function f_file_n_update(json){
 
 function f_directory_excel_export(){
     Swal.fire({
-        title: '디렉토리 정보 다운로드',
-        html: '디렉토리 정보를 다운로드하시겠습니까 ?',
         icon: 'info',
+        title: '[ 디렉토리 정보 다운로드 ]',
+        html: '디렉토리 정보를 다운로드하시겠습니까 ?',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -1406,9 +1406,9 @@ function f_directory_excel_export(){
 
 function f_exhibitor_excel_export(){
     Swal.fire({
-        title: '전시업체 상세 다운로드',
-        html: '전시업체 상세를 다운로드하시겠습니까 ?',
         icon: 'info',
+        title: '[ 전시업체 상세 다운로드 ]',
+        html: '전시업체 상세를 다운로드하시겠습니까 ?',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -1472,7 +1472,7 @@ function f_approval_status_btn_yn(){
             Swal.fire({
                 icon: 'info',
                 title: '[ 참가 상태 변경 ]',
-                html: '<span style="font-size: 1.4em;">참가 상태를 변경하시겠습니까 ?<br>[ ' + md_approval_stat_val + ' ]</span>',
+                html: '<span style="font-size: 1.2em;">참가 상태를 변경하시겠습니까 ?<br>[ ' + md_approval_stat_val + ' ]</span>',
                 allowOutsideClick: false,
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -1531,7 +1531,7 @@ function f_prc_yn_btn(){
             Swal.fire({
                 icon: 'info',
                 title: '[ 입금 상태 변경 ]',
-                html: '<span style="font-size: 1.4em;">입금 상태를 변경하시겠습니까 ?<br>[ ' + selTxt + ' ]</span>',
+                html: '<span style="font-size: 1.2em;">입금 상태를 변경하시겠습니까 ?<br>[ ' + selTxt + ' ]</span>',
                 allowOutsideClick: false,
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

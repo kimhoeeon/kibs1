@@ -624,6 +624,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectNoticeList */
         SELECT id
              , lang
+             , temp_save_yn
              , notice_gbn
              , gbn1
              , gbn2
@@ -648,6 +649,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectNoticeSingle */
         SELECT id
              , lang
+             , temp_save_yn
              , notice_gbn
              , gbn1
              , gbn2
@@ -677,6 +679,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.updateBoardNotice */
         UPDATE notice
         SET lang = #{lang}
+          , temp_save_yn = #{tempSaveYn}
           , notice_gbn = #{noticeGbn}
           , gbn1 = #{gbn1}
           , gbn2 = #{gbn2}
@@ -695,46 +698,46 @@
     <insert id="insertBoardNotice" parameterType="com.mtf.kibs.dto.NoticeDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.insertBoardNotice */
         INSERT INTO notice
-            ( id
-            , lang
-            , notice_gbn
-            , gbn1
-            , gbn2
-            , gbn3
-            , title
-            , content
-            , writer
-            , write_date
-            , file_id_list
-            , note
-            , init_regi_pic
-            , init_regi_dttm
-            , final_regi_pic
-            , final_regi_dttm
-            )
-        VALUES
-            ( #{id}
-            , #{lang}
-            , #{noticeGbn}
-            , #{gbn1}
-            , #{gbn2}
-            , #{gbn3}
-            , <![CDATA[#{title}]]>
-            , <![CDATA[#{content}]]>
-            , #{writer}
-            , #{writeDate}
-            , <![CDATA[#{fileIdList}]]>
-            , #{note}
-            , 'NOTICE'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'NOTICE'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        ( id
+        , lang
+        , temp_save_yn
+        , notice_gbn
+        , gbn1
+        , gbn2
+        , gbn3
+        , title
+        , content
+        , writer
+        , write_date
+        , file_id_list
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm)
+        VALUES ( #{id}
+               , #{lang}
+               , #{tempSaveYn}
+               , #{noticeGbn}
+               , #{gbn1}
+               , #{gbn2}
+               , #{gbn3}
+               , <![CDATA[#{title}]]>
+               , <![CDATA[#{content}]]>
+               , #{writer}
+               , #{writeDate}
+               , <![CDATA[#{fileIdList}]]>
+               , #{note}
+               , 'NOTICE'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'NOTICE'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <select id="selectNewsletterList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.NewsletterDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectNewsletterList */
         SELECT id
+             , temp_save_yn
              , notice_gbn
              , gbn1
              , gbn2
@@ -756,6 +759,7 @@
     <select id="selectNewsletterSingle" parameterType="com.mtf.kibs.dto.NewsletterDTO" resultType="com.mtf.kibs.dto.NewsletterDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectNewsletterSingle */
         SELECT id
+             , temp_save_yn
              , notice_gbn
              , gbn1
              , gbn2
@@ -785,7 +789,8 @@
     <update id="updateNewsletter" parameterType="com.mtf.kibs.dto.NewsletterDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateNewsletter */
         UPDATE newsletter
-        SET notice_gbn = #{noticeGbn}
+        SET temp_save_yn = #{tempSaveYn}
+          , notice_gbn = #{noticeGbn}
           , gbn1 = #{gbn1}
           , gbn2 = #{gbn2}
           , gbn3 = #{gbn3}
@@ -805,6 +810,7 @@
         INSERT INTO newsletter
         ( id
         , lang
+        , temp_save_yn
         , notice_gbn
         , gbn1
         , gbn2
@@ -818,26 +824,24 @@
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{id}
-            , #{lang}
-            , #{noticeGbn}
-            , #{gbn1}
-            , #{gbn2}
-            , #{gbn3}
-            , <![CDATA[#{title}]]>
-            , <![CDATA[#{content}]]>
-            , #{writer}
-            , #{writeDate}
-            , <![CDATA[#{fileIdList}]]>
-            , #{note}
-            , 'NEWS'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'NEWS'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        , final_regi_dttm)
+        VALUES ( #{id}
+               , #{lang}
+               , #{tempSaveYn}
+               , #{noticeGbn}
+               , #{gbn1}
+               , #{gbn2}
+               , #{gbn3}
+               , <![CDATA[#{title}]]>
+               , <![CDATA[#{content}]]>
+               , #{writer}
+               , #{writeDate}
+               , <![CDATA[#{fileIdList}]]>
+               , #{note}
+               , 'NEWS'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'NEWS'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <select id="selectPressList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.PressDTO">
@@ -947,13 +951,14 @@
     <select id="selectFaqList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.FaqDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectFaqList */
         SELECT id
-        , notice_gbn
-        , lang
-        , title
-        , writer
-        , write_date
-        , final_regi_dttm
-        , view_cnt
+             , temp_save_yn
+             , notice_gbn
+             , lang
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
         FROM faq
         WHERE 1=1
         <if test='noticeGbn != null and noticeGbn != ""'>
@@ -971,6 +976,7 @@
     <select id="selectFaqSingle" parameterType="com.mtf.kibs.dto.FaqDTO" resultType="com.mtf.kibs.dto.FaqDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectFaqSingle */
         SELECT id
+             , temp_save_yn
              , notice_gbn
              , lang
              , title
@@ -997,12 +1003,13 @@
     <update id="updateFaq" parameterType="com.mtf.kibs.dto.FaqDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateFaq */
         UPDATE faq
-        SET notice_gbn = #{noticeGbn}
-        , lang = #{lang}
-        , title = <![CDATA[#{title}]]>
-        , content = <![CDATA[#{content}]]>
-        , writer = #{writer}
-        , write_date = #{writeDate}
+        SET temp_save_yn = #{tempSaveYn}
+          , notice_gbn = #{noticeGbn}
+          , lang = #{lang}
+          , title = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
         <!--<if test='fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>-->
@@ -1014,34 +1021,33 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.insertFaq */
         INSERT INTO faq
         ( id
+        , temp_save_yn
         , notice_gbn
         , lang
         , title
         , content
         , writer
         , write_date
-        /*, file_id_list*/
+            /*, file_id_list*/
         , note
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{id}
-            , #{noticeGbn}
-            , #{lang}
-            , <![CDATA[#{title}]]>
-            , <![CDATA[#{content}]]>
-            , #{writer}
-            , #{writeDate}
-            /*, <![CDATA[#{fileIdList}]]>*/
-            , #{note}
-            , 'FAQ'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'FAQ'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        , final_regi_dttm)
+        VALUES ( #{id}
+               , #{tempSaveYn}
+               , #{noticeGbn}
+               , #{lang}
+               , <![CDATA[#{title}]]>
+               , <![CDATA[#{content}]]>
+               , #{writer}
+               , #{writeDate}
+                   /*, <![CDATA[#{fileIdList}]]>*/
+               , #{note}
+               , 'FAQ'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'FAQ'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <select id="selectColumnList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ColumnDTO">
@@ -1919,6 +1925,9 @@
              , init_regi_dttm
              , final_regi_pic
              , final_regi_dttm
+             , stand_alone_booth_cnt
+             , assembly_booth_cnt
+             , online_booth_cnt
         FROM exhibitor_new
         WHERE seq = #{seq}
     </select>
@@ -3323,89 +3332,90 @@
 
     <select id="selectExhibitorNewBoothList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewBoothList */
-        SELECT seq
-             , company_name_ko
-             , company_name_en
-             , booth_type
-             , discount_type
-             , discount_yn
-             , registration_cnt
-             , registration_fee
-             , stand_alone_booth_cnt
-             , stand_alone_booth_fee
-             , assembly_booth_cnt
-             , assembly_booth_fee
-             , online_booth_cnt
-             , online_booth_fee
-             , discount_early_1
-             , discount_early_2
-             , discount_re_all
-             , discount_scale_1
-             , discount_scale_2
-             , discount_scale_3
-             , discount_first
-             , discount_leisure
-             , booth_prc_sum
-             , init_regi_dttm
-             , final_regi_dttm
-        FROM exhibitor_new
+        SELECT en.seq
+             , en.company_name_ko
+             , en.company_name_en
+             , en.booth_type
+             , en.discount_type
+             , en.discount_yn
+             , en.registration_cnt
+             , en.registration_fee
+             , en.stand_alone_booth_cnt
+             , en.stand_alone_booth_fee
+             , en.assembly_booth_cnt
+             , en.assembly_booth_fee
+             , en.online_booth_cnt
+             , en.online_booth_fee
+             , en.discount_early_1
+             , en.discount_early_2
+             , en.discount_re_all
+             , en.discount_scale_1
+             , en.discount_scale_2
+             , en.discount_scale_3
+             , en.discount_first
+             , en.discount_leisure
+             , en.booth_prc_sum
+             , en.init_regi_dttm
+             , en.final_regi_dttm
+             , IF(( SELECT COUNT(*) FROM invoice_booth ib WHERE ib.ex_seq = en.seq ) <![CDATA[>]]> 0, 'Y', 'N') AS invoiceYn
+        FROM exhibitor_new en
         WHERE 1=1
         <if test='transferYear != null and transferYear != ""'>
-            AND transfer_year = #{transferYear}
+            AND en.transfer_year = #{transferYear}
         </if>
         <if test='searchText != null and searchText != ""'>
             <if test='condition eq "companyNameKo"'>
-                AND company_name_ko LIKE CONCAT('%',#{searchText},'%')
+                AND en.company_name_ko LIKE CONCAT('%',#{searchText},'%')
             </if>
             <if test='condition eq "companyNameEn"'>
-                AND company_name_en LIKE CONCAT('%',#{searchText},'%')
+                AND en.company_name_en LIKE CONCAT('%',#{searchText},'%')
             </if>
             <if test='condition eq "boothCnt"'>
-                AND ( stand_alone_booth_cnt + assembly_booth_cnt + online_booth_cnt ) = #{searchText}
+                AND ( en.stand_alone_booth_cnt + en.assembly_booth_cnt + en.online_booth_cnt ) = #{searchText}
             </if>
         </if>
         <if test='dateFrom != null and dateFrom != "" and dateTo != null and dateTo != ""'>
-            AND init_regi_dttm <![CDATA[>=]]> #{dateFrom} and init_regi_dttm <![CDATA[<=]]> #{dateTo}
+            AND en.init_regi_dttm <![CDATA[>=]]> #{dateFrom} and en.init_regi_dttm <![CDATA[<=]]> #{dateTo}
         </if>
         <if test='lang != null and lang != ""'>
-            AND lang = #{lang}
+            AND en.lang = #{lang}
         </if>
         <if test='approvalStatus != null and approvalStatus != ""'>
-            AND approval_status = #{approvalStatus}
+            AND en.approval_status = #{approvalStatus}
         </if>
         <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
-            AND cancel_yn = #{cancelYn}
+            AND en.cancel_yn = #{cancelYn}
         </if>
         <if test='boothType != null and boothType != ""'>
-            AND INSTR(booth_type,#{boothType}) <![CDATA[>]]> 0
+            AND INSTR(en.booth_type,#{boothType}) <![CDATA[>]]> 0
         </if>
         <if test='discountYn != null and discountYn != ""'>
             <if test='discountYn eq "discountEarly1"'>
-                AND discount_early_1 <![CDATA[>]]> 0
+                AND en.discount_early_1 <![CDATA[>]]> 0
             </if>
             <if test='discountYn eq "discountEarly2"'>
-                AND discount_early_2 <![CDATA[>]]> 0
+                AND en.discount_early_2 <![CDATA[>]]> 0
             </if>
             <if test='discountYn eq "discountReAll"'>
-                AND discount_re_all <![CDATA[>]]> 0
+                AND en.discount_re_all <![CDATA[>]]> 0
             </if>
             <if test='discountYn eq "discountScale1"'>
-                AND discount_scale_1 <![CDATA[>]]> 0
+                AND en.discount_scale_1 <![CDATA[>]]> 0
             </if>
             <if test='discountYn eq "discountScale2"'>
-                AND discount_scale_2 <![CDATA[>]]> 0
+                AND en.discount_scale_2 <![CDATA[>]]> 0
             </if>
             <if test='discountYn eq "discountScale3"'>
-                AND discount_scale_3 <![CDATA[>]]> 0
+                AND en.discount_scale_3 <![CDATA[>]]> 0
             </if>
             <if test='discountYn eq "discountFirst"'>
-                AND discount_first <![CDATA[>]]> 0
+                AND en.discount_first <![CDATA[>]]> 0
             </if>
             <if test='discountYn eq "discountLeisure"'>
-                AND discount_leisure <![CDATA[>]]> 0
+                AND en.discount_leisure <![CDATA[>]]> 0
             </if>
         </if>
-        ORDER BY init_regi_dttm DESC, company_name_ko ASC
+        ORDER BY en.init_regi_dttm DESC, en.company_name_ko ASC
     </select>
 
     <select id="selectBoothSingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorDTO">
@@ -3473,8 +3483,330 @@
         WHERE seq = #{value}
     </select>
 
-    <update id="UpdateBooth" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.UpdateBooth */
+    <select id="selectInvoiceBoothExSeqList" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO" resultType="com.mtf.kibs.dto.InvoiceBoothDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceBoothExSeqList */
+        SELECT seq
+             , ex_seq
+             , invoice_code
+             , title
+             , send_dttm
+             , send_status
+             , send_result
+             , send_result_msg
+             , file_path
+        FROM invoice_booth
+        WHERE ex_seq = #{exSeq}
+          AND del_yn = 'N'
+        ORDER BY seq
+    </select>
+
+    <select id="getExhibitorNewInfo" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.getExhibitorNewInfo */
+        SELECT company_name_ko
+             , email
+        FROM exhibitor_new
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectInvoiceBoothSingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.InvoiceBoothDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceBoothSingle */
+        SELECT ib.seq
+             , ib.ex_seq
+             , ib.invoice_code
+             , ib.send_status
+             , ib.title
+             , ib.email
+             , ib.send_dttm
+             , ib.end_dttm
+             , ib.discount_type
+             , ib.registration_cnt
+             , ib.registration_fee
+             , ib.stand_alone_booth_cnt
+             , ib.stand_alone_booth_fee
+             , ib.assembly_booth_cnt
+             , ib.assembly_booth_fee
+             , ib.online_booth_cnt
+             , ib.online_booth_fee
+             , ib.booth_prc_sum
+             , ib.discount_early_1
+             , ib.discount_early_2
+             , ib.discount_re_all
+             , ib.discount_scale_2
+             , ib.discount_scale_3
+             , ib.discount_leisure
+             , ib.discount_prc_sum
+             , ib.prc_total
+             , ib.send_result
+             , ib.file_path
+             , ib.del_yn
+             , ib.note
+             , ib.init_regi_pic
+             , ib.init_regi_dttm
+             , ib.final_regi_pic
+             , ib.final_regi_dttm
+        FROM invoice_booth ib
+        WHERE ib.seq = #{seq}
+    </select>
+
+    <select id="getInvoiceBoothSeq" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.kibsMngMapper.getInvoiceBoothSeq */
+        SELECT CONCAT('IB', LPAD(next_val('invoice_booth_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertInvoiceBooth" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.insertInvoiceBooth */
+        INSERT INTO invoice_booth
+        ( seq
+        , ex_seq
+        , invoice_code
+        , send_status
+        , title
+        , email
+        , send_dttm
+        , end_dttm
+        , discount_type
+        , registration_cnt
+        , registration_fee
+        , stand_alone_booth_cnt
+        , stand_alone_booth_fee
+        , assembly_booth_cnt
+        , assembly_booth_fee
+        , online_booth_cnt
+        , online_booth_fee
+        , booth_prc_sum
+        , discount_early_1
+        , discount_early_2
+        , discount_re_all
+        , discount_scale_2
+        , discount_scale_3
+        , discount_leisure
+        , discount_prc_sum
+        , prc_total
+        , send_result
+        , send_result_msg
+        , file_path
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{exSeq}
+               , CONCAT('KIBS', SUBSTRING(#{exSeq}, 6, LENGTH(#{exSeq})), '-', (SELECT COUNT(*)
+                                                                                FROM invoice_booth ib2
+                                                                                WHERE ib2.ex_seq = #{exSeq}) + 1)
+               , #{sendStatus}
+               , #{title}
+               , #{email}
+               , null
+               , DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 7 DAY), '%Y-%m-%d')
+               , #{discountType}
+               , #{registrationCnt}
+               , #{registrationFee}
+               , #{standAloneBoothCnt}
+               , #{standAloneBoothFee}
+               , #{assemblyBoothCnt}
+               , #{assemblyBoothFee}
+               , #{onlineBoothCnt}
+               , #{onlineBoothFee}
+               , #{boothPrcSum}
+               , #{discountEarly1}
+               , #{discountEarly2}
+               , #{discountReAll}
+               , #{discountScale2}
+               , #{discountScale3}
+               , #{discountLeisure}
+               , #{discountPrcSum}
+               , (#{boothPrcSum} + (#{boothPrcSum} * 0.1) - #{discountPrcSum})
+               , null
+               , null
+               , null
+               , #{note}
+               , 'INVOICE'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'INVOICE'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+    </insert>
+
+    <update id="updateInvoiceBoothDelYn" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceBoothDelYn */
+        UPDATE invoice_booth
+        SET del_yn = #{delYn}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateInvoiceBoothFilePath" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceBoothFilePath */
+        UPDATE invoice_booth
+        SET file_path = #{filePath}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateInvoiceBoothSendResult" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceBoothSendResult */
+        UPDATE invoice_booth
+        SET send_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          , send_result = #{sendResult}
+          , send_result_msg = #{sendResultMsg}
+          , send_status = #{sendStatus}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectInvoiceUtilitySingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.InvoiceUtilityDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceUtilitySingle */
+        SELECT iu.seq
+             , iu.ex_seq
+             , iu.invoice_code
+             , iu.send_status
+             , iu.title
+             , iu.email
+             , iu.send_dttm
+             , iu.end_dttm
+             , iu.utility_jugan_cnt
+             , iu.utility_jugan_fee
+             , iu.utility_day_cnt
+             , iu.utility_day_fee
+             , iu.utility_compressed_air_cnt
+             , iu.utility_compressed_air_fee
+             , iu.utility_water_basic_cnt
+             , iu.utility_water_basic_fee
+             , iu.utility_internet_cnt
+             , iu.utility_internet_fee
+             , iu.utility_pytex_new_cnt
+             , iu.utility_pytex_new_fee
+             , iu.utility_pytex_re_cnt
+             , iu.utility_pytex_re_fee
+             , iu.utility_barcode_cnt
+             , iu.utility_barcode_fee
+             , iu.utility_prc_sum
+             , iu.prc_total
+             , iu.send_result
+             , iu.send_result_msg
+             , iu.file_path
+             , iu.del_yn
+             , iu.note
+             , iu.init_regi_pic
+             , iu.init_regi_dttm
+             , iu.final_regi_pic
+             , iu.final_regi_dttm
+        FROM invoice_utility iu
+        WHERE iu.seq = #{seq}
+    </select>
+
+    <select id="getInvoiceUtilitySeq" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.kibsMngMapper.getInvoiceUtilitySeq */
+        SELECT CONCAT('IU', LPAD(next_val('invoice_utility_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertInvoiceUtility" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.insertInvoiceUtility */
+        INSERT INTO invoice_utility
+        ( seq
+        , ex_seq
+        , invoice_code
+        , send_status
+        , title
+        , email
+        , send_dttm
+        , end_dttm
+        , utility_jugan_cnt
+        , utility_jugan_fee
+        , utility_day_cnt
+        , utility_day_fee
+        , utility_compressed_air_cnt
+        , utility_compressed_air_fee
+        , utility_water_basic_cnt
+        , utility_water_basic_fee
+        , utility_internet_cnt
+        , utility_internet_fee
+        , utility_pytex_new_cnt
+        , utility_pytex_new_fee
+        , utility_pytex_re_cnt
+        , utility_pytex_re_fee
+        , utility_barcode_cnt
+        , utility_barcode_fee
+        , utility_prc_sum
+        , prc_total
+        , send_result
+        , send_result_msg
+        , file_path
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{exSeq}
+               , CONCAT('KIBS', SUBSTRING(#{exSeq}, 6, LENGTH(#{exSeq})), '-', (SELECT COUNT(*)
+                                                                                FROM invoice_utility iu2
+                                                                                WHERE iu2.ex_seq = #{exSeq}) + 1)
+               , #{sendStatus}
+               , #{title}
+               , #{email}
+               , null
+               , DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 7 DAY), '%Y-%m-%d')
+               , #{utilityJuganCnt}
+               , #{utilityJuganFee}
+               , #{utilityDayCnt}
+               , #{utilityDayFee}
+               , #{utilityCompressedAirCnt}
+               , #{utilityCompressedAirFee}
+               , #{utilityWaterBasicCnt}
+               , #{utilityWaterBasicFee}
+               , #{utilityInternetCnt}
+               , #{utilityInternetFee}
+               , #{utilityPytexNewCnt}
+               , #{utilityPytexNewFee}
+               , #{utilityPytexReCnt}
+               , #{utilityPytexReFee}
+               , #{utilityBarcodeCnt}
+               , #{utilityBarcodeFee}
+               , #{utilityPrcSum}
+               , (#{utilityPrcSum} + (#{utilityPrcSum} * 0.1))
+               , null
+               , null
+               , null
+               , #{note}
+               , 'INVOICE'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'INVOICE'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+    </insert>
+
+    <update id="updateInvoiceUtilityDelYn" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceUtilityDelYn */
+        UPDATE invoice_utility
+        SET del_yn = #{delYn}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateInvoiceUtilityFilePath" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceUtilityFilePath */
+        UPDATE invoice_utility
+        SET file_path = #{filePath}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateInvoiceUtilitySendResult" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceUtilitySendResult */
+        UPDATE invoice_utility
+        SET send_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          , send_result = #{sendResult}
+          , send_result_msg = #{sendResultMsg}
+          , send_status = #{sendStatus}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateBooth" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateBooth */
         UPDATE exhibitor
         SET booth_type = #{boothType}
           , discount_type = #{discountType}
@@ -3505,8 +3837,8 @@
         WHERE seq = #{seq}
     </update>
 
-    <update id="UpdateExhibitorNewBooth" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.UpdateExhibitorNewBooth */
+    <update id="updateExhibitorNewBooth" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorNewBooth */
         UPDATE exhibitor_new
         SET booth_type = #{boothType}
           , discount_type = #{discountType}
@@ -3726,78 +4058,79 @@
 
     <select id="selectExhibitorNewUtilityList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewUtilityList */
-        SELECT seq
-             , company_name_ko
-             , company_name_en
-             , IFNULL(utility_jugan_cnt,0) as utility_jugan_cnt
-             , IFNULL(utility_jugan_fee,0) as utility_jugan_fee
-             , IFNULL(utility_day_cnt,0) as utility_day_cnt
-             , IFNULL(utility_day_fee,0) as utility_day_fee
-             , IFNULL(utility_compressed_air_cnt,0) as utility_compressed_air_cnt
-             , IFNULL(utility_compressed_air_fee,0) as utility_compressed_air_fee
-             , IFNULL(utility_water_basic_cnt,0) as utility_water_basic_cnt
-             , IFNULL(utility_water_basic_fee,0) as utility_water_basic_fee
-             , IFNULL(utility_internet_cnt,0) as utility_internet_cnt
-             , IFNULL(utility_internet_fee,0) as utility_internet_fee
-             , IFNULL(utility_pytex_new_cnt,0) as utility_pytex_new_cnt
-             , IFNULL(utility_pytex_new_fee,0) as utility_pytex_new_fee
-             , IFNULL(utility_pytex_re_cnt,0) as utility_pytex_re_cnt
-             , IFNULL(utility_pytex_re_fee,0) as utility_pytex_re_fee
-             , IFNULL(utility_barcode_cnt,0) as utility_barcode_cnt
-             , IFNULL(utility_barcode_fee,0) as utility_barcode_fee
-             , IFNULL(utility_prc_sum,0) as utility_prc_sum
-             , init_regi_dttm
-             , final_regi_dttm
-        FROM exhibitor_new
+        SELECT en.seq
+             , en.company_name_ko
+             , en.company_name_en
+             , IFNULL(en.utility_jugan_cnt,0) as utility_jugan_cnt
+             , IFNULL(en.utility_jugan_fee,0) as utility_jugan_fee
+             , IFNULL(en.utility_day_cnt,0) as utility_day_cnt
+             , IFNULL(en.utility_day_fee,0) as utility_day_fee
+             , IFNULL(en.utility_compressed_air_cnt,0) as utility_compressed_air_cnt
+             , IFNULL(en.utility_compressed_air_fee,0) as utility_compressed_air_fee
+             , IFNULL(en.utility_water_basic_cnt,0) as utility_water_basic_cnt
+             , IFNULL(en.utility_water_basic_fee,0) as utility_water_basic_fee
+             , IFNULL(en.utility_internet_cnt,0) as utility_internet_cnt
+             , IFNULL(en.utility_internet_fee,0) as utility_internet_fee
+             , IFNULL(en.utility_pytex_new_cnt,0) as utility_pytex_new_cnt
+             , IFNULL(en.utility_pytex_new_fee,0) as utility_pytex_new_fee
+             , IFNULL(en.utility_pytex_re_cnt,0) as utility_pytex_re_cnt
+             , IFNULL(en.utility_pytex_re_fee,0) as utility_pytex_re_fee
+             , IFNULL(en.utility_barcode_cnt,0) as utility_barcode_cnt
+             , IFNULL(en.utility_barcode_fee,0) as utility_barcode_fee
+             , IFNULL(en.utility_prc_sum,0) as utility_prc_sum
+             , en.init_regi_dttm
+             , en.final_regi_dttm
+             , IF(( SELECT COUNT(*) FROM invoice_booth ib WHERE ib.ex_seq = en.seq ) <![CDATA[>]]> 0, 'Y', 'N') AS invoiceYn
+        FROM exhibitor_new en
         WHERE 1=1
         <if test='transferYear != null and transferYear != ""'>
-          AND transfer_year = #{transferYear}
+          AND en.transfer_year = #{transferYear}
         </if>
         <if test='searchText != null and searchText != ""'>
             <if test='condition eq "companyNameKo"'>
-                AND company_name_ko LIKE CONCAT('%',#{searchText},'%')
+                AND en.company_name_ko LIKE CONCAT('%',#{searchText},'%')
             </if>
             <if test='condition eq "companyNameEn"'>
-                AND company_name_en LIKE CONCAT('%',#{searchText},'%')
+                AND en.company_name_en LIKE CONCAT('%',#{searchText},'%')
             </if>
         </if>
         <if test='lang != null and lang != ""'>
-            AND lang = #{lang}
+            AND en.lang = #{lang}
         </if>
         <if test='approvalStatus != null and approvalStatus != ""'>
-            AND approval_status = #{approvalStatus}
+            AND en.approval_status = #{approvalStatus}
         </if>
         <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
-            AND cancel_yn = #{cancelYn}
+            AND en.cancel_yn = #{cancelYn}
         </if>
         <if test='utilityGbn != null and utilityGbn != ""'>
             <if test='utilityGbn eq "JUGAN"'>
-                AND utility_jugan_cnt <![CDATA[>]]> 0
+                AND en.utility_jugan_cnt <![CDATA[>]]> 0
             </if>
             <if test='utilityGbn eq "ALLDAY"'>
-                AND utility_day_cnt <![CDATA[>]]> 0
+                AND en.utility_day_cnt <![CDATA[>]]> 0
             </if>
             <if test='utilityGbn eq "COMPRESSEDAIR"'>
-                AND utility_compressed_air_cnt <![CDATA[>]]> 0
+                AND en.utility_compressed_air_cnt <![CDATA[>]]> 0
             </if>
             <if test='utilityGbn eq "WATERBASIC"'>
-                AND utility_water_basic_cnt <![CDATA[>]]> 0
+                AND en.utility_water_basic_cnt <![CDATA[>]]> 0
             </if>
             <if test='utilityGbn eq "INTERNET"'>
-                AND utility_internet_cnt <![CDATA[>]]> 0
+                AND en.utility_internet_cnt <![CDATA[>]]> 0
             </if>
             <if test='utilityGbn eq "PYTEXNEW"'>
-                AND utility_pytex_new_cnt <![CDATA[>]]> 0
+                AND en.utility_pytex_new_cnt <![CDATA[>]]> 0
             </if>
             <if test='utilityGbn eq "PYTEXRE"'>
-                AND utility_pytex_re_cnt <![CDATA[>]]> 0
+                AND en.utility_pytex_re_cnt <![CDATA[>]]> 0
             </if>
             <if test='utilityGbn eq "BARCODE"'>
-                AND utility_barcode_cnt <![CDATA[>]]> 0
+                AND en.utility_barcode_cnt <![CDATA[>]]> 0
             </if>
         </if>
-        ORDER BY (utility_jugan_cnt + utility_day_cnt + utility_compressed_air_cnt + utility_water_basic_cnt + utility_internet_cnt + utility_pytex_new_cnt + utility_pytex_re_cnt + utility_barcode_cnt) DESC
-               , init_regi_dttm DESC
+        ORDER BY (en.utility_jugan_cnt + en.utility_day_cnt + en.utility_compressed_air_cnt + en.utility_water_basic_cnt + en.utility_internet_cnt + en.utility_pytex_new_cnt + en.utility_pytex_re_cnt + en.utility_barcode_cnt) DESC
+               , en.init_regi_dttm DESC
     </select>
 
     <select id="selectUtilitySingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorDTO">
@@ -3850,6 +4183,23 @@
              , IFNULL(utility_prc_sum,0) as utility_prc_sum
         FROM exhibitor_new
         WHERE seq = #{value}
+    </select>
+
+    <select id="selectInvoiceUtilityExSeqList" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO" resultType="com.mtf.kibs.dto.InvoiceUtilityDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceUtilityExSeqList */
+        SELECT seq
+             , ex_seq
+             , invoice_code
+             , title
+             , send_dttm
+             , send_status
+             , send_result
+             , send_result_msg
+             , file_path
+        FROM invoice_utility
+        WHERE ex_seq = #{exSeq}
+          AND del_yn = 'N'
+        ORDER BY seq
     </select>
 
     <update id="updateUtility" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
@@ -3908,6 +4258,22 @@
                                           (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1))
           , balance                    = (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) +
                                           (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1))
+          , final_regi_dttm            = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateInvoiceBoothMailOpen" parameterType="com.mtf.kibs.dto.MailOpenDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.updateInvoiceBoothMailOpen */
+        UPDATE invoice_booth
+        SET send_status                = '열람'
+          , final_regi_dttm            = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateInvoiceUtilityMailOpen" parameterType="com.mtf.kibs.dto.MailOpenDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.updateInvoiceUtilityMailOpen */
+        UPDATE invoice_utility
+        SET send_status                = '열람'
           , final_regi_dttm            = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
@@ -4950,6 +5316,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectDirectoryList */
         SELECT e.approval_status
              , e.prc_yn
+             , e.company_license_num
              , e.company_name_ko
              , e.company_name_en
              , e.company_address
@@ -4963,27 +5330,175 @@
              , e.industry_part
              , e.industry_part_etc
              , e.employee_cnt
-             , e.company_license_num
-             , e.sns_blog
-             , e.sns_facebook
-             , e.sns_instagram
-             , e.sns_etc
+             , e.company_intro_video
              , e.company_intro_ko
              , e.company_intro_en
              , e.company_purpose_ko
              , e.company_purpose_en
-             , (select GROUP_CONCAT(coalesce(c.charge_person_name,'') separator '^') from charge c where c.id = e.seq) as chargePersonName
-             , (select GROUP_CONCAT(coalesce(c.charge_person_position,'') separator '^') from charge c where c.id = e.seq) as chargePersonPosition
-             , (select GROUP_CONCAT(coalesce(c.charge_person_depart,'') separator '^') from charge c where c.id = e.seq) as chargePersonDepart
-             , (select GROUP_CONCAT(coalesce(c.charge_person_tel,'') separator '^') from charge c where c.id = e.seq) as chargePersonTel
-             , (select GROUP_CONCAT(coalesce(c.charge_person_phone,'') separator '^') from charge c where c.id = e.seq) as chargePersonPhone
-             , (select GROUP_CONCAT(coalesce(c.charge_person_email,'') separator '^') from charge c where c.id = e.seq) as chargePersonEmail
-             , (select GROUP_CONCAT(coalesce(d.display_item,'') separator '^') from display d where d.id = e.seq) as displayItem
-             , (select GROUP_CONCAT(coalesce(d.display_brand,'') separator '^') from display d where d.id = e.seq) as displayBrand
-             , (select GROUP_CONCAT(coalesce(d.display_boat_cnt,0) separator '^') from display d where d.id = e.seq) as displayBoatCnt
-             , (select GROUP_CONCAT(coalesce(d.display_item_intro_ko,'') separator '^') from display d where d.id = e.seq) as displayItemIntroKo
-             , (select GROUP_CONCAT(coalesce(d.display_item_intro_en,'') separator '^') from display d where d.id = e.seq) as displayItemIntroEn
-        FROM exhibitor e
+             , e.new_item_intro_ko
+             , e.new_item_intro_en
+             , e.promotion_plan
+             , e.name
+             , e.position
+             , e.depart
+             , e.tel
+             , e.phone
+             , e.email
+             , (SELECT GROUP_CONCAT(coalesce(p.product_option_big,'') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productOptionBig
+             , (SELECT GROUP_CONCAT(coalesce(p.product_option_small,'') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productOptionSmall
+             , (SELECT GROUP_CONCAT(coalesce(p.product_name_ko,'') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productNameKo
+             , (SELECT GROUP_CONCAT(coalesce(p.product_qty,'0') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productQty
+             , (SELECT GROUP_CONCAT(coalesce(p.product_brand,'') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productBrand
+             , (SELECT GROUP_CONCAT(coalesce(p.product_length,'0') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productLength
+             , (SELECT GROUP_CONCAT(coalesce(p.product_width,'0') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productWidth
+             , (SELECT GROUP_CONCAT(coalesce(p.product_height,'0') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productHeight
+             , (SELECT GROUP_CONCAT(coalesce(p.product_weight,'0') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productWeight
+             , (SELECT GROUP_CONCAT(coalesce(p.product_material,'') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productMaterial
+             , (SELECT GROUP_CONCAT(coalesce(p.product_year,'') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productYear
+             , (SELECT GROUP_CONCAT(coalesce(p.product_intro_ko,'') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productIntroKo
+             , (SELECT GROUP_CONCAT(coalesce(p.product_intro_en,'') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productIntroEn
+             , (SELECT GROUP_CONCAT(coalesce(p.product_link,'') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productLink
+        FROM exhibitor_new e
+        WHERE e.transfer_year = #{transferYear}
+        ORDER BY e.company_name_ko asc, e.init_regi_dttm desc
+    </select>
+
+    <select id="selectExhibitorNewDetailList" parameterType="com.mtf.kibs.dto.ExhibitorNewDetailDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDetailDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewDetailList */
+        SELECT e.participation_status
+             , e.approval_status
+             , e.booth_num
+             , e.id
+             , e.init_regi_dttm
+             , e.final_regi_dttm
+             , e.prc_yn
+             , e.bp_num
+             , e.contact_writer
+             , e.contact_date
+             , e.contact_content
+             , e.reference_writer
+             , e.reference_date
+             , e.reference_content
+             , e.company_license_num
+             , e.company_name_ko
+             , e.company_name_en
+             , e.company_address
+             , e.company_address_detail
+             , e.factory_address
+             , e.factory_address_detail
+             , e.company_ceo
+             , e.company_tel
+             , e.company_homepage
+             , e.company_fax
+             , e.industry_part
+             , e.industry_part_etc
+             , e.employee_cnt
+             , e.pre_part_year
+             , e.member_company_yn
+             , e.name
+             , e.position
+             , e.depart
+             , e.tel
+             , e.phone
+             , e.email
+             , e.email_marketing_yn
+             , (select GROUP_CONCAT(coalesce(c.charge_person_name,'') separator '^') from charge_new c where c.ex_seq = e.seq) as chargePersonName
+             , (select GROUP_CONCAT(coalesce(c.charge_person_position,'') separator '^') from charge_new c where c.ex_seq = e.seq) as chargePersonPosition
+             , (select GROUP_CONCAT(coalesce(c.charge_person_depart,'') separator '^') from charge_new c where c.ex_seq = e.seq) as chargePersonDepart
+             , (select GROUP_CONCAT(coalesce(c.charge_person_tel,'') separator '^') from charge_new c where c.ex_seq = e.seq) as chargePersonTel
+             , (select GROUP_CONCAT(coalesce(c.charge_person_phone,'') separator '^') from charge_new c where c.ex_seq = e.seq) as chargePersonPhone
+             , (select GROUP_CONCAT(coalesce(c.charge_person_email,'') separator '^') from charge_new c where c.ex_seq = e.seq) as chargePersonEmail
+             , e.company_intro_video
+             , e.company_intro_ko
+             , e.company_intro_en
+             , e.company_purpose_ko
+             , e.company_purpose_en
+             , e.new_item_intro_ko
+             , e.new_item_intro_en
+             , e.promotion_plan
+             , e.field_part
+             , (select GROUP_CONCAT(coalesce(p.product_option_big,'') separator '^') from product_new p where p.ex_seq = e.seq) as productOptionBig
+             , (select GROUP_CONCAT(coalesce(p.product_option_small,'') separator '^') from product_new p where p.ex_seq = e.seq) as productOptionSmall
+             , (select GROUP_CONCAT(coalesce(p.product_name_ko,'') separator '^') from product_new p where p.ex_seq = e.seq) as productNameKo
+             , (select GROUP_CONCAT(coalesce(p.product_name_en,'') separator '^') from product_new p where p.ex_seq = e.seq) as productNameEn
+             , (select GROUP_CONCAT(coalesce(p.product_qty,'0') separator '^') from product_new p where p.ex_seq = e.seq) as productQty
+             , (select GROUP_CONCAT(coalesce(p.product_brand,'') separator '^') from product_new p where p.ex_seq = e.seq) as productBrand
+             , (select GROUP_CONCAT(coalesce(p.product_length,'') separator '^') from product_new p where p.ex_seq = e.seq) as productLength
+             , (select GROUP_CONCAT(coalesce(p.product_width,'') separator '^') from product_new p where p.ex_seq = e.seq) as productWidth
+             , (select GROUP_CONCAT(coalesce(p.product_height,'') separator '^') from product_new p where p.ex_seq = e.seq) as productHeight
+             , (select GROUP_CONCAT(coalesce(p.product_weight,'') separator '^') from product_new p where p.ex_seq = e.seq) as productWeight
+             , (select GROUP_CONCAT(coalesce(p.product_material,'') separator '^') from product_new p where p.ex_seq = e.seq) as productMaterial
+             , (select GROUP_CONCAT(coalesce(p.product_year,'') separator '^') from product_new p where p.ex_seq = e.seq) as productYear
+             , (select GROUP_CONCAT(coalesce(p.product_intro_ko,'') separator '^') from product_new p where p.ex_seq = e.seq) as productIntroKo
+             , (select GROUP_CONCAT(coalesce(p.product_intro_en,'') separator '^') from product_new p where p.ex_seq = e.seq) as productIntroEn
+             , (select GROUP_CONCAT(coalesce(p.product_link,'') separator '^') from product_new p where p.ex_seq = e.seq) as productLink
+             , e.company_badge
+             , (select GROUP_CONCAT(coalesce(o.online_option_big,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineOptionBig
+             , (select GROUP_CONCAT(coalesce(o.online_option_small,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineOptionSmall
+             , (select GROUP_CONCAT(coalesce(o.online_name_ko,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineNameKo
+             , (select GROUP_CONCAT(coalesce(o.online_name_en,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineNameEn
+             , (select GROUP_CONCAT(coalesce(o.online_intro_ko,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineIntroKo
+             , (select GROUP_CONCAT(coalesce(o.online_intro_en,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineIntroEn
+             , (select GROUP_CONCAT(coalesce(o.online_link,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineLink
+             , (select GROUP_CONCAT(coalesce(o.online_length,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineLength
+             , (select GROUP_CONCAT(coalesce(o.online_width,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineWidth
+             , (select GROUP_CONCAT(coalesce(o.online_height,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineHeight
+             , (select GROUP_CONCAT(coalesce(o.online_weight,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineWeight
+             , (select GROUP_CONCAT(coalesce(o.online_material,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineMaterial
+             , (select GROUP_CONCAT(coalesce(o.online_year,'') separator '^') from online_new o where o.ex_seq = e.seq) as onlineYear
+             , e.export_meeting_yn
+             , e.registration_cnt
+             , e.stand_alone_booth_cnt
+             , e.assembly_booth_cnt
+             , e.online_booth_cnt
+             , e.discount_early_1
+             , e.discount_early_2
+             , e.discount_re_all
+             , e.discount_scale_1
+             , e.discount_scale_2
+             , e.discount_scale_3
+             , e.discount_leisure
+             , e.company_sign_name_ko
+             , e.company_sign_name_en
+             , IFNULL(e.utility_jugan_cnt,'0') as utilityJuganCnt
+             , IFNULL(e.utility_day_cnt,'0') as utilityDayCnt
+             , IFNULL(e.utility_compressed_air_cnt,'0') as utilityCompressedAirCnt
+             , IFNULL(e.utility_water_basic_cnt,'0') as utilityWaterBasicCnt
+             , IFNULL(e.utility_internet_cnt,'0') as utilityInternetCnt
+             , IFNULL(e.utility_pytex_new_cnt,'0') as utilityPytexNewCnt
+             , IFNULL(e.utility_pytex_re_cnt,'0') as utilityPytexReCnt
+             , IFNULL(e.utility_barcode_cnt,'0') as utilityBarcodeCnt
+             , (select GROUP_CONCAT(coalesce(p.pass_name,'') separator '^') from pass_new p where p.ex_seq = e.seq) as passName
+             , (select GROUP_CONCAT(coalesce(p.pass_last_name,'') separator '^') from pass_new p where p.ex_seq = e.seq) as passLastName
+             , (select GROUP_CONCAT(coalesce(p.pass_first_name,'') separator '^') from pass_new p where p.ex_seq = e.seq) as passFirstName
+             , (select GROUP_CONCAT(coalesce(p.pass_position_ko,'') separator '^') from pass_new p where p.ex_seq = e.seq) as passPositionKo
+             , (select GROUP_CONCAT(coalesce(p.pass_position_en,'') separator '^') from pass_new p where p.ex_seq = e.seq) as passPositionEn
+             , (select GROUP_CONCAT(coalesce(p.pass_note,'') separator '^') from pass_new p where p.ex_seq = e.seq) as passNote
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_name,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyName
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_country,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyCountry
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_location,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyLocation
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_homepage,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyHomepage
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_depart,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyDepart
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_position,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyPosition
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_email,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyEmail
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_tel,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyTel
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_phone,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyPhone
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_fax,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyFax
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_item,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyItem
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_invite_reason,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyInviteReason
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_progress_yn,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyProgressYn
+             , (select GROUP_CONCAT(coalesce(b.buyer_company_hope,'') separator '^') from buyer_new b where b.ex_seq = e.seq) as buyerCompanyHope
+             , (select GROUP_CONCAT(coalesce(g.gift_gbn,'') separator '^') from gift_new g where g.ex_seq = e.seq) as giftGbn
+             , (select GROUP_CONCAT(coalesce(g.gift_cnt,'') separator '^') from gift_new g where g.ex_seq = e.seq) as giftCnt
+             , (select GROUP_CONCAT(coalesce(g.gift_classify,'') separator '^') from gift_new g where g.ex_seq = e.seq) as giftClassify
+             , (select GROUP_CONCAT(coalesce(g.gift_name,'') separator '^') from gift_new g where g.ex_seq = e.seq) as giftName
+             , (select GROUP_CONCAT(coalesce(g.gift_content,'') separator '^') from gift_new g where g.ex_seq = e.seq) as giftContent
+             , (select GROUP_CONCAT(coalesce(g.gift_photo,'') separator '^') from gift_new g where g.ex_seq = e.seq) as giftPhoto
+             , (select GROUP_CONCAT(coalesce(g.gift_company_logo,'') separator '^') from gift_new g where g.ex_seq = e.seq) as giftCompanyLogo
+             , (select GROUP_CONCAT(coalesce(g.gift_price,'') separator '^') from gift_new g where g.ex_seq = e.seq) as giftPrice
+             , (select GROUP_CONCAT(coalesce(g.gift_sponsor_price,'') separator '^') from gift_new g where g.ex_seq = e.seq) as giftSponsorPrice
+             , (select GROUP_CONCAT(coalesce(g.gift_note,'') separator '^') from gift_new g where g.ex_seq = e.seq) as giftNote
+        FROM exhibitor_new e
         WHERE e.transfer_year = #{transferYear}
         ORDER BY e.company_name_ko asc, e.init_regi_dttm desc
     </select>

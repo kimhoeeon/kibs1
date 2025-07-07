@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -135,6 +136,21 @@ public class KibsController {
         kibsService.processStatisticsAccessor();
 
         mv.setViewName("main");
+        return mv;
+    }
+
+    @RequestMapping(value = "/popup.do", method = RequestMethod.POST)
+    public ModelAndView popup(PopupDTO popupDTO) {
+        System.out.println("KibsController > popup");
+        ModelAndView mv = new ModelAndView();
+        //System.out.println(popupDTO);
+
+        PopupDTO info = kibsService.processSelectPopupSingle(popupDTO);
+        if(info != null){
+            mv.addObject("info", info);
+        }
+
+        mv.setViewName("/popup");
         return mv;
     }
 
@@ -266,8 +282,6 @@ public class KibsController {
         mv.setViewName("/guide/conference2025");
         return mv;
     }
-
-
 
     //***************************************************************************
     // apply Folder
@@ -1320,6 +1334,9 @@ public class KibsController {
                 ExhibitorNewDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorNewInfo(seq);
                 mv.addObject("exhibitorInfo", exhibitorInfo);
 
+                List<ProductNewDTO> productList = kibsService.processSelectProductNewInfoList(seq);
+                mv.addObject("productList", productList);
+
                 List<OnlineNewDTO> onlineList = kibsService.processSelectOnlineNewInfoList(seq);
                 mv.addObject("onlineList", onlineList);
             } else {
@@ -1409,7 +1426,45 @@ public class KibsController {
         //System.out.println(seq);
         ModelAndView mv = new ModelAndView();
         if (seq != null && !seq.isEmpty()) {
-            if (seq.contains("ON")) {
+            if(seq.contains("PN")){
+                mv.addObject("gbn", "PN");
+
+                ProductNewDTO productInfo = kibsService.processSelectProductNewInfo(seq);
+                mv.addObject("productInfo", productInfo);
+
+                if (productInfo != null) {
+                    String exSeq = productInfo.getExSeq();
+                    List<FileDTO> fileList = kibsService.processSelectFileList(exSeq);
+                    mv.addObject("fileList", fileList);
+
+                    ExhibitorNewDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorNewInfo(exSeq);
+                    mv.addObject("exhibitorInfo", exhibitorInfo);
+
+                    /* 같은 회사 제품 */
+                    List<ProductNewDTO> productItemList = kibsService.processSelectProductNewInfoList(exSeq);
+                    mv.addObject("productItemList", productItemList);
+
+                    List<OnlineNewDTO> onlineItemList = kibsService.processSelectOnlineNewInfoList(exSeq);
+                    mv.addObject("onlineItemList", onlineItemList);
+
+                    /* 관련 제품 */
+                    OnlineDTO relatedRequestDto = new OnlineDTO();
+                    relatedRequestDto.setProductOptionBig(productInfo.getProductOptionBig());
+                    relatedRequestDto.setProductOptionSmall(productInfo.getProductOptionSmall());
+                    relatedRequestDto.setId(productInfo.getExSeq());
+                    List<List<FileDTO>> productFileList = new ArrayList<>();
+                    List<OnlineRelatedDTO> relatedItemList = kibsService.processSelectOnlineRelatedList(relatedRequestDto);
+                    for (OnlineRelatedDTO onlineRelatedDTO : relatedItemList) {
+                        FileDTO relatedItemFileRequestDto = new FileDTO();
+                        relatedItemFileRequestDto.setUserId(onlineRelatedDTO.getId());
+                        relatedItemFileRequestDto.setNote(onlineRelatedDTO.getNote());
+                        List<FileDTO> relatedItemFileResponseList = kibsService.processSelectProductFileInfo(relatedItemFileRequestDto);
+                        productFileList.add(relatedItemFileResponseList);
+                    }
+                    mv.addObject("relatedItemList", relatedItemList);
+                    mv.addObject("relatedItemFileList", productFileList);
+                }
+            } else if (seq.contains("ON")) {
 
                 mv.addObject("gbn", "ON");
 
@@ -1425,6 +1480,9 @@ public class KibsController {
                     mv.addObject("exhibitorInfo", exhibitorInfo);
 
                     /* 같은 회사 제품 */
+                    List<ProductNewDTO> productItemList = kibsService.processSelectProductNewInfoList(id);
+                    mv.addObject("productItemList", productItemList);
+
                     List<OnlineNewDTO> onlineItemList = kibsService.processSelectOnlineNewInfoList(id);
                     mv.addObject("onlineItemList", onlineItemList);
 

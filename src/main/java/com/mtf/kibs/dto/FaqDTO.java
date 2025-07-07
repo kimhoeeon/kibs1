@@ -11,6 +11,7 @@ public class FaqDTO {
     Integer totalRecords;
     Integer rownum; //연번
     String id; //ID
+    String tempSaveYn; //임시저장여부
     String noticeGbn; //공지사항 구분
     String lang; //언어
     String title; //제목

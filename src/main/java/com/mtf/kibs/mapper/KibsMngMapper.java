@@ -244,9 +244,37 @@ public interface KibsMngMapper {
 
     ExhibitorNewDTO selectExhibitorNewBoothSingle(String seq);
 
-    Integer UpdateBooth(ExhibitorDTO exhibitorDTO);
+    List<InvoiceBoothDTO> selectInvoiceBoothExSeqList(InvoiceBoothDTO invoiceBoothDTO);
 
-    Integer UpdateExhibitorNewBooth(ExhibitorNewDTO exhibitorNewDTO);
+    InvoiceBoothDTO selectInvoiceBoothSingle(String seq);
+
+    InvoiceUtilityDTO selectInvoiceUtilitySingle(String seq);
+
+    ExhibitorNewDTO getExhibitorNewInfo(ExhibitorNewDTO exhibitorNewDTO);
+
+    Integer updateBooth(ExhibitorDTO exhibitorDTO);
+
+    Integer updateExhibitorNewBooth(ExhibitorNewDTO exhibitorNewDTO);
+
+    String getInvoiceBoothSeq();
+
+    Integer insertInvoiceBooth(InvoiceBoothDTO invoiceBoothDTO);
+
+    String getInvoiceUtilitySeq();
+
+    Integer insertInvoiceUtility(InvoiceUtilityDTO invoiceUtilityDTO);
+
+    Integer updateInvoiceBoothDelYn(InvoiceBoothDTO invoiceBoothDTO);
+
+    Integer updateInvoiceUtilityDelYn(InvoiceUtilityDTO invoiceUtilityDTO);
+
+    Integer updateInvoiceBoothFilePath(InvoiceBoothDTO invoiceBoothDTO);
+
+    Integer updateInvoiceUtilityFilePath(InvoiceUtilityDTO invoiceUtilityDTO);
+
+    Integer updateInvoiceBoothSendResult(InvoiceBoothDTO invoiceBoothDTO);
+
+    Integer updateInvoiceUtilitySendResult(InvoiceUtilityDTO invoiceUtilityDTO);
 
     List<ExhibitorDTO> selectMngOnlineList(SearchDTO searchDTO);
 
@@ -278,9 +306,15 @@ public interface KibsMngMapper {
 
     ExhibitorNewDTO selectExhibitorNewUtilitySingle(String seq);
 
+    List<InvoiceUtilityDTO> selectInvoiceUtilityExSeqList(InvoiceUtilityDTO invoiceUtilityDTO);
+
     Integer updateUtility(ExhibitorDTO exhibitorDTO);
 
     Integer updateExhibitorNewUtility(ExhibitorNewDTO exhibitorNewDTO);
+
+    Integer updateInvoiceBoothMailOpen(MailOpenDTO mailOpenDTO);
+
+    Integer updateInvoiceUtilityMailOpen(MailOpenDTO mailOpenDTO);
 
     List<MngPassDTO> selectPassList(SearchDTO searchDTO);
 
@@ -391,6 +425,8 @@ public interface KibsMngMapper {
     String getExhibitorCompSeq();
 
     List<ExhibitorDetailDTO> selectExhibitorDetailList(ExhibitorDetailDTO exhibitorDetailDTO);
+
+    List<ExhibitorNewDetailDTO> selectExhibitorNewDetailList(ExhibitorNewDetailDTO exhibitorNewDetailDTO);
 
     List<MemberDTO> selectMemberList(SearchDTO searchDTO);
 

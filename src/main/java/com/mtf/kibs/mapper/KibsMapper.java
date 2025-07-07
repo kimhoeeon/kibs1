@@ -84,18 +84,6 @@ public interface KibsMapper {
     Integer deleteFile(FileDTO fileDTO);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     Integer updateExhibitBooth(ExhibitorDTO exhibitorDTO);
 
     Integer updateCompanySign(ExhibitorDTO exhibitorDTO);
@@ -124,11 +112,15 @@ public interface KibsMapper {
 
     List<OnlineDTO> selectOnlineInfoList(String seq);
 
+    List<ProductNewDTO> selectProductNewInfoList(String seq);
+
     List<OnlineNewDTO> selectOnlineNewInfoList(String seq);
 
     List<FileDTO> selectFileList(String seq);
 
     OnlineDTO selectOnlineInfo(String seq);
+
+    ProductNewDTO selectProductNewInfo(String seq);
 
     OnlineNewDTO selectOnlineNewInfo(String seq);
 
@@ -245,6 +237,8 @@ public interface KibsMapper {
     Integer updateExhibitPersonalInfo(ExhibitorDTO exhibitorDTO);
 
     List<PopupDTO> selectPopupList(PopupDTO popupDTO);
+
+    PopupDTO selectPopupSingle(PopupDTO popupDTO);
 
     String checkStatisticsAccessor(StatisticsDTO statisticsDTO);
 

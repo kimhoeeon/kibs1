@@ -4,8 +4,6 @@ import com.mtf.kibs.constants.CommConstants;
 import com.mtf.kibs.dto.*;
 import com.mtf.kibs.service.CommService;
 import com.mtf.kibs.service.KibsMngService;
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFCell;
@@ -36,9 +34,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.*;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -759,7 +755,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/visitor/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_visitor_update(@RequestBody VisitorDTO visitorDTO) {
-        System.out.println("KibsController > mng_exhibitor_visitor_update");
+        System.out.println("KibsMngController > mng_exhibitor_visitor_update");
         ResponseDTO response = kibsMngService.processUpdateVisitor(visitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -767,7 +763,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/visitor/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_visitor_delete(@RequestBody VisitorDTO visitorDTO) {
-        System.out.println("KibsController > mng_exhibitor_visitor_delete");
+        System.out.println("KibsMngController > mng_exhibitor_visitor_delete");
         ResponseDTO response = kibsMngService.processDeleteVisitor(visitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -775,7 +771,7 @@ public class KibsMngController {
     @RequestMapping(value = "'/mng/exhibitor/participant/visitor/deletePartner.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_visitor_deletePartner(@RequestBody PartnerDTO partnerDTO) {
-        System.out.println("KibsController > mng_exhibitor_visitor_deletePartner");
+        System.out.println("KibsMngController > mng_exhibitor_visitor_deletePartner");
         ResponseDTO response = kibsMngService.processDeletePartner(partnerDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -946,7 +942,7 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_exhibitor_transfer_visitor_detail");
         ModelAndView mv = new ModelAndView();
 
-        if(seq != null && !"".equals(seq)){
+        if(seq != null && !seq.isEmpty()){
             VisitorDTO info = kibsMngService.processSelectVisitorSingle(seq);
             mv.addObject("info", info);
 
@@ -961,7 +957,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/transfer/visitor/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_transfer_visitor_update(@RequestBody VisitorDTO visitorDTO) {
-        System.out.println("KibsController > mng_exhibitor_transfer_visitor_update");
+        System.out.println("KibsMngController > mng_exhibitor_transfer_visitor_update");
         ResponseDTO response = kibsMngService.processUpdateTransferVisitor(visitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -994,19 +990,127 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_exhibitorNew_application_booth_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
-            ExhibitorNewDTO exhibitorInfo = kibsMngService.processSelectExhibitorNewBoothSingle(seq);
-            mv.addObject("info", exhibitorInfo);
+            ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewBoothSingle(seq);
+            mv.addObject("info", info);
+
+            if(info != null) {
+                InvoiceBoothDTO invoiceBoothDTO = new InvoiceBoothDTO();
+                invoiceBoothDTO.setExSeq(info.getSeq());
+                List<InvoiceBoothDTO> invoiceList = kibsMngService.processSelectInvoiceBoothExSeqList(invoiceBoothDTO);
+
+                if(!invoiceList.isEmpty()){
+                    mv.addObject("invoiceList", invoiceList);
+                }
+            }
         }
         mv.setViewName("/mng/exhibitorNew/application/booth/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/utility/invoice/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_utility_invoice_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_detail");
+        ModelAndView mv = new ModelAndView();
+        if(seq != null){
+            InvoiceUtilityDTO info = kibsMngService.processSelectInvoiceUtilitySingle(seq);
+            mv.addObject("info", info);
+
+            ExhibitorNewDTO exhibitorNewDTO = new ExhibitorNewDTO();
+            exhibitorNewDTO.setSeq(info.getExSeq());
+            ExhibitorNewDTO exhibitorNewInfo = kibsMngService.processSelectExhibitorNewSingle(exhibitorNewDTO);
+            mv.addObject("exhibitorNewInfo", exhibitorNewInfo);
+        }
+        mv.setViewName("/mng/exhibitorNew/application/utility/invoice");
         return mv;
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/booth/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > mng_exhibitorNew_application_booth_update");
+        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewBooth(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/booth/invoice/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_invoice_insert(@RequestBody InvoiceBoothDTO invoiceBoothDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_insert");
+        ResponseDTO response = kibsMngService.processInsertExhibitorNewBoothInvoice(invoiceBoothDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/booth/invoice/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_booth_invoice_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_detail");
+        ModelAndView mv = new ModelAndView();
+        if(seq != null){
+            InvoiceBoothDTO info = kibsMngService.processSelectInvoiceBoothSingle(seq);
+            mv.addObject("info", info);
+
+            ExhibitorNewDTO exhibitorNewDTO = new ExhibitorNewDTO();
+            exhibitorNewDTO.setSeq(info.getExSeq());
+            ExhibitorNewDTO exhibitorNewInfo = kibsMngService.processSelectExhibitorNewSingle(exhibitorNewDTO);
+            mv.addObject("exhibitorNewInfo", exhibitorNewInfo);
+        }
+        mv.setViewName("/mng/exhibitorNew/application/booth/invoice");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/booth/invoice/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_invoice_delete(@RequestBody InvoiceBoothDTO invoiceBoothDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_delete");
+        ResponseDTO response = kibsMngService.processDeleteExhibitorNewBoothInvoice(invoiceBoothDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/utility/invoice/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_invoice_delete(@RequestBody InvoiceUtilityDTO invoiceUtilityDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_delete");
+        ResponseDTO response = kibsMngService.processDeleteExhibitorNewUtilityInvoice(invoiceUtilityDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/booth/invoice/filePath/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_invoice_filePath_update(@RequestBody InvoiceBoothDTO invoiceBoothDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_filePath_update");
+        ResponseDTO response = kibsMngService.processUpdateExhibitorNewBoothInvoiceFilePath(invoiceBoothDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/utility/invoice/filePath/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_invoice_filePath_update(@RequestBody InvoiceUtilityDTO invoiceUtilityDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_filePath_update");
+        ResponseDTO response = kibsMngService.processUpdateExhibitorNewUtilityInvoiceFilePath(invoiceUtilityDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/booth/invoice/mail/result/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_invoice_mail_result_update(@RequestBody InvoiceBoothDTO invoiceBoothDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_mail_result_update");
+        ResponseDTO response = kibsMngService.processUpdateExhibitorNewBoothInvoiceSendResult(invoiceBoothDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/utility/invoice/mail/result/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_invoice_mail_result_update(@RequestBody InvoiceUtilityDTO invoiceUtilityDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_mail_result_update");
+        ResponseDTO response = kibsMngService.processUpdateExhibitorNewUtilityInvoiceSendResult(invoiceUtilityDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/getExhibitorNewInfo.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ExhibitorNewDTO> mng_getExhibitorNewInfo(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngController > mng_getExhibitorNewInfo");
+        ExhibitorNewDTO result = kibsMngService.getExhibitorNewInfo(exhibitorNewDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/sign.do", method = RequestMethod.GET)
@@ -1043,7 +1147,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/sign/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_sign_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > mng_exhibitorNew_application_sign_update");
+        System.out.println("KibsMngController > mng_exhibitorNew_application_sign_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewSign(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1072,19 +1176,44 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_exhibitorNew_application_utility_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
-            ExhibitorNewDTO exhibitorInfo = kibsMngService.processSelectExhibitorNewUtilitySingle(seq);
-            mv.addObject("info", exhibitorInfo);
+            ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewUtilitySingle(seq);
+            mv.addObject("info", info);
+
+            if(info != null) {
+                InvoiceUtilityDTO invoiceUtilityDTO = new InvoiceUtilityDTO();
+                invoiceUtilityDTO.setExSeq(info.getSeq());
+                List<InvoiceUtilityDTO> invoiceList = kibsMngService.processSelectInvoiceUtilityExSeqList(invoiceUtilityDTO);
+
+                if(!invoiceList.isEmpty()){
+                    mv.addObject("invoiceList", invoiceList);
+                }
+            }
         }
         mv.setViewName("/mng/exhibitorNew/application/utility/detail");
         return mv;
     }
 
+    @RequestMapping(value = "/mng/exhibitorNew/application/utility/invoice/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_invoice_insert(@RequestBody InvoiceUtilityDTO invoiceUtilityDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_insert");
+        ResponseDTO response = kibsMngService.processInsertExhibitorNewUtilityInvoice(invoiceUtilityDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/mng/exhibitorNew/application/utility/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > mng_exhibitorNew_application_utility_update");
+        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewUtility(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/invoice/mail/open/update.do", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public void mng_exhibitorNew_application_invoice_mail_open_update(MailOpenDTO mailOpenDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_invoice_mail_open_update");
+        kibsMngService.processUpdateInvoiceMailOpen(mailOpenDTO);
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/pass.do", method = RequestMethod.GET)
@@ -1122,7 +1251,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/pass/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_pass_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > mng_exhibitorNew_application_pass_update");
+        System.out.println("KibsMngController > mng_exhibitorNew_application_pass_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewPass(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1130,7 +1259,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/pass/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_pass_delete(@RequestBody PassNewDTO passNewDTO) {
-        System.out.println("KibsController > mng_exhibitorNew_application_pass_delete");
+        System.out.println("KibsMngController > mng_exhibitorNew_application_pass_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewPass(passNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1170,7 +1299,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/buyer/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_buyer_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > mng_exhibitorNew_application_buyer_update");
+        System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewBuyer(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1178,7 +1307,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/buyer/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_buyer_delete(@RequestBody BuyerNewDTO buyerNewDTO) {
-        System.out.println("KibsController > mng_exhibitorNew_application_buyer_delete");
+        System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewBuyer(buyerNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1240,7 +1369,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/gift/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_gift_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > mng_exhibitorNew_application_gift_update");
+        System.out.println("KibsMngController > mng_exhibitorNew_application_gift_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewGift(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1248,7 +1377,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/gift/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_gift_delete(@RequestBody GiftNewDTO giftNewDTO) {
-        System.out.println("KibsController > mng_exhibitorNew_application_gift_delete");
+        System.out.println("KibsMngController > mng_exhibitorNew_application_gift_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewGift(giftNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1408,7 +1537,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/booth/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_booth_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > mng_exhibitor_application_booth_update");
+        System.out.println("KibsMngController > mng_exhibitor_application_booth_update");
         ResponseDTO response = kibsMngService.processUpdateBooth(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1447,7 +1576,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/sign/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_sign_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > mng_exhibitor_application_sign_update");
+        System.out.println("KibsMngController > mng_exhibitor_application_sign_update");
         ResponseDTO response = kibsMngService.processUpdateSign(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1486,7 +1615,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/utility/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_utility_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > mng_exhibitor_application_utility_update");
+        System.out.println("KibsMngController > mng_exhibitor_application_utility_update");
         ResponseDTO response = kibsMngService.processUpdateUtility(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1526,7 +1655,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/pass/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_pass_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > mng_exhibitor_application_pass_update");
+        System.out.println("KibsMngController > mng_exhibitor_application_pass_update");
         ResponseDTO response = kibsMngService.processUpdatePass(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1534,7 +1663,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/pass/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_pass_delete(@RequestBody PassDTO passDTO) {
-        System.out.println("KibsController > mng_exhibitor_application_pass_delete");
+        System.out.println("KibsMngController > mng_exhibitor_application_pass_delete");
         ResponseDTO response = kibsMngService.processDeletePass(passDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1574,7 +1703,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/buyer/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_buyer_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > mng_exhibitor_application_buyer_update");
+        System.out.println("KibsMngController > mng_exhibitor_application_buyer_update");
         ResponseDTO response = kibsMngService.processUpdateBuyer(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1582,7 +1711,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/buyer/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_buyer_delete(@RequestBody BuyerDTO buyerDTO) {
-        System.out.println("KibsController > mng_exhibitor_application_buyer_delete");
+        System.out.println("KibsMngController > mng_exhibitor_application_buyer_delete");
         ResponseDTO response = kibsMngService.processDeleteBuyer(buyerDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1645,7 +1774,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/gift/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_gift_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > mng_exhibitor_application_gift_update");
+        System.out.println("KibsMngController > mng_exhibitor_application_gift_update");
         ResponseDTO response = kibsMngService.processUpdateGift(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1653,7 +1782,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/gift/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_gift_delete(@RequestBody GiftDTO giftDTO) {
-        System.out.println("KibsController > mng_exhibitor_application_gift_delete");
+        System.out.println("KibsMngController > mng_exhibitor_application_gift_delete");
         ResponseDTO response = kibsMngService.processDeleteGift(giftDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1948,12 +2077,12 @@ public class KibsMngController {
         ResponseDTO responseDTO = kibsMngService.processUpdateBoardNotice(noticeDTO);
 
         String fileIdList = noticeDTO.getFileIdList();
-        if(fileIdList != null && !"".equals(fileIdList)){
+        if(fileIdList != null && !fileIdList.isEmpty()){
             String[] fileIdSplit = fileIdList.split(",");
-            for(int i=0; i<fileIdSplit.length; i++){
-                if(!"".equals(fileIdSplit[i])){
+            for (String s : fileIdSplit) {
+                if (!"".equals(s)) {
                     FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setId(s);
                     fileDTO.setUserId(noticeDTO.getId());
                     ResponseDTO fileResponse = kibsMngService.processUpdateFileUserId(fileDTO);
                 }
@@ -3611,14 +3740,15 @@ public class KibsMngController {
 
             /* 엑셀 그리기 */
             final String[] colNames_ex = {
-                    "No", "승인여부", "입금여부", "회사명(국문)", "회사명(영문)",
-                    "주소", "상세주소", "공장 주소", "공장 상세 주소", "대표자명",
-                    "전화", "홈페이지", "FAX", "산업 분류", "산업 분류 기타",
-                    "임직원수", "사업자등록번호", "블로그", "페이스북", "인스타그램",
-                    "기타", "회사소개(국문)", "회사소개(영문)", "KIBS 참가목적(국문)", "KIBS 참가목적(영문)",
+                    "No", "승인여부", "입금여부", "사업자등록번호", "회사명(국문)",
+                    "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소",
+                    "대표자", "전화", "홈페이지", "FAX", "산업 분류",
+                    "산업 분류 기타", "임직원수", "회사소개영상", "회사소개(국문)", "회사소개(영문)",
+                    "KIBS 참가목적(국문)", "KIBS 참가목적(영문)", "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
                     "성명", "직위", "부서", "전화번호", "휴대전화",
-                    "이메일", "전시품목명", "브랜드명", "실물보트수", "전시품소개(국)",
-                    "전시품소개(영)"
+                    "이메일", "제품 분류(품목)", "제품명", "수량", "제조사(브랜드)",
+                    "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재",
+                    "연식", "제품 설명(국문)", "제품 설명(영문)", "제품 링크"
             };
 
             // 헤더 사이즈
@@ -3630,7 +3760,8 @@ public class KibsMngController {
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
-                    5000
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000
             };
 
             // *** Style--------------------------------------------------
@@ -3733,13 +3864,13 @@ public class KibsMngController {
             sheet.addMergedRegion(new CellRangeAddress(0,0,25,30));
             XSSFCell mergeCell2 = row.createCell(25);
             mergeCell2.setCellStyle(headerStyle_ch);
-            mergeCell2.setCellValue("담당자정보");
+            mergeCell2.setCellValue("대표담당자정보");
 
             // 전시정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,31,35));
+            sheet.addMergedRegion(new CellRangeAddress(0,0,31,43));
             XSSFCell mergeCell3 = row.createCell(31);
             mergeCell3.setCellStyle(headerStyle_di);
-            mergeCell3.setCellValue("전시정보");
+            mergeCell3.setCellValue("전시품정보");
 
             row = sheet.createRow(rowCnt++);
             for (int i = 0; i < colNames_ex.length; i++) {
@@ -3787,6 +3918,10 @@ public class KibsMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getPrcYn());
+                // 사업자등록번호
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getCompanyLicenseNum());
                 // 회사명(국문)
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
@@ -3795,11 +3930,11 @@ public class KibsMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getCompanyNameEn());
-                // 주소
+                // 본사 주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getCompanyAddress());
-                // 상세주소
+                // 본사 상세주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getCompanyAddressDetail());
@@ -3839,26 +3974,10 @@ public class KibsMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getEmployeeCnt());
-                // 사업자등록번호
+                // 회사소개영상
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyLicenseNum());
-                // 블로그
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSnsBlog());
-                // 페이스북
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSnsFacebook());
-                // 인스타그램
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSnsInstagram());
-                // 기타
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSnsEtc());
+                cell.setCellValue(info.getCompanyIntroVideo());
                 // 회사소개(국문)
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
@@ -3875,50 +3994,94 @@ public class KibsMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getCompanyPurposeEn());
+                // 신제품출품 사항 소개(국문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNewItemIntroKo());
+                // 신제품출품 사항 소개(영문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getNewItemIntroEn());
+                // 프로모션 정보
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPromotionPlan());
                 // 담당자명
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getChargePersonName().replaceAll("\\^","\n"));
+                cell.setCellValue(info.getName());
                 // 담당자직위
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getChargePersonPosition().replaceAll("\\^","\n"));
+                cell.setCellValue(info.getPosition());
                 // 담당자부서
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getChargePersonDepart().replaceAll("\\^","\n"));
+                cell.setCellValue(info.getDepart());
                 // 담당자전화번호
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getChargePersonTel().replaceAll("\\^","\n"));
+                cell.setCellValue(info.getTel());
                 // 담당자휴대전화
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getChargePersonPhone().replaceAll("\\^","\n"));
+                cell.setCellValue(info.getPhone());
                 // 담당자이메일
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getChargePersonEmail().replaceAll("\\^","\n"));
-                // 전시품목
+                cell.setCellValue(info.getEmail());
+                // 제품분류(품목)
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getDisplayItem().replaceAll("\\^","\n"));
-                // 브랜드명
+                cell.setCellValue(info.getProductOptionBig().replaceAll("\\^", "\n") + "/" + info.getProductOptionSmall().replaceAll("\\^", "\n"));
+                // 제품명
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getDisplayBrand().replaceAll("\\^","\n"));
-                // 전시품목보트수
+                cell.setCellValue(info.getProductNameKo().replaceAll("\\^","\n"));
+                // 수량
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getDisplayBoatCnt().replaceAll("\\^","\n"));
-                // 전시품소개(국)
+                cell.setCellValue(info.getProductQty().replaceAll("\\^","\n"));
+                // 브랜드
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getDisplayItemIntroKo().replaceAll("\\^","\n"));
-                // 전시품소개(영)
+                cell.setCellValue(info.getProductBrand().replaceAll("\\^","\n"));
+                // 길이
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getDisplayItemIntroEn().replaceAll("\\^","\n"));
+                cell.setCellValue(info.getProductLength().replaceAll("\\^","\n"));
+                // 너비
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle_di);
+                cell.setCellValue(info.getProductWidth().replaceAll("\\^","\n"));
+                // 높이
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle_di);
+                cell.setCellValue(info.getProductHeight().replaceAll("\\^","\n"));
+                // 중량
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle_di);
+                cell.setCellValue(info.getProductWeight().replaceAll("\\^","\n"));
+                // 소재
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle_di);
+                cell.setCellValue(info.getProductMaterial().replaceAll("\\^","\n"));
+                // 연식
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle_di);
+                cell.setCellValue(info.getProductYear().replaceAll("\\^","\n"));
+                // 제품설명(국문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle_di);
+                cell.setCellValue(info.getProductIntroKo().replaceAll("\\^","\n"));
+                // 제품설명(영문)
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle_di);
+                cell.setCellValue(info.getProductIntroEn().replaceAll("\\^","\n"));
+                // 링크
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle_di);
+                cell.setCellValue(info.getProductLink().replaceAll("\\^","\n"));
             }
 
             //너비를 자동으로 다시 설정
@@ -3957,170 +4120,137 @@ public class KibsMngController {
                     "최종수정일", "입금현황(참가비 수납상태)", "BP번호",
                     "(컨택내역)작성자", "(컨택내역)날짜", "(컨택내역)내용",
                     "(참고사항)작성자", "(참고사항)날짜", "(참고사항)내용",
-                    "회사명(국문)", "회사명(영문)", "주소", "상세주소",
+                    "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소",
                     "공장 주소", "공장 상세 주소",
                     "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "임직원 수",
-                    "사업자등록증", "사업자등록번호", "기참가연도", "회원사 여부",
-                    /* SNS(주소기입) */
-                    "블로그", "페이스북", "인스타그램", "기타",
+                    "기참가연도", "회원사 여부",
+                    /* 대표담당자 */
+                    "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "E-mail 마케팅정보 수신동의",
                     /* 담당자 정보 1 */
                     "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
                     /* 담당자 정보 2 */
                     "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
                     /* 담당자 정보 3 */
                     "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
-                    /* 참가분야 */
-                    "요트·보트전 (Yacht & Boat World)", "무동력보트전 (Paddler’s World)", "워크보트전 (Workboat World)", "해양레저관 (Marine Leisure)",
-                    "카라반쇼 (Caravan Show)", "아라마리나 교육 및 체험 프로그램 (Aramarina Education and Experience Program)", "해양부품·안전·마리나산업전 (Marine Equipment, Safety & Marina Industry Show)",
-                    "친환경 특별전 (Eco Friendly Marine)", "한국해양관광전 (Marine Tourism)", "보트정비관 (Boat Maintenance)",
-                    /* 전시품목 1 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 2 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 3 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 4 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 5 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 6 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 7 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 8 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 9 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 10 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 11 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 12 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 13 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 14 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 15 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 16 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 17 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 18 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 19 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
-                    /* 전시품목 20 */
-                    "전시품목", "전시품목;브랜드명", "실물 보트수;(단위:척)", "전시품소개(국)", "전시품소개(영)",
                     /* 업체정보 */
-                    "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)",
-                    "신제품 출품 사항 소개(국문)", "신제품 출품 사항 소개(영문)",
-                    "우리 기업 부스는 꼭 들려야 될 이유가 있다면?", "행사/이벤트 진행계획", "사무국 요청사항", "회사소개영상",
-                    "온라인전시회 노출여부",
+                    "회사소개영상", "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)",
+                    "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
+                    /* 참가분야 */
+                    "보트&요트 (Boat & Yacht)", "무동력보트 (Paddling Boat)", "워크보트 (Work Boat)", "부품&장비 (Marine Equipment)",
+                    "안전&마리나 (Safety & Marina)", "해양관광 (Marine Tourism)", "해양레저 (Marine Leisure)",
+                    "수중레저 (Water Sports)", "서핑 (Surfing)", "카라반&캠핑 (Caravan & Camping)",
+                    /* 전시품 정보 1 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 2 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 3 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 4 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 5 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 6 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 7 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 8 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 9 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 10 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 11 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 12 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 13 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 14 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 15 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 16 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 17 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 18 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 19 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
+                    /* 전시품목 20 */
+                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
                     /* 기업뱃지 */
                     "보트쇼 3회 이상 참가", "올해의 제품상 수상", "보트쇼와 제작한 영상", "제품 등록 우수",
                     /* 제품 1 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 2 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 3 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 4 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 5 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 6 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 7 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 8 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 9 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 10 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 11 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 12 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 13 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 14 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 15 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 16 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 17 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 18 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 19 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 20 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 21 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 22 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 23 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 24 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 25 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 26 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 27 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 28 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 29 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 제품 30 */
-                    "제품사진", "제품명(국문)", "제품명(영문)", "제품분류(대)", "제품분류(소)", "제품설명(국문)", "제품설명(영문)",
-                    "제품 영상", "전장(m)", "마력",
+                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 업체정보 */
-                    "비즈니스 상담 참가희망여부",
+                    "수출상담회 참가희망여부",
                     /* 전시부스 신청 */
                     "등록비", "독립부스", "조립부스", "온라인부스",
                     /* 할인적용 */
-                    "1차 조기신청", "2차 조기신청", "재참가할인", "규모할인 1(20부스 이상)", "규모할인 2(40부스 이상)",
-                    "첫 참가 할인", "한국해양레저산업협회 할인",
+                    "1차 조기신청", "2차 조기신청", "재참가할인", "규모할인 1(20부스 이상)", "규모할인 2(40부스 이상)", "한국해양레저산업협회 할인",
                     /* 상호간판 신청 */
                     "국문", "영문",
                     /* 유틸리티 신청 */
-                    "주간 단상 220V", "24시간용 220V", "압축공기 기본형", "급배수 기본형", "인터넷", "파이텍스(신)", "파이텍스(재)", "바코드 리더기",
+                    "주간 단상 220V", "24시간용 220V", "압축공기 기본형", "급배수 기본형", "인터넷", "파이텍스(신)", "파이텍스(재)", "참관객/바이어 바코드 리더기",
                     /* 출입증 신청 1 */
                     "회사명", "성명(국문)", "성명(영문)", "직책(국문)", "직책(영문)", "비고",
                     /* 출입증 신청 2 */
@@ -4141,74 +4271,176 @@ public class KibsMngController {
                     "회사명", "성명(국문)", "성명(영문)", "직책(국문)", "직책(영문)", "비고",
                     /* 출입증 신청 10 */
                     "회사명", "성명(국문)", "성명(영문)", "직책(국문)", "직책(영문)", "비고",
-                    /* 바이어 등록 정보 1 */
+                    /* 바이어 등록 정보 */
                     "회사명", "국가", "소재지", "홈페이지", "부서", "직책", "이메일", "전화번호", "휴대전화", "FAX", "취급품목",
                     "초청사유", "계약진행여부", "희망사항",
-                    /* 경품 신청 등록 정보 1 */
+                    /* 경품 신청 등록 정보 */
                     "구분", "수량", "분류", "품목명", "경품설명", "경품사진", "경품브랜드회사로고", "소비자가", "협찬가", "비고"
             };
 
             // 헤더 사이즈
             final int[] colWidths_ex = {
-                    3000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000
+                    3000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000,
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    5000, 5000,
+                    /* 대표담당자 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 담당자 정보 1 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 담당자 정보 2 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 담당자 정보 3 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 업체정보 */
+                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    /* 참가분야 */
+                    5000, 5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    /* 전시품 정보 1 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 2 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 3 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 4 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 5 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 6 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 7 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 8 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 9 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 10 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 11 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 12 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 13 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 14 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 15 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 16 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 17 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 18 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 19 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 전시품목 20 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 기업뱃지 */
+                    5000, 5000, 5000, 5000,
+                    /* 제품 1 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 2 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 3 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 4 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 5 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 6 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 7 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 8 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 9 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 10 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 11 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 12 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 13 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 14 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 15 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 16 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 17 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 18 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 19 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 20 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 21 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 22 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 23 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 24 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 25 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 26 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 27 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 28 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 29 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 제품 30 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 업체정보 */
+                    5000,
+                    /* 전시부스 신청 */
+                    5000, 5000, 5000, 5000,
+                    /* 할인적용 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 상호간판 신청 */
+                    5000, 5000,
+                    /* 유틸리티 신청 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 출입증 신청 1 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 출입증 신청 2 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 출입증 신청 3 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 출입증 신청 4 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 출입증 신청 5 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 출입증 신청 6 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 출입증 신청 7 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 출입증 신청 8 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 출입증 신청 9 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 출입증 신청 10 */
+                    5000, 5000, 5000, 5000, 5000, 5000,
+                    /* 바이어 등록 정보 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000,
+                    /* 경품 신청 등록 정보 */
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000
             };
 
             // *** Style--------------------------------------------------
@@ -4380,488 +4612,486 @@ public class KibsMngController {
 
             // *** Sheet-------------------------------------------------
             // Sheet 생성
-            XSSFSheet sheet = workbook.createSheet("Exhibitor");
+            XSSFSheet sheet = workbook.createSheet("참가업체");
 
             XSSFCell cell = null;
             XSSFRow row = sheet.createRow(rowCnt++);
 
             // 헤더 정보 구성
             // 참가업체정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,0,31));
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,30));
             XSSFCell mergeCell = row.createCell(0);
             mergeCell.setCellStyle(headerStyle);
             mergeCell.setCellValue("참가업체정보");
 
-            // SNS
-            sheet.addMergedRegion(new CellRangeAddress(0,0,32,35));
-            XSSFCell mergeCell2 = row.createCell(32);
-            mergeCell2.setCellStyle(headerStyle);
-            mergeCell2.setCellValue("SNS");
+            // 대표 담당자 정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,31,37));
+            XSSFCell mergeCell2_1 = row.createCell(31);
+            mergeCell2_1.setCellStyle(headerStyle);
+            mergeCell2_1.setCellValue("대표 담당자");
 
             // 담당자 정보 1
-            sheet.addMergedRegion(new CellRangeAddress(0,0,36,41));
-            XSSFCell mergeCell3 = row.createCell(36);
-            mergeCell3.setCellStyle(headerStyle);
-            mergeCell3.setCellValue("담당자 정보 1");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,38,43));
+            XSSFCell mergeCell2_2 = row.createCell(38);
+            mergeCell2_2.setCellStyle(headerStyle);
+            mergeCell2_2.setCellValue("담당자 정보 1");
 
             // 담당자 정보 2
-            sheet.addMergedRegion(new CellRangeAddress(0,0,42,47));
-            XSSFCell mergeCell4 = row.createCell(42);
-            mergeCell4.setCellStyle(headerStyle);
-            mergeCell4.setCellValue("담당자 정보 2");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,44,49));
+            XSSFCell mergeCell2_3 = row.createCell(44);
+            mergeCell2_3.setCellStyle(headerStyle);
+            mergeCell2_3.setCellValue("담당자 정보 2");
 
             // 담당자 정보 3
-            sheet.addMergedRegion(new CellRangeAddress(0,0,48,53));
-            XSSFCell mergeCell5 = row.createCell(48);
-            mergeCell5.setCellStyle(headerStyle);
-            mergeCell5.setCellValue("담당자 정보 3");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,50,55));
+            XSSFCell mergeCell2_4 = row.createCell(50);
+            mergeCell2_4.setCellStyle(headerStyle);
+            mergeCell2_4.setCellValue("담당자 정보 3");
+
+            // 업체정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,56,63));
+            XSSFCell mergeCell3 = row.createCell(56);
+            mergeCell3.setCellStyle(headerStyle);
+            mergeCell3.setCellValue("업체정보");
 
             // 참가분야
-            sheet.addMergedRegion(new CellRangeAddress(0,0,54,63));
-            XSSFCell mergeCell6 = row.createCell(54);
-            mergeCell6.setCellStyle(headerStyle_lime);
-            mergeCell6.setCellValue("참가분야");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,64,73));
+            XSSFCell mergeCell4 = row.createCell(64);
+            mergeCell4.setCellStyle(headerStyle_lime);
+            mergeCell4.setCellValue("참가분야");
 
-            // 전시품목 1
-            sheet.addMergedRegion(new CellRangeAddress(0,0,64,68));
-            XSSFCell mergeCell7 = row.createCell(64);
-            mergeCell7.setCellStyle(headerStyle_light_green);
-            mergeCell7.setCellValue("전시품목 1");
+            // 전시품 정보 1
+            sheet.addMergedRegion(new CellRangeAddress(0,0,74,86));
+            XSSFCell mergeCell5_1 = row.createCell(74);
+            mergeCell5_1.setCellStyle(headerStyle_light_green);
+            mergeCell5_1.setCellValue("전시품 정보 1");
 
             // 전시품목 2
-            sheet.addMergedRegion(new CellRangeAddress(0,0,69,73));
-            XSSFCell mergeCell8 = row.createCell(69);
-            mergeCell8.setCellStyle(headerStyle_light_green);
-            mergeCell8.setCellValue("전시품목 2");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,87,99));
+            XSSFCell mergeCell5_2 = row.createCell(87);
+            mergeCell5_2.setCellStyle(headerStyle_light_green);
+            mergeCell5_2.setCellValue("전시품 정보 2");
 
             // 전시품목 3
-            sheet.addMergedRegion(new CellRangeAddress(0,0,74,78));
-            XSSFCell mergeCell9 = row.createCell(74);
-            mergeCell9.setCellStyle(headerStyle_light_green);
-            mergeCell9.setCellValue("전시품목 3");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,100,112));
+            XSSFCell mergeCell5_3 = row.createCell(100);
+            mergeCell5_3.setCellStyle(headerStyle_light_green);
+            mergeCell5_3.setCellValue("전시품 정보 3");
 
             // 전시품목 4
-            sheet.addMergedRegion(new CellRangeAddress(0,0,79,83));
-            XSSFCell mergeCell10 = row.createCell(79);
-            mergeCell10.setCellStyle(headerStyle_light_green);
-            mergeCell10.setCellValue("전시품목 4");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,113,125));
+            XSSFCell mergeCell5_4 = row.createCell(113);
+            mergeCell5_4.setCellStyle(headerStyle_light_green);
+            mergeCell5_4.setCellValue("전시품 정보 4");
 
             // 전시품목 5
-            sheet.addMergedRegion(new CellRangeAddress(0,0,84,88));
-            XSSFCell mergeCell11 = row.createCell(84);
-            mergeCell11.setCellStyle(headerStyle_light_green);
-            mergeCell11.setCellValue("전시품목 5");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,126,138));
+            XSSFCell mergeCell5_5 = row.createCell(126);
+            mergeCell5_5.setCellStyle(headerStyle_light_green);
+            mergeCell5_5.setCellValue("전시품 정보 5");
 
             // 전시품목 6
-            sheet.addMergedRegion(new CellRangeAddress(0,0,89,93));
-            XSSFCell mergeCell12 = row.createCell(89);
-            mergeCell12.setCellStyle(headerStyle_light_green);
-            mergeCell12.setCellValue("전시품목 6");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,139,151));
+            XSSFCell mergeCell5_6 = row.createCell(139);
+            mergeCell5_6.setCellStyle(headerStyle_light_green);
+            mergeCell5_6.setCellValue("전시품 정보 6");
 
             // 전시품목 7
-            sheet.addMergedRegion(new CellRangeAddress(0,0,94,98));
-            XSSFCell mergeCell13 = row.createCell(94);
-            mergeCell13.setCellStyle(headerStyle_light_green);
-            mergeCell13.setCellValue("전시품목 7");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,152,164));
+            XSSFCell mergeCell5_7 = row.createCell(152);
+            mergeCell5_7.setCellStyle(headerStyle_light_green);
+            mergeCell5_7.setCellValue("전시품 정보 7");
 
             // 전시품목 8
-            sheet.addMergedRegion(new CellRangeAddress(0,0,99,103));
-            XSSFCell mergeCell14 = row.createCell(99);
-            mergeCell14.setCellStyle(headerStyle_light_green);
-            mergeCell14.setCellValue("전시품목 8");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,165,177));
+            XSSFCell mergeCell5_8 = row.createCell(165);
+            mergeCell5_8.setCellStyle(headerStyle_light_green);
+            mergeCell5_8.setCellValue("전시품 정보 8");
 
             // 전시품목 9
-            sheet.addMergedRegion(new CellRangeAddress(0,0,104,108));
-            XSSFCell mergeCell15 = row.createCell(104);
-            mergeCell15.setCellStyle(headerStyle_light_green);
-            mergeCell15.setCellValue("전시품목 9");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,178,190));
+            XSSFCell mergeCell5_9 = row.createCell(178);
+            mergeCell5_9.setCellStyle(headerStyle_light_green);
+            mergeCell5_9.setCellValue("전시품 정보 9");
 
             // 전시품목 10
-            sheet.addMergedRegion(new CellRangeAddress(0,0,109,113));
-            XSSFCell mergeCell16 = row.createCell(109);
-            mergeCell16.setCellStyle(headerStyle_light_green);
-            mergeCell16.setCellValue("전시품목 10");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,191,203));
+            XSSFCell mergeCell5_10 = row.createCell(191);
+            mergeCell5_10.setCellStyle(headerStyle_light_green);
+            mergeCell5_10.setCellValue("전시품 정보 10");
 
             // 전시품목 11
-            sheet.addMergedRegion(new CellRangeAddress(0,0,114,118));
-            XSSFCell mergeCell17 = row.createCell(114);
-            mergeCell17.setCellStyle(headerStyle_light_green);
-            mergeCell17.setCellValue("전시품목 11");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,204,216));
+            XSSFCell mergeCell5_11 = row.createCell(204);
+            mergeCell5_11.setCellStyle(headerStyle_light_green);
+            mergeCell5_11.setCellValue("전시품 정보 11");
 
             // 전시품목 12
-            sheet.addMergedRegion(new CellRangeAddress(0,0,119,123));
-            XSSFCell mergeCell18 = row.createCell(119);
-            mergeCell18.setCellStyle(headerStyle_light_green);
-            mergeCell18.setCellValue("전시품목 12");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,217,229));
+            XSSFCell mergeCell5_12 = row.createCell(217);
+            mergeCell5_12.setCellStyle(headerStyle_light_green);
+            mergeCell5_12.setCellValue("전시품 정보 12");
 
             // 전시품목 13
-            sheet.addMergedRegion(new CellRangeAddress(0,0,124,128));
-            XSSFCell mergeCell19 = row.createCell(124);
-            mergeCell19.setCellStyle(headerStyle_light_green);
-            mergeCell19.setCellValue("전시품목 13");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,230,242));
+            XSSFCell mergeCell5_13 = row.createCell(230);
+            mergeCell5_13.setCellStyle(headerStyle_light_green);
+            mergeCell5_13.setCellValue("전시품 정보 13");
 
             // 전시품목 14
-            sheet.addMergedRegion(new CellRangeAddress(0,0,129,133));
-            XSSFCell mergeCell20 = row.createCell(129);
-            mergeCell20.setCellStyle(headerStyle_light_green);
-            mergeCell20.setCellValue("전시품목 14");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,243,255));
+            XSSFCell mergeCell5_14 = row.createCell(243);
+            mergeCell5_14.setCellStyle(headerStyle_light_green);
+            mergeCell5_14.setCellValue("전시품 정보 14");
 
             // 전시품목 15
-            sheet.addMergedRegion(new CellRangeAddress(0,0,134,138));
-            XSSFCell mergeCell21 = row.createCell(134);
-            mergeCell21.setCellStyle(headerStyle_light_green);
-            mergeCell21.setCellValue("전시품목 15");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,256,268));
+            XSSFCell mergeCell5_15 = row.createCell(256);
+            mergeCell5_15.setCellStyle(headerStyle_light_green);
+            mergeCell5_15.setCellValue("전시품 정보 15");
 
             // 전시품목 16
-            sheet.addMergedRegion(new CellRangeAddress(0,0,139,143));
-            XSSFCell mergeCell22 = row.createCell(139);
-            mergeCell22.setCellStyle(headerStyle_light_green);
-            mergeCell22.setCellValue("전시품목 16");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,269,281));
+            XSSFCell mergeCell5_16 = row.createCell(269);
+            mergeCell5_16.setCellStyle(headerStyle_light_green);
+            mergeCell5_16.setCellValue("전시품 정보 16");
 
             // 전시품목 17
-            sheet.addMergedRegion(new CellRangeAddress(0,0,144,148));
-            XSSFCell mergeCell23 = row.createCell(144);
-            mergeCell23.setCellStyle(headerStyle_light_green);
-            mergeCell23.setCellValue("전시품목 17");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,282,294));
+            XSSFCell mergeCell5_17 = row.createCell(282);
+            mergeCell5_17.setCellStyle(headerStyle_light_green);
+            mergeCell5_17.setCellValue("전시품 정보 17");
 
             // 전시품목 18
-            sheet.addMergedRegion(new CellRangeAddress(0,0,149,153));
-            XSSFCell mergeCell24 = row.createCell(149);
-            mergeCell24.setCellStyle(headerStyle_light_green);
-            mergeCell24.setCellValue("전시품목 18");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,295,307));
+            XSSFCell mergeCell5_18 = row.createCell(295);
+            mergeCell5_18.setCellStyle(headerStyle_light_green);
+            mergeCell5_18.setCellValue("전시품 정보 18");
 
             // 전시품목 19
-            sheet.addMergedRegion(new CellRangeAddress(0,0,154,158));
-            XSSFCell mergeCell25 = row.createCell(154);
-            mergeCell25.setCellStyle(headerStyle_light_green);
-            mergeCell25.setCellValue("전시품목 19");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,308,320));
+            XSSFCell mergeCell5_19 = row.createCell(308);
+            mergeCell5_19.setCellStyle(headerStyle_light_green);
+            mergeCell5_19.setCellValue("전시품 정보 19");
 
             // 전시품목 20
-            sheet.addMergedRegion(new CellRangeAddress(0,0,159,163));
-            XSSFCell mergeCell26 = row.createCell(159);
-            mergeCell26.setCellStyle(headerStyle_light_green);
-            mergeCell26.setCellValue("전시품목 20");
-
-            // 참가업체정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,164,174));
-            XSSFCell mergeCell27 = row.createCell(164);
-            mergeCell27.setCellStyle(headerStyle);
-            mergeCell27.setCellValue("참가업체정보");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,321,333));
+            XSSFCell mergeCell5_20 = row.createCell(321);
+            mergeCell5_20.setCellStyle(headerStyle_light_green);
+            mergeCell5_20.setCellValue("전시품 정보 20");
 
             // 기업뱃지
-            sheet.addMergedRegion(new CellRangeAddress(0,0,175,178));
-            XSSFCell mergeCell28 = row.createCell(175);
-            mergeCell28.setCellStyle(headerStyle_cornflower_blue);
-            mergeCell28.setCellValue("기업 뱃지");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,334,337));
+            XSSFCell mergeCell6 = row.createCell(334);
+            mergeCell6.setCellStyle(headerStyle_cornflower_blue);
+            mergeCell6.setCellValue("기업 뱃지");
 
             // 제품 1
-            sheet.addMergedRegion(new CellRangeAddress(0,0,179,188));
-            XSSFCell mergeCell29 = row.createCell(179);
-            mergeCell29.setCellStyle(headerStyle_light_orange);
-            mergeCell29.setCellValue("제품 1");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,338,348));
+            XSSFCell mergeCell7_1 = row.createCell(338);
+            mergeCell7_1.setCellStyle(headerStyle_light_orange);
+            mergeCell7_1.setCellValue("제품 1");
 
             // 제품 2
-            sheet.addMergedRegion(new CellRangeAddress(0,0,189,198));
-            XSSFCell mergeCell30 = row.createCell(189);
-            mergeCell30.setCellStyle(headerStyle_light_orange);
-            mergeCell30.setCellValue("제품 2");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,349,359));
+            XSSFCell mergeCell7_2 = row.createCell(349);
+            mergeCell7_2.setCellStyle(headerStyle_light_orange);
+            mergeCell7_2.setCellValue("제품 2");
 
             // 제품 3
-            sheet.addMergedRegion(new CellRangeAddress(0,0,199,208));
-            XSSFCell mergeCell31 = row.createCell(199);
-            mergeCell31.setCellStyle(headerStyle_light_orange);
-            mergeCell31.setCellValue("제품 3");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,360,370));
+            XSSFCell mergeCell7_3 = row.createCell(360);
+            mergeCell7_3.setCellStyle(headerStyle_light_orange);
+            mergeCell7_3.setCellValue("제품 3");
 
             // 제품 4
-            sheet.addMergedRegion(new CellRangeAddress(0,0,209,218));
-            XSSFCell mergeCell32 = row.createCell(209);
-            mergeCell32.setCellStyle(headerStyle_light_orange);
-            mergeCell32.setCellValue("제품 4");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,371,381));
+            XSSFCell mergeCell7_4 = row.createCell(371);
+            mergeCell7_4.setCellStyle(headerStyle_light_orange);
+            mergeCell7_4.setCellValue("제품 4");
 
             // 제품 5
-            sheet.addMergedRegion(new CellRangeAddress(0,0,219,228));
-            XSSFCell mergeCell33 = row.createCell(219);
-            mergeCell33.setCellStyle(headerStyle_light_orange);
-            mergeCell33.setCellValue("제품 5");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,382,392));
+            XSSFCell mergeCell7_5 = row.createCell(382);
+            mergeCell7_5.setCellStyle(headerStyle_light_orange);
+            mergeCell7_5.setCellValue("제품 5");
 
             // 제품 6
-            sheet.addMergedRegion(new CellRangeAddress(0,0,229,238));
-            XSSFCell mergeCell34 = row.createCell(229);
-            mergeCell34.setCellStyle(headerStyle_light_orange);
-            mergeCell34.setCellValue("제품 6");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,393,403));
+            XSSFCell mergeCell7_6 = row.createCell(393);
+            mergeCell7_6.setCellStyle(headerStyle_light_orange);
+            mergeCell7_6.setCellValue("제품 6");
 
             // 제품 7
-            sheet.addMergedRegion(new CellRangeAddress(0,0,239,248));
-            XSSFCell mergeCell35 = row.createCell(239);
-            mergeCell35.setCellStyle(headerStyle_light_orange);
-            mergeCell35.setCellValue("제품 7");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,404,414));
+            XSSFCell mergeCell7_7 = row.createCell(404);
+            mergeCell7_7.setCellStyle(headerStyle_light_orange);
+            mergeCell7_7.setCellValue("제품 7");
 
             // 제품 8
-            sheet.addMergedRegion(new CellRangeAddress(0,0,249,258));
-            XSSFCell mergeCell36 = row.createCell(249);
-            mergeCell36.setCellStyle(headerStyle_light_orange);
-            mergeCell36.setCellValue("제품 8");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,415,425));
+            XSSFCell mergeCell7_8 = row.createCell(415);
+            mergeCell7_8.setCellStyle(headerStyle_light_orange);
+            mergeCell7_8.setCellValue("제품 8");
 
             // 제품 9
-            sheet.addMergedRegion(new CellRangeAddress(0,0,259,268));
-            XSSFCell mergeCell37 = row.createCell(259);
-            mergeCell37.setCellStyle(headerStyle_light_orange);
-            mergeCell37.setCellValue("제품 9");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,426,436));
+            XSSFCell mergeCell7_9 = row.createCell(426);
+            mergeCell7_9.setCellStyle(headerStyle_light_orange);
+            mergeCell7_9.setCellValue("제품 9");
 
             // 제품 10
-            sheet.addMergedRegion(new CellRangeAddress(0,0,269,278));
-            XSSFCell mergeCell38 = row.createCell(269);
-            mergeCell38.setCellStyle(headerStyle_light_orange);
-            mergeCell38.setCellValue("제품 10");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,437,447));
+            XSSFCell mergeCell7_10 = row.createCell(437);
+            mergeCell7_10.setCellStyle(headerStyle_light_orange);
+            mergeCell7_10.setCellValue("제품 10");
 
             // 제품 11
-            sheet.addMergedRegion(new CellRangeAddress(0,0,279,288));
-            XSSFCell mergeCell39 = row.createCell(279);
-            mergeCell39.setCellStyle(headerStyle_light_orange);
-            mergeCell39.setCellValue("제품 11");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,448,458));
+            XSSFCell mergeCell7_11 = row.createCell(448);
+            mergeCell7_11.setCellStyle(headerStyle_light_orange);
+            mergeCell7_11.setCellValue("제품 11");
 
             // 제품 12
-            sheet.addMergedRegion(new CellRangeAddress(0,0,289,298));
-            XSSFCell mergeCell40 = row.createCell(289);
-            mergeCell40.setCellStyle(headerStyle_light_orange);
-            mergeCell40.setCellValue("제품 12");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,459,469));
+            XSSFCell mergeCell7_12 = row.createCell(459);
+            mergeCell7_12.setCellStyle(headerStyle_light_orange);
+            mergeCell7_12.setCellValue("제품 12");
 
             // 제품 13
-            sheet.addMergedRegion(new CellRangeAddress(0,0,299,308));
-            XSSFCell mergeCell41 = row.createCell(299);
-            mergeCell41.setCellStyle(headerStyle_light_orange);
-            mergeCell41.setCellValue("제품 13");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,470,480));
+            XSSFCell mergeCell7_13 = row.createCell(470);
+            mergeCell7_13.setCellStyle(headerStyle_light_orange);
+            mergeCell7_13.setCellValue("제품 13");
 
             // 제품 14
-            sheet.addMergedRegion(new CellRangeAddress(0,0,309,318));
-            XSSFCell mergeCell42 = row.createCell(309);
-            mergeCell42.setCellStyle(headerStyle_light_orange);
-            mergeCell42.setCellValue("제품 14");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,481,491));
+            XSSFCell mergeCell7_14 = row.createCell(481);
+            mergeCell7_14.setCellStyle(headerStyle_light_orange);
+            mergeCell7_14.setCellValue("제품 14");
 
             // 제품 15
-            sheet.addMergedRegion(new CellRangeAddress(0,0,319,328));
-            XSSFCell mergeCell43 = row.createCell(319);
-            mergeCell43.setCellStyle(headerStyle_light_orange);
-            mergeCell43.setCellValue("제품 15");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,492,502));
+            XSSFCell mergeCell7_15 = row.createCell(492);
+            mergeCell7_15.setCellStyle(headerStyle_light_orange);
+            mergeCell7_15.setCellValue("제품 15");
 
             // 제품 16
-            sheet.addMergedRegion(new CellRangeAddress(0,0,329,338));
-            XSSFCell mergeCell44 = row.createCell(329);
-            mergeCell44.setCellStyle(headerStyle_light_orange);
-            mergeCell44.setCellValue("제품 16");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,503,513));
+            XSSFCell mergeCell7_16 = row.createCell(503);
+            mergeCell7_16.setCellStyle(headerStyle_light_orange);
+            mergeCell7_16.setCellValue("제품 16");
 
             // 제품 17
-            sheet.addMergedRegion(new CellRangeAddress(0,0,339,348));
-            XSSFCell mergeCell45 = row.createCell(339);
-            mergeCell45.setCellStyle(headerStyle_light_orange);
-            mergeCell45.setCellValue("제품 17");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,514,524));
+            XSSFCell mergeCell7_17 = row.createCell(514);
+            mergeCell7_17.setCellStyle(headerStyle_light_orange);
+            mergeCell7_17.setCellValue("제품 17");
 
             // 제품 18
-            sheet.addMergedRegion(new CellRangeAddress(0,0,349,358));
-            XSSFCell mergeCell46 = row.createCell(349);
-            mergeCell46.setCellStyle(headerStyle_light_orange);
-            mergeCell46.setCellValue("제품 18");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,525,535));
+            XSSFCell mergeCell7_18 = row.createCell(525);
+            mergeCell7_18.setCellStyle(headerStyle_light_orange);
+            mergeCell7_18.setCellValue("제품 18");
 
             // 제품 19
-            sheet.addMergedRegion(new CellRangeAddress(0,0,359,368));
-            XSSFCell mergeCell47 = row.createCell(359);
-            mergeCell47.setCellStyle(headerStyle_light_orange);
-            mergeCell47.setCellValue("제품 19");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,536,546));
+            XSSFCell mergeCell7_19 = row.createCell(536);
+            mergeCell7_19.setCellStyle(headerStyle_light_orange);
+            mergeCell7_19.setCellValue("제품 19");
 
             // 제품 20
-            sheet.addMergedRegion(new CellRangeAddress(0,0,369,378));
-            XSSFCell mergeCell48 = row.createCell(369);
-            mergeCell48.setCellStyle(headerStyle_light_orange);
-            mergeCell48.setCellValue("제품 20");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,547,557));
+            XSSFCell mergeCell7_20 = row.createCell(547);
+            mergeCell7_20.setCellStyle(headerStyle_light_orange);
+            mergeCell7_20.setCellValue("제품 20");
 
             // 제품 21
-            sheet.addMergedRegion(new CellRangeAddress(0,0,379,388));
-            XSSFCell mergeCell49 = row.createCell(379);
-            mergeCell49.setCellStyle(headerStyle_light_orange);
-            mergeCell49.setCellValue("제품 21");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,558,568));
+            XSSFCell mergeCell7_21 = row.createCell(558);
+            mergeCell7_21.setCellStyle(headerStyle_light_orange);
+            mergeCell7_21.setCellValue("제품 21");
 
             // 제품 22
-            sheet.addMergedRegion(new CellRangeAddress(0,0,389,398));
-            XSSFCell mergeCell50 = row.createCell(389);
-            mergeCell50.setCellStyle(headerStyle_light_orange);
-            mergeCell50.setCellValue("제품 22");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,569,579));
+            XSSFCell mergeCell7_22 = row.createCell(569);
+            mergeCell7_22.setCellStyle(headerStyle_light_orange);
+            mergeCell7_22.setCellValue("제품 22");
 
             // 제품 23
-            sheet.addMergedRegion(new CellRangeAddress(0,0,399,408));
-            XSSFCell mergeCell51 = row.createCell(399);
-            mergeCell51.setCellStyle(headerStyle_light_orange);
-            mergeCell51.setCellValue("제품 23");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,580,590));
+            XSSFCell mergeCell7_23 = row.createCell(580);
+            mergeCell7_23.setCellStyle(headerStyle_light_orange);
+            mergeCell7_23.setCellValue("제품 23");
 
             // 제품 24
-            sheet.addMergedRegion(new CellRangeAddress(0,0,409,418));
-            XSSFCell mergeCell52 = row.createCell(409);
-            mergeCell52.setCellStyle(headerStyle_light_orange);
-            mergeCell52.setCellValue("제품 24");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,591,601));
+            XSSFCell mergeCell7_24 = row.createCell(591);
+            mergeCell7_24.setCellStyle(headerStyle_light_orange);
+            mergeCell7_24.setCellValue("제품 24");
 
             // 제품 25
-            sheet.addMergedRegion(new CellRangeAddress(0,0,419,428));
-            XSSFCell mergeCell53 = row.createCell(419);
-            mergeCell53.setCellStyle(headerStyle_light_orange);
-            mergeCell53.setCellValue("제품 25");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,602,612));
+            XSSFCell mergeCell7_25 = row.createCell(602);
+            mergeCell7_25.setCellStyle(headerStyle_light_orange);
+            mergeCell7_25.setCellValue("제품 25");
 
             // 제품 26
-            sheet.addMergedRegion(new CellRangeAddress(0,0,429,438));
-            XSSFCell mergeCell54 = row.createCell(429);
-            mergeCell54.setCellStyle(headerStyle_light_orange);
-            mergeCell54.setCellValue("제품 26");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,613,623));
+            XSSFCell mergeCell7_26 = row.createCell(613);
+            mergeCell7_26.setCellStyle(headerStyle_light_orange);
+            mergeCell7_26.setCellValue("제품 26");
 
             // 제품 27
-            sheet.addMergedRegion(new CellRangeAddress(0,0,439,448));
-            XSSFCell mergeCell55 = row.createCell(439);
-            mergeCell55.setCellStyle(headerStyle_light_orange);
-            mergeCell55.setCellValue("제품 27");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,624,634));
+            XSSFCell mergeCell7_27 = row.createCell(624);
+            mergeCell7_27.setCellStyle(headerStyle_light_orange);
+            mergeCell7_27.setCellValue("제품 27");
 
             // 제품 28
-            sheet.addMergedRegion(new CellRangeAddress(0,0,449,458));
-            XSSFCell mergeCell56 = row.createCell(449);
-            mergeCell56.setCellStyle(headerStyle_light_orange);
-            mergeCell56.setCellValue("제품 28");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,635,645));
+            XSSFCell mergeCell7_28 = row.createCell(635);
+            mergeCell7_28.setCellStyle(headerStyle_light_orange);
+            mergeCell7_28.setCellValue("제품 28");
 
             // 제품 29
-            sheet.addMergedRegion(new CellRangeAddress(0,0,459,468));
-            XSSFCell mergeCell57 = row.createCell(459);
-            mergeCell57.setCellStyle(headerStyle_light_orange);
-            mergeCell57.setCellValue("제품 29");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,646,656));
+            XSSFCell mergeCell7_29 = row.createCell(646);
+            mergeCell7_29.setCellStyle(headerStyle_light_orange);
+            mergeCell7_29.setCellValue("제품 29");
 
             // 제품 30
-            sheet.addMergedRegion(new CellRangeAddress(0,0,469,478));
-            XSSFCell mergeCell58 = row.createCell(469);
-            mergeCell58.setCellStyle(headerStyle_light_orange);
-            mergeCell58.setCellValue("제품 30");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,657,667));
+            XSSFCell mergeCell7_30 = row.createCell(657);
+            mergeCell7_30.setCellStyle(headerStyle_light_orange);
+            mergeCell7_30.setCellValue("제품 30");
 
-            // 참가업체정보
+            // 업체정보
             //sheet.addMergedRegion(new CellRangeAddress(0,0,436,436));
-            XSSFCell mergeCell59 = row.createCell(479);
-            mergeCell59.setCellStyle(headerStyle);
-            mergeCell59.setCellValue("참가업체정보");
+            XSSFCell mergeCell8 = row.createCell(668);
+            mergeCell8.setCellStyle(headerStyle);
+            mergeCell8.setCellValue("참가업체정보");
 
             // 전시부스신청
-            sheet.addMergedRegion(new CellRangeAddress(0,0,480,483));
-            XSSFCell mergeCell60 = row.createCell(480);
-            mergeCell60.setCellStyle(headerStyle_cornflower_blue);
-            mergeCell60.setCellValue("전시부스 신청");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,669,672));
+            XSSFCell mergeCell9 = row.createCell(669);
+            mergeCell9.setCellStyle(headerStyle_cornflower_blue);
+            mergeCell9.setCellValue("전시부스 신청");
 
             // 할인적용
-            sheet.addMergedRegion(new CellRangeAddress(0,0,484,490));
-            XSSFCell mergeCell61 = row.createCell(484);
-            mergeCell61.setCellStyle(headerStyle_cornflower_blue);
-            mergeCell61.setCellValue("할인적용");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,673,678));
+            XSSFCell mergeCell10 = row.createCell(673);
+            mergeCell10.setCellStyle(headerStyle_cornflower_blue);
+            mergeCell10.setCellValue("할인적용");
 
             // 상호간판신청
-            sheet.addMergedRegion(new CellRangeAddress(0,0,491,492));
-            XSSFCell mergeCell62 = row.createCell(491);
-            mergeCell62.setCellStyle(headerStyle_light_blue);
-            mergeCell62.setCellValue("상호간판 신청");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,679,680));
+            XSSFCell mergeCell11 = row.createCell(679);
+            mergeCell11.setCellStyle(headerStyle_light_blue);
+            mergeCell11.setCellValue("상호간판 신청");
 
             // 유틸리티 신청
-            sheet.addMergedRegion(new CellRangeAddress(0,0,493,500));
-            XSSFCell mergeCell63 = row.createCell(493);
-            mergeCell63.setCellStyle(headerStyle_rose);
-            mergeCell63.setCellValue("유틸리티 신청");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,681,688));
+            XSSFCell mergeCell12 = row.createCell(681);
+            mergeCell12.setCellStyle(headerStyle_rose);
+            mergeCell12.setCellValue("유틸리티 신청");
 
             // 출입증 신청 1
-            sheet.addMergedRegion(new CellRangeAddress(0,0,501,506));
-            XSSFCell mergeCell64 = row.createCell(501);
-            mergeCell64.setCellStyle(headerStyle_lavender);
-            mergeCell64.setCellValue("출입증 신청 1");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,689,694));
+            XSSFCell mergeCell13_1 = row.createCell(689);
+            mergeCell13_1.setCellStyle(headerStyle_lavender);
+            mergeCell13_1.setCellValue("출입증 신청 1");
 
             // 출입증 신청 2
-            sheet.addMergedRegion(new CellRangeAddress(0,0,507,512));
-            XSSFCell mergeCell65 = row.createCell(507);
-            mergeCell65.setCellStyle(headerStyle_lavender);
-            mergeCell65.setCellValue("출입증 신청 2");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,695,700));
+            XSSFCell mergeCell13_2 = row.createCell(695);
+            mergeCell13_2.setCellStyle(headerStyle_lavender);
+            mergeCell13_2.setCellValue("출입증 신청 2");
 
             // 출입증 신청 3
-            sheet.addMergedRegion(new CellRangeAddress(0,0,513,518));
-            XSSFCell mergeCell66 = row.createCell(513);
-            mergeCell66.setCellStyle(headerStyle_lavender);
-            mergeCell66.setCellValue("출입증 신청 3");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,701,706));
+            XSSFCell mergeCell13_3 = row.createCell(701);
+            mergeCell13_3.setCellStyle(headerStyle_lavender);
+            mergeCell13_3.setCellValue("출입증 신청 3");
 
             // 출입증 신청 4
-            sheet.addMergedRegion(new CellRangeAddress(0,0,519,524));
-            XSSFCell mergeCell67 = row.createCell(519);
-            mergeCell67.setCellStyle(headerStyle_lavender);
-            mergeCell67.setCellValue("출입증 신청 4");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,707,712));
+            XSSFCell mergeCell13_4 = row.createCell(707);
+            mergeCell13_4.setCellStyle(headerStyle_lavender);
+            mergeCell13_4.setCellValue("출입증 신청 4");
 
             // 출입증 신청 5
-            sheet.addMergedRegion(new CellRangeAddress(0,0,525,530));
-            XSSFCell mergeCell68 = row.createCell(525);
-            mergeCell68.setCellStyle(headerStyle_lavender);
-            mergeCell68.setCellValue("출입증 신청 5");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,713,718));
+            XSSFCell mergeCell13_5 = row.createCell(713);
+            mergeCell13_5.setCellStyle(headerStyle_lavender);
+            mergeCell13_5.setCellValue("출입증 신청 5");
 
             // 출입증 신청 6
-            sheet.addMergedRegion(new CellRangeAddress(0,0,531,536));
-            XSSFCell mergeCell69 = row.createCell(531);
-            mergeCell69.setCellStyle(headerStyle_lavender);
-            mergeCell69.setCellValue("출입증 신청 6");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,719,724));
+            XSSFCell mergeCell13_6 = row.createCell(719);
+            mergeCell13_6.setCellStyle(headerStyle_lavender);
+            mergeCell13_6.setCellValue("출입증 신청 6");
 
             // 출입증 신청 7
-            sheet.addMergedRegion(new CellRangeAddress(0,0,537,542));
-            XSSFCell mergeCell70 = row.createCell(537);
-            mergeCell70.setCellStyle(headerStyle_lavender);
-            mergeCell70.setCellValue("출입증 신청 7");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,725,730));
+            XSSFCell mergeCell13_7 = row.createCell(725);
+            mergeCell13_7.setCellStyle(headerStyle_lavender);
+            mergeCell13_7.setCellValue("출입증 신청 7");
 
             // 출입증 신청 8
-            sheet.addMergedRegion(new CellRangeAddress(0,0,543,548));
-            XSSFCell mergeCell71 = row.createCell(543);
-            mergeCell71.setCellStyle(headerStyle_lavender);
-            mergeCell71.setCellValue("출입증 신청 8");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,731,736));
+            XSSFCell mergeCell13_8 = row.createCell(731);
+            mergeCell13_8.setCellStyle(headerStyle_lavender);
+            mergeCell13_8.setCellValue("출입증 신청 8");
 
             // 출입증 신청 9
-            sheet.addMergedRegion(new CellRangeAddress(0,0,549,554));
-            XSSFCell mergeCell72 = row.createCell(549);
-            mergeCell72.setCellStyle(headerStyle_lavender);
-            mergeCell72.setCellValue("출입증 신청 9");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,737,742));
+            XSSFCell mergeCell13_9 = row.createCell(737);
+            mergeCell13_9.setCellStyle(headerStyle_lavender);
+            mergeCell13_9.setCellValue("출입증 신청 9");
 
             // 출입증 신청 10
-            sheet.addMergedRegion(new CellRangeAddress(0,0,555,560));
-            XSSFCell mergeCell73 = row.createCell(555);
-            mergeCell73.setCellStyle(headerStyle_lavender);
-            mergeCell73.setCellValue("출입증 신청 10");
+            sheet.addMergedRegion(new CellRangeAddress(0,0,743,748));
+            XSSFCell mergeCell13_10 = row.createCell(743);
+            mergeCell13_10.setCellStyle(headerStyle_lavender);
+            mergeCell13_10.setCellValue("출입증 신청 10");
 
-            // 바이어 등록 정보 1
-            sheet.addMergedRegion(new CellRangeAddress(0,0,561,574));
-            XSSFCell mergeCell74 = row.createCell(561);
+            // 바이어 등록 정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,749,762));
+            XSSFCell mergeCell74 = row.createCell(749);
             mergeCell74.setCellStyle(headerStyle_rose);
-            mergeCell74.setCellValue("바이어 등록 정보 1");
+            mergeCell74.setCellValue("바이어 등록 정보");
 
-            // 경품 신청 등록 정보 1
-            sheet.addMergedRegion(new CellRangeAddress(0,0,575,584));
-            XSSFCell mergeCell75 = row.createCell(575);
+            // 경품 신청 등록 정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,763,772));
+            XSSFCell mergeCell75 = row.createCell(763);
             mergeCell75.setCellStyle(headerStyle_lemon_chiffon);
-            mergeCell75.setCellValue("경품 신청 등록 정보 1");
+            mergeCell75.setCellValue("경품 신청 등록 정보");
 
             row = sheet.createRow(rowCnt++);
             for (int i = 0; i < colNames_ex.length; i++) {
                 cell = row.createCell(i);
-                if(i < 54) {
+                if(i < 64) {
                     cell.setCellStyle(headerStyle);
-                }else if(i<64){
+                }else if(i<74){
                     cell.setCellStyle(headerStyle_lime);
-                }else if(i<164){
+                }else if(i<334){
                     cell.setCellStyle(headerStyle_light_green);
-                }else if(i<175){
-                    cell.setCellStyle(headerStyle);
-                }else if(i<179){
+                }else if(i<338){
                     cell.setCellStyle(headerStyle_cornflower_blue);
-                }else if(i<479){
+                }else if(i<668){
                     cell.setCellStyle(headerStyle_light_orange);
-                }else if(i<480){
+                }else if(i<669){
                     cell.setCellStyle(headerStyle);
-                }else if(i<491){
+                }else if(i<679){
                     cell.setCellStyle(headerStyle_cornflower_blue);
-                }else if(i<493){
+                }else if(i<681){
                     cell.setCellStyle(headerStyle_light_blue);
-                }else if(i<501){
+                }else if(i<689){
                     cell.setCellStyle(headerStyle_rose);
-                }else if(i<561){
+                }else if(i<749){
                     cell.setCellStyle(headerStyle_lavender);
-                }else if(i<575){
+                }else if(i<763){
                     cell.setCellStyle(headerStyle_rose);
                 }else{
                     cell.setCellStyle(headerStyle_lemon_chiffon);
@@ -4871,15 +5101,15 @@ public class KibsMngController {
             }
 
             // 데이터 조회
-            ExhibitorDetailDTO exhibitorDetailDTO = new ExhibitorDetailDTO();
-            exhibitorDetailDTO.setTransferYear(transferYear);
-            List<ExhibitorDetailDTO> exhibitorDetailList = kibsMngService.processSelectExhibitorDetailList(exhibitorDetailDTO);
+            ExhibitorNewDetailDTO exhibitorNewDetailDTO = new ExhibitorNewDetailDTO();
+            exhibitorNewDetailDTO.setTransferYear(transferYear);
+            List<ExhibitorNewDetailDTO> exhibitorDetailList = kibsMngService.processSelectExhibitorNewDetailList(exhibitorNewDetailDTO);
 
             int cellCnt = 0;
             int listCount = exhibitorDetailList.size();
 
             //데이터 부분 생성
-            for(ExhibitorDetailDTO info : exhibitorDetailList) {
+            for(ExhibitorNewDetailDTO info : exhibitorDetailList) {
                 cellCnt = 0;
                 row = sheet.createRow(rowCnt++);
 
@@ -4906,7 +5136,11 @@ public class KibsMngController {
                 // 참가상태
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getParticipationStatus());
+                if(info.getApprovalStatus().contains("승인")){
+                    cell.setCellValue("참가");
+                }else{
+                    cell.setCellValue("취소");
+                }
 
                 // 승인구분
                 cell = row.createCell(cellCnt++);
@@ -4916,7 +5150,7 @@ public class KibsMngController {
                 // 부스번호
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBoothNum());
+                cell.setCellValue(nvl(info.getBoothNum(),"-"));
 
                 // 아이디
                 cell = row.createCell(cellCnt++);
@@ -4936,11 +5170,28 @@ public class KibsMngController {
                 // 입금현황
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                if("1".equals(info.getPrcYn())){
-                    cell.setCellValue("Y");
-                }else{
-                    cell.setCellValue("N");
+                String prcYn = info.getPrcYn();
+                String prcYn_val = "";
+                if (prcYn != null && !"".equals(prcYn)) {
+                    switch (prcYn) {
+                        case "0":
+                            prcYn_val = "미납";
+                            break;
+                        case "1":
+                            prcYn_val = "참가비 납부";
+                            break;
+                        case "2":
+                            prcYn_val = "50% 납부";
+                            break;
+                        case "3":
+                            prcYn_val = "전액 납부";
+                            break;
+                        case "4":
+                            prcYn_val = "완납(부대시설비)";
+                            break;
+                    }
                 }
+                cell.setCellValue(prcYn_val);
 
                 // BP번호
                 cell = row.createCell(cellCnt++);
@@ -4977,6 +5228,11 @@ public class KibsMngController {
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getReferenceContent());
 
+                // 사업자등록번호
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getCompanyLicenseNum());
+
                 // 회사명(국문)
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
@@ -4987,12 +5243,12 @@ public class KibsMngController {
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getCompanyNameEn());
 
-                // 주소
+                // 본사 주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getCompanyAddress());
 
-                // 상세주소
+                // 본사 상세주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getCompanyAddressDetail());
@@ -5042,16 +5298,6 @@ public class KibsMngController {
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getEmployeeCnt());
 
-                // 사업자등록증
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyLicense());
-
-                // 사업자등록번호
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyLicenseNum());
-
                 // 기참가연도
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
@@ -5062,25 +5308,46 @@ public class KibsMngController {
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getMemberCompanyYn());
 
-                // 블로그
+                // 대표담당자 정보
+                // 성명
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSnsBlog());
+                cell.setCellValue(info.getName());
 
-                // 페이스북
+                // 직위
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSnsFacebook());
+                cell.setCellValue(info.getPosition());
 
-                // 인스타그램
+                // 부서
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSnsInstagram());
+                cell.setCellValue(info.getDepart());
 
-                // 기타
+                // 전화번호
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSnsEtc());
+                cell.setCellValue(info.getTel());
+
+                // 휴대전화
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getPhone());
+
+                // 이메일
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getEmail());
+
+                // 이메일 마케팅 수신동의
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                String emailMarketingYn = info.getEmailMarketingYn();
+                String emailMarketingYnVal = "동의";
+                if("N".equals(emailMarketingYn)){
+                    emailMarketingYnVal = "미동의";
+                }
+                cell.setCellValue(emailMarketingYnVal);
 
                 // 담당자정보
                 for(int i=0; i<3; i++){
@@ -5175,158 +5442,13 @@ public class KibsMngController {
                     cell.setCellValue(convertValue(chargePersonEmailSplit, i));
                 }
 
-                // 참가분야
-                String fieldPart = "";
-                if(info.getFieldPart() != null && !"".equals(info.getFieldPart())) {
-                    fieldPart = info.getFieldPart().replaceAll(" ","");
-                }
-
-                // 요트·보트전
+                // 회사소개영상
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                if(fieldPart.contains("요트·보트전")){
-                    cell.setCellValue("O");
+                if(info.getCompanyIntroVideo() != null && !"".equals(info.getCompanyIntroVideo())){
+                    cell.setCellValue("https://www.youtube.com/embed/" + info.getCompanyIntroVideo());
                 }else{
                     cell.setCellValue("");
-                }
-
-                // 무동력보트전
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(fieldPart.contains("무동력보트전")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 워크보트전
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(fieldPart.contains("워크보트전")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 해양레저관
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(fieldPart.contains("해양레저관")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 카라반쇼
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(fieldPart.contains("카라반쇼")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 아라마리나 교육 및 체험 프로그램
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(fieldPart.contains("아라마리나")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 해양부품·안전·마리나산업전
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(fieldPart.contains("해양부품")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 친환경 특별전
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(fieldPart.contains("친환경")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 한국해양관광전
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(fieldPart.contains("한국해양관광전")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 보트정비관
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(fieldPart.contains("보트정비관")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 전시품목
-                for(int i=0; i<20; i++){
-                    // 전시품목
-                    String[] displayItemSplit = new String[3];
-                    if(info.getDisplayItem().contains("^")){
-                        displayItemSplit = info.getDisplayItem().split("\\^");
-                    }else{
-                        displayItemSplit[0] = info.getDisplayItem();
-                    }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(displayItemSplit, i));
-
-                    // 브랜드명
-                    String[] displayBrandSplit = new String[3];
-                    if(info.getDisplayBrand().contains("^")){
-                        displayBrandSplit = info.getDisplayBrand().split("\\^");
-                    }else{
-                        displayBrandSplit[0] = info.getDisplayBrand();
-                    }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(displayBrandSplit, i));
-
-                    // 실물보트수
-                    String[] displayBoatCntSplit = new String[3];
-                    if(info.getDisplayBoatCnt().contains("^")){
-                        displayBoatCntSplit = info.getDisplayBoatCnt().split("\\^");
-                    }else{
-                        displayBoatCntSplit[0] = info.getDisplayBoatCnt();
-                    }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(displayBoatCntSplit, i));
-
-                    // 전시품소개(국)
-                    String[] displayItemIntroKoSplit = new String[3];
-                    if(info.getDisplayItemIntroKo().contains("^")){
-                        displayItemIntroKoSplit = info.getDisplayItemIntroKo().split("\\^");
-                    }else{
-                        displayItemIntroKoSplit[0] = info.getDisplayItemIntroKo();
-                    }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(displayItemIntroKoSplit, i));
-
-                    // 전시품소개(영)
-                    String[] displayItemIntroEnSplit = new String[3];
-                    if(info.getDisplayItemIntroEn().contains("^")){
-                        displayItemIntroEnSplit = info.getDisplayItemIntroEn().split("\\^");
-                    }else{
-                        displayItemIntroEnSplit[0] = info.getDisplayItemIntroEn();
-                    }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(displayItemIntroEnSplit, i));
                 }
 
                 // 회사소개(국문)
@@ -5359,34 +5481,263 @@ public class KibsMngController {
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getNewItemIntroEn());
 
-                // 우리 기업 부스 ~
+                // 프로모션 정보
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBoothVisitReason());
+                cell.setCellValue(info.getPromotionPlan());
 
-                // 행사/이벤트 진행계획
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEventPlan());
+                // 참가분야
+                String fieldPart = "";
+                if(info.getFieldPart() != null && !"".equals(info.getFieldPart())) {
+                    fieldPart = info.getFieldPart().replaceAll(" ","");
+                }
 
-                // 사무국 요청사항
+                // 보트&요트
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getOfficeRequest());
-
-                // 회사소개영상
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(info.getCompanyIntroVideo() != null && !"".equals(info.getCompanyIntroVideo())){
-                    cell.setCellValue("https://www.youtube.com/embed/" + info.getCompanyIntroVideo());
+                if(fieldPart.contains("보트&요트")){
+                    cell.setCellValue("O");
                 }else{
                     cell.setCellValue("");
                 }
 
-                // 온라인 전시관 노출 여부
+                // 무동력보트
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyOnlineViewYn());
+                if(fieldPart.contains("무동력보트")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 워크보트
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(fieldPart.contains("워크보트")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 부품&장비
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(fieldPart.contains("부품&장비")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 안전&마리나
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(fieldPart.contains("안전&마리나")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 해양관광
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(fieldPart.contains("해양관광")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 해양레저
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(fieldPart.contains("해양레저")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 수중레저
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(fieldPart.contains("수중레저")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 서핑
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(fieldPart.contains("서핑")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 카라반&캠핑
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(fieldPart.contains("카라반&캠핑")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 전시품목
+                for(int i=0; i<20; i++){
+                    // 제품분류(품목)
+                    String[] productOptionBigSplit = new String[20];
+                    if(info.getProductOptionBig().contains("^")){
+                        productOptionBigSplit = info.getProductOptionBig().split("\\^");
+                    }else{
+                        productOptionBigSplit[0] = info.getProductOptionBig();
+                    }
+                    String[] productOptionSmallSplit = new String[20];
+                    if(info.getProductOptionSmall().contains("^")){
+                        productOptionSmallSplit = info.getProductOptionSmall().split("\\^");
+                    }else{
+                        productOptionSmallSplit[0] = info.getProductOptionSmall();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    String productOptionBig = convertValue(productOptionBigSplit, i);
+                    String productOptionVal = "";
+                    if(productOptionBig != null && !productOptionBig.isEmpty()){
+                        productOptionVal = productOptionBig + " / " + convertValue(productOptionSmallSplit, i);
+                    }
+                    cell.setCellValue(productOptionVal);
+
+                    // 제품명
+                    String[] productNameKoSplit = new String[20];
+                    if(info.getProductNameKo().contains("^")){
+                        productNameKoSplit = info.getProductNameKo().split("\\^");
+                    }else{
+                        productNameKoSplit[0] = info.getProductNameKo();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(productNameKoSplit, i));
+
+                    // 수량
+                    String[] productQtySplit = new String[20];
+                    if(info.getProductQty().contains("^")){
+                        productQtySplit = info.getProductQty().split("\\^");
+                    }else{
+                        productQtySplit[0] = info.getProductQty();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(productQtySplit, i));
+
+                    // 브랜드
+                    String[] productBrandSplit = new String[20];
+                    if(info.getProductBrand().contains("^")){
+                        productBrandSplit = info.getProductBrand().split("\\^");
+                    }else{
+                        productBrandSplit[0] = info.getProductBrand();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(productBrandSplit, i));
+
+                    // 길이
+                    String[] productLengthSplit = new String[20];
+                    if(info.getProductLength().contains("^")){
+                        productLengthSplit = info.getProductLength().split("\\^");
+                    }else{
+                        productLengthSplit[0] = info.getProductLength();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(productLengthSplit, i));
+
+                    // 너비
+                    String[] productWidthSplit = new String[20];
+                    if(info.getProductWidth().contains("^")){
+                        productWidthSplit = info.getProductWidth().split("\\^");
+                    }else{
+                        productWidthSplit[0] = info.getProductWidth();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(productWidthSplit, i));
+
+                    // 높이
+                    String[] productHeightSplit = new String[20];
+                    if(info.getProductHeight().contains("^")){
+                        productHeightSplit = info.getProductHeight().split("\\^");
+                    }else{
+                        productHeightSplit[0] = info.getProductHeight();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(productHeightSplit, i));
+
+                    // 중량
+                    String[] productWeightSplit = new String[20];
+                    if(info.getProductWeight().contains("^")){
+                        productWeightSplit = info.getProductWeight().split("\\^");
+                    }else{
+                        productWeightSplit[0] = info.getProductWeight();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(productWeightSplit, i));
+
+                    // 소재
+                    String[] productMaterialSplit = new String[20];
+                    if(info.getProductMaterial().contains("^")){
+                        productMaterialSplit = info.getProductMaterial().split("\\^");
+                    }else{
+                        productMaterialSplit[0] = info.getProductMaterial();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(productMaterialSplit, i));
+
+                    // 연식
+                    String[] productYearSplit = new String[20];
+                    if(info.getProductYear().contains("^")){
+                        productYearSplit = info.getProductYear().split("\\^");
+                    }else{
+                        productYearSplit[0] = info.getProductYear();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(productYearSplit, i));
+
+                    // 제품설명(국)
+                    String[] productIntroKoSplit = new String[20];
+                    if(info.getProductIntroKo().contains("^")){
+                        productIntroKoSplit = info.getProductIntroKo().split("\\^");
+                    }else{
+                        productIntroKoSplit[0] = info.getProductIntroKo();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(productIntroKoSplit, i));
+
+                    // 제품설명(영)
+                    String[] productIntroEnSplit = new String[20];
+                    if(info.getProductIntroEn().contains("^")){
+                        productIntroEnSplit = info.getProductIntroEn().split("\\^");
+                    }else{
+                        productIntroEnSplit[0] = info.getProductIntroEn();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(productIntroEnSplit, i));
+
+                    // 제품링크
+                    String[] productLinkSplit = new String[20];
+                    if(info.getProductLink().contains("^")){
+                        productLinkSplit = info.getProductLink().split("\\^");
+                    }else{
+                        productLinkSplit[0] = info.getProductLink();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(productLinkSplit, i));
+                }
 
                 // 기업 뱃지
                 String companyBadge = "";
@@ -5432,129 +5783,148 @@ public class KibsMngController {
 
                 // 제품
                 for(int i=0; i<30; i++) {
-                    // 제품사진
+                    // 제품분류(품목)
+                    String[] onlineOptionBigSplit = new String[30];
+                    if(info.getOnlineOptionBig().contains("^")){
+                        onlineOptionBigSplit = info.getOnlineOptionBig().split("\\^");
+                    }else{
+                        onlineOptionBigSplit[0] = info.getOnlineOptionBig();
+                    }
+                    String[] onlineOptionSmallSplit = new String[30];
+                    if(info.getOnlineOptionSmall().contains("^")){
+                        onlineOptionSmallSplit = info.getOnlineOptionSmall().split("\\^");
+                    }else{
+                        onlineOptionSmallSplit[0] = info.getOnlineOptionSmall();
+                    }
                     cell = row.createCell(cellCnt++);
                     cell.setCellStyle(bodyStyle);
-                    String[] productPhotoSplit = new String[30];
-                    if(info.getProductNameKo().contains("^")){
-                        productPhotoSplit = info.getProductNameKo().split("\\^");
-                    }else{
-                        productPhotoSplit[0] = "-";
+                    String onlineOptionBig = convertValue(onlineOptionBigSplit, i);
+                    String onlineOptionVal = "";
+                    if(onlineOptionBig != null && !onlineOptionBig.isEmpty()){
+                        onlineOptionVal = onlineOptionBig + " / " + convertValue(onlineOptionSmallSplit, i);
                     }
-                    if(!"".equals(convertValue(productPhotoSplit, i))){
-                        cell.setCellValue("-");
-                    }else{
-                        cell.setCellValue("");
-                    }
+                    cell.setCellValue(onlineOptionVal);
 
-                    // 제품명(국문)
-                    String[] productNameKoSplit = new String[30];
-                    if(info.getProductNameKo().contains("^")){
-                        productNameKoSplit = info.getProductNameKo().split("\\^");
+                    // 제품명
+                    String[] onlineNameKoSplit = new String[30];
+                    if(info.getOnlineNameKo().contains("^")){
+                        onlineNameKoSplit = info.getOnlineNameKo().split("\\^");
                     }else{
-                        productNameKoSplit[0] = info.getProductNameKo();
+                        onlineNameKoSplit[0] = info.getOnlineNameKo();
                     }
                     cell = row.createCell(cellCnt++);
                     cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(productNameKoSplit, i));
+                    cell.setCellValue(convertValue(onlineNameKoSplit, i));
 
-                    // 제품명(영문)
-                    String[] productNameEnSplit = new String[30];
-                    if(info.getProductNameEn().contains("^")){
-                        productNameEnSplit = info.getProductNameEn().split("\\^");
+                    // 제품설명(국)
+                    String[] onlineIntroKoSplit = new String[30];
+                    if(info.getOnlineIntroKo().contains("^")){
+                        onlineIntroKoSplit = info.getOnlineIntroKo().split("\\^");
                     }else{
-                        productNameEnSplit[0] = info.getProductNameEn();
+                        onlineIntroKoSplit[0] = info.getOnlineIntroKo();
                     }
                     cell = row.createCell(cellCnt++);
                     cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(productNameEnSplit, i));
+                    cell.setCellValue(convertValue(onlineIntroKoSplit, i));
 
-                    // 제품분류(대)
-                    String[] productOptionBigSplit = new String[30];
-                    if(info.getProductOptionBig().contains("^")){
-                        productOptionBigSplit = info.getProductOptionBig().split("\\^");
+                    // 제품설명(영)
+                    String[] onlineIntroEnSplit = new String[30];
+                    if(info.getOnlineIntroEn().contains("^")){
+                        onlineIntroEnSplit = info.getOnlineIntroEn().split("\\^");
                     }else{
-                        productOptionBigSplit[0] = info.getProductOptionBig();
+                        onlineIntroEnSplit[0] = info.getOnlineIntroEn();
                     }
                     cell = row.createCell(cellCnt++);
                     cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(productOptionBigSplit, i));
+                    cell.setCellValue(convertValue(onlineIntroEnSplit, i));
 
-                    // 제품분류(소)
-                    String[] productOptionSmallSplit = new String[30];
-                    if(info.getProductOptionSmall().contains("^")){
-                        productOptionSmallSplit = info.getProductOptionSmall().split("\\^");
+                    // 제품링크
+                    String[] onlineLinkSplit = new String[30];
+                    if(info.getOnlineLink().contains("^")){
+                        onlineLinkSplit = info.getOnlineLink().split("\\^");
                     }else{
-                        productOptionSmallSplit[0] = info.getProductOptionSmall();
+                        onlineLinkSplit[0] = info.getOnlineLink();
                     }
                     cell = row.createCell(cellCnt++);
                     cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(productOptionSmallSplit, i));
+                    cell.setCellValue(convertValue(onlineLinkSplit, i));
+                    
+                    // 길이
+                    String[] onlineLengthSplit = new String[30];
+                    if(info.getOnlineLength().contains("^")){
+                        onlineLengthSplit = info.getOnlineLength().split("\\^");
+                    }else{
+                        onlineLengthSplit[0] = info.getOnlineLength();
+                    }
+                    cell = row.createCell(cellCnt++);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(convertValue(onlineLengthSplit, i));
 
-                    // 제품설명(국문)
-                    String[] productIntroKoSplit = new String[30];
-                    if(info.getProductIntroKo().contains("^")){
-                        productIntroKoSplit = info.getProductIntroKo().split("\\^");
+                    // 너비
+                    String[] onlineWidthSplit = new String[30];
+                    if(info.getOnlineWidth().contains("^")){
+                        onlineWidthSplit = info.getOnlineWidth().split("\\^");
                     }else{
-                        productIntroKoSplit[0] = info.getProductIntroKo();
+                        onlineWidthSplit[0] = info.getOnlineWidth();
                     }
                     cell = row.createCell(cellCnt++);
                     cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(productIntroKoSplit, i));
+                    cell.setCellValue(convertValue(onlineWidthSplit, i));
 
-                    // 제품설명(영문)
-                    String[] productIntroEnSplit = new String[30];
-                    if(info.getProductIntroEn().contains("^")){
-                        productIntroEnSplit = info.getProductIntroEn().split("\\^");
+                    // 높이
+                    String[] onlineHeightSplit = new String[30];
+                    if(info.getOnlineHeight().contains("^")){
+                        onlineHeightSplit = info.getOnlineHeight().split("\\^");
                     }else{
-                        productIntroEnSplit[0] = info.getProductIntroEn();
+                        onlineHeightSplit[0] = info.getOnlineHeight();
                     }
                     cell = row.createCell(cellCnt++);
                     cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(productIntroEnSplit, i));
+                    cell.setCellValue(convertValue(onlineHeightSplit, i));
 
-                    // 제품영상
-                    String[] productIntroVideoSplit = new String[30];
-                    if(info.getProductIntroVideo().contains("^")){
-                        productIntroVideoSplit = info.getProductIntroVideo().split("\\^");
+                    // 중량
+                    String[] onlineWeightSplit = new String[30];
+                    if(info.getOnlineWeight().contains("^")){
+                        onlineWeightSplit = info.getOnlineWeight().split("\\^");
                     }else{
-                        productIntroVideoSplit[0] = info.getProductIntroVideo();
+                        onlineWeightSplit[0] = info.getOnlineWeight();
                     }
                     cell = row.createCell(cellCnt++);
                     cell.setCellStyle(bodyStyle);
-                    if(convertValue(productIntroVideoSplit, i) != null && !"".equals(convertValue(productIntroVideoSplit, i))){
-                        cell.setCellValue("https://www.youtube.com/embed/" + convertValue(productIntroVideoSplit, i));
-                    }else{
-                        cell.setCellValue("");
-                    }
+                    cell.setCellValue(convertValue(onlineWeightSplit, i));
 
-                    // 전장
-                    String[] productWidthSplit = new String[30];
-                    if(info.getProductWidth().contains("^")){
-                        productWidthSplit = info.getProductWidth().split("\\^");
+                    // 소재
+                    String[] onlineMaterialSplit = new String[30];
+                    if(info.getOnlineMaterial().contains("^")){
+                        onlineMaterialSplit = info.getOnlineMaterial().split("\\^");
                     }else{
-                        productWidthSplit[0] = info.getProductWidth();
+                        onlineMaterialSplit[0] = info.getOnlineMaterial();
                     }
                     cell = row.createCell(cellCnt++);
                     cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(productWidthSplit, i));
+                    cell.setCellValue(convertValue(onlineMaterialSplit, i));
 
-                    // 마력
-                    String[] productHorsePowerSplit = new String[30];
-                    if(info.getProductHorsePower().contains("^")){
-                        productHorsePowerSplit = info.getProductHorsePower().split("\\^");
+                    // 연식
+                    String[] onlineYearSplit = new String[30];
+                    if(info.getOnlineYear().contains("^")){
+                        onlineYearSplit = info.getOnlineYear().split("\\^");
                     }else{
-                        productHorsePowerSplit[0] = info.getProductHorsePower();
+                        onlineYearSplit[0] = info.getOnlineYear();
                     }
                     cell = row.createCell(cellCnt++);
                     cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(productHorsePowerSplit, i));
+                    cell.setCellValue(convertValue(onlineYearSplit, i));
                 }
 
-                // 비즈니스 상담 참가희망 여부
+                // 수출상담회 참가희망 여부
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getExportMeetingYn());
+                String exportMeetingYn = info.getExportMeetingYn();
+                String exportMeetingYn_val = "참가";
+                if("N".equals(exportMeetingYn)){
+                    exportMeetingYn_val = "참가 안 함";
+                }
+                cell.setCellValue(exportMeetingYn_val);
 
                 // 등록비
                 cell = row.createCell(cellCnt++);
@@ -5616,15 +5986,6 @@ public class KibsMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 if(info.getDiscountScale3()){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 첫참가할인
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(info.getDiscountFirst()){
                     cell.setCellValue("O");
                 }else{
                     cell.setCellValue("");
@@ -6018,7 +6379,7 @@ public class KibsMngController {
             //너비를 자동으로 다시 설정
             for (int i = 0; i < colNames_ex.length; i++) {
                 sheet.autoSizeColumn(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
+                sheet.setColumnWidth(i, Math.min(255 * 256, sheet.getColumnWidth(i) + 1024));
             }
 
             // excel 파일 저장
@@ -9129,6 +9490,16 @@ public class KibsMngController {
         ResponseDTO responseDTO = kibsMngService.processMailSend(mailRequestDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    public String nvl(String str, String repStr){
+        String result = "";
+        if(str == null || str.isEmpty()){
+            result = repStr;
+        }else{
+            result = str;
+        }
+        return result;
     }
 
 }

@@ -82,7 +82,7 @@ function f_application_booth_search(){
             Swal.fire({
                 icon: 'info',
                 title: '[ 검색 조건 확인 ]',
-                html: '<span style="font-size: 1.4em;">검색 조건이 신청갯수일 경우<br>숫자로만 검색 가능합니다.</span>',
+                html: '<span style="font-size: 1.2em;">검색 조건이 신청갯수일 경우<br>숫자로만 검색 가능합니다.</span>',
                 allowOutsideClick: false,
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: '확인'

@@ -1,0 +1,37 @@
+.inv_wrap {width: 800px; background: #fff; font-size: 13px;}
+.inv_wrap .inv_box {padding: 40px;}
+.inv_wrap .cont_box {margin-bottom: 35px;}
+.inv_wrap .text-c {text-align: center !important;}
+.inv_wrap .text-r {text-align: right !important;}
+.inv_wrap .text-l {text-align: left !important;}
+.inv_wrap .title {font-size: 18px; font-weight: 700;}
+.inv_wrap .table {width: 100%; margin-top: 10px;}
+.inv_wrap .table table {width: 100%; margin: 0; padding: 0; border: 0; border-collapse: collapse; border-spacing: 0;}
+.inv_wrap .table th,
+.inv_wrap .table td {padding: 5px; border: 1px solid #aaa; text-align: center;}
+.inv_wrap .table th {background: #ddd; font-weight: 700;}
+.inv_wrap .table .none {border: 0; font-size: 0;}
+.inv_wrap .table .sub_total {font-weight: 700;}
+.inv_wrap .table .total {font-weight: 700; font-size: 15px;}
+.inv_wrap .table .final_total {font-weight: 700; font-size: 15px; color: blue;}
+.inv_wrap .cmnt > div {margin-top: 5px; font-size: 14px;}
+.inv_wrap .cmnt > div::before {display: inline-block; content: "■"; margin-right: 5px;}
+
+.inv_wrap .top_box {font-size: 0; margin-bottom: 35px;}
+.inv_wrap .top_box .box {margin-bottom: 10px;}
+.inv_wrap .top_box .event {display: inline-block; vertical-align: middle; width: calc(100% - 280px);}
+.inv_wrap .top_box .event .logo img {height: 45px;}
+.inv_wrap .top_box .event .date {font-weight: 700; margin-top: 5px; color: #1D5CAD; font-size: 13px;}
+.inv_wrap .top_box .doc {display: inline-block; vertical-align: middle;  width: 280px; text-align: right; font-size: 30px; font-weight: 700; margin-bottom: 21px;}
+.inv_wrap .top_box .info {width: 50%; display: inline-block; vertical-align: bottom;}
+.inv_wrap .top_box .info > div {font-size: 13px; display: inline-block; margin-right: 10px;  margin-top: 2px;}
+.inv_wrap .top_box .info .secr {font-size: 16px; font-weight: 700; display: block;}
+.inv_wrap .top_box .issue {width: 50%; font-size: 13px; display: inline-block; vertical-align: bottom;}
+.inv_wrap .top_box .issue table {margin-left: auto;}
+.inv_wrap .top_box .issue table td {text-align: right; min-width: 100px; padding-left: 8px;}
+.inv_wrap .top_box .issue table th {text-align: left; font-weight: 700; position: relative; padding-right: 10px;}
+.inv_wrap .top_box .issue table th::after {display: inline-block; content: ":"; position: absolute; right: 0;}
+.inv_wrap .bot_box .secr {text-align: center; font-size: 30px; font-weight: 700;}
+.inv_wrap .bot_box .secr .sm {display: inline-block; margin-left: 5px; font-size: 18px; font-weight: 500;}
+.inv_wrap .bot_box .logo {text-align: center; margin-top: 15px;}
+.inv_wrap .bot_box .logo img {height: 25px;}

@@ -87,6 +87,13 @@ if (document.documentElement) {
 
 <c:if test="${sessionScope.get('status') eq 'logon'}">
 
+    <!--begin::Page loading(append to body)-->
+    <div class="page-loader flex-column bg-dark bg-opacity-25">
+        <span class="spinner-border text-primary" role="status"></span>
+        <span class="text-gray-800 fs-6 fw-semibold mt-5">Loading...</span>
+    </div>
+    <!--end::Page loading-->
+
     <!--begin::App-->
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
         <!--begin::Page-->
@@ -2611,8 +2618,9 @@ if (document.documentElement) {
                                                 <a href="/mng/exhibitorNew/application/utility.do" class="btn btn-info btn-active-light-info cursor-pointer">목록</a>
                                             </div>
                                             <div>
-                                                <button type="button" onclick="f_application_utility_new_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
-                                                <button type="button" onclick="f_application_utility_new_save('${info.seq}')" class="btn btn-primary btn-active-light-primary">변경내용저장</button>
+                                                <button type="button" onclick="f_application_utility_new_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger">변경내용취소</button>
+                                                <button type="button" onclick="f_application_utility_new_save('${info.seq}')" class="btn btn-primary btn-active-light-primary ms-2 me-2">변경내용저장</button>
+                                                <button type="button" onclick="f_invoice_utility_create('${info.seq}', '${info.companyNameKo}')" class="btn btn-dark btn-active-light-dark">인보이스 생성</button>
                                             </div>
                                         </div>
                                         <!--end::Actions-->
@@ -2620,6 +2628,92 @@ if (document.documentElement) {
                                     <!--end::Basic info-->
                                 </form>
                                 <!--end::form-->
+
+                                <!--begin::Basic info-->
+                                <div class="card mb-5 mb-xl-10">
+                                    <!--begin::Card header-->
+                                    <div class="card-header border-0">
+                                        <!--begin::Card title-->
+                                        <div class="card-title m-0">
+                                            <h3 class="fw-bold m-0">인보이스</h3>
+                                        </div>
+                                        <!--end::Card title-->
+                                    </div>
+                                    <!--begin::Card header-->
+                                    <!--begin::Content-->
+                                    <div id="kt_invoice_info">
+                                        <!--begin::Card body-->
+                                        <div class="card-body border-top p-9">
+                                            <!--begin::Table container-->
+                                            <div class="table-responsive">
+                                                <!--begin::Table-->
+                                                <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border gy-7 gs-7">
+                                                    <!--begin::Table head-->
+                                                    <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
+                                                        <tr class="text-center">
+                                                            <th>선택</th>
+                                                            <th>NO</th>
+                                                            <th>제목</th>
+                                                            <th>수신상태</th>
+                                                            <th>발송결과</th>
+                                                            <th>발송일시</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <!--end::Table head-->
+                                                    <!--begin::Table body-->
+                                                    <tbody>
+                                                        <c:if test="${not empty invoiceList}">
+                                                            <c:forEach var="invoice" items="${invoiceList}" begin="0" end="${invoiceList.size()}" step="1" varStatus="status">
+                                                                <tr class="text-center align-middle">
+                                                                    <td>
+                                                                        <span class="fw-semibold d-block fs-7">
+                                                                            <input type="hidden" name="filePath" value="${invoice.filePath}"/>
+                                                                            <input type="checkbox" name="invoiceSeq" value="${invoice.seq}" class="form-check-input form-control-solid-bg" onclick="f_invoice_checkbox_sel(this);">
+                                                                        </span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span class="fw-semibold d-block fs-7">${invoice.invoiceCode}</span>
+                                                                    </td>
+                                                                    <td class="td_title">
+                                                                        <span class="fw-semibold d-block fs-7">${invoice.title}</span>
+                                                                    </td>
+                                                                    <td class="td_sendStatus">
+                                                                        <span class="fw-semibold d-block fs-7">${invoice.sendStatus}</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span class="fw-semibold d-block fs-7">[${invoice.sendResult eq null ? '-' : invoice.sendResult}] ${invoice.sendResultMsg eq null ? '-' : invoice.sendResultMsg}</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span class="fw-semibold d-block fs-7">${invoice.sendDttm eq null ? '-' : invoice.sendDttm}</span>
+                                                                    </td>
+                                                                </tr>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                        <c:if test="${empty invoiceList}">
+                                                            <tr><td colspan="6" style="text-align: center;">인보이스 내역 없음</td></tr>
+                                                        </c:if>
+                                                    </tbody>
+                                                    <!--end::Table body-->
+                                                </table>
+                                                <!--end::Table-->
+                                            </div>
+                                            <!--begin::Table container-->
+                                        </div>
+                                        <!--end::Card body-->
+                                        <!--begin::Basic info-->
+                                        <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                            <div>
+                                                <button type="button" onclick="f_invoice_utility_delete('${info.seq}')" class="btn btn-danger btn-active-light-danger">삭제</button>
+                                                <button type="button" id="previewBtn" class="btn btn-primary btn-active-light-primary ms-2 me-2" data-bs-target="#kt_modal_invoice_form">미리보기</button>
+                                                <button type="button" onclick="f_invoice_utility_send('${info.seq}')" class="btn btn-dark btn-active-light-dark">발송</button>
+                                            </div>
+                                        </div>
+                                        <!--end::Basic info-->
+                                    </div>
+                                    <!--end::Content-->
+                                </div>
+                                <!--end::Basic info-->
+
                             </div>
                             <!--end::Content container-->
                         </div>
@@ -2674,7 +2768,62 @@ if (document.documentElement) {
     </div>
     <!--end::Scrolltop-->
 
-    <!--begin::Javascript-->
+    <!--begin::Modal - 수정이력-->
+    <div class="modal fade" id="kt_modal_invoice_form" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 840px;">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header" style="background-color: #1e1e2d;">
+                    <!--begin::Modal title-->
+                    <h2 style="color: #FFFFFF;">인보이스 정보</h2>
+                    <!--end::Modal title-->
+
+                    <div>
+                        <!--begin::Btn-->
+                        <div class="btn btn-sm btn-icon btn-active-color-primary" onclick="f_invoice_utility_download();">
+                            <i class="ki-duotone ki-file-down fs-1">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                        </div>
+                        <!--end::Btn-->
+                        <!--begin::Btn-->
+                        <div class="btn btn-sm btn-icon btn-active-color-primary" onclick="f_invoice_utility_print();">
+                            <i class="ki-duotone ki-printer fs-1">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                                <span class="path5"></span>
+                            </i>
+                        </div>
+                        <!--end::Btn-->
+                        <!--begin::Btn-->
+                        <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                            <i class="ki-duotone ki-cross fs-1">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                        </div>
+                        <!--end::Btn-->
+                    </div>
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-5 px-lg-5">
+                    <div class="card card-flush">
+                        <iframe id="detailForm" name="detailForm" width="100%" height="700" allowtransparency="true"></iframe>
+                    </div>
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - 수정이력-->
 
     <script>var hostUrl = "/assets/";</script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
@@ -2693,6 +2842,10 @@ if (document.documentElement) {
     <script src="/assets/js/custom/utilities/modals/create-app.js"></script>
     <script src="/assets/js/custom/utilities/modals/users-search.js"></script>
     <!--end::Custom Javascript-->
+
+    <%--PDF--%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>

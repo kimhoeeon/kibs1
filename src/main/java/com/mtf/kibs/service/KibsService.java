@@ -80,8 +80,6 @@ public interface KibsService {
     ExhibitorDTO processSelectPreExhibitorSingle(ExhibitorDTO exhibitorDTO);
 
 
-
-
     ResponseDTO processUpdateExhibitBooth(ExhibitorDTO exhibitorDTO);
 
     ResponseDTO processUpdateCompanySign(ExhibitorDTO exhibitorDTO);
@@ -106,11 +104,15 @@ public interface KibsService {
 
     List<OnlineDTO> processSelectOnlineInfoList(String seq);
 
+    List<ProductNewDTO> processSelectProductNewInfoList(String seq);
+
     List<OnlineNewDTO> processSelectOnlineNewInfoList(String seq);
 
     List<FileDTO> processSelectFileList(String seq);
 
     OnlineDTO processSelectOnlineInfo(String seq);
+
+    ProductNewDTO processSelectProductNewInfo(String seq);
 
     OnlineNewDTO processSelectOnlineNewInfo(String seq);
 
@@ -208,6 +210,8 @@ public interface KibsService {
 
     List<PopupDTO> processSelectPopupList(PopupDTO popupDTO);
 
+    PopupDTO processSelectPopupSingle(PopupDTO popupDTO);
+
     void processStatisticsAccessor();
 
     List<ChargePersonDTO> processSelectChargeEmail(ChargePersonDTO chargePersonDTO);
@@ -222,7 +226,7 @@ public interface KibsService {
 
     ResponseDTO processSaveVisitor(VisitorDTO visitorDTO);
 
-    SearchCompanyResponseDTO processSearchCompany(SearchCompanyRequestDTO searchCompanyRequestDTO) ;
+    SearchCompanyResponseDTO processSearchCompany(SearchCompanyRequestDTO searchCompanyRequestDTO);
 
     VisitorDTO processSelectVisitorSingle(String seq);
 
