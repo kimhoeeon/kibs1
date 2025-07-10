@@ -47,4 +47,11 @@
         ORDER BY id
     </select>
 
+    <delete id="deleteFileUserId" parameterType="com.mtf.kibs.dto.FileDTO">
+        /* com.mtf.kibs.mapper.CommMapper.deleteFileUserId */
+        DELETE
+        FROM file
+        WHERE user_id = #{userId}
+    </delete>
+
 </mapper>

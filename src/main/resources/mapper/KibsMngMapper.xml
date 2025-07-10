@@ -6192,5 +6192,59 @@
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
-    
+
+    <delete id="deleteExhibitorNew" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteExhibitorNew */
+        DELETE FROM exhibitor_new
+        WHERE seq = #{seq}
+    </delete>
+
+    <delete id="deleteChargeNew" parameterType="com.mtf.kibs.dto.ChargeNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteChargeNew */
+        DELETE FROM charge_new
+        WHERE ex_seq = #{exSeq}
+    </delete>
+
+    <delete id="deleteProductNew" parameterType="com.mtf.kibs.dto.ProductNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteProductNew */
+        DELETE FROM product_new
+        WHERE ex_seq = #{exSeq}
+    </delete>
+
+    <delete id="deleteOnlineNew" parameterType="com.mtf.kibs.dto.OnlineNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteOnlineNew */
+        DELETE FROM online_new
+        WHERE ex_seq = #{exSeq}
+    </delete>
+
+    <delete id="deletePassNew" parameterType="com.mtf.kibs.dto.PassNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deletePassNew */
+        DELETE FROM pass_new
+        WHERE ex_seq = #{exSeq}
+    </delete>
+
+    <delete id="deleteGiftNew" parameterType="com.mtf.kibs.dto.GiftNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteGiftNew */
+        DELETE FROM gift_new
+        WHERE ex_seq = #{exSeq}
+    </delete>
+
+    <delete id="deleteBuyerNew" parameterType="com.mtf.kibs.dto.BuyerNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteBuyerNew */
+        DELETE FROM buyer_new
+        WHERE ex_seq = #{exSeq}
+    </delete>
+
+    <delete id="deleteInvoiceBooth" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteInvoiceBooth */
+        DELETE FROM invoice_booth
+        WHERE ex_seq = #{exSeq}
+    </delete>
+
+    <delete id="deleteInvoiceUtility" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteInvoiceUtility */
+        DELETE FROM invoice_utility
+        WHERE ex_seq = #{exSeq}
+    </delete>
+
 </mapper>

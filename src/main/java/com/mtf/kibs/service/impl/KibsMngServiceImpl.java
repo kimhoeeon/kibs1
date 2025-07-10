@@ -3,6 +3,7 @@ package com.mtf.kibs.service.impl;
 import com.google.gson.JsonObject;
 import com.mtf.kibs.constants.CommConstants;
 import com.mtf.kibs.dto.*;
+import com.mtf.kibs.mapper.CommMapper;
 import com.mtf.kibs.mapper.KibsMngMapper;
 import com.mtf.kibs.service.KibsMngService;
 import com.mtf.kibs.util.StringUtil;
@@ -46,6 +47,9 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Setter(onMethod_ = {@Autowired})
     private KibsMngMapper kibsMngMapper;
+
+    @Setter(onMethod_ = {@Autowired})
+    private CommMapper commMapper;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
@@ -2395,6 +2399,83 @@ public class KibsMngServiceImpl implements KibsMngService {
             updFileDTO.setNote("productImage" + onlineNote + "_" + (i+1));
             Integer updFileNote = kibsMngMapper.updateProductImageFileNote(updFileDTO);
         }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteExhibitorNew(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngServiceImpl > processDeleteExhibitorNew");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(exhibitorNewDTO.getSeq() != null){
+                result = kibsMngMapper.deleteExhibitorNew(exhibitorNewDTO);
+
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + exhibitorNewDTO.getSeq();
+                }else{
+                    /* charge_new */
+                    ChargeNewDTO chargeNewDTO = new ChargeNewDTO();
+                    chargeNewDTO.setExSeq(exhibitorNewDTO.getSeq());
+                    Integer chargeNewResult = kibsMngMapper.deleteChargeNew(chargeNewDTO);
+
+                    /* product_new */
+                    ProductNewDTO productNewDTO = new ProductNewDTO();
+                    productNewDTO.setExSeq(exhibitorNewDTO.getSeq());
+                    Integer productNewResult = kibsMngMapper.deleteProductNew(productNewDTO);
+
+                    /* online_new */
+                    OnlineNewDTO onlineNewDTO = new OnlineNewDTO();
+                    onlineNewDTO.setExSeq(exhibitorNewDTO.getSeq());
+                    Integer onlineNewResult = kibsMngMapper.deleteOnlineNew(onlineNewDTO);
+
+                    /* pass_new */
+                    PassNewDTO passNewDTO = new PassNewDTO();
+                    passNewDTO.setExSeq(exhibitorNewDTO.getSeq());
+                    Integer passNewResult = kibsMngMapper.deletePassNew(passNewDTO);
+
+                    /* gift_new */
+                    GiftNewDTO giftNewDTO = new GiftNewDTO();
+                    giftNewDTO.setExSeq(exhibitorNewDTO.getSeq());
+                    Integer giftNewResult = kibsMngMapper.deleteGiftNew(giftNewDTO);
+
+                    /* buyer_new */
+                    BuyerNewDTO buyerNewDTO = new BuyerNewDTO();
+                    buyerNewDTO.setExSeq(exhibitorNewDTO.getSeq());
+                    Integer buyerNewResult = kibsMngMapper.deleteBuyerNew(buyerNewDTO);
+
+                    /* invoice_booth */
+                    InvoiceBoothDTO invoiceBoothDTO = new InvoiceBoothDTO();
+                    invoiceBoothDTO.setExSeq(exhibitorNewDTO.getSeq());
+                    Integer invoiceBoothResult = kibsMngMapper.deleteInvoiceBooth(invoiceBoothDTO);
+
+                    /* invoice_utility */
+                    InvoiceUtilityDTO invoiceUtilityDTO = new InvoiceUtilityDTO();
+                    invoiceUtilityDTO.setExSeq(exhibitorNewDTO.getSeq());
+                    Integer invoiceUtilityResult = kibsMngMapper.deleteInvoiceUtility(invoiceUtilityDTO);
+
+                    /* file */
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setUserId(exhibitorNewDTO.getSeq());
+                    commMapper.deleteFileUserId(fileDTO);
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteExhibitorNew ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})

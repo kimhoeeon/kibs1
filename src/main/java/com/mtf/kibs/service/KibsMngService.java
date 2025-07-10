@@ -153,6 +153,8 @@ public interface KibsMngService {
 
     ResponseDTO processUpdateParticipantCompany(ExhibitorDTO exhibitorDTO);
 
+    ResponseDTO processDeleteExhibitorNew(ExhibitorNewDTO exhibitorNewDTO);
+
     ResponseDTO processDeleteParticipantCompany(ExhibitorDTO exhibitorDTO);
 
     List<DisplayDTO> processSelectDisplayList(DisplayDTO displayDTO);

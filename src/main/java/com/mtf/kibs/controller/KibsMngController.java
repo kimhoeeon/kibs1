@@ -658,6 +658,17 @@ public class KibsMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mng/exhibitorNew/participant/company/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_participant_company_delete(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_participant_company_delete");
+        //System.out.println(exhibitorDTO.toString());
+
+        ResponseDTO responseDTO = kibsMngService.processDeleteExhibitorNew(exhibitorNewDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/mng/exhibitor/participant/company/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_participant_company_delete(@RequestBody ExhibitorDTO exhibitorDTO) {

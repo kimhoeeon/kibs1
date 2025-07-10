@@ -15,4 +15,6 @@ public interface CommMapper {
     Integer updateFileParentSeq(FileDTO fileDTO);
 
     List<FileDTO> selectFileParentSeqList(FileDTO fileDTO);
+
+    void deleteFileUserId(FileDTO fileDTO);
 }

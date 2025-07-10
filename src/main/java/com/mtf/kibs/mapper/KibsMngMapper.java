@@ -528,4 +528,21 @@ public interface KibsMngMapper {
 
     Integer updateRequestCompleteExpect(RequestDTO info);
 
+    Integer deleteExhibitorNew(ExhibitorNewDTO exhibitorNewDTO);
+
+    Integer deleteChargeNew(ChargeNewDTO chargeNewDTO);
+
+    Integer deleteProductNew(ProductNewDTO productNewDTO);
+
+    Integer deleteOnlineNew(OnlineNewDTO onlineNewDTO);
+
+    Integer deletePassNew(PassNewDTO passNewDTO);
+
+    Integer deleteGiftNew(GiftNewDTO giftNewDTO);
+
+    Integer deleteBuyerNew(BuyerNewDTO buyerNewDTO);
+
+    Integer deleteInvoiceBooth(InvoiceBoothDTO invoiceBoothDTO);
+
+    Integer deleteInvoiceUtility(InvoiceUtilityDTO invoiceUtilityDTO);
 }

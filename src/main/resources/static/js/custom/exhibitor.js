@@ -415,7 +415,7 @@ function f_exhibitor_remove(seq){
                 let jsonObj = {
                     seq: seq
                 }
-                let resData = ajaxConnect('/mng/exhibitor/participant/company/delete.do', 'post', jsonObj);
+                let resData = ajaxConnect('/mng/exhibitorNew/participant/company/delete.do', 'post', jsonObj);
 
                 if (resData.resultCode === "0") {
                     showMessage('', 'info', '[ 참가업체 정보 ]', '참가업체 정보가 삭제되었습니다.', '');
