@@ -140,8 +140,18 @@
                                 <div class="swiper-wrapper">
                                     <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1" varStatus="status">
                                         <c:choose>
-                                            <c:when test="${gbn eq 'O' or gbn eq 'PN'}">
+                                            <c:when test="${gbn eq 'O'}">
                                                 <c:if test="${fn:contains(fileInfo.note, 'productImage'.concat(onlineInfo.note).concat('_'))}">
+                                                    <div class="swiper-slide">
+                                                        <div class="thumb75 thumbBox">
+                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <img src="${productImageFileSrc}" class="thumbImg">
+                                                        </div>
+                                                    </div>
+                                                </c:if>
+                                            </c:when>
+                                            <c:when test="${gbn eq 'PN'}">
+                                                <c:if test="${fn:contains(fileInfo.note, 'productImage'.concat(productInfo.note).concat('_'))}">
                                                     <div class="swiper-slide">
                                                         <div class="thumb75 thumbBox">
                                                             <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
@@ -174,8 +184,18 @@
                                 <div class="swiper-wrapper">
                                     <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1" varStatus="status">
                                         <c:choose>
-                                            <c:when test="${gbn eq 'O' or gbn eq 'PN'}">
+                                            <c:when test="${gbn eq 'O'}">
                                                 <c:if test="${fn:contains(fileInfo.note, 'productImage'.concat(onlineInfo.note).concat('_'))}">
+                                                    <div class="swiper-slide">
+                                                        <div class="thumb11 thumbBox">
+                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <img src="${productImageFileSrc}" class="thumbImg">
+                                                        </div>
+                                                    </div>
+                                                </c:if>
+                                            </c:when>
+                                            <c:when test="${gbn eq 'PN'}">
+                                                <c:if test="${fn:contains(fileInfo.note, 'productImage'.concat(productInfo.note).concat('_'))}">
                                                     <div class="swiper-slide">
                                                         <div class="thumb11 thumbBox">
                                                             <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
@@ -243,10 +263,10 @@
                                                 </div>
                                             </li>
                                         </c:if>
-                                        <c:if test="${productInfo.productWidth ne null and productInfo.productWidth ne ''}">
+                                        <c:if test="${productInfo.productLength ne null and productInfo.productLength ne ''}">
                                             <li>
                                                 <div class="gubun">길이 (cm)</div>
-                                                <div class="cont">${productInfo.productWidth} cm</div>
+                                                <div class="cont">${productInfo.productLength} cm</div>
                                             </li>
                                         </c:if>
                                         <c:if test="${productInfo.productWidth ne null and productInfo.productWidth ne ''}">
@@ -317,10 +337,10 @@
                                                 </div>
                                             </li>
                                         </c:if>
-                                        <c:if test="${onlineInfo.onlineWidth ne null and onlineInfo.onlineWidth ne ''}">
+                                        <c:if test="${onlineInfo.onlineLength ne null and onlineInfo.onlineLength ne ''}">
                                             <li>
                                                 <div class="gubun">길이 (cm)</div>
-                                                <div class="cont">${onlineInfo.onlineWidth} cm</div>
+                                                <div class="cont">${onlineInfo.onlineLength} cm</div>
                                             </li>
                                         </c:if>
                                         <c:if test="${onlineInfo.onlineWidth ne null and onlineInfo.onlineWidth ne ''}">

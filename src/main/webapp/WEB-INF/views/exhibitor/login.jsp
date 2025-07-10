@@ -136,7 +136,9 @@
 <script>
     document.addEventListener("keyup", function(event) {
         if (event.key === 'Enter') {
-            exibitloginFormSubmit();
+            if(!Swal.isVisible()) {
+                exibitloginFormSubmit();
+            }
         }
     });
 </script>

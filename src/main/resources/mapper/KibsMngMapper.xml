@@ -3600,7 +3600,7 @@
                , #{title}
                , #{email}
                , null
-               , DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 7 DAY), '%Y-%m-%d')
+               , DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 14 DAY), '%Y-%m-%d')
                , #{discountType}
                , #{registrationCnt}
                , #{registrationFee}
@@ -3749,7 +3749,7 @@
                , #{title}
                , #{email}
                , null
-               , DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 7 DAY), '%Y-%m-%d')
+               , DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 14 DAY), '%Y-%m-%d')
                , #{utilityJuganCnt}
                , #{utilityJuganFee}
                , #{utilityDayCnt}

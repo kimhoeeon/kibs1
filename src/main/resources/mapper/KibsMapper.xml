@@ -2322,6 +2322,8 @@
                   ORDER BY LENGTH (en.company_badge) DESC, en.init_regi_dttm DESC
                 ) /* 2026~ 전시업체 온라인 End */
             ) r
+        GROUP BY r.orderSeq, r.seq, r.id, r.transfer_year, r.company_name_ko , r.company_name_en, r.company_badge, r.logoFilePath, r.promotionImageFilePath, r.totalRecords
+        HAVING r.orderSeq <![CDATA[<]]> 2
         ORDER BY r.transfer_year DESC, r.orderSeq, LENGTH (r.company_badge) DESC, RAND()
         LIMIT #{pageNum} , #{rows}
     </select>

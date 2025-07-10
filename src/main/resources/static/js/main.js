@@ -6649,9 +6649,13 @@ function f_company_uploadFile_call(id, path) {
         let productImageFile = productImageFileList[i].value;
         if (nvl(productImageFile, '') !== '') {
             //console.log('제품사진 파일 업로드' + (i+1));
-            let fileId = ($('.productImageFile_li input[type=hidden][name=productImageUploadFile]').eq(i).attr('id'));
-            if(nvl(fileId,'') !== ''){
-                f_file_n_update({ id: fileId });
+            let productImageNum_child = Number.parseInt(productImageNum.split('_')[1]);
+            if(productImageNum_child > 5){
+                let productImageUploadFile_el = $('.productImageFile_li input[type=hidden][name=productImageUploadFile]');
+                let fileId = (productImageUploadFile_el.eq(productImageUploadFile_el.length - 1).attr('id'));
+                if(nvl(fileId,'') !== ''){
+                    f_file_n_update({ id: fileId });
+                }
             }
 
             f_company_uploadFile(id, 'exhibitor_apply_form', 'productImageFile' + productImageNum, 'exhibitor/company/' + path);
@@ -6660,15 +6664,20 @@ function f_company_uploadFile_call(id, path) {
 
     /* 온라인 전시관 정보 - 제품사진 */
     let onlineImageFileList = document.getElementsByName('onlineImageFile');
-    for(let i=0; i<onlineImageFileList.length; i++){
+    let onlineImageFileList_len = onlineImageFileList.length;
+    for(let i=0; i<onlineImageFileList_len; i++){
         let onlineImageNum = onlineImageFileList[i].id;
         onlineImageNum = onlineImageNum.toString().replace('onlineImageFile','');
         let onlineImageFile = onlineImageFileList[i].value;
         if (nvl(onlineImageFile, '') !== '') {
             //console.log('홍보이미지 파일 업로드' + (i+1));
-            let fileId = ($('.onlineImageFile_li input[type=hidden][name=onlineImageUploadFile]').eq(i).attr('id'));
-            if(nvl(fileId,'') !== ''){
-                f_file_n_update({ id: fileId });
+            let onlineImageNum_child = Number.parseInt(onlineImageNum.split('_')[1]);
+            if(onlineImageNum_child > 5){
+                let onlineImageUploadFile_el = $('.onlineImageFile_li input[type=hidden][name=onlineImageUploadFile]');
+                let fileId = (onlineImageUploadFile_el.eq(onlineImageUploadFile_el.length - 1).attr('id'));
+                if(nvl(fileId,'') !== ''){
+                    f_file_n_update({ id: fileId });
+                }
             }
 
             f_company_uploadFile(id, 'exhibitor_apply_form', 'onlineImageFile' + onlineImageNum, 'exhibitor/company/' + path);

@@ -328,7 +328,7 @@
                                     <fmt:formatDate var="endDay" value="${date}" type="time" pattern="yyyy-MM-dd (EEE)" />
                                     ${endDay} 까지
                                 </td>
-                                <td></td>
+                                <td>인보이스 발행기준 14일 이내</td>
                             </tr>
                         </tbody>
                     </table>
