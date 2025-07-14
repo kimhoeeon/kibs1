@@ -596,7 +596,9 @@ function autoDiscountSum(checkbox, discountPrc){
 
     let memberCompanyYn = $('#memberCompanyYn').val();
     if(nvl(memberCompanyYn,'') !== ''){
-        if(memberCompanyYn === 'N'){
+        let memberCompanyYn_id = $(checkbox).prop('id');
+        let memberCompanyYn_flag = $(checkbox).prop('checked');
+        if(memberCompanyYn === 'N' && memberCompanyYn_id === 'discount8' && memberCompanyYn_flag){
             alert("한국해양레저산업협회 회원사 여부 - \'아니오\'\n체크 시 해당 할인은 불가합니다.");
             $(checkbox).prop('checked',false);
             return;
@@ -1706,39 +1708,7 @@ function step_01_check(exhibitorSeq){
 
     /******************** 온라인 전시관 정보 ********************/
 
-    // 제품분류(대)
-    let online_option_big_el = $('select[name=onlineOptionBig]');
-    let online_option_big_len = online_option_big_el.length;
-    let online_option_big_flag = true;
-    for(let i=0; i<online_option_big_len; i++){
-        if(online_option_big_el.eq(i).val() === '선택' || online_option_big_el.eq(i).val() === '선택'){
-            if($('.preOptionList').length === 0){
-                online_option_big_flag = false;
-                break;
-            }
-        }
-    }
-    if(!online_option_big_flag){
-        showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 분류 첫 번째 항목을 선택해 주세요.', '');
-        return false;
-    }
-
-    // 제품분류(소)
-    let online_option_small_el = $('select[name=onlineOptionSmall]');
-    let online_option_small_len = online_option_small_el.length;
-    let online_option_small_flag = true;
-    for(let i=0; i<online_option_small_len; i++){
-        if(online_option_small_el.eq(i).val() === '선택' || online_option_small_el.eq(i).val() === '선택'){
-            if($('.preOptionList').length === 0) {
-                online_option_small_flag = false;
-                break;
-            }
-        }
-    }
-    if(!online_option_small_flag){
-        showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 분류 두 번째 항목을 선택해 주세요.', '');
-        return false;
-    }
+    let onlineList_json_arr = [];
 
     // 제품명(국문)
     let online_name_ko_el = $('input[type=text][name=onlineNameKo]');
@@ -1750,129 +1720,176 @@ function step_01_check(exhibitorSeq){
             break;
         }
     }
-    if(!online_name_ko_flag){
-        showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품명(국문)을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 제품명(영문)
-    let online_name_en_el = $('input[type=text][name=onlineNameEn]');
-    let online_name_en_len = online_name_en_el.length;
-    let online_name_en_flag = true;
-    for(let i=0; i<online_name_en_len; i++){
-        if(nvl(online_name_en_el.eq(i).val(),'') === ''){
-            online_name_en_flag = false;
-            break;
+    if(online_name_ko_flag){
+        // 제품분류(대)
+        let online_option_big_el = $('select[name=onlineOptionBig]');
+        let online_option_big_len = online_option_big_el.length;
+        let online_option_big_flag = true;
+        for(let i=0; i<online_option_big_len; i++){
+            if(online_option_big_el.eq(i).val() === '선택' || online_option_big_el.eq(i).val() === '선택'){
+                if($('.preOptionList').length === 0){
+                    online_option_big_flag = false;
+                    break;
+                }
+            }
         }
-    }
-    if(!online_name_en_flag){
-        showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품명(영문)을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 제품사진
-    let onlinePrdBox = $('.onlinePrdBox');
-    for(let i=0; i<onlinePrdBox.length; i++){
-        let inputFile = onlinePrdBox.eq(i).find('.upload_name').val();
-        let preFileList = $('.onlineInfoBox').eq(i).find('.preValueList').find('li.onlineImageFile_li').length;
-        if(nvl(inputFile,"") === "" && preFileList === 0){
-            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품사진을 첨부해 주세요.', '');
+        if(!online_option_big_flag){
+            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 분류 첫 번째 항목을 선택해 주세요.', '');
             return false;
         }
-    }
 
-    // 제품 설명(국문)
-    let online_intro_ko_el = $('textarea[name=onlineIntroKo]');
-    let online_intro_ko_len = online_intro_ko_el.length;
-    let online_intro_ko_flag = true;
-    for(let i=0; i<online_intro_ko_len; i++){
-        if(online_intro_ko_el.eq(i).val() === ''){
-            online_intro_ko_flag = false;
+        // 제품분류(소)
+        let online_option_small_el = $('select[name=onlineOptionSmall]');
+        let online_option_small_len = online_option_small_el.length;
+        let online_option_small_flag = true;
+        for(let i=0; i<online_option_small_len; i++){
+            if(online_option_small_el.eq(i).val() === '선택' || online_option_small_el.eq(i).val() === '선택'){
+                if($('.preOptionList').length === 0) {
+                    online_option_small_flag = false;
+                    break;
+                }
+            }
         }
-    }
-    if(!online_intro_ko_flag){
-        showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 설명(국문)을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 제품 설명(영문)
-    let online_intro_en_el = $('textarea[name=onlineIntroEn]');
-    let online_intro_en_len = online_intro_en_el.length;
-    let online_intro_en_flag = true;
-    for(let i=0; i<online_intro_en_len; i++){
-        if(online_intro_en_el.eq(i).val() === ''){
-            online_intro_en_flag = false;
+        if(!online_option_small_flag){
+            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 분류 두 번째 항목을 선택해 주세요.', '');
+            return false;
         }
-    }
-    if(!online_intro_en_flag){
-        showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 설명(영문)을 입력해 주세요.', '');
-        return false;
-    }
 
-    // 제품링크
-    let online_link_el = $('input[type=text][name=onlineLink]');
-    for(let i=0; i<online_link_el.length; i++){
-        let online_link = online_link_el.eq(i).val();
-        if(nvl(online_link,'') !== ''){
-            if(!checkUrl(online_link)){
-                showMessage('', 'error', '[ 온라인 전시관 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+        // 제품명(국문)
+        let online_name_ko_el = $('input[type=text][name=onlineNameKo]');
+        let online_name_ko_len = online_name_ko_el.length;
+        let online_name_ko_flag = true;
+        for(let i=0; i<online_name_ko_len; i++){
+            if(nvl(online_name_ko_el.eq(i).val(),'') === ''){
+                online_name_ko_flag = false;
+                break;
+            }
+        }
+        if(!online_name_ko_flag){
+            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품명(국문)을 입력해 주세요.', '');
+            return false;
+        }
+
+        // 제품명(영문)
+        let online_name_en_el = $('input[type=text][name=onlineNameEn]');
+        let online_name_en_len = online_name_en_el.length;
+        let online_name_en_flag = true;
+        for(let i=0; i<online_name_en_len; i++){
+            if(nvl(online_name_en_el.eq(i).val(),'') === ''){
+                online_name_en_flag = false;
+                break;
+            }
+        }
+        if(!online_name_en_flag){
+            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품명(영문)을 입력해 주세요.', '');
+            return false;
+        }
+
+        // 제품사진
+        let onlinePrdBox = $('.onlinePrdBox');
+        for(let i=0; i<onlinePrdBox.length; i++){
+            let inputFile = onlinePrdBox.eq(i).find('.upload_name').val();
+            let preFileList = $('.onlineInfoBox').eq(i).find('.preValueList').find('li.onlineImageFile_li').length;
+            if(nvl(inputFile,"") === "" && preFileList === 0){
+                showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품사진을 첨부해 주세요.', '');
                 return false;
             }
         }
-    }
 
-    // 길이
-    let online_length_el = $('input[type=text][name=onlineLength]');
-
-    // 너비
-    let online_width_el = $('input[type=text][name=onlineWidth]');
-
-    // 높이
-    let online_height_el = $('input[type=text][name=onlineHeight]');
-
-    // 중량
-    let online_weight_el = $('input[type=text][name=onlineWeight]');
-
-    // 소재
-    let online_material_el = $('input[type=text][name=onlineMaterial]');
-
-    // 연식
-    let online_year_el = $('input[type=text][name=onlineYear]');
-
-    let onlineList_json_arr = [];
-    let onlineCnt = Number.parseInt($('.exhiInfoNum:last').text());
-    if(onlineCnt > 0){
-        for(let i=0; i<onlineCnt; i++){
-            let onlineOptionBig = '';
-            let onlineOptionSmall = '';
-            let selOnlineOptionBig = $('select[name=onlineOptionBig]').eq(i).val();
-            if(nvl(selOnlineOptionBig,'선택') !== '선택'){
-                onlineOptionBig = $('select[name=onlineOptionBig]').eq(i).val();
-                onlineOptionSmall = $('select[name=onlineOptionSmall]').eq(i).val();
-            }else {
-                onlineOptionBig = $('input[type=text][name=preOnlineOptionBig]').eq(i).val();
-                onlineOptionSmall = $('input[type=text][name=preOnlineOptionSmall]').eq(i).val();
+        // 제품 설명(국문)
+        let online_intro_ko_el = $('textarea[name=onlineIntroKo]');
+        let online_intro_ko_len = online_intro_ko_el.length;
+        let online_intro_ko_flag = true;
+        for(let i=0; i<online_intro_ko_len; i++){
+            if(online_intro_ko_el.eq(i).val() === ''){
+                online_intro_ko_flag = false;
             }
-            let onlineList_json_obj = {
-                seq: $('input[type=hidden][name=onlineSeq]').eq(i).val(),
-                exSeq: exhibitorSeq,
-                onlineOptionBig: onlineOptionBig,
-                onlineOptionSmall: onlineOptionSmall,
-                onlineNameKo: online_name_ko_el.eq(i).val(),
-                onlineNameEn: online_name_en_el.eq(i).val(),
-                onlineIntroKo: online_intro_ko_el.eq(i).val(),
-                onlineIntroEn: online_intro_en_el.eq(i).val(),
-                onlineLink: online_link_el.eq(i).val(),
-                onlineLength: online_length_el.eq(i).val(),
-                onlineWidth: online_width_el.eq(i).val(),
-                onlineHeight: online_height_el.eq(i).val(),
-                onlineWeight: online_weight_el.eq(i).val(),
-                onlineMaterial: online_material_el.eq(i).val(),
-                onlineYear: online_year_el.eq(i).val(),
-                note: (i+1)
-            };
-            onlineList_json_arr.push(onlineList_json_obj);
         }
+        if(!online_intro_ko_flag){
+            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 설명(국문)을 입력해 주세요.', '');
+            return false;
+        }
+
+        // 제품 설명(영문)
+        let online_intro_en_el = $('textarea[name=onlineIntroEn]');
+        let online_intro_en_len = online_intro_en_el.length;
+        let online_intro_en_flag = true;
+        for(let i=0; i<online_intro_en_len; i++){
+            if(online_intro_en_el.eq(i).val() === ''){
+                online_intro_en_flag = false;
+            }
+        }
+        if(!online_intro_en_flag){
+            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 설명(영문)을 입력해 주세요.', '');
+            return false;
+        }
+
+        // 제품링크
+        let online_link_el = $('input[type=text][name=onlineLink]');
+        for(let i=0; i<online_link_el.length; i++){
+            let online_link = online_link_el.eq(i).val();
+            if(nvl(online_link,'') !== ''){
+                if(!checkUrl(online_link)){
+                    showMessage('', 'error', '[ 온라인 전시관 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+                    return false;
+                }
+            }
+        }
+
+        // 길이
+        let online_length_el = $('input[type=text][name=onlineLength]');
+
+        // 너비
+        let online_width_el = $('input[type=text][name=onlineWidth]');
+
+        // 높이
+        let online_height_el = $('input[type=text][name=onlineHeight]');
+
+        // 중량
+        let online_weight_el = $('input[type=text][name=onlineWeight]');
+
+        // 소재
+        let online_material_el = $('input[type=text][name=onlineMaterial]');
+
+        // 연식
+        let online_year_el = $('input[type=text][name=onlineYear]');
+
+        let onlineCnt = Number.parseInt($('.exhiInfoNum:last').text());
+        if(onlineCnt > 0){
+            for(let i=0; i<onlineCnt; i++){
+                let onlineOptionBig = '';
+                let onlineOptionSmall = '';
+                let selOnlineOptionBig = $('select[name=onlineOptionBig]').eq(i).val();
+                if(nvl(selOnlineOptionBig,'선택') !== '선택'){
+                    onlineOptionBig = $('select[name=onlineOptionBig]').eq(i).val();
+                    onlineOptionSmall = $('select[name=onlineOptionSmall]').eq(i).val();
+                }else {
+                    onlineOptionBig = $('input[type=text][name=preOnlineOptionBig]').eq(i).val();
+                    onlineOptionSmall = $('input[type=text][name=preOnlineOptionSmall]').eq(i).val();
+                }
+                let onlineList_json_obj = {
+                    seq: $('input[type=hidden][name=onlineSeq]').eq(i).val(),
+                    exSeq: exhibitorSeq,
+                    onlineOptionBig: onlineOptionBig,
+                    onlineOptionSmall: onlineOptionSmall,
+                    onlineNameKo: online_name_ko_el.eq(i).val(),
+                    onlineNameEn: online_name_en_el.eq(i).val(),
+                    onlineIntroKo: online_intro_ko_el.eq(i).val(),
+                    onlineIntroEn: online_intro_en_el.eq(i).val(),
+                    onlineLink: online_link_el.eq(i).val(),
+                    onlineLength: online_length_el.eq(i).val(),
+                    onlineWidth: online_width_el.eq(i).val(),
+                    onlineHeight: online_height_el.eq(i).val(),
+                    onlineWeight: online_weight_el.eq(i).val(),
+                    onlineMaterial: online_material_el.eq(i).val(),
+                    onlineYear: online_year_el.eq(i).val(),
+                    note: (i+1)
+                };
+                onlineList_json_arr.push(onlineList_json_obj);
+            }
+        }
+    }else{
+        onlineList_json_arr = [];
     }
 
     // 수출상담회 참가 희망 여부
@@ -4622,39 +4639,7 @@ function my_step_01_check(exhibitorSeq){
 
     /******************** 온라인 전시관 정보 ********************/
 
-        // 제품분류(대)
-    let online_option_big_el = $('select[name=onlineOptionBig]');
-    let online_option_big_len = online_option_big_el.length;
-    let online_option_big_flag = true;
-    for(let i=0; i<online_option_big_len; i++){
-        if(online_option_big_el.eq(i).val() === '선택' || online_option_big_el.eq(i).val() === '선택'){
-            if($('.preOptionList').length === 0){
-                online_option_big_flag = false;
-                break;
-            }
-        }
-    }
-    if(!online_option_big_flag){
-        showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 분류 첫 번째 항목을 선택해 주세요.', '');
-        return false;
-    }
-
-    // 제품분류(소)
-    let online_option_small_el = $('select[name=onlineOptionSmall]');
-    let online_option_small_len = online_option_small_el.length;
-    let online_option_small_flag = true;
-    for(let i=0; i<online_option_small_len; i++){
-        if(online_option_small_el.eq(i).val() === '선택' || online_option_small_el.eq(i).val() === '선택'){
-            if($('.preOptionList').length === 0) {
-                online_option_small_flag = false;
-                break;
-            }
-        }
-    }
-    if(!online_option_small_flag){
-        showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 분류 두 번째 항목을 선택해 주세요.', '');
-        return false;
-    }
+    let onlineList_json_arr = [];
 
     // 제품명(국문)
     let online_name_ko_el = $('input[type=text][name=onlineNameKo]');
@@ -4666,129 +4651,176 @@ function my_step_01_check(exhibitorSeq){
             break;
         }
     }
-    if(!online_name_ko_flag){
-        showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품명(국문)을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 제품명(영문)
-    let online_name_en_el = $('input[type=text][name=onlineNameEn]');
-    let online_name_en_len = online_name_en_el.length;
-    let online_name_en_flag = true;
-    for(let i=0; i<online_name_en_len; i++){
-        if(nvl(online_name_en_el.eq(i).val(),'') === ''){
-            online_name_en_flag = false;
-            break;
+    if(online_name_ko_flag){
+        // 제품분류(대)
+        let online_option_big_el = $('select[name=onlineOptionBig]');
+        let online_option_big_len = online_option_big_el.length;
+        let online_option_big_flag = true;
+        for(let i=0; i<online_option_big_len; i++){
+            if(online_option_big_el.eq(i).val() === '선택' || online_option_big_el.eq(i).val() === '선택'){
+                if($('.preOptionList').length === 0){
+                    online_option_big_flag = false;
+                    break;
+                }
+            }
         }
-    }
-    if(!online_name_en_flag){
-        showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품명(영문)을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 제품사진
-    let onlinePrdBox = $('.onlinePrdBox');
-    for(let i=0; i<onlinePrdBox.length; i++){
-        let inputFile = onlinePrdBox.eq(i).find('.upload_name').val();
-        let preFileList = $('.onlineInfoBox').eq(i).find('.preValueList').find('li.onlineImageFile_li').length;
-        if(nvl(inputFile,"") === "" && preFileList === 0){
-            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품사진을 첨부해 주세요.', '');
+        if(!online_option_big_flag){
+            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 분류 첫 번째 항목을 선택해 주세요.', '');
             return false;
         }
-    }
 
-    // 제품 설명(국문)
-    let online_intro_ko_el = $('textarea[name=onlineIntroKo]');
-    let online_intro_ko_len = online_intro_ko_el.length;
-    let online_intro_ko_flag = true;
-    for(let i=0; i<online_intro_ko_len; i++){
-        if(online_intro_ko_el.eq(i).val() === ''){
-            online_intro_ko_flag = false;
+        // 제품분류(소)
+        let online_option_small_el = $('select[name=onlineOptionSmall]');
+        let online_option_small_len = online_option_small_el.length;
+        let online_option_small_flag = true;
+        for(let i=0; i<online_option_small_len; i++){
+            if(online_option_small_el.eq(i).val() === '선택' || online_option_small_el.eq(i).val() === '선택'){
+                if($('.preOptionList').length === 0) {
+                    online_option_small_flag = false;
+                    break;
+                }
+            }
         }
-    }
-    if(!online_intro_ko_flag){
-        showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 설명(국문)을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 제품 설명(영문)
-    let online_intro_en_el = $('textarea[name=onlineIntroEn]');
-    let online_intro_en_len = online_intro_en_el.length;
-    let online_intro_en_flag = true;
-    for(let i=0; i<online_intro_en_len; i++){
-        if(online_intro_en_el.eq(i).val() === ''){
-            online_intro_en_flag = false;
+        if(!online_option_small_flag){
+            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 분류 두 번째 항목을 선택해 주세요.', '');
+            return false;
         }
-    }
-    if(!online_intro_en_flag){
-        showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 설명(영문)을 입력해 주세요.', '');
-        return false;
-    }
 
-    // 제품링크
-    let online_link_el = $('input[type=text][name=onlineLink]');
-    for(let i=0; i<online_link_el.length; i++){
-        let online_link = online_link_el.eq(i).val();
-        if(nvl(online_link,'') !== ''){
-            if(!checkUrl(online_link)){
-                showMessage('', 'error', '[ 온라인 전시관 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+        // 제품명(국문)
+        let online_name_ko_el = $('input[type=text][name=onlineNameKo]');
+        let online_name_ko_len = online_name_ko_el.length;
+        let online_name_ko_flag = true;
+        for(let i=0; i<online_name_ko_len; i++){
+            if(nvl(online_name_ko_el.eq(i).val(),'') === ''){
+                online_name_ko_flag = false;
+                break;
+            }
+        }
+        if(!online_name_ko_flag){
+            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품명(국문)을 입력해 주세요.', '');
+            return false;
+        }
+
+        // 제품명(영문)
+        let online_name_en_el = $('input[type=text][name=onlineNameEn]');
+        let online_name_en_len = online_name_en_el.length;
+        let online_name_en_flag = true;
+        for(let i=0; i<online_name_en_len; i++){
+            if(nvl(online_name_en_el.eq(i).val(),'') === ''){
+                online_name_en_flag = false;
+                break;
+            }
+        }
+        if(!online_name_en_flag){
+            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품명(영문)을 입력해 주세요.', '');
+            return false;
+        }
+
+        // 제품사진
+        let onlinePrdBox = $('.onlinePrdBox');
+        for(let i=0; i<onlinePrdBox.length; i++){
+            let inputFile = onlinePrdBox.eq(i).find('.upload_name').val();
+            let preFileList = $('.onlineInfoBox').eq(i).find('.preValueList').find('li.onlineImageFile_li').length;
+            if(nvl(inputFile,"") === "" && preFileList === 0){
+                showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품사진을 첨부해 주세요.', '');
                 return false;
             }
         }
-    }
 
-    // 길이
-    let online_length_el = $('input[type=text][name=onlineLength]');
-
-    // 너비
-    let online_width_el = $('input[type=text][name=onlineWidth]');
-
-    // 높이
-    let online_height_el = $('input[type=text][name=onlineHeight]');
-
-    // 중량
-    let online_weight_el = $('input[type=text][name=onlineWeight]');
-
-    // 소재
-    let online_material_el = $('input[type=text][name=onlineMaterial]');
-
-    // 연식
-    let online_year_el = $('input[type=text][name=onlineYear]');
-
-    let onlineList_json_arr = [];
-    let onlineCnt = Number.parseInt($('.exhiInfoNum:last').text());
-    if(onlineCnt > 0){
-        for(let i=0; i<onlineCnt; i++){
-            let onlineOptionBig = '';
-            let onlineOptionSmall = '';
-            let selOnlineOptionBig = $('select[name=onlineOptionBig]').eq(i).val();
-            if(nvl(selOnlineOptionBig,'선택') !== '선택'){
-                onlineOptionBig = $('select[name=onlineOptionBig]').eq(i).val();
-                onlineOptionSmall = $('select[name=onlineOptionSmall]').eq(i).val();
-            }else {
-                onlineOptionBig = $('input[type=text][name=preOnlineOptionBig]').eq(i).val();
-                onlineOptionSmall = $('input[type=text][name=preOnlineOptionSmall]').eq(i).val();
+        // 제품 설명(국문)
+        let online_intro_ko_el = $('textarea[name=onlineIntroKo]');
+        let online_intro_ko_len = online_intro_ko_el.length;
+        let online_intro_ko_flag = true;
+        for(let i=0; i<online_intro_ko_len; i++){
+            if(online_intro_ko_el.eq(i).val() === ''){
+                online_intro_ko_flag = false;
             }
-            let onlineList_json_obj = {
-                seq: $('input[type=hidden][name=onlineSeq]').eq(i).val(),
-                exSeq: exhibitorSeq,
-                onlineOptionBig: onlineOptionBig,
-                onlineOptionSmall: onlineOptionSmall,
-                onlineNameKo: online_name_ko_el.eq(i).val(),
-                onlineNameEn: online_name_en_el.eq(i).val(),
-                onlineIntroKo: online_intro_ko_el.eq(i).val(),
-                onlineIntroEn: online_intro_en_el.eq(i).val(),
-                onlineLink: online_link_el.eq(i).val(),
-                onlineLength: online_length_el.eq(i).val(),
-                onlineWidth: online_width_el.eq(i).val(),
-                onlineHeight: online_height_el.eq(i).val(),
-                onlineWeight: online_weight_el.eq(i).val(),
-                onlineMaterial: online_material_el.eq(i).val(),
-                onlineYear: online_year_el.eq(i).val(),
-                note: (i+1)
-            };
-            onlineList_json_arr.push(onlineList_json_obj);
         }
+        if(!online_intro_ko_flag){
+            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 설명(국문)을 입력해 주세요.', '');
+            return false;
+        }
+
+        // 제품 설명(영문)
+        let online_intro_en_el = $('textarea[name=onlineIntroEn]');
+        let online_intro_en_len = online_intro_en_el.length;
+        let online_intro_en_flag = true;
+        for(let i=0; i<online_intro_en_len; i++){
+            if(online_intro_en_el.eq(i).val() === ''){
+                online_intro_en_flag = false;
+            }
+        }
+        if(!online_intro_en_flag){
+            showMessage('', 'error', '[ 온라인 전시관 정보 ]', '제품 설명(영문)을 입력해 주세요.', '');
+            return false;
+        }
+
+        // 제품링크
+        let online_link_el = $('input[type=text][name=onlineLink]');
+        for(let i=0; i<online_link_el.length; i++){
+            let online_link = online_link_el.eq(i).val();
+            if(nvl(online_link,'') !== ''){
+                if(!checkUrl(online_link)){
+                    showMessage('', 'error', '[ 온라인 전시관 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+                    return false;
+                }
+            }
+        }
+
+        // 길이
+        let online_length_el = $('input[type=text][name=onlineLength]');
+
+        // 너비
+        let online_width_el = $('input[type=text][name=onlineWidth]');
+
+        // 높이
+        let online_height_el = $('input[type=text][name=onlineHeight]');
+
+        // 중량
+        let online_weight_el = $('input[type=text][name=onlineWeight]');
+
+        // 소재
+        let online_material_el = $('input[type=text][name=onlineMaterial]');
+
+        // 연식
+        let online_year_el = $('input[type=text][name=onlineYear]');
+
+        let onlineCnt = Number.parseInt($('.exhiInfoNum:last').text());
+        if(onlineCnt > 0){
+            for(let i=0; i<onlineCnt; i++){
+                let onlineOptionBig = '';
+                let onlineOptionSmall = '';
+                let selOnlineOptionBig = $('select[name=onlineOptionBig]').eq(i).val();
+                if(nvl(selOnlineOptionBig,'선택') !== '선택'){
+                    onlineOptionBig = $('select[name=onlineOptionBig]').eq(i).val();
+                    onlineOptionSmall = $('select[name=onlineOptionSmall]').eq(i).val();
+                }else {
+                    onlineOptionBig = $('input[type=text][name=preOnlineOptionBig]').eq(i).val();
+                    onlineOptionSmall = $('input[type=text][name=preOnlineOptionSmall]').eq(i).val();
+                }
+                let onlineList_json_obj = {
+                    seq: $('input[type=hidden][name=onlineSeq]').eq(i).val(),
+                    exSeq: exhibitorSeq,
+                    onlineOptionBig: onlineOptionBig,
+                    onlineOptionSmall: onlineOptionSmall,
+                    onlineNameKo: online_name_ko_el.eq(i).val(),
+                    onlineNameEn: online_name_en_el.eq(i).val(),
+                    onlineIntroKo: online_intro_ko_el.eq(i).val(),
+                    onlineIntroEn: online_intro_en_el.eq(i).val(),
+                    onlineLink: online_link_el.eq(i).val(),
+                    onlineLength: online_length_el.eq(i).val(),
+                    onlineWidth: online_width_el.eq(i).val(),
+                    onlineHeight: online_height_el.eq(i).val(),
+                    onlineWeight: online_weight_el.eq(i).val(),
+                    onlineMaterial: online_material_el.eq(i).val(),
+                    onlineYear: online_year_el.eq(i).val(),
+                    note: (i+1)
+                };
+                onlineList_json_arr.push(onlineList_json_obj);
+            }
+        }
+    }else{
+        onlineList_json_arr = [];
     }
 
     // 수출상담회 참가 희망 여부

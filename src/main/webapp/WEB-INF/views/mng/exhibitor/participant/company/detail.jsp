@@ -1069,7 +1069,7 @@
                                         <span class="del_btn onlineInfoDel">삭제</span>
                                     </li>
                                     <li>
-                                        <div class="item req">
+                                        <div class="item">
                                             <p>제품분류</p>
                                         </div>
                                         <div class="input">
@@ -1078,7 +1078,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="item req">
+                                        <div class="item">
                                             <p>제품명</p>
                                         </div>
                                         <div class="input">
@@ -1087,7 +1087,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="item req">
+                                        <div class="item">
                                             <p>제품사진</p>
                                         </div>
                                         <div class="input file_box">
@@ -1104,7 +1104,7 @@
                                         </div>
                                     </li>
                                     <li>
-                                        <div class="item req">
+                                        <div class="item">
                                             <p>제품 설명</p>
                                         </div>
                                         <div class="input">
@@ -1182,7 +1182,7 @@
                                             <span class="del_btn onlineInfoDel">삭제</span>
                                         </li>
                                         <li>
-                                            <div class="item req">
+                                            <div class="item">
                                                 <p>제품명</p>
                                             </div>
                                             <div class="input">
@@ -1191,7 +1191,7 @@
                                             </div>
                                         </li>
                                         <li>
-                                            <div class="item req">
+                                            <div class="item">
                                                 <p>제품분류</p>
                                             </div>
                                             <div class="input">
@@ -1213,7 +1213,7 @@
                                             </div>
                                         </li>
                                         <li>
-                                            <div class="item req">
+                                            <div class="item">
                                                 <p>제품사진</p>
                                             </div>
                                             <div class="input file_box">
@@ -1270,7 +1270,7 @@
                                         </c:if>
 
                                         <li>
-                                            <div class="item req">
+                                            <div class="item">
                                                 <p>제품 설명</p>
                                             </div>
                                             <div class="input">

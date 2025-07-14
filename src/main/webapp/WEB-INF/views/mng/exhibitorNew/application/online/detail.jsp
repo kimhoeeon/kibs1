@@ -2388,7 +2388,7 @@ if (document.documentElement) {
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6">
                                                                 <!--begin::Label-->
-                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">제품명</label>
+                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제품명</label>
                                                                 <!--end::Label-->
                                                                 <!--begin::Col-->
                                                                 <div class="col-lg-10">
@@ -2413,7 +2413,7 @@ if (document.documentElement) {
                                                             <!--begin::Input group-->
                                                             <%--<div class="row mb-6">
                                                                 <!--begin::Label-->
-                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">제품분류</label>
+                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제품분류</label>
                                                                 <!--end::Label-->
                                                                 <!--begin::Col-->
                                                                 <div class="col-lg-10">
@@ -2465,7 +2465,7 @@ if (document.documentElement) {
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6">
                                                                 <!--begin::Label-->
-                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">제품 설명</label>
+                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제품 설명</label>
                                                                 <!--end::Label-->
                                                                 <!--begin::Col-->
                                                                 <div class="col-lg-10">

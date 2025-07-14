@@ -243,7 +243,7 @@
                                             2. 전시자가 참가신청 후 참가를 취소하고자 할 경우 반드시 주관자에게 서면(공문)으로 취소 신청을 하여야 하며, 이 경우 다음에 정한 위약금 전액을 참가 취소 후 7일 이내에 주관자에게 지불하여야 한다. <br>단, 기납입된 참가비는 동 위약금으로 차감하며, 부족 시 추가 납입하여야 하고 잉여 시 반환한다.<br>
                                             - ~2025.12.31. 취소 시: 총 참가비의 50%를 위약금으로 주관자에게 납부<br>
                                             - 2026.1.1.~2026.1.18. 취소 시: 총 참가비의 80%를 위약금으로 주관자에게 납부<br>
-                                            - 2025.1.19.~ 취소 시: 총 참가비의 100%를 위약금으로 주관자에게 납부<br><br>
+                                            - 2026.1.19.~ 취소 시: 총 참가비의 100%를 위약금으로 주관자에게 납부<br><br>
 
                                             <div class="form_pri_titt">제 9 조 (전시회 취소 또는 변경)</div>
                                             1. 주관자가 행정명령 또는 기타 내부적인 사유로 전시회 개최를 취소하는 경우 이미 납입된 참가비 전액을 전시자에게 반환한다.<br>
@@ -1407,7 +1407,7 @@
                                                     <span class="del_btn onlineInfoDel">삭제</span>
                                                 </li>
                                                 <li>
-                                                    <div class="item req">
+                                                    <div class="item">
                                                         <p>제품분류</p>
                                                     </div>
                                                     <div class="input">
@@ -1416,7 +1416,7 @@
                                                     </div>
                                                 </li>
                                                 <li>
-                                                    <div class="item req">
+                                                    <div class="item">
                                                         <p>제품명</p>
                                                     </div>
                                                     <div class="input">
@@ -1425,7 +1425,7 @@
                                                     </div>
                                                 </li>
                                                 <li>
-                                                    <div class="item req">
+                                                    <div class="item">
                                                         <p>제품사진</p>
                                                     </div>
                                                     <div class="input file_box">
@@ -1442,7 +1442,7 @@
                                                     </div>
                                                 </li>
                                                 <li>
-                                                    <div class="item req">
+                                                    <div class="item">
                                                         <p>제품 설명</p>
                                                     </div>
                                                     <div class="input">
@@ -1520,16 +1520,7 @@
                                                         <span class="del_btn onlineInfoDel">삭제</span>
                                                     </li>
                                                     <li>
-                                                        <div class="item req">
-                                                            <p>제품명</p>
-                                                        </div>
-                                                        <div class="input">
-                                                            <input type="text" name="onlineNameKo" value="${online.onlineNameKo}" placeholder="국문" class="w50">
-                                                            <input type="text" name="onlineNameEn" value="${online.onlineNameEn}" placeholder="영문" class="w50 onlyNumEng">
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="item req">
+                                                        <div class="item">
                                                             <p>제품분류</p>
                                                         </div>
                                                         <div class="input">
@@ -1541,17 +1532,26 @@
                                                                     $('#onlineOptionSmall_${status.index + 1}').val('${online.onlineOptionSmall}').prop('selected', true);
                                                                 })
                                                             </script>
-                                                            <%--<c:if test="${online.onlineOptionBig ne null and online.onlineOptionBig ne '' and online.onlineOptionSmall ne null and online.onlineOptionSmall ne ''}">
-                                                                <span class="preOptionList" style="margin-left: 10px; display: block;">
-                                                                    저장된 제품 분류 값 : &nbsp;
-                                                                        <input type="text" name="preBigValue" value="${online.onlineOptionBig}" style="width: unset;" readonly="readonly"/>&nbsp;
-                                                                        <input type="text" name="preSmallValue" value="${online.onlineOptionSmall}" style="width: unset;" readonly="readonly"/>
-                                                                </span>
-                                                            </c:if>--%>
+                                                                <%--<c:if test="${online.onlineOptionBig ne null and online.onlineOptionBig ne '' and online.onlineOptionSmall ne null and online.onlineOptionSmall ne ''}">
+                                                                    <span class="preOptionList" style="margin-left: 10px; display: block;">
+                                                                        저장된 제품 분류 값 : &nbsp;
+                                                                            <input type="text" name="preBigValue" value="${online.onlineOptionBig}" style="width: unset;" readonly="readonly"/>&nbsp;
+                                                                            <input type="text" name="preSmallValue" value="${online.onlineOptionSmall}" style="width: unset;" readonly="readonly"/>
+                                                                    </span>
+                                                                </c:if>--%>
                                                         </div>
                                                     </li>
                                                     <li>
-                                                        <div class="item req">
+                                                        <div class="item">
+                                                            <p>제품명</p>
+                                                        </div>
+                                                        <div class="input">
+                                                            <input type="text" name="onlineNameKo" value="${online.onlineNameKo}" placeholder="국문" class="w50">
+                                                            <input type="text" name="onlineNameEn" value="${online.onlineNameEn}" placeholder="영문" class="w50 onlyNumEng">
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="item">
                                                             <p>제품사진</p>
                                                         </div>
                                                         <div class="input file_box">
@@ -1608,7 +1608,7 @@
                                                     </c:if>
 
                                                     <li>
-                                                        <div class="item req">
+                                                        <div class="item">
                                                             <p>제품 설명</p>
                                                         </div>
                                                         <div class="input">
