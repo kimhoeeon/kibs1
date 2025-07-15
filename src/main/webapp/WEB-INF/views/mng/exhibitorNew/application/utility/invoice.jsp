@@ -377,7 +377,7 @@
             <!-- box -->
             <div class="cont_box">
                 <div class="cmnt">
-                    <div>문의처 : 킨텍스 경기국제보트쇼 사무국 (Tel : 1370-8785) (E-mail : kibs@kintex.com)</div>
+                    <div>문의처 : 킨텍스 경기국제보트쇼 사무국 (Tel : 1670-8785) (E-mail : kibs@kintex.com)</div>
                     <div>귀사의 관심과 참여에 깊은 감사 드립니다.</div>
                     <div>동 전시회를 통해 조기 목표하신 성과를 거양하시도록 최선을 다하겠습니다.</div>
                 </div>
