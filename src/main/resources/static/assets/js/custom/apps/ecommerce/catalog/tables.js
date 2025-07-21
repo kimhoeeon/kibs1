@@ -809,7 +809,7 @@ let KTAppExhibitorNewApplicationBooth = function () {
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,3,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] }
+                { visible: false, targets: [1,3] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
@@ -825,26 +825,21 @@ let KTAppExhibitorNewApplicationBooth = function () {
                 { data: 'boothPrcSum' }, //부스신청 총액
                 { data: 'initRegiDttm' }, //등록일시
                 { data: 'finalRegiDttm' }, //수정일시
-                { data: 'actions' },
-                { data: 'registrationCnt' }, //등록비 수량
-                { data: 'registrationFee' }, //등록비 금액
-                { data: 'standAloneBoothCnt' }, //독립부스 수량
-                { data: 'standAloneBoothFee' }, //독립부스 금액
-                { data: 'assemblyBoothCnt' }, //조립부스 수량
-                { data: 'assemblyBoothFee' }, //조립부스 금액
-                { data: 'onlineBoothCnt' }, //온라인부스 수량
-                { data: 'onlineBoothFee' }, //온라인부스 금액
-                { data: 'discountEarly1' }, //1차 조기신청
-                { data: 'discountEarly2' }, //2차 조기신청
-                { data: 'discountRe1' }, //재참가할인1
-                { data: 'discountRe2' }, //재참가할인2
-                { data: 'discountRe3' }, //재참가할인3
-                { data: 'discountScale1' }, //규모할인1
-                { data: 'discountScale2' }, //규모할인2
-                { data: 'discountScale3' }, //규모할인3
-                { data: 'discountFirst' } //첫 참가할인
+                { data: 'actions' }
             ]
         });
+    }
+
+    function renderCompanyNameCell(data, type, row){
+        let companyNameKo = row.companyNameKo;
+        let companyNameEn = row.companyNameEn;
+        let renderHTML = '<span class="fw-bold">';
+        renderHTML += '<a href="/mng/exhibitorNew/application/booth/detail.do?seq=' + row.seq + '"';
+        renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
+        renderHTML += companyNameKo + '<br>' + companyNameEn;
+        renderHTML += '</a>';
+        renderHTML += '</span>';
+        return renderHTML;
     }
 
     function renderInvoiceYnCell(data, type, row){
@@ -856,14 +851,32 @@ let KTAppExhibitorNewApplicationBooth = function () {
         return renderHTML;
     }
 
-    function renderBoothPrcSumCell(data, type, row){
-        let renderHTML = Number(row.boothPrcSum);
-        return renderHTML.toLocaleString();
+    function renderBoothTypeCell(data, type, row){
+        let renderHTML = '';
+        if(row.boothType != null) {
+            let boothType_arr = row.boothType.split(',');
+            for (let i = 0; i < boothType_arr.length; i++) {
+                let booth = boothType_arr[i];
+                if (booth === '독립부스') {
+                    renderHTML += booth + ' (' + row.standAloneBoothCnt + ')';
+                    renderHTML += '<br>';
+                } else if (booth === '조립부스') {
+                    renderHTML += booth + ' (' + row.assemblyBoothCnt + ')';
+                    renderHTML += '<br>';
+                } else if (booth === '온라인부스') {
+                    renderHTML += booth + ' (' + row.onlineBoothCnt + ')';
+                }
+            }
+        }
+        return renderHTML;
     }
 
-    function renderDiscountPrcCell(data, type, row){
-        return ((parseInt(row.registrationFee) + parseInt(row.standAloneBoothFee) + parseInt(row.assemblyBoothFee) + parseInt(row.onlineBoothFee))
-            - parseInt(row.boothPrcSum)).toLocaleString();
+    function renderBoothCntCell(data, type, row){
+        return (parseInt(row.standAloneBoothCnt) + parseInt(row.assemblyBoothCnt) + parseInt(row.onlineBoothCnt)).toString();
+    }
+
+    function renderBoothPrcCell(data, type, row){
+        return parseInt(row.boothPrcSum).toLocaleString();
     }
 
     function renderDiscountTypeCell(data, type, row){
@@ -883,47 +896,14 @@ let KTAppExhibitorNewApplicationBooth = function () {
         return renderHTML;
     }
 
-    function renderBoothPrcCell(data, type, row){
-        return (parseInt(row.registrationFee) + parseInt(row.standAloneBoothFee) + parseInt(row.assemblyBoothFee) + parseInt(row.onlineBoothFee)).toLocaleString();
+    function renderDiscountPrcCell(data, type, row){
+        let discountPrc = row.discountPrcSum;
+        return parseInt(discountPrc).toLocaleString();
     }
 
-    function renderBoothCntCell(data, type, row){
-        return (parseInt(row.registrationCnt) + parseInt(row.standAloneBoothCnt) + parseInt(row.assemblyBoothCnt) + parseInt(row.onlineBoothCnt)).toString();
-    }
-
-    function renderBoothTypeCell(data, type, row){
-        let renderHTML = '';
-        if(row.boothType != null) {
-            let boothType_arr = row.boothType.split(',');
-            for (let i = 0; i < boothType_arr.length; i++) {
-                let booth = boothType_arr[i];
-                if (booth === '등록비') {
-                    renderHTML += booth + ' (' + row.registrationCnt + ')';
-                    renderHTML += '<br>';
-                } else if (booth === '독립부스') {
-                    renderHTML += booth + ' (' + row.standAloneBoothCnt + ')';
-                    renderHTML += '<br>';
-                } else if (booth === '조립부스') {
-                    renderHTML += booth + ' (' + row.assemblyBoothCnt + ')';
-                    renderHTML += '<br>';
-                } else if (booth === '온라인부스') {
-                    renderHTML += booth + ' (' + row.onlineBoothCnt + ')';
-                }
-            }
-        }
-        return renderHTML;
-    }
-
-    function renderCompanyNameCell(data, type, row){
-        let companyNameKo = row.companyNameKo;
-        let companyNameEn = row.companyNameEn;
-        let renderHTML = '<span class="fw-bold">';
-        renderHTML += '<a href="/mng/exhibitorNew/application/booth/detail.do?seq=' + row.seq + '"';
-        renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
-        renderHTML += companyNameKo + '<br>' + companyNameEn;
-        renderHTML += '</a>';
-        renderHTML += '</span>';
-        return renderHTML;
+    function renderBoothPrcSumCell(data, type, row){
+        let boothPrcSum = row.boothPrcSum - row.discountPrcSum;
+        return parseInt(boothPrcSum).toLocaleString();
     }
 
     function renderActionsCell(data, type, row){

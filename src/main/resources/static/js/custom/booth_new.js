@@ -14,7 +14,7 @@ $(function(){
                 showDropdowns: true,
                 minYear: 1901,
                 maxYear: parseInt(moment().format("YYYY"),12),
-                startDate: '01/01/' + transferYear
+                startDate: '01/01/' + (transferYear-1)
             }, function(start, end, label) {
                 /*var years = moment().diff(start, "years");
                 alert("You are " + years + " years old!");*/
@@ -431,15 +431,12 @@ function f_booth_form_data_setting(seq){
 }
 
 function minCnt(el, cnt){
-    let val = $.number($(el).val() || 0);
+    let val = $(el).val() || 0;
     if(val < cnt){
-        if(val !== $.number(0)){
+        if(val !== 0){
             alert('독립부스는 2부스부터 신청 가능합니다.');
             $(el).val(0);
-            checkBooth();
-            autoSum(1);
-            autoTotalSum();
-            return false;
+            calculateTotal();
         }
     }
 }
@@ -455,6 +452,207 @@ function checkBooth(){
         autoSum(3);
     }
 }
+
+/***************************************************************************************
+ * 할인 조건 Function Start
+ * *************************************************************************************/
+const boothPrices = {
+    standAlone: 1800000,
+    assembly: 2100000,
+    online: 1000000
+};
+const registrationFee = 100000; // 기본 등록비
+
+// 현재 시간 (서버 시간 또는 사용자 로컬 시간)
+const now = new Date();
+
+// 1차 조기신청 할인 적용 마감일 (2025년 11월 21일 23:59:59)
+const discount1Deadline = new Date('2025-11-21T23:59:59');
+
+// 2차 조기신청 할인 적용 시작일 (2025년 11월 22일 00:00:00)
+const discount2StartDate = new Date('2025-11-22T00:00:00');
+// 2차 조기신청 할인 적용 마감일 (2025년 12월 19일 23:59:59)
+const discount2Deadline = new Date('2025-12-19T23:59:59');
+// 2차 조기신청 할인 선택 불가 시작일 (2025년 12월 20일 00:00:00)
+const discount2DisableDate = new Date('2025-12-20T00:00:00');
+
+// 첫 참가 할인 의 기본 할인 금액
+const discount3BaseAmount = 500000;
+// 첫 참가 할인 의 변경된 할인 금액
+const discount3ChangedAmount = 300000;
+
+// 단일 선택 그룹에 속하는 할인들 (5, 6, 7, 8, 9, 10)
+const singleChoiceDiscounts = [
+    '#discountScale1', '#discountScale2', '#discountScale3', '#discountScale4', '#discountScale5', '#discountScale6'
+];
+
+// 1차 조기신청 할인 체크박스 제어
+function handleDiscountEarly1() {
+    // 1차 조기신청 할인 적용 마감일 (2025년 11월 21일 23:59:59)
+    const discount1Checkbox = $('#discountEarly1');
+    const discount1Item = $('#discountItem1');
+
+    // 최초 등록인지 여부 판단
+    let isPrcTotal = Number.parseInt($('#prcTotal').val()) === 110000;
+
+    if (now <= discount1Deadline) {
+        // [수정] DB에서 데이터를 로드하지 않은 최초 접근 시에만 자동 선택
+        if (isPrcTotal && !discount1Checkbox.prop('checked')) {
+            discount1Checkbox.prop('checked', true);
+        }
+        discount1Item.removeClass('disabled');
+        discount1Checkbox.prop('disabled', false);
+        discount1Checkbox.off('click.preventCheck');
+
+        let userUnchecked = false; // 사용자가 직접 해제했는지 추적
+        discount1Checkbox.on('change.discountControl', function() { // 네임스페이스 추가
+            if (!$(this).prop('checked')) {
+                // 사용자가 체크를 해제한 경우
+                if(confirm('1차 조기신청 할인은 자동으로 적용되며,\n한 번 해제하시면 다시 선택할 수 없습니다. 해제하시겠습니까?')){
+                    userUnchecked = true;
+                }else{
+                    $(this).prop('checked',true);
+                }
+                calculateTotal();
+            } else {
+                // 사용자가 다시 체크하려고 할 때 (마감일 이전에)
+                if (userUnchecked) {
+                    $(this).prop('checked', false); // 다시 체크되는 것을 막음
+                    alert('1차 조기신청 할인은 자동으로 적용되며,\n한 번 해제하시면 다시 선택할 수 없습니다.');
+                    calculateTotal(); // 상태 변경 없으니 다시 계산 필요 없을 수 있으나 안전장치
+                } else {
+                    calculateTotal();
+                }
+            }
+        });
+
+    } else {
+        // 마감일 이후: 선택 불가능, 클릭 시 알림, 자동 해제
+        if (discount1Checkbox.prop('checked')) {
+            discount1Checkbox.prop('checked', false);
+        }
+        discount1Checkbox.prop('disabled', true);
+        discount1Item.addClass('disabled');
+        discount1Checkbox.off('change.discountControl'); // change 이벤트 핸들러 제거
+
+        discount1Item.on('click.preventCheck', function(e) {
+            if (!$(e.target).is('input[type="checkbox"]')) {
+                alert('할인 1번은 현재 선택 불가합니다.');
+            }
+        });
+    }
+}
+
+// 2차 조기신청 체크박스 제어
+function handleDiscountEarly2() {
+    const discount2Checkbox = $('#discountEarly2');
+    const discount2Item = $('#discountItem2');
+
+    // 최초 등록인지 여부 판단
+    let isPrcTotal = Number.parseInt($('#prcTotal').val()) === 110000;
+
+    if (now >= discount2StartDate && now <= discount2Deadline) {
+        // [수정] DB에서 데이터를 로드하지 않은 최초 접근 시에만 자동 선택
+        if (isPrcTotal && !discount2Checkbox.prop('checked')) {
+            discount2Checkbox.prop('checked', true);
+        }
+        discount2Item.removeClass('disabled');
+        discount2Checkbox.prop('disabled', false);
+        discount2Checkbox.off('click.preventCheck');
+
+        let userUnchecked = false;
+        discount2Checkbox.on('change.discountControl', function() { // 네임스페이스 추가
+            if (!$(this).prop('checked')) {
+                // 사용자가 체크를 해제한 경우
+                if(confirm('2차 조기신청 할인은 자동으로 적용되며,\n한 번 해제하시면 다시 선택할 수 없습니다. 해제하시겠습니까?')){
+                    userUnchecked = true;
+                }else{
+                    $(this).prop('checked',true);
+                }
+                calculateTotal();
+            } else {
+                // 사용자가 다시 체크하려고 할 때 (마감일 이전에)
+                if (userUnchecked) {
+                    $(this).prop('checked', false); // 다시 체크되는 것을 막음
+                    alert('2차 조기신청 할인은 자동으로 적용되며,\n한 번 해제하시면 다시 선택할 수 없습니다.');
+                }
+                calculateTotal(); // 상태 변경 없으니 다시 계산 필요 없을 수 있으나 안전장치
+            }
+        });
+
+    }
+        // 이외의 경우 (예: 이미 마감일이 지났지만, disabled 처리되지 않은 상태)
+    // 초기화 및 비활성화 상태를 확실히 하기 위해 한 번 더 설정
+    else {
+        // 시작일 이전 또는 선택 불가 시작일 이후: 선택 불가능, 클릭 시 알림, 자동 해제
+        if (discount2Checkbox.prop('checked')) {
+            discount2Checkbox.prop('checked', false);
+        }
+        discount2Checkbox.prop('disabled', true);
+        discount2Item.addClass('disabled');
+        discount2Checkbox.off('change.discountControl'); // change 이벤트 핸들러 제거
+
+        discount2Item.on('click.preventCheck', function(e) {
+            if (!$(e.target).is('input[type="checkbox"]')) {
+                alert('2차 조기신청 할인은 현재 선택 불가합니다.');
+            }
+        });
+    }
+}
+
+function calculateTotal() {
+    let standAloneQty = parseInt($('#standAloneBoothCnt').val()) || 0;
+    let assemblyQty = parseInt($('#assemblyBoothCnt').val()) || 0;
+    let onlineQty = parseInt($('#onlineBoothCnt').val()) || 0;
+
+    let standAloneFee = standAloneQty * boothPrices.standAlone;
+    let assemblyFee = assemblyQty * boothPrices.assembly;
+    let onlineFee = onlineQty * boothPrices.online;
+
+    // 금액 표시 단위를 '￦'으로 변경
+    $('#standAloneBoothFee').val('￦ ' + standAloneFee.toLocaleString());
+    $('#assemblyBoothFee').val('￦ ' + assemblyFee.toLocaleString());
+    $('#onlineBoothFee').val('￦ ' + onlineFee.toLocaleString());
+
+    let subtotal = standAloneFee + assemblyFee + onlineFee;
+    let totalBooths = standAloneQty + assemblyQty + onlineQty;
+    let totalDiscount = 0;
+
+    // 첫 참가 할인 금액 결정 (규모할인 1~6 중 하나라도 선택되었는지 확인)
+    let isSingleChoiceDiscountSelected = false;
+    singleChoiceDiscounts.forEach(function(id) {
+        if ($(id).prop('checked')) {
+            isSingleChoiceDiscountSelected = true;
+        }
+    });
+
+    let discount3Amount = discount3BaseAmount;
+    if (isSingleChoiceDiscountSelected && $('#discountFirst').prop('checked')) {
+        discount3Amount = discount3ChangedAmount; // 첫 참가 할인이 선택되었고 규모할인 1~6 중 하나라도 선택되었다면 30만원으로 변경
+    }
+
+    // 체크된 모든 할인 합산
+    $('input[type="checkbox"]:checked').each(function() {
+        const discountId = $(this).attr('id');
+        let discountPerBooth = 0;
+
+        if (discountId === 'discountFirst') {
+            discountPerBooth = discount3Amount; // 첫 참가 할인은 결정된 금액 사용
+        } else {
+            discountPerBooth = parseInt($(this).data('discount'));
+        }
+        totalDiscount += discountPerBooth * totalBooths;
+    });
+
+    let finalAmount = subtotal - totalDiscount + registrationFee;
+
+    // 총 금액 표시 단위를 '￦'으로 변경
+    $('#totalAmount').val('￦ ' + Math.max(0, finalAmount).toLocaleString());
+}
+
+/***************************************************************************************
+ * 할인 조건 Function End
+ * *************************************************************************************/
 
 function autoSum(index){
     let boothCost = $('.booth_cost span');
@@ -1074,4 +1272,43 @@ async function createAndUploadPdfFromIframe(param , iframeId, uploadPath) {
         }
     }
 
+}
+
+function f_exhibitor_application_booth_new_excel_export(){
+    Swal.fire({
+        icon: 'info',
+        title: '[ 전시업체 상세 다운로드 ]',
+        html: '전시업체 상세를 다운로드하시겠습니까 ?',
+        allowOutsideClick: false,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: '확인',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            /* 로딩페이지 */
+            loadingBarShow();
+
+            let form = document.createElement('form');
+            form.setAttribute('action','/mng/exhibitor/download.do');
+            form.setAttribute('method','get');
+
+            let obj = document.createElement('input');
+            obj.setAttribute('type', 'hidden');
+            obj.setAttribute('name', 'fileName');
+            obj.setAttribute('value', 'exhibitor_list_' + getCurrentDate() + '.xlsx');
+
+            let obj2 = document.createElement('input');
+            obj2.setAttribute('type', 'hidden');
+            obj2.setAttribute('name', 'transferYear');
+            obj2.setAttribute('value', transferYear);
+
+            form.appendChild(obj);
+            form.appendChild(obj2);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
 }

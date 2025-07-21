@@ -120,10 +120,14 @@ public class ExhibitorNewDetailDTO {
     private Integer onlineBoothCnt; //온라인부스 신청수량
     private Boolean discountEarly1; //1차조기신청
     private Boolean discountEarly2; //2차조기신청
-    private Boolean discountReAll; //재참가할인(All)
-    private Boolean discountScale1; //규모할인1(40부스이상)
+    private Boolean discountFirst; //첫참가할인
+    private Boolean discountRe; //재참가할인
+    private Boolean discountScale1; //규모할인1(10부스이상)
     private Boolean discountScale2; //규모할인2(20부스이상)
-    private Boolean discountScale3; //규모할인3(10부스이상)
+    private Boolean discountScale3; //규모할인3(30부스이상)
+    private Boolean discountScale4; //규모할인4(40부스이상)
+    private Boolean discountScale5; //규모할인5(50부스이상)
+    private Boolean discountScale6; //규모할인6(100부스이상)
     private Boolean discountLeisure; //한국해양레저산업협회할인
 
     /* 상호간판 */
@@ -180,4 +184,7 @@ public class ExhibitorNewDetailDTO {
     private String giftSponsorPrice; //협찬가
     private String giftNote; //경품비고
 
+    private Integer boothPrcSum;
+    private Integer discountPrcSum;
+    private Integer utilityPrcSum;
 }

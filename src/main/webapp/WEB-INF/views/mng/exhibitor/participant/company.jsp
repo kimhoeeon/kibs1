@@ -2224,19 +2224,19 @@ if (document.documentElement) {
                                     <!--end::Export dropdown-->
 
                                     <!--begin::Export dropdown-->
-                                    <button type="button" onclick="f_excel_export('kt_exhibitor_table', '전시업체')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                    <%--<button type="button" onclick="f_excel_export('kt_exhibitor_table', '전시업체')" class="btn btn-dark btn-active-light-dark" data-kt-export="excel" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
-                                        </i>검색 결과 정보 다운로드</button>
+                                        </i>검색 결과 정보 다운로드</button>--%>
                                     <!--end::Export dropdown-->
 
                                     <!--begin::Export dropdown-->
-                                    <button type="button" onclick="f_exhibitor_excel_export()" class="btn btn-dark btn-active-light-dark" data-kt-menu-placement="bottom-end">
+                                    <button type="button" onclick="f_exhibitor_excel_export()" class="btn btn-success btn-active-light-success" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
-                                        </i>전시업체 상세 다운로드</button>
+                                        </i>Export to Excel</button>
                                     <!--end::Export dropdown-->
                                 </div>
                                 <!--end::Actions-->

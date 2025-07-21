@@ -252,7 +252,26 @@
                                                     <td>- <fmt:formatNumber value="${boothCnt * 200000}"/></td>
                                                 </tr>
                                             </c:if>
-                                            <c:if test="${info.discountReAll}">
+                                            <c:if test="${info.discountFirst}">
+                                                <c:set var="discountRownum" value="${discountRownum + 1}"/>
+                                                <tr>
+                                                    <td>${discountRownum}</td>
+                                                    <td>첫 참가</td>
+                                                    <c:choose>
+                                                        <c:when test="${info.discountScale1 || info.discountScale2 || info.discountScale3 || info.discountScale4 || info.discountScale5 || info.discountScale6}">
+                                                            <td>1 부스당 500,000 원 할인</td>
+                                                            <td><c:out value="${boothCnt}"/></td>
+                                                            <td>- <fmt:formatNumber value="${boothCnt * 500000}"/></td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <td>1 부스당 300,000 원 할인</td>
+                                                            <td><c:out value="${boothCnt}"/></td>
+                                                            <td>- <fmt:formatNumber value="${boothCnt * 300000}"/></td>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </tr>
+                                            </c:if>
+                                            <c:if test="${info.discountRe}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
@@ -262,34 +281,64 @@
                                                     <td>- <fmt:formatNumber value="${boothCnt * 200000}"/></td>
                                                 </tr>
                                             </c:if>
+                                            <c:if test="${info.discountScale1}">
+                                                <c:set var="discountRownum" value="${discountRownum + 1}"/>
+                                                <tr>
+                                                    <td>${discountRownum}</td>
+                                                    <td>규모 1 (10부스 이상)</td>
+                                                    <td>1 부스당 400,000 원 할인</td>
+                                                    <td><c:out value="${boothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${boothCnt * 400000}"/></td>
+                                                </tr>
+                                            </c:if>
                                             <c:if test="${info.discountScale2}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
                                                     <td>규모 2 (20부스 이상)</td>
-                                                    <td>1 부스당 200,000 원 할인</td>
+                                                    <td>1 부스당 650,000 원 할인</td>
                                                     <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 300000}"/></td>
+                                                    <td>- <fmt:formatNumber value="${boothCnt * 650000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountScale3}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>규모 3 (40부스 이상)</td>
-                                                    <td>1 부스당 450,000 원 할인</td>
+                                                    <td>규모 3 (30부스 이상)</td>
+                                                    <td>1 부스당 750,000 원 할인</td>
                                                     <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 450000}"/></td>
+                                                    <td>- <fmt:formatNumber value="${boothCnt * 750000}"/></td>
                                                 </tr>
                                             </c:if>
-                                            <c:if test="${info.discountFirst}">
+                                            <c:if test="${info.discountScale4}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>첫 참가</td>
-                                                    <td>1 부스당 500,000 원 할인</td>
+                                                    <td>규모 4 (40부스 이상)</td>
+                                                    <td>1 부스당 800,000 원 할인</td>
                                                     <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 500000}"/></td>
+                                                    <td>- <fmt:formatNumber value="${boothCnt * 800000}"/></td>
+                                                </tr>
+                                            </c:if>
+                                            <c:if test="${info.discountScale5}">
+                                                <c:set var="discountRownum" value="${discountRownum + 1}"/>
+                                                <tr>
+                                                    <td>${discountRownum}</td>
+                                                    <td>규모 5 (50부스 이상)</td>
+                                                    <td>1 부스당 850,000 원 할인</td>
+                                                    <td><c:out value="${boothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${boothCnt * 850000}"/></td>
+                                                </tr>
+                                            </c:if>
+                                            <c:if test="${info.discountScale6}">
+                                                <c:set var="discountRownum" value="${discountRownum + 1}"/>
+                                                <tr>
+                                                    <td>${discountRownum}</td>
+                                                    <td>규모 6 (100부스 이상)</td>
+                                                    <td>1 부스당 900,000 원 할인</td>
+                                                    <td><c:out value="${boothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${boothCnt * 900000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountLeisure}">

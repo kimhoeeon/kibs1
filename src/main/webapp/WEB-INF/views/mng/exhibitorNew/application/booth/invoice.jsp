@@ -281,7 +281,35 @@
                                 </tr>
                                 <c:set var="discountIdx" value="${discountIdx + 1}"/>
                             </c:if>
-                            <c:if test="${info.discountReAll}">
+                            <c:if test="${info.discountFirst}">
+                                <tr>
+                                    <td>${discountIdx}</td>
+                                    <td>첫 참가 할인</td>
+                                    <td>${boothCnt}부스</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${info.discountFirst && (info.discountScale1 || info.discountScale2 || info.discountScale3 || info.discountScale4 || info.discountScale5 || info.discountScale6)}">
+                                                300,000원
+                                            </c:when>
+                                            <c:otherwise>
+                                                500,000원
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td class="text-r sub_total">
+                                        <c:choose>
+                                            <c:when test="${info.discountFirst && (info.discountScale1 || info.discountScale2 || info.discountScale3 || info.discountScale4 || info.discountScale5 || info.discountScale6)}">
+                                                <fmt:formatNumber value="${boothCnt * 300000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:formatNumber value="${boothCnt * 500000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+                                <c:set var="discountIdx" value="${discountIdx + 1}"/>
+                            </c:if>
+                            <c:if test="${info.discountRe}">
                                 <tr>
                                     <td>${discountIdx}</td>
                                     <td>재참가 할인</td>
@@ -293,14 +321,26 @@
                                 </tr>
                                 <c:set var="discountIdx" value="${discountIdx + 1}"/>
                             </c:if>
+                            <c:if test="${info.discountScale1}">
+                                <tr>
+                                    <td>${discountIdx}</td>
+                                    <td>규모할인 1 (10부스 이상)</td>
+                                    <td>${boothCnt}부스</td>
+                                    <td>400,000원</td>
+                                    <td class="text-r sub_total">
+                                        <fmt:formatNumber value="${boothCnt * 400000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                    </td>
+                                </tr>
+                                <c:set var="discountIdx" value="${discountIdx + 1}"/>
+                            </c:if>
                             <c:if test="${info.discountScale2}">
                                 <tr>
                                     <td>${discountIdx}</td>
-                                    <td>규모할인 1 (20부스 이상)</td>
+                                    <td>규모할인 2 (20부스 이상)</td>
                                     <td>${boothCnt}부스</td>
-                                    <td>300,000원</td>
+                                    <td>650,000원</td>
                                     <td class="text-r sub_total">
-                                        <fmt:formatNumber value="${boothCnt * 300000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                        <fmt:formatNumber value="${boothCnt * 650000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
                                     </td>
                                 </tr>
                                 <c:set var="discountIdx" value="${discountIdx + 1}"/>
@@ -308,11 +348,47 @@
                             <c:if test="${info.discountScale3}">
                                 <tr>
                                     <td>${discountIdx}</td>
-                                    <td>규모할인 2 (40부스 이상)</td>
+                                    <td>규모할인 3 (30부스 이상)</td>
                                     <td>${boothCnt}부스</td>
-                                    <td>450,000원</td>
+                                    <td>750,000원</td>
                                     <td class="text-r sub_total">
-                                        <fmt:formatNumber value="${boothCnt * 450000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                        <fmt:formatNumber value="${boothCnt * 750000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                    </td>
+                                </tr>
+                                <c:set var="discountIdx" value="${discountIdx + 1}"/>
+                            </c:if>
+                            <c:if test="${info.discountScale4}">
+                                <tr>
+                                    <td>${discountIdx}</td>
+                                    <td>규모할인 4 (40부스 이상)</td>
+                                    <td>${boothCnt}부스</td>
+                                    <td>800,000원</td>
+                                    <td class="text-r sub_total">
+                                        <fmt:formatNumber value="${boothCnt * 800000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                    </td>
+                                </tr>
+                                <c:set var="discountIdx" value="${discountIdx + 1}"/>
+                            </c:if>
+                            <c:if test="${info.discountScale5}">
+                                <tr>
+                                    <td>${discountIdx}</td>
+                                    <td>규모할인 5 (50부스 이상)</td>
+                                    <td>${boothCnt}부스</td>
+                                    <td>850,000원</td>
+                                    <td class="text-r sub_total">
+                                        <fmt:formatNumber value="${boothCnt * 850000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                    </td>
+                                </tr>
+                                <c:set var="discountIdx" value="${discountIdx + 1}"/>
+                            </c:if>
+                            <c:if test="${info.discountScale6}">
+                                <tr>
+                                    <td>${discountIdx}</td>
+                                    <td>규모할인 6 (100부스 이상)</td>
+                                    <td>${boothCnt}부스</td>
+                                    <td>900,000원</td>
+                                    <td class="text-r sub_total">
+                                        <fmt:formatNumber value="${boothCnt * 900000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
                                     </td>
                                 </tr>
                                 <c:set var="discountIdx" value="${discountIdx + 1}"/>
@@ -351,14 +427,14 @@
                                 <td colspan="3" class="none"></td>
                                 <th>부가세</th>
                                 <td class="text-r sub_total">
-                                    <fmt:formatNumber value="${info.boothPrcSum * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                    <fmt:formatNumber value="${(info.boothPrcSum - info.discountPrcSum) * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="3" class="none"></td>
                                 <th>할인총액</th>
                                 <td class="text-r final_total">
-                                    <fmt:formatNumber value="${info.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                    <fmt:formatNumber value="${(info.boothPrcSum - info.discountPrcSum) + ((info.boothPrcSum - info.discountPrcSum) * 0.1)}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
                                 </td>
                             </tr>
                         </tfoot>
@@ -394,7 +470,7 @@
                             <tr>
                                 <td>참가비</td>
                                 <td class="final_total">
-                                    <fmt:formatNumber value="${info.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                    <fmt:formatNumber value="${(info.boothPrcSum - info.discountPrcSum) + ((info.boothPrcSum - info.discountPrcSum) * 0.1)}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
                                 </td>
                                 <td style="color: red; font-size: 15px; font-weight: 700;">
                                     <fmt:parseDate value="${info.endDttm}" pattern="yyyy-MM-dd" var="date"/>

@@ -117,14 +117,14 @@ public class ExhibitorNewDTO {
     Integer onlineBoothFee; //온라인부스 신청비용
     Boolean discountEarly1; //1차조기신청
     Boolean discountEarly2; //2차조기신청
-    Boolean discountRe1; //재참가할인1(19~22)
-    Boolean discountRe2; //재참가할인2(16~18)
-    Boolean discountRe3; //재참가할인3(13~15)
-    Boolean discountReAll; //재참가할인(All)
-    Boolean discountScale1; //규모할인1(40부스이상)
-    Boolean discountScale2; //규모할인2(20부스이상)
-    Boolean discountScale3; //규모할인3(10부스이상)
     Boolean discountFirst; //첫참가할인
+    Boolean discountRe; //재참가할인
+    Boolean discountScale1; //규모할인1(10부스이상)
+    Boolean discountScale2; //규모할인2(20부스이상)
+    Boolean discountScale3; //규모할인3(30부스이상)
+    Boolean discountScale4; //규모할인4(40부스이상)
+    Boolean discountScale5; //규모할인5(50부스이상)
+    Boolean discountScale6; //규모할인6(100부스이상)
     Boolean discountLeisure; //한국해양레저산업협회할인
     Integer boothPrcSum; //부스신청총액
     Integer discountPrcSum; //할인총액

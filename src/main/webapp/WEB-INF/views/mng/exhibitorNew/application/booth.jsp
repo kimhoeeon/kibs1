@@ -2212,6 +2212,14 @@ if (document.documentElement) {
                                             <span class="path2"></span>
                                         </i>Export as Excel</button>
                                     <!--end::Export dropdown-->
+
+                                    <!--begin::Export dropdown-->
+                                    <%--<button type="button" onclick="f_exhibitor_application_booth_new_excel_export()" class="btn btn-dark btn-active-light-dark" data-kt-menu-placement="bottom-end">
+                                        <i class="ki-duotone ki-exit-down fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>전시업체 상세 데이터 추출</button>--%>
+                                    <!--end::Export dropdown-->
                                 </div>
                                 <!--end::Actions-->
 
@@ -2339,7 +2347,7 @@ if (document.documentElement) {
                                             </div>
                                             <%--end::부스구분--%>
                                             <%--begin::할인여부--%>
-                                            <div class="w-100 mw-250px">
+                                            <div class="w-100 mw-275px">
                                                 <!--begin::Select2-->
                                                 <select id="discountYn" class="form-select form-select-solid" data-control="select2"
                                                         data-hide-search="true" data-allow-clear="true"
@@ -2348,9 +2356,14 @@ if (document.documentElement) {
                                                     <option disabled>- 할인여부 -</option>
                                                     <option value="discountEarly1">1차 조기신청 할인</option>
                                                     <option value="discountEarly2">2차 조기신청 할인</option>
-                                                    <option value="discountReAll">재참가 할인</option>
-                                                    <option value="discountScale2">규모할인 1 (20부스 이상) 할인</option>
-                                                    <option value="discountScale3">규모할인 2 (40부스 이상) 할인</option>
+                                                    <option value="discountFirst">첫 참가 할인</option>
+                                                    <option value="discountRe">재참가 할인</option>
+                                                    <option value="discountScale1">규모할인 1 (10부스 이상) 할인</option>
+                                                    <option value="discountScale2">규모할인 2 (20부스 이상) 할인</option>
+                                                    <option value="discountScale3">규모할인 3 (30부스 이상) 할인</option>
+                                                    <option value="discountScale4">규모할인 4 (40부스 이상) 할인</option>
+                                                    <option value="discountScale5">규모할인 5 (50부스 이상) 할인</option>
+                                                    <option value="discountScale6">규모할인 6 (100부스 이상) 할인</option>
                                                     <option value="discountLeisure">한국해양레저산업협회 할인</option>
                                                 </select>
                                                 <!--end::Select2-->
@@ -2389,44 +2402,10 @@ if (document.documentElement) {
                                                 <th class="text-center min-w-150px">등록일시</th>
                                                 <th class="text-center min-w-150px">수정일시</th>
                                                 <th class="text-center min-w-100px">기능</th>
-                                                <th>registrationCnt</th>
-                                                <th>registrationFee</th>
-                                                <th>standAloneBoothCnt</th>
-                                                <th>standAloneBoothFee</th>
-                                                <th>assemblyBoothCnt</th>
-                                                <th>assemblyBoothFee</th>
-                                                <th>onlineBoothCnt</th>
-                                                <th>onlineBoothFee</th>
-                                                <th>discountEarly1</th>
-                                                <th>discountEarly2</th>
-                                                <th>discountRe1</th>
-                                                <th>discountRe2</th>
-                                                <th>discountRe3</th>
-                                                <th>discountScale1</th>
-                                                <th>discountScale2</th>
-                                                <th>discountScale3</th>
-                                                <th>discountFirst</th>
                                             </tr>
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>

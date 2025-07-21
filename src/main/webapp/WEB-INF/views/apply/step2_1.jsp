@@ -48,6 +48,16 @@
         <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
         <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
+
+    <style>
+        .discount-item.disabled label {
+            color: #999;
+            cursor: not-allowed;
+        }
+        .discount-item.disabled input[type="checkbox"] {
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 
 <body>
@@ -99,7 +109,6 @@
             </div>
         </div>
         <!-- section -->
-
 
         <!-- section -->
         <div class="apply_s padding_tb" id="apply_s">
@@ -181,6 +190,39 @@
                             </ul>
                         </div>
 
+                        <input type="hidden" id="prcTotal" value="${info.prcTotal}"/>
+
+                        <!-- 등록비 -->
+                        <div class="form_wrap">
+                            <div class="form_tit">
+                                <div class="big">등록비</div>
+                            </div>
+                            <div class="form_booth form_ptag">
+                                <div class="form_ptag_box">
+                                    <ul class="form_ptag_list">
+                                        <li class="form_ptag_hd">
+                                            <div class="cate">구분</div>
+                                            <div class="amount">금액 (원)</div>
+                                            <div class="note">비고</div>
+                                        </li>
+                                        <li>
+                                            <div class="cate">등록비</div>
+                                            <div class="amount">
+                                                <p class="price">
+                                                    <input type="text" id="registrationFee" value="￦ 100,000" disabled>
+                                                </p>
+                                            </div>
+                                            <div class="note">
+                                                2019년부터 참가업체의 홍보 지원을 위하여 업체당 참가신청 등록비를 받습니다.<br>
+                                                등록비는 참가업체의 각종 온라인 홍보 및 대외 홍보에 사용됩니다.
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- //등록비-->
+
                         <!-- 부스 신청 -->
                         <div class="form_wrap">
                             <div class="form_tit">
@@ -197,67 +239,49 @@
                                             <div class="note">비고</div>
                                         </li>
                                         <li>
-                                            <div class="cate">등록비</div>
-                                            <div class="cost booth_cost">￦ 100,000</div>
-                                            <div class="quantity">
-                                                <p class="j_num">
-                                                    <input type="text" id="registration_cnt" placeholder="수량 입력" class="onlyNum qty" value="1" disabled>
-                                                </p>
-                                            </div>
-                                            <div class="amount">
-                                                <p class="price">
-                                                    <input type="text" id="registration_fee" class="num_sum" value="￦ 100,000" disabled>
-                                                </p>
-                                            </div>
-                                            <div class="note">
-                                                2019년부터 참가업체의 홍보 지원을 위하여 업체당 참가신청 등록비를 받습니다.<br>
-                                                등록비는 참가업체의 각종 온라인 홍보 및 대외 홍보에 사용됩니다.
-                                            </div>
-                                        </li>
-                                        <li>
                                             <div class="cate">독립부스</div>
-                                            <div class="cost booth_cost">￦ 1,800,000</div>
+                                            <div class="cost">￦ 1,800,000</div>
                                             <div class="quantity">
                                                 <p class="j_num">
-                                                    <input type="text" id="stand_alone_booth_cnt" placeholder="수량 입력" class="onlyNum qty" value="${info.standAloneBoothCnt eq null ? 0 : info.standAloneBoothCnt}" onblur="minCnt(this,2);" onkeyup="checkBooth();autoSum(1);autoTotalSum();">
+                                                    <input type="number" id="standAloneBoothCnt" placeholder="수량 입력" min="0" value="${info.standAloneBoothCnt eq null ? 0 : info.standAloneBoothCnt}" onblur="minCnt(this,2);" onkeyup="checkBooth();">
                                                 </p>
                                             </div>
                                             <div class="amount">
                                                 <p class="price">
-                                                    <input type="text" id="stand_alone_booth_fee" class="num_sum" value="<fmt:formatNumber value="${info.standAloneBoothFee eq null ? 0 : info.standAloneBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                    <input type="text" id="standAloneBoothFee" value="<fmt:formatNumber value="${info.standAloneBoothFee eq null ? 0 : info.standAloneBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
                                                 </p>
                                             </div>
                                             <div class="note">독립부스는 2부스부터 신청 가능합니다.</div>
                                         </li>
                                         <li>
                                             <div class="cate">조립부스</div>
-                                            <div class="cost booth_cost">￦ 2,100,000</div>
+                                            <div class="cost">￦ 2,100,000</div>
                                             <div class="quantity">
                                                 <p class="j_num">
-                                                    <input type="text" id="assembly_booth_cnt" placeholder="수량 입력" class="onlyNum qty" value="${info.assemblyBoothCnt eq null ? 0 : info.assemblyBoothCnt}" onkeyup="checkBooth();autoSum(2);autoTotalSum();">
+                                                    <input type="number" id="assemblyBoothCnt" placeholder="수량 입력" min="0" value="${info.assemblyBoothCnt eq null ? 0 : info.assemblyBoothCnt}" onkeyup="checkBooth();">
                                                 </p>
                                             </div>
                                             <div class="amount">
                                                 <p class="price">
-                                                    <input type="text" id="assembly_booth_fee" class="num_sum" value="<fmt:formatNumber value="${info.assemblyBoothFee eq null ? 0 : info.assemblyBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                    <input type="text" id="assemblyBoothFee" value="<fmt:formatNumber value="${info.assemblyBoothFee eq null ? 0 : info.assemblyBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
                                                 </p>
                                             </div>
                                             <div class="note"></div>
                                         </li>
                                         <li>
                                             <div class="cate">온라인부스</div>
-                                            <div class="cost booth_cost">￦ 1,000,000</div>
+                                            <div class="cost">￦ 1,000,000</div>
                                             <div class="quantity">
                                                 <p class="j_num">
-                                                    <select id="online_booth_cnt" onchange="checkBooth();autoSum(3);autoTotalSum();">
-                                                        <option <c:if test="${info.onlineBoothCnt eq 0}">selected</c:if> >0</option>
-                                                        <option <c:if test="${info.onlineBoothCnt eq 1}">selected</c:if> >1</option>
+                                                    <select id="onlineBoothCnt" onchange="checkBooth();">
+                                                        <option value="0" <c:if test="${info.onlineBoothCnt eq 0}">selected</c:if> >0</option>
+                                                        <option value="1" <c:if test="${info.onlineBoothCnt eq 1}">selected</c:if> >1</option>
                                                     </select>
                                                 </p>
                                             </div>
                                             <div class="amount">
                                                 <p class="price">
-                                                    <input type="text" id="online_booth_fee" class="num_sum" value="<fmt:formatNumber value="${info.onlineBoothFee eq null ? 0 : info.onlineBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                    <input type="text" id="onlineBoothFee" value="<fmt:formatNumber value="${info.onlineBoothFee eq null ? 0 : info.onlineBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
                                                 </p>
                                             </div>
                                             <div class="note">영상 제작 별도 : 영상 제작 희망 시 사무국 문의</div>
@@ -284,46 +308,114 @@
                                             <div class="note">비고</div>
                                         </li>
                                         <li<%-- style="color: #8c8c8c"--%>>
-                                            <div class="select"><label><input type="checkbox" id="discount1" name="discount" value="300000" onchange="autoDiscountSum(this, '300000');" <c:if test="${info.discountEarly1}">checked</c:if> <%--disabled--%>></label></div>
+                                            <div class="select">
+                                                <label class="discount-item" id="discountItem1">
+                                                    <input type="checkbox" id="discountEarly1" name="discount" data-discount="300000" onchange="calculateTotal();" <c:if test="${info.discountEarly1}">checked</c:if> <%--disabled--%>>
+                                                </label>
+                                            </div>
                                             <div class="cate">1차 조기신청<%-- (종료)--%></div>
                                             <div class="discount">1 부스당 300,000 원 할인</div>
                                             <div class="note">1차 조기신청 할인 / ~ 2025.11.21 (금)까지 신청 시</div>
                                             <%--<div class="note">1차 조기신청 할인이 종료되었습니다.</div>--%>
                                         </li>
                                         <li<%-- style="color: #8c8c8c"--%>>
-                                            <div class="select"><label><input type="checkbox" id="discount2" name="discount" value="200000" onchange="autoDiscountSum(this, '200000');" <c:if test="${info.discountEarly2}">checked</c:if> <%--disabled--%>></label></div>
+                                            <div class="select">
+                                                <label class="discount-item" id="discountItem2">
+                                                    <input type="checkbox" id="discountEarly2" name="discount" data-discount="200000" onchange="calculateTotal();" <c:if test="${info.discountEarly2}">checked</c:if> <%--disabled--%>>
+                                                </label>
+                                            </div>
                                             <div class="cate">2차 조기신청<%-- (종료)--%></div>
                                             <div class="discount">1 부스당 200,000 원 할인</div>
                                             <div class="note">2차 조기신청 할인 / ~ 2025.12.19 (금)까지 신청 시</div>
                                             <%--<div class="note">2차 조기신청 할인이 종료되었습니다.</div>--%>
                                         </li>
                                         <li>
-                                            <div class="select"><label><input type="checkbox" id="discount3" name="discount" value="200000" onchange="autoDiscountSum(this, '200000');" <c:if test="${info.discountReAll}">checked</c:if> ></label></div>
+                                            <div class="select">
+                                                <label class="discount-item">
+                                                    <input type="checkbox" id="discountFirst" name="discount" data-discount="500000" onchange="calculateTotal();" <c:if test="${info.discountFirst}">checked</c:if> >
+                                                </label>
+                                            </div>
+                                            <div class="cate">첫 참가할인</div>
+                                            <div class="discount">1 부스당 500,000 원 할인</div>
+                                            <div class="note">규모 할인 중복 적용 시 부스당 300,000 원 할인</div>
+                                        </li>
+                                        <li>
+                                            <div class="select">
+                                                <label class="discount-item">
+                                                    <input type="checkbox" id="discountRe" name="discount" data-discount="200000" onchange="calculateTotal();" <c:if test="${info.discountRe}">checked</c:if> >
+                                                </label>
+                                            </div>
                                             <div class="cate">재참가할인</div>
                                             <div class="discount">1 부스당 200,000 원 할인</div>
                                             <div class="note">2015년 ~ 2025년 경기국제보트쇼 참가기업</div>
                                         </li>
                                         <li>
-                                            <div class="select"><label><input type="checkbox" id="discount5" name="discount" value="300000" onchange="autoDiscountSum(this, '300000');" <c:if test="${info.discountScale2}">checked</c:if> ></label></div>
-                                            <div class="cate">규모할인 1 (20부스 이상)</div>
-                                            <div class="discount">1 부스당 300,000 원 할인</div>
+                                            <div class="select">
+                                                <label class="discount-item single-choice-discount">
+                                                    <input type="checkbox" id="discountScale1" name="discount" data-discount="400000" onchange="calculateTotal();" <c:if test="${info.discountScale1}">checked</c:if> >
+                                                </label>
+                                            </div>
+                                            <div class="cate">규모할인 1 (10부스 이상)</div>
+                                            <div class="discount">1 부스당 400,000 원 할인</div>
+                                            <div class="note">10부스 이상 참가기업</div>
+                                        </li>
+                                        <li>
+                                            <div class="select">
+                                                <label class="discount-item single-choice-discount">
+                                                    <input type="checkbox" id="discountScale2" name="discount" data-discount="650000" onchange="calculateTotal();" <c:if test="${info.discountScale2}">checked</c:if> >
+                                                </label>
+                                            </div>
+                                            <div class="cate">규모할인 2 (20부스 이상)</div>
+                                            <div class="discount">1 부스당 650,000 원 할인</div>
                                             <div class="note">20부스 이상 참가기업</div>
                                         </li>
                                         <li>
-                                            <div class="select"><label><input type="checkbox" id="discount6" name="discount" value="450000" onchange="autoDiscountSum(this, '450000');" <c:if test="${info.discountScale3}">checked</c:if> ></label></div>
-                                            <div class="cate">규모할인 2 (40부스 이상)</div>
-                                            <div class="discount">1 부스당 450,000 원 할인</div>
+                                            <div class="select">
+                                                <label class="discount-item single-choice-discount">
+                                                    <input type="checkbox" id="discountScale3" name="discount" data-discount="750000" onchange="calculateTotal();" <c:if test="${info.discountScale3}">checked</c:if> >
+                                                </label>
+                                            </div>
+                                            <div class="cate">규모할인 3 (30부스 이상)</div>
+                                            <div class="discount">1 부스당 750,000 원 할인</div>
+                                            <div class="note">30부스 이상 참가기업</div>
+                                        </li>
+                                        <li>
+                                            <div class="select">
+                                                <label class="discount-item single-choice-discount">
+                                                    <input type="checkbox" id="discountScale4" name="discount" data-discount="800000" onchange="calculateTotal();" <c:if test="${info.discountScale4}">checked</c:if> >
+                                                </label>
+                                            </div>
+                                            <div class="cate">규모할인 4 (40부스 이상)</div>
+                                            <div class="discount">1 부스당 800,000 원 할인</div>
                                             <div class="note">40부스 이상 참가기업</div>
                                         </li>
-                                        <%--<li>
-                                            <div class="select"><label><input type="checkbox" id="discount7" name="discount" value="500000" onchange="autoDiscountSum(this, '500000');" <c:if test="${info.discountFirst}">checked</c:if> ></label></div>
-                                            <div class="cate">첫 참가 할인</div>
-                                            <div class="discount">1 부스당 500,000 원 할인</div>
-                                            <div class="note">경기국제보트쇼 최초 참가기업</div>
-                                        </li>--%>
+                                        <li>
+                                            <div class="select">
+                                                <label class="discount-item single-choice-discount">
+                                                    <input type="checkbox" id="discountScale5" name="discount" data-discount="850000" onchange="calculateTotal();" <c:if test="${info.discountScale5}">checked</c:if> >
+                                                </label>
+                                            </div>
+                                            <div class="cate">규모할인 5 (50부스 이상)</div>
+                                            <div class="discount">1 부스당 850,000 원 할인</div>
+                                            <div class="note">50부스 이상 참가기업</div>
+                                        </li>
+                                        <li>
+                                            <div class="select">
+                                                <label class="discount-item single-choice-discount">
+                                                    <input type="checkbox" id="discountScale6" name="discount" data-discount="900000" onchange="calculateTotal();" <c:if test="${info.discountScale6}">checked</c:if> >
+                                                </label>
+                                            </div>
+                                            <div class="cate">규모할인 6 (100부스 이상)</div>
+                                            <div class="discount">1 부스당 900,000 원 할인</div>
+                                            <div class="note">100부스 이상 참가기업</div>
+                                        </li>
                                         <li>
                                             <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}"/>
-                                            <div class="select"><label><input type="checkbox" id="discount8" name="discount" value="200000" onchange="autoDiscountSum(this, '200000');" <c:if test="${info.discountLeisure}">checked</c:if> ></label></div>
+                                            <div class="select">
+                                                <label class="discount-item">
+                                                    <input type="checkbox" id="discountLeisure" name="discount" data-discount="200000" onchange="calculateTotal();" <c:if test="${info.discountLeisure}">checked</c:if> >
+                                                </label>
+                                            </div>
                                             <div class="cate">한국해양레저산업협회 할인</div>
                                             <div class="discount">1 부스당 200,000 원 할인</div>
                                             <div class="note">한국해양레저산업협회 회원사</div>
@@ -335,7 +427,7 @@
                                     <div class="cate2">총액(VAT 미포함)</div>
                                     <div class="amount2">
                                         <p class="price">
-                                            <input type="text" class="num_sum" id="form_add_total" value="<fmt:formatNumber value="${info.boothPrcSum - info.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                            <input type="text" id="totalAmount" value="<fmt:formatNumber value="${info.boothPrcSum - info.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
                                         </p>
                                     </div>
                                 </div>
@@ -365,22 +457,69 @@
 
     <script type="text/javascript">
         $(function(){
-            let prcSum = '${info.prcSum}';
-            if(nvl(prcSum,'') === '' || parseInt(prcSum) === 0){
-                $('#form_add_total').val($('.booth_cost')[0].innerText); // 초기 총액 : 등록비 합계 Set
-            }
 
-            /*let prePartYear = '${info.prePartYear}';
-            if(nvl(prePartYear,'first') !== 'first'){
-                $('#discount3').prop('checked', true).trigger('change'); //재참가할인
-            }
+            let approvalStatus = '${info.approvalStatus}';
+            if(nvl(approvalStatus,'') === '작성중'){ // 최초 등록 시
 
-            let memberCompanyYn = '${info.memberCompanyYn}';
-            if(nvl(memberCompanyYn,'') !== ''){
-                if(memberCompanyYn === 'Y'){
-                    $('#discount8').prop('checked', true).trigger('change'); //한국해양레저산업협회 할인
+                let prePartYear = '${info.prePartYear}';
+                if(nvl(prePartYear,'') !== '') {
+                    if(prePartYear === 'first'){
+                        $('#discountFirst').prop('checked', true).trigger('change'); //첫참가할인
+                    }else{
+                        $('#discountRe').prop('checked', true).trigger('change'); //재참가할인
+                    }
                 }
-            }*/
+
+                let memberCompanyYn = '${info.memberCompanyYn}';
+                if(nvl(memberCompanyYn,'') !== ''){
+                    if(memberCompanyYn === 'Y'){
+                        $('#discountLeisure').prop('checked', true).trigger('change'); //한국해양레저산업협회 할인
+                    }
+                }
+            }
+
+            // 할인 5~10번 중 하나만 선택 가능 로직
+            $('.single-choice-discount input[type="checkbox"]').on('change', function() {
+                const clickedCheckbox = $(this);
+                if (clickedCheckbox.prop('checked')) {
+                    // 클릭된 체크박스가 선택되었다면, 다른 체크박스들을 해제
+                    $('.single-choice-discount input[type="checkbox"]').not(clickedCheckbox).prop('checked', false);
+                }
+                calculateTotal();
+            });
+
+            // 첫 참가할인, 재참가 할인 중복 선택 방지 로직 추가
+            $('#discountFirst, #discountRe').on('change', function() {
+                const d3 = $('#discountFirst');
+                const d4 = $('#discountRe');
+                const changedCheckbox = $(this);
+
+                if (d3.prop('checked') && d4.prop('checked')) {
+                    if (changedCheckbox.is('#discountFirst')) { // 재참가 할인이 선택된 상태에서 첫 참가할인을 클릭
+                        alert('첫 참가 할인과 중복 선택할 수 없습니다.');
+                        changedCheckbox.prop('checked', false);
+                    } else { // 첫 참가 할인이 선택된 상태에서 재참가 할인을 클릭
+                        alert('재참가 할인과 중복 선택할 수 없습니다.');
+                        changedCheckbox.prop('checked', false);
+                    }
+                }
+                // 로직 처리 후 최종적으로 계산 함수 호출
+                calculateTotal();
+            });
+
+            // 수량 입력 변경 시 계산
+            $('#standAloneBoothCnt, #assemblyBoothCnt').on('input', calculateTotal);
+            // 온라인 부스 select box 변경 시 계산
+            $('#onlineBoothCnt').on('change', calculateTotal);
+
+            // 일반 할인 체크박스 변경 시 계산 (할인 1, 2, 3, 4, 5~10번 제외)
+            $('input[type="checkbox"]:not(#discountEarly1, #discountEarly2, #discountFirst, #discountRe, .single-choice-discount input)').on('change', calculateTotal);
+
+            // 초기 로드 시 계산 및 할인 1, 2번 상태 설정
+            handleDiscountEarly1();
+            handleDiscountEarly2();
+            calculateTotal();
+
         });
     </script>
 

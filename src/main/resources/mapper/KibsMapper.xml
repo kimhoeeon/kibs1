@@ -495,14 +495,14 @@
              , booth_prc_sum
              , discount_early_1
              , discount_early_2
-             , discount_re_1
-             , discount_re_2
-             , discount_re_3
-             , discount_re_all
+             , discount_first
+             , discount_re
              , discount_scale_1
              , discount_scale_2
              , discount_scale_3
-             , discount_first
+             , discount_scale_4
+             , discount_scale_5
+             , discount_scale_6
              , discount_leisure
              , discount_prc_sum
              , company_sign_name_ko
@@ -784,17 +784,21 @@
           , online_booth_fee = #{onlineBoothFee}
           , discount_early_1 = #{discountEarly1}
           , discount_early_2 = #{discountEarly2}
-          , discount_re_all = #{discountReAll}
-          , discount_scale_1 = 0
+          , discount_first = #{discountFirst}
+          , discount_re = #{discountRe}
+          , discount_scale_1 = #{discountScale1}
           , discount_scale_2 = #{discountScale2}
           , discount_scale_3 = #{discountScale3}
+          , discount_scale_4 = #{discountScale4}
+          , discount_scale_5 = #{discountScale5}
+          , discount_scale_6 = #{discountScale6}
           , discount_leisure = #{discountLeisure}
           , booth_prc_sum = #{boothPrcSum}
           , discount_prc_sum = #{discountPrcSum}
           , discount_yn = #{discountYn}
-          , prc_sum = ((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum)
-          , prc_vat = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1)
-          , prc_total = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) + (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
+          , prc_sum = (#{boothPrcSum} - #{discountPrcSum})
+          , prc_vat = (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
+          , prc_total = ((#{boothPrcSum} - #{discountPrcSum})) + (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
           , balance = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) + (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
           , note = #{note}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')

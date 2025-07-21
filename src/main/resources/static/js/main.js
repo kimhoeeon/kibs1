@@ -511,30 +511,229 @@ function f_file_download(path, fileName){
 }
 
 function minCnt(el, cnt){
-    let val = $.number($(el).val() || 0);
+    let val = $(el).val() || 0;
     if(val < cnt){
-        if(val !== $.number(0)){
+        if(val !== 0){
             alert('독립부스는 2부스부터 신청 가능합니다.');
             $(el).val(0);
-            checkBooth();
-            autoSum(1);
-            autoTotalSum();
-            return false;
+            calculateTotal();
         }
     }
 }
 
 function checkBooth(){
-    let standAloneBoothCnt = $.number((parseInt($('#stand_alone_booth_cnt').val() || 0)));
-    let assemblyBoothCnt = $.number((parseInt($('#assembly_booth_cnt').val() || 0)));
-    let onlineBoothCnt = $.number((parseInt($('#online_booth_cnt option:selected').val() || 0)));
+    let standAloneBoothCnt = $.number((parseInt($('#standAloneBoothCnt').val() || 0)));
+    let assemblyBoothCnt = $.number((parseInt($('#assemblyBoothCnt').val() || 0)));
+    let onlineBoothCnt = $.number((parseInt($('#onlineBoothCnt option:selected').val() || 0)));
     if((standAloneBoothCnt > 0 || assemblyBoothCnt > 0) && onlineBoothCnt > 0){
         alert('조립부스 또는 독립부스 신청 시, 온라인 부스는 무료 지원됩니다.');
-        $('#online_booth_cnt').val(0);
-        $('#online_booth_cnt option').eq(0).prop('selected',true);
-        autoSum(3);
+        $('#onlineBoothCnt').val(0);
+        $('#onlineBoothCnt option').eq(0).prop('selected',true);
+        calculateTotal();
     }
 }
+
+/***************************************************************************************
+ * 할인 조건 Function Start
+ * *************************************************************************************/
+const boothPrices = {
+    standAlone: 1800000,
+    assembly: 2100000,
+    online: 1000000
+};
+const registrationFee = 100000; // 기본 등록비
+
+// 현재 시간 (서버 시간 또는 사용자 로컬 시간)
+const now = new Date();
+
+// 1차 조기신청 할인 적용 마감일 (2025년 11월 21일 23:59:59)
+const discount1Deadline = new Date('2025-11-21T23:59:59');
+
+// 2차 조기신청 할인 적용 시작일 (2025년 11월 22일 00:00:00)
+const discount2StartDate = new Date('2025-11-22T00:00:00');
+// 2차 조기신청 할인 적용 마감일 (2025년 12월 19일 23:59:59)
+const discount2Deadline = new Date('2025-12-19T23:59:59');
+// 2차 조기신청 할인 선택 불가 시작일 (2025년 12월 20일 00:00:00)
+const discount2DisableDate = new Date('2025-12-20T00:00:00');
+
+// 첫 참가 할인 의 기본 할인 금액
+const discount3BaseAmount = 500000;
+// 첫 참가 할인 의 변경된 할인 금액
+const discount3ChangedAmount = 300000;
+
+// 단일 선택 그룹에 속하는 할인들 (5, 6, 7, 8, 9, 10)
+const singleChoiceDiscounts = [
+    '#discountScale1', '#discountScale2', '#discountScale3', '#discountScale4', '#discountScale5', '#discountScale6'
+];
+
+// 1차 조기신청 할인 체크박스 제어
+function handleDiscountEarly1() {
+    // 1차 조기신청 할인 적용 마감일 (2025년 11월 21일 23:59:59)
+    const discount1Checkbox = $('#discountEarly1');
+    const discount1Item = $('#discountItem1');
+
+    // 최초 등록인지 여부 판단
+    let isPrcTotal = Number.parseInt($('#prcTotal').val()) === 110000;
+
+    if (now <= discount1Deadline) {
+        // [수정] DB에서 데이터를 로드하지 않은 최초 접근 시에만 자동 선택
+        //console.log(isPrcTotal , !discount1Checkbox.prop('checked'));
+        if (isPrcTotal && !discount1Checkbox.prop('checked')) {
+            discount1Checkbox.prop('checked', true);
+        }
+        discount1Item.removeClass('disabled');
+        discount1Checkbox.prop('disabled', false);
+        discount1Checkbox.off('click.preventCheck');
+
+        let userUnchecked = false; // 사용자가 직접 해제했는지 추적
+        discount1Checkbox.on('change.discountControl', function() { // 네임스페이스 추가
+            if (!$(this).prop('checked')) {
+                // 사용자가 체크를 해제한 경우
+                if(confirm('1차 조기신청 할인은 자동으로 적용되며,\n한 번 해제하시면 다시 선택할 수 없습니다. 해제하시겠습니까?')){
+                    userUnchecked = true;
+                }else{
+                    $(this).prop('checked',true);
+                }
+                calculateTotal();
+            } else {
+                // 사용자가 다시 체크하려고 할 때 (마감일 이전에)
+                if (userUnchecked) {
+                    $(this).prop('checked', false); // 다시 체크되는 것을 막음
+                    alert('1차 조기신청 할인은 자동으로 적용되며,\n한 번 해제하시면 다시 선택할 수 없습니다.');
+                    calculateTotal(); // 상태 변경 없으니 다시 계산 필요 없을 수 있으나 안전장치
+                } else {
+                    calculateTotal();
+                }
+            }
+        });
+
+    } else {
+        // 마감일 이후: 선택 불가능, 클릭 시 알림, 자동 해제
+        if (discount1Checkbox.prop('checked')) {
+            discount1Checkbox.prop('checked', false);
+        }
+        discount1Checkbox.prop('disabled', true);
+        discount1Item.addClass('disabled');
+        discount1Checkbox.off('change.discountControl'); // change 이벤트 핸들러 제거
+
+        discount1Item.on('click.preventCheck', function(e) {
+            if (!$(e.target).is('input[type="checkbox"]')) {
+                alert('1차 조기신청 할인은 현재 선택 불가합니다.');
+            }
+        });
+    }
+}
+
+// 2차 조기신청 체크박스 제어
+function handleDiscountEarly2() {
+    const discount2Checkbox = $('#discountEarly2');
+    const discount2Item = $('#discountItem2');
+
+    // 최초 등록인지 여부 판단
+    let isPrcTotal = Number.parseInt($('#prcTotal').val()) === 110000;
+
+    if (now >= discount2StartDate && now <= discount2Deadline) {
+        // [수정] DB에서 데이터를 로드하지 않은 최초 접근 시에만 자동 선택
+        if (!isPrcTotal && !discount2Checkbox.prop('checked')) {
+            discount2Checkbox.prop('checked', true);
+        }
+        discount2Item.removeClass('disabled');
+        discount2Checkbox.prop('disabled', false);
+        discount2Checkbox.off('click.preventCheck');
+
+        let userUnchecked = false;
+        discount2Checkbox.on('change.discountControl', function() { // 네임스페이스 추가
+            if (!$(this).prop('checked')) {
+                // 사용자가 체크를 해제한 경우
+                if(confirm('2차 조기신청 할인은 자동으로 적용되며,\n한 번 해제하시면 다시 선택할 수 없습니다. 해제하시겠습니까?')){
+                    userUnchecked = true;
+                }else{
+                    $(this).prop('checked',true);
+                }
+                calculateTotal();
+            } else {
+                // 사용자가 다시 체크하려고 할 때 (마감일 이전에)
+                if (userUnchecked) {
+                    $(this).prop('checked', false); // 다시 체크되는 것을 막음
+                    alert('2차 조기신청 할인은 자동으로 적용되며,\n한 번 해제하시면 다시 선택할 수 없습니다.');
+                }
+                calculateTotal(); // 상태 변경 없으니 다시 계산 필요 없을 수 있으나 안전장치
+            }
+        });
+
+    }
+    // 이외의 경우 (예: 이미 마감일이 지났지만, disabled 처리되지 않은 상태)
+    // 초기화 및 비활성화 상태를 확실히 하기 위해 한 번 더 설정
+    else {
+        // 시작일 이전 또는 선택 불가 시작일 이후: 선택 불가능, 클릭 시 알림, 자동 해제
+        if (discount2Checkbox.prop('checked')) {
+            discount2Checkbox.prop('checked', false);
+        }
+        discount2Checkbox.prop('disabled', true);
+        discount2Item.addClass('disabled');
+        discount2Checkbox.off('change.discountControl'); // change 이벤트 핸들러 제거
+
+        discount2Item.on('click.preventCheck', function(e) {
+            if (!$(e.target).is('input[type="checkbox"]')) {
+                alert('2차 조기신청 할인은 현재 선택 불가합니다.');
+            }
+        });
+    }
+}
+
+function calculateTotal() {
+    let standAloneQty = parseInt($('#standAloneBoothCnt').val()) || 0;
+    let assemblyQty = parseInt($('#assemblyBoothCnt').val()) || 0;
+    let onlineQty = parseInt($('#onlineBoothCnt').val()) || 0;
+
+    let standAloneFee = standAloneQty * boothPrices.standAlone;
+    let assemblyFee = assemblyQty * boothPrices.assembly;
+    let onlineFee = onlineQty * boothPrices.online;
+
+    // 금액 표시 단위를 '￦'으로 변경
+    $('#standAloneBoothFee').val('￦ ' + standAloneFee.toLocaleString());
+    $('#assemblyBoothFee').val('￦ ' + assemblyFee.toLocaleString());
+    $('#onlineBoothFee').val('￦ ' + onlineFee.toLocaleString());
+
+    let subtotal = standAloneFee + assemblyFee + onlineFee;
+    let totalBooths = standAloneQty + assemblyQty + onlineQty;
+    let totalDiscount = 0;
+
+    // 첫 참가 할인 금액 결정 (규모할인 1~6 중 하나라도 선택되었는지 확인)
+    let isSingleChoiceDiscountSelected = false;
+    singleChoiceDiscounts.forEach(function(id) {
+        if ($(id).prop('checked')) {
+            isSingleChoiceDiscountSelected = true;
+        }
+    });
+
+    let discount3Amount = discount3BaseAmount;
+    if (isSingleChoiceDiscountSelected && $('#discountFirst').prop('checked')) {
+        discount3Amount = discount3ChangedAmount; // 첫 참가 할인이 선택되었고 규모할인 1~6 중 하나라도 선택되었다면 30만원으로 변경
+    }
+
+    // 체크된 모든 할인 합산
+    $('input[type="checkbox"]:checked').each(function() {
+        const discountId = $(this).attr('id');
+        let discountPerBooth = 0;
+
+        if (discountId === 'discountFirst') {
+            discountPerBooth = discount3Amount; // 첫 참가 할인은 결정된 금액 사용
+        } else {
+            discountPerBooth = parseInt($(this).data('discount'));
+        }
+        totalDiscount += discountPerBooth * totalBooths;
+    });
+
+    let finalAmount = subtotal - totalDiscount + registrationFee;
+
+    // 총 금액 표시 단위를 '￦'으로 변경
+    $('#totalAmount').val('￦ ' + Math.max(0, finalAmount).toLocaleString());
+}
+
+/***************************************************************************************
+ * 할인 조건 Function End
+ * *************************************************************************************/
 
 function autoSum(index){
     let boothCost = $('.booth_cost');
@@ -543,9 +742,9 @@ function autoSum(index){
 
     let qty = 0;
     switch (index){
-        case 1: qty = $.number((parseInt($('#stand_alone_booth_cnt').val() || 0))); break; //독립부스
-        case 2: qty = $.number((parseInt($('#assembly_booth_cnt').val() || 0))); break; //조립부스
-        case 3: qty = $.number((parseInt($('#online_booth_cnt option:selected').val() || 0))); break; //온라인부스
+        case 0: qty = $.number((parseInt($('#stand_alone_booth_cnt').val() || 0))); break; //독립부스
+        case 1: qty = $.number((parseInt($('#assembly_booth_cnt').val() || 0))); break; //조립부스
+        case 2: qty = $.number((parseInt($('#online_booth_cnt option:selected').val() || 0))); break; //온라인부스
         default: break;
     }
 
@@ -560,7 +759,6 @@ function autoTotalSum(){
     for(let i=0; i<4/*sum.length*/; i++){
         totalSum += wonToNumber(sum.eq(i).val());
     }
-
     $('#form_add_total').val(numberToWon(totalSum));
 
     // CheckBox 검사
@@ -577,13 +775,16 @@ function autoTotalSum(){
         for(let i=0; i<names.length; i++){
             let discountPrc = '0';
             switch (names[i]){
-                case 'discount1': discountPrc = '300000'; break;
-                case 'discount2': discountPrc = '200000'; break;
-                case 'discount3': discountPrc = '200000'; break;
-                case 'discount5': discountPrc = '300000'; break;
-                case 'discount6': discountPrc = '450000'; break;
-                /*case 'discount7': discountPrc = '500000'; break;*/
-                case 'discount8': discountPrc = '200000'; break;
+                case 'discountEarly1': discountPrc = '300000'; break;
+                case 'discountEarly2': discountPrc = '200000'; break;
+                case 'discountFirst': discountPrc = '500000'; break;
+                case 'discountRe': discountPrc = '200000'; break;
+                case 'discountScale1': discountPrc = '400000'; break;
+                case 'discountScale2': discountPrc = '650000'; break;
+                case 'discountScale3': discountPrc = '750000'; break;
+                case 'discountScale4': discountPrc = '800000'; break;
+                case 'discountScale5': discountPrc = '850000'; break;
+                case 'discountScale6': discountPrc = '900000'; break;
                 default: break;
             }
             autoDiscountSum($('#'+names[i]),discountPrc);
@@ -592,13 +793,13 @@ function autoTotalSum(){
 
 }
 
-function autoDiscountSum(checkbox, discountPrc){
+function autoDiscountSum(checkbox){
 
     let memberCompanyYn = $('#memberCompanyYn').val();
     if(nvl(memberCompanyYn,'') !== ''){
         let memberCompanyYn_id = $(checkbox).prop('id');
         let memberCompanyYn_flag = $(checkbox).prop('checked');
-        if(memberCompanyYn === 'N' && memberCompanyYn_id === 'discount8' && memberCompanyYn_flag){
+        if(memberCompanyYn === 'N' && memberCompanyYn_id === 'discountLeisure' && memberCompanyYn_flag){
             alert("한국해양레저산업협회 회원사 여부 - \'아니오\'\n체크 시 해당 할인은 불가합니다.");
             $(checkbox).prop('checked',false);
             return;
@@ -607,88 +808,52 @@ function autoDiscountSum(checkbox, discountPrc){
 
     let discountId = $(checkbox).prop('id');
 
-    if(discountId === 'discount1'){
-        let discount2Checked = $('#discount2').is(':checked');
-        if(discount2Checked){
-            $('#discount2').prop('checked',false);
+    if(discountId === 'discountScale1'){
+        let discountFirstChecked = $('#discountFirst').is(':checked');
+        if(discountFirstChecked){
+            let discountScale1Checked = $('#discountScale1').is(':checked');
+            if(discountScale1Checked){
+                alert("첫 참가할인과 규모할인을 함께 적용할 경우,\n부스당 할인 금액은 30만원으로 조정됩니다.");
+            }
         }
     }
 
-    if(discountId === 'discount2'){
-        let discount1Checked = $('#discount1').is(':checked');
-        if(discount1Checked){
-            $('#discount1').prop('checked',false);
+    let form_add_total = wonToNumber($('#form_add_total').val());
+    if(form_add_total > 100000){
+
+        // 부스 수량 가져오기
+        let boothSum = parseInt($('#stand_alone_booth_cnt').val() || 0)
+            + parseInt($('#assembly_booth_cnt').val() || 0)
+            + parseInt($('#online_booth_cnt option:selected').val());
+
+        if(boothSum > 0) {
+
+            let boothPrc = (parseInt($('#stand_alone_booth_cnt').val() || 0) * 1800000)
+                + (parseInt($('#assembly_booth_cnt').val() || 0) * 2100000)
+                + (parseInt($('#online_booth_cnt option:selected').val()) * 1000000)
+                + 100000;
+
+            let discount_checkBox = $('input[type=checkbox][name=discount]:checked');
+            let discountPrc = 0;
+            for(let i=0; i<discount_checkBox.length; i++){
+                discountPrc += boothSum * parseInt(discount_checkBox.eq(i).val());
+            }
+
+            let totalSum = boothPrc;
+            totalSum = wonToNumber(totalSum) - discountPrc;
+
+            if(wonToNumber(totalSum) > 0){
+                $('#form_add_total').val(numberToWon(totalSum));
+            }else{
+                $('#form_add_total').val(numberToWon("0"));
+            }
+
+        } else {
+            alert("부스 신청 수량을 입력해 주세요.\nPlease enter the booth application quantity.");
+            $(checkbox).prop('checked',false);
         }
     }
 
-    /*if(discountId === 'discount3'){
-        let discount7Checked = $('#discount7').is(':checked');
-        if(discount7Checked){
-            $('#discount7').prop('checked',false);
-        }
-    }
-
-    if(discountId === 'discount7'){
-        let discount3Checked = $('#discount3').is(':checked');
-        if(discount3Checked){
-            $('#discount3').prop('checked',false);
-        }
-    }*/
-
-    if(discountId === 'discount5'){
-        let discount6Checked = $('#discount6').is(':checked');
-        if(discount6Checked){
-            $('#discount6').prop('checked',false);
-        }
-    }
-
-    if(discountId === 'discount6'){
-        let discount5Checked = $('#discount5').is(':checked');
-        if(discount5Checked){
-            $('#discount5').prop('checked',false);
-        }
-    }
-
-    // console.log(checkbox.id , $(checkbox).is(":checked"));
-    // discount1 - 1 부스당 300,000 원 할인
-    // discount2 - 1 부스당 200,000 원 할인
-    // discount3 - 1 부스당 200,000 원 할인
-    // discount5 - 1 부스당 300,000 원 할인
-    // discount6 - 1 부스당 450,000 원 할인
-    // discount7 - 1 부스당 500,000 원 할인
-    // discount8 - 1 부스당 200,000 원 할인
-
-    // 부스 수량 가져오기
-    let boothSum = parseInt($('#stand_alone_booth_cnt').val() || 0)
-        + parseInt($('#assembly_booth_cnt').val() || 0)
-        + parseInt($('#online_booth_cnt option:selected').val());
-
-    if(boothSum > 0) {
-
-        let boothPrc = (parseInt($('#stand_alone_booth_cnt').val() || 0) * 1800000)
-            + (parseInt($('#assembly_booth_cnt').val() || 0) * 2100000)
-            + (parseInt($('#online_booth_cnt option:selected').val()) * 1000000)
-            + 100000;
-
-        let discount_checkBox = $('input[type=checkbox][name=discount]:checked');
-        let discountPrc = 0;
-        for(let i=0; i<discount_checkBox.length; i++){
-            discountPrc += boothSum * parseInt(discount_checkBox.eq(i).val());
-        }
-
-        let totalSum = boothPrc;
-        totalSum = wonToNumber(totalSum) - discountPrc;
-
-        if(wonToNumber(totalSum) > 0){
-            $('#form_add_total').val(numberToWon(totalSum));
-        }else{
-            $('#form_add_total').val(numberToWon("0"));
-        }
-
-    } else {
-        alert("부스 신청 수량을 입력해 주세요.\nPlease enter the booth application quantity.");
-        $(checkbox).prop('checked',false);
-    }
 }
 
 function wonToNumber(won){
@@ -2475,98 +2640,132 @@ function step_2_1_check(exhibitorSeq){
     let boothPrcSum = 0;
 
     // 부스 신청 - 등록비 - 수량
-    let registration_cnt = parseInt(document.querySelector('#registration_cnt').value);
+    let registrationCnt = 1;
 
     // 부스 신청 - 등록비 - 금액
-    let registration_fee = document.querySelector('#registration_fee').value;
+    let registrationFee = 100000;
 
-    boothPrcSum += wonToNumber(registration_fee);
+    boothPrcSum += registrationFee;
 
     // 부스 신청 - 독립부스 - 수량
-    let stand_alone_booth_cnt = parseInt(document.querySelector('#stand_alone_booth_cnt').value);
+    let standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val());
 
-    if(stand_alone_booth_cnt > 0){
+    if(standAloneBoothCnt > 0){
         boothType += ',독립부스';
     }
 
     // 부스 신청 - 독립부스 - 금액
-    let stand_alone_booth_fee = document.querySelector('#stand_alone_booth_fee').value;
+    let standAloneBoothFee = $('#standAloneBoothFee').val();
 
-    boothPrcSum += wonToNumber(stand_alone_booth_fee);
+    boothPrcSum += wonToNumber(standAloneBoothFee);
 
     // 부스 신청 - 조립부스 - 수량
-    let assembly_booth_cnt = parseInt(document.querySelector('#assembly_booth_cnt').value);
+    let assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val());
 
-    if(assembly_booth_cnt > 0){
+    if(assemblyBoothCnt > 0){
         boothType += ',조립부스';
     }
 
     // 부스 신청 - 조립부스 - 금액
-    let assembly_booth_fee = document.querySelector('#assembly_booth_fee').value;
+    let assemblyBoothFee = $('#assemblyBoothFee').val();
 
-    boothPrcSum += wonToNumber(assembly_booth_fee);
+    boothPrcSum += wonToNumber(assemblyBoothFee);
 
     // 부스 신청 - 온라인부스 - 수량
-    let online_booth_cnt = parseInt(document.querySelector('select#online_booth_cnt option:checked').text);
+    let onlineBoothCnt = parseInt($('#onlineBoothCnt option:checked').val());
 
-    if(online_booth_cnt > 0){
+    if(onlineBoothCnt > 0){
         boothType += ',온라인부스';
     }
 
     // 부스 신청 - 온라인부스 - 금액
-    let online_booth_fee = document.querySelector('#online_booth_fee').value;
+    let onlineBoothFee = $('#onlineBoothFee').val();
 
-    boothPrcSum += wonToNumber(online_booth_fee);
+    boothPrcSum += wonToNumber(onlineBoothFee);
 
     let discountType = '';
     let discountPrcSum = 0;
-    let boothTotalCnt = stand_alone_booth_cnt + assembly_booth_cnt + online_booth_cnt;
+    let boothTotalCnt = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
 
     // 할인적용 - 1차 조기신청
-    let discount_early_1 = document.querySelector('input[type=checkbox][id=discount1]').checked;
-    if(discount_early_1){
+    let discountEarly1 = $('#discountEarly1').is(':checked');
+    if(discountEarly1){
         discountType += ',1차조기신청';
         discountPrcSum += (boothTotalCnt * 300000);
     }
 
     // 할인적용 - 2차 조기신청
-    let discount_early_2 = document.querySelector('input[type=checkbox][id=discount2]').checked;
-    if(discount_early_2){
+    let discountEarly2 = $('#discountEarly2').is(':checked');
+    if(discountEarly2){
         discountType += ',2차조기신청';
         discountPrcSum += (boothTotalCnt * 200000);
     }
 
+    // 할인적용 - 첫 참가 할인
+    let discountFirst = $('#discountFirst').is(':checked');
+    if(discountFirst){
+        discountType += ',첫참가';
+        
+        // 규모할인 체크시 30만원으로 적용
+        if($('.single-choice-discount input[type="checkbox"]').is(':checked')){
+            discountPrcSum += (boothTotalCnt * 300000);
+        }else{
+            discountPrcSum += (boothTotalCnt * 500000);
+        }
+    }
+
     // 할인적용 - 재참가할인 All
-    let discount_re_all = document.querySelector('input[type=checkbox][id=discount3]').checked;
-    if(discount_re_all){
+    let discountRe = $('#discountRe').is(':checked');
+    if(discountRe){
         discountType += ',재참가할인';
         discountPrcSum += (boothTotalCnt * 200000);
     }
 
-    // 할인적용 - 규모할인 1 (20부스 이상)
-    let discount_scale_2 = document.querySelector('input[type=checkbox][id=discount5]').checked;
-    if(discount_scale_2){
+    // 할인적용 - 규모할인 1 (10부스 이상)
+    let discountScale1 = $('#discountScale1').is(':checked');
+    if(discountScale1){
         discountType += ',규모할인1';
-        discountPrcSum += (boothTotalCnt * 300000);
+        discountPrcSum += (boothTotalCnt * 400000);
     }
 
-    // 할인적용 - 규모할인 2 (40부스 이상)
-    let discount_scale_3 = document.querySelector('input[type=checkbox][id=discount6]').checked;
-    if(discount_scale_3){
+    // 할인적용 - 규모할인 2 (20부스 이상)
+    let discountScale2 = $('#discountScale2').is(':checked');
+    if(discountScale2){
         discountType += ',규모할인2';
-        discountPrcSum += (boothTotalCnt * 450000);
+        discountPrcSum += (boothTotalCnt * 650000);
     }
 
-    // 할인적용 - 첫 참가 할인
-    /*let discount_first = document.querySelector('input[type=checkbox][id=discount7]').checked;
-    if(discount_first){
-        discountType += ',첫참가';
-        discountPrcSum += (boothTotalCnt * 500000);
-    }*/
+    // 할인적용 - 규모할인 3 (30부스 이상)
+    let discountScale3 = $('#discountScale3').is(':checked');
+    if(discountScale3){
+        discountType += ',규모할인3';
+        discountPrcSum += (boothTotalCnt * 750000);
+    }
+
+    // 할인적용 - 규모할인 4 (40부스 이상)
+    let discountScale4 = $('#discountScale4').is(':checked');
+    if(discountScale4){
+        discountType += ',규모할인4';
+        discountPrcSum += (boothTotalCnt * 800000);
+    }
+
+    // 할인적용 - 규모할인 5 (50부스 이상)
+    let discountScale5 = $('#discountScale5').is(':checked');
+    if(discountScale5){
+        discountType += ',규모할인5';
+        discountPrcSum += (boothTotalCnt * 850000);
+    }
+
+    // 할인적용 - 규모할인 6 (60부스 이상)
+    let discountScale6 = $('#discountScale6').is(':checked');
+    if(discountScale6){
+        discountType += ',규모할인6';
+        discountPrcSum += (boothTotalCnt * 900000);
+    }
 
     // 할인적용 - 한국해양레저산업협회 할인
-    let discount_leisure = document.querySelector('input[type=checkbox][id=discount8]').checked;
-    if(discount_leisure){
+    let discountLeisure = $('#discountLeisure').is(':checked');
+    if(discountLeisure){
         discountType += ',한국해양레저산업협회';
         discountPrcSum += (boothTotalCnt * 200000);
     }
@@ -2582,30 +2781,34 @@ function step_2_1_check(exhibitorSeq){
 
     //let boothPrcSum = parseInt(wonToInt($('#form_add_total').val()));
 
-    if(stand_alone_booth_cnt + assembly_booth_cnt + online_booth_cnt === 0){
+    if(boothTotalCnt === 0){
         showMessage('', 'error', '[ 전시부스 신청 ]', '부스(독립,조립,온라인)를 하나 이상 신청해 주세요.', '');
-        return false;
+        return;
     }
 
     let booth_json_obj = {
         seq: exhibitorSeq,
         boothType: boothType,
         discountType: discountType,
-        registrationCnt: registration_cnt,
-        registrationFee: Number.parseInt(wonToInt(registration_fee)),
-        standAloneBoothCnt: stand_alone_booth_cnt,
-        standAloneBoothFee: Number.parseInt(wonToInt(stand_alone_booth_fee)),
-        assemblyBoothCnt: assembly_booth_cnt,
-        assemblyBoothFee: Number.parseInt(wonToInt(assembly_booth_fee)),
-        onlineBoothCnt: online_booth_cnt,
-        onlineBoothFee: Number.parseInt(wonToInt(online_booth_fee)),
-        discountEarly1: discount_early_1,
-        discountEarly2: discount_early_2,
-        discountReAll: discount_re_all,
-        discountScale2: discount_scale_2,
-        discountScale3: discount_scale_3,
-        /*discountFirst: discount_first,*/
-        discountLeisure: discount_leisure,
+        registrationCnt: registrationCnt,
+        registrationFee: registrationFee,
+        standAloneBoothCnt: standAloneBoothCnt,
+        standAloneBoothFee: Number.parseInt(wonToInt(standAloneBoothFee)),
+        assemblyBoothCnt: assemblyBoothCnt,
+        assemblyBoothFee: Number.parseInt(wonToInt(assemblyBoothFee)),
+        onlineBoothCnt: onlineBoothCnt,
+        onlineBoothFee: Number.parseInt(wonToInt(onlineBoothFee)),
+        discountEarly1: discountEarly1,
+        discountEarly2: discountEarly2,
+        discountFirst: discountFirst,
+        discountRe: discountRe,
+        discountScale1: discountScale1,
+        discountScale2: discountScale2,
+        discountScale3: discountScale3,
+        discountScale4: discountScale4,
+        discountScale5: discountScale5,
+        discountScale6: discountScale6,
+        discountLeisure: discountLeisure,
         discountYn: discountYn,
         boothPrcSum: boothPrcSum,
         discountPrcSum: discountPrcSum
@@ -5011,98 +5214,132 @@ function my_step_2_1_check(exhibitorSeq){
     let boothPrcSum = 0;
 
     // 부스 신청 - 등록비 - 수량
-    let registration_cnt = parseInt(document.querySelector('#registration_cnt').value);
+    let registrationCnt = 1;
 
     // 부스 신청 - 등록비 - 금액
-    let registration_fee = document.querySelector('#registration_fee').value;
+    let registrationFee = 100000;
 
-    boothPrcSum += wonToNumber(registration_fee);
+    boothPrcSum += registrationFee;
 
     // 부스 신청 - 독립부스 - 수량
-    let stand_alone_booth_cnt = parseInt(document.querySelector('#stand_alone_booth_cnt').value);
+    let standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val());
 
-    if(stand_alone_booth_cnt > 0){
+    if(standAloneBoothCnt > 0){
         boothType += ',독립부스';
     }
 
     // 부스 신청 - 독립부스 - 금액
-    let stand_alone_booth_fee = document.querySelector('#stand_alone_booth_fee').value;
+    let standAloneBoothFee = $('#standAloneBoothFee').val();
 
-    boothPrcSum += wonToNumber(stand_alone_booth_fee);
+    boothPrcSum += wonToNumber(standAloneBoothFee);
 
     // 부스 신청 - 조립부스 - 수량
-    let assembly_booth_cnt = parseInt(document.querySelector('#assembly_booth_cnt').value);
+    let assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val());
 
-    if(assembly_booth_cnt > 0){
+    if(assemblyBoothCnt > 0){
         boothType += ',조립부스';
     }
 
     // 부스 신청 - 조립부스 - 금액
-    let assembly_booth_fee = document.querySelector('#assembly_booth_fee').value;
+    let assemblyBoothFee = $('#assemblyBoothFee').val();
 
-    boothPrcSum += wonToNumber(assembly_booth_fee);
+    boothPrcSum += wonToNumber(assemblyBoothFee);
 
     // 부스 신청 - 온라인부스 - 수량
-    let online_booth_cnt = parseInt(document.querySelector('select#online_booth_cnt option:checked').text);
+    let onlineBoothCnt = parseInt($('#onlineBoothCnt option:checked').val());
 
-    if(online_booth_cnt > 0){
+    if(onlineBoothCnt > 0){
         boothType += ',온라인부스';
     }
 
     // 부스 신청 - 온라인부스 - 금액
-    let online_booth_fee = document.querySelector('#online_booth_fee').value;
+    let onlineBoothFee = $('#onlineBoothFee').val();
 
-    boothPrcSum += wonToNumber(online_booth_fee);
+    boothPrcSum += wonToNumber(onlineBoothFee);
 
     let discountType = '';
     let discountPrcSum = 0;
-    let boothTotalCnt = stand_alone_booth_cnt + assembly_booth_cnt + online_booth_cnt;
+    let boothTotalCnt = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
 
     // 할인적용 - 1차 조기신청
-    let discount_early_1 = document.querySelector('input[type=checkbox][id=discount1]').checked;
-    if(discount_early_1){
+    let discountEarly1 = $('#discountEarly1').is(':checked');
+    if(discountEarly1){
         discountType += ',1차조기신청';
         discountPrcSum += (boothTotalCnt * 300000);
     }
 
     // 할인적용 - 2차 조기신청
-    let discount_early_2 = document.querySelector('input[type=checkbox][id=discount2]').checked;
-    if(discount_early_2){
+    let discountEarly2 = $('#discountEarly2').is(':checked');
+    if(discountEarly2){
         discountType += ',2차조기신청';
         discountPrcSum += (boothTotalCnt * 200000);
     }
 
+    // 할인적용 - 첫 참가 할인
+    let discountFirst = $('#discountFirst').is(':checked');
+    if(discountFirst){
+        discountType += ',첫참가';
+
+        // 규모할인 체크시 30만원으로 적용
+        if($('.single-choice-discount input[type="checkbox"]').is(':checked')){
+            discountPrcSum += (boothTotalCnt * 300000);
+        }else{
+            discountPrcSum += (boothTotalCnt * 500000);
+        }
+    }
+
     // 할인적용 - 재참가할인 All
-    let discount_re_all = document.querySelector('input[type=checkbox][id=discount3]').checked;
-    if(discount_re_all){
+    let discountRe = $('#discountRe').is(':checked');
+    if(discountRe){
         discountType += ',재참가할인';
         discountPrcSum += (boothTotalCnt * 200000);
     }
 
-    // 할인적용 - 규모할인 1 (20부스 이상)
-    let discount_scale_2 = document.querySelector('input[type=checkbox][id=discount5]').checked;
-    if(discount_scale_2){
+    // 할인적용 - 규모할인 1 (10부스 이상)
+    let discountScale1 = $('#discountScale1').is(':checked');
+    if(discountScale1){
         discountType += ',규모할인1';
-        discountPrcSum += (boothTotalCnt * 300000);
+        discountPrcSum += (boothTotalCnt * 400000);
     }
 
-    // 할인적용 - 규모할인 2 (40부스 이상)
-    let discount_scale_3 = document.querySelector('input[type=checkbox][id=discount6]').checked;
-    if(discount_scale_3){
+    // 할인적용 - 규모할인 2 (20부스 이상)
+    let discountScale2 = $('#discountScale2').is(':checked');
+    if(discountScale2){
         discountType += ',규모할인2';
-        discountPrcSum += (boothTotalCnt * 450000);
+        discountPrcSum += (boothTotalCnt * 650000);
     }
 
-    // 할인적용 - 첫 참가 할인
-    /*let discount_first = document.querySelector('input[type=checkbox][id=discount7]').checked;
-    if(discount_first){
-        discountType += ',첫참가';
-        discountPrcSum += (boothTotalCnt * 500000);
-    }*/
+    // 할인적용 - 규모할인 3 (30부스 이상)
+    let discountScale3 = $('#discountScale3').is(':checked');
+    if(discountScale3){
+        discountType += ',규모할인3';
+        discountPrcSum += (boothTotalCnt * 750000);
+    }
+
+    // 할인적용 - 규모할인 4 (40부스 이상)
+    let discountScale4 = $('#discountScale4').is(':checked');
+    if(discountScale4){
+        discountType += ',규모할인4';
+        discountPrcSum += (boothTotalCnt * 800000);
+    }
+
+    // 할인적용 - 규모할인 5 (50부스 이상)
+    let discountScale5 = $('#discountScale5').is(':checked');
+    if(discountScale5){
+        discountType += ',규모할인5';
+        discountPrcSum += (boothTotalCnt * 850000);
+    }
+
+    // 할인적용 - 규모할인 6 (60부스 이상)
+    let discountScale6 = $('#discountScale6').is(':checked');
+    if(discountScale6){
+        discountType += ',규모할인6';
+        discountPrcSum += (boothTotalCnt * 900000);
+    }
 
     // 할인적용 - 한국해양레저산업협회 할인
-    let discount_leisure = document.querySelector('input[type=checkbox][id=discount8]').checked;
-    if(discount_leisure){
+    let discountLeisure = $('#discountLeisure').is(':checked');
+    if(discountLeisure){
         discountType += ',한국해양레저산업협회';
         discountPrcSum += (boothTotalCnt * 200000);
     }
@@ -5118,30 +5355,34 @@ function my_step_2_1_check(exhibitorSeq){
 
     //let boothPrcSum = parseInt(wonToInt($('#form_add_total').val()));
 
-    if(stand_alone_booth_cnt + assembly_booth_cnt + online_booth_cnt === 0){
-        showMessage('', 'error', '[전시부스 신청정보]', '부스(독립,조립,온라인)를 하나 이상 신청해 주세요.', '');
-        return false;
+    if(boothTotalCnt === 0){
+        showMessage('', 'error', '[ 전시부스 신청 ]', '부스(독립,조립,온라인)를 하나 이상 신청해 주세요.', '');
+        return;
     }
 
     let booth_json_obj = {
         seq: exhibitorSeq,
         boothType: boothType,
         discountType: discountType,
-        registrationCnt: registration_cnt,
-        registrationFee: wonToInt(registration_fee),
-        standAloneBoothCnt: stand_alone_booth_cnt,
-        standAloneBoothFee: wonToInt(stand_alone_booth_fee),
-        assemblyBoothCnt: assembly_booth_cnt,
-        assemblyBoothFee: wonToInt(assembly_booth_fee),
-        onlineBoothCnt: online_booth_cnt,
-        onlineBoothFee: wonToInt(online_booth_fee),
-        discountEarly1: discount_early_1,
-        discountEarly2: discount_early_2,
-        discountReAll: discount_re_all,
-        discountScale2: discount_scale_2,
-        discountScale3: discount_scale_3,
-        /*discountFirst: discount_first,*/
-        discountLeisure: discount_leisure,
+        registrationCnt: registrationCnt,
+        registrationFee: registrationFee,
+        standAloneBoothCnt: standAloneBoothCnt,
+        standAloneBoothFee: Number.parseInt(wonToInt(standAloneBoothFee)),
+        assemblyBoothCnt: assemblyBoothCnt,
+        assemblyBoothFee: Number.parseInt(wonToInt(assemblyBoothFee)),
+        onlineBoothCnt: onlineBoothCnt,
+        onlineBoothFee: Number.parseInt(wonToInt(onlineBoothFee)),
+        discountEarly1: discountEarly1,
+        discountEarly2: discountEarly2,
+        discountFirst: discountFirst,
+        discountRe: discountRe,
+        discountScale1: discountScale1,
+        discountScale2: discountScale2,
+        discountScale3: discountScale3,
+        discountScale4: discountScale4,
+        discountScale5: discountScale5,
+        discountScale6: discountScale6,
+        discountLeisure: discountLeisure,
         discountYn: discountYn,
         boothPrcSum: boothPrcSum,
         discountPrcSum: discountPrcSum
@@ -7043,16 +7284,21 @@ function makeJsonFormat(data){
 
 /**
  * 문자열이 빈 문자열인지 체크하여 기본 문자열로 리턴한다.
- * @param str			: 체크할 문자열
- * @param defaultStr	: string 비어있을경우 리턴할 기본 문자열
+ * @param value
+ * @param defaultValue
  */
-function nvl(str, defaultStr){
-
-    if(str === "" || str === null || str === "null" || str === undefined || typeof str === "undefined" || (typeof str === "object" && !Object.keys(str).length) ){
-        str = defaultStr ;
+function nvl(value, defaultValue) {
+    // null, undefined, "", "null" (문자열), 빈 객체를 처리하고 기본값 반환
+    if (
+        value === null ||                         // null 처리
+        value === undefined ||                   // undefined 처리
+        value === "" ||                          // 빈 문자열 처리
+        value === "null" ||                      // "null" 문자열 처리
+        (typeof value === "object" && !Object.keys(value || {}).length) // 빈 객체 처리
+    ) {
+        return defaultValue;
     }
-
-    return str ;
+    return value; // 해당 조건에 걸리지 않으면 원본 값 반환
 }
 
 function f_page_move(url, param){
