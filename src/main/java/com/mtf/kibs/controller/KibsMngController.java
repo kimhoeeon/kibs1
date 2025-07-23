@@ -4257,8 +4257,6 @@ public class KibsMngController {
                     "수출상담회 참가희망여부",
                     /* 전시부스 신청 */
                     "등록비", "독립부스", "조립부스", "온라인부스",
-                    // [추가] 부스 신청 금액 항목 추가
-                    "소계", "부가세", "총계",
                     /* 할인적용 */
                     "1차 조기신청", "2차 조기신청", "첫 참가할인", "재참가할인", "규모할인 1(10부스 이상)", "규모할인 2(20부스 이상)", "규모할인 3(30부스 이상)", "규모할인 4(40부스 이상)", "규모할인 5(50부스 이상)", "규모할인 6(100부스 이상)", "한국해양레저산업협회 할인",
                     // [추가] 할인 적용 금액 항목 추가
@@ -4428,8 +4426,6 @@ public class KibsMngController {
                     5000,
                     /* 전시부스 신청 */
                     5000, 5000, 5000, 5000,
-                    // [추가] 부스 금액 항목 너비 추가
-                    5000, 5000, 5000,
                     /* 할인적용 */
                     5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
                     // [추가] 할인 금액 항목 너비 추가
@@ -4991,120 +4987,103 @@ public class KibsMngController {
             mergeCell7_30.setCellValue("제품 30");
 
             // 업체정보
-            //sheet.addMergedRegion(new CellRangeAddress(0,0,436,436));
             XSSFCell mergeCell8 = row.createCell(668);
             mergeCell8.setCellStyle(headerStyle);
             mergeCell8.setCellValue("참가업체정보");
 
             // 전시부스신청
-            // [수정] 셀 병합 범위 변경 (669, 672 -> 669, 675)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,669,675));
+            sheet.addMergedRegion(new CellRangeAddress(0,0,669,672));
             XSSFCell mergeCell9 = row.createCell(669);
             mergeCell9.setCellStyle(headerStyle_cornflower_blue);
             mergeCell9.setCellValue("전시부스 신청");
 
             // 할인적용
-            // [수정] 셀 병합 범위 변경 (673, 683 -> 676, 689)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,676,689));
-            XSSFCell mergeCell10 = row.createCell(676);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,673,686));
+            XSSFCell mergeCell10 = row.createCell(673);
             mergeCell10.setCellStyle(headerStyle_cornflower_blue);
             mergeCell10.setCellValue("할인적용");
 
             // 상호간판신청
-            // [수정] 셀 병합 범위 변경 (684, 685 -> 690, 691)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,690,691));
-            XSSFCell mergeCell11 = row.createCell(690);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,687,688));
+            XSSFCell mergeCell11 = row.createCell(687);
             mergeCell11.setCellStyle(headerStyle_light_blue);
             mergeCell11.setCellValue("상호간판 신청");
 
             // 유틸리티 신청
-            // [수정] 셀 병합 범위 변경 (686, 693 -> 692, 702)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,692,702));
-            XSSFCell mergeCell12 = row.createCell(692);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,689,699));
+            XSSFCell mergeCell12 = row.createCell(689);
             mergeCell12.setCellStyle(headerStyle_rose);
             mergeCell12.setCellValue("유틸리티 신청");
 
             // 출입증 신청 1
-            // [수정] 셀 병합 범위 변경 (694, 699 -> 703, 708)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,703,708));
-            XSSFCell mergeCell13_1 = row.createCell(703);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,700,705));
+            XSSFCell mergeCell13_1 = row.createCell(700);
             mergeCell13_1.setCellStyle(headerStyle_lavender);
             mergeCell13_1.setCellValue("출입증 신청 1");
 
             // 출입증 신청 2
-            // [수정] 셀 병합 범위 변경 (700, 705 -> 709, 714)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,709,714));
-            XSSFCell mergeCell13_2 = row.createCell(709);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,706,711));
+            XSSFCell mergeCell13_2 = row.createCell(706);
             mergeCell13_2.setCellStyle(headerStyle_lavender);
             mergeCell13_2.setCellValue("출입증 신청 2");
 
             // 출입증 신청 3
-            // [수정] 셀 병합 범위 변경 (706, 711 -> 715, 720)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,715,720));
-            XSSFCell mergeCell13_3 = row.createCell(715);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,712,717));
+            XSSFCell mergeCell13_3 = row.createCell(712);
             mergeCell13_3.setCellStyle(headerStyle_lavender);
             mergeCell13_3.setCellValue("출입증 신청 3");
 
             // 출입증 신청 4
-            // [수정] 셀 병합 범위 변경 (712, 717 -> 721, 726)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,721,726));
-            XSSFCell mergeCell13_4 = row.createCell(721);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,718,723));
+            XSSFCell mergeCell13_4 = row.createCell(718);
             mergeCell13_4.setCellStyle(headerStyle_lavender);
             mergeCell13_4.setCellValue("출입증 신청 4");
 
             // 출입증 신청 5
-            // [수정] 셀 병합 범위 변경 (718, 723 -> 727, 732)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,727,732));
-            XSSFCell mergeCell13_5 = row.createCell(727);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,724,729));
+            XSSFCell mergeCell13_5 = row.createCell(724);
             mergeCell13_5.setCellStyle(headerStyle_lavender);
             mergeCell13_5.setCellValue("출입증 신청 5");
 
             // 출입증 신청 6
-            // [수정] 셀 병합 범위 변경 (724, 729 -> 733, 738)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,733,738));
-            XSSFCell mergeCell13_6 = row.createCell(733);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,730,735));
+            XSSFCell mergeCell13_6 = row.createCell(730);
             mergeCell13_6.setCellStyle(headerStyle_lavender);
             mergeCell13_6.setCellValue("출입증 신청 6");
 
             // 출입증 신청 7
-            // [수정] 셀 병합 범위 변경 (730, 735 -> 739, 744)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,739,744));
-            XSSFCell mergeCell13_7 = row.createCell(739);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,736,741));
+            XSSFCell mergeCell13_7 = row.createCell(736);
             mergeCell13_7.setCellStyle(headerStyle_lavender);
             mergeCell13_7.setCellValue("출입증 신청 7");
 
             // 출입증 신청 8
-            // [수정] 셀 병합 범위 변경 (736, 741 -> 745, 750)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,745,750));
-            XSSFCell mergeCell13_8 = row.createCell(745);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,742,747));
+            XSSFCell mergeCell13_8 = row.createCell(742);
             mergeCell13_8.setCellStyle(headerStyle_lavender);
             mergeCell13_8.setCellValue("출입증 신청 8");
 
             // 출입증 신청 9
-            // [수정] 셀 병합 범위 변경 (742, 747 -> 751, 756)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,751,756));
-            XSSFCell mergeCell13_9 = row.createCell(751);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,748,753));
+            XSSFCell mergeCell13_9 = row.createCell(748);
             mergeCell13_9.setCellStyle(headerStyle_lavender);
             mergeCell13_9.setCellValue("출입증 신청 9");
 
             // 출입증 신청 10
-            // [수정] 셀 병합 범위 변경 (748, 753 -> 757, 762)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,757,762));
-            XSSFCell mergeCell13_10 = row.createCell(757);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,754,759));
+            XSSFCell mergeCell13_10 = row.createCell(754);
             mergeCell13_10.setCellStyle(headerStyle_lavender);
             mergeCell13_10.setCellValue("출입증 신청 10");
 
             // 바이어 등록 정보
-            // [수정] 셀 병합 범위 변경 (754, 767 -> 763, 776)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,763,776));
-            XSSFCell mergeCell74 = row.createCell(763);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,760,773));
+            XSSFCell mergeCell74 = row.createCell(760);
             mergeCell74.setCellStyle(headerStyle_rose);
             mergeCell74.setCellValue("바이어 등록 정보");
 
             // 경품 신청 등록 정보
-            // [수정] 셀 병합 범위 변경 (768, 777 -> 777, 786)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,777,786));
-            XSSFCell mergeCell75 = row.createCell(777);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,774,783));
+            XSSFCell mergeCell75 = row.createCell(774);
             mergeCell75.setCellStyle(headerStyle_lemon_chiffon);
             mergeCell75.setCellValue("경품 신청 등록 정보");
 
@@ -5123,17 +5102,15 @@ public class KibsMngController {
                     cell.setCellStyle(headerStyle_light_orange);
                 }else if(i<669){
                     cell.setCellStyle(headerStyle);
-                }
-                // [수정] 헤더 스타일링 범위 변경
-                else if(i<690){ // 기존 684
+                }else if(i<687){
                     cell.setCellStyle(headerStyle_cornflower_blue);
-                }else if(i<692){ // 기존 686
+                }else if(i<689){
                     cell.setCellStyle(headerStyle_light_blue);
-                }else if(i<703){ // 기존 694
+                }else if(i<700){
                     cell.setCellStyle(headerStyle_rose);
-                }else if(i<763){ // 기존 754
+                }else if(i<760){
                     cell.setCellStyle(headerStyle_lavender);
-                }else if(i<777){ // 기존 768
+                }else if(i<774){
                     cell.setCellStyle(headerStyle_rose);
                 }else{
                     cell.setCellStyle(headerStyle_lemon_chiffon);
@@ -5974,7 +5951,7 @@ public class KibsMngController {
                 // 등록비
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRegistrationCnt());
+                cell.setCellValue(info.getRegistrationCnt() != null ? df.format(info.getRegistrationCnt() * 100000) + " 원" : "0 원");
 
                 // 독립부스
                 cell = row.createCell(cellCnt++);
@@ -5990,19 +5967,6 @@ public class KibsMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getOnlineBoothCnt());
-
-                // [추가] 부스 신청 금액 (DTO에 관련 메소드가 추가되었다고 가정)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBoothPrcSum() != null ? df.format(info.getBoothPrcSum()) + " 원" : "0 원");
-
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBoothPrcSum() != null ? df.format(info.getBoothPrcSum() * 0.1) + " 원" : "0 원");
-
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getBoothPrcSum() != null ? df.format(info.getBoothPrcSum() + (info.getBoothPrcSum() * 0.1)) + " 원" : "0 원");
 
                 // 1차 조기신청
                 cell = row.createCell(cellCnt++);
@@ -6103,18 +6067,21 @@ public class KibsMngController {
                     cell.setCellValue("");
                 }
 
+                // 할인 적용 금액 계산 결과를 변수로 분리
+                double discountedAmount = info.getBoothPrcSum() - info.getDiscountPrcSum();
+
                 // [추가] 할인 적용 금액 (DTO에 관련 메소드가 추가되었다고 가정)
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getDiscountPrcSum() != null ? df.format(info.getDiscountPrcSum()) + " 원" : "0 원");
+                cell.setCellValue(discountedAmount != 0 ? df.format(discountedAmount) + " 원" : "0 원");
 
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getDiscountPrcSum() != null ? df.format(info.getDiscountPrcSum() * 0.1) + " 원" : "0 원");
+                cell.setCellValue(discountedAmount != 0 ? df.format(discountedAmount * 0.1) + " 원" : "0 원");
 
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getDiscountPrcSum() != null ? df.format(info.getDiscountPrcSum() + (info.getDiscountPrcSum() * 0.1)) + " 원" : "0 원");
+                cell.setCellValue(discountedAmount != 0 ? df.format(discountedAmount + (discountedAmount * 0.1)) + " 원" : "0 원");
 
                 // 상호간판(국문)
                 cell = row.createCell(cellCnt++);

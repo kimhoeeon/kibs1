@@ -296,98 +296,132 @@ function f_booth_form_data_setting(seq){
     let boothPrcSum = 0;
 
     // 부스 신청 - 등록비 - 수량
-    let registration_cnt = parseInt(document.querySelector('#registration_cnt').value);
+    let registrationCnt = 1;
 
     // 부스 신청 - 등록비 - 금액
-    let registration_fee = document.querySelector('#registration_fee').value;
+    let registrationFee = 100000;
 
-    boothPrcSum += wonToNumber(registration_fee);
+    boothPrcSum += registrationFee;
 
     // 부스 신청 - 독립부스 - 수량
-    let stand_alone_booth_cnt = parseInt(document.querySelector('#stand_alone_booth_cnt').value);
+    let standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val());
 
-    if(stand_alone_booth_cnt > 0){
+    if(standAloneBoothCnt > 0){
         boothType += ',독립부스';
     }
 
     // 부스 신청 - 독립부스 - 금액
-    let stand_alone_booth_fee = document.querySelector('#stand_alone_booth_fee').value;
+    let standAloneBoothFee = $('#standAloneBoothFee').val();
 
-    boothPrcSum += wonToNumber(stand_alone_booth_fee);
+    boothPrcSum += wonToNumber(standAloneBoothFee);
 
     // 부스 신청 - 조립부스 - 수량
-    let assembly_booth_cnt = parseInt(document.querySelector('#assembly_booth_cnt').value);
+    let assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val());
 
-    if(assembly_booth_cnt > 0){
+    if(assemblyBoothCnt > 0){
         boothType += ',조립부스';
     }
 
     // 부스 신청 - 조립부스 - 금액
-    let assembly_booth_fee = document.querySelector('#assembly_booth_fee').value;
+    let assemblyBoothFee = $('#assemblyBoothFee').val();
 
-    boothPrcSum += wonToNumber(assembly_booth_fee);
+    boothPrcSum += wonToNumber(assemblyBoothFee);
 
     // 부스 신청 - 온라인부스 - 수량
-    let online_booth_cnt = parseInt(document.querySelector('select#online_booth_cnt option:checked').text);
+    let onlineBoothCnt = parseInt($('#onlineBoothCnt option:checked').val());
 
-    if(online_booth_cnt > 0){
+    if(onlineBoothCnt > 0){
         boothType += ',온라인부스';
     }
 
     // 부스 신청 - 온라인부스 - 금액
-    let online_booth_fee = document.querySelector('#online_booth_fee').value;
+    let onlineBoothFee = $('#onlineBoothFee').val();
 
-    boothPrcSum += wonToNumber(online_booth_fee);
+    boothPrcSum += wonToNumber(onlineBoothFee);
 
     let discountType = '';
     let discountPrcSum = 0;
-    let boothTotalCnt = stand_alone_booth_cnt + assembly_booth_cnt + online_booth_cnt;
+    let boothTotalCnt = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
 
     // 할인적용 - 1차 조기신청
-    let discount_early_1 = document.querySelector('input[type=checkbox][id=discount1]').checked;
-    if(discount_early_1){
+    let discountEarly1 = $('#discountEarly1').is(':checked');
+    if(discountEarly1){
         discountType += ',1차조기신청';
         discountPrcSum += (boothTotalCnt * 300000);
     }
 
     // 할인적용 - 2차 조기신청
-    let discount_early_2 = document.querySelector('input[type=checkbox][id=discount2]').checked;
-    if(discount_early_2){
+    let discountEarly2 = $('#discountEarly2').is(':checked');
+    if(discountEarly2){
         discountType += ',2차조기신청';
         discountPrcSum += (boothTotalCnt * 200000);
     }
 
+    // 할인적용 - 첫 참가 할인
+    let discountFirst = $('#discountFirst').is(':checked');
+    if(discountFirst){
+        discountType += ',첫참가';
+
+        // 규모할인 체크시 30만원으로 적용
+        if($('.single-choice-discount input[type="checkbox"]').is(':checked')){
+            discountPrcSum += (boothTotalCnt * 300000);
+        }else{
+            discountPrcSum += (boothTotalCnt * 500000);
+        }
+    }
+
     // 할인적용 - 재참가할인 All
-    let discount_re_all = document.querySelector('input[type=checkbox][id=discount3]').checked;
-    if(discount_re_all){
+    let discountRe = $('#discountRe').is(':checked');
+    if(discountRe){
         discountType += ',재참가할인';
         discountPrcSum += (boothTotalCnt * 200000);
     }
 
-    // 할인적용 - 규모할인 1 (20부스 이상)
-    let discount_scale_2 = document.querySelector('input[type=checkbox][id=discount5]').checked;
-    if(discount_scale_2){
+    // 할인적용 - 규모할인 1 (10부스 이상)
+    let discountScale1 = $('#discountScale1').is(':checked');
+    if(discountScale1){
         discountType += ',규모할인1';
-        discountPrcSum += (boothTotalCnt * 300000);
+        discountPrcSum += (boothTotalCnt * 400000);
     }
 
-    // 할인적용 - 규모할인 2 (40부스 이상)
-    let discount_scale_3 = document.querySelector('input[type=checkbox][id=discount6]').checked;
-    if(discount_scale_3){
+    // 할인적용 - 규모할인 2 (20부스 이상)
+    let discountScale2 = $('#discountScale2').is(':checked');
+    if(discountScale2){
         discountType += ',규모할인2';
-        discountPrcSum += (boothTotalCnt * 450000);
+        discountPrcSum += (boothTotalCnt * 650000);
     }
 
-    // 할인적용 - 첫 참가 할인
-    /*let discount_first = document.querySelector('input[type=checkbox][id=discount7]').checked;
-    if(discount_first){
-        discountType += ',첫참가';
-        discountPrcSum += (boothTotalCnt * 500000);
-    }*/
+    // 할인적용 - 규모할인 3 (30부스 이상)
+    let discountScale3 = $('#discountScale3').is(':checked');
+    if(discountScale3){
+        discountType += ',규모할인3';
+        discountPrcSum += (boothTotalCnt * 750000);
+    }
+
+    // 할인적용 - 규모할인 4 (40부스 이상)
+    let discountScale4 = $('#discountScale4').is(':checked');
+    if(discountScale4){
+        discountType += ',규모할인4';
+        discountPrcSum += (boothTotalCnt * 800000);
+    }
+
+    // 할인적용 - 규모할인 5 (50부스 이상)
+    let discountScale5 = $('#discountScale5').is(':checked');
+    if(discountScale5){
+        discountType += ',규모할인5';
+        discountPrcSum += (boothTotalCnt * 850000);
+    }
+
+    // 할인적용 - 규모할인 6 (60부스 이상)
+    let discountScale6 = $('#discountScale6').is(':checked');
+    if(discountScale6){
+        discountType += ',규모할인6';
+        discountPrcSum += (boothTotalCnt * 900000);
+    }
 
     // 할인적용 - 한국해양레저산업협회 할인
-    let discount_leisure = document.querySelector('input[type=checkbox][id=discount8]').checked;
-    if(discount_leisure){
+    let discountLeisure = $('#discountLeisure').is(':checked');
+    if(discountLeisure){
         discountType += ',한국해양레저산업협회';
         discountPrcSum += (boothTotalCnt * 200000);
     }
@@ -403,25 +437,34 @@ function f_booth_form_data_setting(seq){
 
     //let boothPrcSum = parseInt(wonToInt($('#form_add_total').val()));
 
+    if(boothTotalCnt === 0){
+        showMessage('', 'error', '[ 전시부스 신청 ]', '부스(독립,조립,온라인)를 하나 이상 신청해 주세요.', '');
+        return;
+    }
+
     let booth_json_obj = {
-        seq: seq,
+        seq: exhibitorSeq,
         boothType: boothType,
         discountType: discountType,
-        registrationCnt: registration_cnt,
-        registrationFee: Number.parseInt(wonToInt(registration_fee)),
-        standAloneBoothCnt: stand_alone_booth_cnt,
-        standAloneBoothFee: Number.parseInt(wonToInt(stand_alone_booth_fee)),
-        assemblyBoothCnt: assembly_booth_cnt,
-        assemblyBoothFee: Number.parseInt(wonToInt(assembly_booth_fee)),
-        onlineBoothCnt: online_booth_cnt,
-        onlineBoothFee: Number.parseInt(wonToInt(online_booth_fee)),
-        discountEarly1: discount_early_1,
-        discountEarly2: discount_early_2,
-        discountReAll: discount_re_all,
-        discountScale2: discount_scale_2,
-        discountScale3: discount_scale_3,
-        /*discountFirst: discount_first,*/
-        discountLeisure: discount_leisure,
+        registrationCnt: registrationCnt,
+        registrationFee: registrationFee,
+        standAloneBoothCnt: standAloneBoothCnt,
+        standAloneBoothFee: Number.parseInt(wonToInt(standAloneBoothFee)),
+        assemblyBoothCnt: assemblyBoothCnt,
+        assemblyBoothFee: Number.parseInt(wonToInt(assemblyBoothFee)),
+        onlineBoothCnt: onlineBoothCnt,
+        onlineBoothFee: Number.parseInt(wonToInt(onlineBoothFee)),
+        discountEarly1: discountEarly1,
+        discountEarly2: discountEarly2,
+        discountFirst: discountFirst,
+        discountRe: discountRe,
+        discountScale1: discountScale1,
+        discountScale2: discountScale2,
+        discountScale3: discountScale3,
+        discountScale4: discountScale4,
+        discountScale5: discountScale5,
+        discountScale6: discountScale6,
+        discountLeisure: discountLeisure,
         discountYn: discountYn,
         boothPrcSum: boothPrcSum,
         discountPrcSum: discountPrcSum

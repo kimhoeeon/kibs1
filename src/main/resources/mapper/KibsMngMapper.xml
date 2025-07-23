@@ -3469,6 +3469,8 @@
         SELECT seq
              , company_name_ko
              , company_name_en
+             , pre_part_year
+             , member_company_yn
              , booth_type
              , discount_type
              , discount_yn
@@ -3896,9 +3898,9 @@
           , booth_prc_sum = #{boothPrcSum}
           , discount_prc_sum = #{discountPrcSum}
           , discount_yn = #{discountYn}
-          , prc_sum = ((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum)
-          , prc_vat = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1)
-          , prc_total = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) + (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
+          , prc_sum = (#{boothPrcSum} - #{discountPrcSum})
+          , prc_vat = (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
+          , prc_total = ((#{boothPrcSum} - #{discountPrcSum})) + (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
           , balance = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) + (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}

@@ -147,6 +147,40 @@
 
             <!-- box -->
             <div class="cont_box">
+                <div class="title">1. 등록비</div>
+                <!-- table -->
+                <div class="table">
+                    <table>
+                        <colgroup>
+                            <col width="50">
+                            <col width="50">
+                            <col width="200">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>금액</th>
+                            <th>비고</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>등록비</td>
+                                <td>100,000원</td>
+                                <td>
+                                    2019년부터 참가업체의 홍보 지원을 위하여 업체당 참가신청 등록비를 받습니다.<br>
+                                    등록비는 참가업체의 각종 온라인 홍보 및 대외 홍보에 사용됩니다.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table -->
+            </div>
+            <!-- //box -->
+
+            <!-- box -->
+            <div class="cont_box">
                 <div class="title">2. 참가비 내역</div>
                 <!-- table -->
                 <div class="table">
@@ -169,18 +203,6 @@
                         </thead>
                         <tbody>
                             <c:set var="boothIdx" value="1"/>
-                            <c:if test="${info.registrationCnt > 0}">
-                                <tr>
-                                    <td>${boothIdx}</td>
-                                    <td>등록비</td>
-                                    <td>${info.registrationCnt}개사</td>
-                                    <td>100,000원</td>
-                                    <td class="text-r sub_total">
-                                        <fmt:formatNumber value="${info.registrationFee eq null ? 0 : info.registrationFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
-                                    </td>
-                                </tr>
-                                <c:set var="boothIdx" value="${boothIdx + 1}"/>
-                            </c:if>
                             <c:if test="${info.standAloneBoothCnt > 0}">
                                 <tr>
                                     <td>${boothIdx}</td>

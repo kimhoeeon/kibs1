@@ -285,7 +285,7 @@
                                             <li>
                                                 <div class="select">
                                                     <label class="discount-item">
-                                                        <input type="checkbox" id="discountFirst" name="discount" data-discount="500000" onchange="calculateTotal();" <c:if test="${info.discountFirst}">checked</c:if> >
+                                                        <input type="checkbox" id="discountFirst" name="discount" data-discount="500000" onchange="calculateTotal();" data-db-val="${info.prePartYear}" ${info.prePartYear == 'first' ? 'checked' : ''}>
                                                     </label>
                                                 </div>
                                                 <div class="cate">첫 참가할인</div>
@@ -295,7 +295,7 @@
                                             <li>
                                                 <div class="select">
                                                     <label class="discount-item">
-                                                        <input type="checkbox" id="discountRe" name="discount" data-discount="200000" onchange="calculateTotal();" <c:if test="${info.discountRe}">checked</c:if> >
+                                                        <input type="checkbox" id="discountRe" name="discount" data-discount="200000" onchange="calculateTotal();" data-db-val="${info.prePartYear}" ${info.prePartYear != 'first' ? 'checked' : ''}>
                                                     </label>
                                                 </div>
                                                 <div class="cate">재참가할인</div>
@@ -363,10 +363,9 @@
                                                 <div class="note">100부스 이상 참가기업</div>
                                             </li>
                                             <li>
-                                                <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}"/>
                                                 <div class="select">
                                                     <label class="discount-item">
-                                                        <input type="checkbox" id="discountLeisure" name="discount" data-discount="200000" onchange="calculateTotal();" <c:if test="${info.discountLeisure}">checked</c:if> >
+                                                        <input type="checkbox" id="discountLeisure" name="discount" data-discount="200000" onchange="calculateTotal();" data-db-lock="${info.memberCompanyYn}" ${info.memberCompanyYn == 'Y' ? 'checked' : ''} >
                                                     </label>
                                                 </div>
                                                 <div class="cate">한국해양레저산업협회 할인</div>
@@ -411,44 +410,25 @@
         <script type="text/javascript">
             $(function(){
 
-                let approvalStatus = '${info.approvalStatus}';
-                if(nvl(approvalStatus,'') === '작성중'){ // 최초 등록 시
-
-                    let prePartYear = '${info.prePartYear}';
-                    if(nvl(prePartYear,'') !== '') {
-                        if(prePartYear === 'first'){
-                            $('#discountFirst').prop('checked', true).trigger('change'); //첫참가할인
-                        }else{
-                            $('#discountRe').prop('checked', true).trigger('change'); //재참가할인
-                        }
-                    }
-
-                    let memberCompanyYn = '${info.memberCompanyYn}';
-                    if(nvl(memberCompanyYn,'') !== ''){
-                        if(memberCompanyYn === 'Y'){
-                            $('#discountLeisure').prop('checked', true).trigger('change'); //한국해양레저산업협회 할인
-                        }
-                    }
-                }
-
-                // 할인 5~10번 중 하나만 선택 가능 로직
-                $('.single-choice-discount input[type="checkbox"]').on('change', function() {
-                    const clickedCheckbox = $(this);
-                    if (clickedCheckbox.prop('checked')) {
-                        // 클릭된 체크박스가 선택되었다면, 다른 체크박스들을 해제
-                        $('.single-choice-discount input[type="checkbox"]').not(clickedCheckbox).prop('checked', false);
-                    }
-                    calculateTotal();
-                });
-
                 // 첫 참가할인, 재참가 할인 중복 선택 방지 로직 추가
                 $('#discountFirst, #discountRe').on('change', function() {
                     const d3 = $('#discountFirst');
                     const d4 = $('#discountRe');
                     const changedCheckbox = $(this);
+                    const changedId = changedCheckbox.attr('id');
+
+                    // 1. 잠금된 항목 해제 시도 방지
+                    if (!changedCheckbox.prop('checked')) { // 체크를 해제하려는 경우
+                        if ((changedId === 'discountFirst' && d3.data('db-val') === 'first') ||
+                            (changedId === 'discountRe' && d4.data('db-val') !== 'first')) {
+                            alert('기참가연도 선택에 따라 할인이 자동 적용되었습니다.');
+                            changedCheckbox.prop('checked', true); // 선택 상태로 되돌림
+                            return; // 함수 종료
+                        }
+                    }
 
                     if (d3.prop('checked') && d4.prop('checked')) {
-                        if (changedCheckbox.is('#discountFirst')) { // 재참가 할인이 선택된 상태에서 첫 참가할인을 클릭
+                        if (changedCheckbox.is('#discountRe')) { // 재참가 할인이 선택된 상태에서 첫 참가할인을 클릭
                             alert('첫 참가 할인과 중복 선택할 수 없습니다.');
                             changedCheckbox.prop('checked', false);
                         } else { // 첫 참가 할인이 선택된 상태에서 재참가 할인을 클릭
@@ -456,7 +436,38 @@
                             changedCheckbox.prop('checked', false);
                         }
                     }
+
+                    // [신규] 할인 3번이 방금 선택되었을 때, 5~10번 그룹이 선택되어 있는지 확인 후 alert
+                    if (changedCheckbox.is('#discountFirst') && changedCheckbox.prop('checked')) {
+                        const isSingleChoiceSelected = $('.single-choice-discount input:checked').length > 0;
+                        if (isSingleChoiceSelected) {
+                            alert('첫 참가 할인과 규모할인을 함께 적용할 경우,\n부스당 할인 금액은 30만 원으로 조정됩니다.');
+                        }
+                    }
                     // 로직 처리 후 최종적으로 계산 함수 호출
+                    calculateTotal();
+                });
+
+                // 할인 5~10번 중 하나만 선택 가능 로직
+                $('.single-choice-discount input[type="checkbox"]').on('change', function() {
+                    const clickedCheckbox = $(this);
+                    if (clickedCheckbox.prop('checked')) {
+                        $('.single-choice-discount input[type="checkbox"]').not(clickedCheckbox).prop('checked', false);
+
+                        // [신규] 할인 3번이 이미 선택되어 있는지 확인 후 alert
+                        if ($('#discountFirst').prop('checked')) {
+                            alert('첫 참가 할인과 규모할인을 함께 적용할 경우,\n부스당 할인 금액은 30만 원으로 조정됩니다.');
+                        }
+                    }
+                    calculateTotal();
+                });
+
+                $('#discountLeisure').on('change', function() {
+                    // DB Lock 값이 'Y'이고, 사용자가 체크를 해제하려고 할 때
+                    if ($(this).data('db-lock') === 'Y' && !$(this).prop('checked')) {
+                        alert('한국해양레저산업협회 회원사 여부 체크 시 할인 해제 불가합니다.');
+                        $(this).prop('checked', true); // 강제로 다시 체크 상태로 변경
+                    }
                     calculateTotal();
                 });
 
@@ -465,8 +476,8 @@
                 // 온라인 부스 select box 변경 시 계산
                 $('#onlineBoothCnt').on('change', calculateTotal);
 
-                // 일반 할인 체크박스 변경 시 계산 (할인 1, 2, 3, 4, 5~10번 제외)
-                $('input[type="checkbox"]:not(#discountEarly1, #discountEarly2, #discountFirst, #discountRe, .single-choice-discount input)').on('change', calculateTotal);
+                // 일반 할인 체크박스 변경 시 계산 (할인 1, 2, 3, 4, 5~9번 제외)
+                $('input[type="checkbox"]:not(#discountEarly1, #discountEarly2, #discountFirst, #discountRe, .single-choice-discount input, #discountLeisure)').on('change', calculateTotal);
 
                 // 초기 로드 시 계산 및 할인 1, 2번 상태 설정
                 handleDiscountEarly1();
