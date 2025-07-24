@@ -441,7 +441,7 @@
                     if (changedCheckbox.is('#discountFirst') && changedCheckbox.prop('checked')) {
                         const isSingleChoiceSelected = $('.single-choice-discount input:checked').length > 0;
                         if (isSingleChoiceSelected) {
-                            alert('첫 참가 할인과 규모할인을 함께 적용할 경우,\n부스당 할인 금액은 30만 원으로 조정됩니다.');
+                            alert('첫 참가 할인과 규모할인을 함께 적용할 경우,\n부스당 첫 참가 할인 금액은 30만 원으로 조정됩니다.');
                         }
                     }
                     // 로직 처리 후 최종적으로 계산 함수 호출
@@ -456,7 +456,7 @@
 
                         // [신규] 할인 3번이 이미 선택되어 있는지 확인 후 alert
                         if ($('#discountFirst').prop('checked')) {
-                            alert('첫 참가 할인과 규모할인을 함께 적용할 경우,\n부스당 할인 금액은 30만 원으로 조정됩니다.');
+                            alert('첫 참가 할인과 규모할인을 함께 적용할 경우,\n부스당 첫 참가 할인 금액은 30만 원으로 조정됩니다.');
                         }
                     }
                     calculateTotal();
@@ -467,6 +467,9 @@
                     if ($(this).data('db-lock') === 'Y' && !$(this).prop('checked')) {
                         alert('한국해양레저산업협회 회원사 여부 체크 시 할인 해제 불가합니다.');
                         $(this).prop('checked', true); // 강제로 다시 체크 상태로 변경
+                    }else{
+                        alert('한국해양레저산업협회 회원사 여부 체크 시 할인 불가합니다.');
+                        $(this).prop('checked', false); // 강제로 다시 체크 상태로 변경
                     }
                     calculateTotal();
                 });

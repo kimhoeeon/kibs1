@@ -813,7 +813,7 @@ function autoDiscountSum(checkbox){
         if(discountFirstChecked){
             let discountScale1Checked = $('#discountScale1').is(':checked');
             if(discountScale1Checked){
-                alert("첫 참가할인과 규모할인을 함께 적용할 경우,\n부스당 할인 금액은 30만원으로 조정됩니다.");
+                alert("첫 참가할인과 규모할인을 함께 적용할 경우,\n부스당 첫 참가할인 금액은 30만원으로 조정됩니다.");
             }
         }
     }

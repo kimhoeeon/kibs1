@@ -443,7 +443,7 @@ function f_booth_form_data_setting(seq){
     }
 
     let booth_json_obj = {
-        seq: exhibitorSeq,
+        seq: seq,
         boothType: boothType,
         discountType: discountType,
         registrationCnt: registrationCnt,
@@ -540,6 +540,7 @@ function handleDiscountEarly1() {
 
     if (now <= discount1Deadline) {
         // [수정] DB에서 데이터를 로드하지 않은 최초 접근 시에만 자동 선택
+        //console.log(isPrcTotal , !discount1Checkbox.prop('checked'));
         if (isPrcTotal && !discount1Checkbox.prop('checked')) {
             discount1Checkbox.prop('checked', true);
         }
@@ -580,7 +581,7 @@ function handleDiscountEarly1() {
 
         discount1Item.on('click.preventCheck', function(e) {
             if (!$(e.target).is('input[type="checkbox"]')) {
-                alert('할인 1번은 현재 선택 불가합니다.');
+                alert('1차 조기신청 할인은 현재 선택 불가합니다.');
             }
         });
     }
@@ -596,7 +597,7 @@ function handleDiscountEarly2() {
 
     if (now >= discount2StartDate && now <= discount2Deadline) {
         // [수정] DB에서 데이터를 로드하지 않은 최초 접근 시에만 자동 선택
-        if (isPrcTotal && !discount2Checkbox.prop('checked')) {
+        if (!isPrcTotal && !discount2Checkbox.prop('checked')) {
             discount2Checkbox.prop('checked', true);
         }
         discount2Item.removeClass('disabled');

@@ -2556,7 +2556,7 @@ if (document.documentElement) {
                                                             </tr>
                                                             <tr class="text-center align-middle">
                                                                 <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item">
+                                                                    <span class="fw-semibold d-block fs-7 discount-item single-choice-discount">
                                                                         <input type="checkbox" id="discountScale1" name="discount" data-discount="400000" class="form-check-input form-control-solid-bg" onchange="calculateTotal();" <c:if test="${info.discountScale1}">checked</c:if> >
                                                                     </span>
                                                                 </td>
@@ -2572,7 +2572,7 @@ if (document.documentElement) {
                                                             </tr>
                                                             <tr class="text-center align-middle">
                                                                 <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item">
+                                                                    <span class="fw-semibold d-block fs-7 discount-item single-choice-discount">
                                                                         <input type="checkbox" id="discountScale2" name="discount" data-discount="650000" class="form-check-input form-control-solid-bg" onchange="calculateTotal();" <c:if test="${info.discountScale2}">checked</c:if> >
                                                                     </span>
                                                                 </td>
@@ -2588,7 +2588,7 @@ if (document.documentElement) {
                                                             </tr>
                                                             <tr class="text-center align-middle">
                                                                 <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item">
+                                                                    <span class="fw-semibold d-block fs-7 discount-item single-choice-discount">
                                                                         <input type="checkbox" id="discountScale3" name="discount" data-discount="750000" class="form-check-input form-control-solid-bg" onchange="calculateTotal();" <c:if test="${info.discountScale3}">checked</c:if> >
                                                                     </span>
                                                                 </td>
@@ -2604,7 +2604,7 @@ if (document.documentElement) {
                                                             </tr>
                                                             <tr class="text-center align-middle">
                                                                 <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item">
+                                                                    <span class="fw-semibold d-block fs-7 discount-item single-choice-discount">
                                                                         <input type="checkbox" id="discountScale4" name="discount" data-discount="800000" class="form-check-input form-control-solid-bg" onchange="calculateTotal();" <c:if test="${info.discountScale4}">checked</c:if> >
                                                                     </span>
                                                                 </td>
@@ -2620,7 +2620,7 @@ if (document.documentElement) {
                                                             </tr>
                                                             <tr class="text-center align-middle">
                                                                 <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item">
+                                                                    <span class="fw-semibold d-block fs-7 discount-item single-choice-discount">
                                                                         <input type="checkbox" id="discountScale5" name="discount" data-discount="850000" class="form-check-input form-control-solid-bg" onchange="calculateTotal();" <c:if test="${info.discountScale5}">checked</c:if> >
                                                                     </span>
                                                                 </td>
@@ -2636,7 +2636,7 @@ if (document.documentElement) {
                                                             </tr>
                                                             <tr class="text-center align-middle">
                                                                 <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item">
+                                                                    <span class="fw-semibold d-block fs-7 discount-item single-choice-discount">
                                                                         <input type="checkbox" id="discountScale6" name="discount" data-discount="900000" class="form-check-input form-control-solid-bg" onchange="calculateTotal();" <c:if test="${info.discountScale6}">checked</c:if> >
                                                                     </span>
                                                                 </td>
@@ -2971,7 +2971,7 @@ if (document.documentElement) {
                 if (changedCheckbox.is('#discountFirst') && changedCheckbox.prop('checked')) {
                     const isSingleChoiceSelected = $('.single-choice-discount input:checked').length > 0;
                     if (isSingleChoiceSelected) {
-                        alert('첫 참가 할인과 규모할인을 함께 적용할 경우,\n부스당 할인 금액은 30만 원으로 조정됩니다.');
+                        alert('첫 참가 할인과 규모할인을 함께 적용할 경우,\n부스당 첫 참가 할인 금액은 30만 원으로 조정됩니다.');
                     }
                 }
                 // 로직 처리 후 최종적으로 계산 함수 호출
@@ -2986,7 +2986,7 @@ if (document.documentElement) {
 
                     // [신규] 할인 3번이 이미 선택되어 있는지 확인 후 alert
                     if ($('#discountFirst').prop('checked')) {
-                        alert('첫 참가 할인과 규모할인을 함께 적용할 경우,\n부스당 할인 금액은 30만 원으로 조정됩니다.');
+                        alert('첫 참가 할인과 규모할인을 함께 적용할 경우,\n부스당 첫 참가 할인 금액은 30만 원으로 조정됩니다.');
                     }
                 }
                 calculateTotal();
@@ -2997,6 +2997,9 @@ if (document.documentElement) {
                 if ($(this).data('db-lock') === 'Y' && !$(this).prop('checked')) {
                     alert('한국해양레저산업협회 회원사 여부 체크 시 할인 해제 불가합니다.');
                     $(this).prop('checked', true); // 강제로 다시 체크 상태로 변경
+                }else{
+                    alert('한국해양레저산업협회 회원사 여부 체크 시 할인 불가합니다.');
+                    $(this).prop('checked', false); // 강제로 다시 체크 상태로 변경
                 }
                 calculateTotal();
             });

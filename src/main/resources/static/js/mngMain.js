@@ -364,16 +364,22 @@ function nullToEmpty(nullStr){
 
 /**
  * 문자열이 빈 문자열인지 체크하여 기본 문자열로 리턴한다.
- * @param str			: 체크할 문자열
- * @param defaultStr	: string 비어있을경우 리턴할 기본 문자열
+ * @param value
+ * @param defaultValue
  */
-function nvl(str, defaultStr){
+function nvl(value, defaultValue){
 
-    if(str === "" || str === null || str === "null" || str === undefined || typeof str === "undefined" || (typeof str === "object" && !Object.keys(str).length) ){
-        str = defaultStr ;
+    // null, undefined, "", "null" (문자열), 빈 객체를 처리하고 기본값 반환
+    if (
+        value === null ||                         // null 처리
+        value === undefined ||                   // undefined 처리
+        value === "" ||                          // 빈 문자열 처리
+        value === "null" ||                      // "null" 문자열 처리
+        (typeof value === "object" && !Object.keys(value || {}).length) // 빈 객체 처리
+    ) {
+        return defaultValue;
     }
-
-    return str ;
+    return value; // 해당 조건에 걸리지 않으면 원본 값 반환
 }
 
 function loadingBarShow(){
