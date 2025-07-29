@@ -70,7 +70,7 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">참가기업</div>
@@ -193,7 +193,7 @@
                                 <div class="txtHp">※ 추가 부대시설은 별도신청</div>
                             </td>
                             <td rowspan="3">업체당 10만원</td>
-                            <td>-</td>
+                            <td>1,800,000</td>
                         </tr>
                         <tr>
                             <td>조립부스</td>
@@ -206,7 +206,7 @@
                                 <div class="txtHp">전기 1kw (220V 콘센트)</div>
                                 <div class="txtHp">※ 추가 부대시설은 별도신청</div>
                             </td>
-                            <td>-</td>
+                            <td>2,100,000</td>
                         </tr>
                         <tr>
                             <td>온라인부스</td>
@@ -215,7 +215,7 @@
                                 <div class="txtHp">업체 소개, 제품 소개 (텍스트, 이미지)</div>
                                 <div class="txtHp">독립부스 또는 조립부스 참가시 무료</div>
                             </td>
-                            <td>-</td>
+                            <td>1,000,000</td>
                         </tr>
                         </tbody>
                     </table>

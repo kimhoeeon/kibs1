@@ -4150,7 +4150,7 @@ public class KibsMngController {
                     /* 참가분야 */
                     "보트&요트 (Boat & Yacht)", "무동력보트 (Paddling Boat)", "워크보트 (Work Boat)", "부품&장비 (Marine Equipment)",
                     "안전&마리나 (Safety & Marina)", "해양관광 (Marine Tourism)", "해양레저 (Marine Leisure)",
-                    "수중레저 (Water Sports)", "서핑 (Surfing)", "카라반&캠핑 (Caravan & Camping)",
+                    "수중레저 (Water Sports)", "서핑 (Surfing)",
                     /* 전시품 정보 1 */
                     "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품설명(국문)", "제품설명(영문)", "제품링크",
                     /* 전시품목 2 */
@@ -4319,7 +4319,7 @@ public class KibsMngController {
                     /* 참가분야 */
                     5000, 5000, 5000, 5000,
                     5000, 5000, 5000,
-                    5000, 5000, 5000,
+                    5000, 5000,
                     /* 전시품 정보 1 */
                     5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
                     /* 전시품목 2 */
@@ -4674,416 +4674,349 @@ public class KibsMngController {
             mergeCell3.setCellStyle(headerStyle);
             mergeCell3.setCellValue("업체정보");
 
-            // 참가분야
-            sheet.addMergedRegion(new CellRangeAddress(0,0,64,73));
+            // [수정] 셀 병합 범위 변경 (64, 73 -> 64, 72)
+            sheet.addMergedRegion(new CellRangeAddress(0,0,64,72));
             XSSFCell mergeCell4 = row.createCell(64);
             mergeCell4.setCellStyle(headerStyle_lime);
             mergeCell4.setCellValue("참가분야");
 
-            // 전시품 정보 1
-            sheet.addMergedRegion(new CellRangeAddress(0,0,74,86));
-            XSSFCell mergeCell5_1 = row.createCell(74);
+            // [수정] 이후 모든 셀 병합 범위의 인덱스를 1씩 앞으로 조정
+            sheet.addMergedRegion(new CellRangeAddress(0,0,73,85));
+            XSSFCell mergeCell5_1 = row.createCell(73);
             mergeCell5_1.setCellStyle(headerStyle_light_green);
             mergeCell5_1.setCellValue("전시품 정보 1");
 
-            // 전시품목 2
-            sheet.addMergedRegion(new CellRangeAddress(0,0,87,99));
-            XSSFCell mergeCell5_2 = row.createCell(87);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,86,98));
+            XSSFCell mergeCell5_2 = row.createCell(86);
             mergeCell5_2.setCellStyle(headerStyle_light_green);
             mergeCell5_2.setCellValue("전시품 정보 2");
 
-            // 전시품목 3
-            sheet.addMergedRegion(new CellRangeAddress(0,0,100,112));
-            XSSFCell mergeCell5_3 = row.createCell(100);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,99,111));
+            XSSFCell mergeCell5_3 = row.createCell(99);
             mergeCell5_3.setCellStyle(headerStyle_light_green);
             mergeCell5_3.setCellValue("전시품 정보 3");
 
-            // 전시품목 4
-            sheet.addMergedRegion(new CellRangeAddress(0,0,113,125));
-            XSSFCell mergeCell5_4 = row.createCell(113);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,112,124));
+            XSSFCell mergeCell5_4 = row.createCell(112);
             mergeCell5_4.setCellStyle(headerStyle_light_green);
             mergeCell5_4.setCellValue("전시품 정보 4");
 
-            // 전시품목 5
-            sheet.addMergedRegion(new CellRangeAddress(0,0,126,138));
-            XSSFCell mergeCell5_5 = row.createCell(126);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,125,137));
+            XSSFCell mergeCell5_5 = row.createCell(125);
             mergeCell5_5.setCellStyle(headerStyle_light_green);
             mergeCell5_5.setCellValue("전시품 정보 5");
 
-            // 전시품목 6
-            sheet.addMergedRegion(new CellRangeAddress(0,0,139,151));
-            XSSFCell mergeCell5_6 = row.createCell(139);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,138,150));
+            XSSFCell mergeCell5_6 = row.createCell(138);
             mergeCell5_6.setCellStyle(headerStyle_light_green);
             mergeCell5_6.setCellValue("전시품 정보 6");
 
-            // 전시품목 7
-            sheet.addMergedRegion(new CellRangeAddress(0,0,152,164));
-            XSSFCell mergeCell5_7 = row.createCell(152);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,151,163));
+            XSSFCell mergeCell5_7 = row.createCell(151);
             mergeCell5_7.setCellStyle(headerStyle_light_green);
             mergeCell5_7.setCellValue("전시품 정보 7");
 
-            // 전시품목 8
-            sheet.addMergedRegion(new CellRangeAddress(0,0,165,177));
-            XSSFCell mergeCell5_8 = row.createCell(165);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,164,176));
+            XSSFCell mergeCell5_8 = row.createCell(164);
             mergeCell5_8.setCellStyle(headerStyle_light_green);
             mergeCell5_8.setCellValue("전시품 정보 8");
 
-            // 전시품목 9
-            sheet.addMergedRegion(new CellRangeAddress(0,0,178,190));
-            XSSFCell mergeCell5_9 = row.createCell(178);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,177,189));
+            XSSFCell mergeCell5_9 = row.createCell(177);
             mergeCell5_9.setCellStyle(headerStyle_light_green);
             mergeCell5_9.setCellValue("전시품 정보 9");
 
-            // 전시품목 10
-            sheet.addMergedRegion(new CellRangeAddress(0,0,191,203));
-            XSSFCell mergeCell5_10 = row.createCell(191);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,190,202));
+            XSSFCell mergeCell5_10 = row.createCell(190);
             mergeCell5_10.setCellStyle(headerStyle_light_green);
             mergeCell5_10.setCellValue("전시품 정보 10");
 
-            // 전시품목 11
-            sheet.addMergedRegion(new CellRangeAddress(0,0,204,216));
-            XSSFCell mergeCell5_11 = row.createCell(204);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,203,215));
+            XSSFCell mergeCell5_11 = row.createCell(203);
             mergeCell5_11.setCellStyle(headerStyle_light_green);
             mergeCell5_11.setCellValue("전시품 정보 11");
 
-            // 전시품목 12
-            sheet.addMergedRegion(new CellRangeAddress(0,0,217,229));
-            XSSFCell mergeCell5_12 = row.createCell(217);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,216,228));
+            XSSFCell mergeCell5_12 = row.createCell(216);
             mergeCell5_12.setCellStyle(headerStyle_light_green);
             mergeCell5_12.setCellValue("전시품 정보 12");
 
-            // 전시품목 13
-            sheet.addMergedRegion(new CellRangeAddress(0,0,230,242));
-            XSSFCell mergeCell5_13 = row.createCell(230);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,229,241));
+            XSSFCell mergeCell5_13 = row.createCell(229);
             mergeCell5_13.setCellStyle(headerStyle_light_green);
             mergeCell5_13.setCellValue("전시품 정보 13");
 
-            // 전시품목 14
-            sheet.addMergedRegion(new CellRangeAddress(0,0,243,255));
-            XSSFCell mergeCell5_14 = row.createCell(243);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,242,254));
+            XSSFCell mergeCell5_14 = row.createCell(242);
             mergeCell5_14.setCellStyle(headerStyle_light_green);
             mergeCell5_14.setCellValue("전시품 정보 14");
 
-            // 전시품목 15
-            sheet.addMergedRegion(new CellRangeAddress(0,0,256,268));
-            XSSFCell mergeCell5_15 = row.createCell(256);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,255,267));
+            XSSFCell mergeCell5_15 = row.createCell(255);
             mergeCell5_15.setCellStyle(headerStyle_light_green);
             mergeCell5_15.setCellValue("전시품 정보 15");
 
-            // 전시품목 16
-            sheet.addMergedRegion(new CellRangeAddress(0,0,269,281));
-            XSSFCell mergeCell5_16 = row.createCell(269);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,268,280));
+            XSSFCell mergeCell5_16 = row.createCell(268);
             mergeCell5_16.setCellStyle(headerStyle_light_green);
             mergeCell5_16.setCellValue("전시품 정보 16");
 
-            // 전시품목 17
-            sheet.addMergedRegion(new CellRangeAddress(0,0,282,294));
-            XSSFCell mergeCell5_17 = row.createCell(282);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,281,293));
+            XSSFCell mergeCell5_17 = row.createCell(281);
             mergeCell5_17.setCellStyle(headerStyle_light_green);
             mergeCell5_17.setCellValue("전시품 정보 17");
 
-            // 전시품목 18
-            sheet.addMergedRegion(new CellRangeAddress(0,0,295,307));
-            XSSFCell mergeCell5_18 = row.createCell(295);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,294,306));
+            XSSFCell mergeCell5_18 = row.createCell(294);
             mergeCell5_18.setCellStyle(headerStyle_light_green);
             mergeCell5_18.setCellValue("전시품 정보 18");
 
-            // 전시품목 19
-            sheet.addMergedRegion(new CellRangeAddress(0,0,308,320));
-            XSSFCell mergeCell5_19 = row.createCell(308);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,307,319));
+            XSSFCell mergeCell5_19 = row.createCell(307);
             mergeCell5_19.setCellStyle(headerStyle_light_green);
             mergeCell5_19.setCellValue("전시품 정보 19");
 
-            // 전시품목 20
-            sheet.addMergedRegion(new CellRangeAddress(0,0,321,333));
-            XSSFCell mergeCell5_20 = row.createCell(321);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,320,332));
+            XSSFCell mergeCell5_20 = row.createCell(320);
             mergeCell5_20.setCellStyle(headerStyle_light_green);
             mergeCell5_20.setCellValue("전시품 정보 20");
 
-            // 기업뱃지
-            sheet.addMergedRegion(new CellRangeAddress(0,0,334,337));
-            XSSFCell mergeCell6 = row.createCell(334);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,333,336));
+            XSSFCell mergeCell6 = row.createCell(333);
             mergeCell6.setCellStyle(headerStyle_cornflower_blue);
             mergeCell6.setCellValue("기업 뱃지");
 
-            // 제품 1
-            sheet.addMergedRegion(new CellRangeAddress(0,0,338,348));
-            XSSFCell mergeCell7_1 = row.createCell(338);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,337,347));
+            XSSFCell mergeCell7_1 = row.createCell(337);
             mergeCell7_1.setCellStyle(headerStyle_light_orange);
             mergeCell7_1.setCellValue("제품 1");
 
-            // 제품 2
-            sheet.addMergedRegion(new CellRangeAddress(0,0,349,359));
-            XSSFCell mergeCell7_2 = row.createCell(349);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,348,358));
+            XSSFCell mergeCell7_2 = row.createCell(348);
             mergeCell7_2.setCellStyle(headerStyle_light_orange);
             mergeCell7_2.setCellValue("제품 2");
 
-            // 제품 3
-            sheet.addMergedRegion(new CellRangeAddress(0,0,360,370));
-            XSSFCell mergeCell7_3 = row.createCell(360);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,359,369));
+            XSSFCell mergeCell7_3 = row.createCell(359);
             mergeCell7_3.setCellStyle(headerStyle_light_orange);
             mergeCell7_3.setCellValue("제품 3");
 
-            // 제품 4
-            sheet.addMergedRegion(new CellRangeAddress(0,0,371,381));
-            XSSFCell mergeCell7_4 = row.createCell(371);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,370,380));
+            XSSFCell mergeCell7_4 = row.createCell(370);
             mergeCell7_4.setCellStyle(headerStyle_light_orange);
             mergeCell7_4.setCellValue("제품 4");
 
-            // 제품 5
-            sheet.addMergedRegion(new CellRangeAddress(0,0,382,392));
-            XSSFCell mergeCell7_5 = row.createCell(382);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,381,391));
+            XSSFCell mergeCell7_5 = row.createCell(381);
             mergeCell7_5.setCellStyle(headerStyle_light_orange);
             mergeCell7_5.setCellValue("제품 5");
 
-            // 제품 6
-            sheet.addMergedRegion(new CellRangeAddress(0,0,393,403));
-            XSSFCell mergeCell7_6 = row.createCell(393);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,392,402));
+            XSSFCell mergeCell7_6 = row.createCell(392);
             mergeCell7_6.setCellStyle(headerStyle_light_orange);
             mergeCell7_6.setCellValue("제품 6");
 
-            // 제품 7
-            sheet.addMergedRegion(new CellRangeAddress(0,0,404,414));
-            XSSFCell mergeCell7_7 = row.createCell(404);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,403,413));
+            XSSFCell mergeCell7_7 = row.createCell(403);
             mergeCell7_7.setCellStyle(headerStyle_light_orange);
             mergeCell7_7.setCellValue("제품 7");
 
-            // 제품 8
-            sheet.addMergedRegion(new CellRangeAddress(0,0,415,425));
-            XSSFCell mergeCell7_8 = row.createCell(415);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,414,424));
+            XSSFCell mergeCell7_8 = row.createCell(414);
             mergeCell7_8.setCellStyle(headerStyle_light_orange);
             mergeCell7_8.setCellValue("제품 8");
 
-            // 제품 9
-            sheet.addMergedRegion(new CellRangeAddress(0,0,426,436));
-            XSSFCell mergeCell7_9 = row.createCell(426);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,425,435));
+            XSSFCell mergeCell7_9 = row.createCell(425);
             mergeCell7_9.setCellStyle(headerStyle_light_orange);
             mergeCell7_9.setCellValue("제품 9");
 
-            // 제품 10
-            sheet.addMergedRegion(new CellRangeAddress(0,0,437,447));
-            XSSFCell mergeCell7_10 = row.createCell(437);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,436,446));
+            XSSFCell mergeCell7_10 = row.createCell(436);
             mergeCell7_10.setCellStyle(headerStyle_light_orange);
             mergeCell7_10.setCellValue("제품 10");
 
-            // 제품 11
-            sheet.addMergedRegion(new CellRangeAddress(0,0,448,458));
-            XSSFCell mergeCell7_11 = row.createCell(448);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,447,457));
+            XSSFCell mergeCell7_11 = row.createCell(447);
             mergeCell7_11.setCellStyle(headerStyle_light_orange);
             mergeCell7_11.setCellValue("제품 11");
 
-            // 제품 12
-            sheet.addMergedRegion(new CellRangeAddress(0,0,459,469));
-            XSSFCell mergeCell7_12 = row.createCell(459);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,458,468));
+            XSSFCell mergeCell7_12 = row.createCell(458);
             mergeCell7_12.setCellStyle(headerStyle_light_orange);
             mergeCell7_12.setCellValue("제품 12");
 
-            // 제품 13
-            sheet.addMergedRegion(new CellRangeAddress(0,0,470,480));
-            XSSFCell mergeCell7_13 = row.createCell(470);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,469,479));
+            XSSFCell mergeCell7_13 = row.createCell(469);
             mergeCell7_13.setCellStyle(headerStyle_light_orange);
             mergeCell7_13.setCellValue("제품 13");
 
-            // 제품 14
-            sheet.addMergedRegion(new CellRangeAddress(0,0,481,491));
-            XSSFCell mergeCell7_14 = row.createCell(481);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,480,490));
+            XSSFCell mergeCell7_14 = row.createCell(480);
             mergeCell7_14.setCellStyle(headerStyle_light_orange);
             mergeCell7_14.setCellValue("제품 14");
 
-            // 제품 15
-            sheet.addMergedRegion(new CellRangeAddress(0,0,492,502));
-            XSSFCell mergeCell7_15 = row.createCell(492);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,491,501));
+            XSSFCell mergeCell7_15 = row.createCell(491);
             mergeCell7_15.setCellStyle(headerStyle_light_orange);
             mergeCell7_15.setCellValue("제품 15");
 
-            // 제품 16
-            sheet.addMergedRegion(new CellRangeAddress(0,0,503,513));
-            XSSFCell mergeCell7_16 = row.createCell(503);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,502,512));
+            XSSFCell mergeCell7_16 = row.createCell(502);
             mergeCell7_16.setCellStyle(headerStyle_light_orange);
             mergeCell7_16.setCellValue("제품 16");
 
-            // 제품 17
-            sheet.addMergedRegion(new CellRangeAddress(0,0,514,524));
-            XSSFCell mergeCell7_17 = row.createCell(514);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,513,523));
+            XSSFCell mergeCell7_17 = row.createCell(513);
             mergeCell7_17.setCellStyle(headerStyle_light_orange);
             mergeCell7_17.setCellValue("제품 17");
 
-            // 제품 18
-            sheet.addMergedRegion(new CellRangeAddress(0,0,525,535));
-            XSSFCell mergeCell7_18 = row.createCell(525);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,524,534));
+            XSSFCell mergeCell7_18 = row.createCell(524);
             mergeCell7_18.setCellStyle(headerStyle_light_orange);
             mergeCell7_18.setCellValue("제품 18");
 
-            // 제품 19
-            sheet.addMergedRegion(new CellRangeAddress(0,0,536,546));
-            XSSFCell mergeCell7_19 = row.createCell(536);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,535,545));
+            XSSFCell mergeCell7_19 = row.createCell(535);
             mergeCell7_19.setCellStyle(headerStyle_light_orange);
             mergeCell7_19.setCellValue("제품 19");
 
-            // 제품 20
-            sheet.addMergedRegion(new CellRangeAddress(0,0,547,557));
-            XSSFCell mergeCell7_20 = row.createCell(547);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,546,556));
+            XSSFCell mergeCell7_20 = row.createCell(546);
             mergeCell7_20.setCellStyle(headerStyle_light_orange);
             mergeCell7_20.setCellValue("제품 20");
 
-            // 제품 21
-            sheet.addMergedRegion(new CellRangeAddress(0,0,558,568));
-            XSSFCell mergeCell7_21 = row.createCell(558);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,557,567));
+            XSSFCell mergeCell7_21 = row.createCell(557);
             mergeCell7_21.setCellStyle(headerStyle_light_orange);
             mergeCell7_21.setCellValue("제품 21");
 
-            // 제품 22
-            sheet.addMergedRegion(new CellRangeAddress(0,0,569,579));
-            XSSFCell mergeCell7_22 = row.createCell(569);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,568,578));
+            XSSFCell mergeCell7_22 = row.createCell(568);
             mergeCell7_22.setCellStyle(headerStyle_light_orange);
             mergeCell7_22.setCellValue("제품 22");
 
-            // 제품 23
-            sheet.addMergedRegion(new CellRangeAddress(0,0,580,590));
-            XSSFCell mergeCell7_23 = row.createCell(580);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,579,589));
+            XSSFCell mergeCell7_23 = row.createCell(579);
             mergeCell7_23.setCellStyle(headerStyle_light_orange);
             mergeCell7_23.setCellValue("제품 23");
 
-            // 제품 24
-            sheet.addMergedRegion(new CellRangeAddress(0,0,591,601));
-            XSSFCell mergeCell7_24 = row.createCell(591);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,590,600));
+            XSSFCell mergeCell7_24 = row.createCell(590);
             mergeCell7_24.setCellStyle(headerStyle_light_orange);
             mergeCell7_24.setCellValue("제품 24");
 
-            // 제품 25
-            sheet.addMergedRegion(new CellRangeAddress(0,0,602,612));
-            XSSFCell mergeCell7_25 = row.createCell(602);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,601,611));
+            XSSFCell mergeCell7_25 = row.createCell(601);
             mergeCell7_25.setCellStyle(headerStyle_light_orange);
             mergeCell7_25.setCellValue("제품 25");
 
-            // 제품 26
-            sheet.addMergedRegion(new CellRangeAddress(0,0,613,623));
-            XSSFCell mergeCell7_26 = row.createCell(613);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,612,622));
+            XSSFCell mergeCell7_26 = row.createCell(612);
             mergeCell7_26.setCellStyle(headerStyle_light_orange);
             mergeCell7_26.setCellValue("제품 26");
 
-            // 제품 27
-            sheet.addMergedRegion(new CellRangeAddress(0,0,624,634));
-            XSSFCell mergeCell7_27 = row.createCell(624);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,623,633));
+            XSSFCell mergeCell7_27 = row.createCell(623);
             mergeCell7_27.setCellStyle(headerStyle_light_orange);
             mergeCell7_27.setCellValue("제품 27");
 
-            // 제품 28
-            sheet.addMergedRegion(new CellRangeAddress(0,0,635,645));
-            XSSFCell mergeCell7_28 = row.createCell(635);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,634,644));
+            XSSFCell mergeCell7_28 = row.createCell(634);
             mergeCell7_28.setCellStyle(headerStyle_light_orange);
             mergeCell7_28.setCellValue("제품 28");
 
-            // 제품 29
-            sheet.addMergedRegion(new CellRangeAddress(0,0,646,656));
-            XSSFCell mergeCell7_29 = row.createCell(646);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,645,655));
+            XSSFCell mergeCell7_29 = row.createCell(645);
             mergeCell7_29.setCellStyle(headerStyle_light_orange);
             mergeCell7_29.setCellValue("제품 29");
 
-            // 제품 30
-            sheet.addMergedRegion(new CellRangeAddress(0,0,657,667));
-            XSSFCell mergeCell7_30 = row.createCell(657);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,656,666));
+            XSSFCell mergeCell7_30 = row.createCell(656);
             mergeCell7_30.setCellStyle(headerStyle_light_orange);
             mergeCell7_30.setCellValue("제품 30");
 
-            // 업체정보
-            XSSFCell mergeCell8 = row.createCell(668);
+            XSSFCell mergeCell8 = row.createCell(667);
             mergeCell8.setCellStyle(headerStyle);
             mergeCell8.setCellValue("참가업체정보");
 
-            // 전시부스신청
-            sheet.addMergedRegion(new CellRangeAddress(0,0,669,672));
-            XSSFCell mergeCell9 = row.createCell(669);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,668,671));
+            XSSFCell mergeCell9 = row.createCell(668);
             mergeCell9.setCellStyle(headerStyle_cornflower_blue);
             mergeCell9.setCellValue("전시부스 신청");
 
-            // 할인적용
-            sheet.addMergedRegion(new CellRangeAddress(0,0,673,686));
-            XSSFCell mergeCell10 = row.createCell(673);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,672,685));
+            XSSFCell mergeCell10 = row.createCell(672);
             mergeCell10.setCellStyle(headerStyle_cornflower_blue);
             mergeCell10.setCellValue("할인적용");
 
-            // 상호간판신청
-            sheet.addMergedRegion(new CellRangeAddress(0,0,687,688));
-            XSSFCell mergeCell11 = row.createCell(687);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,686,687));
+            XSSFCell mergeCell11 = row.createCell(686);
             mergeCell11.setCellStyle(headerStyle_light_blue);
             mergeCell11.setCellValue("상호간판 신청");
 
-            // 유틸리티 신청
-            sheet.addMergedRegion(new CellRangeAddress(0,0,689,699));
-            XSSFCell mergeCell12 = row.createCell(689);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,688,698));
+            XSSFCell mergeCell12 = row.createCell(688);
             mergeCell12.setCellStyle(headerStyle_rose);
             mergeCell12.setCellValue("유틸리티 신청");
 
-            // 출입증 신청 1
-            sheet.addMergedRegion(new CellRangeAddress(0,0,700,705));
-            XSSFCell mergeCell13_1 = row.createCell(700);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,699,704));
+            XSSFCell mergeCell13_1 = row.createCell(699);
             mergeCell13_1.setCellStyle(headerStyle_lavender);
             mergeCell13_1.setCellValue("출입증 신청 1");
 
-            // 출입증 신청 2
-            sheet.addMergedRegion(new CellRangeAddress(0,0,706,711));
-            XSSFCell mergeCell13_2 = row.createCell(706);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,705,710));
+            XSSFCell mergeCell13_2 = row.createCell(705);
             mergeCell13_2.setCellStyle(headerStyle_lavender);
             mergeCell13_2.setCellValue("출입증 신청 2");
 
-            // 출입증 신청 3
-            sheet.addMergedRegion(new CellRangeAddress(0,0,712,717));
-            XSSFCell mergeCell13_3 = row.createCell(712);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,711,716));
+            XSSFCell mergeCell13_3 = row.createCell(711);
             mergeCell13_3.setCellStyle(headerStyle_lavender);
             mergeCell13_3.setCellValue("출입증 신청 3");
 
-            // 출입증 신청 4
-            sheet.addMergedRegion(new CellRangeAddress(0,0,718,723));
-            XSSFCell mergeCell13_4 = row.createCell(718);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,717,722));
+            XSSFCell mergeCell13_4 = row.createCell(717);
             mergeCell13_4.setCellStyle(headerStyle_lavender);
             mergeCell13_4.setCellValue("출입증 신청 4");
 
-            // 출입증 신청 5
-            sheet.addMergedRegion(new CellRangeAddress(0,0,724,729));
-            XSSFCell mergeCell13_5 = row.createCell(724);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,723,728));
+            XSSFCell mergeCell13_5 = row.createCell(723);
             mergeCell13_5.setCellStyle(headerStyle_lavender);
             mergeCell13_5.setCellValue("출입증 신청 5");
 
-            // 출입증 신청 6
-            sheet.addMergedRegion(new CellRangeAddress(0,0,730,735));
-            XSSFCell mergeCell13_6 = row.createCell(730);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,729,734));
+            XSSFCell mergeCell13_6 = row.createCell(729);
             mergeCell13_6.setCellStyle(headerStyle_lavender);
             mergeCell13_6.setCellValue("출입증 신청 6");
 
-            // 출입증 신청 7
-            sheet.addMergedRegion(new CellRangeAddress(0,0,736,741));
-            XSSFCell mergeCell13_7 = row.createCell(736);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,735,740));
+            XSSFCell mergeCell13_7 = row.createCell(735);
             mergeCell13_7.setCellStyle(headerStyle_lavender);
             mergeCell13_7.setCellValue("출입증 신청 7");
 
-            // 출입증 신청 8
-            sheet.addMergedRegion(new CellRangeAddress(0,0,742,747));
-            XSSFCell mergeCell13_8 = row.createCell(742);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,741,746));
+            XSSFCell mergeCell13_8 = row.createCell(741);
             mergeCell13_8.setCellStyle(headerStyle_lavender);
             mergeCell13_8.setCellValue("출입증 신청 8");
 
-            // 출입증 신청 9
-            sheet.addMergedRegion(new CellRangeAddress(0,0,748,753));
-            XSSFCell mergeCell13_9 = row.createCell(748);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,747,752));
+            XSSFCell mergeCell13_9 = row.createCell(747);
             mergeCell13_9.setCellStyle(headerStyle_lavender);
             mergeCell13_9.setCellValue("출입증 신청 9");
 
-            // 출입증 신청 10
-            sheet.addMergedRegion(new CellRangeAddress(0,0,754,759));
-            XSSFCell mergeCell13_10 = row.createCell(754);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,753,758));
+            XSSFCell mergeCell13_10 = row.createCell(753);
             mergeCell13_10.setCellStyle(headerStyle_lavender);
             mergeCell13_10.setCellValue("출입증 신청 10");
 
-            // 바이어 등록 정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,760,773));
-            XSSFCell mergeCell74 = row.createCell(760);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,759,772));
+            XSSFCell mergeCell74 = row.createCell(759);
             mergeCell74.setCellStyle(headerStyle_rose);
             mergeCell74.setCellValue("바이어 등록 정보");
 
-            // 경품 신청 등록 정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,774,783));
-            XSSFCell mergeCell75 = row.createCell(774);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,773,782));
+            XSSFCell mergeCell75 = row.createCell(773);
             mergeCell75.setCellStyle(headerStyle_lemon_chiffon);
             mergeCell75.setCellValue("경품 신청 등록 정보");
 
@@ -5092,25 +5025,25 @@ public class KibsMngController {
                 cell = row.createCell(i);
                 if(i < 64) {
                     cell.setCellStyle(headerStyle);
-                }else if(i<74){
+                }else if(i<73){
                     cell.setCellStyle(headerStyle_lime);
-                }else if(i<334){
+                }else if(i<333){
                     cell.setCellStyle(headerStyle_light_green);
-                }else if(i<338){
+                }else if(i<337){
                     cell.setCellStyle(headerStyle_cornflower_blue);
-                }else if(i<668){
+                }else if(i<667){
                     cell.setCellStyle(headerStyle_light_orange);
-                }else if(i<669){
+                }else if(i<668){
                     cell.setCellStyle(headerStyle);
-                }else if(i<687){
+                }else if(i<686){
                     cell.setCellStyle(headerStyle_cornflower_blue);
-                }else if(i<689){
+                }else if(i<688){
                     cell.setCellStyle(headerStyle_light_blue);
-                }else if(i<700){
+                }else if(i<699){
                     cell.setCellStyle(headerStyle_rose);
-                }else if(i<760){
+                }else if(i<759){
                     cell.setCellStyle(headerStyle_lavender);
-                }else if(i<774){
+                }else if(i<773){
                     cell.setCellStyle(headerStyle_rose);
                 }else{
                     cell.setCellStyle(headerStyle_lemon_chiffon);
@@ -5590,15 +5523,6 @@ public class KibsMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 if(fieldPart.contains("서핑")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 카라반&캠핑
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(fieldPart.contains("카라반&캠핑")){
                     cell.setCellValue("O");
                 }else{
                     cell.setCellValue("");

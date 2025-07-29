@@ -61,12 +61,12 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">Exhibitors</div>
                         <div class="tabOptSel">
-                            <a href="/eng/guide/summary.do">KIBS 2025</a>
+                            <a href="/eng/guide/summary.do">KIBS 2026</a>
                             <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
                             <a href="/eng/buyer/apply.do">Buyer</a>
                             <a href="/eng/board/notice.do">News</a>
@@ -76,8 +76,11 @@
                         <div class="tabOptAct">QnA</div>
                         <div class="tabOptSel">
                             <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                            <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>">Exhibitor Registration</a>
+                            <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
+                            <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                            <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
                             <a href="/eng/exhibitor/list.do">Exhibitor List</a>
-                            <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : 031-995-8738');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>">Exhibitor Registration</a>
                             <a class="active" href="/eng/exhibitor/qna.do">QnA</a>
                         </div>
                     </div>

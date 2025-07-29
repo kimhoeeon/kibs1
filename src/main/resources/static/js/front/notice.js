@@ -5,7 +5,7 @@ $(function(){
 
 });
 
-const showPageCnt = 3; // 화면에 보일 페이지 번호 개수
+const showPageCnt = 10; // 화면에 보일 페이지 번호 개수
 
 /**
  * @param pageNum 출력 페이지 번호

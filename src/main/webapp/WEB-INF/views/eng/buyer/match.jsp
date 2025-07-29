@@ -61,12 +61,12 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">Buyer</div>
                         <div class="tabOptSel">
-                            <a href="/eng/guide/summary.do">KIBS 2025</a>
+                            <a href="/eng/guide/summary.do">KIBS 2026</a>
                             <a href="/eng/exhibitor/categories.do">Exhibitors</a>
                             <a class="active" href="/eng/buyer/apply.do">Buyer</a>
                             <a href="/eng/board/notice.do">News</a>
@@ -95,7 +95,7 @@
         <div class="inner">
             <div class="sub_cont_tit">
                 <div class="big">
-                    KIBS 2025 MATCHMAKING PROGRAM<br>
+                    KIBS MATCHMAKING PROGRAM<br>
                     “A Perfect Match for Global Yacht & Boat Business”
                 </div>
                 <div class="small">

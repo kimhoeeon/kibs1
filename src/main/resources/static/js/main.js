@@ -13,8 +13,12 @@ $(function() {
     }
 
 })
-function home(){
-    window.location.href = '/';
+function home(lang){
+    let url = '/main.do';
+    if(lang === 'en'){
+        url = '/eng/index.do';
+    }
+    window.location.href = url;
 }
 
 function maskingEmail(email) {
@@ -4050,7 +4054,7 @@ function step_03_check(exhibitorSeq){
                 //console.log(i , resData);
                 if (resData.resultCode === "0") {
                     /* 등록 성공 시 다음 단계로 이동 */
-                    home();
+                    home('ko');
                 }
             }
         })
@@ -5807,7 +5811,7 @@ function my_step_03_check(exhibitorSeq){
                 //console.log(i , resData);
                 if (resData.resultCode === "0") {
                     /* 등록 성공 시 다음 단계로 이동 */
-                    home();
+                    home('ko');
                 }
             }
         })

@@ -70,7 +70,7 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">참관객</div>
@@ -87,6 +87,8 @@
                         <div class="tabOptSel">
                             <a class="active" href="/visitor/guide_off.do">참관안내</a>
                             <a href="/visitor/apply.do">사전등록</a>
+                            <a href="/guide/conference.do">컨퍼런스</a>
+                            <a href="/guide/program.do">체험 프로그램</a>
                             <a href="/visitor/login.do">참관신청확인</a>
                             <a href="/visitor/faq.do">FAQ</a>
                         </div>

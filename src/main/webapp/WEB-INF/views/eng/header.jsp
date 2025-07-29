@@ -80,13 +80,13 @@
                     </a>
                 </div>
                 <h1 class="hd_logo">
-                    <a href="/eng/index.do">
+                    <a href="javascript:void(0);" onclick="home('en')">
                         <img src="/img/logo_eng.png">
                     </a>
                 </h1>
                 <div class="hd_top_right">
-                    <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : 031-995-8738');" class="login">LOGIN</a>
-                    <a href="/" class="language">KOR</a>
+                    <%--<a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');" class="login">LOGIN</a>--%>
+                    <a href="javascript:void(0);" onclick="home('ko');" class="language">KOR</a>
                     <a href="#a" class="m_menu">
                         <span>Menu</span>
                     </a>
@@ -100,25 +100,26 @@
                             <a href="/eng/guide/summary.do"><span>KIBS 2026</span></a>
                             <ul class="dept2">
                                 <li><a href="/eng/guide/summary.do"><span>Overview</span></a></li>
-                                <li><a href="/eng/guide/venue.do"><span>Venue</span></a></li>
-                                <li><a href="/eng/guide/bi.do"><span>KIBS BI</span></a></li>
-                                <li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>
-                                <li><a href="/eng/guide/certify.do"><span>International Certification&Awards</span></a></li>
-                                <li><a href="/eng/guide/contact.do"><span>Contact us</span></a></li>
+                                <li><a href="/eng/guide/certify.do"><span>International Certification & Awards</span></a></li>
                                 <li><a href="/eng/guide/conference.do"><span>Conference</span></a></li>
                                 <li><a href="/eng/guide/program.do"><span>Program</span></a></li>
-                                <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>Held Concurrently with KOFISH</span></a></li>
+                                <li><a href="/eng/guide/bi.do"><span>KIBS BI</span></a></li>
+                                <li><a href="/eng/guide/venue.do"><span>Venue</span></a></li>
+                                <li><a href="/eng/guide/contact.do"><span>Contact us</span></a></li>
+                                <%--<li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>--%>
+                                <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>Concurrently event_KOFISH</span></a></li>
+                                <li><a href="javascript:void(0);" onclick="alert('An update is scheduled');return false;" class="outLink" target="_blank"><span>Concurrently event_Caravan&Camping</span></a></li>
                             </ul>
                         </li>
                         <li>
                             <a href="/eng/exhibitor/categories.do"><span>Exhibitors</span></a>
                             <ul class="dept2">
                                 <li><a href="/eng/exhibitor/categories.do"><span>Exhibitors Categories</span></a></li>
-                                <li><a href="/eng/exhibitor/list.do"><span>Exhibitor List</span></a></li>
-                                <li><a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : 031-995-8738');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>"><span>Exhibitor Registration</span></a></li>
+                                <li><a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>"><span>Exhibitor Registration</span></a></li>
                                 <li><a href="/eng/exhibitor/glance.do"><span>Korea at a Glance</span></a></li>
                                 <li><a href="/eng/exhibitor/marina.do"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="/eng/exhibitor/match.do"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
+                                <li><a href="/eng/exhibitor/list.do"><span>Exhibitor List</span></a></li>
                                 <li><a href="/eng/exhibitor/qna.do"><span>QnA</span></a></li>
                             </ul>
                         </li>
@@ -153,7 +154,7 @@
             <div class="site_map_box">
                 <div class="site_map_top">
                     <div class="site_map_top_btn">
-                        <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : 031-995-8738');" class="login">LOGIN</a>
+                        <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');" class="login">LOGIN</a>
                         <a href="/" class="language">KOR</a>
                     </div>
                     <div class="site_map_top_sns">
@@ -166,35 +167,36 @@
                 <div class="site_map_nav">
                     <ul class="dept1">
                         <li>
-                            <a href="/eng/guide/summary.do"><span>KIBS 2025</span></a>
+                            <a href="/eng/guide/summary.do"><span>KIBS 2026</span></a>
                             <ul class="dept2">
                                 <li><a href="/eng/guide/summary.do"><span>Overview</span></a></li>
+                                <li><a href="/eng/guide/certify.do"><span>International Certification & Awards</span></a></li>
+                                <li><a href="/eng/guide/conference.do"><span>Conference</span></a></li>
+                                <li><a href="/eng/guide/program.do"><span>Program</span></a></li>
+                                <li><a href="/eng/guide/bi.do"><span>KIBS BI</span></a></li>
                                 <li>
                                     <a href="/eng/guide/venue.do"><span>Venue</span></a>
                                     <ul class="dept3">
                                         <li><a href="/eng/guide/venue.do"><span>Venue</span></a></li>
                                         <li><a href="/eng/guide/to_kintex.do"><span>To Kintex</span></a></li>
-                                        <li><a href="/eng/guide/to_ara.do"><span>To ARA Marina</span></a></li>
+                                        <%--<li><a href="/eng/guide/to_ara.do"><span>To ARA Marina</span></a></li>--%>
                                     </ul>
                                 </li>
-                                <li><a href="/eng/guide/bi.do"><span>KIBS BI</span></a></li>
-                                <li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>
-                                <li><a href="/eng/guide/certify.do"><span>International Certification&Awards</span></a></li>
                                 <li><a href="/eng/guide/contact.do"><span>Contact us</span></a></li>
-                                <li><a href="/eng/guide/conference.do"><span>Conference</span></a></li>
-                                <li><a href="/eng/guide/program.do"><span>Program</span></a></li>
-                                <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>Held Concurrently with KOFISH</span></a></li>
+                                <%--<li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>--%>
+                                <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>Concurrently event_KOFISH</span></a></li>
+                                <li><a href="javascript:void(0);" onclick="alert('An update is scheduled')" class="outLink" target="_blank"><span>Concurrently event_Caravan&Camping</span></a></li>
                             </ul>
                         </li>
                         <li>
                             <a href="/eng/exhibitor/categories.do"><span>Exhibitors</span></a>
                             <ul class="dept2">
                                 <li><a href="/eng/exhibitor/categories.do"><span>Exhibitors Categories</span></a></li>
-                                <li><a href="/eng/exhibitor/list.do"><span>Exhibitor List</span></a></li>
-                                <li><a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : 031-995-8738');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>"><span>Exhibitor Registration</span></a></li>
+                                <li><a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>"><span>Exhibitor Registration</span></a></li>
                                 <li><a href="/eng/exhibitor/glance.do"><span>Korea at a Glance</span></a></li>
                                 <li><a href="/eng/exhibitor/marina.do"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="/eng/exhibitor/match.do"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
+                                <li><a href="/eng/exhibitor/list.do"><span>Exhibitor List</span></a></li>
                                 <li><a href="/eng/exhibitor/qna.do"><span>QnA</span></a></li>
                             </ul>
                         </li>

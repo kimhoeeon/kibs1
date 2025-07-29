@@ -61,12 +61,12 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">News</div>
                         <div class="tabOptSel">
-                            <a href="/eng/guide/summary.do">KIBS 2025</a>
+                            <a href="/eng/guide/summary.do">KIBS 2026</a>
                             <a href="/eng/exhibitor/categories.do">Exhibitors</a>
                             <a href="/eng/buyer/apply.do">Buyer</a>
                             <a class="active" href="/eng/board/notice.do">News</a>
@@ -124,70 +124,70 @@
                 <ul class="tBody">
                     <li class="postNt">
                         <div class="num">Notice</div>
-                        <div class="tit" onClick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
+                        <div class="tit" onclick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
                         <div class="write">Admin</div>
                         <div class="date">2024.01.01</div>
                         <div class="count">1234</div>
                     </li>
                     <li class="postNt">
                         <div class="num">Notice</div>
-                        <div class="tit" onClick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
+                        <div class="tit" onclick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
                         <div class="write">Admin</div>
                         <div class="date">2024.01.01</div>
                         <div class="count">1234</div>
                     </li>
                     <li class="postNt">
                         <div class="num">Notice</div>
-                        <div class="tit" onClick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
+                        <div class="tit" onclick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
                         <div class="write">Admin</div>
                         <div class="date">2024.01.01</div>
                         <div class="count">1234</div>
                     </li>
                     <li>
                         <div class="num">7</div>
-                        <div class="tit" onClick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
+                        <div class="tit" onclick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
                         <div class="write">Admin</div>
                         <div class="date">2024.01.01</div>
                         <div class="count">1234</div>
                     </li>
                     <li>
                         <div class="num">6</div>
-                        <div class="tit" onClick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
+                        <div class="tit" onclick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
                         <div class="write">Admin</div>
                         <div class="date">2024.01.01</div>
                         <div class="count">1234</div>
                     </li>
                     <li>
                         <div class="num">5</div>
-                        <div class="tit" onClick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
+                        <div class="tit" onclick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
                         <div class="write">Admin</div>
                         <div class="date">2024.01.01</div>
                         <div class="count">1234</div>
                     </li>
                     <li>
                         <div class="num">4</div>
-                        <div class="tit" onClick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
+                        <div class="tit" onclick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
                         <div class="write">Admin</div>
                         <div class="date">2024.01.01</div>
                         <div class="count">1234</div>
                     </li>
                     <li>
                         <div class="num">3</div>
-                        <div class="tit" onClick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
+                        <div class="tit" onclick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
                         <div class="write">Admin</div>
                         <div class="date">2024.01.01</div>
                         <div class="count">1234</div>
                     </li>
                     <li>
                         <div class="num">2</div>
-                        <div class="tit" onClick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
+                        <div class="tit" onclick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
                         <div class="write">Admin</div>
                         <div class="date">2024.01.01</div>
                         <div class="count">1234</div>
                     </li>
                     <li>
                         <div class="num">1</div>
-                        <div class="tit" onClick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
+                        <div class="tit" onclick="location.href='/eng/board/newsletterView.do'">게시판 제목이 노출됩니다.</div>
                         <div class="write">Admin</div>
                         <div class="date">2024.01.01</div>
                         <div class="count">1234</div>

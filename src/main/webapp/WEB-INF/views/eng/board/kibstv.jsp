@@ -59,12 +59,12 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">News</div>
                         <div class="tabOptSel">
-                            <a href="/eng/guide/summary.do">KIBS 2025</a>
+                            <a href="/eng/guide/summary.do">KIBS 2026</a>
                             <a href="/eng/exhibitor/categories.do">Exhibitors</a>
                             <a href="/eng/buyer/apply.do">Buyer</a>
                             <a class="active" href="/eng/board/notice.do">News</a>

@@ -62,7 +62,7 @@
         <div class="inner">
             <div class="member_box">
                 <div class="box">
-                    <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : 031-995-8738');<%--TODO : 참가신청 기간에 오픈 /eng/exhibitor/login.do--%>">
+                    <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');<%--TODO : 참가신청 기간에 오픈 /eng/exhibitor/login.do--%>">
                         <div class="icon"><img src="/img/icon_login02.png" class="off"><img src="/img/icon_login02_on.png" class="on"></div>
                         <div class="txt">Exhibitors</div>
                     </a>

@@ -70,7 +70,7 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">KIBS 안내</div>
@@ -86,8 +86,9 @@
                         <div class="tabOptAct">행사소개</div>
                         <div class="tabOptSel">
                             <a class="active" href="/guide/summary.do">행사소개</a>
-                            <a href="/guide/conference.do">컨퍼런스</a>
-                            <a href="/guide/program.do">체험 프로그램</a>
+                            <a href="/board/history25.do">지난 전시회</a>
+                            <a href="/board/bi.do">KIBS BI</a>
+                            <a href="/board/cerify.do">인증 및 수상현황</a>
                         </div>
                     </div>
                 </div>
@@ -191,13 +192,9 @@
                                 <p class="icon"><img src="/img/summ_img09.png?ver=20250423"></p>
                                 <p class="txt">서핑</p>
                             </li>
-                            <li>
-                                <p class="icon"><img src="/img/summ_img10.png?ver=20250423"></p>
-                                <p class="txt">카라반&캠핑</p>
-                            </li>
                         </ul>
                     </div>
-                    <a class="downBtn btnSt01" href="void(0);" onclick="alert('준비 중입니다');return false;">2026 브로슈어 다운로드</a>
+                    <a class="downBtn btnSt01" href="javascript:void(0);" onclick="alert('준비 중입니다');return false;">2026 브로슈어 다운로드</a>
                     <%--<a class="downBtn btnSt01" href="/file/2025_경기국제보트쇼_브로슈어_국문.pdf" target="_blank">2025 브로슈어 다운로드</a>--%>
                 </div>
             </div>
@@ -229,11 +226,7 @@
                             </tr>
                             <tr>
                                 <td>TEL</td>
-                                <td>031) 810 - 8114</td>
-                            </tr>
-                            <tr>
-                                <td>FAX</td>
-                                <td>031) 995-8082</td>
+                                <td>031) 810-8114</td>
                             </tr>
                             </tbody>
                         </table>

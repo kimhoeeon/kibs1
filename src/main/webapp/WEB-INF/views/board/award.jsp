@@ -64,7 +64,7 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">미디어센터</div>
@@ -81,12 +81,11 @@
                         <div class="tabOptSel">
                             <a href="/guide/notice.do">공지사항</a>
                             <a href="/board/gallery.do">갤러리</a>
+                            <a href="/online/kibstv.do">KIBS Tube</a>
                             <a href="/board/press.do">기사 및 칼럼</a>
-                            <a href="/board/history25.do">지난 전시회</a>
                             <a href="/board/newsletter.do">뉴스레터</a>
-                            <a href="/board/bi.do">KIBS BI</a>
-                            <a href="/board/cerify.do">인증 및 수상현황</a>
                             <a class="active" href="/board/award.do">올해의 제품상</a>
+                            <a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');">해양레저사진공모전</a>
                         </div>
                     </div>
                 </div>

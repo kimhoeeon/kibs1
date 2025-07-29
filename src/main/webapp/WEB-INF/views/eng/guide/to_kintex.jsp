@@ -61,7 +61,7 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">KIBS 2026</div>
@@ -96,7 +96,7 @@
             <ul class="ssub_tab_box">
                 <li><a href="/eng/guide/venue.do">Venue</a></li>
                 <li class="active"><a href="/eng/guide/to_kintex.do">To Kintex</a></li>
-                <li><a href="/eng/guide/to_ara.do">To ARA Marina</a></li>
+                <%--<li><a href="/eng/guide/to_ara.do">To ARA Marina</a></li>--%>
             </ul>
         </div>
     </div>

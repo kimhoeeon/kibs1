@@ -50,8 +50,8 @@
 
 <body>
 <script>
-    /*alert('Contact Us\nEmail : kibs@kintex.com\nTel : 031-995-8738');*/
-    window.location.href = '/visitor/apply.do';
+    alert('We are preparing to accept pre-registration applications for visitors to the 2026 Gyeonggi International Boat Show.');
+    history.back();
 </script>
 
 <c:import url="../header.jsp" charEncoding="UTF-8"/>
@@ -81,7 +81,7 @@
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">Buyer</div>
                         <div class="tabOptSel">
-                            <a href="/eng/guide/summary.do">KIBS 2025</a>
+                            <a href="/eng/guide/summary.do">KIBS 2026</a>
                             <a href="/eng/exhibitor/categories.do">Exhibitors</a>
                             <a class="active" href="/eng/buyer/apply.do">Buyer</a>
                             <a href="/eng/board/notice.do">News</a>

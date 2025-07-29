@@ -106,7 +106,7 @@
                                 Finally, press the application button below to ask the person in charge of the event for
                                 approval.
                             </div>
-                            <a href="javascript:alert('This is not the application period.');<%--TODO : 참가신청 기간에 오픈 /eng/exhibitor/login.do--%>" <%--onClick="alert('Your application for participation has been completed.')"--%>
+                            <a href="javascript:alert('This is not the application period.');<%--TODO : 참가신청 기간에 오픈 /eng/exhibitor/login.do--%>" <%--onclick="alert('Your application for participation has been completed.')"--%>
                                class="form_guide_comp_btn btnSt01">Application For Participation</a>
                         </div>
                     </div>

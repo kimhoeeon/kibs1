@@ -93,7 +93,7 @@
                 <div class="sub_tab">
                     <div class="inner">
                         <div class="sub_tab_box">
-                            <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                            <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
                             <div class="optionBox">
                                 <div class="tabOpt1 tabOption">
                                     <div class="tabOptAct">참가기업</div>
@@ -1064,10 +1064,6 @@
                                                     <label>
                                                         <input type="checkbox" name="fieldPart" value="서핑" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '서핑')}">checked</c:if>/>
                                                         서핑 (Surfing)
-                                                    </label>
-                                                    <label>
-                                                        <input type="checkbox" name="fieldPart" value="카라반&캠핑" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '카라반&캠핑')}">checked</c:if>/>
-                                                        카라반&캠핑 (Caravan & Camping)
                                                     </label>
                                                 </div>
                                             </li>

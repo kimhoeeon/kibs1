@@ -70,7 +70,7 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">온라인 전시관</div>
@@ -85,9 +85,8 @@
                     <div class="tabOpt2 tabOption">
                         <div class="tabOptAct">제품 검색하기</div>
                         <div class="tabOptSel" style="background: #fff;">
-                            <a href="/online/kibstv.do">KIBS Tube</a>
                             <a href="/online/company.do">참가기업 미리보기</a>
-                            <a href="/online/product.do" class="active">제품 검색하기</a>
+                            <a class="active" href="/online/product.do">제품 검색하기</a>
                         </div>
                     </div>
                 </div>

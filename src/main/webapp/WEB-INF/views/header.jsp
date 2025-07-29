@@ -141,7 +141,7 @@
                         <a href="/logout.do" class="logout">LOGOUT</a>
                         <a href="javascript:void(0);" onclick="f_page_move('/mypage/index.do',{ id: `${sessionScope.id}` , transferYear: '2026' })" class="mypage">MYPAGE</a>
                     </c:if>
-                    <a href="/eng/index.do" class="language">ENG</a>
+                    <a href="javascript:void(0);" onclick="home('en')" class="language">ENG</a>
                     <a href="#a" class="m_menu">
                         <span>메뉴</span>
                     </a>
@@ -155,9 +155,11 @@
                             <a href="/guide/summary.do"><span>KIBS 안내</span></a>
                             <ul class="dept2">
                                 <li><a href="/guide/summary.do"><span>행사소개</span></a></li>
-                                <li><a href="/guide/conference.do"><span>컨퍼런스</span></a></li>
-                                <li><a href="/guide/program.do"><span>체험 프로그램</span></a></li>
+                                <li><a href="/board/history25.do"><span>지난 전시회</span></a></li>
+                                <li><a href="/board/bi.do"><span>KIBS BI</span></a></li>
+                                <li><a href="/board/cerify.do"><span>인증 및 수상현황</span></a></li>
                                 <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>동시개최행사<br>[한국국제낚시박람회]</span></a></li>
+                                <li><a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');return false;" class="outLink" target="_blank"><span>동시개최행사<br>[캠핑&피크닉페어]</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -174,6 +176,8 @@
                             <ul class="dept2">
                                 <li><a href="/visitor/guide_off.do"><span>참관안내</span></a></li>
                                 <li><a href="/visitor/apply.do"><span>사전등록</span></a></li>
+                                <li><a href="/guide/conference.do"><span>컨퍼런스</span></a></li>
+                                <li><a href="/guide/program.do"><span>체험 프로그램</span></a></li>
                                 <li><a href="/visitor/login.do"><span>참관신청확인</span></a></li>
                                 <li><a href="/visitor/faq.do"><span>FAQ</span></a></li>
                             </ul>
@@ -183,18 +187,16 @@
                             <ul class="dept2">
                                 <li><a href="/guide/notice.do"><span>공지사항</span></a></li>
                                 <li><a href="/board/gallery.do"><span>갤러리</span></a></li>
+                                <li><a href="/online/kibstv.do"><span>KIBS Tube</span></a></li>
                                 <li><a href="/board/press.do"><span>기사 및 칼럼</span></a></li>
-                                <li><a href="/board/history25.do"><span>지난 전시회</span></a></li>
                                 <li><a href="/board/newsletter.do"><span>뉴스레터</span></a></li>
-                                <li><a href="/board/bi.do"><span>KIBS BI</span></a></li>
-                                <li><a href="/board/cerify.do"><span>인증 및 수상현황</span></a></li>
                                 <li><a href="/board/award.do"><span>올해의 제품상</span></a></li>
+                                <li><a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');"><span>해양레저사진공모전</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/online/kibstv.do"><span>온라인 전시관</span></a>
+                            <a href="/online/company.do"><span>온라인 전시관</span></a>
                             <ul class="dept2">
-                                <li><a href="/online/kibstv.do"><span>KIBS Tube</span></a></li>
                                 <li><a href="/online/company.do"><span>참가기업 미리보기</span></a></li>
                                 <li><a href="/online/product.do"><span>제품 검색하기</span></a></li>
                             </ul>
@@ -211,7 +213,7 @@
                 <div class="site_map_top">
                     <div class="site_map_top_btn">
                         <a href="/login.do" class="login">LOGIN</a>
-                        <a href="/eng/index.do" class="language">ENG</a>
+                        <a href="javascript:void(0);" onclick="home('en')" class="language">ENG</a>
                     </div>
                     <div class="site_map_top_sns">
                         <a href="/board/newsletter.do" class="hd_top_sns">
@@ -234,9 +236,11 @@
                             <a href="/guide/summary.do"><span>KIBS 안내</span></a>
                             <ul class="dept2">
                                 <li><a href="/guide/summary.do"><span>행사소개</span></a></li>
-                                <li><a href="/guide/conference.do"><span>컨퍼런스</span></a></li>
-                                <li><a href="/guide/program.do"><span>체험 프로그램</span></a></li>
+                                <li><a href="/board/history25.do"><span>지난 전시회</span></a></li>
+                                <li><a href="/board/bi.do"><span>KIBS BI</span></a></li>
+                                <li><a href="/board/cerify.do"><span>인증 및 수상현황</span></a></li>
                                 <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>동시개최행사<br>[한국국제낚시박람회]</span></a></li>
+                                <li><a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');return false;" class="outLink" target="_blank"><span>동시개최행사<br>[캠핑&피크닉페어]</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -259,6 +263,8 @@
                                     </ul>
                                 </li>
                                 <li><a href="/visitor/apply.do"><span>사전등록</span></a></li>
+                                <li><a href="/guide/conference.do"><span>컨퍼런스</span></a></li>
+                                <li><a href="/guide/program.do"><span>체험 프로그램</span></a></li>
                                 <li><a href="/visitor/login.do"><span>참관신청확인</span></a></li>
                                 <li><a href="/visitor/faq.do"><span>FAQ</span></a></li>
                             </ul>
@@ -268,6 +274,7 @@
                             <ul class="dept2">
                                 <li><a href="/guide/notice.do"><span>공지사항</span></a></li>
                                 <li><a href="/board/gallery.do"><span>갤러리</span></a></li>
+                                <li><a href="/online/kibstv.do"><span>KIBS Tube</span></a></li>
                                 <li>
                                     <a href="/board/press.do"><span>기사 및 칼럼</span></a>
                                     <ul class="dept3">
@@ -275,17 +282,14 @@
                                         <li><a href="/board/column.do"><span>칼럼</span></a></li>
                                     </ul>
                                 </li>
-                                <li><a href="/board/history25.do"><span>지난 전시회</span></a></li>
                                 <li><a href="/board/newsletter.do"><span>뉴스레터</span></a></li>
-                                <li><a href="/board/bi.do"><span>KIBS BI</span></a></li>
-                                <li><a href="/board/cerify.do"><span>인증 및 수상현황</span></a></li>
                                 <li><a href="/board/award.do"><span>올해의 제품상</span></a></li>
+                                <li><a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');"><span>해양레저사진공모전</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/online/kibstv.do"><span>온라인 전시관</span></a>
+                            <a href="/online/company.do"><span>온라인 전시관</span></a>
                             <ul class="dept2">
-                                <li><a href="/online/kibstv.do"><span>KIBS Tube</span></a></li>
                                 <li><a href="/online/company.do"><span>참가기업 미리보기</span></a></li>
                                 <li><a href="/online/product.do"><span>제품 검색하기</span></a></li>
                             </ul>

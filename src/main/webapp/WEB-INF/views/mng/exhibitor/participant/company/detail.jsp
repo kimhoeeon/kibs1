@@ -725,10 +725,6 @@
                                             <input type="checkbox" name="fieldPart" value="서핑" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '서핑')}">checked</c:if>/>
                                             서핑 (Surfing)
                                         </label>
-                                        <label>
-                                            <input type="checkbox" name="fieldPart" value="카라반&캠핑" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '카라반&캠핑')}">checked</c:if>/>
-                                            카라반&캠핑 (Caravan & Camping)
-                                        </label>
                                     </div>
                                 </li>
                             </ul>

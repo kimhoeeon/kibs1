@@ -59,7 +59,7 @@
             <div class="inner">
                 <div class="sub_top_box">
                     <div class="sub_top_nav">
-                        <span>홈</span><span>KIBS 안내</span><span>2025 체험 프로그램</span>
+                        <span>홈</span><span>참관객</span><span>2025 체험 프로그램</span>
                     </div>
                     <div class="sub_top_tit">2025 체험 프로그램</div>
                 </div>
@@ -71,14 +71,14 @@
         <div class="sub_tab">
             <div class="inner">
                 <div class="sub_tab_box">
-                    <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                    <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
                     <div class="optionBox">
                         <div class="tabOpt1 tabOption">
-                            <div class="tabOptAct">KIBS 안내</div>
+                            <div class="tabOptAct">참관객</div>
                             <div class="tabOptSel">
-                                <a class="active" href="/guide/summary.do">KIBS 안내</a>
+                                <a href="/guide/summary.do">KIBS 안내</a>
                                 <a href="/exhibitor/guide.do">참가기업</a>
-                                <a href="/visitor/guide_off.do">참관객</a>
+                                <a class="active" href="/visitor/guide_off.do">참관객</a>
                                 <a href="/guide/notice.do">미디어센터</a>
                                 <a href="/online/kibstv.do">온라인 전시관</a>
                             </div>
@@ -86,9 +86,12 @@
                         <div class="tabOpt2 tabOption">
                             <div class="tabOptAct">체험 프로그램</div>
                             <div class="tabOptSel">
-                                <a href="/guide/summary.do">행사소개</a>
+                                <a href="/visitor/guide_off.do">참관안내</a>
+                                <a href="/visitor/apply.do">사전등록</a>
                                 <a href="/guide/conference.do">컨퍼런스</a>
                                 <a class="active" href="/guide/program.do">체험 프로그램</a>
+                                <a href="/visitor/login.do">참관신청확인</a>
+                                <a href="/visitor/faq.do">FAQ</a>
                             </div>
                         </div>
                     </div>

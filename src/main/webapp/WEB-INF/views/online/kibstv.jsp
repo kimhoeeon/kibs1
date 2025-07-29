@@ -70,24 +70,28 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">온라인 전시관</div>
+                        <div class="tabOptAct">미디어센터</div>
                         <div class="tabOptSel">
                             <a href="/guide/summary.do">KIBS 안내</a>
                             <a href="/exhibitor/guide.do">참가기업</a>
                             <a href="/visitor/guide_off.do">참관객</a>
-                            <a href="/guide/notice.do">미디어센터</a>
-                            <a class="active" href="/online/kibstv.do">온라인 전시관</a>
+                            <a class="active" href="/guide/notice.do">미디어센터</a>
+                            <a href="/online/kibstv.do">온라인 전시관</a>
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
                         <div class="tabOptAct">KIBS Tube</div>
                         <div class="tabOptSel">
-                            <a href="/online/kibstv.do" class="active">KIBS Tube</a>
-                            <a href="/online/company.do">참가기업 미리보기</a>
-                            <a href="/online/product.do">제품 검색하기</a>
+                            <a href="/guide/notice.do">공지사항</a>
+                            <a href="/board/gallery.do">갤러리</a>
+                            <a class="active" href="/online/kibstv.do">KIBS Tube</a>
+                            <a href="/board/press.do">기사 및 칼럼</a>
+                            <a href="/board/newsletter.do">뉴스레터</a>
+                            <a href="/board/award.do">올해의 제품상</a>
+                            <a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');">해양레저사진공모전</a>
                         </div>
                     </div>
                 </div>

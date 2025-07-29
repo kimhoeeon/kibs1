@@ -61,7 +61,7 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">KIBS 2026</div>
@@ -76,12 +76,13 @@
                         <div class="tabOptAct">International Certification & Awards</div>
                         <div class="tabOptSel">
                             <a href="/eng/guide/summary.do">Overview</a>
-                            <a href="/eng/guide/venue.do">Venue</a>
-                            <a href="/eng/guide/bi.do">KIBS BI</a>
-                            <a href="/eng/guide/brochure.do">E-Brochure</a>
                             <a class="active" href="/eng/guide/certify.do">International Certification & Awards</a>
-                            <a href="/eng/guide/contact.do">Contact us</a>
+                            <a href="/eng/guide/conference.do">Conference</a>
                             <a href="/eng/guide/program.do">Program</a>
+                            <a href="/eng/guide/bi.do">KIBS BI</a>
+                            <a href="/eng/guide/venue.do">Venue</a>
+                            <a href="/eng/guide/contact.do">Contact us</a>
+                            <%--<a href="/eng/guide/brochure.do">E-Brochure</a>--%>
                         </div>
                     </div>
                 </div>

@@ -61,7 +61,7 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">KIBS 2026</div>
@@ -76,12 +76,13 @@
                         <div class="tabOptAct">Contact us</div>
                         <div class="tabOptSel">
                             <a href="/eng/guide/summary.do">Overview</a>
-                            <a href="/eng/guide/venue.do">Venue</a>
-                            <a href="/eng/guide/bi.do">KIBS BI</a>
-                            <a href="/eng/guide/brochure.do">E-Brochure</a>
                             <a href="/eng/guide/certify.do">International Certification & Awards</a>
-                            <a class="active" href="/eng/guide/contact.do">Contact us</a>
+                            <a href="/eng/guide/conference.do">Conference</a>
                             <a href="/eng/guide/program.do">Program</a>
+                            <a href="/eng/guide/bi.do">KIBS BI</a>
+                            <a href="/eng/guide/venue.do">Venue</a>
+                            <a class="active" href="/eng/guide/contact.do">Contact us</a>
+                            <%--<a href="/eng/guide/brochure.do">E-Brochure</a>--%>
                         </div>
                     </div>
                 </div>
@@ -103,10 +104,6 @@
                     <li>
                         <div class="gubun">Tel</div>
                         <div class="cont">+82 1670 8785</div>
-                    </li>
-                    <li>
-                        <div class="gubun">Fax</div>
-                        <div class="cont">+82 31 995 8082</div>
                     </li>
                     <li>
                         <div class="gubun">E-mail</div>

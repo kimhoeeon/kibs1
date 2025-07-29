@@ -63,7 +63,7 @@
     <c:when test="${mode eq 'end'}">
         <script>
             alert('2026 경기국제보트쇼 참관객 사전등록 신청 준비중입니다.');
-            window.location.href = '/guide/summary.do';
+            history.back();
         </script>
     </c:when>
     <c:otherwise>
@@ -90,7 +90,7 @@
             <div class="sub_tab">
                 <div class="inner">
                     <div class="sub_tab_box">
-                        <a href="" class="iconHome"><img src="/img/icon_home.png"></a>
+                        <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
                         <div class="optionBox">
                             <div class="tabOpt1 tabOption">
                                 <div class="tabOptAct">참관객</div>
@@ -107,6 +107,8 @@
                                 <div class="tabOptSel">
                                     <a href="/visitor/guide_off.do">참관안내</a>
                                     <a class="active" href="/visitor/apply.do">사전등록</a>
+                                    <a href="/guide/conference.do">컨퍼런스</a>
+                                    <a href="/guide/program.do">체험 프로그램</a>
                                     <a href="/visitor/login.do">참관신청확인</a>
                                     <a href="/visitor/faq.do">FAQ</a>
                                 </div>
