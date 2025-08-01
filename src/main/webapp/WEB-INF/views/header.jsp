@@ -156,10 +156,11 @@
                             <ul class="dept2">
                                 <li><a href="/guide/summary.do"><span>행사소개</span></a></li>
                                 <li><a href="/board/history25.do"><span>지난 전시회</span></a></li>
+                                <li><a href="/board/award.do"><span>올해의 제품상</span></a></li>
                                 <li><a href="/board/bi.do"><span>KIBS BI</span></a></li>
                                 <li><a href="/board/cerify.do"><span>인증 및 수상현황</span></a></li>
                                 <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>동시개최행사<br>[한국국제낚시박람회]</span></a></li>
-                                <li><a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');return false;" class="outLink" target="_blank"><span>동시개최행사<br>[캠핑&피크닉페어]</span></a></li>
+                                <li><a href="https://www.campingfair.co.kr/camping/" class="outLink" target="_blank"><span>동시개최행사<br>[캠핑&피크닉페어]</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -190,8 +191,7 @@
                                 <li><a href="/online/kibstv.do"><span>KIBS Tube</span></a></li>
                                 <li><a href="/board/press.do"><span>기사 및 칼럼</span></a></li>
                                 <li><a href="/board/newsletter.do"><span>뉴스레터</span></a></li>
-                                <li><a href="/board/award.do"><span>올해의 제품상</span></a></li>
-                                <li><a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');"><span>해양레저사진공모전</span></a></li>
+                                <li><a href="/board/contest.do"><span>해양레저 사진 공모전</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -237,10 +237,11 @@
                             <ul class="dept2">
                                 <li><a href="/guide/summary.do"><span>행사소개</span></a></li>
                                 <li><a href="/board/history25.do"><span>지난 전시회</span></a></li>
+                                <li><a href="/board/award.do"><span>올해의 제품상</span></a></li>
                                 <li><a href="/board/bi.do"><span>KIBS BI</span></a></li>
                                 <li><a href="/board/cerify.do"><span>인증 및 수상현황</span></a></li>
                                 <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>동시개최행사<br>[한국국제낚시박람회]</span></a></li>
-                                <li><a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');return false;" class="outLink" target="_blank"><span>동시개최행사<br>[캠핑&피크닉페어]</span></a></li>
+                                <li><a href="https://www.campingfair.co.kr/camping/" class="outLink" target="_blank"><span>동시개최행사<br>[캠핑&피크닉페어]</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -283,8 +284,7 @@
                                     </ul>
                                 </li>
                                 <li><a href="/board/newsletter.do"><span>뉴스레터</span></a></li>
-                                <li><a href="/board/award.do"><span>올해의 제품상</span></a></li>
-                                <li><a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');"><span>해양레저사진공모전</span></a></li>
+                                <li><a href="/board/contest.do"><span>해양레저 사진 공모전</span></a></li>
                             </ul>
                         </li>
                         <li>

@@ -784,7 +784,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane active w-lg-400px"
+                                                <div class="tab-pane active w-lg-300px"
                                                      id="kt_app_header_menu_pages_notice">
                                                     <!--begin:Row-->
                                                     <div class="row">
@@ -890,6 +890,16 @@ if (document.documentElement) {
                                                                         <a href="/mng/center/board/kibstv.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">KIBS Tube</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/center/board/contest.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">공모전</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1938,10 +1948,22 @@ if (document.documentElement) {
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/center/board/kibstv.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">KIBS Tube</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/center/board/contest.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">공모전</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>

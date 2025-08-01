@@ -441,4 +441,13 @@ public interface KibsMngService {
 
     ResponseDTO processUpdateRequestCompleteExpect(List<RequestDTO> requestList);
 
+    List<ContestDTO> processSelectContestList(SearchDTO searchDTO);
+
+    ContestDTO processSelectContestSingle(ContestDTO requestDto);
+
+    ResponseDTO processDeleteContest(ContestDTO contestDTO);
+
+    ResponseDTO processUpdateContest(ContestDTO contestDTO);
+
+    ResponseDTO processInsertContest(ContestDTO contestDTO);
 }

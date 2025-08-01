@@ -1255,6 +1255,86 @@
             )
     </insert>
 
+    <select id="selectContestList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ContestDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectContestList */
+        SELECT id
+             , gbn
+             , title
+             , writer
+             , write_date
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM contest
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "TITLE"'>
+                AND title LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        ORDER BY init_regi_dttm desc, title asc
+    </select>
+
+    <select id="selectContestSingle" parameterType="com.mtf.kibs.dto.ContestDTO" resultType="com.mtf.kibs.dto.ContestDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectContestSingle */
+        SELECT id
+             , gbn
+             , title
+             , writer
+             , write_date
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM contest
+        WHERE id = #{id}
+    </select>
+
+    <delete id="deleteContest" parameterType="com.mtf.kibs.dto.ContestDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteContest */
+        DELETE FROM contest
+        WHERE id = #{id}
+    </delete>
+
+    <update id="updateContest" parameterType="com.mtf.kibs.dto.ContestDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateContest */
+        UPDATE contest
+        SET gbn = #{gbn}
+        , title = <![CDATA[#{title}]]>
+        , writer = #{writer}
+        , write_date = #{writeDate}
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE id = #{id}
+    </update>
+
+    <insert id="insertContest" parameterType="com.mtf.kibs.dto.ContestDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.insertContest */
+        INSERT INTO contest
+        ( id
+        , gbn
+        , title
+        , writer
+        , write_date
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm)
+        VALUES ( #{id}
+               , #{gbn}
+               , <![CDATA[#{title}]]>
+               , #{writer}
+               , #{writeDate}
+               , #{note}
+               , 'CONTEST'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'CONTEST'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+    </insert>
+
     <select id="selectDataroomList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.DataroomDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectDataroomList */
         SELECT id
@@ -2682,6 +2762,12 @@
     <select id="getGalleryId" resultType="java.lang.String">
         /* com.mtf.kibs.mapper.kibsMngMapper.getGalleryId */
         SELECT CONCAT('G', LPAD(next_val('gallery_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <select id="getContestId" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.kibsMngMapper.getContestId */
+        SELECT CONCAT('CT', LPAD(next_val('contest_seq'), '7', '0'))
         FROM DUAL
     </select>
 

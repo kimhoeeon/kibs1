@@ -75,7 +75,7 @@
                     <div class="tabOpt2 tabOption">
                         <div class="tabOptAct">Marine Industry in korea</div>
                         <div class="tabOptSel">
-                            <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Investor program</a>
+                            <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor guide</a>
                             <a href="/eng/buyer/apply.do">Pre-registration</a>
                             <a href="/eng/buyer/glance.do">Korea at a Glance</a>
                             <a class="active" href="/eng/buyer/marina.do">Marine Industry in korea</a>
@@ -89,38 +89,82 @@
     </div>
     <!-- section -->
 
-
     <!-- section -->
-    <div class="marina_s padding_tb">
+    <div class="marina_s1 padding_tb">
         <div class="inner">
             <div class="sub_cont_tit">
                 <div class="big">
-                    The National Marina Development Plan
+                    The 2nd National Marina<br>
+                    Development Plan of Korea(2020~2029)
                 </div>
+                <div class="small">Central Government of Korea sponsored plan launched in 2029 for the development of 70 marinas.</div>
             </div>
 
-            <div class="img_box"><img src="/img/img_marine_01.png"></div>
-            <div class="txt_box">
-                A nationwide investment in marina developments is the strongest signal of the growth potential and
-                future value of investment. A central government sponsored plan launched in 2010 for the development of
-                43 marinas, subsequently amended in 2015 and now covering 58 developments to be completed by 2019.
+            <div class="sec_box">
 
-                Currently 33 new marinas are in operation, 7 are under construction and 1 is in the final planning
-                phase. By 2029, there will be berths to accommodate just under 15,000 boats afloat with more than 4
-                times that for dry storage, a growing trend.
+                <div class="box">
+                    <div class="img1"><img src="/img/img_marina_01_01.jpg"></div>
+                    <div class="text">
+                        The Government supported plan to develop a recreational boating culture has created the fastest growing boating activity in Asia. Since 2009 when the coastal regions were opened for recreational activity the unprecedented numbers of people actively involved in going boating and the annual increases confirm that this is a sustained and fast moving market that has fully embraced “messing about in boats.”<br><br>
+                        The large disparity between driving licences issued and registration of leisure boats can be attributed to respect for the Police and controls applied by them to this system compared to the current lack of resources of the Coastguard. It is safe to assume that the number of boats currently in use is probably more than double the number registered.
+                    </div>
+                </div>
+
             </div>
+
         </div>
     </div>
     <!-- section -->
 
     <!-- section -->
-    <div class="marina_s padding_b">
+    <div class="marina_s2 padding_b">
         <div class="inner">
             <div class="sub_cont_tit">
-                <div class="big">Recent Trends</div>
+                <div class="big">The New Hub of Korea Marina</div>
+                <div class="small">
+                    Jeongok Port in Hwaseong City has changed from a small fishing harbour into a modern 200 berth marina with dry storage ashore for a further 500 Boats and a growing café culture making it a weekend leisure destination. Gyeonggi Bay offering abundant sea angling has become the hub for the best boating location with Jebu Marina adding another 300 berths to provide the 2nd largest to provide the largest and best equipped combined facilities in Korea.
+                </div>
             </div>
 
-            <div class="img_box"><img src="/img/img_marine_02.png"></div>
+            <div class="sec_box">
+
+                <div class="box">
+                    <div class="img1"><img src="/img/img_marina_02_01.jpg"></div>
+                    <div class="list">
+                        <div class="item">
+                            <div class="img"><img src="/img/img_marina_02_02.jpg"></div>
+                            <div class="tit">Jeongok Marina(Hwaseong)</div>
+                            <div class="descrip">
+                                Moorings for 200 yachts (completed in 2011)
+                                Main facilities: Marina and supporting facilities, pleasure boat pier, marine park, aquatic leisure facilities.
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="img"><img src="/img/img_marina_02_03.jpg"></div>
+                            <div class="tit">Jebu Marina(Hwaseong)</div>
+                            <div class="descrip">
+                                Moorings for 300 yachts (completed in 2021) Main facilities: Marina and supporting facilities, indoor/outdoor marine recreation center, marine zoo and botanical garden, observation deck.
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="img"><img src="/img/img_marina_02_04.jpg"></div>
+                            <div class="tit">Ara Marina(Gimpo)</div>
+                            <div class="descrip">
+                                Moorings for 192 yachts (completed in 2012) Main facilities: Marina and supporting facilities, petrol station pleasure boat pier, accommodations, premium outlet.
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="img"><img src="/img/img_marina_02_05.jpg"></div>
+                            <div class="tit">Ansan Marina(Ansan)</div>
+                            <div class="descrip">
+                                Moorings for 300 yachts (To be completed in 2027) Main facilities: Marina and supporting facilities, accommodations, auto camping site, oceanic swimming pool, fishing site.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
     <!-- section -->

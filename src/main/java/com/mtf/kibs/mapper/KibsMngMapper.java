@@ -545,4 +545,16 @@ public interface KibsMngMapper {
     Integer deleteInvoiceBooth(InvoiceBoothDTO invoiceBoothDTO);
 
     Integer deleteInvoiceUtility(InvoiceUtilityDTO invoiceUtilityDTO);
+
+    List<ContestDTO> selectContestList(SearchDTO searchDTO);
+
+    ContestDTO selectContestSingle(ContestDTO contestDTO);
+
+    Integer deleteContest(ContestDTO contestDTO);
+
+    Integer updateContest(ContestDTO contestDTO);
+
+    String getContestId();
+
+    Integer insertContest(ContestDTO contestDTO);
 }

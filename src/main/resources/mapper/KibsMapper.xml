@@ -3378,6 +3378,39 @@
         </if>
     </select>
 
+    <select id="selectContestList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ContestDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectContestList */
+        SELECT id
+             , title
+             , write_date
+        , ( SELECT COUNT(*)
+                 FROM contest
+                 WHERE 1=1
+                   <if test='gbn != null and !gbn.equals("") and !gbn.equals("전체")'>
+                    AND gbn = #{gbn}
+                   </if>
+                   <if test='searchText != null and searchText != ""'>
+                       <if test='condition == "title"'>
+                        AND title LIKE CONCAT('%',#{searchText},'%')
+                       </if>
+                   </if>
+                 ) AS totalRecords
+        FROM contest
+        WHERE 1=1
+            <if test='gbn != null and !gbn.equals("") and !gbn.equals("전체")'>
+                AND gbn = #{gbn}
+            </if>
+            <if test='searchText != null and searchText != ""'>
+                <if test='condition == "title"'>
+                    AND title LIKE CONCAT('%',#{searchText},'%')
+                </if>
+            </if>
+        ORDER BY gbn DESC, title ASC, init_regi_dttm DESC
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
     <select id="selectGalleryList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.GalleryDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectGalleryList */
         SELECT id

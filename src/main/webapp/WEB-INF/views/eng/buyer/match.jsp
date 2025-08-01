@@ -75,7 +75,7 @@
                     <div class="tabOpt2 tabOption">
                         <div class="tabOptAct">Exhibitor-Buyer Matchmaking Program</div>
                         <div class="tabOptSel">
-                            <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Investor program</a>
+                            <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor guide</a>
                             <a href="/eng/buyer/apply.do">Pre-registration</a>
                             <a href="/eng/buyer/glance.do">Korea at a Glance</a>
                             <a href="/eng/buyer/marina.do">Marine Industry in korea</a>
@@ -104,9 +104,9 @@
             </div>
 
             <div class="img_box">
-                <img src="/img/img_match_01.png">
-                <img src="/img/img_match_02.png">
-                <img src="/img/img_match_03.png">
+                <img src="/img/img_match_04.png">
+                <img src="/img/img_match_05.png">
+                <img src="/img/img_match_06.png">
             </div>
         </div>
     </div>

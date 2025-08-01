@@ -310,4 +310,5 @@ public interface KibsMapper {
 
     List<String> selectOnlineFileSeq(FileDTO fileDTO);
 
+    List<ContestDTO> selectContestList(SearchDTO searchDTO);
 }

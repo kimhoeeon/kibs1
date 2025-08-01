@@ -4793,6 +4793,100 @@ let KTAppCenterBoardKibstv = function () {
     };
 }();
 
+let KTAppCenterBoardContest = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 3,
+                    'width': '20%'
+                },
+                {
+                    'targets': 7,
+                    'width': '10%',
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' },
+                { data: 'id'},
+                { data: 'gbn' },
+                { data: 'title' },
+                { data: 'writer' },
+                { data: 'writeDate' },
+                { data: 'finalRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let rowId = row.id;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div id="kt_menu_item" class="menu-item px-3">';
+        renderHTML += '<a onclick="f_contest_detail_modal_set(' + '\'' + rowId + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_contest_modify_init_set(' + '\'' + rowId + '\'' + ')" class="menu-link px-3">수정</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_contest_remove(' + '\'' + rowId + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#kt_center_board_contest_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#kt_center_board_contest_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_board_contest_search();
+        }
+    };
+}();
+
 let KTAppCenterPopupAdd = function () {
     // Shared variables
     let table;
@@ -5948,8 +6042,9 @@ KTUtil.onDOMContentLoaded(function () {
     KTAppCenterBoardColumn.init(); // /mng/center/board/column.do
     KTAppCenterBoardBrochure.init(); // /mng/center/board/brochure.do
     KTAppCenterBoardDataroom.init(); // /mng/center/board/dataroom.do
-    KTAppCenterBoardGallery.init(); // /mng/center/board/gallery.do
+    /*KTAppCenterBoardGallery.init();*/ // /mng/center/board/gallery.do
     KTAppCenterBoardKibstv.init(); // /mng/center/board/kibstv.do
+    KTAppCenterBoardContest.init(); // /mng/center/board/contest.do
 
     // 정보센터>팝업관리
     KTAppCenterPopupAdd.init(); // /mng/center/popup/add.do

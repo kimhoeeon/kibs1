@@ -67,25 +67,23 @@
                 <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">미디어센터</div>
+                        <div class="tabOptAct">KIBS 안내</div>
                         <div class="tabOptSel">
-                            <a href="/guide/summary.do">KIBS 안내</a>
+                            <a class="active" href="/guide/summary.do">KIBS 안내</a>
                             <a href="/exhibitor/guide.do">참가기업</a>
                             <a href="/visitor/guide_off.do">참관객</a>
-                            <a class="active" href="/guide/notice.do">미디어센터</a>
+                            <a href="/guide/notice.do">미디어센터</a>
                             <a href="/online/kibstv.do">온라인 전시관</a>
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
                         <div class="tabOptAct">올해의 제품상</div>
                         <div class="tabOptSel">
-                            <a href="/guide/notice.do">공지사항</a>
-                            <a href="/board/gallery.do">갤러리</a>
-                            <a href="/online/kibstv.do">KIBS Tube</a>
-                            <a href="/board/press.do">기사 및 칼럼</a>
-                            <a href="/board/newsletter.do">뉴스레터</a>
+                            <a href="/guide/summary.do">행사소개</a>
+                            <a href="/board/history25.do">지난 전시회</a>
                             <a class="active" href="/board/award.do">올해의 제품상</a>
-                            <a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');">해양레저사진공모전</a>
+                            <a href="/board/bi.do">KIBS BI</a>
+                            <a href="/board/cerify.do">인증 및 수상현황</a>
                         </div>
                     </div>
                 </div>
@@ -128,7 +126,7 @@
                         </div>
                     </li>
                 </ul>
-                <div class="cmnt">※ 기업 인센티브 : 차기년도 참가비 50% 할인 (단, 전년도 최대신청면적에 한함)</div>
+                <div class="cmnt">※ 기업 인센티브 : 차기년도 참가비 50% 할인</div>
             </div>
         </div>
     </div>
@@ -168,6 +166,7 @@
                                     <li>
                                         <div class="logo"><img src="/img/img_award_2025_01.jpg"></div>
                                         <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_san.png"></div>
                                             <div class="name">아비커스</div>
                                             <div class="prd">뉴보트(뉴보트 Navi / 뉴보트 Dock II / 뉴보트 Control)</div>
                                         </div>
@@ -175,6 +174,7 @@
                                     <li>
                                         <div class="logo"><img src="/img/img_award_2025_02.jpg"></div>
                                         <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_hae.png"></div>
                                             <div class="name">㈜에스컴텍</div>
                                             <div class="prd">28ft 세일링 카타마란</div>
                                         </div>
@@ -182,6 +182,7 @@
                                     <li>
                                         <div class="logo"><img src="/img/img_award_2025_03.jpg"></div>
                                         <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_ggd.png"></div>
                                             <div class="name">원다마린산업</div>
                                             <div class="prd">더블유엘에스560-엑스</div>
                                         </div>
@@ -196,8 +197,7 @@
                                     <li>
                                         <div class="logo"><img src="/img/img_award_2025_05.jpg"></div>
                                         <div class="txt">
-                                            <div class="name">현대요트주식회사
-                                            </div>
+                                            <div class="name">현대요트주식회사</div>
                                             <div class="prd">삭스도어 320</div>
                                         </div>
                                     </li>
@@ -245,6 +245,7 @@
                                     <li>
                                         <div class="logo"><img src="/img/img_award_2024_01.jpg"></div>
                                         <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_hae.png"></div>
                                             <div class="name">보트팩토리㈜</div>
                                             <div class="prd">트라이던트9프로</div>
                                         </div>
@@ -252,6 +253,7 @@
                                     <li>
                                         <div class="logo"><img src="/img/img_award_2024_02.jpg"></div>
                                         <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_ggd.png"></div>
                                             <div class="name">에스텍마린㈜</div>
                                             <div class="prd">장보고 보트트레일러</div>
                                         </div>
@@ -294,6 +296,7 @@
                                     <li>
                                         <div class="logo"><img src="/img/img_award_2023_01.jpg"></div>
                                         <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_hae.png"></div>
                                             <div class="name">주식회사 모토젯</div>
                                             <div class="prd">엔진제트서핑보드 바이퍼</div>
                                         </div>
@@ -301,6 +304,7 @@
                                     <li>
                                         <div class="logo"><img src="/img/img_award_2023_02.jpg"></div>
                                         <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_ggd.png"></div>
                                             <div class="name">주식회사 일렉트린</div>
                                             <div class="prd">선박용 전기추진 배터리 시스템</div>
                                         </div>
@@ -308,6 +312,7 @@
                                     <li>
                                         <div class="logo"><img src="/img/img_award_2023_03.jpg"></div>
                                         <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_ggd.png"></div>
                                             <div class="name">주식회사 빅베어마린</div>
                                             <div class="prd">하이브리드FRP보트 BBM450</div>
                                         </div>
@@ -343,6 +348,7 @@
                                     <li>
                                         <div class="logo"><img src="/img/img_award_2022_01.jpg"></div>
                                         <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_hae.png"></div>
                                             <div class="name">스타마린</div>
                                             <div class="prd">스타마린 빅스타520</div>
                                         </div>
@@ -390,8 +396,17 @@
                             <div class="list">
                                 <ul>
                                     <li>
+                                        <div class="logo"><img src="/img/img_award_2019_06.jpg"></div>
+                                        <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_hae.png"></div>
+                                            <div class="name">㈜흥진티엔디</div>
+                                            <div class="prd">albacore 40</div>
+                                        </div>
+                                    </li>
+                                    <li>
                                         <div class="logo"><img src="/img/img_award_2019_01.jpg"></div>
                                         <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_ggd.png"></div>
                                             <div class="name">주식회사 일렉트린</div>
                                             <div class="prd">Electric Propulsion System for Boats</div>
                                         </div>
@@ -422,13 +437,6 @@
                                         <div class="txt">
                                             <div class="name">주식회사 제트웨이크</div>
                                             <div class="prd">Electric Surfboard</div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="logo"><img src="/img/img_award_2019_06.jpg"></div>
-                                        <div class="txt">
-                                            <div class="name">㈜흥진티엔디</div>
-                                            <div class="prd">albacore 40</div>
                                         </div>
                                     </li>
                                     <li>

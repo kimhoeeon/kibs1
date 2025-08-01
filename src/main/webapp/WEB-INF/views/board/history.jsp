@@ -86,14 +86,11 @@
                     <div class="tabOpt2 tabOption">
                         <div class="tabOptAct">지난 전시회</div>
                         <div class="tabOptSel">
-                            <a href="/guide/notice.do">공지사항</a>
-                            <a href="/board/gallery.do">갤러리</a>
-                            <a href="/board/press.do">기사 및 칼럼</a>
+                            <a href="/guide/summary.do">행사소개</a>
                             <a class="active" href="/board/history25.do">지난 전시회</a>
-                            <a href="/board/newsletter.do">뉴스레터</a>
+                            <a href="/board/award.do">올해의 제품상</a>
                             <a href="/board/bi.do">KIBS BI</a>
                             <a href="/board/cerify.do">인증 및 수상현황</a>
-                            <a href="/board/award.do">올해의 제품상</a>
                         </div>
                     </div>
                 </div>

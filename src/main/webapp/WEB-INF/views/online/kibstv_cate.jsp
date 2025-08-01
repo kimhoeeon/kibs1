@@ -90,8 +90,7 @@
                             <a class="active" href="/online/kibstv.do">KIBS Tube</a>
                             <a href="/board/press.do">기사 및 칼럼</a>
                             <a href="/board/newsletter.do">뉴스레터</a>
-                            <a href="/board/award.do">올해의 제품상</a>
-                            <a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');">해양레저사진공모전</a>
+                            <a href="/board/contest.do">해양레저 사진 공모전</a>
                         </div>
                     </div>
                 </div>
@@ -213,7 +212,7 @@
     <div class="popup_inner">
         <div class="popup_wrap">
             <div class="pop_tit">
-                <div class="tit">게시물 제목 노출</div>
+                <div class="tit"></div>
                 <a class="close" href="#close"><img src="/img/close_w.png"></a>
             </div>
             <div class="pop_box">

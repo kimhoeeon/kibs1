@@ -106,13 +106,13 @@
         <div class="inner">
             <div class="search">
                 <form class="search_box" onsubmit="return false;">
-                        <span class="select">
-                            <select id="search_box">
-                                <option value="title" selected>제목</option>
-                                <option value="content">내용</option>
-                                <option value="all">내용+제목</option>
-                            </select>
-                        </span>
+                    <span class="select">
+                        <select id="search_box">
+                            <option value="title" selected>제목</option>
+                            <option value="content">내용</option>
+                            <option value="all">내용+제목</option>
+                        </select>
+                    </span>
                     <span class="search">
                         <input type="text" id="search_text" placeholder="검색어를 입력해 주세요.">
                         <button type="button" onclick="faqList(1)" style="cursor: pointer"></button>

@@ -92,8 +92,7 @@
                             <a href="/online/kibstv.do">KIBS Tube</a>
                             <a href="/board/press.do">기사 및 칼럼</a>
                             <a href="/board/newsletter.do">뉴스레터</a>
-                            <a href="/board/award.do">올해의 제품상</a>
-                            <a href="javascript:void(0);" onclick="alert('업데이트 예정입니다.');">해양레저사진공모전</a>
+                            <a href="/board/contest.do">해양레저 사진 공모전</a>
                         </div>
                     </div>
                 </div>
@@ -134,17 +133,17 @@
         <div class="inner">
             <div class="search">
                 <form class="search_box" onsubmit="return false;">
-                <span class="select">
-                    <select id="search_box">
-                        <option value="title" selected>제목</option>
-                        <%--<option value="content">내용</option>
-                        <option value="all">내용+제목</option>--%>
-                    </select>
-                </span>
+                    <span class="select">
+                        <select id="search_box">
+                            <option value="title" selected>제목</option>
+                            <%--<option value="content">내용</option>
+                            <option value="all">내용+제목</option>--%>
+                        </select>
+                    </span>
                     <span class="search">
-                    <input type="text" id="search_text" placeholder="검색어를 입력해 주세요.">
-                    <button type="button" onclick="galleryList(1, '전체')" style="cursor: pointer"></button>
-                </span>
+                        <input type="text" id="search_text" placeholder="검색어를 입력해 주세요.">
+                        <button type="button" onclick="galleryList(1, '전체')" style="cursor: pointer"></button>
+                    </span>
                 </form>
             </div>
         </div>
@@ -196,7 +195,7 @@
     <div class="popup_inner">
         <div class="popup_wrap">
             <div class="pop_tit">
-                <div class="tit">게시물 제목 노출</div>
+                <div class="tit"></div>
                 <a class="close" href="#close"><img src="/img/close_w.png"></a>
             </div>
             <div class="pop_box">

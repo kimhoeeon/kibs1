@@ -907,6 +907,34 @@ public class KibsController {
     // board Folder
     //***************************************************************************
 
+    @RequestMapping(value = "/board/contest.do", method = RequestMethod.GET)
+    public ModelAndView board_contest() {
+        System.out.println("KibsController > board_contest");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/board/contest");
+        return mv;
+    }
+
+    @RequestMapping(value = "/board/contest/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ContestDTO>> board_contest_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("KibsController > board_contest_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<ContestDTO> responseList = kibsService.processSelectContestList(searchDTO);
+
+        for(ContestDTO response : responseList){
+            List<String> fullFilePathList = new ArrayList<>();
+            List<FileDTO> fileList = kibsService.processSelectFileList(response.getId());
+            for(FileDTO file : fileList){
+                fullFilePathList.add(file.getFullFilePath());
+            }
+            response.setFullFilePathList(fullFilePathList);
+        }
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/board/gallery.do", method = RequestMethod.GET)
     public ModelAndView board_gallery() {
         System.out.println("KibsController > board_gallery");

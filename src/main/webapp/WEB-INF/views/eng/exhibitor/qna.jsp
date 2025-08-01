@@ -96,13 +96,13 @@
         <div class="inner">
             <div class="search">
                 <form class="search_box" onsubmit="return false;">
-                        <span class="select">
-                            <select id="search_box">
-                                <option value="title" selected>title</option>
-                                <option value="content">content</option>
-                                <option value="all">title+content</option>
-                            </select>
-                        </span>
+                    <span class="select">
+                        <select id="search_box">
+                            <option value="title" selected>title</option>
+                            <option value="content">content</option>
+                            <option value="all">title+content</option>
+                        </select>
+                    </span>
                     <span class="search">
                         <input type="text" id="search_text" placeholder="Please enter a search term.">
                         <button type="button" onclick="faqList(1)" style="cursor: pointer"></button>

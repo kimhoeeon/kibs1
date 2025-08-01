@@ -188,7 +188,7 @@
     <div class="popup_inner">
         <div class="popup_wrap">
             <div class="pop_tit">
-                <div class="tit">게시물 제목 노출</div>
+                <div class="tit"></div>
                 <a class="close" href="#close"><img src="/img/close_w.png"></a>
             </div>
             <div class="pop_box">

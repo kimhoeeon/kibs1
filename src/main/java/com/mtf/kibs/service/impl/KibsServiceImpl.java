@@ -1573,6 +1573,13 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<ContestDTO> processSelectContestList(SearchDTO searchDTO) {
+        System.out.println("KibsServiceImpl > processSelectContestList");
+        return kibsMapper.selectContestList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<GalleryDTO> processSelectGalleryList(SearchDTO searchDTO) {
         System.out.println("KibsServiceImpl > processSelectGalleryList");
         return kibsMapper.selectGalleryList(searchDTO);

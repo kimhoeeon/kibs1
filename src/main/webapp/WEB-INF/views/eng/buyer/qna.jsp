@@ -75,7 +75,7 @@
                     <div class="tabOpt2 tabOption">
                         <div class="tabOptAct">QnA</div>
                         <div class="tabOptSel">
-                            <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Investor program</a>
+                            <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor guide</a>
                             <a href="/eng/buyer/apply.do">Pre-registration</a>
                             <a href="/eng/buyer/glance.do">Korea at a Glance</a>
                             <a href="/eng/buyer/marina.do">Marine Industry in korea</a>
@@ -95,13 +95,13 @@
         <div class="inner">
             <div class="search">
                 <form class="search_box" onsubmit="return false;">
-                        <span class="select">
-                            <select id="search_box">
-                                <option value="title" selected>title</option>
-                                <option value="content">content</option>
-                                <option value="all">title+content</option>
-                            </select>
-                        </span>
+                    <span class="select">
+                        <select id="search_box">
+                            <option value="title" selected>title</option>
+                            <option value="content">content</option>
+                            <option value="all">title+content</option>
+                        </select>
+                    </span>
                     <span class="search">
                         <input type="text" id="search_text" placeholder="Please enter a search term.">
                         <button type="button" onclick="faqList(1)" style="cursor: pointer"></button>

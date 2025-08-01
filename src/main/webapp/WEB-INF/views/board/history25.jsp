@@ -87,6 +87,7 @@
                         <div class="tabOptSel">
                             <a href="/guide/summary.do">행사소개</a>
                             <a class="active" href="/board/history25.do">지난 전시회</a>
+                            <a href="/board/award.do">올해의 제품상</a>
                             <a href="/board/bi.do">KIBS BI</a>
                             <a href="/board/cerify.do">인증 및 수상현황</a>
                         </div>

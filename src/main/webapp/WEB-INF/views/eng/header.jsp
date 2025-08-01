@@ -108,7 +108,7 @@
                                 <li><a href="/eng/guide/contact.do"><span>Contact us</span></a></li>
                                 <%--<li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>--%>
                                 <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>Concurrently event_KOFISH</span></a></li>
-                                <li><a href="javascript:void(0);" onclick="alert('An update is scheduled');return false;" class="outLink" target="_blank"><span>Concurrently event_Caravan&Camping</span></a></li>
+                                <li><a href="https://www.campingfair.co.kr/camping/" class="outLink" target="_blank"><span>Concurrently event_Caravan&Camping</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -126,7 +126,7 @@
                         <li>
                             <a href="/eng/buyer/apply.do"><span>Buyers</span></a>
                             <ul class="dept2">
-                                <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Investor program</span></a></li>
+                                <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Visitor guide</span></a></li>
                                 <li><a href="/eng/buyer/apply.do"><span>Pre-registration</span></a></li>
                                 <li><a href="/eng/buyer/glance.do"><span>Korea at a Glance</span></a></li>
                                 <li><a href="/eng/buyer/marina.do"><span>Marine Industry in korea</span></a></li>
@@ -185,7 +185,7 @@
                                 <li><a href="/eng/guide/contact.do"><span>Contact us</span></a></li>
                                 <%--<li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>--%>
                                 <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>Concurrently event_KOFISH</span></a></li>
-                                <li><a href="javascript:void(0);" onclick="alert('An update is scheduled')" class="outLink" target="_blank"><span>Concurrently event_Caravan&Camping</span></a></li>
+                                <li><a href="https://www.campingfair.co.kr/camping/" class="outLink" target="_blank"><span>Concurrently event_Caravan&Camping</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -203,7 +203,7 @@
                         <li>
                             <a href="/eng/buyer/apply.do"><span>Buyers</span></a>
                             <ul class="dept2">
-                                <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Investor program</span></a></li>
+                                <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Visitor guide</span></a></li>
                                 <li><a href="/eng/buyer/apply.do"><span>Pre-registration</span></a></li>
                                 <li><a href="/eng/buyer/glance.do"><span>Korea at a Glance</span></a></li>
                                 <li><a href="/eng/buyer/marina.do"><span>Marine Industry in korea</span></a></li>

@@ -2529,6 +2529,122 @@ public class KibsMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mng/center/board/contest.do", method = RequestMethod.GET)
+    public ModelAndView mng_center_board_contest() {
+        System.out.println("KibsMngController > mng_center_board_contest");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/center/board/contest");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/center/board/contest/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ContestDTO>> mng_center_board_contest_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("KibsMngController > mng_center_board_contest_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<ContestDTO> responseList = kibsMngService.processSelectContestList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/center/board/contest/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_center_board_contest_detail(String seq) {
+        System.out.println("KibsMngController > mng_center_board_contest_detail");
+        ModelAndView mv = new ModelAndView();
+        //seq == notice table id
+        if(seq != null && !seq.isEmpty()){
+            ContestDTO requestDto = new ContestDTO();
+            requestDto.setId(seq);
+            ContestDTO info = kibsMngService.processSelectContestSingle(requestDto);
+            if(info != null){
+                mv.addObject("info",info);
+
+                FileDTO fileDTO = new FileDTO();
+                fileDTO.setUserId(seq);
+                List<FileDTO> fileList = kibsMngService.processSelectFileList(fileDTO);
+                if(fileList != null && !fileList.isEmpty()){
+                    mv.addObject("fileList", fileList);
+                }
+            }
+        }
+        mv.setViewName("/mng/center/board/contest/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/center/board/contest/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ContestDTO> mng_center_board_contest_selectSingle(@RequestBody ContestDTO contestDTO) {
+        System.out.println("KibsMngController > mng_center_board_contest_selectSingle");
+        //System.out.println(newsletterDTO.toString());
+
+        ContestDTO response = kibsMngService.processSelectContestSingle(contestDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/center/board/contest/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_contest_delete(@RequestBody ContestDTO contestDTO) {
+        System.out.println("KibsMngController > mng_center_board_contest_delete");
+
+        ResponseDTO responseDTO = kibsMngService.processDeleteContest(contestDTO);
+
+        FileDTO fileDTO = new FileDTO();
+        fileDTO.setUserId(contestDTO.getId());
+        commService.processUpdateFileDeleteUseN(fileDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/center/board/contest/modifySave.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_contest_modifySave(@RequestBody ContestDTO contestDTO) {
+        System.out.println("KibsMngController > mng_center_board_contest_modifySave");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = kibsMngService.processUpdateContest(contestDTO);
+
+        String fileIdList = contestDTO.getFileIdList();
+        if(fileIdList != null && !fileIdList.isEmpty()){
+            String[] fileIdSplit = fileIdList.split(",");
+            for (String s : fileIdSplit) {
+                if (!"".equals(s)) {
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(s);
+                    fileDTO.setUserId(contestDTO.getId());
+                    ResponseDTO fileResponse = kibsMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/center/board/contest/insertSave.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_contest_insertSave(@RequestBody ContestDTO contestDTO) {
+        System.out.println("KibsMngController > mng_center_board_contest_insertSave");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = kibsMngService.processInsertContest(contestDTO);
+
+        String fileIdList = contestDTO.getFileIdList();
+        if(fileIdList != null && !fileIdList.isEmpty()){
+            String[] fileIdSplit = fileIdList.split(",");
+            for (String s : fileIdSplit) {
+                if (!"".equals(s)) {
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(s);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = kibsMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/mng/center/board/dataroom.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_dataroom() {
         System.out.println("KibsMngController > mng_center_board_dataroom");
@@ -2666,12 +2782,12 @@ public class KibsMngController {
         ResponseDTO responseDTO = kibsMngService.processUpdateGallery(galleryDTO);
 
         String fileIdList = galleryDTO.getFileIdList();
-        if(fileIdList != null && !"".equals(fileIdList)){
+        if(fileIdList != null && !fileIdList.isEmpty()){
             String[] fileIdSplit = fileIdList.split(",");
-            for(int i=0; i<fileIdSplit.length; i++){
-                if(!"".equals(fileIdSplit[i])){
+            for (String s : fileIdSplit) {
+                if (!"".equals(s)) {
                     FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setId(s);
                     fileDTO.setUserId(galleryDTO.getId());
                     ResponseDTO fileResponse = kibsMngService.processUpdateFileUserId(fileDTO);
                 }
@@ -2690,12 +2806,12 @@ public class KibsMngController {
         ResponseDTO responseDTO = kibsMngService.processInsertGallery(galleryDTO);
 
         String fileIdList = galleryDTO.getFileIdList();
-        if(fileIdList != null && !"".equals(fileIdList)){
+        if(fileIdList != null && !fileIdList.isEmpty()){
             String[] fileIdSplit = fileIdList.split(",");
-            for(int i=0; i<fileIdSplit.length; i++){
-                if(!"".equals(fileIdSplit[i])){
+            for (String s : fileIdSplit) {
+                if (!"".equals(s)) {
                     FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setId(s);
                     fileDTO.setUserId(responseDTO.getCustomValue());
                     ResponseDTO fileResponse = kibsMngService.processUpdateFileUserId(fileDTO);
                 }

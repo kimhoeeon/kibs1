@@ -823,6 +823,8 @@
     .glance_s .list_box li:nth-child(3n) {margin-right: 2%;}
     .glance_s .list_box li:nth-child(2n) {margin-right: 0;}
 
+
+
     .exh_cate_list li .txtBox .tit {font-size: 1.8rem; line-height: 2.4rem;}
     .exh_cate_list li .txtBox .txt {font-size: 1.4rem; line-height: 1.9rem;}
 
@@ -847,6 +849,24 @@
     .main_top .info_box .tit {max-width: 500px;}
     .main_top .wave {margin-bottom: 0;}
     .main_top .video_box {flex: none; width: 100%;}
+
+    .glance_s2 .box,
+    .glance_s3 .box,
+    .glance_s4 .box {font-size: 1.4rem;}
+    .glance_s2 .box .img1 {width: 100%;}
+    .glance_s2 .box .text {width: 100%;}
+    .glance_s3 .box .img1 {width: 100%;}
+    .glance_s3 .box .text {width: 100%;}
+    .glance_s4 .box .img1 {width: 100%;}
+    .glance_s4 .box .img2 {width: 100%;}
+
+    .marina_s1 .box {font-size: 1.4rem;}
+    .marina_s1 .box .img1 {width: 100%;}
+    .marina_s1 .box .text {width: 100%;}
+    .marina_s2 .box .list {flex-direction: column;}
+    .marina_s2 .box .item {width: 100%;}
+    .marina_s2 .box .item .tit {font-size: 1.6rem;}
+    .marina_s2 .box .item .descrip {font-size: 1.4rem;}
     
 
 
