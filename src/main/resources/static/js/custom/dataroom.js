@@ -51,7 +51,7 @@ function f_board_dataroom_search(){
 function f_dataroom_detail_modal_set(rowId){
     /* 목록 상세 조회 */
     let jsonObj = {
-        "id": rowId
+        id: rowId
     };
 
     let resData = ajaxConnect('/mng/center/board/dataroom/selectSingle.do', 'post', jsonObj);
@@ -60,28 +60,29 @@ function f_dataroom_detail_modal_set(rowId){
     //console.log(resData);
 
     document.querySelector('#md_title').value = resData.title;
+    document.querySelector('#md_title_en').value = resData.titleEn;
     document.querySelector('#md_writer').value = resData.writer;
     document.querySelector('#md_write_date').value = resData.writeDate;
 
     $('#md_mng_year').val(resData.mngYear).prop('selected',true);
 
-    if(resData.siteGbn==="1"){
+    if (resData.siteGbn === "1") {
         document.querySelector('#md_site_gbn').checked = true;
     }else{
         document.querySelector('#md_site_gbn').checked = false;
     }
 
     document.querySelector('#md_content').innerHTML = resData.content;
-    document.querySelector('#md_view_cnt').value = resData.viewCnt;
 
     /* 파일 목록 상세 조회 */
     let jsonObj2 = {
-        "userId": rowId
+        userId: rowId
     };
 
     let file_list_el = document.getElementById('file_list');
-    while (file_list_el.hasChildNodes()) {
-        file_list_el.removeChild(file_list_el.firstChild);
+    // 첫 번째 요소를 제외한 모든 요소 삭제
+    while (file_list_el.children.length > 1) {
+        file_list_el.removeChild(file_list_el.lastChild);
     }
 
     let fileData = ajaxConnect('/file/upload/selectList.do', 'post', jsonObj2);
@@ -104,13 +105,14 @@ function f_dataroom_detail_modal_set(rowId){
 
 function f_board_dataroom_remove(rowId){
     //console.log('삭제버튼');
-    if(nullToEmpty(rowId) !== ""){
+    if(nvl(rowId,'') !== ""){
         let jsonObj = {
-            "id": rowId
+            id: rowId
         }
         Swal.fire({
-            title: '선택한 자료를 삭제하시겠습니까?',
             icon: 'warning',
+            title: '[ 갤러리 ]',
+            html: '<span style="font-size: 1.2em;">선택한 자료를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -123,7 +125,7 @@ function f_board_dataroom_remove(rowId){
                 let resData = ajaxConnect('/mng/center/board/dataroom/delete.do', 'post', jsonObj);
 
                 if (resData.resultCode === "0") {
-                    showMessage('', 'info', '자료 삭제', '자료가 삭제되었습니다.', '');
+                    showMessage('', 'info', '[ 갤러리 ]', '자료가 삭제되었습니다.', '');
                     f_board_dataroom_search(); // 삭제 성공 후 재조회 수행
                 } else {
                     showMessage('', 'error', '에러 발생', '자료 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
@@ -140,12 +142,13 @@ function f_board_dataroom_modify_init_set(id){
 function f_board_dataroom_save(id){
     //console.log(id + '변경내용저장 클릭');
     Swal.fire({
-        title: '입력된 정보를 저장하시겠습니까?',
         icon: 'info',
+        title: '[ 갤러리 ]',
+        html: '<span style="font-size: 1.2em;">입력된 정보로 저장하시겠습니까?</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
-        confirmButtonText: '변경내용저장',
+        confirmButtonText: '저장',
         cancelButtonColor: '#A1A5B7',
         cancelButtonText: '취소'
     }).then(async (result) => {
@@ -179,6 +182,7 @@ function f_board_dataroom_save(id){
 
                 let serialData = JSON.parse(JSON.stringify($('#dataroomForm').serializeArray()));
                 let data = objectifyForm(serialData);
+                data.siteGbn = nvl(data.siteGbn, 0);
                 //console.log(JSON.stringify(data));
 
                 /* Modify */
@@ -193,9 +197,9 @@ function f_board_dataroom_save(id){
                         success: function (data) {
                             if (data.resultCode === "0") {
                                 Swal.fire({
-                                    title: '자료 정보 변경',
-                                    text: '자료 정보가 변경되었습니다.',
                                     icon: 'info',
+                                    title: '[ 갤러리 ]',
+                                    html: '<span style="font-size: 1.2em;">저장되었습니다.</span>',
                                     allowOutsideClick: false,
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: '확인'
@@ -205,7 +209,7 @@ function f_board_dataroom_save(id){
                                     }
                                 });
                             } else {
-                                showMessage('', 'error', '에러 발생', '자료 정보 변경을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
+                                showMessage('', 'error', '에러 발생', '갤러리 정보 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                             }
                         },
                         error: function (xhr, status) {
@@ -223,9 +227,9 @@ function f_board_dataroom_save(id){
                         success: function (data) {
                             if (data.resultCode === "0") {
                                 Swal.fire({
-                                    title: '자료 정보 등록',
-                                    text: '자료 정보가 등록되었습니다.',
                                     icon: 'info',
+                                    title: '[ 갤러리 ]',
+                                    html: '<span style="font-size: 1.2em;">저장되었습니다.</span>',
                                     allowOutsideClick: false,
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: '확인'
@@ -235,7 +239,7 @@ function f_board_dataroom_save(id){
                                     }
                                 });
                             } else {
-                                showMessage('', 'error', '에러 발생', '자료 정보 등록을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
+                                showMessage('', 'error', '에러 발생', '갤러리 정보 등록을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                             }
                         },
                         error: function (xhr, status) {
@@ -255,14 +259,12 @@ function f_board_dataroom_valid(){
     let title = document.querySelector('#title').value;
     let writer = document.querySelector('#writer').value;
     let writeDate = document.querySelector('#writeDate').value;
-    let content = document.querySelector('#quill_content').value;
     let mngYear = document.querySelector('#mngYear').value;
 
-    if(nvl(title,"") === ""){ showMessage('#title', 'error', '[ 글 등록 정보 ]', '제목을 입력해 주세요.', ''); return false; }
-    if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[ 글 등록 정보 ]', '작성자를 입력해 주세요.', ''); return false; }
-    if(nvl(writeDate,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', '작성일을 입력해 주세요.', ''); return false; }
-    if(nvl(mngYear,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', '관리년도를 선택해 주세요.', ''); return false; }
-    if(nvl(content,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', '내용을 입력해 주세요.', ''); return false; }
+    if(nvl(title,"") === ""){ showMessage('#title', 'error', '[ 갤러리 ]', '제목을 입력해 주세요.', ''); return false; }
+    if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[ 갤러리 ]', '작성자를 입력해 주세요.', ''); return false; }
+    if(nvl(writeDate,"") === ""){ showMessage('', 'error', '[ 갤러리 ]', '작성일을 입력해 주세요.', ''); return false; }
+    if(nvl(mngYear,"") === ""){ showMessage('', 'error', '[ 갤러리 ]', '관리년도를 선택해 주세요.', ''); return false; }
 
     return true;
 }

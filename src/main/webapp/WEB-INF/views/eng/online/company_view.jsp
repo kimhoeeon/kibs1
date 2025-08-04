@@ -39,15 +39,6 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
-
-    <span itemscope="" itemtype="http://schema.org/Organization">
-        <link itemprop="url" href="https://kibs.com/">
-        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-        <a itemprop="sameAs" href="https://kibs-online.com"></a>
-        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
-    </span>
 </head>
 
 <body>
@@ -59,8 +50,8 @@
     <div class="sub_online_top online_exh_top">
         <div class="inner">
             <div class="online_top_tit">
-                <div class="big">참가기업 보기</div>
-                <div class="small">온라인 전시관에 등록된 업체를 한 눈에 살펴볼 수 있습니다</div>
+                <div class="big">Exhibitors List</div>
+                <div class="small">You can see the companies registered in the online exhibition hall at a glance.</div>
             </div>
         </div>
     </div>
@@ -70,23 +61,27 @@
     <div class="sub_tab">
         <div class="inner">
             <div class="sub_tab_box">
-                <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
+                <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">온라인 전시관</div>
+                        <div class="tabOptAct">Exhibitors</div>
                         <div class="tabOptSel">
-                            <a href="/guide/summary.do">KIBS 안내</a>
-                            <a href="/exhibitor/guide.do">참가기업</a>
-                            <a href="/visitor/guide_off.do">참관객</a>
-                            <a href="/guide/notice.do">미디어센터</a>
-                            <a class="active" href="/online/kibstv.do">온라인 전시관</a>
+                            <a href="/eng/guide/summary.do">KIBS 2026</a>
+                            <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
+                            <a href="/eng/buyer/apply.do">Buyer</a>
+                            <a href="/eng/board/notice.do">News</a>
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">참가기업 미리보기</div>
+                        <div class="tabOptAct">Exhibitor List</div>
                         <div class="tabOptSel">
-                            <a class="active" href="/online/company.do">참가기업 미리보기</a>
-                            <a href="/online/product.do">제품 검색하기</a>
+                            <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                            <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>">Exhibitor Registration</a>
+                            <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
+                            <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                            <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
+                            <a class="active" href="/eng/online/company.do">Exhibitor List</a>
+                            <a href="/eng/exhibitor/qna.do">FAQ</a>
                         </div>
                     </div>
                 </div>
@@ -104,14 +99,36 @@
                         <c:when test="${gbn eq 'E'}">
                             <c:if test="${not empty onlineList}">
                                 <c:if test="${onlineList.get(0).productOptionBig ne null and onlineList.get(0).productOptionBig ne ''}">
-                                    ${onlineList.get(0).productOptionBig}전
+                                    <c:choose>
+                                        <c:when test="${onlineList.get(0).productOptionBig eq '요트·보트'}">Yacht & Boat</c:when>
+                                        <c:when test="${onlineList.get(0).productOptionBig eq '무동력보트'}">Paddling Boat</c:when>
+                                        <c:when test="${onlineList.get(0).productOptionBig eq '워크보트'}">Work Boat</c:when>
+                                        <c:when test="${onlineList.get(0).productOptionBig eq '워터스포츠'}">Water Sports</c:when>
+                                        <c:when test="${onlineList.get(0).productOptionBig eq '다이빙'}">Diving</c:when>
+                                        <c:when test="${onlineList.get(0).productOptionBig eq '아웃도어'}">Outdoor</c:when>
+                                        <c:when test="${onlineList.get(0).productOptionBig eq '해양관광'}">Marine Tourism</c:when>
+                                        <c:when test="${onlineList.get(0).productOptionBig eq '해양부품'}">Marine Equipment</c:when>
+                                        <c:when test="${onlineList.get(0).productOptionBig eq '마리나산업'}">Marina Industry</c:when>
+                                        <c:otherwise>-</c:otherwise>
+                                    </c:choose>
                                 </c:if>
                             </c:if>
                         </c:when>
                         <c:otherwise>
                             <c:if test="${not empty productList}">
                                 <c:if test="${productList.get(0).productOptionBig ne null and productList.get(0).productOptionBig ne ''}">
-                                    ${productList.get(0).productOptionBig}전
+                                    <c:choose>
+                                        <c:when test="${productList.get(0).productOptionBig eq '요트·보트'}">Yacht & Boat</c:when>
+                                        <c:when test="${productList.get(0).productOptionBig eq '무동력보트'}">Paddling Boat</c:when>
+                                        <c:when test="${productList.get(0).productOptionBig eq '워크보트'}">Work Boat</c:when>
+                                        <c:when test="${productList.get(0).productOptionBig eq '워터스포츠'}">Water Sports</c:when>
+                                        <c:when test="${productList.get(0).productOptionBig eq '다이빙'}">Diving</c:when>
+                                        <c:when test="${productList.get(0).productOptionBig eq '아웃도어'}">Outdoor</c:when>
+                                        <c:when test="${productList.get(0).productOptionBig eq '해양관광'}">Marine Tourism</c:when>
+                                        <c:when test="${productList.get(0).productOptionBig eq '해양부품'}">Marine Equipment</c:when>
+                                        <c:when test="${productList.get(0).productOptionBig eq '마리나산업'}">Marina Industry</c:when>
+                                        <c:otherwise>-</c:otherwise>
+                                    </c:choose>
                                 </c:if>
                             </c:if>
                         </c:otherwise>
@@ -190,8 +207,8 @@
 
                 <div class="exh_view_top">
                     <div class="name">
-                        <c:if test="${exhibitorInfo.lang eq 'KO'}">
-                            ${exhibitorInfo.companyNameKo}
+                        <c:if test="${exhibitorInfo.lang eq 'EN'}">
+                            ${exhibitorInfo.companyNameEn}
                         </c:if>
                     </div>
                     <div class="info">
@@ -207,15 +224,15 @@
                     <div class="btn">
                         <div class="btnCs">
                             <a href="javascript:void(0);" onclick="f_ask_popup_open()">
-                                <img src="/img/icon_exh_cs.png">문의하기
+                                <img src="/img/icon_exh_cs.png">Contact us
                             </a>
                         </div>
                         <%--<div class="btnLike">
                             <img src="/img/icon_like.png" class="likeImg">좋아요
                         </div>--%>
                         <div class="<%--TODO: 추후 기능 오픈시 해당 클래스 주석 해제 : btnShare--%>">
-                            <a href="javascript:alert('해당 기능은 준비 중입니다.');">
-                                <img src="/img/icon_share.png">공유하기
+                            <a href="javascript:alert('It will be updated.');">
+                                <img src="/img/icon_share.png">Sharing
                             </a>
                         </div>
                     </div>
@@ -225,7 +242,7 @@
                     <c:when test="${gbn eq 'E'}">
                         <c:if test="${exhibitorInfo.companyIntroVideo ne null and exhibitorInfo.companyIntroVideo ne ''}">
                             <div class="exh_view_video">
-                                <div class="view_tit">기업 영상</div>
+                                <div class="view_tit">Company Video</div>
                                 <div class="video_wrap">
                                     <div class="embed-container">
                                         <iframe src="https://www.youtube.com/embed/${exhibitorInfo.companyIntroVideo}?autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
@@ -238,7 +255,7 @@
                         <c:if test="${exhibitorInfo.companyIntroVideo ne null and exhibitorInfo.companyIntroVideo ne ''}">
                             <c:set var="companyIntroVideo" value="${fn:substring(fn:substringAfter(exhibitorInfo.companyIntroVideo, 'youtu.be/'), 0, fn:indexOf(fn:substringAfter(exhibitorInfo.companyIntroVideo, 'youtu.be/'), '?'))}"/>
                             <div class="exh_view_video">
-                                <div class="view_tit">기업 영상</div>
+                                <div class="view_tit">Company Video</div>
                                 <div class="video_wrap">
                                     <div class="embed-container">
                                         <iframe src="https://www.youtube.com/embed/${companyIntroVideo}?autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
@@ -250,23 +267,23 @@
                 </c:choose>
 
                 <div class="exh_view_info">
-                    <div class="view_tit">기업 소개</div>
+                    <div class="view_tit">Company Introduction</div>
                     <div class="cont">
-                        ${exhibitorInfo.companyIntroKo}
+                        ${exhibitorInfo.companyIntroEn}
                     </div>
                 </div>
             </div>
 
             <div class="exh_view_prd">
-                <div class="view_tit">제품소개</div>
+                <div class="view_tit">Product Information</div>
                 <ul class="prdList">
                     <c:choose>
                         <c:when test="${gbn eq 'E'}">
                             <c:forEach var="onlineInfo" items="${onlineList}" begin="0" end="${onlineList.size()}" step="1" varStatus="status">
-                                <c:if test="${fn:trim(onlineInfo.productNameKo) ne '-' and fn:trim(onlineInfo.productNameKo) ne ''}">
+                                <c:if test="${fn:trim(onlineInfo.productNameEn) ne '-' and fn:trim(onlineInfo.productNameEn) ne ''}">
                                     <li>
                                         <%--<div class="btnLike"><img src="/img/icon_like.png" class="likeImg"></div>--%>
-                                        <a href="<c:url value="/online/product_view.do?seq=${onlineInfo.seq}"/>">
+                                        <a href="<c:url value="/eng/online/product_view.do?seq=${onlineInfo.seq}"/>">
                                             <div class="thumbnail">
                                                 <div class="thumb75 thumbBox">
                                                     <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
@@ -278,8 +295,8 @@
                                                 </div>
                                             </div>
                                             <div class="prdTxt">
-                                                <div class="name">${exhibitorInfo.companyNameKo}</div>
-                                                <div class="prdName">${onlineInfo.productNameKo}</div>
+                                                <div class="name">${exhibitorInfo.companyNameEn}</div>
+                                                <div class="prdName">${onlineInfo.productNameEn}</div>
                                                 <div class="type">${onlineInfo.productOptionBig} > ${onlineInfo.productOptionSmall}</div>
                                             </div>
                                         </a>
@@ -292,7 +309,7 @@
                                 <c:if test="${fn:trim(productInfo.productNameKo) ne '-' and fn:trim(productInfo.productNameKo) ne ''}">
                                     <li>
                                         <%--<div class="btnLike"><img src="/img/icon_like.png" class="likeImg"></div>--%>
-                                        <a href="<c:url value="/online/product_view.do?seq=${productInfo.seq}"/>">
+                                        <a href="<c:url value="/eng/online/product_view.do?seq=${productInfo.seq}"/>">
                                             <div class="thumbnail">
                                                 <div class="thumb75 thumbBox">
                                                     <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
@@ -304,8 +321,8 @@
                                                 </div>
                                             </div>
                                             <div class="prdTxt">
-                                                <div class="name">${exhibitorInfo.companyNameKo}</div>
-                                                <div class="prdName">${productInfo.productNameKo}</div>
+                                                <div class="name">${exhibitorInfo.companyNameEn}</div>
+                                                <div class="prdName">${productInfo.productNameEn}</div>
                                                 <div class="type">${productInfo.productOptionBig} > ${productInfo.productOptionSmall}</div>
                                             </div>
                                         </a>
@@ -313,10 +330,10 @@
                                 </c:if>
                             </c:forEach>
                             <c:forEach var="onlineInfo" items="${onlineList}" begin="0" end="${onlineList.size()}" step="1" varStatus="status">
-                                <c:if test="${fn:trim(onlineInfo.onlineNameKo) ne '-' and fn:trim(onlineInfo.onlineNameKo) ne ''}">
+                                <c:if test="${fn:trim(onlineInfo.onlineNameEn) ne '-' and fn:trim(onlineInfo.onlineNameEn) ne ''}">
                                     <li>
                                         <%--<div class="btnLike"><img src="/img/icon_like.png" class="likeImg"></div>--%>
-                                        <a href="<c:url value="/online/product_view.do?seq=${onlineInfo.seq}"/>">
+                                        <a href="<c:url value="/eng/online/product_view.do?seq=${onlineInfo.seq}"/>">
                                             <div class="thumbnail">
                                                 <div class="thumb75 thumbBox">
                                                     <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
@@ -328,8 +345,8 @@
                                                 </div>
                                             </div>
                                             <div class="prdTxt">
-                                                <div class="name">${exhibitorInfo.companyNameKo}</div>
-                                                <div class="prdName">${onlineInfo.onlineNameKo}</div>
+                                                <div class="name">${exhibitorInfo.companyNameEn}</div>
+                                                <div class="prdName">${onlineInfo.onlineNameEn}</div>
                                                 <div class="type">${onlineInfo.onlineOptionBig} > ${onlineInfo.onlineOptionSmall}</div>
                                             </div>
                                         </a>
@@ -369,7 +386,7 @@
     <div class="popup_inner">
         <div class="popup_wrap">
             <div class="pop_tit">
-                <div class="tit">공유하기</div>
+                <div class="tit">Sharing</div>
                 <a class="close" href="#close"><img src="/img/close_w.png"></a>
             </div>
             <div class="pop_box">
@@ -383,7 +400,7 @@
                     </div>
                     <div class="pop_share_clip">
                         <input type="text">
-                        <input type="button" value="복사">
+                        <input type="button" value="Copy">
                     </div>
                     <!-- //box -->
                 </div>
@@ -398,7 +415,7 @@
     <div class="popup_inner">
         <div class="popup_wrap">
             <div class="pop_tit">
-                <div class="tit">문의하기</div>
+                <div class="tit">Contact us</div>
                 <a class="close" href="javascript:void(0);" onclick="f_ask_popup_close()"><img src="/img/close_w.png"></a>
             </div>
             <div class="pop_box">
@@ -406,26 +423,26 @@
                     <!-- box -->
                     <ul class="pop_cs_box">
                         <li>
-                            <div class="gubun">업체</div>
-                            <div class="input">${exhibitorInfo.companyNameKo}</div>
+                            <div class="gubun">Company</div>
+                            <div class="input">${exhibitorInfo.companyNameEn}</div>
                         </li>
                         <li>
-                            <div class="gubun">이름</div>
-                            <div class="input"><input type="text" id="askName" maxlength="15" placeholder="이름을 입력해 주세요."></div>
+                            <div class="gubun">Name</div>
+                            <div class="input"><input type="text" id="askName" maxlength="15" placeholder="Name"></div>
                         </li>
                         <li>
-                            <div class="gubun">연락처</div>
-                            <div class="input"><input type="tel" id="askPhone" class="onlyTel" maxlength="13" placeholder="하이픈('-') 자동입력"></div>
+                            <div class="gubun">Phone</div>
+                            <div class="input"><input type="tel" id="askPhone" class="onlyTel" maxlength="13" placeholder="Phone"></div>
                         </li>
                         <li class="w100">
-                            <div class="gubun">상담요청내용 ( <span id="smsRemain">90</span> / 90 Bytes 남음 )</div>
-                            <div class="input"><textarea id="askContent" onblur="smsByteChk(this);" onkeyup="smsByteChk(this);" placeholder="상담요청내용을 작성해 주세요."></textarea></div>
+                            <div class="gubun">Content ( <span id="smsRemain">90</span> / 90 Bytes )</div>
+                            <div class="input"><textarea id="askContent" onblur="smsByteChk(this);" onkeyup="smsByteChk(this);" placeholder="Please enter the contents."></textarea></div>
                         </li>
                     </ul>
 
                     <div class="pop_cs_btn">
-                        <a href="javascript:void(0);" onclick="f_ask_popup_close()" class="btnSt02">닫기</a>
-                        <a href="javascript:f_ask_request('${exhibitorInfo.companyNameKo}','${exhibitorInfo.seq}')" class="btnSt01">문의</a>
+                        <a href="javascript:void(0);" onclick="f_ask_popup_close()" class="btnSt02">Close</a>
+                        <a href="javascript:f_ask_request('${exhibitorInfo.companyNameEn}','${exhibitorInfo.seq}')" class="btnSt01">Send</a>
                     </div>
                     <!-- //box -->
                 </div>

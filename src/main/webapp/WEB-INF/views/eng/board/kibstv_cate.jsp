@@ -75,6 +75,7 @@
                         <div class="tabOptSel">
                             <a href="/eng/board/notice.do">Notice</a>
                             <a class="active" href="/eng/board/kibstv.do">KIBS Tube</a>
+                            <a href="/eng/board/gallery.do">Gallery</a>
                             <%--<a href="/eng/board/media.do">KIBS in Media</a>--%>
                             <%--<a href="/eng/board/newsletter.do">Newsletter</a>--%>
                         </div>

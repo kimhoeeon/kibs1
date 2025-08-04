@@ -1338,20 +1338,22 @@
     <select id="selectDataroomList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.DataroomDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectDataroomList */
         SELECT id
-        , site_gbn
-        , mng_year
-        , title
-        , writer
-        , write_date
-        , final_regi_dttm
-        , view_cnt
+             , site_gbn
+             , mng_year
+             , title
+             , title_en
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
         FROM dataroom
         WHERE 1=1
         <if test='condition != null and condition != "" and condition != "ALL"'>
             AND mng_year = #{condition}
         </if>
         <if test='searchText != null and searchText != ""'>
-            AND title LIKE CONCAT('%',#{searchText},'%')
+            AND ( title LIKE CONCAT('%',#{searchText},'%')
+                      OR title_en LIKE CONCAT('%',#{searchText},'%') )
         </if>
         ORDER BY mng_year desc, init_regi_dttm desc, title asc
     </select>
@@ -1362,6 +1364,7 @@
              , site_gbn
              , mng_year
              , title
+             , title_en
              , content
              , writer
              , write_date
@@ -1386,15 +1389,16 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.updateDataroom */
         UPDATE dataroom
         SET site_gbn = #{siteGbn}
-        , mng_year = #{mngYear}
-        , title = <![CDATA[#{title}]]>
-        , content = <![CDATA[#{content}]]>
-        , writer = #{writer}
-        , write_date = #{writeDate}
+          , mng_year = #{mngYear}
+          , title = <![CDATA[#{title}]]>
+          , title_en = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
         <if test='fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
-        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE id = #{id}
     </update>
 
@@ -1405,6 +1409,7 @@
         , site_gbn
         , mng_year
         , title
+        , title_en
         , content
         , writer
         , write_date
@@ -1413,23 +1418,21 @@
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{id}
-            , #{siteGbn}
-            , #{mngYear}
-            , <![CDATA[#{title}]]>
-            , <![CDATA[#{content}]]>
-            , #{writer}
-            , #{writeDate}
-            , <![CDATA[#{fileIdList}]]>
-            , #{note}
-            , 'DATAROOM'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'DATAROOM'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        , final_regi_dttm)
+        VALUES ( #{id}
+               , #{siteGbn}
+               , #{mngYear}
+               , <![CDATA[#{title}]]>
+               , <![CDATA[#{titleEn}]]>
+               , <![CDATA[#{content}]]>
+               , #{writer}
+               , #{writeDate}
+               , <![CDATA[#{fileIdList}]]>
+               , #{note}
+               , 'DATAROOM'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'DATAROOM'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <select id="selectGalleryList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.GalleryDTO">

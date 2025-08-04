@@ -119,8 +119,8 @@
                                 <li><a href="/eng/exhibitor/glance.do"><span>Korea at a Glance</span></a></li>
                                 <li><a href="/eng/exhibitor/marina.do"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="/eng/exhibitor/match.do"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
-                                <li><a href="/eng/exhibitor/list.do"><span>Exhibitor List</span></a></li>
-                                <li><a href="/eng/exhibitor/qna.do"><span>QnA</span></a></li>
+                                <li><a href="/eng/online/company.do"><span>Exhibitor List</span></a></li>
+                                <li><a href="/eng/exhibitor/qna.do"><span>FAQ</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -131,7 +131,7 @@
                                 <li><a href="/eng/buyer/glance.do"><span>Korea at a Glance</span></a></li>
                                 <li><a href="/eng/buyer/marina.do"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="/eng/buyer/match.do"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
-                                <li><a href="/eng/buyer/qna.do"><span>QnA</span></a></li>
+                                <li><a href="/eng/buyer/qna.do"><span>FAQ</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -139,6 +139,7 @@
                             <ul class="dept2">
                                 <li><a href="/eng/board/notice.do"><span>Notice</span></a></li>
                                 <li><a href="/eng/board/kibstv.do"><span>KIBS Tube</span></a></li>
+                                <li><a href="/eng/board/gallery.do"><span>Gallery</span></a></li>
                                 <%--<li><a href="/eng/board/media.do"><span>KIBS in Media</span></a></li>--%>
                                 <%--<li><a href="/eng/board/newsletter.do"><span>Newsletter</span></a></li>--%>
                             </ul>
@@ -196,8 +197,8 @@
                                 <li><a href="/eng/exhibitor/glance.do"><span>Korea at a Glance</span></a></li>
                                 <li><a href="/eng/exhibitor/marina.do"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="/eng/exhibitor/match.do"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
-                                <li><a href="/eng/exhibitor/list.do"><span>Exhibitor List</span></a></li>
-                                <li><a href="/eng/exhibitor/qna.do"><span>QnA</span></a></li>
+                                <li><a href="/eng/online/company.do"><span>Exhibitor List</span></a></li>
+                                <li><a href="/eng/exhibitor/qna.do"><span>FAQ</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -208,7 +209,7 @@
                                 <li><a href="/eng/buyer/glance.do"><span>Korea at a Glance</span></a></li>
                                 <li><a href="/eng/buyer/marina.do"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="/eng/buyer/match.do"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
-                                <li><a href="/eng/buyer/qna.do"><span>QnA</span></a></li>
+                                <li><a href="/eng/buyer/qna.do"><span>FAQ</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -216,6 +217,7 @@
                             <ul class="dept2">
                                 <li><a href="/eng/board/notice.do"><span>Notice</span></a></li>
                                 <li><a href="/eng/board/kibstv.do"><span>KIBS Tube</span></a></li>
+                                <li><a href="/eng/board/gallery.do"><span>Gallery</span></a></li>
                                 <%--<li><a href="/eng/board/media.do"><span>KIBS in Media</span></a></li>--%>
                                 <%--<li><a href="/eng/board/newsletter.do"><span>Newsletter</span></a></li>--%>
                             </ul>

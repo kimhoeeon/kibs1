@@ -96,7 +96,7 @@ function searchPosts(pageNum) {
     };
 
     $.ajax({
-        url: '/online/company/selectList.do',
+        url: '/eng/online/company/selectList.do',
         method: 'post',
         data: JSON.stringify(jsonObj),
         contentType: 'application/json; charset=utf-8' //server charset 확인 필요
@@ -108,7 +108,7 @@ function searchPosts(pageNum) {
         $.each(results , function(i){
             let seq = results[i].seq;
             let id = results[i].id;
-            let companyNameKo = results[i].companyNameKo;
+            let companyNameEn = results[i].companyNameEn;
             let companyBadge = results[i].companyBadge;
             let year = results[i].transferYear;
             if(nvl(companyBadge,"") === ""){
@@ -141,7 +141,7 @@ function searchPosts(pageNum) {
                 str += '<img src="' + window.location.origin + '/img/icon_like.png" class="likeImg">';
             str += '</div>';*/
 
-            str += '<a href="/online/company_view.do?seq=' + seq + '">';
+            str += '<a href="/eng/online/company_view.do?seq=' + seq + '">';
                 str += '<div class="thumbnail">';
                     str += '<div class="thumb41 thumbBox">';
 
@@ -166,7 +166,7 @@ function searchPosts(pageNum) {
                     str += '</div>';
                 str += '</div>';
                 str += '<div class="name">';
-                    str += companyNameKo;
+                    str += companyNameEn;
                 str += '</div>';
                 str += '<div class="badge">';
                 if(nvl(companyBadge,'') !== ''){
@@ -186,7 +186,7 @@ function searchPosts(pageNum) {
                 }
                 str += '</div>';
                 str += '<button type="button" class="btnView">';
-                    str += year + ' 온라인전시관 바로가기';
+                    str += year + ' Go to Online Exhibition';
                 str += '</button>';
             str += '</a>';
             str += '</li>';
@@ -216,7 +216,7 @@ function searchPosts(pageNum) {
             emptyStr += '<li>';
                 emptyStr += '<div>';
                     emptyStr += '<p style="font-size: 18px; font-weight: bold;">';
-                        emptyStr += '조회된 결과가 없습니다.';
+                        emptyStr += 'No results have been searched.';
                     emptyStr += '</p>';
                 emptyStr += '</div>';
             emptyStr += '</li>';

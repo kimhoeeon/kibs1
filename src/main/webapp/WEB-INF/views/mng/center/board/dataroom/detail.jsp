@@ -2261,11 +2261,11 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제목</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">제목(국문)</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <input type="text" id="title" name="title" class="form-control form-control-lg form-control-solid-bg" placeholder="제목" value="${info.title}"/>
+                                                    <input type="text" id="title" name="title" class="form-control form-control-lg form-control-solid-bg" placeholder="제목(국문)" value="${info.title}"/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -2273,7 +2273,19 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">작성자</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제목(영문)</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <input type="text" id="titleEn" name="titleEn" class="form-control form-control-lg form-control-solid-bg" placeholder="제목(영문)" value="${info.titleEn}"/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">작성자</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
@@ -2285,11 +2297,14 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">작성일</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">작성일</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${info.writeDate}"/>
+                                                    <c:set var="now" value="<%=new java.util.Date()%>"/>
+                                                    <fmt:formatDate var="fmNow" value="${now}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                                    <c:set var="sysdate" value="${info.writeDate eq null or info.writeDate eq '' ? fmNow : info.writeDate}"/>
+                                                    <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${sysdate}"/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -2297,7 +2312,7 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">관리년도</label>
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">관리년도</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
@@ -2305,24 +2320,9 @@ if (document.documentElement) {
                                                     <select id="mngYear" name="mngYear" class="form-select form-select-solid" data-control="select2" aria-label="- 관리년도 -" data-placeholder="- 관리년도 -">
                                                         <option></option>
                                                         <option disabled>- 관리년도 -</option>
-                                                        <option value="2025" <c:if test="${info.mngYear eq '2025'}">selected</c:if> >2025</option>
-                                                        <option value="2024" <c:if test="${info.mngYear eq '2024'}">selected</c:if> >2024</option>
-                                                        <option value="2023" <c:if test="${info.mngYear eq '2023'}">selected</c:if> >2023</option>
-                                                        <option value="2022" <c:if test="${info.mngYear eq '2022'}">selected</c:if> >2022</option>
-                                                        <option value="2021" <c:if test="${info.mngYear eq '2021'}">selected</c:if> >2021</option>
-                                                        <option value="2020" <c:if test="${info.mngYear eq '2020'}">selected</c:if> >2020</option>
-                                                        <option value="2019" <c:if test="${info.mngYear eq '2019'}">selected</c:if> >2019</option>
-                                                        <option value="2018" <c:if test="${info.mngYear eq '2018'}">selected</c:if> >2018</option>
-                                                        <option value="2017" <c:if test="${info.mngYear eq '2017'}">selected</c:if> >2017</option>
-                                                        <option value="2016" <c:if test="${info.mngYear eq '2016'}">selected</c:if> >2016</option>
-                                                        <option value="2015" <c:if test="${info.mngYear eq '2015'}">selected</c:if> >2015</option>
-                                                        <option value="2014" <c:if test="${info.mngYear eq '2014'}">selected</c:if> >2014</option>
-                                                        <option value="2013" <c:if test="${info.mngYear eq '2013'}">selected</c:if> >2013</option>
-                                                        <option value="2012" <c:if test="${info.mngYear eq '2012'}">selected</c:if> >2012</option>
-                                                        <option value="2011" <c:if test="${info.mngYear eq '2011'}">selected</c:if> >2011</option>
-                                                        <option value="2010" <c:if test="${info.mngYear eq '2010'}">selected</c:if> >2010</option>
-                                                        <option value="2009" <c:if test="${info.mngYear eq '2009'}">selected</c:if> >2009</option>
-                                                        <option value="2008" <c:if test="${info.mngYear eq '2008'}">selected</c:if> >2008</option>
+                                                        <c:forEach var="year" begin="2008" end="2025">
+                                                            <option value="${year}" <c:if test="${info.mngYear eq year}">selected</c:if>>${year}</option>
+                                                        </c:forEach>
                                                     </select>
                                                     <!--end::Select2-->
                                                 </div>
@@ -2337,11 +2337,9 @@ if (document.documentElement) {
                                                 <!--begin::Col-->
                                                 <div class="col-lg-8 d-flex flex-wrap">
                                                     <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                        <input class="form-check-input form-control-solid-bg"
-                                                               type="checkbox" id="siteGbn" name="siteGbn"
+                                                        <input class="form-check-input form-control-solid-bg" type="checkbox" id="siteGbn" name="siteGbn"
                                                                <c:if test="${info.siteGbn eq '1'}">checked</c:if>/>
-                                                        <label class="form-check-label text-hover-primary"
-                                                               for="siteGbn">
+                                                        <label class="form-check-label text-hover-primary" for="siteGbn">
                                                             홈페이지에 보이기
                                                         </label>
                                                     </div>
@@ -2350,13 +2348,13 @@ if (document.documentElement) {
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="row mb-6 h-550px">
+                                            <div class="row mb-6 h-250px">
                                                 <!--begin::Label-->
                                                 <label class="col-lg-2 col-form-label fw-semibold fs-6">내용</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <div id="quill_editor_content" class="h-500px">${info.content}</div>
+                                                    <div id="quill_editor_content" class="h-200px">${info.content}</div>
                                                     <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true" />">
                                                 </div>
                                                 <!--end::Col-->
@@ -2415,7 +2413,7 @@ if (document.documentElement) {
                                 <!--begin::Basic info-->
                                 <div class="card mb-5 mb-xl-10">
                                     <!--begin::Actions-->
-                                    <div class="card-footer d-flex justify-content-between py-6 px-9">
+                                    <div class="card-footer d-flex justify-content-between py-6 px-9">ㅌ
                                         <div>
                                             <a href="/mng/center/board/dataroom.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
                                         </div>

@@ -259,7 +259,7 @@
                                 <li>
                                     <a href="/visitor/guide_off.do"><span>참관안내</span></a>
                                     <ul class="dept3">
-                                        <li><a href=""><span>온라인</span></a></li>
+                                        <li><a href="/online/company.do"><span>온라인</span></a></li>
                                         <li><a href="/visitor/guide_off.do"><span>오프라인</span></a></li>
                                     </ul>
                                 </li>

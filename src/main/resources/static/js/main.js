@@ -6758,8 +6758,8 @@ function f_ask_request(companyName, id){
     }
 
     Swal.fire({
-        title: '입력된 정보로 문의하시겠습니까?',
         icon: 'info',
+        title: '입력된 정보로 문의하시겠습니까?',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
@@ -6799,9 +6799,9 @@ function f_ask_request(companyName, id){
                 if (chargePersonCnt === smsSendResultCnt) {
 
                     Swal.fire({
+                        icon: 'info',
                         title: '문의하기',
                         html: '작성하신 내용으로 문의가 정상 접수되었습니다.<br>접수하신 연락처로 문의 답변 예정입니다.<br>감사합니다.',
-                        icon: 'info',
                         allowOutsideClick: false,
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: '확인'
@@ -6847,7 +6847,11 @@ function smsByteChk(content){
     remain.innerText = String(90 - getByte(temp_str));
     //남은 바이트수를 표시 하기
     if(remain.innerText < 0) {
-        alert("상담요청내용은 " + 90 + " Byte 를 초과할 수 없습니다.");
+        if(window.location.href.includes('/eng/')){
+            alert("Content cannot exceed " + 90 + " bytes.");
+        }else{
+            alert("상담요청내용은 " + 90 + " Byte 를 초과할 수 없습니다.");
+        }
 
         while(remain.innerText < 0) {
             temp_str = temp_str.substring(0, temp_str.length-1);

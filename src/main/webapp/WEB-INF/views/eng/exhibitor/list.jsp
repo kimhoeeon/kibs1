@@ -80,8 +80,8 @@
                             <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
                             <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
                             <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
-                            <a class="active" href="/eng/exhibitor/list.do">Exhibitor List</a>
-                            <a href="/eng/exhibitor/qna.do">QnA</a>
+                            <a class="active" href="/eng/online/company.do">Exhibitor List</a>
+                            <a href="/eng/exhibitor/qna.do">FAQ</a>
                         </div>
                     </div>
                 </div>

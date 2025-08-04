@@ -4504,18 +4504,22 @@ let KTAppCenterBoardDataroom = function () {
             'order': [[0, 'desc']],
             'columnDefs': [
                 {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
                     'targets': 2,
                     'render': function (data) {
                         if (data === '1') {
-                            return '홈페이지'
+                            return '<div class="badge badge-light-primary">노출</div>';
                         } else {
-                            return '-'
+                            return '<div class="badge badge-light-danger">미노출</div>';
                         }
                     }
                 },
                 {
-                    'targets': '_all',
-                    'className': 'text-center'
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderTitleEnCell(data, type, row); }
                 },
                 {
                     'targets': 9,
@@ -4530,13 +4534,24 @@ let KTAppCenterBoardDataroom = function () {
                 { data: 'siteGbn' },
                 { data: 'mngYear' },
                 { data: 'title' },
+                { data: 'titleEn' },
                 { data: 'writer' },
                 { data: 'writeDate' },
                 { data: 'finalRegiDttm' },
-                { data: 'viewCnt' },
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderTitleEnCell(data, type, row){
+        let renderHTML = '';
+        let titleEn = row.titleEn;
+        if(nvl(titleEn,'') !== ''){
+            renderHTML = titleEn;
+        }else{
+            renderHTML = '-';
+        }
+        return renderHTML;
     }
 
     function renderActionsCell(data, type, row){

@@ -17,6 +17,7 @@ public class GalleryDTO extends AbstractPagingRequestVo {
     String siteGbn; //사이트 분류
     Integer mngYear; //관리년도
     String title; //제목
+    String titleEn; //제목 영문
     String content; //내용
     String writer; //작성자
     String writeDate; //작성일

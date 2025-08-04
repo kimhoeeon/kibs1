@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
@@ -49,9 +51,9 @@
         <div class="inner">
             <div class="sub_top_box">
                 <div class="sub_top_nav">
-                    <span>Home</span><span>Exhibitors</span><span>FAQ</span>
+                    <span>Home</span><span>News</span><span>Gallery</span>
                 </div>
-                <div class="sub_top_tit">FAQ</div>
+                <div class="sub_top_tit">Gallery</div>
             </div>
         </div>
     </div>
@@ -64,24 +66,22 @@
                 <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">Exhibitors</div>
+                        <div class="tabOptAct">News</div>
                         <div class="tabOptSel">
                             <a href="/eng/guide/summary.do">KIBS 2026</a>
-                            <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
+                            <a href="/eng/exhibitor/categories.do">Exhibitors</a>
                             <a href="/eng/buyer/apply.do">Buyer</a>
-                            <a href="/eng/board/notice.do">News</a>
+                            <a class="active" href="/eng/board/notice.do">News</a>
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">FAQ</div>
+                        <div class="tabOptAct">Gallery</div>
                         <div class="tabOptSel">
-                            <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
-                            <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>">Exhibitor Registration</a>
-                            <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
-                            <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
-                            <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
-                            <a href="/eng/online/company.do">Exhibitor List</a>
-                            <a class="active" href="/eng/exhibitor/qna.do">FAQ</a>
+                            <a href="/eng/board/notice.do">Notice</a>
+                            <a href="/eng/board/kibstv.do">KIBS Tube</a>
+                            <a class="active" href="/eng/board/gallery.do">Gallery</a>
+                            <%--<a href="/eng/board/media.do">KIBS in Media</a>--%>
+                            <%--<a href="/eng/board/newsletter.do">Newsletter</a>--%>
                         </div>
                     </div>
                 </div>
@@ -90,22 +90,48 @@
     </div>
     <!-- section -->
 
+    <!-- section -->
+    <div class="year_tab padding_t">
+        <div class="inner">
+            <div class="year_tab_box">
+                <a class="cate active" data-value="전체" onclick="f_gallery_category_search(this, '전체')" style="cursor: pointer">ALL</a>
+                <a class="cate" data-value="2025" onclick="f_gallery_category_search(this, '2025')" style="cursor: pointer">2025</a>
+                <a class="cate" data-value="2024" onclick="f_gallery_category_search(this, '2024')" style="cursor: pointer">2024</a>
+                <a class="cate" data-value="2023" onclick="f_gallery_category_search(this, '2023')" style="cursor: pointer">2023</a>
+                <a class="cate" data-value="2022" onclick="f_gallery_category_search(this, '2022')" style="cursor: pointer">2022</a>
+                <a class="cate" data-value="2021" onclick="f_gallery_category_search(this, '2021')" style="cursor: pointer">2021</a>
+                <a class="cate" data-value="2019" onclick="f_gallery_category_search(this, '2019')" style="cursor: pointer">2019</a>
+                <a class="cate" data-value="2018" onclick="f_gallery_category_search(this, '2018')" style="cursor: pointer">2018</a>
+                <a class="cate" data-value="2017" onclick="f_gallery_category_search(this, '2017')" style="cursor: pointer">2017</a>
+                <a class="cate" data-value="2016" onclick="f_gallery_category_search(this, '2016')" style="cursor: pointer">2016</a>
+                <a class="cate" data-value="2015" onclick="f_gallery_category_search(this, '2015')" style="cursor: pointer">2015</a>
+                <a class="cate" data-value="2014" onclick="f_gallery_category_search(this, '2014')" style="cursor: pointer">2014</a>
+                <a class="cate" data-value="2013" onclick="f_gallery_category_search(this, '2013')" style="cursor: pointer">2013</a>
+                <a class="cate" data-value="2012" onclick="f_gallery_category_search(this, '2012')" style="cursor: pointer">2012</a>
+                <a class="cate" data-value="2011" onclick="f_gallery_category_search(this, '2011')" style="cursor: pointer">2011</a>
+                <a class="cate" data-value="2010" onclick="f_gallery_category_search(this, '2010')" style="cursor: pointer">2010</a>
+                <a class="cate" data-value="2009" onclick="f_gallery_category_search(this, '2009')" style="cursor: pointer">2009</a>
+                <a class="cate" data-value="2008" onclick="f_gallery_category_search(this, '2008')" style="cursor: pointer">2008</a>
+            </div>
+        </div>
+    </div>
+    <!-- //section -->
 
     <!-- section -->
-    <div class="board_search padding_t">
+    <div class="board_search">
         <div class="inner">
             <div class="search">
                 <form class="search_box" onsubmit="return false;">
                     <span class="select">
                         <select id="search_box">
-                            <option value="title" selected>title</option>
-                            <option value="content">content</option>
-                            <option value="all">title+content</option>
+                            <option value="titleEn" selected>TITLE</option>
+                            <%--<option value="content">내용</option>
+                            <option value="all">내용+제목</option>--%>
                         </select>
                     </span>
                     <span class="search">
-                        <input type="text" id="search_text" placeholder="Please enter a search term.">
-                        <button type="button" onclick="faqList(1)" style="cursor: pointer"></button>
+                        <input type="text" id="search_text" placeholder="Please enter a search.">
+                        <button type="button" onclick="galleryList(1, '전체')" style="cursor: pointer"></button>
                     </span>
                 </form>
             </div>
@@ -113,24 +139,26 @@
     </div>
     <!-- section -->
 
-
-    <!-- section -->
-    <div class="board_faq">
+    <div class="board_gallery padding_b">
         <div class="inner">
             <div class="sub_cont_tit" style="margin: 1% 1% 15px;">
-                <div class="small">Results : <span class="total" style="font-weight: bold; color: #1d5cad; font-size: 2rem;"></span></div>
+                <div class="small">Result : <span class="total" style="font-weight: bold; color: #1d5cad; font-size: 2rem;"></span></div>
             </div>
-            <ul class="box">
-                <%--<li>
-                    <div class="ask">행사장 안에서 음식물을 섭취해도 되나요?</div>
-                    <div class="answer">
-                        <p><img src="/img/sample_img.jpg" width="500px"></p>
-                        현재 코로나19로 인해 행사장 내부에서는 음식물 반입, 섭취가 금지됩니다.<br><br>
-                        <p><img src="/img/sample_img.jpg" width="500px"></p>
-                        대신 킨텍스 내부에는 식음료장이 있으므로, 이를 이용해주시면 됩니다.
-                    </div>
-                </li>--%>
-            </ul>
+            <div class="board_gallery_box">
+                <ul>
+                    <%--<li>
+                        <a href="#" class="viewGallery">
+                            <div class="thumb75 thumbBox">
+                                <img class="thumbImg" src="/img/sample_img.jpg">
+                            </div>
+                            <div class="txtBox">
+                                <div class="tit">갤러리 게시물 제목</div>
+                                <div class="date">2024.01.01</div>
+                            </div>
+                        </a>
+                    </li>--%>
+                </ul>
+            </div>
 
             <div class="paging">
                 <span class="first" id="first_page"><a><img src="/img/btn_first.gif" style="cursor: pointer"></a></span>
@@ -149,10 +177,39 @@
         </div>
     </div>
 
+
+</div>
+
+<div class="popGallery popup">
+    <div class="popup_inner">
+        <div class="popup_wrap">
+            <div class="pop_tit">
+                <div class="tit"></div>
+                <a class="close" href="#close"><img src="/img/close_w.png"></a>
+            </div>
+            <div class="pop_box">
+                <div class="pop_cont">
+                    <!-- 슬라이드박스 -->
+                    <div class="swiper_box">
+                        <div class="swiper swiper_gallery">
+                            <ul class="swiper-wrapper">
+                                <%--<li class="swiper-slide thumb75 thumbBox">
+                                    <img class="thumbImg" src="/img/thumb_exh_img_01.jpg">
+                                </li>--%>
+                            </ul>
+                        </div>
+                        <div class="swiper-button-prev swiper_gallery_prev"></div>
+                        <div class="swiper-button-next swiper_gallery_next"></div>
+                    </div>
+                    <!-- //슬라이드박스 -->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-<script src="/js/front/faq.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/front/gallery.js?ver=<%=System.currentTimeMillis()%>"></script>
 </body>
 </html>

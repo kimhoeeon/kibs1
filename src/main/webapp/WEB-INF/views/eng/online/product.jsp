@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
@@ -45,13 +47,11 @@
 <div id="container">
 
     <!-- section -->
-    <div class="sub_top">
+    <div class="sub_online_top online_prd_top">
         <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>Home</span><span>Exhibitors</span><span>FAQ</span>
-                </div>
-                <div class="sub_top_tit">FAQ</div>
+            <div class="online_top_tit">
+                <div class="big">Product List</div>
+                <div class="small">Choose a category or search to find the product you're interested in easily</div>
             </div>
         </div>
     </div>
@@ -73,15 +73,15 @@
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">FAQ</div>
+                        <div class="tabOptAct">Exhibitor List</div>
                         <div class="tabOptSel">
                             <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
                             <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>">Exhibitor Registration</a>
                             <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
                             <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
                             <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
-                            <a href="/eng/online/company.do">Exhibitor List</a>
-                            <a class="active" href="/eng/exhibitor/qna.do">FAQ</a>
+                            <a class="active" href="/eng/online/company.do">Exhibitor List</a>
+                            <a href="/eng/exhibitor/qna.do">FAQ</a>
                         </div>
                     </div>
                 </div>
@@ -90,48 +90,81 @@
     </div>
     <!-- section -->
 
-
     <!-- section -->
-    <div class="board_search padding_t">
+    <script src="/js/product.js"></script>
+    <div class="prd_search">
         <div class="inner">
-            <div class="search">
-                <form class="search_box" onsubmit="return false;">
-                    <span class="select">
-                        <select id="search_box">
-                            <option value="title" selected>title</option>
-                            <option value="content">content</option>
-                            <option value="all">title+content</option>
-                        </select>
-                    </span>
-                    <span class="search">
-                        <input type="text" id="search_text" placeholder="Please enter a search term.">
-                        <button type="button" onclick="faqList(1)" style="cursor: pointer"></button>
-                    </span>
-                </form>
+            <div class="sec_box">
+                <div class="prd_sh_select">
+                    <select name="productOptionBig" id="productOptionBig"></select>
+                    <select name="productOptionSmall" id="productOptionSmall"></select>
+                    <!-- 240103 추가 -->
+                    <div class="input_box">
+                        <span class="select">
+                            <select id="searchCondition">
+                                <option value="productName">제품명</option>
+                                <option value="companyName">참가기업명</option>
+                            </select>
+                        </span>
+                        <span class="input">
+                            <input type="text" id="searchText" placeholder="검색어를 입력해 주세요.">
+                        </span>
+                    </div>
+                    <!-- //240103 추가 -->
+                </div>
+                <div class="prd_sh_slider">
+                    <div class="slider">
+                        <div class="gubun">전장(m)</div>
+                        <div id="prdLength" class="slider-range"></div>
+                        <input type="text" id="prdLengthAmount" class="amount" disabled>
+                    </div>
+                    <div class="slider">
+                        <div class="gubun">마력</div>
+                        <div id="prdHp" class="slider-range"></div>
+                        <input type="text" id="prdHpAmount" class="amount" disabled>
+                    </div>
+                </div>
+                <div class="prd_sh_btn">
+                    <a href="javascript:onlineProductList(1)">검색하기</a>
+                </div>
             </div>
         </div>
     </div>
-    <!-- section -->
+    <!-- //section -->
 
 
     <!-- section -->
-    <div class="board_faq">
+    <div class="prd_item padding_tb" id="page-anchor">
         <div class="inner">
             <div class="sub_cont_tit" style="margin: 1% 1% 15px;">
-                <div class="small">Results : <span class="total" style="font-weight: bold; color: #1d5cad; font-size: 2rem;"></span></div>
+                <div class="small">제품 검색 결과 : <span class="total" style="font-weight: bold; color: #1d5cad; font-size: 2rem;"></span> 개 제품</div>
             </div>
-            <ul class="box">
-                <%--<li>
-                    <div class="ask">행사장 안에서 음식물을 섭취해도 되나요?</div>
-                    <div class="answer">
-                        <p><img src="/img/sample_img.jpg" width="500px"></p>
-                        현재 코로나19로 인해 행사장 내부에서는 음식물 반입, 섭취가 금지됩니다.<br><br>
-                        <p><img src="/img/sample_img.jpg" width="500px"></p>
-                        대신 킨텍스 내부에는 식음료장이 있으므로, 이를 이용해주시면 됩니다.
-                    </div>
-                </li>--%>
-            </ul>
-
+            <div class="prd_item_box">
+                <ul class="prdList">
+                    <%--<li>
+                        <div class="btnLike">
+                            <img src="/img/icon_like.png" class="likeImg">
+                        </div>
+                        <a href="/online/product_view.do">
+                            <div class="thumbnail">
+                                <div class="thumb75 thumbBox">
+                                    <img src="/img/thumb_exh_img_01.jpg" class="thumbImg">
+                                </div>
+                                <div class="thumbLogo">
+                                    <p>
+                                        <img src="/img/thumb_exh_logo_01.jpg">
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="prdTxt">
+                                <div class="name">현대요트주식회사</div>
+                                <div class="prdName">바바리아 VIDA33</div>
+                                <div class="type">요트·보트 > 파워보트</div>
+                            </div>
+                        </a>
+                    </li>--%>
+                </ul>
+            </div>
             <div class="paging">
                 <span class="first" id="first_page"><a><img src="/img/btn_first.gif" style="cursor: pointer"></a></span>
                 <span class="prev" id="prev_page"><a><img src="/img/btn_prev.gif" style="cursor: pointer"></a></span>
@@ -148,11 +181,46 @@
             </div>
         </div>
     </div>
+    <!-- //section -->
 
 </div>
 
 <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-<script src="/js/front/faq.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script>
+    $(function(){
+        let productOptionInfo = '${productOptionInfo}';
+
+        if(nvl(productOptionInfo,"") !== ""){
+            let productNameKo = '${productOptionInfo.productNameKo}';
+            $('#searchText').val(productNameKo);
+
+            /*let productOptionBig = '${productOptionInfo.productOptionBig}';
+            let productOptionSmall = '${productOptionInfo.productOptionSmall}';
+            let productWidthMin = '${productOptionInfo.productWidthMin}';
+            let productWidthMax = '${productOptionInfo.productWidthMax}';
+            let productHorsePowerMin = '${productOptionInfo.productHorsePowerMin}';
+            let productHorsePowerMax = '${productOptionInfo.productHorsePowerMax}';
+
+            $('#productOptionBig').val(productOptionBig).trigger('change');
+            $('#productOptionSmall').val(productOptionSmall);
+            let prdLengthValues = [productWidthMin, productWidthMax];
+            $("#prdLengthAmount").val(prdLengthValues[0] + ' - ' + prdLengthValues[1]);
+            $("#prdLength").slider("values", prdLengthValues);
+            let prdHpValues = [productHorsePowerMin, productHorsePowerMax];
+            $("#prdHpAmount").val(prdHpValues[0] + ' - ' + prdHpValues[1]);
+            $("#prdHp").slider("values", prdHpValues);*/
+        }
+
+        document.addEventListener("keyup", function(event) {
+            if (event.key === 'Enter') {
+                onlineProductList(1);
+            }
+        });
+    });
+</script>
+
+<script src="/js/front/product.js?ver=<%=System.currentTimeMillis()%>"></script>
+
 </body>
 </html>

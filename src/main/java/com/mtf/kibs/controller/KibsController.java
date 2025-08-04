@@ -945,13 +945,13 @@ public class KibsController {
 
     @RequestMapping(value = "/board/gallery/selectList.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<List<GalleryDTO>> board_gallery_selectList(@RequestBody SearchDTO searchDTO) {
+    public ResponseEntity<List<DataroomDTO>> board_gallery_selectList(@RequestBody SearchDTO searchDTO) {
         System.out.println("KibsController > board_gallery_selectList");
         //System.out.println(searchDTO.toString());
 
-        List<GalleryDTO> responseList = kibsService.processSelectGalleryList(searchDTO);
+        List<DataroomDTO> responseList = kibsService.processSelectGalleryList(searchDTO);
 
-        for(GalleryDTO response : responseList){
+        for(DataroomDTO response : responseList){
             List<String> fullFilePathList = new ArrayList<>();
             List<FileDTO> fileList = kibsService.processSelectFileList(response.getId());
             for(FileDTO file : fileList){
@@ -2711,6 +2711,14 @@ public class KibsController {
         return mv;
     }
 
+    @RequestMapping(value = "/eng/board/gallery.do", method = RequestMethod.GET)
+    public ModelAndView eng_board_gallery() {
+        System.out.println("KibsController > eng_board_gallery");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/eng/board/gallery");
+        return mv;
+    }
+
     @RequestMapping(value = "/eng/board/newsletter.do", method = RequestMethod.GET)
     public ModelAndView eng_board_newsletter() {
         System.out.println("KibsController > eng_board_newsletter");
@@ -2875,6 +2883,245 @@ public class KibsController {
         System.out.println("KibsController > eng_mypage_total");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/total");
+        return mv;
+    }
+
+    //***************************************************************************
+    // Online
+    //***************************************************************************
+
+    @RequestMapping(value = "/eng/online/company.do", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView eng_online_company(HttpServletRequest request, String companyNameEn) {
+        System.out.println("KibsController > eng_online_company");
+        ModelAndView mv = new ModelAndView();
+        if("POST".equals(request.getMethod())){
+            mv.addObject("companyNameEn", companyNameEn);
+        }
+        mv.setViewName("/eng/online/company");
+        return mv;
+    }
+
+    @RequestMapping(value = "/eng/online/company/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<MainOnlineDTO>> eng_online_company_selectList(@RequestBody MainOnlineDTO mainOnlineDTO) {
+        System.out.println("KibsController > eng_online_company_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<MainOnlineDTO> responseDTO = kibsService.processSelectEnOnlineListPaging(mainOnlineDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/eng/online/company_view.do", method = RequestMethod.GET)
+    public ModelAndView eng_online_company_view(String seq) {
+        System.out.println("KibsController > eng_online_company_view");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !seq.isEmpty()) {
+            if (seq.contains("EN")) {
+                mv.addObject("gbn", "EN");
+
+                ExhibitorNewDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorNewInfo(seq);
+                mv.addObject("exhibitorInfo", exhibitorInfo);
+
+                List<ProductNewDTO> productList = kibsService.processSelectProductNewInfoList(seq);
+                mv.addObject("productList", productList);
+
+                List<OnlineNewDTO> onlineList = kibsService.processSelectOnlineNewInfoList(seq);
+                mv.addObject("onlineList", onlineList);
+            } else {
+                mv.addObject("gbn", "E");
+
+                ExhibitorDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorInfo(seq);
+                mv.addObject("exhibitorInfo", exhibitorInfo);
+
+                List<OnlineDTO> onlineList = kibsService.processSelectOnlineInfoList(seq);
+                mv.addObject("onlineList", onlineList);
+            }
+
+            List<FileDTO> fileList = kibsService.processSelectFileList(seq);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/eng/online/company_view");
+        return mv;
+    }
+
+    @RequestMapping(value = "/eng/online/product.do", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView eng_online_product(HttpServletRequest request, OnlineRelatedDTO onlineRelatedDTO) {
+        System.out.println("KibsController > eng_online_product");
+        //System.out.println(onlineRelatedDTO.toString());
+
+        ModelAndView mv = new ModelAndView();
+        if("POST".equals(request.getMethod())){
+            mv.addObject("productOptionInfo", onlineRelatedDTO);
+        }
+        mv.setViewName("/eng/online/product");
+        return mv;
+    }
+
+    @RequestMapping(value = "/eng/online/product/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> eng_online_product_selectList(@RequestBody OnlineRelatedDTO onlineRelatedDTO) {
+        System.out.println("KibsController > eng_online_product_selectList");
+        //System.out.println(onlineRelatedDTO.toString());
+
+        //List<FileDTO> productFileList = new ArrayList<>();
+        List<OnlineRelatedDTO> relatedItemList = kibsService.processSelectOnlineProductListPaging(onlineRelatedDTO);
+        for (OnlineRelatedDTO relatedDTO : relatedItemList) {
+            FileDTO relatedItemFileRequestDto = new FileDTO();
+            relatedItemFileRequestDto.setUserId(relatedDTO.getId());
+            relatedItemFileRequestDto.setNote(relatedDTO.getNote());
+
+            List<FileDTO> productFileResponseDto = kibsService.processSelectProductFileInfo(relatedItemFileRequestDto);
+            if (productFileResponseDto != null && !productFileResponseDto.isEmpty()) {
+                relatedDTO.setProductFullFilePath(productFileResponseDto.get(0).getFullFilePath());
+            }
+
+            FileDTO logoFileResponseDto = kibsService.processSelectLogoFileInfo(relatedItemFileRequestDto);
+            if (logoFileResponseDto != null) {
+                relatedDTO.setLogoFullFilePath(logoFileResponseDto.getFullFilePath());
+            }
+
+            //productFileList.add(relatedItemFileResponseDto);
+        }
+
+        Gson gson = new Gson();
+        JsonElement relatedItemListElement = gson.toJsonTree(relatedItemList, new TypeToken<List<OnlineRelatedDTO>>() {}.getType());
+        JsonArray relatedItemListJsonArray = relatedItemListElement.getAsJsonArray();
+        //JsonElement productFileListElement = gson.toJsonTree(productFileList, new TypeToken<List<FileDTO>>() {}.getType());
+        //JsonArray productFileListJsonArray = productFileListElement.getAsJsonArray();
+
+        JsonObject responseJson = new JsonObject();
+        responseJson.add("relatedItemList", relatedItemListJsonArray);
+        //responseJson.add("productFileList", productFileListJsonArray);
+
+        return new ResponseEntity<>(responseJson.toString(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/eng/online/product_view.do", method = RequestMethod.GET)
+    public ModelAndView eng_online_product_view(String seq) {
+        System.out.println("KibsController > eng_online_product_view");
+        //System.out.println(seq);
+        ModelAndView mv = new ModelAndView();
+        if (seq != null && !seq.isEmpty()) {
+            if(seq.contains("PN")){
+                mv.addObject("gbn", "PN");
+
+                ProductNewDTO productInfo = kibsService.processSelectProductNewInfo(seq);
+                mv.addObject("productInfo", productInfo);
+
+                if (productInfo != null) {
+                    String exSeq = productInfo.getExSeq();
+                    List<FileDTO> fileList = kibsService.processSelectFileList(exSeq);
+                    mv.addObject("fileList", fileList);
+
+                    ExhibitorNewDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorNewInfo(exSeq);
+                    mv.addObject("exhibitorInfo", exhibitorInfo);
+
+                    /* 같은 회사 제품 */
+                    List<ProductNewDTO> productItemList = kibsService.processSelectProductNewInfoList(exSeq);
+                    mv.addObject("productItemList", productItemList);
+
+                    List<OnlineNewDTO> onlineItemList = kibsService.processSelectOnlineNewInfoList(exSeq);
+                    mv.addObject("onlineItemList", onlineItemList);
+
+                    /* 관련 제품 */
+                    OnlineDTO relatedRequestDto = new OnlineDTO();
+                    relatedRequestDto.setProductOptionBig(productInfo.getProductOptionBig());
+                    relatedRequestDto.setProductOptionSmall(productInfo.getProductOptionSmall());
+                    relatedRequestDto.setId(productInfo.getExSeq());
+                    List<List<FileDTO>> productFileList = new ArrayList<>();
+                    List<OnlineRelatedDTO> relatedItemList = kibsService.processSelectOnlineRelatedList(relatedRequestDto);
+                    for (OnlineRelatedDTO onlineRelatedDTO : relatedItemList) {
+                        FileDTO relatedItemFileRequestDto = new FileDTO();
+                        relatedItemFileRequestDto.setUserId(onlineRelatedDTO.getId());
+                        relatedItemFileRequestDto.setNote(onlineRelatedDTO.getNote());
+                        List<FileDTO> relatedItemFileResponseList = kibsService.processSelectProductFileInfo(relatedItemFileRequestDto);
+                        productFileList.add(relatedItemFileResponseList);
+                    }
+                    mv.addObject("relatedItemList", relatedItemList);
+                    mv.addObject("relatedItemFileList", productFileList);
+                }
+            } else if (seq.contains("ON")) {
+
+                mv.addObject("gbn", "ON");
+
+                OnlineNewDTO onlineInfo = kibsService.processSelectOnlineNewInfo(seq);
+                mv.addObject("onlineInfo", onlineInfo);
+
+                if (onlineInfo != null) {
+                    String id = onlineInfo.getExSeq();
+                    List<FileDTO> fileList = kibsService.processSelectFileList(id);
+                    mv.addObject("fileList", fileList);
+
+                    ExhibitorNewDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorNewInfo(id);
+                    mv.addObject("exhibitorInfo", exhibitorInfo);
+
+                    /* 같은 회사 제품 */
+                    List<ProductNewDTO> productItemList = kibsService.processSelectProductNewInfoList(id);
+                    mv.addObject("productItemList", productItemList);
+
+                    List<OnlineNewDTO> onlineItemList = kibsService.processSelectOnlineNewInfoList(id);
+                    mv.addObject("onlineItemList", onlineItemList);
+
+                    /* 관련 제품 */
+                    OnlineDTO relatedRequestDto = new OnlineDTO();
+                    relatedRequestDto.setProductOptionBig(onlineInfo.getOnlineOptionBig());
+                    relatedRequestDto.setProductOptionSmall(onlineInfo.getOnlineOptionSmall());
+                    relatedRequestDto.setId(onlineInfo.getExSeq());
+                    List<List<FileDTO>> productFileList = new ArrayList<>();
+                    List<OnlineRelatedDTO> relatedItemList = kibsService.processSelectOnlineRelatedList(relatedRequestDto);
+                    for (OnlineRelatedDTO onlineRelatedDTO : relatedItemList) {
+                        FileDTO relatedItemFileRequestDto = new FileDTO();
+                        relatedItemFileRequestDto.setUserId(onlineRelatedDTO.getId());
+                        relatedItemFileRequestDto.setNote(onlineRelatedDTO.getNote());
+                        List<FileDTO> relatedItemFileResponseList = kibsService.processSelectProductFileInfo(relatedItemFileRequestDto);
+                        productFileList.add(relatedItemFileResponseList);
+                    }
+                    mv.addObject("relatedItemList", relatedItemList);
+                    mv.addObject("relatedItemFileList", productFileList);
+                }
+            } else {
+
+                mv.addObject("gbn", "O");
+
+                OnlineDTO onlineInfo = kibsService.processSelectOnlineInfo(seq);
+                mv.addObject("onlineInfo", onlineInfo);
+
+                if (onlineInfo != null) {
+                    String id = onlineInfo.getId();
+                    List<FileDTO> fileList = kibsService.processSelectFileList(id);
+                    mv.addObject("fileList", fileList);
+
+                    ExhibitorDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorInfo(id);
+                    mv.addObject("exhibitorInfo", exhibitorInfo);
+
+                    /* 같은 회사 제품 */
+                    List<OnlineDTO> onlineItemList = kibsService.processSelectOnlineInfoList(id);
+                    mv.addObject("onlineItemList", onlineItemList);
+
+                    /* 관련 제품 */
+                    OnlineDTO relatedRequestDto = new OnlineDTO();
+                    relatedRequestDto.setProductOptionBig(onlineInfo.getProductOptionBig());
+                    relatedRequestDto.setProductOptionSmall(onlineInfo.getProductOptionSmall());
+                    relatedRequestDto.setId(onlineInfo.getId());
+                    List<List<FileDTO>> productFileList = new ArrayList<>();
+                    List<OnlineRelatedDTO> relatedItemList = kibsService.processSelectOnlineRelatedList(relatedRequestDto);
+                    for (OnlineRelatedDTO onlineRelatedDTO : relatedItemList) {
+                        FileDTO relatedItemFileRequestDto = new FileDTO();
+                        relatedItemFileRequestDto.setUserId(onlineRelatedDTO.getId());
+                        relatedItemFileRequestDto.setNote(onlineRelatedDTO.getNote());
+                        List<FileDTO> relatedItemFileResponseList = kibsService.processSelectProductFileInfo(relatedItemFileRequestDto);
+                        productFileList.add(relatedItemFileResponseList);
+                    }
+                    mv.addObject("relatedItemList", relatedItemList);
+                    mv.addObject("relatedItemFileList", productFileList);
+                }
+            }
+        }
+
+        mv.setViewName("/eng/online/product_view");
         return mv;
     }
 

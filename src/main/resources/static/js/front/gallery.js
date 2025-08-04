@@ -13,6 +13,7 @@ const showPageCnt = 10; // 화면에 보일 페이지 번호 개수
 
 /**
  * @param pageNum 출력 페이지 번호
+ * @param mngYearValue
  * */
 function galleryList(pageNum, mngYearValue) {
     // 데이터 조회
@@ -88,11 +89,11 @@ function searchPosts(pageNum, mngYearValue) {
     let condition = $('#search_box option:selected').val();
 
     let jsonObj = {
-        "pageNum": start,
-        "rows": countPerPage,
-        "mngYear": mngYearValue,
-        "condition": condition,
-        "searchText": searchText
+        pageNum: start,
+        rows: countPerPage,
+        mngYear: mngYearValue,
+        condition: condition,
+        searchText: searchText
     };
 
     $.ajax({
@@ -109,6 +110,7 @@ function searchPosts(pageNum, mngYearValue) {
         $.each(results , function(i){
             let id = results[i].id;
             let title = results[i].title;
+            let titleEn = results[i].titleEn;
             let writeDate = results[i].writeDate;
             writeDate = writeDate.split(' ')[0].replaceAll('-','.');
 
@@ -135,7 +137,11 @@ function searchPosts(pageNum, mngYearValue) {
                     str += '</div>';
                     str += '<div class="txtBox">';
                         str += '<div class="tit">';
-                            str += title;
+                            if(lang === 'KO'){
+                                str += title;
+                            }else{
+                                str += nvl(titleEn, title);
+                            }
                         str += '</div>';
                         str += '<div class="date">';
                             str += writeDate;
@@ -162,9 +168,9 @@ function searchPosts(pageNum, mngYearValue) {
             $('.paging ol').empty(); // 페이징 번호 없애기
             let emptyStr = '';
             emptyStr += '<li>';
-            emptyStr += '<div>';
-            emptyStr += '해당 조건으로 검색된 자료가 없습니다.';
-            emptyStr += '</div>';
+                emptyStr += '<div>';
+                    emptyStr += '해당 조건으로 검색된 자료가 없습니다.';
+                emptyStr += '</div>';
             emptyStr += '</li>';
             $('.board_gallery_box ul').html(emptyStr);
         }

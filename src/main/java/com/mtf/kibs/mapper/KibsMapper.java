@@ -104,6 +104,8 @@ public interface KibsMapper {
 
     List<MainOnlineDTO> selectOnlineList(String transferYear);
 
+    List<MainOnlineDTO> selectEnOnlineListPaging(MainOnlineDTO mainOnlineDTO);
+
     List<MainOnlineDTO> selectOnlineListPaging(MainOnlineDTO mainOnlineDTO);
 
     ExhibitorDTO selectOnlineExhibitorInfo(String seq);
@@ -160,7 +162,7 @@ public interface KibsMapper {
 
     List<KibstvDTO> selectKibstvList(SearchDTO searchDTO);
 
-    List<GalleryDTO> selectGalleryList(SearchDTO searchDTO);
+    List<DataroomDTO> selectGalleryList(SearchDTO searchDTO);
 
     List<NoticeDTO> selectMainNoticeList(String lang);
 

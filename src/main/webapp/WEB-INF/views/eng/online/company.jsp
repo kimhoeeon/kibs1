@@ -34,20 +34,11 @@
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
-    <title>2026 경기국제보트쇼</title>
+    <title>2026 KIBS</title>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
-
-    <span itemscope="" itemtype="http://schema.org/Organization">
-        <link itemprop="url" href="https://kibs.com/">
-        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-        <a itemprop="sameAs" href="https://kibs-online.com"></a>
-        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
-    </span>
 </head>
 
 <body>
@@ -60,8 +51,8 @@
         <div class="sub_online_top online_exh_top">
             <div class="inner">
                 <div class="online_top_tit">
-                    <div class="big">참가기업 보기</div>
-                    <div class="small">온라인 전시관에 등록된 업체를 한 눈에 살펴볼 수 있습니다</div>
+                    <div class="big">Exhibitors List</div>
+                    <div class="small">You can see the companies registered in the online exhibition hall at a glance.</div>
                 </div>
             </div>
         </div>
@@ -71,23 +62,27 @@
         <div class="sub_tab">
             <div class="inner">
                 <div class="sub_tab_box">
-                    <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
+                    <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                     <div class="optionBox">
                         <div class="tabOpt1 tabOption">
-                            <div class="tabOptAct">온라인 전시관</div>
+                            <div class="tabOptAct">Exhibitors</div>
                             <div class="tabOptSel">
-                                <a href="/guide/summary.do">KIBS 안내</a>
-                                <a href="/exhibitor/guide.do">참가기업</a>
-                                <a href="/visitor/guide_off.do">참관객</a>
-                                <a href="/guide/notice.do">미디어센터</a>
-                                <a class="active" href="/online/kibstv.do">온라인 전시관</a>
+                                <a href="/eng/guide/summary.do">KIBS 2026</a>
+                                <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
+                                <a href="/eng/buyer/apply.do">Buyer</a>
+                                <a href="/eng/board/notice.do">News</a>
                             </div>
                         </div>
                         <div class="tabOpt2 tabOption">
-                            <div class="tabOptAct">참가기업 미리보기</div>
-                            <div class="tabOptSel" style="background: #fff;">
-                                <a class="active" href="/online/company.do">참가기업 미리보기</a>
-                                <a href="/online/product.do">제품 검색하기</a>
+                            <div class="tabOptAct">Exhibitor List</div>
+                            <div class="tabOptSel">
+                                <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                                <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>">Exhibitor Registration</a>
+                                <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
+                                <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                                <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
+                                <a class="active" href="/eng/online/company.do">Exhibitor List</a>
+                                <a href="/eng/exhibitor/qna.do">FAQ</a>
                             </div>
                         </div>
                     </div>
@@ -103,42 +98,42 @@
                 <div class="sec_box">
                     <div class="exh_sh_select">
                         <select id="productOptionBig">
-                            <option value="">전체보기</option>
-                            <option value="보트&요트">보트&요트</option>
-                            <option value="무동력보트">무동력보트</option>
-                            <option value="워크보트">워크보트</option>
-                            <option value="부품&장비">부품&장비</option>
-                            <option value="안전&마리나">안전&마리나</option>
-                            <option value="해양관광">해양관광</option>
-                            <option value="해양레저">해양레저</option>
-                            <option value="수중레저">수중레저</option>
-                            <option value="서핑">서핑</option>
+                            <option value="">ALL</option>
+                            <option value="보트&요트">Boat & Yacht</option>
+                            <option value="무동력보트">Paddling Boat</option>
+                            <option value="워크보트">Work Boat</option>
+                            <option value="부품&장비">Marine Equipment</option>
+                            <option value="안전&마리나">Safety & Marina</option>
+                            <option value="해양관광">Marine Tourism</option>
+                            <option value="해양레저">Marine Leisure</option>
+                            <option value="수중레저">Water Sports</option>
+                            <option value="서핑">Surfing</option>
                         </select>
                         <div class="badge_box">
-                            <div class="txt">뱃지 선택</div>
+                            <div class="txt">Badge</div>
                             <ul class="badge_list">
                                 <%--<li>
                                     <label><input type="checkbox" name="companyBadge"><img src="/img/exh_badge1.png">2023 보트쇼 참가</label>
                                 </li>--%>
-                                <li><label><input type="checkbox" name="companyBadge" value="보트쇼 3회 이상 참가"><img src="/img/exh_badge2.png">보트쇼 3회 이상 참가</label>
+                                <li><label><input type="checkbox" name="companyBadge" value="보트쇼 3회 이상 참가"><img src="/img/exh_badge2.png">Participation more than 3 times</label>
                                 </li>
-                                <li><label><input type="checkbox" name="companyBadge" value="보트쇼와 제작한 영상"><img src="/img/exh_badge3.png">보트쇼와 제작한 영상</label>
+                                <li><label><input type="checkbox" name="companyBadge" value="보트쇼와 제작한 영상"><img src="/img/exh_badge3.png">Video produced with the boat show</label>
                                 </li>
-                                <li><label><input type="checkbox" name="companyBadge" value="올해의 제품상 수상"><img src="/img/exh_badge4.png">올해의 제품상 수상</label>
+                                <li><label><input type="checkbox" name="companyBadge" value="올해의 제품상 수상"><img src="/img/exh_badge4.png">Product of the Year Award</label>
                                 </li>
-                                <li><label><input type="checkbox" name="companyBadge" value="제품 등록 우수"><img src="/img/exh_badge5.png">제품 등록 우수</label>
+                                <li><label><input type="checkbox" name="companyBadge" value="제품 등록 우수"><img src="/img/exh_badge5.png">Excellent product</label>
                                 </li>
                             </ul>
                         </div>
                         <!-- 240103 추가 -->
                         <div class="input_box">
-                            <input type="text" id="searchText" placeholder="참가기업명 입력">
+                            <input type="text" id="searchText" placeholder="Company Name">
                         </div>
                         <!-- //240103 추가 -->
                     </div>
 
                     <div class="exh_sh_btn">
-                        <a href="javascript:onlineExhibitorList(1);">검색하기</a>
+                        <a href="javascript:onlineExhibitorList(1);">Search</a>
                     </div>
                 </div>
             </div>
@@ -150,7 +145,7 @@
         <div class="exh_item padding_tb" id="page-anchor">
             <div class="inner">
                 <div class="sub_cont_tit" style="margin: 1% 1% 15px;">
-                    <div class="small">업체 검색 결과 : <span class="total" style="font-weight: bold; color: #1d5cad; font-size: 2rem;"></span> 개 업체</div>
+                    <div class="small">Result : <span class="total" style="font-weight: bold; color: #1d5cad; font-size: 2rem;"></span> Company</div>
                 </div>
                 <div class="exh_item_box">
                     <ul class="exhList">
@@ -208,9 +203,9 @@
 
     <script>
         $(function(){
-            let companyNameKo = '${companyNameKo}';
-            if(nvl(companyNameKo,'') !== ''){
-                $('#searchText').val(companyNameKo);
+            let companyNameEn = '${companyNameEn}';
+            if(nvl(companyNameEn,'') !== ''){
+                $('#searchText').val(companyNameEn);
             }
 
             document.addEventListener("keyup", function(event) {
@@ -221,7 +216,7 @@
         })
     </script>
 
-    <script src="/js/front/online.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/front/eng/online.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

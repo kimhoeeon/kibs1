@@ -49,9 +49,9 @@
         <div class="inner">
             <div class="sub_top_box">
                 <div class="sub_top_nav">
-                    <span>Home</span><span>Buyer</span><span>QnA</span>
+                    <span>Home</span><span>Buyer</span><span>FAQ</span>
                 </div>
-                <div class="sub_top_tit">QnA</div>
+                <div class="sub_top_tit">FAQ</div>
             </div>
         </div>
     </div>
@@ -73,14 +73,14 @@
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">QnA</div>
+                        <div class="tabOptAct">FAQ</div>
                         <div class="tabOptSel">
                             <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor guide</a>
                             <a href="/eng/buyer/apply.do">Pre-registration</a>
                             <a href="/eng/buyer/glance.do">Korea at a Glance</a>
                             <a href="/eng/buyer/marina.do">Marine Industry in korea</a>
                             <a href="/eng/buyer/match.do">Exhibitor-Buyer Matchmaking Program</a>
-                            <a class="active" href="/eng/buyer/qna.do">QnA</a>
+                            <a class="active" href="/eng/buyer/qna.do">FAQ</a>
                         </div>
                     </div>
                 </div>

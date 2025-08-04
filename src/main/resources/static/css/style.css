@@ -2037,6 +2037,7 @@ label:last-child {
     width: 100%;
     font-size: 1.8rem;
     padding: 15px 30px 15px 15px;
+    height: 55px;
 }
 
 .exh_sh_select .badge_box {

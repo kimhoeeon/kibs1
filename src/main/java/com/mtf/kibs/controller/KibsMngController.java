@@ -3130,7 +3130,7 @@ public class KibsMngController {
             DataroomDTO resInfo = kibsMngService.processSelectDataroomSingle(requestDto);
             mv.addObject("info",resInfo);
 
-            if(resInfo.getFileIdList() != null && !"".equals(resInfo.getFileIdList())){
+            if(resInfo.getFileIdList() != null && !resInfo.getFileIdList().isEmpty()){
                 String[] fileIdList = resInfo.getFileIdList().split(",");
                 List<FileDTO> fileList = new ArrayList<>();
                 for (String id : fileIdList) {

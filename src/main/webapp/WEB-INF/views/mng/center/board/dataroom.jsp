@@ -2321,13 +2321,13 @@ if (document.documentElement) {
                                                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th class="text-center">ID</th>
-                                                    <th class="text-center min-w-75px">사이트분류</th>
+                                                    <th class="text-center min-w-75px">노출구분</th>
                                                     <th class="text-center min-w-50px">연도</th>
                                                     <th class="text-center min-w-300px">제목</th>
+                                                    <th class="text-center min-w-300px">제목(영문)</th>
                                                     <th class="text-center min-w-125px">작성자</th>
                                                     <th class="text-center min-w-150px">등록일시</th>
                                                     <th class="text-center min-w-150px">수정일시</th>
-                                                    <th class="text-center min-w-50px">조회수</th>
                                                     <th class="text-center min-w-100px">기능</th>
                                                 </tr>
                                             </thead>
@@ -2424,10 +2424,10 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">제목</label>
+                                <label class="form-label required">제목(국문)</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_title" placeholder="제목" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_title" placeholder="제목(국문)" readonly>
                                 <!--end::Input-->
                                 <!--begin::Description-->
                                     <%--<div class="text-muted fs-7">Set a meta tag title. Recommended to be simple and precise keywords.</div>--%>
@@ -2438,7 +2438,21 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">작성자</label>
+                                <label class="form-label">제목(영문)</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_title_en" placeholder="제목(영문)" readonly>
+                                <!--end::Input-->
+                                <!--begin::Description-->
+                                    <%--<div class="text-muted fs-7">Set a meta tag title. Recommended to be simple and precise keywords.</div>--%>
+                                <!--end::Description-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label required">작성자</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_writer" placeholder="작성자" readonly>
@@ -2449,7 +2463,7 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">작성일</label>
+                                <label class="form-label required">작성일</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_write_date" placeholder="작성일" readonly>
@@ -2460,7 +2474,7 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">관리년도</label>
+                                <label class="form-label required">관리년도</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <select id="md_mng_year" class="form-select form-select-solid" data-placeholder="- 관리년도 -" disabled>
@@ -2516,18 +2530,7 @@ if (document.documentElement) {
                                 <label class="form-label">내용</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <div id="md_content" class="form-control form-control-solid-bg resize-none h-250px overflow-y-auto" placeholder="내용" readonly></div>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">조회수</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_view_cnt" placeholder="조회수" readonly>
+                                <div id="md_content" class="form-control form-control-solid-bg resize-none h-250px overflow-y-auto" readonly></div>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->

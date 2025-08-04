@@ -80,7 +80,7 @@
                             <a href="/eng/buyer/glance.do">Korea at a Glance</a>
                             <a href="/eng/buyer/marina.do">Marine Industry in korea</a>
                             <a href="/eng/buyer/match.do">Exhibitor-Buyer Matchmaking Program</a>
-                            <a href="/eng/buyer/qna.do">QnA</a>
+                            <a href="/eng/buyer/qna.do">FAQ</a>
                         </div>
                     </div>
                 </div>

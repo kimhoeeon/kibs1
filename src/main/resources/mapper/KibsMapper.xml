@@ -2098,6 +2098,240 @@
         WHERE id = #{id}
     </update>
 
+    <select id="selectEnOnlineListPaging" parameterType="com.mtf.kibs.dto.MainOnlineDTO" resultType="com.mtf.kibs.dto.MainOnlineDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.selectEnOnlineListPaging */
+        SELECT r.*
+        FROM ( /* ~2025 전시업체 Start */
+               ( SELECT 1 as orderSeq
+                      , e.seq
+                      , e.id
+                      , e.transfer_year
+                      , e.company_name_ko
+                      , e.company_name_en
+                      , e.company_badge
+                      , ( SELECT f.full_file_path
+                          FROM file f
+                          WHERE f.user_id = e.seq
+                            AND f.file_yn = 'Y'
+                            AND f.note = 'logo'
+                          LIMIT 1) AS logoFilePath
+                      , ( SELECT f.full_file_path
+                          FROM file f
+                          WHERE f.user_id = e.seq
+                            AND f.file_yn = 'Y'
+                            AND f.note LIKE CONCAT('promotionImage','%')
+                          ORDER BY f.note
+                          LIMIT 1) AS promotionImageFilePath
+                      , ( SELECT COUNT(*)
+                          FROM exhibitor e1
+                          WHERE 1=1
+                            AND e1.transfer_year in (#{transferYear}-1, #{transferYear}-2)
+                            AND e1.company_online_view_yn = 'Y'
+                            AND e1.apply_complt = 'Y'
+                            AND e1.approval_status = '참가승인'
+                            <if test='searchText != null and searchText != ""'>
+                                AND e1.company_name_en LIKE CONCAT('%', #{searchText}, '%')
+                            </if>
+                            <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
+                                <foreach collection="companyBadgeList" item="item" index="index">
+                                    AND e1.company_badge LIKE CONCAT('%', #{item}, '%')
+                                </foreach>
+                            <!--AND e.company_badge REGEXP (REGEXP_REPLACE(
+                                <foreach collection="companyBadge" item="item" index="index" separator="|">
+                                    #{item}
+                                </foreach>
+                            ,''|'',''))-->
+                            </if>
+                            AND EXISTS ( SELECT 1
+                                         FROM online o
+                                         WHERE 1=1
+                                           AND o.id = e1.seq
+                                           <if test='productOptionBig != null and productOptionBig != ""'>
+                                            AND o.product_option_big = #{productOptionBig}
+                                           </if>
+                                        )
+                          ) AS totalRecords
+                 FROM exhibitor e
+                 WHERE 1=1
+                   AND e.transfer_year in (#{transferYear}-1, #{transferYear}-2)
+                   AND e.company_online_view_yn = 'Y'
+                   AND e.apply_complt = 'Y'
+                   AND e.approval_status = '참가승인'
+                   <if test='searchText != null and searchText != ""'>
+                    AND e.company_name_en LIKE CONCAT('%', #{searchText}, '%')
+                   </if>
+                   <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
+                        <foreach collection="companyBadgeList" item="item" index="index">
+                            AND e.company_badge LIKE CONCAT('%', #{item}, '%')
+                        </foreach>
+                   </if>
+                   AND EXISTS ( SELECT 1
+                                  FROM online o
+                                  WHERE 1=1
+                                    AND o.id = e.seq
+                                    <if test='productOptionBig != null and productOptionBig != ""'>
+                                        AND o.product_option_big = #{productOptionBig}
+                                    </if>
+                              )
+                 ORDER BY LENGTH (e.company_badge) DESC, e.init_regi_dttm DESC
+                ) /* ~2025 전시업체 End */
+        UNION ALL
+                /* 2026~ 전시업체 전시품 Start */
+                ( SELECT 1 as orderSeq
+                       , en.seq
+                       , en.id
+                       , en.transfer_year
+                       , en.company_name_ko
+                       , en.company_name_en
+                       , en.company_badge
+                       , ( SELECT f.full_file_path
+                           FROM file f
+                           WHERE f.user_id = en.seq
+                             AND f.file_yn = 'Y'
+                             AND f.note = 'logo'
+                           LIMIT 1) AS logoFilePath
+                       , ( SELECT f.full_file_path
+                           FROM file f
+                           WHERE f.user_id = en.seq
+                             AND f.file_yn = 'Y'
+                             AND f.note LIKE CONCAT('productImage','%')
+                           ORDER BY f.note
+                           LIMIT 1) AS promotionImageFilePath
+                       , ( SELECT COUNT(*)
+                           FROM exhibitor_new en1
+                           WHERE 1=1
+                             AND en1.transfer_year in (#{transferYear})
+                             AND en1.company_online_view_yn = 'Y'
+                             AND en1.apply_complt = 'Y'
+                             AND en1.approval_status = '참가승인'
+                             <if test='searchText != null and searchText != ""'>
+                                AND en1.company_name_en LIKE CONCAT('%', #{searchText}, '%')
+                             </if>
+                             <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
+                                <foreach collection="companyBadgeList" item="item" index="index">
+                                    AND en1.company_badge LIKE CONCAT('%', #{item}, '%')
+                                </foreach>
+                             <!--AND en.company_badge REGEXP (REGEXP_REPLACE(
+                                 <foreach collection="companyBadge" item="item" index="index" separator="|">
+                                    #{item}
+                                 </foreach>
+                             ,''|'',''))-->
+                             </if>
+                             AND EXISTS ( SELECT 1
+                                          FROM product_new pdn
+                                          WHERE 1=1
+                                            AND pdn.ex_seq = en1.seq
+                                            <if test='productOptionBig != null and productOptionBig != ""'>
+                                                AND pdn.product_option_big = #{productOptionBig}
+                                            </if>
+                                          )
+                           ) AS totalRecords
+                  FROM exhibitor_new en
+                  WHERE 1=1
+                    AND en.transfer_year in (#{transferYear})
+                    AND en.company_online_view_yn = 'Y'
+                    AND en.apply_complt = 'Y'
+                    AND en.approval_status = '참가승인'
+                    <if test='searchText != null and searchText != ""'>
+                        AND en.company_name_en LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                    <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
+                        <foreach collection="companyBadgeList" item="item" index="index">
+                            AND en.company_badge LIKE CONCAT('%', #{item}, '%')
+                        </foreach>
+                    </if>
+                    AND EXISTS ( SELECT 1
+                                 FROM product_new pdn
+                                 WHERE 1=1
+                                   AND pdn.ex_seq = en.seq
+                                   <if test='productOptionBig != null and productOptionBig != ""'>
+                                    AND pdn.product_option_big = #{productOptionBig}
+                                    </if>
+                                 )
+                  ORDER BY LENGTH (en.company_badge) DESC, en.init_regi_dttm DESC
+                ) /* 2026~ 전시업체 전시품 End */
+        UNION ALL
+                /* 2026~ 전시업체 온라인 Start */
+                ( SELECT 2 as orderSeq
+                       , en.seq
+                       , en.id
+                       , en.transfer_year
+                       , en.company_name_ko
+                       , en.company_name_en
+                       , en.company_badge
+                       , ( SELECT f.full_file_path
+                           FROM file f
+                           WHERE f.user_id = en.seq
+                             AND f.file_yn = 'Y'
+                             AND f.note = 'logo'
+                           LIMIT 1) AS logoFilePath
+                       , ( SELECT f.full_file_path
+                           FROM file f
+                           WHERE f.user_id = en.seq
+                             AND f.file_yn = 'Y'
+                             AND f.note LIKE CONCAT('onlineImage','%')
+                           ORDER BY f.note
+                           LIMIT 1) AS promotionImageFilePath
+                       , ( SELECT COUNT(*)
+                           FROM exhibitor_new en1
+                           WHERE 1=1
+                             AND en1.transfer_year in (#{transferYear})
+                             AND en1.company_online_view_yn = 'Y'
+                             AND en1.apply_complt = 'Y'
+                             AND en1.approval_status = '참가승인'
+                             <if test='searchText != null and searchText != ""'>
+                                AND en1.company_name_en LIKE CONCAT('%', #{searchText}, '%')
+                             </if>
+                             <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
+                                <foreach collection="companyBadgeList" item="item" index="index">
+                                    AND en1.company_badge LIKE CONCAT('%', #{item}, '%')
+                                </foreach>
+                             <!--AND en.company_badge REGEXP (REGEXP_REPLACE(
+                                 <foreach collection="companyBadge" item="item" index="index" separator="|">
+                                    #{item}
+                                 </foreach>
+                             ,''|'',''))-->
+                             </if>
+                             AND EXISTS ( SELECT 1
+                                          FROM online_new oln
+                                          WHERE 1=1
+                                            AND oln.ex_seq = en1.seq
+                                            <if test='productOptionBig != null and productOptionBig != ""'>
+                                                AND oln.online_option_big = #{productOptionBig}
+                                            </if>
+                                          )
+                           ) AS totalRecords
+                  FROM exhibitor_new en
+                  WHERE 1=1
+                    AND en.transfer_year in (#{transferYear})
+                    AND en.company_online_view_yn = 'Y'
+                    AND en.apply_complt = 'Y'
+                    AND en.approval_status = '참가승인'
+                    <if test='searchText != null and searchText != ""'>
+                        AND en.company_name_en LIKE CONCAT('%', #{searchText}, '%')
+                    </if>
+                    <if test='!@org.springframework.util.CollectionUtils@isEmpty(companyBadgeList)'>
+                        <foreach collection="companyBadgeList" item="item" index="index">
+                            AND en.company_badge LIKE CONCAT('%', #{item}, '%')
+                        </foreach>
+                    </if>
+                    AND EXISTS ( SELECT 1
+                                 FROM online_new oln
+                                 WHERE 1=1
+                                   AND oln.ex_seq = en.seq
+                                   <if test='productOptionBig != null and productOptionBig != ""'>
+                                    AND oln.online_option_big = #{productOptionBig}
+                                    </if>
+                                 )
+                  ORDER BY LENGTH (en.company_badge) DESC, en.init_regi_dttm DESC
+                ) /* 2026~ 전시업체 온라인 End */
+            ) r
+        GROUP BY r.orderSeq, r.seq, r.id, r.transfer_year, r.company_name_ko , r.company_name_en, r.company_badge, r.logoFilePath, r.promotionImageFilePath, r.totalRecords
+        HAVING r.orderSeq <![CDATA[<]]> 2
+        ORDER BY r.transfer_year DESC, r.orderSeq, LENGTH (r.company_badge) DESC, RAND()
+        LIMIT #{pageNum} , #{rows}
+    </select>
+
     <select id="selectOnlineListPaging" parameterType="com.mtf.kibs.dto.MainOnlineDTO" resultType="com.mtf.kibs.dto.MainOnlineDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectOnlineListPaging */
         SELECT r.*
@@ -3411,34 +3645,43 @@
         </if>
     </select>
 
-    <select id="selectGalleryList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.GalleryDTO">
+    <select id="selectGalleryList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.DataroomDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectGalleryList */
-        SELECT id
-             , title
-             , write_date
+        SELECT d.id
+             , d.title
+             , d.title_en
+             , d.write_date
         , ( SELECT COUNT(*)
-                 FROM dataroom
+                 FROM dataroom d1
                  WHERE 1=1
+                   AND d1.site_gbn = '1'
                    <if test='mngYear != null and !mngYear.equals("") and !mngYear.equals("전체")'>
-                    AND mng_year = #{mngYear}
+                    AND d1.mng_year = #{mngYear}
                    </if>
                    <if test='searchText != null and searchText != ""'>
                        <if test='condition == "title"'>
-                        AND title LIKE CONCAT('%',#{searchText},'%')
+                        AND d1.title LIKE CONCAT('%',#{searchText},'%')
+                       </if>
+                       <if test='condition == "titleEn"'>
+                        AND d1.title_en LIKE CONCAT('%',#{searchText},'%')
                        </if>
                    </if>
                  ) AS totalRecords
-        FROM dataroom
+        FROM dataroom d
         WHERE 1=1
+          AND d.site_gbn = '1'
             <if test='mngYear != null and !mngYear.equals("") and !mngYear.equals("전체")'>
-                AND mng_year = #{mngYear}
+                AND d.mng_year = #{mngYear}
             </if>
             <if test='searchText != null and searchText != ""'>
                 <if test='condition == "title"'>
-                    AND title LIKE CONCAT('%',#{searchText},'%')
+                    AND d.title LIKE CONCAT('%',#{searchText},'%')
+                </if>
+                <if test='condition == "titleEn"'>
+                    AND d.title_en LIKE CONCAT('%',#{searchText},'%')
                 </if>
             </if>
-        ORDER BY mng_year DESC, title ASC, init_regi_dttm DESC
+        ORDER BY d.mng_year DESC, d.title ASC, d.init_regi_dttm DESC
         <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
             LIMIT #{pageNum} , #{rows}
         </if>

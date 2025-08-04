@@ -96,6 +96,8 @@ public interface KibsService {
 
     List<MainOnlineDTO> processSelectOnlineList(String transferYear);
 
+    List<MainOnlineDTO> processSelectEnOnlineListPaging(MainOnlineDTO mainOnlineDTO);
+
     List<MainOnlineDTO> processSelectOnlineListPaging(MainOnlineDTO mainOnlineDTO);
 
     ExhibitorDTO processSelectOnlineExhibitorInfo(String seq);
@@ -152,7 +154,7 @@ public interface KibsService {
 
     List<KibstvDTO> processSelectKibstvList(SearchDTO searchDTO);
 
-    List<GalleryDTO> processSelectGalleryList(SearchDTO searchDTO);
+    List<DataroomDTO> processSelectGalleryList(SearchDTO searchDTO);
 
     List<NoticeDTO> processSelectMainNoticeList(String lang);
 

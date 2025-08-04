@@ -1282,6 +1282,13 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<MainOnlineDTO> processSelectEnOnlineListPaging(MainOnlineDTO mainOnlineDTO) {
+        System.out.println("KibsServiceImpl > processSelectEnOnlineListPaging");
+        return kibsMapper.selectEnOnlineListPaging(mainOnlineDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<MainOnlineDTO> processSelectOnlineListPaging(MainOnlineDTO mainOnlineDTO) {
         System.out.println("KibsServiceImpl > processSelectOnlineListPaging");
         return kibsMapper.selectOnlineListPaging(mainOnlineDTO);
@@ -1580,7 +1587,7 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public List<GalleryDTO> processSelectGalleryList(SearchDTO searchDTO) {
+    public List<DataroomDTO> processSelectGalleryList(SearchDTO searchDTO) {
         System.out.println("KibsServiceImpl > processSelectGalleryList");
         return kibsMapper.selectGalleryList(searchDTO);
     }
