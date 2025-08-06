@@ -223,43 +223,43 @@
                         <ul class="eventFieldBox">
                             <li>
                                 <p class="icon"><img src="/img/summ_img01.png?ver=20250423"></p>
-                                <p class="txt">Boat & Yacht</p>
-                            </li>
-                            <li>
-                                <p class="icon"><img src="/img/summ_img02.png?ver=20250423"></p>
-                                <p class="txt">Paddler’s World</p>
-                            </li>
-                            <li>
-                                <p class="icon"><img src="/img/summ_img03.png?ver=20250423"></p>
-                                <p class="txt">Work Boat</p>
-                            </li>
-                            <li>
-                                <p class="icon"><img src="/img/summ_img04.png?ver=20250423"></p>
-                                <p class="txt">Parts & Equipment</p>
-                            </li>
-                            <li>
-                                <p class="icon"><img src="/img/summ_img05.png?ver=20250423"></p>
-                                <p class="txt">Safety & Marina</p>
+                                <p class="txt">Boat & Yacht</p> <%--보트&요트--%>
                             </li>
                             <li>
                                 <p class="icon"><img src="/img/summ_img06.png?ver=20250423"></p>
-                                <p class="txt">Marine Tourism</p>
+                                <p class="txt">Marine Tourism</p> <%--해양관광--%>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img02.png?ver=20250423"></p>
+                                <p class="txt">Paddler’s World</p> <%--무동력보트--%>
                             </li>
                             <li>
                                 <p class="icon"><img src="/img/summ_img07.png?ver=20250423"></p>
-                                <p class="txt">Marine Leisure</p>
+                                <p class="txt">Marine Leisure</p> <%--해양레저--%>
                             </li>
                             <li>
-                                <p class="icon"><img src="/img/summ_img08.png?ver=20250423"></p>
-                                <p class="txt">Underwater Leisure</p>
+                                <p class="icon"><img src="/img/summ_img03.png?ver=20250423"></p>
+                                <p class="txt">Work Boat</p> <%--워크보트--%>
                             </li>
                             <li>
                                 <p class="icon"><img src="/img/summ_img09.png?ver=20250423"></p>
-                                <p class="txt">Surfing</p>
+                                <p class="txt">Surfing</p> <%--서핑--%>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img04.png?ver=20250423"></p>
+                                <p class="txt">Parts & Equipment</p> <%--부품&장비--%>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img08.png?ver=20250423"></p>
+                                <p class="txt">Underwater Leisure</p> <%--수중레저--%>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img05.png?ver=20250423"></p>
+                                <p class="txt">Safety & Marina</p> <%--안전&마리나--%>
                             </li>
                         </ul>
                     </div>
-                    <a class="downBtn btnSt01" href="javascript:void(0);" onclick="alert('An update is scheduled');return false;">Download the 2026 Brochure</a>
+                    <a class="downBtn btnSt01" href="/file/Korea International Boat Show(KIBS) 2026 Brochure - For Exhibitors and Buyers.pdf" download="Korea International Boat Show(KIBS) 2026 Brochure - For Exhibitors and Buyers.pdf">Download the 2026 Brochure</a>
                 </div>
             </div>
 

@@ -63,7 +63,7 @@
                     <a href="https://www.ufi.org/" target="_blank">
                         <img src="/img/top_logo_01.png">
                     </a>
-                    <a href="https://ifbso.com/" target="_blank">
+                    <a href="https://ifbso.com/home" target="_blank">
                         <img src="/img/top_logo_02.png">
                     </a>
                     <a href="/eng/board/newsletter.do" class="hd_top_sns">
@@ -107,8 +107,8 @@
                                 <li><a href="/eng/guide/venue.do"><span>Venue</span></a></li>
                                 <li><a href="/eng/guide/contact.do"><span>Contact us</span></a></li>
                                 <%--<li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>--%>
-                                <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>Concurrently event_KOFISH</span></a></li>
-                                <li><a href="https://www.campingfair.co.kr/camping/" class="outLink" target="_blank"><span>Concurrently event_Caravan&Camping</span></a></li>
+                                <li><a href="https://www.kofish.kr/eng/main/main.php" class="outLink" target="_blank"><span>Concurrently event_KOFISH</span></a></li>
+                                <li><a href="https://www.campingfair.co.kr/eng" class="outLink" target="_blank"><span>Caravan&Camping</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -185,8 +185,8 @@
                                 </li>
                                 <li><a href="/eng/guide/contact.do"><span>Contact us</span></a></li>
                                 <%--<li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>--%>
-                                <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>Concurrently event_KOFISH</span></a></li>
-                                <li><a href="https://www.campingfair.co.kr/camping/" class="outLink" target="_blank"><span>Concurrently event_Caravan&Camping</span></a></li>
+                                <li><a href="https://www.kofish.kr/eng/main/main.php" class="outLink" target="_blank"><span>Concurrently event_KOFISH</span></a></li>
+                                <li><a href="https://www.campingfair.co.kr/eng" class="outLink" target="_blank"><span>Caravan&Camping</span></a></li>
                             </ul>
                         </li>
                         <li>

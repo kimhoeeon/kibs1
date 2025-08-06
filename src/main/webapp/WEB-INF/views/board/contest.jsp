@@ -106,7 +106,7 @@
         <div class="inner">
             <div class="year_tab_box">
                 <a class="cate active" data-value="전체" onclick="f_contest_category_search(this, '전체')" style="cursor: pointer">전체</a>
-                <a class="cate" data-value="3" onclick="f_contest_category_search(this, '3')" style="cursor: pointer">제3회</a>
+                <%--<a class="cate" data-value="3" onclick="f_contest_category_search(this, '3')" style="cursor: pointer">제3회</a>--%>
                 <a class="cate" data-value="2" onclick="f_contest_category_search(this, '2')" style="cursor: pointer">제2회</a>
                 <a class="cate" data-value="1" onclick="f_contest_category_search(this, '1')" style="cursor: pointer">제1회</a>
             </div>

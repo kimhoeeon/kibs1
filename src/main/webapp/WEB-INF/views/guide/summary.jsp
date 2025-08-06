@@ -162,36 +162,36 @@
                                 <p class="txt">보트&요트</p>
                             </li>
                             <li>
-                                <p class="icon"><img src="/img/summ_img02.png?ver=20250423"></p>
-                                <p class="txt">무동력보트</p>
-                            </li>
-                            <li>
-                                <p class="icon"><img src="/img/summ_img03.png?ver=20250423"></p>
-                                <p class="txt">워크보트</p>
-                            </li>
-                            <li>
-                                <p class="icon"><img src="/img/summ_img04.png?ver=20250423"></p>
-                                <p class="txt">부품&장비</p>
-                            </li>
-                            <li>
-                                <p class="icon"><img src="/img/summ_img05.png?ver=20250423"></p>
-                                <p class="txt">안전&마리나</p>
-                            </li>
-                            <li>
                                 <p class="icon"><img src="/img/summ_img06.png?ver=20250423"></p>
                                 <p class="txt">해양관광</p>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img02.png?ver=20250423"></p>
+                                <p class="txt">무동력보트</p>
                             </li>
                             <li>
                                 <p class="icon"><img src="/img/summ_img07.png?ver=20250423"></p>
                                 <p class="txt">해양레저</p>
                             </li>
                             <li>
-                                <p class="icon"><img src="/img/summ_img08.png?ver=20250423"></p>
-                                <p class="txt">수중레저</p>
+                                <p class="icon"><img src="/img/summ_img03.png?ver=20250423"></p>
+                                <p class="txt">워크보트</p>
                             </li>
                             <li>
                                 <p class="icon"><img src="/img/summ_img09.png?ver=20250423"></p>
                                 <p class="txt">서핑</p>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img04.png?ver=20250423"></p>
+                                <p class="txt">부품&장비</p>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img08.png?ver=20250423"></p>
+                                <p class="txt">수중레저</p>
+                            </li>
+                            <li>
+                                <p class="icon"><img src="/img/summ_img05.png?ver=20250423"></p>
+                                <p class="txt">안전&마리나</p>
                             </li>
                         </ul>
                     </div>

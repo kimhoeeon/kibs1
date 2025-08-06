@@ -45,7 +45,8 @@
         <a itemprop="sameAs" href="https://kibs-online.com"></a>
         <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
         <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
-    </span>    <%-- Naver SEO --%>
+    </span>
+    <%-- Naver SEO --%>
     <meta name="naver-site-verification" content="adc5540381e65e9f24333fe41cde2f8b36ae9690" />
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>

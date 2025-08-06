@@ -112,7 +112,7 @@
                     <a href="https://www.ufi.org/" target="_blank">
                         <img src="/img/top_logo_01.png">
                     </a>
-                    <a href="https://ifbso.com/" target="_blank">
+                    <a href="https://ifbso.com/home" target="_blank">
                         <img src="/img/top_logo_02.png">
                     </a>
                     <a href="/board/newsletter.do" class="hd_top_sns">
@@ -160,7 +160,7 @@
                                 <li><a href="/board/bi.do"><span>KIBS BI</span></a></li>
                                 <li><a href="/board/cerify.do"><span>인증 및 수상현황</span></a></li>
                                 <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>동시개최행사<br>[한국국제낚시박람회]</span></a></li>
-                                <li><a href="https://www.campingfair.co.kr/camping/" class="outLink" target="_blank"><span>동시개최행사<br>[캠핑&피크닉페어]</span></a></li>
+                                <li><a href="https://www.campingfair.co.kr/camping/" class="outLink" target="_blank"><span>[캠핑&피크닉페어]</span></a></li>
                             </ul>
                         </li>
                         <li>
@@ -241,7 +241,7 @@
                                 <li><a href="/board/bi.do"><span>KIBS BI</span></a></li>
                                 <li><a href="/board/cerify.do"><span>인증 및 수상현황</span></a></li>
                                 <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>동시개최행사<br>[한국국제낚시박람회]</span></a></li>
-                                <li><a href="https://www.campingfair.co.kr/camping/" class="outLink" target="_blank"><span>동시개최행사<br>[캠핑&피크닉페어]</span></a></li>
+                                <li><a href="https://www.campingfair.co.kr/camping/" class="outLink" target="_blank"><span>[캠핑&피크닉페어]</span></a></li>
                             </ul>
                         </li>
                         <li>

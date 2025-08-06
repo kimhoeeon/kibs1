@@ -1391,7 +1391,7 @@
         SET site_gbn = #{siteGbn}
           , mng_year = #{mngYear}
           , title = <![CDATA[#{title}]]>
-          , title_en = <![CDATA[#{title}]]>
+          , title_en = <![CDATA[#{titleEn}]]>
           , content = <![CDATA[#{content}]]>
           , writer = #{writer}
           , write_date = #{writeDate}
