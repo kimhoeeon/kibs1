@@ -108,17 +108,17 @@
             <div class="select_box">
                 <div class="btn">관련기관 사이트</div>
                 <div class="option_box">
-                    <a href="https://www.gg.go.kr/" target="_blank">경기도</a>
                     <a href="https://www.mof.go.kr/index.do" target="_blank">해양수산부</a>
+                    <a href="https://www.gg.go.kr/" target="_blank">경기도</a>
                     <a href="https://www.kintex.com/" target="_blank">킨텍스</a>
-                    <a href="http://ekfa.kr/" target="_blank">(사)한국낚시협회</a>
-                    <a href="https://www.kofish.kr/" target="_blank">한국국제낚시박람회</a>
                     <a href="http://kmarina.org/" target="_blank">한국마리나협회</a>
-                    <a href="https://edumarine.org" target="_blank">경기해양레저인력양성센터</a>
+                    <a href="https://koreamia.or.kr/" target="_blank">한국해양레저산업협회</a>
+                    <a href="https://www.edumarine.org/main.do" target="_blank">경기해양레저인력양성센터</a>
                     <a href="https://www.kbf.or.kr/main.do" target="_blank">경기해양레저포럼</a>
-                    <a href="https://www.ggbada.co.kr" target="_blank">경기도 해양안전체험관</a>
-                    <a href="https://www.ggbada.co.kr" target="_blank">경기바다 해양관광</a>
-                    <a href="https://www.ggbada.co.kr" target="_blank">제부마리나</a>
+                    <a href="https://ggmsec.ggbada.co.kr/home/kor/contents.do?menuPos=50" target="_blank">경기해양안전체험관</a>
+                    <a href="https://www.ggbada.co.kr/home/kor/main.do" target="_blank">경기바다 해양관광</a>
+                    <a href="https://jebumarina.ggbada.co.kr/home/kor/contents.do?menuPos=64" target="_blank">제부마리나</a>
+                    <a href="https://ekfa.kr/" target="_blank">(사)한국낚시협회</a>
                 </div>
             </div>
         </div>

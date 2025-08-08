@@ -108,17 +108,17 @@
             <div class="select_box">
                 <div class="btn">Related Organization Sites</div>
                 <div class="option_box">
-                    <a href="https://www.gg.go.kr/" target="_blank">경기도</a>
-                    <a href="https://www.mof.go.kr/index.do" target="_blank">해양수산부</a>
-                    <a href="https://www.kintex.com/" target="_blank">킨텍스</a>
-                    <a href="http://ekfa.kr/" target="_blank">(사)한국낚시협회</a>
-                    <a href="https://www.kofish.kr/" target="_blank">한국국제낚시박람회</a>
-                    <a href="http://kmarina.org/" target="_blank">한국마리나협회</a>
-                    <a href="https://edumarine.org" target="_blank">경기해양레저인력양성센터</a>
-                    <a href="https://www.kbf.or.kr/main.do" target="_blank">경기해양레저포럼</a>
-                    <a href="https://www.ggbada.co.kr" target="_blank">경기도 해양안전체험관</a>
-                    <a href="https://www.ggbada.co.kr" target="_blank">경기바다 해양관광</a>
-                    <a href="https://www.ggbada.co.kr" target="_blank">제부마리나</a>
+                    <a href="https://www.mof.go.kr/en/index.do" target="_blank">Ministry of Oceans and Fisheries</a>
+                    <a href="https://english.gg.go.kr/" target="_blank">Gyeonggi-Do</a>
+                    <a href="https://www.kintex.com/web/en/index.do" target="_blank">KINTEX</a>
+                    <a href="http://kmarina.org/" target="_blank">Korea Marina Association</a>
+                    <a href="https://koreamia.or.kr/" target="_blank">Korea Marine Industry Association</a>
+                    <a href="https://www.edumarine.org/eng/index.do" target="_blank">Korea Marine Education Academy</a>
+                    <a href="https://www.kbf.or.kr/main.do" target="_blank">Korea Boating Forum</a>
+                    <a href="https://ggmsec.ggbada.co.kr/home/kor/contents.do?menuPos=50" target="_blank">Gyeonggi Marine Safety Experience Center</a>
+                    <a href="https://www.ggbada.co.kr/home/kor/main.do" target="_blank">GyeonggiBaDa</a>
+                    <a href="https://jebumarina.ggbada.co.kr/home/kor/contents.do?menuPos=64" target="_blank">JEBU Marina</a>
+                    <a href="https://ekfa.kr/" target="_blank">Korea Fishing Association</a>
                 </div>
             </div>
         </div>
