@@ -2411,6 +2411,17 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
+                                <label class="form-label">입상 구분</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_prize_gbn" placeholder="입상 구분" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
                                 <label class="form-label">제목</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->

@@ -59,6 +59,7 @@ function f_contest_detail_modal_set(rowId){
     //console.log(resData);
 
     $('#md_gbn').val(resData.gbn);
+    $('#md_prize_gbn').val(resData.prizeGbn);
     $('#md_title').val(resData.title);
     $('#md_writer').val(resData.writer);
     $('#md_write_date').val(resData.writeDate);
@@ -249,10 +250,12 @@ function f_board_contest_save(id){
 }//fn
 
 function f_board_contest_valid(){
+    let prizeGbn = $('#prizeGbn').val();
     let title = $('#title').val();
     let writer = $('#writer').val();
     let writeDate = $('#writeDate').val();
 
+    if(nvl(prizeGbn,"") === ""){ showMessage('', 'error', '[ 공모전 ]', '입상 구분을 선택해 주세요.', ''); return false; }
     if(nvl(title,"") === ""){ showMessage('#title', 'error', '[ 공모전 ]', '제목을 입력해 주세요.', ''); return false; }
     if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[ 공모전 ]', '작성자를 입력해 주세요.', ''); return false; }
     if(nvl(writeDate,"") === ""){ showMessage('', 'error', '[ 공모전 ]', '작성일을 입력해 주세요.', ''); return false; }

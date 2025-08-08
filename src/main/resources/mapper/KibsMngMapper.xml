@@ -1259,6 +1259,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectContestList */
         SELECT id
              , gbn
+             , prize_gbn
              , title
              , writer
              , write_date
@@ -1281,6 +1282,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectContestSingle */
         SELECT id
              , gbn
+             , prize_gbn
              , title
              , writer
              , write_date
@@ -1302,11 +1304,12 @@
     <update id="updateContest" parameterType="com.mtf.kibs.dto.ContestDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateContest */
         UPDATE contest
-        SET gbn = #{gbn}
-        , title = <![CDATA[#{title}]]>
-        , writer = #{writer}
-        , write_date = #{writeDate}
-        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        SET prize_gbn = #{prizeGbn}
+          , gbn = #{gbn}
+          , title = <![CDATA[#{title}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE id = #{id}
     </update>
 
@@ -1315,6 +1318,7 @@
         INSERT INTO contest
         ( id
         , gbn
+        , prize_gbn
         , title
         , writer
         , write_date
@@ -1325,6 +1329,7 @@
         , final_regi_dttm)
         VALUES ( #{id}
                , #{gbn}
+               , #{prizeGbn}
                , <![CDATA[#{title}]]>
                , #{writer}
                , #{writeDate}

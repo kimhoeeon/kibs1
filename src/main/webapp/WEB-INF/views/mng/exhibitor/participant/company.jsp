@@ -2763,7 +2763,7 @@ if (document.documentElement) {
     <!--begin::Modal - 수정이력-->
     <div class="modal fade" id="modal_exhibitor_new_detail_info" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered <%--mw-1000px--%>" style="max-width: 1280px;">
+        <div id="ifDiv" class="modal-dialog modal-dialog-centered <%--mw-1000px--%>" style="max-width: 1280px;">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Modal header-->
@@ -2785,7 +2785,44 @@ if (document.documentElement) {
                 <div class="modal-body py-lg-5 px-lg-5">
                     <div class="card card-flush">
 
-                        <iframe id="applyDetailForm" width="100%" height="700" allowtransparency="true"></iframe>
+                        <iframe id="applyDetailForm" name="applyDetailForm" width="100%" height="700" allowtransparency="true"></iframe>
+
+                    </div>
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - 수정이력-->
+
+    <!--begin::Modal - 수정이력-->
+    <div class="modal fade" id="modal_exhibitor_new_mypage_info" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 95%;">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header" style="background-color: #1e1e2d;">
+                    <!--begin::Modal title-->
+                    <h2 style="color: #FFFFFF;">이 업체로 로그인</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-5 px-lg-5">
+                    <div class="card card-flush">
+
+                        <iframe id="exhibitorDetailForm" name="exhibitorDetailForm" width="100%" height="800" allowtransparency="true"></iframe>
 
                     </div>
                 </div>

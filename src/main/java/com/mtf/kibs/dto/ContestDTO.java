@@ -14,6 +14,7 @@ public class ContestDTO {
     Integer rownum; //연번
     String id; //ID
     Integer gbn; //회차
+    String prizeGbn; //입상 구분
     String title; //제목
     String writer; //작성자
     String writeDate; //작성일

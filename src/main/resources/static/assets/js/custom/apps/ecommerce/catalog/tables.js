@@ -184,9 +184,9 @@ let KTAppExhibitorMng = function () {
         /*renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_exhibitor_detail_modal_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">수정이력</a>';
         renderHTML += '</div>';*/
-        /*renderHTML += '<div class="menu-item px-3">';
-        renderHTML += '<a onclick="f_exhibitor_select_login(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">이 업체로 로그인</a>';
-        renderHTML += '</div>';*/
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_select_login(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_mypage_info">이 업체로 로그인</a>';
+        renderHTML += '</div>';
         /*renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_exhibitor_payment_info(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">결제정보</a>';
         renderHTML += '</div>';*/

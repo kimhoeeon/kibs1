@@ -1034,6 +1034,7 @@
     <select id="selectExhibitorNewPrc" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectExhibitorNewPrc */
         SELECT seq
+             , company_name_ko
              , prc_yn
              , IFNULL(booth_prc_sum, 0) as booth_prc_sum
              , IFNULL(discount_prc_sum, 0) as discount_prc_sum
@@ -3639,7 +3640,7 @@
                     AND title LIKE CONCAT('%',#{searchText},'%')
                 </if>
             </if>
-        ORDER BY gbn DESC, title ASC, init_regi_dttm DESC
+        ORDER BY prize_gbn ASC, init_regi_dttm DESC
         <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
             LIMIT #{pageNum} , #{rows}
         </if>

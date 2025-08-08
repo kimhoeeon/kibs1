@@ -82,7 +82,7 @@
                 <div class="inner">
                     <div class="apply_nav">
                         <div class="apply_nav_txt">
-                            <div class="txt">${sessionScope.id} 님 환영합니다!</div>
+                            <div class="txt">${info.companyNameKo} 님 환영합니다!</div>
                             <div class="btn">
                                 <a href="/mypage/modify.do" class="btnSt01">회원정보관리</a>
                                 <a href="/mypage/index.do" class="btnSt01">마이페이지</a>

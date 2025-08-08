@@ -1575,6 +1575,43 @@ function f_prc_yn_btn(){
 
 }
 
+function f_exhibitor_select_login(seq){
+    $('#exhibitorDetailForm').removeAttr('src');
+
+    const url = '/mypage/step01.do';
+    const params = {
+        seq: seq
+    };
+    loadPostInIframe('exhibitorDetailForm', url, params);
+}
+
+function loadPostInIframe(iframeName, url, params) {
+    // 1. 동적으로 form 요소 생성
+    const $form = $('<form>').attr({
+        action: url,
+        method: 'post',
+        target: iframeName
+    }).css('display', 'none');
+
+    // 2. 파라미터 수만큼 hidden input 생성하여 form에 추가
+    for (const key in params) {
+        if (params.hasOwnProperty(key)) {
+            $('<input>').attr({
+                type: 'hidden',
+                name: key,
+                value: params[key]
+            }).appendTo($form);
+        }
+    }
+
+    // 3. 생성된 form을 body에 추가하고 즉시 submit
+    $('body').append($form);
+    $form.submit();
+
+    // 4. submit 후 form 제거
+    $form.remove();
+}
+
 /*
 @author https://github.com/macek/jquery-serialize-object
 */

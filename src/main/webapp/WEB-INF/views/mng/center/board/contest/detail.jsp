@@ -2273,6 +2273,28 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">입상구분</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-10">
+                                                    <!--begin::Select2-->
+                                                    <select id="prizeGbn" name="prizeGbn" class="form-select form-select-solid" data-control="select2" aria-label="- 입상구분 -" data-placeholder="- 입상구분 -" data-hide-search="true">
+                                                        <option></option>
+                                                        <option value="" disabled>- 입상구분 -</option>
+                                                        <option value="1" <c:if test="${info.prizeGbn eq '1'}">selected</c:if> >대상</option>
+                                                        <option value="2" <c:if test="${info.prizeGbn eq '2'}">selected</c:if> >최우수상</option>
+                                                        <option value="3" <c:if test="${info.prizeGbn eq '3'}">selected</c:if> >우수상</option>
+                                                        <option value="4" <c:if test="${info.prizeGbn eq '4'}">selected</c:if> >특별상</option>
+                                                        <option value="5" <c:if test="${info.prizeGbn eq '5'}">selected</c:if> >입선</option>
+                                                    </select>
+                                                    <!--end::Select2-->
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
                                                 <label class="col-lg-2 col-form-label fw-semibold fs-6">제목</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->

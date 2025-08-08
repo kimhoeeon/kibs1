@@ -65,7 +65,7 @@
                 </a>
             </li>--%>
             <li>
-                <a href="/file/Korea International Boat Show(KIBS) 2026 Brochure - For Exhibitors and Buyers.pdf" download="Korea International Boat Show(KIBS) 2026 Brochure - For Exhibitors and Buyers.pdf">
+                <a href="/file/2025 경기국제보트쇼 브로슈어 영문.pdf" download="2025 경기국제보트쇼 브로슈어 영문.pdf">
                     <div class="icon"><img src="/img/icon_floating25_bro.png"></div>
                     <div class="txt">
                         Brochure<br>
