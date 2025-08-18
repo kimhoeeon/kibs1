@@ -2135,6 +2135,13 @@ if (document.documentElement) {
                                 <!--end::Breadcrumb-->
                             </div>
                             <!--end::Page title-->
+                            <!--begin::Export dropdown-->
+                            <button type="button" onclick="f_mng_stat_excel_download()" class="btn btn-success btn-active-light-success" data-kt-menu-placement="bottom-end">
+                                <i class="ki-duotone ki-exit-down fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>전체 통계 EXCEL 다운로드</button>
+                            <!--end::Export dropdown-->
                         </div>
                         <!--end::Toolbar container-->
                     </div>

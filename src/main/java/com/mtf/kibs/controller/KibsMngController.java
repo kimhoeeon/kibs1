@@ -9568,6 +9568,30 @@ public class KibsMngController {
 
     }
 
+    @RequestMapping(value = "/mng/admin/stat/download.do", method = RequestMethod.GET)
+    public void mng_admin_stat_download(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("KibsMngController > mng_admin_stat_download");
+        String fileName = req.getParameter("fileName");
+
+        try {
+            // 1. 다운로드 될 파일 이름 설정
+            String encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+
+            // 2. HTTP Response Header 설정
+            res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            res.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+
+            // 3. Service 호출 (Response 객체를 직접 전달)
+            kibsMngService.createAndDownloadProductExcel(res);
+
+        } catch (Exception e) {
+            // 예외 처리
+            e.printStackTrace();
+            // 에러 페이지로 리다이렉트 하거나, 적절한 에러 응답을 보낼 수 있습니다.
+            res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     private String convertValue(String[] splitVal, int index){
         int length = splitVal.length;
         String returnVal = "";

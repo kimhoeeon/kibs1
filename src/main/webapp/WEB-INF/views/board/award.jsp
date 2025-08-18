@@ -305,7 +305,7 @@
                                         <div class="logo"><img src="/img/img_award_2023_02.jpg"></div>
                                         <div class="txt">
                                             <div class="crown"><img src="/img/img_award_crown_ggd.png"></div>
-                                            <div class="name">주식회사 일렉트린</div>
+                                            <div class="name">주식회사 일렉트린(舊 엘지엠)</div>
                                             <div class="prd">선박용 전기추진 배터리 시스템</div>
                                         </div>
                                     </li>
@@ -407,7 +407,7 @@
                                         <div class="logo"><img src="/img/img_award_2019_01.jpg"></div>
                                         <div class="txt">
                                             <div class="crown"><img src="/img/img_award_crown_ggd.png"></div>
-                                            <div class="name">주식회사 일렉트린</div>
+                                            <div class="name">주식회사 일렉트린(舊 엘지엠)</div>
                                             <div class="prd">Electric Propulsion System for Boats</div>
                                         </div>
                                     </li>

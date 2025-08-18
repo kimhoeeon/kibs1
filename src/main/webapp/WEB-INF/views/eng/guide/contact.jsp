@@ -97,7 +97,7 @@
             <div class="sub_cont_tit"><div class="big">CONTACT US</div></div>
             <div class="contact_box">
                 <div class="tit_box">
-                    <div class="img"><img src="/img/logo4_eng.png"></div>
+                    <div class="img"><img src="/img/logo_kintex.png"></div>
                     <div class="txt">Korea International Boat Show Secretariat</div>
                 </div>
                 <ul class="txt_box">

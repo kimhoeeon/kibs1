@@ -6386,4 +6386,130 @@
         WHERE ex_seq = #{exSeq}
     </delete>
 
+    <select id="selectPartApplyDayList" resultType="com.mtf.kibs.dto.StatDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectPartApplyDayList */
+        SELECT combined_data.eventDate,
+               SUM(combined_data.exhibitorCount) AS exhibitorCount,
+               SUM(combined_data.visitorCount)   AS visitorCount
+        FROM (SELECT DATE(en.init_regi_dttm) AS eventDate,
+                     1                       AS exhibitorCount,
+                     0                       AS visitorCount
+              FROM exhibitor_new en
+              WHERE en.transfer_year = '2026'
+                AND en.cancel_yn = 'N'
+              UNION ALL
+              SELECT DATE(v.init_regi_dttm) AS eventDate,
+                     0                      AS exhibitorCount,
+                     1                      AS visitorCount
+              FROM visitor v
+              WHERE v.join_year = '2026'
+                AND v.join_yn = 'Y') AS combined_data
+        GROUP BY combined_data.eventDate
+        ORDER BY combined_data.eventDate ASC
+    </select>
+
+    <select id="selectPartApplyWeekList" resultType="com.mtf.kibs.dto.StatDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectPartApplyWeekList */
+        SELECT CONCAT(weekStartDate, ' ~ ', DATE_ADD(weekStartDate, INTERVAL 6 DAY)) AS weekPeriod,
+               SUM(exhibitorCount)                                                      AS exhibitorCount,
+               SUM(visitorCount)                                                        AS visitorCount
+        FROM (SELECT DATE_SUB(DATE(en.init_regi_dttm), INTERVAL WEEKDAY(en.init_regi_dttm) DAY) AS weekStartDate,
+                     1                                                                    AS exhibitorCount,
+                     0                                                                    AS visitorCount
+              FROM exhibitor_new en
+              WHERE en.transfer_year = '2026'
+                AND en.cancel_yn = 'N'
+              UNION ALL
+              SELECT DATE_SUB(DATE(v.init_regi_dttm), INTERVAL WEEKDAY(v.init_regi_dttm) DAY) AS weekStartDate,
+                     0                                                            AS exhibitorCount,
+                     1                                                            AS visitorCount
+              FROM visitor v
+              WHERE v.join_year = '2026'
+                AND v.join_yn = 'Y') AS combined_weekly_data
+        GROUP BY weekStartDate
+        ORDER BY weekStartDate ASC
+    </select>
+
+    <select id="selectPartApplyMonthList" resultType="com.mtf.kibs.dto.StatDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectPartApplyMonthList */
+        SELECT monthPeriod,
+               SUM(exhibitorCount) AS exhibitorCount,
+               SUM(visitorCount)   AS visitorCount
+        FROM (SELECT DATE_FORMAT(en.init_regi_dttm, '%Y-%m') AS monthPeriod,
+                     1                                    AS exhibitorCount,
+                     0                                    AS visitorCount
+              FROM exhibitor_new en
+              WHERE en.transfer_year = '2026'
+                AND en.cancel_yn = 'N'
+              UNION ALL
+
+              SELECT DATE_FORMAT(v.init_regi_dttm, '%Y-%m') AS monthPeriod,
+                     0                                    AS exhibitorCount,
+                     1                                    AS visitorCount
+              FROM visitor v
+              WHERE v.join_year = '2026'
+                AND v.join_yn = 'Y') AS combined_monthly_data
+        GROUP BY monthPeriod
+        ORDER BY monthPeriod ASC
+    </select>
+
+    <select id="selectExhNewBoothStatList" resultType="com.mtf.kibs.dto.StatDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhNewBoothStatList */
+        SELECT SUM(IF(en.booth_type LIKE '%독립부스%', 1, 0))  AS boothCount1,
+               SUM(IF(en.booth_type LIKE '%조립부스%', 1, 0))  AS boothCount2,
+               SUM(IF(en.booth_type LIKE '%온라인부스%', 1, 0)) AS boothCount3
+        FROM exhibitor_new en
+        WHERE en.transfer_year = '2026'
+          AND en.cancel_yn = 'N'
+    </select>
+
+    <select id="selectStatAccessDayList" resultType="com.mtf.kibs.dto.StatDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectStatAccessDayList */
+        SELECT DATE(in_dttm) AS statisticDate,
+               SUM(in_count) AS totalCount
+        FROM kibs_statistics
+        WHERE in_dttm <![CDATA[>=]]> '2025-01-01'
+        GROUP BY statisticDate
+        ORDER BY statisticDate ASC
+    </select>
+
+    <select id="selectStatAccessWeekList" resultType="com.mtf.kibs.dto.StatDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectStatAccessWeekList */
+        SELECT CONCAT(weekStartDate, ' ~ ', DATE_ADD(weekStartDate, INTERVAL 6 DAY)) AS weekPeriod,
+               totalCount
+        FROM (SELECT DATE_SUB(DATE(in_dttm), INTERVAL WEEKDAY(in_dttm) DAY) AS weekStartDate,
+                     SUM(in_count)                                          AS totalCount
+              FROM kibs_statistics
+              WHERE in_dttm <![CDATA[>=]]> '2025-01-01'
+              GROUP BY weekStartDate) AS weekly_summary
+        ORDER BY weekStartDate ASC
+    </select>
+
+    <select id="selectStatAccessMonthList" resultType="com.mtf.kibs.dto.StatDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectStatAccessMonthList */
+        SELECT DATE_FORMAT(in_dttm, '%Y-%m') AS monthPeriod,
+               SUM(in_count)                 AS totalCount
+        FROM kibs_statistics
+        WHERE in_dttm <![CDATA[>=]]> '2025-01-01'
+        GROUP BY monthPeriod
+        ORDER BY monthPeriod ASC
+    </select>
+
+    <select id="selectExhNewFieldList" resultType="com.mtf.kibs.dto.StatDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhNewFieldList */
+        SELECT SUM(IF(en.field_part LIKE '%보트&amp;요트%', 1, 0))  AS fieldCount1,
+               SUM(IF(en.field_part LIKE '%무동력보트%', 1, 0))  AS fieldCount2,
+               SUM(IF(en.field_part LIKE '%워크보트%', 1, 0)) AS fieldCount3,
+               SUM(IF(en.field_part LIKE '%부품&amp;장비%', 1, 0)) AS fieldCount4,
+               SUM(IF(en.field_part LIKE '%안전&amp;마리나%', 1, 0)) AS fieldCount5,
+               SUM(IF(en.field_part LIKE '%해양관광%', 1, 0)) AS fieldCount6,
+               SUM(IF(en.field_part LIKE '%해양레저%', 1, 0)) AS fieldCount7,
+               SUM(IF(en.field_part LIKE '%수중레저%', 1, 0)) AS fieldCount8,
+               SUM(IF(en.field_part LIKE '%서핑%', 1, 0)) AS fieldCount9,
+               SUM(IF(en.field_part LIKE '%카라반&amp;캠핑%', 1, 0)) AS fieldCount10
+        FROM exhibitor_new en
+        WHERE en.transfer_year = '2026'
+          AND en.cancel_yn = 'N'
+    </select>
+
 </mapper>

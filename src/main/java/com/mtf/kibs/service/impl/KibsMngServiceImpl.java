@@ -9,7 +9,9 @@ import com.mtf.kibs.service.KibsMngService;
 import com.mtf.kibs.util.StringUtil;
 import lombok.Setter;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -19,14 +21,18 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -5283,6 +5289,189 @@ public class KibsMngServiceImpl implements KibsMngService {
         responseDTO.setResultCode(resultCode);
         responseDTO.setResultMessage(resultMessage);
         return responseDTO;
+    }
+
+    public void createAndDownloadProductExcel(HttpServletResponse response) throws Exception {
+        // DB에서 데이터 가져오기
+        //List<ProductDTO> productList = productMapper.selectProductList();
+
+        // *** 1. 수정 필요: 실제 템플릿 파일 경로와 이름으로 변경 ***
+        ClassPathResource resource = new ClassPathResource("/static/file/보트쇼_통계_엑셀.xlsx");
+
+        try (InputStream inputStream = resource.getInputStream();
+             XSSFWorkbook templateWorkbook = new XSSFWorkbook(inputStream);
+             // 2. 템플릿을 기반으로 SXSSFWorkbook 생성 (스트리밍을 위한 객체)
+             SXSSFWorkbook workbook = new SXSSFWorkbook(templateWorkbook)) {
+
+            // ========================================================================
+            // 스타일 생성
+            // ========================================================================
+            CellStyle centerStyle = workbook.createCellStyle();
+            centerStyle.setAlignment(HorizontalAlignment.CENTER); // 수평 가운데 정렬
+            centerStyle.setVerticalAlignment(VerticalAlignment.CENTER); // 수직 가운데 정렬
+
+            // ============ 시트 0: 참가 신청 현황 ============
+            SXSSFSheet sheet0 = (SXSSFSheet) workbook.getSheetAt(0);
+            sheet0.trackAllColumnsForAutoSizing();
+            List<StatDTO> dayList0 = kibsMngMapper.selectPartApplyDayList();
+            List<StatDTO> weekList0 = kibsMngMapper.selectPartApplyWeekList();
+            List<StatDTO> monthList0 = kibsMngMapper.selectPartApplyMonthList();
+
+            // 4. 데이터 채우기 (Sheet 2와 동일한 방식으로 수정)
+            int maxSize0 = Math.max(dayList0.size(), Math.max(weekList0.size(), monthList0.size()));
+            int startRowNum0 = 3; // 데이터 시작 행
+
+            for (int i = 0; i < maxSize0; i++) {
+                Row row = sheet0.createRow(startRowNum0 + i);
+
+                // --- DAY 데이터 ---
+                if (i < dayList0.size()) {
+                    StatDTO dayInfo = dayList0.get(i);
+                    createCell(row, 0, dayInfo.getEventDate(), centerStyle);
+                    createCell(row, 1, dayInfo.getExhibitorCount(), centerStyle);
+                    createCell(row, 2, dayInfo.getVisitorCount(), centerStyle);
+                }
+
+                // --- WEEK 데이터 ---
+                if (i < weekList0.size()) {
+                    StatDTO weekInfo = weekList0.get(i);
+                    createCell(row, 3, weekInfo.getWeekPeriod(), centerStyle);
+                    createCell(row, 4, weekInfo.getExhibitorCount(), centerStyle);
+                    createCell(row, 5, weekInfo.getVisitorCount(), centerStyle);
+                }
+
+                // --- MONTH 데이터 ---
+                if (i < monthList0.size()) {
+                    StatDTO monthInfo = monthList0.get(i);
+                    createCell(row, 6, monthInfo.getMonthPeriod(), centerStyle);
+                    createCell(row, 7, monthInfo.getExhibitorCount(), centerStyle);
+                    createCell(row, 8, monthInfo.getVisitorCount(), centerStyle);
+                }
+            }
+            // 너비 자동 조정
+            for (int i = 0; i < 9; i++) {
+                sheet0.setColumnWidth(i, Math.min(255*256, sheet0.getColumnWidth(i) + 1024));
+            }
+            // ============ 시트 0: 참가 신청 현황 ============
+
+            // ============ 시트 1: 부스별 신청업체 수 ============
+            SXSSFSheet sheet1 = (SXSSFSheet) workbook.getSheetAt(1);
+            sheet1.trackAllColumnsForAutoSizing();
+            List<StatDTO> boothList = kibsMngMapper.selectExhNewBoothStatList();
+
+            // 4. 데이터 채우기
+            int boothStatRowNum  = 2; // *** 수정 필요: 데이터 시작 행 번호 ***
+            for (StatDTO info : boothList ) {
+                // createRow()는 새 행을 생성 (기존 행이 있으면 덮어씀)
+                Row row = sheet1.createRow(boothStatRowNum++);
+                // *** 수정 필요: 실제 엑셀의 열 순서에 맞게 DTO 데이터 매핑 ***
+                createCell(row, 0, info.getBoothCount1(), centerStyle);
+                createCell(row, 1, info.getBoothCount2(), centerStyle);
+                createCell(row, 2, info.getBoothCount3(), centerStyle);
+            }
+            // 너비 자동 조정
+            for (int i = 0; i < 9; i++) {
+                sheet1.setColumnWidth(i, Math.min(255*256, sheet1.getColumnWidth(i) + 1024));
+            }
+            // ============ 시트 1: 부스별 신청업체 수 ============
+
+            // ============ 시트 2: 홈페이지 방문 현황 ============
+            SXSSFSheet sheet2 = (SXSSFSheet) workbook.getSheetAt(2);
+            sheet2.trackAllColumnsForAutoSizing();
+            List<StatDTO> dayList2 = kibsMngMapper.selectStatAccessDayList();
+            List<StatDTO> weekList2 = kibsMngMapper.selectStatAccessWeekList();
+            List<StatDTO> monthList2 = kibsMngMapper.selectStatAccessMonthList();
+
+            // DAY, WEEK, MONTH 리스트 중 가장 큰 사이즈를 기준으로 반복
+            int maxSize1 = Math.max(dayList2.size(), Math.max(weekList2.size(), monthList2.size()));
+            int startRowNum1 = 2; // 데이터 시작 행
+
+            for (int i = 0; i < maxSize1; i++) {
+                // 루프마다 새로운 행을 하나 생성
+                Row row = sheet2.createRow(startRowNum1 + i);
+
+                // --- DAY 데이터 채우기 (해당 인덱스에 데이터가 있을 경우) ---
+                if (i < dayList2.size()) {
+                    StatDTO dayInfo = dayList2.get(i);
+                    createCell(row, 0, dayInfo.getStatisticDate(), centerStyle);
+                    createCell(row, 1, dayInfo.getTotalCount(), centerStyle);
+                }
+
+                // --- WEEK 데이터 채우기 (해당 인덱스에 데이터가 있을 경우) ---
+                if (i < weekList2.size()) {
+                    StatDTO weekInfo = weekList2.get(i);
+                    createCell(row, 2, weekInfo.getWeekPeriod(), centerStyle);
+                    createCell(row, 3, weekInfo.getTotalCount(), centerStyle);
+                }
+
+                // --- MONTH 데이터 채우기 (해당 인덱스에 데이터가 있을 경우) ---
+                if (i < monthList2.size()) {
+                    StatDTO monthInfo = monthList2.get(i);
+                    createCell(row, 4, monthInfo.getMonthPeriod(), centerStyle);
+                    createCell(row, 5, monthInfo.getTotalCount(), centerStyle);
+                }
+            }
+            // 너비 자동 조정
+            for (int i = 0; i < 6; i++) {
+                sheet2.setColumnWidth(i, Math.min(255*256, sheet2.getColumnWidth(i) + 1024));
+            }
+            // ============ 시트 2: 홈페이지 방문 현황 ============
+
+            // ============ 시트 3: 참가분야별 신청업체 수 ============
+            SXSSFSheet sheet3 = (SXSSFSheet) workbook.getSheetAt(3);
+            sheet3.trackAllColumnsForAutoSizing();
+            List<StatDTO> fieldList = kibsMngMapper.selectExhNewFieldList();
+
+            // 4. 데이터 채우기
+            int fieldPartRowNum  = 2; // *** 수정 필요: 데이터 시작 행 번호 ***
+            for (StatDTO info : fieldList) {
+                // createRow()는 새 행을 생성 (기존 행이 있으면 덮어씀)
+                Row row = sheet3.createRow(fieldPartRowNum++);
+                createCell(row, 0, info.getFieldCount1(), centerStyle);
+                createCell(row, 1, info.getFieldCount2(), centerStyle);
+                createCell(row, 2, info.getFieldCount3(), centerStyle);
+                createCell(row, 3, info.getFieldCount4(), centerStyle);
+                createCell(row, 4, info.getFieldCount5(), centerStyle);
+                createCell(row, 5, info.getFieldCount6(), centerStyle);
+                createCell(row, 6, info.getFieldCount7(), centerStyle);
+                createCell(row, 7, info.getFieldCount8(), centerStyle);
+                createCell(row, 8, info.getFieldCount9(), centerStyle);
+                createCell(row, 9, info.getFieldCount10(), centerStyle);
+            }
+            // 너비 자동 조정
+            for (int i = 0; i < 10; i++) {
+                sheet3.setColumnWidth(i, Math.min(255*256, sheet3.getColumnWidth(i) + 1024));
+            }
+            // ============ 시트 3: 참가분야별 신청업체 수 ============
+
+            // 5. 생성된 파일을 Response의 OutputStream에 직접 작성
+            try (OutputStream out = response.getOutputStream()) {
+                workbook.write(out);
+            }
+
+        } finally {
+            // SXSSFWorkbook은 임시 파일을 생성하므로, dispose()를 호출하여 확실하게 정리해주는 것이 좋습니다.
+            // try-with-resources 구문이 close()를 호출하고, close()가 내부적으로 dispose()를 호출하지만,
+            // 명시적으로 호출하는 것이 더 안전할 수 있습니다. (필수는 아님)
+            // workbook.dispose();
+        }
+    }
+
+    /**
+     * 셀 생성과 스타일 적용을 한 번에 처리하는 헬퍼 메서드 추가
+     * (코드 중복을 줄이고 가독성을 높입니다)
+     */
+    private void createCell(Row row, int cellNum, Object value, CellStyle style) {
+        Cell cell = row.createCell(cellNum);
+        if (value instanceof String) {
+            cell.setCellValue((String) value);
+        } else if (value instanceof Integer) {
+            cell.setCellValue((Integer) value);
+        } else if (value instanceof Double) {
+            cell.setCellValue((Double) value);
+        } // 필요에 따라 다른 타입 추가
+
+        cell.setCellStyle(style);
     }
 
     /*******************************************

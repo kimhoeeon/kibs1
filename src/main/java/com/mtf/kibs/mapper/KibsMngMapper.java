@@ -557,4 +557,20 @@ public interface KibsMngMapper {
     String getContestId();
 
     Integer insertContest(ContestDTO contestDTO);
+
+    List<StatDTO> selectPartApplyDayList();
+
+    List<StatDTO> selectPartApplyWeekList();
+
+    List<StatDTO> selectPartApplyMonthList();
+
+    List<StatDTO> selectExhNewBoothStatList();
+
+    List<StatDTO> selectStatAccessDayList();
+
+    List<StatDTO> selectStatAccessWeekList();
+
+    List<StatDTO> selectStatAccessMonthList();
+
+    List<StatDTO> selectExhNewFieldList();
 }

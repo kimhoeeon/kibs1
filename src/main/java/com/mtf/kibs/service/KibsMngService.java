@@ -1,8 +1,10 @@
 package com.mtf.kibs.service;
 
 import com.mtf.kibs.dto.*;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -450,4 +452,6 @@ public interface KibsMngService {
     ResponseDTO processUpdateContest(ContestDTO contestDTO);
 
     ResponseDTO processInsertContest(ContestDTO contestDTO);
+
+    void createAndDownloadProductExcel(HttpServletResponse response) throws Exception;
 }

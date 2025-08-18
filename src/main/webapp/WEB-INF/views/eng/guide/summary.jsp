@@ -259,7 +259,7 @@
                             </li>
                         </ul>
                     </div>
-                    <a class="downBtn btnSt01" href="/file/2025 경기국제보트쇼 브로슈어 영문.pdf" download="2025 경기국제보트쇼 브로슈어 영문.pdf">Download the 2026 Brochure</a>
+                    <a class="downBtn btnSt01" href="/file/2026 경기국제보트쇼 브로슈어 영문.pdf" download="2026 KIBS Brochure.pdf">Download the 2026 Brochure</a>
                 </div>
             </div>
 

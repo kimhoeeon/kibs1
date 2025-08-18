@@ -237,6 +237,54 @@ function f_file_download(path, fileName){
     form.submit();
 }
 
+function f_mng_stat_excel_download(){
+    Swal.fire({
+        icon: 'info',
+        title: '[ 전체 통계 EXCEL 다운로드 ]',
+        html: '통계 파일을 다운로드하시겠습니까 ?<br><span style="font-weight: bold; font-size: 1rem;">' +
+            '( 데이터가 많을 경우 시간이 소요될 수 있습니다. )<br>( 해당 창이 닫혀도 다운로드가 완료될 때까지<br>대기해 주세요. )</span>',
+        allowOutsideClick: false,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: '확인',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            let fileName = '전체_통계_EXCEL_' + getCurrentDate() + '.xlsx';
+
+            $.ajax({
+                url: '/mng/admin/stat/download.do?fileName=' + fileName,
+                method: 'get',
+                /*async: false,*/
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                contentType: 'application/json; charset=utf-8', //server charset 확인 필요
+                beforeSend : function(request){
+                    // Performed before calling Ajax
+                    $('#spinner').show();
+                },
+                success: function (blob) {
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = fileName;
+                    link.click();
+
+                    $('#spinner').hide();
+                },
+                error: function() {
+                    // Do when ajax call fail
+                    alert('오류가 발생했습니다. 관리자에게 문의해 주세요.');
+                    $('#spinner').hide();
+                }
+            })
+
+        }
+    });
+}
+
 function replaceText(value){
     if(nullToEmpty(value) !== ''){
         value = value.toString().replaceAll('\r','');
