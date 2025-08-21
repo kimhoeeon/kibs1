@@ -105,9 +105,9 @@
             </div>
 
             <div class="img_box">
-                <img src="/img/img_match_01.png">
-                <img src="/img/img_match_02.png">
-                <img src="/img/img_match_03.png">
+                <img src="/img/img_match_04.png">
+                <img src="/img/img_match_05.png">
+                <img src="/img/img_match_06.png">
             </div>
         </div>
     </div>

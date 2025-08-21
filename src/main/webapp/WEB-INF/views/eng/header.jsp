@@ -97,49 +97,49 @@
                 <div class="nav">
                     <ul class="dept1">
                         <li>
-                            <a href="/eng/guide/summary.do"><span>KIBS 2026</span></a>
+                            <a href="<c:url value="/eng/guide/summary.do"/>"><span>KIBS 2026</span></a>
                             <ul class="dept2">
-                                <li><a href="/eng/guide/summary.do"><span>Overview</span></a></li>
-                                <li><a href="/eng/guide/certify.do"><span>International Certification & Awards</span></a></li>
-                                <li><a href="/eng/guide/conference.do"><span>Conference</span></a></li>
-                                <li><a href="/eng/guide/program.do"><span>Program</span></a></li>
-                                <li><a href="/eng/guide/bi.do"><span>KIBS BI</span></a></li>
-                                <li><a href="/eng/guide/venue.do"><span>Venue</span></a></li>
-                                <li><a href="/eng/guide/contact.do"><span>Contact us</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/summary.do"/>"><span>Overview</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/certify.do"/>"><span>International Certification & Awards</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/conference.do"/>"><span>Conference</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/program.do"/>"><span>Program</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/bi.do"/>"><span>KIBS BI</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/venue.do"/>"><span>Venue</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/contact.do"/>"><span>Contact us</span></a></li>
                                 <%--<li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>--%>
-                                <li><a href="https://www.kofish.kr/eng/main/main.php" class="outLink" target="_blank"><span>Concurrently event_KOFISH</span></a></li>
-                                <li><a href="https://www.campingfair.co.kr/eng" class="outLink" target="_blank"><span>Caravan&Camping</span></a></li>
+                                <li><a href="https://www.kofish.kr/eng/main/main.php" class="outLink" target="_blank"><span>Concurrently event<br>[KOFISH]</span></a></li>
+                                <li><a href="https://www.campingfair.co.kr/eng" class="outLink" target="_blank"><span>[Caravan&Camping]</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/eng/exhibitor/categories.do"><span>Exhibitors</span></a>
+                            <a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors</span></a>
                             <ul class="dept2">
-                                <li><a href="/eng/exhibitor/categories.do"><span>Exhibitors Categories</span></a></li>
+                                <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors Categories</span></a></li>
                                 <li><a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>"><span>Exhibitor Registration</span></a></li>
-                                <li><a href="/eng/exhibitor/glance.do"><span>Korea at a Glance</span></a></li>
-                                <li><a href="/eng/exhibitor/marina.do"><span>Marine Industry in korea</span></a></li>
-                                <li><a href="/eng/exhibitor/match.do"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
-                                <li><a href="/eng/online/company.do"><span>Exhibitor List</span></a></li>
-                                <li><a href="/eng/exhibitor/qna.do"><span>FAQ</span></a></li>
+                                <li><a href="<c:url value="/eng/exhibitor/glance.do"/>"><span>Korea at a Glance</span></a></li>
+                                <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in korea</span></a></li>
+                                <li><a href="<c:url value="/eng/exhibitor/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
+                                <li><a href="<c:url value="/eng/online/company.do"/>"><span>Exhibitor List</span></a></li>
+                                <li><a href="<c:url value="/eng/exhibitor/qna.do"/>"><span>FAQ</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/eng/buyer/apply.do"><span>Buyers</span></a>
+                            <a href="<c:url value="/eng/buyer/apply.do"/>"><span>Buyers</span></a>
                             <ul class="dept2">
                                 <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Visitor guide</span></a></li>
-                                <li><a href="/eng/buyer/apply.do"><span>Pre-registration</span></a></li>
-                                <li><a href="/eng/buyer/glance.do"><span>Korea at a Glance</span></a></li>
-                                <li><a href="/eng/buyer/marina.do"><span>Marine Industry in korea</span></a></li>
-                                <li><a href="/eng/buyer/match.do"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
-                                <li><a href="/eng/buyer/qna.do"><span>FAQ</span></a></li>
+                                <li><a href="<c:url value="/eng/buyer/apply.do"/>"><span>Pre-registration</span></a></li>
+                                <li><a href="<c:url value="/eng/buyer/glance.do"/>"><span>Korea at a Glance</span></a></li>
+                                <li><a href="<c:url value="/eng/buyer/marina.do"/>"><span>Marine Industry in korea</span></a></li>
+                                <li><a href="<c:url value="/eng/buyer/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
+                                <li><a href="<c:url value="/eng/buyer/qna.do"/>"><span>FAQ</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/eng/board/notice.do"><span>News</span></a>
+                            <a href="<c:url value="/eng/board/notice.do"/>"><span>News</span></a>
                             <ul class="dept2">
-                                <li><a href="/eng/board/notice.do"><span>Notice</span></a></li>
-                                <li><a href="/eng/board/kibstv.do"><span>KIBS Tube</span></a></li>
-                                <li><a href="/eng/board/gallery.do"><span>Gallery</span></a></li>
+                                <li><a href="<c:url value="/eng/board/notice.do"/>"><span>Notice</span></a></li>
+                                <li><a href="<c:url value="/eng/board/kibstv.do"/>"><span>KIBS Tube</span></a></li>
+                                <li><a href="<c:url value="/eng/board/gallery.do"/>"><span>Gallery</span></a></li>
                                 <%--<li><a href="/eng/board/media.do"><span>KIBS in Media</span></a></li>--%>
                                 <%--<li><a href="/eng/board/newsletter.do"><span>Newsletter</span></a></li>--%>
                             </ul>
@@ -156,7 +156,7 @@
                 <div class="site_map_top">
                     <div class="site_map_top_btn">
                         <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');" class="login">LOGIN</a>
-                        <a href="/" class="language">KOR</a>
+                        <a href="<c:url value="/"/>" class="language">KOR</a>
                     </div>
                     <div class="site_map_top_sns">
                         <%--<a href="/eng/board/newsletter.do" class="hd_top_sns"><img src="/img/top_sns_n.png"></a>--%>
@@ -168,56 +168,56 @@
                 <div class="site_map_nav">
                     <ul class="dept1">
                         <li>
-                            <a href="/eng/guide/summary.do"><span>KIBS 2026</span></a>
+                            <a href="<c:url value="/eng/guide/summary.do"/>"><span>KIBS 2026</span></a>
                             <ul class="dept2">
-                                <li><a href="/eng/guide/summary.do"><span>Overview</span></a></li>
-                                <li><a href="/eng/guide/certify.do"><span>International Certification & Awards</span></a></li>
-                                <li><a href="/eng/guide/conference.do"><span>Conference</span></a></li>
-                                <li><a href="/eng/guide/program.do"><span>Program</span></a></li>
-                                <li><a href="/eng/guide/bi.do"><span>KIBS BI</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/summary.do"/>"><span>Overview</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/certify.do"/>"><span>International Certification & Awards</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/conference.do"/>"><span>Conference</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/program.do"/>"><span>Program</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/bi.do"/>"><span>KIBS BI</span></a></li>
                                 <li>
-                                    <a href="/eng/guide/venue.do"><span>Venue</span></a>
+                                    <a href="<c:url value="/eng/guide/venue.do"/>"><span>Venue</span></a>
                                     <ul class="dept3">
-                                        <li><a href="/eng/guide/venue.do"><span>Venue</span></a></li>
-                                        <li><a href="/eng/guide/to_kintex.do"><span>To Kintex</span></a></li>
+                                        <li><a href="<c:url value="/eng/guide/venue.do"/>"><span>Venue</span></a></li>
+                                        <li><a href="<c:url value="/eng/guide/to_kintex.do"/>"><span>To Kintex</span></a></li>
                                         <%--<li><a href="/eng/guide/to_ara.do"><span>To ARA Marina</span></a></li>--%>
                                     </ul>
                                 </li>
-                                <li><a href="/eng/guide/contact.do"><span>Contact us</span></a></li>
+                                <li><a href="<c:url value="/eng/guide/contact.do"/>"><span>Contact us</span></a></li>
                                 <%--<li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>--%>
-                                <li><a href="https://www.kofish.kr/eng/main/main.php" class="outLink" target="_blank"><span>Concurrently event_KOFISH</span></a></li>
-                                <li><a href="https://www.campingfair.co.kr/eng" class="outLink" target="_blank"><span>Caravan&Camping</span></a></li>
+                                <li><a href="https://www.kofish.kr/eng/main/main.php" class="outLink" target="_blank"><span>Concurrently event<br>[KOFISH]</span></a></li>
+                                <li><a href="https://www.campingfair.co.kr/eng" class="outLink" target="_blank"><span>[Caravan&Camping]</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/eng/exhibitor/categories.do"><span>Exhibitors</span></a>
+                            <a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors</span></a>
                             <ul class="dept2">
-                                <li><a href="/eng/exhibitor/categories.do"><span>Exhibitors Categories</span></a></li>
+                                <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors Categories</span></a></li>
                                 <li><a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>"><span>Exhibitor Registration</span></a></li>
-                                <li><a href="/eng/exhibitor/glance.do"><span>Korea at a Glance</span></a></li>
-                                <li><a href="/eng/exhibitor/marina.do"><span>Marine Industry in korea</span></a></li>
-                                <li><a href="/eng/exhibitor/match.do"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
-                                <li><a href="/eng/online/company.do"><span>Exhibitor List</span></a></li>
-                                <li><a href="/eng/exhibitor/qna.do"><span>FAQ</span></a></li>
+                                <li><a href="<c:url value="/eng/exhibitor/glance.do"/>"><span>Korea at a Glance</span></a></li>
+                                <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in korea</span></a></li>
+                                <li><a href="<c:url value="/eng/exhibitor/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
+                                <li><a href="<c:url value="/eng/online/company.do"/>"><span>Exhibitor List</span></a></li>
+                                <li><a href="<c:url value="/eng/exhibitor/qna.do"/>"><span>FAQ</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/eng/buyer/apply.do"><span>Buyers</span></a>
+                            <a href="<c:url value="/eng/buyer/apply.do"/>"><span>Buyers</span></a>
                             <ul class="dept2">
                                 <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Visitor guide</span></a></li>
-                                <li><a href="/eng/buyer/apply.do"><span>Pre-registration</span></a></li>
-                                <li><a href="/eng/buyer/glance.do"><span>Korea at a Glance</span></a></li>
-                                <li><a href="/eng/buyer/marina.do"><span>Marine Industry in korea</span></a></li>
-                                <li><a href="/eng/buyer/match.do"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
-                                <li><a href="/eng/buyer/qna.do"><span>FAQ</span></a></li>
+                                <li><a href="<c:url value="/eng/buyer/apply.do"/>"><span>Pre-registration</span></a></li>
+                                <li><a href="<c:url value="/eng/buyer/glance.do"/>"><span>Korea at a Glance</span></a></li>
+                                <li><a href="<c:url value="/eng/buyer/marina.do"/>"><span>Marine Industry in korea</span></a></li>
+                                <li><a href="<c:url value="/eng/buyer/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
+                                <li><a href="<c:url value="/eng/buyer/qna.do"/>"><span>FAQ</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/eng/board/notice.do"><span>News</span></a>
+                            <a href="<c:url value="/eng/board/notice.do"/>"><span>News</span></a>
                             <ul class="dept2">
-                                <li><a href="/eng/board/notice.do"><span>Notice</span></a></li>
-                                <li><a href="/eng/board/kibstv.do"><span>KIBS Tube</span></a></li>
-                                <li><a href="/eng/board/gallery.do"><span>Gallery</span></a></li>
+                                <li><a href="<c:url value="/eng/board/notice.do"/>"><span>Notice</span></a></li>
+                                <li><a href="<c:url value="/eng/board/kibstv.do"/>"><span>KIBS Tube</span></a></li>
+                                <li><a href="<c:url value="/eng/board/gallery.do"/>"><span>Gallery</span></a></li>
                                 <%--<li><a href="/eng/board/media.do"><span>KIBS in Media</span></a></li>--%>
                                 <%--<li><a href="/eng/board/newsletter.do"><span>Newsletter</span></a></li>--%>
                             </ul>

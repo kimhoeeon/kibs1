@@ -129,13 +129,13 @@
                     </a>
                 </div>
                 <h1 class="hd_logo">
-                    <a href="/">
+                    <a href="<c:url value="/"/>">
                         <img src="/img/logo.png">
                     </a>
                 </h1>
                 <div class="hd_top_right">
                     <c:if test="${empty sessionScope.get('status')}">
-                        <a href="/login.do" class="login">LOGIN</a>
+                        <a href="<c:url value="/login.do"/>" class="login">LOGIN</a>
                     </c:if>
                     <c:if test="${not empty sessionScope.get('status')}">
                         <a href="/logout.do" class="logout">LOGOUT</a>
@@ -152,53 +152,53 @@
                 <div class="nav">
                     <ul class="dept1">
                         <li>
-                            <a href="/guide/summary.do"><span>KIBS 안내</span></a>
+                            <a href="<c:url value="/guide/summary.do"/>"><span>KIBS 안내</span></a>
                             <ul class="dept2">
-                                <li><a href="/guide/summary.do"><span>행사소개</span></a></li>
-                                <li><a href="/board/history25.do"><span>지난 전시회</span></a></li>
-                                <li><a href="/board/award.do"><span>올해의 제품상</span></a></li>
-                                <li><a href="/board/bi.do"><span>KIBS BI</span></a></li>
-                                <li><a href="/board/cerify.do"><span>인증 및 수상현황</span></a></li>
+                                <li><a href="<c:url value="/guide/summary.do"/>"><span>행사소개</span></a></li>
+                                <li><a href="<c:url value="/board/history25.do"/>"><span>지난 전시회</span></a></li>
+                                <li><a href="<c:url value="/board/award.do"/>"><span>올해의 제품상</span></a></li>
+                                <li><a href="<c:url value="/board/bi.do"/>"><span>KIBS BI</span></a></li>
+                                <li><a href="<c:url value="/board/cerify.do"/>"><span>인증 및 수상현황</span></a></li>
                                 <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>동시개최행사<br>[한국국제낚시박람회]</span></a></li>
                                 <li><a href="https://www.campingfair.co.kr/camping/" class="outLink" target="_blank"><span>[캠핑&피크닉페어]</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/exhibitor/guide.do"><span>참가기업</span></a>
+                            <a href="<c:url value="/exhibitor/guide.do"/>"><span>참가기업</span></a>
                             <ul class="dept2">
-                                <li><a href="/exhibitor/guide.do"><span>참가기업 안내</span></a></li>
-                                <li><a href="/apply/step01.do"><span>참가신청</span></a></li>
-                                <li><a href="/exhibitor/login.do"><span>참가신청확인</span></a></li>
-                                <li><a href="/exhibitor/faq.do"><span>FAQ</span></a></li>
+                                <li><a href="<c:url value="/exhibitor/guide.do"/>"><span>참가기업 안내</span></a></li>
+                                <li><a href="<c:url value="/apply/step01.do"/>"><span>참가신청</span></a></li>
+                                <li><a href="<c:url value="/exhibitor/login.do"/>"><span>참가신청확인</span></a></li>
+                                <li><a href="<c:url value="/exhibitor/faq.do"/>"><span>FAQ</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/visitor/guide_off.do"><span>참관객</span></a>
+                            <a href="<c:url value="/visitor/guide_off.do"/>"><span>참관객</span></a>
                             <ul class="dept2">
-                                <li><a href="/visitor/guide_off.do"><span>참관안내</span></a></li>
-                                <li><a href="/visitor/apply.do"><span>사전등록</span></a></li>
-                                <li><a href="/guide/conference.do"><span>컨퍼런스</span></a></li>
-                                <li><a href="/guide/program.do"><span>체험 프로그램</span></a></li>
-                                <li><a href="/visitor/login.do"><span>참관신청확인</span></a></li>
-                                <li><a href="/visitor/faq.do"><span>FAQ</span></a></li>
+                                <li><a href="<c:url value="/visitor/guide_off.do"/>"><span>참관안내</span></a></li>
+                                <li><a href="<c:url value="/visitor/apply.do"/>"><span>사전등록</span></a></li>
+                                <li><a href="<c:url value="/guide/conference.do"/>"><span>컨퍼런스</span></a></li>
+                                <li><a href="<c:url value="/guide/program.do"/>"><span>체험 프로그램</span></a></li>
+                                <li><a href="<c:url value="/visitor/login.do"/>"><span>참관신청확인</span></a></li>
+                                <li><a href="<c:url value="/visitor/faq.do"/>"><span>FAQ</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/guide/notice.do"><span>미디어센터</span></a>
+                            <a href="<c:url value="/guide/notice.do"/>"><span>미디어센터</span></a>
                             <ul class="dept2">
-                                <li><a href="/guide/notice.do"><span>공지사항</span></a></li>
-                                <li><a href="/board/gallery.do"><span>갤러리</span></a></li>
-                                <li><a href="/online/kibstv.do"><span>KIBS Tube</span></a></li>
-                                <li><a href="/board/press.do"><span>기사 및 칼럼</span></a></li>
-                                <li><a href="/board/newsletter.do"><span>뉴스레터</span></a></li>
-                                <li><a href="/board/contest.do"><span>해양레저 사진 공모전</span></a></li>
+                                <li><a href="<c:url value="/guide/notice.do"/>"><span>공지사항</span></a></li>
+                                <li><a href="<c:url value="/board/gallery.do"/>"><span>갤러리</span></a></li>
+                                <li><a href="<c:url value="/online/kibstv.do"/>"><span>KIBS Tube</span></a></li>
+                                <li><a href="<c:url value="/board/press.do"/>"><span>기사 및 칼럼</span></a></li>
+                                <li><a href="<c:url value="/board/newsletter.do"/>"><span>뉴스레터</span></a></li>
+                                <li><a href="<c:url value="/board/contest.do"/>"><span>해양레저 사진 공모전</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/online/company.do"><span>온라인 전시관</span></a>
+                            <a href="<c:url value="/online/company.do"/>"><span>온라인 전시관</span></a>
                             <ul class="dept2">
-                                <li><a href="/online/company.do"><span>참가기업 미리보기</span></a></li>
-                                <li><a href="/online/product.do"><span>제품 검색하기</span></a></li>
+                                <li><a href="<c:url value="/online/company.do"/>"><span>참가기업 미리보기</span></a></li>
+                                <li><a href="<c:url value="/online/product.do"/>"><span>제품 검색하기</span></a></li>
                             </ul>
                         </li>
                     </ul>
@@ -212,11 +212,17 @@
             <div class="site_map_box">
                 <div class="site_map_top">
                     <div class="site_map_top_btn">
-                        <a href="/login.do" class="login">LOGIN</a>
-                        <a href="javascript:void(0);" onclick="home('en')" class="language">ENG</a>
+                        <c:if test="${empty sessionScope.get('status')}">
+                            <a href="<c:url value="/login.do"/>" class="login">LOGIN</a>
+                            <a href="javascript:void(0);" onclick="home('en')" class="language">ENG</a>
+                        </c:if>
+                        <c:if test="${not empty sessionScope.get('status')}">
+                            <a href="/logout.do" class="logout">LOGOUT</a>
+                            <a href="javascript:void(0);" onclick="f_page_move('/mypage/index.do',{ id: `${sessionScope.id}` , transferYear: '2026' })" class="mypage">MYPAGE</a>
+                        </c:if>
                     </div>
                     <div class="site_map_top_sns">
-                        <a href="/board/newsletter.do" class="hd_top_sns">
+                        <a href="<c:url value="/board/newsletter.do"/>" class="hd_top_sns">
                             <img src="/img/top_sns_n.png">
                         </a>
                         <a href="https://www.instagram.com/kibskintex/" target="_blank" class="hd_top_sns">
@@ -233,65 +239,65 @@
                 <div class="site_map_nav">
                     <ul class="dept1">
                         <li>
-                            <a href="/guide/summary.do"><span>KIBS 안내</span></a>
+                            <a href="<c:url value="/guide/summary.do"/>"><span>KIBS 안내</span></a>
                             <ul class="dept2">
-                                <li><a href="/guide/summary.do"><span>행사소개</span></a></li>
-                                <li><a href="/board/history25.do"><span>지난 전시회</span></a></li>
-                                <li><a href="/board/award.do"><span>올해의 제품상</span></a></li>
-                                <li><a href="/board/bi.do"><span>KIBS BI</span></a></li>
-                                <li><a href="/board/cerify.do"><span>인증 및 수상현황</span></a></li>
+                                <li><a href="<c:url value="/guide/summary.do"/>"><span>행사소개</span></a></li>
+                                <li><a href="<c:url value="/board/history25.do"/>"><span>지난 전시회</span></a></li>
+                                <li><a href="<c:url value="/board/award.do"/>"><span>올해의 제품상</span></a></li>
+                                <li><a href="<c:url value="/board/bi.do"/>"><span>KIBS BI</span></a></li>
+                                <li><a href="<c:url value="/board/cerify.do"/>"><span>인증 및 수상현황</span></a></li>
                                 <li><a href="https://www.kofish.kr/main/main.php" class="outLink" target="_blank"><span>동시개최행사<br>[한국국제낚시박람회]</span></a></li>
                                 <li><a href="https://www.campingfair.co.kr/camping/" class="outLink" target="_blank"><span>[캠핑&피크닉페어]</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/exhibitor/guide.do"><span>참가기업</span></a>
+                            <a href="<c:url value="/exhibitor/guide.do"/>"><span>참가기업</span></a>
                             <ul class="dept2">
-                                <li><a href="/exhibitor/guide.do"><span>참가기업 안내</span></a></li>
-                                <li><a href="/apply/step01.do"><span>참가기업 신청</span></a></li>
-                                <li><a href="/exhibitor/login.do"><span>참가신청확인</span></a></li>
-                                <li><a href="/exhibitor/faq.do"><span>FAQ</span></a></li>
+                                <li><a href="<c:url value="/exhibitor/guide.do"/>"><span>참가기업 안내</span></a></li>
+                                <li><a href="<c:url value="/apply/step01.do"/>"><span>참가기업 신청</span></a></li>
+                                <li><a href="<c:url value="/exhibitor/login.do"/>"><span>참가신청확인</span></a></li>
+                                <li><a href="<c:url value="/exhibitor/faq.do"/>"><span>FAQ</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/visitor/guide_off.do"><span>참관객</span></a>
+                            <a href="<c:url value="/visitor/guide_off.do"/>"><span>참관객</span></a>
                             <ul class="dept2">
                                 <li>
-                                    <a href="/visitor/guide_off.do"><span>참관안내</span></a>
+                                    <a href="<c:url value="/visitor/guide_off.do"/>"><span>참관안내</span></a>
                                     <ul class="dept3">
-                                        <li><a href="/online/company.do"><span>온라인</span></a></li>
-                                        <li><a href="/visitor/guide_off.do"><span>오프라인</span></a></li>
+                                        <li><a href="<c:url value="/online/company.do"/>"><span>온라인</span></a></li>
+                                        <li><a href="<c:url value="/visitor/guide_off.do"/>"><span>오프라인</span></a></li>
                                     </ul>
                                 </li>
-                                <li><a href="/visitor/apply.do"><span>사전등록</span></a></li>
-                                <li><a href="/guide/conference.do"><span>컨퍼런스</span></a></li>
-                                <li><a href="/guide/program.do"><span>체험 프로그램</span></a></li>
-                                <li><a href="/visitor/login.do"><span>참관신청확인</span></a></li>
-                                <li><a href="/visitor/faq.do"><span>FAQ</span></a></li>
+                                <li><a href="<c:url value="/visitor/apply.do"/>"><span>사전등록</span></a></li>
+                                <li><a href="<c:url value="/guide/conference.do"/>"><span>컨퍼런스</span></a></li>
+                                <li><a href="<c:url value="/guide/program.do"/>"><span>체험 프로그램</span></a></li>
+                                <li><a href="<c:url value="/visitor/login.do"/>"><span>참관신청확인</span></a></li>
+                                <li><a href="<c:url value="/visitor/faq.do"/>"><span>FAQ</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/guide/notice.do"><span>미디어센터</span></a>
+                            <a href="<c:url value="/guide/notice.do"/>"><span>미디어센터</span></a>
                             <ul class="dept2">
-                                <li><a href="/guide/notice.do"><span>공지사항</span></a></li>
-                                <li><a href="/board/gallery.do"><span>갤러리</span></a></li>
-                                <li><a href="/online/kibstv.do"><span>KIBS Tube</span></a></li>
+                                <li><a href="<c:url value="/guide/notice.do"/>"><span>공지사항</span></a></li>
+                                <li><a href="<c:url value="/board/gallery.do"/>"><span>갤러리</span></a></li>
+                                <li><a href="<c:url value="/online/kibstv.do"/>"><span>KIBS Tube</span></a></li>
                                 <li>
-                                    <a href="/board/press.do"><span>기사 및 칼럼</span></a>
+                                    <a href="<c:url value="/board/press.do"/>"><span>기사 및 칼럼</span></a>
                                     <ul class="dept3">
-                                        <li><a href="/board/press.do"><span>보도자료</span></a></li>
-                                        <li><a href="/board/column.do"><span>칼럼</span></a></li>
+                                        <li><a href="<c:url value="/board/press.do"/>"><span>보도자료</span></a></li>
+                                        <li><a href="<c:url value="/board/column.do"/>"><span>칼럼</span></a></li>
                                     </ul>
                                 </li>
-                                <li><a href="/board/newsletter.do"><span>뉴스레터</span></a></li>
-                                <li><a href="/board/contest.do"><span>해양레저 사진 공모전</span></a></li>
+                                <li><a href="<c:url value="/board/newsletter.do"/>"><span>뉴스레터</span></a></li>
+                                <li><a href="<c:url value="/board/contest.do"/>"><span>해양레저 사진 공모전</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/online/company.do"><span>온라인 전시관</span></a>
+                            <a href="<c:url value="/online/company.do"/>"><span>온라인 전시관</span></a>
                             <ul class="dept2">
-                                <li><a href="/online/company.do"><span>참가기업 미리보기</span></a></li>
-                                <li><a href="/online/product.do"><span>제품 검색하기</span></a></li>
+                                <li><a href="<c:url value="/online/company.do"/>"><span>참가기업 미리보기</span></a></li>
+                                <li><a href="<c:url value="/online/product.do"/>"><span>제품 검색하기</span></a></li>
                             </ul>
                         </li>
                     </ul>

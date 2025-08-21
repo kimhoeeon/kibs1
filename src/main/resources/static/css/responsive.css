@@ -318,12 +318,10 @@
 
     #header .hd_top_right a {
         margin-left: 0;
-    }
-
-    #header .hd_top_right .login,
-    #header .hd_top_right .language {
         display: none;
     }
+
+    #header .hd_top_right a.m_menu {display: inline-block !important;}
 
     #header .hd_nav {
         display: none;
@@ -387,11 +385,15 @@
         font-size: 1.4rem;
     }
 
-    .site_map_top_btn .login:after {
+    .site_map_top_btn a:after {
         display: inline-block;
         content: "｜";
         vertical-align: middle;
         margin: 0 3px 2px;
+    }
+
+    .site_map_top_btn a:last-child::after {
+        display: none;
     }
 
     .site_map_top_sns {
