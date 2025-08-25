@@ -63,7 +63,7 @@
                     <a href="https://www.ufi.org/" target="_blank">
                         <img src="/img/top_logo_01.png">
                     </a>
-                    <a href="https://ifbso.com/home" target="_blank">
+                    <a href="https://www.ifbso.com/home" target="_blank">
                         <img src="/img/top_logo_02.png">
                     </a>
                     <a href="/eng/board/newsletter.do" class="hd_top_sns">

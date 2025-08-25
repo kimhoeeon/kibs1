@@ -590,10 +590,18 @@ function requestMakeMailFormat(data){
 
     let note = data.note;
 
-    let cpEmail;
     if(nvl(note,'') === '개발사') {
-        cpEmail = 'eh32408@kintex.com';
+        let cpEmail1 = 'eh32408@kintex.com';
+        receiverArr.push({
+            email: cpEmail1 //받는이 메일주소,
+        });
+
+        let cpEmail2 = 'eh32508@kintex.com';
+        receiverArr.push({
+            email: cpEmail2 //받는이 메일주소,
+        });
     }else{
+        let cpEmail = '';
         // kyj@meetingfan.com
         // khe@meetingfan.com
         // cmn@meetingfan.com
@@ -613,13 +621,11 @@ function requestMakeMailFormat(data){
                 cpEmail = 'kyj@meetingfan.com';
                 break;
         }
-    }
 
-    let receiverObj = {
-        email: cpEmail //받는이 메일주소,
+        receiverArr.push({
+            email: cpEmail //받는이 메일주소,
+        });
     }
-    
-    receiverArr.push(receiverObj);
 
     returnJsonObj = {
         subject: data.subject, //제목

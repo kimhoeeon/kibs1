@@ -103,7 +103,7 @@
     <div class="summ_s summ_s1 padding_tb">
         <div class="inner">
             <div class="summ_box">
-                <div class="summ_poster"><img src="/img/keyvisual26_kor.jpg?ver=20250625"></div>
+                <div class="summ_poster"><img src="/img/keyvisual26_kor.jpg?ver=20250825"></div>
                 <div class="summ_info">
                     <ul class="infoBox">
                         <li>
