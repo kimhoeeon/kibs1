@@ -2282,42 +2282,6 @@ if (document.documentElement) {
                                                             </div>
                                                             <!--end::Input group-->
 
-                                                            <c:if test="${productImageFileList ne null and not empty productImageFileList}">
-
-                                                                <!--begin::Input group-->
-                                                                <div class="row mb-6 preValueList">
-                                                                    <!--begin::Label-->
-                                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">제품 사진 파일목록</label>
-                                                                    <!--end::Label-->
-                                                                    <!--begin::Col-->
-                                                                    <div class="col-lg-10">
-                                                                        <ul>
-                                                                        <c:forEach var="productImageFile" items="${productImageFileList}" begin="0" end="${productImageFileList.size()}" step="1">
-                                                                            <c:set var="idx" value="${status.index + 1}"/>
-                                                                            <c:if test="${fn:contains(productImageFile.note, 'productImage'.concat(idx.toString()).concat('_'))}">
-                                                                                <li class="productImageFile_li">
-                                                                                    <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
-                                                                                    <img src="${productImageFileSrc}" class="w-100px mr10" style="border: 1px solid #009ef7"/>
-                                                                                    <%--<a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>--%>
-                                                                                    <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${productImageFile.folderPath}', '${productImageFile.fullFileName}')">${productImageFile.fileName}</a>
-                                                                                    <input type="hidden" name="productImageUploadFile" id="${productImageFile.id}" value="${productImageFile.fullFilePath}">
-                                                                                    <%--<button type="button" class="ml10" onclick="f_file_remove(this,'${productImageFile.id}')">
-                                                                                        <i class="ki-duotone ki-abstract-11">
-                                                                                            <i class="path1"></i>
-                                                                                            <i class="path2"></i>
-                                                                                        </i>
-                                                                                    </button>--%>
-                                                                                </li>
-                                                                            </c:if>
-                                                                        </c:forEach>
-                                                                        </ul>
-                                                                    </div>
-                                                                    <!--end::Col-->
-                                                                </div>
-                                                                <!--end::Input group-->
-
-                                                            </c:if>
-
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6">
                                                                 <!--begin::Label-->
@@ -2395,19 +2359,6 @@ if (document.documentElement) {
                                                             </div>
                                                             <!--end::Input group-->
 
-                                                            <!--begin::Input group-->
-                                                            <div class="row mb-6">
-                                                                <!--begin::Label-->
-                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">제품 설명</label>
-                                                                <!--end::Label-->
-                                                                <!--begin::Col-->
-                                                                <div class="col-lg-10">
-                                                                    <textarea name="productIntroKo" class="form-control form-control-solid-bg resize-none h-100px" placeholder="국문" disabled>${product.productIntroKo}</textarea>
-                                                                    <textarea name="productIntroEn" class="form-control form-control-solid-bg resize-none h-100px mt5" placeholder="영문" disabled>${product.productIntroEn}</textarea>
-                                                                </div>
-                                                                <!--end::Col-->
-                                                            </div>
-                                                            <!--end::Input group-->
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6">
                                                                 <!--begin::Label-->

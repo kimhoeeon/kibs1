@@ -223,7 +223,7 @@ function f_application_pass_save(seq){
                                 text: '출입증 신청 정보가 저장되었습니다.',
                                 icon: 'info',
                                 allowOutsideClick: false,
-                                confirmButtonColor: '#3085d6',
+                                confirmButtonColor: '#00a8ff',
                                 confirmButtonText: '확인'
                             }).then((result) => {
                                 if (result.isConfirmed) {
@@ -363,7 +363,7 @@ function f_exhibitor_pass_excel_export(){
         icon: 'info',
         allowOutsideClick: false,
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#00a8ff',
         confirmButtonText: '다운로드',
         cancelButtonColor: '#A1A5B7',
         cancelButtonText: '취소'

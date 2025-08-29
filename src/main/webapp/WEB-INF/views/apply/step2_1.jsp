@@ -120,8 +120,9 @@
                         <ul class="list1">
                             <li><a>기본정보</a></li>
                             <li class="active">
-                                <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_1.do','${info.seq}')">전시 신청 정보</a>
+                                <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')">전시 신청 정보</a>
                                 <ul class="list2">
+                                    <li><a>전시품 정보</a></li>
                                     <li class="active"><a>전시부스 신청</a></li>
                                     <li><a>상호간판 신청</a></li>
                                     <li><a>유틸리티 신청</a></li>
@@ -154,9 +155,9 @@
                                 <p>Step 2</p>전시 신청 정보
                             </div>
                             <div class="gauge">
-                                <progress class="gauge_bar" value="3" max="60"></progress>
+                                <progress class="gauge_bar" value="10" max="70"></progress>
                             </div>
-                            <div class="txt">진행중...<p>(총 <span>6</span>개 중 <span>0</span> 완료)</p></div>
+                            <div class="txt">진행중...<p>(총 <span>7</span>개 중 <span>1</span> 완료)</p></div>
                         </div>
                         <div class="apply_step_box step3">
                             <div class="gubun">
@@ -435,9 +436,9 @@
                         <!-- //할인적용 선택-->
 
                         <div class="form_btn">
-                            <a href="javascript:void(0);" onclick="f_page_move('/apply/step01.do','${info.seq}')" class="form_btn_prev">
+                            <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')" class="form_btn_prev">
                                 <div class="big">이전</div>
-                                <div class="small">기본정보</div>
+                                <div class="small">전시품 정보</div>
                             </a>
                             <a href="javascript:void(0);" onclick="f_apply_comp('2_1','${info.seq}')" class="form_btn_next">
                                 <div class="big">다음</div>

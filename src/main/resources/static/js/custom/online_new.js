@@ -146,7 +146,7 @@ function f_online_view_yn(seq, viewYn){
             html: '<span style="font-size: 1.2em;">노출 상태를 변경하시겠습니까 ?<br>현재 노출 상태 : ' + viewStatus + '</span>',
             allowOutsideClick: false,
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인',
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'

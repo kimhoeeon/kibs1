@@ -99,15 +99,16 @@
                     <div class="exh_sh_select">
                         <select id="productOptionBig">
                             <option value="">ALL</option>
-                            <option value="보트&요트">Boat & Yacht</option>
-                            <option value="무동력보트">Paddling Boat</option>
+                            <option value="보트·요트">Boat&Yacht</option>
+                            <option value="무동력보트">Paddler's World</option>
                             <option value="워크보트">Work Boat</option>
-                            <option value="부품&장비">Marine Equipment</option>
-                            <option value="안전&마리나">Safety & Marina</option>
-                            <option value="해양관광">Marine Tourism</option>
                             <option value="해양레저">Marine Leisure</option>
-                            <option value="수중레저">Water Sports</option>
                             <option value="서핑">Surfing</option>
+                            <option value="수중레저">Underwater Leisure</option>
+                            <option value="해양관광">Marine Tourism</option>
+                            <option value="부품&장비">Parts&Equipment</option>
+                            <option value="안전&마리나">Safety&Marina</option>
+                            <option value="기타">Others</option>
                         </select>
                         <div class="badge_box">
                             <div class="txt">Badge</div>

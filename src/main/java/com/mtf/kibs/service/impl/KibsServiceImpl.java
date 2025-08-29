@@ -237,15 +237,6 @@ public class KibsServiceImpl implements KibsService {
                         }
                     }
 
-                    /* 전시품 정보 insert */
-                    if (!StringUtil.isEmpty(exhibitorNewDTO.getProductList())) {
-                        for (int i = 0; i < exhibitorNewDTO.getProductList().size(); i++) {
-                            ProductNewDTO productNewDTO = exhibitorNewDTO.getProductList().get(i);
-                            productNewDTO.setExSeq(exhibitorNewSeq);
-                            Integer step01_dis_result = kibsMapper.insertProductNew(productNewDTO);
-                        }
-                    }
-
                     /* 온라인 전시관 정보 insert */
                     if (!StringUtil.isEmpty(exhibitorNewDTO.getOnlineList())) {
                         for (int i = 0; i < exhibitorNewDTO.getOnlineList().size(); i++) {
@@ -347,19 +338,6 @@ public class KibsServiceImpl implements KibsService {
                     }
                 }
 
-                /* product_new table update */
-                List<ProductNewDTO> productNewList = exhibitorNewDTO.getProductList();
-                if (productNewList != null) {
-                    for (ProductNewDTO productNew : productNewList) {
-                        String productNewSeq = productNew.getSeq();
-                        if (productNewSeq != null & !Objects.equals(productNewSeq, "")) {
-                            Integer updateResult = kibsMapper.updateProductNew(productNew);
-                        } else {
-                            Integer insertResult = kibsMapper.insertProductNew(productNew);
-                        }
-                    }
-                }
-
                 /* online table update */
                 List<OnlineNewDTO> onlineNewList = exhibitorNewDTO.getOnlineList();
                 if (onlineNewList != null) {
@@ -439,6 +417,51 @@ public class KibsServiceImpl implements KibsService {
             updFileDTO.setNote("onlineImage" + onlineNote + "_" + (i + 1));
             Integer updFileNote = kibsMapper.updateImageFileNote(updFileDTO);
         }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processSaveProductNew(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processSaveProductNew : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            Integer result = kibsMapper.updateExhibitorNewBoatEntryYn(exhibitorNewDTO);
+            if (result > 0) {
+                String boatEntryYn = exhibitorNewDTO.getBoatEntryYn();
+                if("Y".equals(boatEntryYn)) {
+                    List<ProductNewDTO> productNewList = exhibitorNewDTO.getProductList();
+                    if (productNewList != null && !productNewList.isEmpty()) {
+                        for (ProductNewDTO productNewDTO : productNewList) {
+                            String productNewSeq = productNewDTO.getSeq();
+                            if (productNewSeq != null & !Objects.equals(productNewSeq, "")) {
+                                kibsMapper.updateProductNew(productNewDTO);
+                            }else{
+                                kibsMapper.insertProductNew(productNewDTO);
+                            }
+                        }
+                    }
+                }else{
+                    String exSeq = exhibitorNewDTO.getSeq();
+                    kibsMapper.deleteProductNewExSeq(exSeq);
+                }
+
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "updateExhibitorNewBoatEntryYn FAIL : " + exhibitorNewDTO.getSeq();
+            }
+
+        } catch (Exception e) {
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[step2_9] processSaveProductNew Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})

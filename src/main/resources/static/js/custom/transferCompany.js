@@ -1107,7 +1107,7 @@ function f_transfer_exhibitor_save(seq){
                                         title: '[ 참가업체 정보 ]',
                                         html: '<span style="font-size: 1.2em;">참가업체 정보가 저장되었습니다.</span>',
                                         allowOutsideClick: false,
-                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonColor: '#00a8ff',
                                         confirmButtonText: '확인'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
@@ -1402,7 +1402,7 @@ function f_transfer_company_excel_export(){
         html: '전시업체 상세를 다운로드하시겠습니까 ?<br><span style="font-weight: bold; font-size: 1rem;">' +
             '( 데이터가 많을 경우 시간이 소요될 수 있습니다. )<br>( 해당 창이 닫혀도 다운로드가 완료될 때까지<br>대기해 주세요. )</span>',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#00a8ff',
         confirmButtonText: '확인',
         cancelButtonColor: '#A1A5B7',
         cancelButtonText: '취소'

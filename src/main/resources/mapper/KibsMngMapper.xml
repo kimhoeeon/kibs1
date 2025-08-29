@@ -2402,9 +2402,6 @@
              , product_weight
              , product_material
              , product_year
-             , product_intro_ko
-             , product_intro_en
-             , product_link
              , note
              , init_regi_pic
              , init_regi_dttm
@@ -4958,25 +4955,16 @@
     <select id="selectMngProductNewList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.MngProductDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectMngProductNewList */
         SELECT e.seq
-             , e.transfer_year
+             , e.boat_entry_yn
              , e.company_name_ko
              , e.company_name_en
-             , p.product_option_big
-             , p.product_option_small
-             , p.product_name_ko
-             , p.product_name_en
-             , p.product_qty
-             , p.product_brand
-             , p.product_length
-             , p.product_width
-             , p.product_height
-             , p.product_weight
-             , p.product_material
-             , p.product_year
+             , e.name
+             , e.position
+             , e.phone
              , e.init_regi_dttm
-             , e.final_regi_dttm
+             , IFNULL(SUM(p.product_qty), 0) AS productCount
         FROM exhibitor_new e
-        JOIN product_new p
+        LEFT JOIN product_new p
         ON e.seq = p.ex_seq
         WHERE 1=1
         <if test='searchText != null and searchText != ""'>
@@ -4990,7 +4978,8 @@
         <if test='transferYear != null and transferYear != ""'>
             AND e.transfer_year = #{transferYear}
         </if>
-        ORDER BY e.company_online_view_yn DESC , e.transfer_year DESC , e.company_name_ko ASC , e.company_name_en ASC
+        GROUP BY e.seq, e.boat_entry_yn, e.company_name_ko, e.company_name_en, e.name, e.position, e.phone, e.init_regi_dttm
+        ORDER BY e.init_regi_dttm DESC
     </select>
 
     <update id="updateViewYn" parameterType="com.mtf.kibs.dto.ExhibitorDTO">

@@ -239,4 +239,6 @@ public interface KibsService {
     void insertBusiness(BusinessDTO businessDTO);
 
     List<ContestDTO> processSelectContestList(SearchDTO searchDTO);
+
+    ResponseDTO processSaveProductNew(ExhibitorNewDTO exhibitorNewDTO);
 }

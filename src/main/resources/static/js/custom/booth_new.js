@@ -109,7 +109,7 @@ function f_application_booth_new_search(){
                 title: '[ 검색 조건 확인 ]',
                 html: '<span style="font-size: 1.2em;">검색 조건이 신청갯수일 경우<br>숫자로만 검색 가능합니다.</span>',
                 allowOutsideClick: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00a8ff',
                 confirmButtonText: '확인'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -268,7 +268,7 @@ function f_application_booth_new_save(seq){
                             title: '[ 전시부스 정보 ]',
                             html: '<span style="font-size: 1.2em;">전시 부스 정보가 저장되었습니다.</span>',
                             allowOutsideClick: false,
-                            confirmButtonColor: '#3085d6',
+                            confirmButtonColor: '#00a8ff',
                             confirmButtonText: '확인'
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -910,7 +910,7 @@ function f_invoice_booth_create(exSeq, companyNameKo){
                                     title: '[ 인보이스 ]',
                                     html: '<span style="font-size: 1.2em;">인보이스가 생성되었습니다.</span>',
                                     allowOutsideClick: false,
-                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonColor: '#00a8ff',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -968,7 +968,7 @@ function f_invoice_booth_delete(exSeq){
                                     title: '[ 인보이스 ]',
                                     html: '<span style="font-size: 1.2em;">인보이스가 삭제되었습니다.</span>',
                                     allowOutsideClick: false,
-                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonColor: '#00a8ff',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -1012,7 +1012,7 @@ function f_invoice_booth_send(exSeq){
             html: swal_html,
             allowOutsideClick: false,
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '발송',
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'
@@ -1077,7 +1077,7 @@ function f_invoice_booth_send(exSeq){
                                     title: '[ 인보이스 ]',
                                     html: '<span style="font-size: 1.2em;">인보이스가 발송되었습니다.</span>',
                                     allowOutsideClick: false,
-                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonColor: '#00a8ff',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -1325,7 +1325,7 @@ function f_exhibitor_application_booth_new_excel_export(){
         html: '전시업체 상세를 다운로드하시겠습니까 ?',
         allowOutsideClick: false,
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#00a8ff',
         confirmButtonText: '확인',
         cancelButtonColor: '#A1A5B7',
         cancelButtonText: '취소'

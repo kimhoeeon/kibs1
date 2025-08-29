@@ -189,7 +189,7 @@ function f_application_gift_new_save(seq){
                                 title: '[ 경품제공 정보 ]',
                                 html: '<span style="font-size: 1.2em;">경품 신청 정보가 저장되었습니다.</span>',
                                 allowOutsideClick: false,
-                                confirmButtonColor: '#3085d6',
+                                confirmButtonColor: '#00a8ff',
                                 confirmButtonText: '확인'
                             }).then((result) => {
                                 if (result.isConfirmed) {

@@ -114,6 +114,7 @@
                         <li class="active">
                             <a>전시 신청 정보</a>
                             <ul class="list2">
+                                <li><a>전시품 정보</a></li>
                                 <li><a>전시부스 신청</a></li>
                                 <li><a>상호간판 신청</a></li>
                                 <li><a>유틸리티 신청</a></li>
@@ -146,9 +147,9 @@
                             <p>Step 2</p>전시 신청 정보
                         </div>
                         <div class="gauge">
-                            <progress class="gauge_bar" value="50" max="60"></progress>
+                            <progress class="gauge_bar" value="60" max="70"></progress>
                         </div>
-                        <div class="txt">진행중...<p>(총 <span>6</span>개 중 <span>5</span> 완료)</p></div>
+                        <div class="txt">진행중...<p>(총 <span>7</span>개 중 <span>6</span> 완료)</p></div>
                     </div>
                     <div class="apply_step_box step3">
                         <div class="gubun">
@@ -517,57 +518,6 @@
                                         </div>
                                         <div class="input">
                                             ${product.productYear}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="item">
-                                            <p>제품 설명(국문)</p>
-                                        </div>
-                                        <div class="input">
-                                            ${fn:replace(fn:replace(fn:escapeXml(product.productIntroKo), CRLF, '<br/>'), LF, '<br/>')}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="item">
-                                            <p>제품 설명(영문)</p>
-                                        </div>
-                                        <div class="input">
-                                            ${fn:replace(fn:replace(fn:escapeXml(product.productIntroEn), CRLF, '<br/>'), LF, '<br/>')}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="item">
-                                            <p>제품 사진</p>
-                                        </div>
-                                        <div class="input">
-                                            <ul>
-                                                <c:forEach var="productImageFile" items="${productImageFileList}" begin="0" end="${productImageFileList.size()}" step="1">
-                                                    <c:set var="idx" value="${status.index + 1}"/>
-                                                    <c:if test="${fn:contains(productImageFile.note, 'productImage'.concat(idx.toString()).concat('_'))}">
-                                                        <li class="productImageFile_li" style="align-items: center; margin-bottom: 5px;">
-                                                            <c:if test="${fn:substring(productImageFile.note, fn:length(productImageFile.note)-2, fn:length(productImageFile.note)) eq '_1'}">
-                                                                <span style="color: #FF0083">메인 이미지 : </span>
-                                                            </c:if>
-                                                            <c:if test="${fn:substring(productImageFile.note, fn:length(productImageFile.note)-2, fn:length(productImageFile.note)) ne '_1'}">
-                                                                <span style="color: #FF0083"><c:out value="${fn:substring(productImageFile.note, fn:indexOf(productImageFile.note, '_')+1, fn:length(productImageFile.note))}"/> : </span>
-                                                            </c:if>
-                                                            <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
-                                                            <img src="${productImageFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin: 0 10px;"/>
-                                                                <%--<a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>--%>
-                                                            <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${productImageFile.folderPath}', '${productImageFile.fullFileName}')">${productImageFile.fileName}</a>
-                                                            <input type="hidden" name="productImageUploadFile" id="${productImageFile.id}" value="${productImageFile.fullFilePath}">
-                                                        </li>
-                                                    </c:if>
-                                                </c:forEach>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="item">
-                                            <p>제품링크</p>
-                                        </div>
-                                        <div class="input">
-                                            ${product.productLink}
                                         </div>
                                     </li>
                                 </ul>

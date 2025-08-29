@@ -104,15 +104,16 @@
                     <div class="exh_sh_select">
                         <select id="productOptionBig">
                             <option value="">전체보기</option>
-                            <option value="보트&요트">보트&요트</option>
+                            <option value="보트·요트">보트·요트</option>
                             <option value="무동력보트">무동력보트</option>
                             <option value="워크보트">워크보트</option>
+                            <option value="해양레저">해양레저</option>
+                            <option value="서핑">서핑</option>
+                            <option value="수중레저">수중레저</option>
+                            <option value="해양관광">해양관광</option>
                             <option value="부품&장비">부품&장비</option>
                             <option value="안전&마리나">안전&마리나</option>
-                            <option value="해양관광">해양관광</option>
-                            <option value="해양레저">해양레저</option>
-                            <option value="수중레저">수중레저</option>
-                            <option value="서핑">서핑</option>
+                            <option value="기타">기타</option>
                         </select>
                         <div class="badge_box">
                             <div class="txt">뱃지 선택</div>

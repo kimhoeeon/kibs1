@@ -112,6 +112,7 @@
                         <li class="active">
                             <a>전시 신청 정보</a>
                             <ul class="list2">
+                                <li><a>전시품 정보</a></li>
                                 <li><a>전시부스 신청</a></li>
                                 <li><a>상호간판 신청</a></li>
                                 <li><a>유틸리티 신청</a></li>
@@ -144,9 +145,9 @@
                             <p>Step 2</p>전시 신청 정보
                         </div>
                         <div class="gauge">
-                            <progress class="gauge_bar" value="40" max="60"></progress>
+                            <progress class="gauge_bar" value="50" max="70"></progress>
                         </div>
-                        <div class="txt">진행중...<p>(총 <span>6</span>개 중 <span>4</span> 완료)</p></div>
+                        <div class="txt">진행중...<p>(총 <span>7</span>개 중 <span>5</span> 완료)</p></div>
                     </div>
                     <div class="apply_step_box step3">
                         <div class="gubun">

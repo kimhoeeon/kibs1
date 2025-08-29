@@ -574,12 +574,6 @@ public class KibsMngController {
                 List<ChargeNewDTO> chargeList = kibsMngService.processSelectChargeNewList(chargeNewReq);
                 mv.addObject("chargeList", chargeList);
 
-                /* 전시품 정보 */
-                ProductNewDTO productNewReq = new ProductNewDTO();
-                productNewReq.setExSeq(exhibitor_new_seq);
-                List<ProductNewDTO> productList = kibsMngService.processSelectProductNewList(productNewReq);
-                mv.addObject("productList", productList);
-
                 /* 온라인정보 */
                 OnlineNewDTO onlineNewReq = new OnlineNewDTO();
                 onlineNewReq.setExSeq(exhibitor_new_seq);
@@ -596,7 +590,6 @@ public class KibsMngController {
                 FileDTO fileReq = new FileDTO();
                 fileReq.setUserId(exhibitor_new_seq);
                 List<FileDTO> fileList = kibsMngService.processSelectFileList(fileReq);
-                List<FileDTO> productImageFileList = new ArrayList<>();
                 List<FileDTO> onlineImageFileList = new ArrayList<>();
                 for (FileDTO fileInfo : fileList) {
                     String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
@@ -607,9 +600,6 @@ public class KibsMngController {
                         case "logo":
                             mv.addObject("logoFile", fileInfo);
                             break;
-                        case "productImage":
-                            productImageFileList.add(fileInfo);
-                            break;
                         case "onlineImage":
                             onlineImageFileList.add(fileInfo);
                             break;
@@ -617,7 +607,6 @@ public class KibsMngController {
                             break;
                     }
                 }
-                mv.addObject("productImageFileList", productImageFileList);
                 mv.addObject("onlineImageFileList", onlineImageFileList);
             }
 
@@ -1494,18 +1483,6 @@ public class KibsMngController {
             List<ProductNewDTO> productList = kibsMngService.processSelectProductNewList(productReq);
             mv.addObject("productList", productList);
 
-            /* 파일정보 */
-            FileDTO fileReq = new FileDTO();
-            fileReq.setUserId(seq);
-            List<FileDTO> fileList = kibsMngService.processSelectFileList(fileReq);
-            List<FileDTO> productImageFileList = new ArrayList<>();
-            for (FileDTO fileInfo : fileList) {
-                String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
-                if ("productImage".equals(fileNote)) {
-                    productImageFileList.add(fileInfo);
-                }
-            }
-            mv.addObject("productImageFileList", productImageFileList);
         }
         mv.setViewName("/mng/exhibitorNew/application/product/detail");
         return mv;

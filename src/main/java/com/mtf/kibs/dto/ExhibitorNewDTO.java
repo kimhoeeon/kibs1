@@ -89,6 +89,7 @@ public class ExhibitorNewDTO {
     String fieldPart; //참가분야
 
     //전시품 정보
+    String boatEntryYn; // 요트/보트 출품 여부
     List<ProductNewDTO> productList; //전시품정보
 
     //온라인 전시관 정보

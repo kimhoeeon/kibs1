@@ -292,14 +292,14 @@ public class KibsController {
         System.out.println("KibsController > apply_step01");
         ModelAndView mv = new ModelAndView();
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-        String today = dateFormat.format(new Date());
-        if(Long.parseLong(today) > Long.parseLong("202502261559")){
-            mv.addObject("mode", "end");
-        }
-
         if(mode != null && !mode.isEmpty()){
             mv.addObject("mode", mode);
+        }else {
+            DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+            String today = dateFormat.format(new Date());
+            if (Long.parseLong(today) > Long.parseLong("202509080859")) {
+                mv.addObject("mode", "open");
+            }
         }
 
         /* 기본정보 - 참가업체 정보 */
@@ -330,12 +330,6 @@ public class KibsController {
             List<ChargeNewDTO> chargeList = kibsService.processSelectChargeNewList(chargeNewReq);
             mv.addObject("chargeList", chargeList);
 
-            /* 전시품 정보 */
-            ProductNewDTO productNewReq = new ProductNewDTO();
-            productNewReq.setExSeq(exhibitor_new_seq);
-            List<ProductNewDTO> productList = kibsService.processSelectProductNewList(productNewReq);
-            mv.addObject("productList", productList);
-
             /* 온라인정보 */
             OnlineNewDTO onlineNewReq = new OnlineNewDTO();
             onlineNewReq.setExSeq(exhibitor_new_seq);
@@ -350,7 +344,6 @@ public class KibsController {
 
             /* 파일정보 */
             List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_new_seq);
-            List<FileDTO> productImageFileList = new ArrayList<>();
             List<FileDTO> onlineImageFileList = new ArrayList<>();
             for (FileDTO fileInfo : fileList) {
                 String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
@@ -361,9 +354,6 @@ public class KibsController {
                     case "logo":
                         mv.addObject("logoFile", fileInfo);
                         break;
-                    case "productImage":
-                        productImageFileList.add(fileInfo);
-                        break;
                     case "onlineImage":
                         onlineImageFileList.add(fileInfo);
                         break;
@@ -371,7 +361,6 @@ public class KibsController {
                         break;
                 }
             }
-            mv.addObject("productImageFileList", productImageFileList);
             mv.addObject("onlineImageFileList", onlineImageFileList);
         }
 
@@ -379,6 +368,44 @@ public class KibsController {
         return mv;
     }
 
+    @RequestMapping(value = "/apply/step2_9.do", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView apply_step2_9(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > apply_step2_9");
+        ModelAndView mv = new ModelAndView();
+
+        /* 기본정보 - 참가업체 정보 */
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
+        }else{
+            String id = String.valueOf(session.getAttribute("id"));
+            String transferYear = String.valueOf(session.getAttribute("transferYear"));
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
+            reqDTO.setId(id);
+            reqDTO.setTransferYear(transferYear);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
+            if(exInfo != null){
+                exhibitor_new_seq = exInfo.getSeq();
+            }
+        }
+
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            mv.addObject("info", exInfo);
+
+            /* 전시품 정보 */
+            ProductNewDTO productNewReq = new ProductNewDTO();
+            productNewReq.setExSeq(exhibitor_new_seq);
+            List<ProductNewDTO> productList = kibsService.processSelectProductNewList(productNewReq);
+            mv.addObject("productList", productList);
+
+        }else{
+            session.invalidate(); //세션 초기화
+        }
+        mv.setViewName("/apply/step2_9");
+        return mv;
+    }
+    
     @RequestMapping(value = "/apply/step2_1.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step2_1(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
         System.out.println("KibsController > apply_step2_1");
@@ -612,7 +639,6 @@ public class KibsController {
 
             /* 파일정보 */
             List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_new_seq);
-            List<FileDTO> productImageFileList = new ArrayList<>();
             List<FileDTO> onlineImageFileList = new ArrayList<>();
             for (FileDTO fileInfo : fileList) {
                 String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
@@ -623,9 +649,6 @@ public class KibsController {
                     case "logo":
                         mv.addObject("logoFile", fileInfo);
                         break;
-                    case "productImage":
-                        productImageFileList.add(fileInfo);
-                        break;
                     case "onlineImage":
                         onlineImageFileList.add(fileInfo);
                         break;
@@ -633,7 +656,6 @@ public class KibsController {
                         break;
                 }
             }
-            mv.addObject("productImageFileList", productImageFileList);
             mv.addObject("onlineImageFileList", onlineImageFileList);
         }
 
@@ -1362,8 +1384,8 @@ public class KibsController {
                 ExhibitorNewDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorNewInfo(seq);
                 mv.addObject("exhibitorInfo", exhibitorInfo);
 
-                List<ProductNewDTO> productList = kibsService.processSelectProductNewInfoList(seq);
-                mv.addObject("productList", productList);
+                /*List<ProductNewDTO> productList = kibsService.processSelectProductNewInfoList(seq);
+                mv.addObject("productList", productList);*/
 
                 List<OnlineNewDTO> onlineList = kibsService.processSelectOnlineNewInfoList(seq);
                 mv.addObject("onlineList", onlineList);
@@ -1683,12 +1705,6 @@ public class KibsController {
             List<ChargeNewDTO> chargeList = kibsService.processSelectChargeNewList(chargeNewReq);
             mv.addObject("chargeList", chargeList);
 
-            /* 전시품 정보 */
-            ProductNewDTO productNewReq = new ProductNewDTO();
-            productNewReq.setExSeq(exhibitor_new_seq);
-            List<ProductNewDTO> productList = kibsService.processSelectProductNewList(productNewReq);
-            mv.addObject("productList", productList);
-
             /* 온라인정보 */
             OnlineNewDTO onlineNewReq = new OnlineNewDTO();
             onlineNewReq.setExSeq(exhibitor_new_seq);
@@ -1703,7 +1719,6 @@ public class KibsController {
 
             /* 파일정보 */
             List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_new_seq);
-            List<FileDTO> productImageFileList = new ArrayList<>();
             List<FileDTO> onlineImageFileList = new ArrayList<>();
             for (FileDTO fileInfo : fileList) {
                 String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
@@ -1714,9 +1729,6 @@ public class KibsController {
                     case "logo":
                         mv.addObject("logoFile", fileInfo);
                         break;
-                    case "productImage":
-                        productImageFileList.add(fileInfo);
-                        break;
                     case "onlineImage":
                         onlineImageFileList.add(fileInfo);
                         break;
@@ -1724,7 +1736,6 @@ public class KibsController {
                         break;
                 }
             }
-            mv.addObject("productImageFileList", productImageFileList);
             mv.addObject("onlineImageFileList", onlineImageFileList);
         }else{
             session.invalidate(); //세션 초기화
@@ -1816,6 +1827,44 @@ public class KibsController {
         ResponseDTO responseDTO = kibsService.processDeleteFile(fileDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mypage/step2_9.do", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView mypage_step2_9(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > mypage_step2_9");
+        ModelAndView mv = new ModelAndView();
+
+        /* 기본정보 - 참가업체 정보 */
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
+        }else{
+            String id = String.valueOf(session.getAttribute("id"));
+            String transferYear = String.valueOf(session.getAttribute("transferYear"));
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
+            reqDTO.setId(id);
+            reqDTO.setTransferYear(transferYear);
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
+            if(exInfo != null){
+                exhibitor_new_seq = exInfo.getSeq();
+            }
+        }
+
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            mv.addObject("info", exInfo);
+
+            /* 전시품 정보 */
+            ProductNewDTO productNewReq = new ProductNewDTO();
+            productNewReq.setExSeq(exhibitor_new_seq);
+            List<ProductNewDTO> productList = kibsService.processSelectProductNewList(productNewReq);
+            mv.addObject("productList", productList);
+
+        }else{
+            session.invalidate(); //세션 초기화
+        }
+        mv.setViewName("/mypage/step2_9");
+        return mv;
     }
 
     @RequestMapping(value = "/mypage/step2_1.do", method = {RequestMethod.GET, RequestMethod.POST})
@@ -2924,10 +2973,18 @@ public class KibsController {
                 ExhibitorNewDTO exhibitorInfo = kibsService.processSelectOnlineExhibitorNewInfo(seq);
                 mv.addObject("exhibitorInfo", exhibitorInfo);
 
-                List<ProductNewDTO> productList = kibsService.processSelectProductNewInfoList(seq);
-                mv.addObject("productList", productList);
+                /*List<ProductNewDTO> productList = kibsService.processSelectProductNewInfoList(seq);
+                for(ProductNewDTO productInfo : productList){
+                    productInfo.setProductOptionBig(convertOptionBig(productInfo.getProductOptionBig()));
+                    productInfo.setProductOptionSmall(convertOptionSmall(productInfo.getProductOptionSmall()));
+                }
+                mv.addObject("productList", productList);*/
 
                 List<OnlineNewDTO> onlineList = kibsService.processSelectOnlineNewInfoList(seq);
+                for(OnlineNewDTO onlineInfo : onlineList){
+                    onlineInfo.setOnlineOptionBig(convertOptionBig(onlineInfo.getOnlineOptionBig()));
+                    onlineInfo.setOnlineOptionSmall(convertOptionSmall(onlineInfo.getOnlineOptionSmall()));
+                }
                 mv.addObject("onlineList", onlineList);
             } else {
                 mv.addObject("gbn", "E");
@@ -2936,6 +2993,10 @@ public class KibsController {
                 mv.addObject("exhibitorInfo", exhibitorInfo);
 
                 List<OnlineDTO> onlineList = kibsService.processSelectOnlineInfoList(seq);
+                for(OnlineDTO onlineInfo : onlineList){
+                    onlineInfo.setProductOptionBig(convertOptionBig(onlineInfo.getProductOptionBig()));
+                    onlineInfo.setProductOptionSmall(convertOptionSmall(onlineInfo.getProductOptionSmall()));
+                }
                 mv.addObject("onlineList", onlineList);
             }
 
@@ -3009,6 +3070,8 @@ public class KibsController {
                 mv.addObject("gbn", "PN");
 
                 ProductNewDTO productInfo = kibsService.processSelectProductNewInfo(seq);
+                productInfo.setProductOptionBig(convertOptionBig(productInfo.getProductOptionBig()));
+                productInfo.setProductOptionSmall(convertOptionSmall(productInfo.getProductOptionSmall()));
                 mv.addObject("productInfo", productInfo);
 
                 if (productInfo != null) {
@@ -3021,9 +3084,17 @@ public class KibsController {
 
                     /* 같은 회사 제품 */
                     List<ProductNewDTO> productItemList = kibsService.processSelectProductNewInfoList(exSeq);
+                    for(ProductNewDTO productSameInfo : productItemList){
+                        productSameInfo.setProductOptionBig(convertOptionBig(productSameInfo.getProductOptionBig()));
+                        productSameInfo.setProductOptionSmall(convertOptionSmall(productSameInfo.getProductOptionSmall()));
+                    }
                     mv.addObject("productItemList", productItemList);
 
                     List<OnlineNewDTO> onlineItemList = kibsService.processSelectOnlineNewInfoList(exSeq);
+                    for(OnlineNewDTO onlineSameInfo : onlineItemList){
+                        onlineSameInfo.setOnlineOptionBig(convertOptionBig(onlineSameInfo.getOnlineOptionBig()));
+                        onlineSameInfo.setOnlineOptionSmall(convertOptionSmall(onlineSameInfo.getOnlineOptionSmall()));
+                    }
                     mv.addObject("onlineItemList", onlineItemList);
 
                     /* 관련 제품 */
@@ -3048,6 +3119,8 @@ public class KibsController {
                 mv.addObject("gbn", "ON");
 
                 OnlineNewDTO onlineInfo = kibsService.processSelectOnlineNewInfo(seq);
+                onlineInfo.setOnlineOptionBig(convertOptionBig(onlineInfo.getOnlineOptionBig()));
+                onlineInfo.setOnlineOptionSmall(convertOptionSmall(onlineInfo.getOnlineOptionSmall()));
                 mv.addObject("onlineInfo", onlineInfo);
 
                 if (onlineInfo != null) {
@@ -3060,9 +3133,17 @@ public class KibsController {
 
                     /* 같은 회사 제품 */
                     List<ProductNewDTO> productItemList = kibsService.processSelectProductNewInfoList(id);
+                    for(ProductNewDTO productSameInfo : productItemList){
+                        productSameInfo.setProductOptionBig(convertOptionBig(productSameInfo.getProductOptionBig()));
+                        productSameInfo.setProductOptionSmall(convertOptionSmall(productSameInfo.getProductOptionSmall()));
+                    }
                     mv.addObject("productItemList", productItemList);
 
                     List<OnlineNewDTO> onlineItemList = kibsService.processSelectOnlineNewInfoList(id);
+                    for(OnlineNewDTO onlineSameInfo : onlineItemList){
+                        onlineSameInfo.setOnlineOptionBig(convertOptionBig(onlineSameInfo.getOnlineOptionBig()));
+                        onlineSameInfo.setOnlineOptionSmall(convertOptionSmall(onlineSameInfo.getOnlineOptionSmall()));
+                    }
                     mv.addObject("onlineItemList", onlineItemList);
 
                     /* 관련 제품 */
@@ -3087,6 +3168,8 @@ public class KibsController {
                 mv.addObject("gbn", "O");
 
                 OnlineDTO onlineInfo = kibsService.processSelectOnlineInfo(seq);
+                onlineInfo.setProductOptionBig(convertOptionBig(onlineInfo.getProductOptionBig()));
+                onlineInfo.setProductOptionSmall(convertOptionSmall(onlineInfo.getProductOptionSmall()));
                 mv.addObject("onlineInfo", onlineInfo);
 
                 if (onlineInfo != null) {
@@ -3099,6 +3182,10 @@ public class KibsController {
 
                     /* 같은 회사 제품 */
                     List<OnlineDTO> onlineItemList = kibsService.processSelectOnlineInfoList(id);
+                    for(OnlineDTO onlineSameInfo : onlineItemList){
+                        onlineSameInfo.setProductOptionBig(convertOptionBig(onlineSameInfo.getProductOptionBig()));
+                        onlineSameInfo.setProductOptionSmall(convertOptionSmall(onlineSameInfo.getProductOptionSmall()));
+                    }
                     mv.addObject("onlineItemList", onlineItemList);
 
                     /* 관련 제품 */
@@ -3193,6 +3280,15 @@ public class KibsController {
         if(response.getResultCode().equals("0")){
             session.setAttribute("id", exhibitorNewDTO.getId());
         }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/apply/step/saveProductNew.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> saveProductNew(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        System.out.println("KibsController > saveProductNew");
+        //System.out.println(exhibitorDTO.toString());
+        ResponseDTO response = kibsService.processSaveProductNew(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -3453,6 +3549,312 @@ public class KibsController {
         SmsResponseDTO response = commService.smsSend(smsDTO);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public String convertOptionBig(String optionBig){
+        String result = optionBig;
+        //"보트·요트", "무동력보트", "워크보트", "해양레저", "서핑", "수중레저", "해양관광", "부품&장비", "안전&마리나", "기타"
+        //"boat&yacht", "paddler's world", "work boat", "marine leisure", "surfing", "underwater leisure", "marine tourism", "parts&equipment", "safety&marina", "Others"
+        if(optionBig != null && !optionBig.isEmpty()){
+            switch (optionBig){
+                // 기존 -----------------
+                case "요트·보트":
+                    result = "Yacht&Boat";
+                    break;
+                case "워터스포츠":
+                    result = "Water sports";
+                    break;
+                case "다이빙":
+                    result = "Diving";
+                    break;
+                // 기존 -----------------
+                case "보트·요트":
+                    result = "Boat&Yacht";
+                    break;
+                case "무동력보트":
+                    result = "Paddler's World";
+                    break;
+                case "워크보트":
+                    result = "Work Boat";
+                    break;
+                case "해양레저":
+                    result = "Marine Leisure";
+                    break;
+                case "서핑":
+                    result = "Surfing";
+                    break;
+                case "수중레저":
+                    result = "Underwater Leisure";
+                    break;
+                case "해양관광":
+                    result = "Marine Tourism";
+                    break;
+                case "부품&장비":
+                    result = "Parts&Equipment";
+                    break;
+                case "안전&마리나":
+                    result = "Safety&Marina";
+                    break;
+                case "기타":
+                    result = "Others";
+                    break;
+            }
+        }
+
+        return result;
+    }
+
+    public String convertOptionSmall(String optionSmall){
+        // 보트·요트
+        // "파워보트", "세일요트", "고무보트", "콤비보트", "FRP보트", "알루미늄보트", "카본보트", "복합소재보트"
+        // "Power Boat", "Sailing Yacht", "Inflatable Boat", "Rigid-hulled Inflatable Boat(RHIB)", "Fiberglass Boat", "Aluminum Boat", "Carbon Fiber Boat", "Composite Boat"
+        // 무동력보트
+        // "카누", "카약", "조정", "노보트", "SUP", "딩기요트", "무동력보트"
+        // "Canoe", "Kayak", "Rowing Shell", "Rowboat", "Stand-Up Paddleboard", "Dinghy", "Sail-Only Yacht"
+        // 워크보트
+        // "관공선", "소방선", "구조선", "감시선", "행정선", "고속단정", "특수선박"
+        // "Government Vessel", "Firefighting Vessel", "Rescue Vessel", "Patrol Vessel", "Public Service Vessel", "High-Speed RIB", "Special Purpose Vessel"
+        // 해양레저
+        // "수상오토바이", "수상스키", "웨이크보드", "해양레저 서비스"
+        // "Personal Watercraft", "Water Skis", "Wakeboard", "Marine Leisure Services"
+        // 서핑
+        // "서핑장비", "서프웨어&라이프 스타일", "서핑체험"
+        // "Surfing Equipment", "Surfwear & Lifestyle", "Surfing Experience"
+        // 수중레저
+        // "다이빙 장비", "다이빙 서비스", "다이빙 교육", "스킨스쿠버", "스노우쿨링"
+        // "Diving Equipment", "Diving Services", "Diving Education", "Scuba Diving", "Snorkeling"
+        // 해양관광
+        // "관광 서비스", "보트대여", "요트대여", "관광상품"
+        // "Tourism Services", "Boat Rental", "Yacht Rental", "Tour Products"
+        // 부품&장비
+        // "선외기", "선내기", "스턴드라이브 엔진", "가이드모터", "프로펠러", "마린스피커", "케이블류", "앵커", "무어링", "어군탐지기", "네비게이션", "레이더", "무선통신장비", "기타"
+        // "Outboard Engine", "Inboard Engine", "Stern Drive Engine", "Trolling Motor", "Propeller", "Marine Speaker", "Marine Cables", "Anchor", "Mooring", "Fish Finder", "Marine Navigation System", "Marine Radar", "Marine Radio Equipment", "ETC"
+        // 안전&마리나
+        // "선박 보관 임대", "선박 유지보수", "방제장비", "워터프론트 개발", "보트용 전자장비", "도시/광택", "보트 소재 및 원료"
+        // "Boat Storage and Rental", "Boat Maintenance and Repair", "Spill Response Equipment", "Waterfront Development", "Marine Electronics for Boats", "Boat Polishing/Detailing", "Boat Materials and Raw Components"
+        // 기타
+        // "트레일러", "견인장치", "캠핑카", "아웃도어용품", "기타"
+        // "Trailer", "Towing Equipment", "Recreational Vehicle", "Outdoor Equipment", "Others"
+
+        String result = optionSmall;
+
+        if(optionSmall != null && !optionSmall.isEmpty()){
+            switch (optionSmall){
+                // 보트·요트
+                case "파워보트":
+                    result = "Power Boat";
+                    break;
+                case "세일요트":
+                    result = "Sailing Yacht";
+                    break;
+                case "고무보트":
+                    result = "Inflatable Boat";
+                    break;
+                case "콤비보트":
+                    result = "Rigid-hulled Inflatable Boat(RHIB)";
+                    break;
+                case "FRP보트":
+                    result = "Fiberglass Boat";
+                    break;
+                case "알루미늄보트":
+                    result = "Aluminum Boat";
+                    break;
+                case "카본보트":
+                    result = "Carbon Fiber Boat";
+                    break;
+                case "복합소재보트":
+                    result = "Composite Boat";
+                    break;
+
+                // 무동력보트
+                case "카누":
+                    result = "Canoe";
+                    break;
+                case "카약":
+                    result = "Kayak";
+                    break;
+                case "조정":
+                    result = "Rowing Shell";
+                    break;
+                case "노보트":
+                    result = "Rowboat";
+                    break;
+                case "SUP":
+                    result = "Stand-Up Paddleboard";
+                    break;
+                case "딩기요트":
+                    result = "Dinghy";
+                    break;
+                case "무동력보트":
+                    result = "Sail-Only Yacht";
+                    break;
+
+                // 워크보트
+                case "관공선":
+                    result = "Government Vessel";
+                    break;
+                case "소방선":
+                    result = "Firefighting Vessel";
+                    break;
+                case "구조선":
+                    result = "Rescue Vessel";
+                    break;
+                case "감시선":
+                    result = "Patrol Vessel";
+                    break;
+                case "행정선":
+                    result = "Public Service Vessel";
+                    break;
+                case "고속단정":
+                    result = "High-Speed RIB";
+                    break;
+                case "특수선박":
+                    result = "Special Purpose Vessel";
+                    break;
+
+                // 해양레저
+                case "수상오토바이":
+                    result = "Personal Watercraft";
+                    break;
+                case "수상스키":
+                    result = "Water Skis";
+                    break;
+                case "웨이크보드":
+                    result = "Wakeboard";
+                    break;
+                case "해양레저 서비스":
+                    result = "Marine Leisure Services";
+                    break;
+
+                // 서핑
+                case "서핑장비":
+                    result = "Surfing Equipment";
+                    break;
+                case "서프웨어&라이프 스타일":
+                    result = "Surfwear & Lifestyle";
+                    break;
+                case "서핑체험":
+                    result = "Surfing Experience";
+                    break;
+
+                // 수중레저
+                case "다이빙 장비":
+                    result = "Diving Equipment";
+                    break;
+                case "다이빙 서비스":
+                    result = "Diving Services";
+                    break;
+                case "다이빙 교육":
+                    result = "Diving Education";
+                    break;
+                case "스킨스쿠버":
+                    result = "Scuba Diving";
+                    break;
+                case "스노우쿨링":
+                    result = "Snorkeling";
+                    break;
+
+                // 해양관광
+                case "관광 서비스":
+                    result = "Tourism Services";
+                    break;
+                case "보트대여":
+                    result = "Boat Rental";
+                    break;
+                case "요트대여":
+                    result = "Yacht Rental";
+                    break;
+                case "관광상품":
+                    result = "Tour Products";
+                    break;
+
+                // 부품&장비
+                case "선외기":
+                    result = "Outboard Engine";
+                    break;
+                case "선내기":
+                    result = "Inboard Engine";
+                    break;
+                case "스턴드라이브 엔진":
+                    result = "Stern Drive Engine";
+                    break;
+                case "가이드모터":
+                    result = "Trolling Motor";
+                    break;
+                case "프로펠러":
+                    result = "Propeller";
+                    break;
+                case "마린스피커":
+                    result = "Marine Speaker";
+                    break;
+                case "케이블류":
+                    result = "Marine Cables";
+                    break;
+                case "앵커":
+                    result = "Anchor";
+                    break;
+                case "무어링":
+                    result = "Mooring";
+                    break;
+                case "어군탐지기":
+                    result = "Fish Finder";
+                    break;
+                case "네비게이션":
+                    result = "Marine Navigation System";
+                    break;
+                case "레이더":
+                    result = "Marine Radar";
+                    break;
+                case "무선통신장비":
+                    result = "Marine Radio Equipment";
+                    break;
+                case "기타":
+                    result = "ETC";
+                    break;
+
+                // 안전&마리나
+                case "선박 보관 임대":
+                    result = "Boat Storage and Rental";
+                    break;
+                case "선박 유지보수":
+                    result = "Boat Maintenance and Repair";
+                    break;
+                case "방제장비":
+                    result = "Spill Response Equipment";
+                    break;
+                case "워터프론트 개발":
+                    result = "Waterfront Development";
+                    break;
+                case "보트용 전자장비":
+                    result = "Marine Electronics for Boats";
+                    break;
+                case "도시/광택":
+                    result = "Boat Polishing/Detailing";
+                    break;
+                case "보트 소재 및 원료":
+                    result = "Boat Materials and Raw Components";
+                    break;
+
+                // 기타 (기존 "기타"와 중복될 수 있으니 주의)
+                case "트레일러":
+                    result = "Trailer";
+                    break;
+                case "견인장치":
+                    result = "Towing Equipment";
+                    break;
+                case "캠핑카":
+                    result = "Recreational Vehicle";
+                    break;
+                case "아웃도어용품":
+                    result = "Outdoor Equipment";
+                    break;
+                /*case "기타":
+                    result = "ETC";
+                    break;*/
+            }
+        }
+
+        return result;
     }
 
     public HashMap<String, Object> convertMap(HttpServletRequest request) {

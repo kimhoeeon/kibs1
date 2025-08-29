@@ -223,7 +223,7 @@ function f_board_newsletter_ko_temp_save(id){
                                 title: '[ 뉴스레터 ]',
                                 html: '<span style="font-size: 1.2em;">뉴스레터 정보가 변경되었습니다. (임시저장)</span>',
                                 allowOutsideClick: false,
-                                confirmButtonColor: '#3085d6',
+                                confirmButtonColor: '#00a8ff',
                                 confirmButtonText: '확인'
                             }).then((result) => {
                                 if (result.isConfirmed) {
@@ -253,7 +253,7 @@ function f_board_newsletter_ko_temp_save(id){
                                 title: '[ 뉴스레터 ]',
                                 html: '<span style="font-size: 1.2em;">뉴스레터 정보가 등록되었습니다. (임시저장)</span>',
                                 allowOutsideClick: false,
-                                confirmButtonColor: '#3085d6',
+                                confirmButtonColor: '#00a8ff',
                                 confirmButtonText: '확인'
                             }).then((result) => {
                                 if (result.isConfirmed) {
@@ -339,7 +339,7 @@ function f_board_newsletter_ko_save(id){
                                     title: '[ 뉴스레터 ]',
                                     html: '<span style="font-size: 1.2em;">뉴스레터 정보가 변경되었습니다.</span>',
                                     allowOutsideClick: false,
-                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonColor: '#00a8ff',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -369,7 +369,7 @@ function f_board_newsletter_ko_save(id){
                                     title: '[ 뉴스레터 ]',
                                     html: '<span style="font-size: 1.2em;">뉴스레터 정보가 등록되었습니다.</span>',
                                     allowOutsideClick: false,
-                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonColor: '#00a8ff',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {

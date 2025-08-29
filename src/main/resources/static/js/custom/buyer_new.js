@@ -239,7 +239,7 @@ function f_application_buyer_new_save(seq){
                                 title: '[ 바이어 정보 ]',
                                 html: '<span style="font-size: 1.2em;">바이어 정보가 저장되었습니다.</span>',
                                 allowOutsideClick: false,
-                                confirmButtonColor: '#3085d6',
+                                confirmButtonColor: '#00a8ff',
                                 confirmButtonText: '확인'
                             }).then((result) => {
                                 if (result.isConfirmed) {

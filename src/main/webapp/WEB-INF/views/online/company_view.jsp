@@ -109,11 +109,11 @@
                             </c:if>
                         </c:when>
                         <c:otherwise>
-                            <c:if test="${not empty productList}">
+                            <%--<c:if test="${not empty productList}">
                                 <c:if test="${productList.get(0).productOptionBig ne null and productList.get(0).productOptionBig ne ''}">
                                     ${productList.get(0).productOptionBig}전
                                 </c:if>
-                            </c:if>
+                            </c:if>--%>
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -288,10 +288,10 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <c:forEach var="productInfo" items="${productList}" begin="0" end="${productList.size()}" step="1" varStatus="status">
+                            <%--<c:forEach var="productInfo" items="${productList}" begin="0" end="${productList.size()}" step="1" varStatus="status">
                                 <c:if test="${fn:trim(productInfo.productNameKo) ne '-' and fn:trim(productInfo.productNameKo) ne ''}">
                                     <li>
-                                        <%--<div class="btnLike"><img src="/img/icon_like.png" class="likeImg"></div>--%>
+                                        &lt;%&ndash;<div class="btnLike"><img src="/img/icon_like.png" class="likeImg"></div>&ndash;%&gt;
                                         <a href="<c:url value="/online/product_view.do?seq=${productInfo.seq}"/>">
                                             <div class="thumbnail">
                                                 <div class="thumb75 thumbBox">
@@ -311,7 +311,7 @@
                                         </a>
                                     </li>
                                 </c:if>
-                            </c:forEach>
+                            </c:forEach>--%>
                             <c:forEach var="onlineInfo" items="${onlineList}" begin="0" end="${onlineList.size()}" step="1" varStatus="status">
                                 <c:if test="${fn:trim(onlineInfo.onlineNameKo) ne '-' and fn:trim(onlineInfo.onlineNameKo) ne ''}">
                                     <li>

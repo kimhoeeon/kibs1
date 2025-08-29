@@ -84,7 +84,7 @@ function f_application_booth_search(){
                 title: '[ 검색 조건 확인 ]',
                 html: '<span style="font-size: 1.2em;">검색 조건이 신청갯수일 경우<br>숫자로만 검색 가능합니다.</span>',
                 allowOutsideClick: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00a8ff',
                 confirmButtonText: '확인'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -242,7 +242,7 @@ function f_application_booth_save(seq){
                             text: '전시 부스 정보가 저장되었습니다.',
                             icon: 'info',
                             allowOutsideClick: false,
-                            confirmButtonColor: '#3085d6',
+                            confirmButtonColor: '#00a8ff',
                             confirmButtonText: '확인'
                         }).then((result) => {
                             if (result.isConfirmed) {

@@ -159,7 +159,7 @@ function f_edm_detail_mail_send(){
                                 html: "메일 발송이 정상적으로 완료되어<br>발송 결과가 등록되었습니다.<br>메일 발송 & 이력 목록으로 이동합니다.",
                                 icon: 'info',
                                 allowOutsideClick: false,
-                                confirmButtonColor: '#3085d6',
+                                confirmButtonColor: '#00a8ff',
                                 confirmButtonText: '확인'
                             }).then((result) => {
                                 if (result.isConfirmed) {
@@ -315,7 +315,7 @@ async function f_mail_file_upload(userId, formId, path) {
                 text: "파일 업로드 성공",
                 icon: 'info',
                 allowOutsideClick: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00a8ff',
                 confirmButtonText: '확인'
             }).then((result) => {
                 if (result.isConfirmed) {

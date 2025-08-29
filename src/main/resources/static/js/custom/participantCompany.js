@@ -305,7 +305,7 @@ function f_exhibitor_comp_remove(){
                         html: '참가 업체 정보가 삭제되었습니다.',
                         icon: 'info',
                         allowOutsideClick: false,
-                        confirmButtonColor: '#3085d6',
+                        confirmButtonColor: '#00a8ff',
                         confirmButtonText: '확인'
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -367,7 +367,7 @@ function f_participant_company_save(seq){
                             html: '참가 업체 정보가 변경되었습니다.',
                             icon: 'info',
                             allowOutsideClick: false,
-                            confirmButtonColor: '#3085d6',
+                            confirmButtonColor: '#00a8ff',
                             confirmButtonText: '확인'
                         }).then((result) => {
                             if (result.isConfirmed) {

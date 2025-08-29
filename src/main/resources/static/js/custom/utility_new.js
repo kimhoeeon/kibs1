@@ -236,7 +236,7 @@ function f_application_utility_new_save(seq){
                             title: '[ 유틸리티 정보 ]',
                             html: '<span style="font-size: 1.2em;">유틸리티 신청 정보가 저장되었습니다.</span>',
                             allowOutsideClick: false,
-                            confirmButtonColor: '#3085d6',
+                            confirmButtonColor: '#00a8ff',
                             confirmButtonText: '확인'
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -394,7 +394,7 @@ function f_invoice_utility_create(exSeq, companyNameKo){
                                     title: '[ 인보이스 ]',
                                     html: '<span style="font-size: 1.2em;">인보이스가 생성되었습니다.</span>',
                                     allowOutsideClick: false,
-                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonColor: '#00a8ff',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -452,7 +452,7 @@ function f_invoice_utility_delete(exSeq){
                                     title: '[ 인보이스 ]',
                                     html: '<span style="font-size: 1.2em;">인보이스가 삭제되었습니다.</span>',
                                     allowOutsideClick: false,
-                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonColor: '#00a8ff',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -496,7 +496,7 @@ function f_invoice_utility_send(exSeq){
             html: swal_html,
             allowOutsideClick: false,
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '발송',
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'
@@ -561,7 +561,7 @@ function f_invoice_utility_send(exSeq){
                                     title: '[ 인보이스 ]',
                                     html: '<span style="font-size: 1.2em;">인보이스가 발송되었습니다.</span>',
                                     allowOutsideClick: false,
-                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonColor: '#00a8ff',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {

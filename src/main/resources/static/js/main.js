@@ -13,6 +13,15 @@ $(function() {
     }
 
 })
+
+function f_lang_get(){
+    let lang = 'K';
+    if(window.location.href.includes('eng')){
+        lang = 'E';
+    }
+    return lang;
+}
+
 function home(lang){
     let url = '/main.do';
     if(lang === 'en'){
@@ -116,7 +125,7 @@ function f_pre_exhibitor_info_call(){
             title: '[ 참가신청 정보 불러오기 ]',
             html: '<span style="font-size: 1.2em;">' + transferYear + ' 년도 신청정보를 조회하였습니다.<br>입력되지 않은 정보는 직접 입력해 주세요.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -956,7 +965,7 @@ function f_pw_init(){
             html: '<span style="font-size: 1.2em;">해당 ID [ ' + id + ' ] 의<br>비밀번호 초기화를 요청하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '요청하기',
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'
@@ -987,7 +996,7 @@ function f_pw_init(){
                                 title: '[ 회원 정보 ]',
                                 html: '<span style="font-size: 1.2em;">해당 ID의 비밀번호가 초기화되었습니다.<br>초기화 정보는 [ ' + email + ' ] 로 전송되었습니다.<br>로그인하신 후 비밀번호를 변경하여 이용해 주세요.</span>',
                                 allowOutsideClick: false,
-                                confirmButtonColor: '#3085d6',
+                                confirmButtonColor: '#00a8ff',
                                 confirmButtonText: '확인'
                             });
                             return false;
@@ -998,7 +1007,7 @@ function f_pw_init(){
                             title: '[ 회원 정보 ]',
                             html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소로 메일 전송이 실패하였습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 1670-8785</span>',
                             allowOutsideClick: false,
-                            confirmButtonColor: '#3085d6',
+                            confirmButtonColor: '#00a8ff',
                             confirmButtonText: '확인'
                         });
                         return false;
@@ -1009,7 +1018,7 @@ function f_pw_init(){
                         title: '[ 회원 정보 ]',
                         html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소가 없습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 1670-8785</span>',
                         allowOutsideClick: false,
-                        confirmButtonColor: '#3085d6',
+                        confirmButtonColor: '#00a8ff',
                         confirmButtonText: '확인'
                     });
                     return false;
@@ -1029,6 +1038,9 @@ function f_apply_comp(step, seq){
         case "01":
             step_01_check(seq);
             break;
+        case "2_9":
+            step_2_9_check(seq);
+            break;
         case "2_1":
             step_2_1_check(seq);
             break;
@@ -1044,9 +1056,9 @@ function f_apply_comp(step, seq){
         case "2_5":
             step_2_5_check(seq);
             break;
-        case "2_6":
+        /*case "2_6":
             step_2_6_check(seq);
-            break;
+            break;*/
         case "2_8":
             step_2_8_check(seq);
             break;
@@ -1533,22 +1545,25 @@ function step_01_check(exhibitorSeq){
     let chargePersonCnt = Number.parseInt($('.managerInfoNum:last').text());
     if(chargePersonCnt > 0){
         for(let i=0; i<chargePersonCnt; i++){
-            let chargePersonEmail_val = charge_person_email_el.eq(i).val();
-            let chargePersonEmail = '';
-            if(nvl(chargePersonEmail_val,'') !== ''){
-                chargePersonEmail = chargePersonEmail_val + '@' + charge_person_domain_el.eq(i).val();
+            let chargePersonName = charge_person_name_el.eq(i).val();
+            if(nvl(chargePersonName,'') !== ''){
+                let chargePersonEmail_val = charge_person_email_el.eq(i).val();
+                let chargePersonEmail = '';
+                if(nvl(chargePersonEmail_val,'') !== ''){
+                    chargePersonEmail = chargePersonEmail_val + '@' + charge_person_domain_el.eq(i).val();
+                }
+                let chargePersonList_json_obj = {
+                    seq: $('input[type=hidden][name=chargeSeq]').eq(i).val(),
+                    exSeq: exhibitorSeq,
+                    chargePersonName: chargePersonName,
+                    chargePersonPosition: charge_person_position_el.eq(i).val(),
+                    chargePersonDepart: charge_person_depart_el.eq(i).val(),
+                    chargePersonTel: charge_person_tel_el.eq(i).val(),
+                    chargePersonPhone: charge_person_phone_el.eq(i).val(),
+                    chargePersonEmail: chargePersonEmail,
+                };
+                chargePersonList_json_arr.push(chargePersonList_json_obj);
             }
-            let chargePersonList_json_obj = {
-                seq: $('input[type=hidden][name=chargeSeq]').eq(i).val(),
-                exSeq: exhibitorSeq,
-                chargePersonName: charge_person_name_el.eq(i).val(),
-                chargePersonPosition: charge_person_position_el.eq(i).val(),
-                chargePersonDepart: charge_person_depart_el.eq(i).val(),
-                chargePersonTel: charge_person_tel_el.eq(i).val(),
-                chargePersonPhone: charge_person_phone_el.eq(i).val(),
-                chargePersonEmail: chargePersonEmail,
-            };
-            chargePersonList_json_arr.push(chargePersonList_json_obj);
         }
     }
 
@@ -1612,268 +1627,6 @@ function step_01_check(exhibitorSeq){
         return false;
     }
     //console.log(field_part);
-
-    /******************** 전시품 정보 ********************/
-
-    let product_option_len = Number.parseInt($('.exhiInfoNum').text());
-
-    // 제품분류(대)
-    let product_option_big_el = $('select[name=productOptionBig]');
-    let product_option_big_len = product_option_big_el.length;
-    let product_option_big_flag = true;
-    for(let i=0; i<product_option_big_len; i++){
-        if(product_option_big_el.eq(i).val() === '선택' || product_option_big_el.eq(i).val() === '선택'){
-            if($('.preOptionList').length === 0){
-                product_option_big_flag = false;
-                break;
-            }
-        }
-    }
-    if(!product_option_big_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
-        return false;
-    }
-
-    // 제품분류(소)
-    let product_option_small_el = $('select[name=productOptionSmall]');
-    let product_option_small_len = product_option_small_el.length;
-    let product_option_small_flag = true;
-    for(let i=0; i<product_option_small_len; i++){
-        if(product_option_small_el.eq(i).val() === '선택' || product_option_small_el.eq(i).val() === '선택'){
-            if($('.preOptionList').length === 0) {
-                product_option_small_flag = false;
-                break;
-            }
-        }
-    }
-    if(!product_option_small_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
-        return false;
-    }
-
-    // 제품명(국문)
-    let product_name_ko_el = $('input[type=text][name=productNameKo]');
-    let product_name_ko_len = product_name_ko_el.length;
-    let product_name_ko_flag = true;
-    for(let i=0; i<product_name_ko_len; i++){
-        if(nvl(product_name_ko_el.eq(i).val(),'') === ''){
-            product_name_ko_flag = false;
-            break;
-        }
-    }
-    if(!product_name_ko_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품명을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 수량
-    let product_qty_el = $('input[type=text][name=productQty]');
-    let product_qty_len = product_qty_el.length;
-    let product_qty_flag = true;
-    for(let i=0; i<product_qty_len; i++){
-        if(nvl(product_qty_el.eq(i).val(),'') === ''){
-            product_qty_flag = false;
-            break;
-        }
-    }
-    if(!product_qty_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '수량을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 제조사(브랜드)
-    let product_brand_el = $('input[type=text][name=productBrand]');
-    let product_brand_len = product_brand_el.length;
-    let product_brand_flag = true;
-    for(let i=0; i<product_brand_len; i++){
-        if(nvl(product_brand_el.eq(i).val(),'') === ''){
-            product_brand_flag = false;
-            break;
-        }
-    }
-    if(!product_brand_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 길이
-    let product_length_el = $('input[type=text][name=productLength]');
-    let product_length_len = product_length_el.length;
-    let product_length_flag = true;
-    for(let i=0; i<product_length_len; i++){
-        if(nvl(product_length_el.eq(i).val(),'') === ''){
-            product_length_flag = false;
-            break;
-        }
-    }
-    if(!product_length_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '길이(cm)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 너비
-    let product_width_el = $('input[type=text][name=productWidth]');
-    let product_width_len = product_width_el.length;
-    let product_width_flag = true;
-    for(let i=0; i<product_width_len; i++){
-        if(nvl(product_width_el.eq(i).val(),'') === ''){
-            product_width_flag = false;
-            break;
-        }
-    }
-    if(!product_width_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '너비(cm)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 높이
-    let product_height_el = $('input[type=text][name=productHeight]');
-    let product_height_len = product_height_el.length;
-    let product_height_flag = true;
-    for(let i=0; i<product_height_len; i++){
-        if(nvl(product_height_el.eq(i).val(),'') === ''){
-            product_height_flag = false;
-            break;
-        }
-    }
-    if(!product_height_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '높이(cm)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 중량
-    let product_weight_el = $('input[type=text][name=productWeight]');
-    let product_weight_len = product_weight_el.length;
-    let product_weight_flag = true;
-    for(let i=0; i<product_weight_len; i++){
-        if(nvl(product_weight_el.eq(i).val(),'') === ''){
-            product_weight_flag = false;
-            break;
-        }
-    }
-    if(!product_weight_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '중량(kg)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 소재
-    let product_material_el = $('input[type=text][name=productMaterial]');
-    let product_material_len = product_material_el.length;
-    let product_material_flag = true;
-    for(let i=0; i<product_material_len; i++){
-        if(nvl(product_material_el.eq(i).val(),'') === ''){
-            product_material_flag = false;
-            break;
-        }
-    }
-    if(!product_material_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '소재를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 연식
-    let product_year_el = $('input[type=text][name=productYear]');
-    let product_year_len = product_year_el.length;
-    let product_year_flag = true;
-    for(let i=0; i<product_year_len; i++){
-        if(nvl(product_year_el.eq(i).val(),'') === ''){
-            product_year_flag = false;
-            break;
-        }
-    }
-    if(!product_year_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '연식을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 제품 설명(국문)
-    let product_intro_ko_el = $('textarea[name=productIntroKo]');
-    /*let product_intro_ko_len = product_intro_ko_el.length;
-    let product_intro_ko_flag = true;
-    for(let i=0; i<product_intro_ko_len; i++){
-        if(product_intro_ko_el.eq(i).val() === ''){
-            product_intro_ko_flag = false;
-        }
-    }
-    if(!product_intro_ko_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품 설명(국문)을 입력해 주세요.', '');
-        return false;
-    }*/
-
-    // 제품 설명(영문)
-    let product_intro_en_el = $('textarea[name=productIntroEn]');
-    /*let product_intro_en_len = product_intro_en_el.length;
-    let product_intro_en_flag = true;
-    for(let i=0; i<product_intro_en_len; i++){
-        if(product_intro_en_el.eq(i).val() === ''){
-            product_intro_en_flag = false;
-        }
-    }
-    if(!product_intro_en_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품 설명(영문)을 입력해 주세요.', '');
-        return false;
-    }*/
-
-    // 제품사진
-    let exhiPrdBox = $('.exhiPrdBox');
-    for(let i=0; i<exhiPrdBox.length; i++){
-        let inputFile = exhiPrdBox.eq(i).find('.upload_name').val();
-        let preFileList = $('.exhiInfoBox').eq(i).find('.preValueList').find('li.productImageFile_li').length;
-        if(nvl(inputFile,"") === "" && preFileList === 0){
-            showMessage('', 'error', '[ 전시품 정보 ]', '제품사진을 첨부해 주세요.', '');
-            return false;
-        }
-    }
-
-    // 제품링크
-    let product_link_el = $('input[type=text][name=productLink]');
-    for(let i=0; i<product_link_el.length; i++){
-        let product_link = product_link_el.eq(i).val();
-        if(nvl(product_link,'') !== ''){
-            if(!checkUrl(product_link)){
-                showMessage('', 'error', '[ 전시품 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
-                return false;
-            }
-        }
-    }
-
-    //전시품정보 Json Create
-    let productList_json_arr = [];
-    let productCnt = Number.parseInt($('.exhiInfoNum:last').text());
-    if(productCnt > 0){
-        for(let i=0; i<productCnt; i++){
-            let productOptionBig = '';
-            let productOptionSmall = '';
-            let selProductOptionBig = $('select[name=productOptionBig]').eq(i).val();
-            if(nvl(selProductOptionBig,'선택') !== '선택'){
-                productOptionBig = $('select[name=productOptionBig]').eq(i).val();
-                productOptionSmall = $('select[name=productOptionSmall]').eq(i).val();
-            }else {
-                productOptionBig = $('input[type=text][name=preProductOptionBig]').eq(i).val();
-                productOptionSmall = $('input[type=text][name=preProductOptionSmall]').eq(i).val();
-            }
-            let productList_json_obj = {
-                seq: $('input[type=hidden][name=productSeq]').eq(i).val(),
-                exSeq: exhibitorSeq,
-                productOptionBig: productOptionBig,
-                productOptionSmall: productOptionSmall,
-                productNameKo: product_name_ko_el.eq(i).val(),
-                productQty: product_qty_el.eq(i).val(),
-                productBrand: product_brand_el.eq(i).val(),
-                productLength: product_length_el.eq(i).val(),
-                productWidth: product_width_el.eq(i).val(),
-                productHeight: product_height_el.eq(i).val(),
-                productWeight: product_weight_el.eq(i).val(),
-                productMaterial: product_material_el.eq(i).val(),
-                productYear: product_year_el.eq(i).val(),
-                productIntroKo: product_intro_ko_el.eq(i).val(),
-                productIntroEn: product_intro_en_el.eq(i).val(),
-                productLink: product_link_el.eq(i).val(),
-                note: (i+1)
-            };
-            productList_json_arr.push(productList_json_obj);
-        }
-    }
 
     /******************** 온라인 전시관 정보 ********************/
 
@@ -2117,8 +1870,6 @@ function step_01_check(exhibitorSeq){
         newItemIntroEn: newItemIntroEn,
         promotionPlan: promotionPlan,
         fieldPart: fieldPart,
-        /* 전시품 정보 */
-        productList: productList_json_arr,
         /* 온라인 전시관 정보 */
         onlineList: onlineList_json_arr,
         /* 수출상담회 */
@@ -2176,17 +1927,10 @@ function step_01_check(exhibitorSeq){
                         title: '[ 참가업체 정보 ]',
                         html: '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
                         allowOutsideClick: false,
-                        confirmButtonColor: '#3085d6',
+                        confirmButtonColor: '#00a8ff',
                         confirmButtonText: '확인'
                     }).then((result) => {
                         if (result.isConfirmed) {
-
-                            /* 전시품 사진 번호 재부여 */
-                            let product_File_json_obj = {
-                                seq: exhibitorSeq,
-                                productList: productList_json_arr
-                            }
-                            let product_res = ajaxConnect('/mypage/step/updateProductNewFileNote.do', 'post', product_File_json_obj);
 
                             /* 온라인 제품 사진 번호 재부여 */
                             let onlineFile_json_obj = {
@@ -2195,8 +1939,8 @@ function step_01_check(exhibitorSeq){
                             }
                             let online_res = ajaxConnect('/mypage/step/updateOnlineNewFileNote.do', 'post', onlineFile_json_obj);
 
-                            if(product_res.resultCode === "0" && online_res.resultCode === "0"){
-                                f_page_move('/apply/step2_1.do', exhibitorSeq);
+                            if(online_res.resultCode === "0"){
+                                f_page_move('/apply/step2_9.do', exhibitorSeq);
                             }
                         }
                     })
@@ -2204,7 +1948,7 @@ function step_01_check(exhibitorSeq){
             });
 
         }else{
-            window.location.href = '/apply/step2_1.do';
+            window.location.href = '/apply/step2_9.do';
         }
     }else{
         showMessage('', 'error', '[ 참가업체 정보 ]', '기본 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
@@ -2637,6 +2381,275 @@ function check_count(obj){
 
 /* //////////////////////////////// end:step_01 ////////////////////////////////// */
 
+/* //////////////////////////////// begin:step_2_9 ////////////////////////////////// */
+function step_2_9_check(exhibitorSeq){
+
+    /******************** 전시품 정보 ********************/
+
+    let boatEntryYn = $('input[type=radio][name=boatEntryYn]:checked').val();
+    if(nvl(boatEntryYn,'') === ''){
+        showMessage('', 'error', '[ 전시품 정보 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
+        return false;
+    }
+
+    // 제품분류(대)
+    let product_option_big_el = $('select[name=productOptionBig]');
+    let product_option_big_len = product_option_big_el.length;
+    let product_option_big_flag = true;
+    for(let i=0; i<product_option_big_len; i++){
+        if(product_option_big_el.eq(i).val() === '선택' || product_option_big_el.eq(i).val() === '선택'){
+            if($('.preOptionList').length === 0){
+                product_option_big_flag = false;
+                break;
+            }
+        }
+    }
+    if(!product_option_big_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
+        return false;
+    }
+
+    // 제품분류(소)
+    let product_option_small_el = $('select[name=productOptionSmall]');
+    let product_option_small_len = product_option_small_el.length;
+    let product_option_small_flag = true;
+    for(let i=0; i<product_option_small_len; i++){
+        if(product_option_small_el.eq(i).val() === '선택' || product_option_small_el.eq(i).val() === '선택'){
+            if($('.preOptionList').length === 0) {
+                product_option_small_flag = false;
+                break;
+            }
+        }
+    }
+    if(!product_option_small_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
+        return false;
+    }
+
+    // 제품명(국문)
+    let product_name_ko_el = $('input[type=text][name=productNameKo]');
+    let product_name_ko_len = product_name_ko_el.length;
+    let product_name_ko_flag = true;
+    for(let i=0; i<product_name_ko_len; i++){
+        if(nvl(product_name_ko_el.eq(i).val(),'') === ''){
+            product_name_ko_flag = false;
+            break;
+        }
+    }
+    if(!product_name_ko_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '제품명을 입력해 주세요.', '');
+        return false;
+    }
+
+    // 수량
+    let product_qty_el = $('input[type=text][name=productQty]');
+    let product_qty_len = product_qty_el.length;
+    let product_qty_flag = true;
+    for(let i=0; i<product_qty_len; i++){
+        if(nvl(product_qty_el.eq(i).val(),'') === ''){
+            product_qty_flag = false;
+            break;
+        }
+    }
+    if(!product_qty_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '수량을 입력해 주세요.', '');
+        return false;
+    }
+
+    // 제조사(브랜드)
+    let product_brand_el = $('input[type=text][name=productBrand]');
+    let product_brand_len = product_brand_el.length;
+    let product_brand_flag = true;
+    for(let i=0; i<product_brand_len; i++){
+        if(nvl(product_brand_el.eq(i).val(),'') === ''){
+            product_brand_flag = false;
+            break;
+        }
+    }
+    if(!product_brand_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
+        return false;
+    }
+
+    // 길이
+    let product_length_el = $('input[type=text][name=productLength]');
+    let product_length_len = product_length_el.length;
+    let product_length_flag = true;
+    for(let i=0; i<product_length_len; i++){
+        if(nvl(product_length_el.eq(i).val(),'') === ''){
+            product_length_flag = false;
+            break;
+        }
+    }
+    if(!product_length_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '길이(cm)를 입력해 주세요.', '');
+        return false;
+    }
+
+    // 너비
+    let product_width_el = $('input[type=text][name=productWidth]');
+    let product_width_len = product_width_el.length;
+    let product_width_flag = true;
+    for(let i=0; i<product_width_len; i++){
+        if(nvl(product_width_el.eq(i).val(),'') === ''){
+            product_width_flag = false;
+            break;
+        }
+    }
+    if(!product_width_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '너비(cm)를 입력해 주세요.', '');
+        return false;
+    }
+
+    // 높이
+    let product_height_el = $('input[type=text][name=productHeight]');
+    let product_height_len = product_height_el.length;
+    let product_height_flag = true;
+    for(let i=0; i<product_height_len; i++){
+        if(nvl(product_height_el.eq(i).val(),'') === ''){
+            product_height_flag = false;
+            break;
+        }
+    }
+    if(!product_height_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '높이(cm)를 입력해 주세요.', '');
+        return false;
+    }
+
+    // 중량
+    let product_weight_el = $('input[type=text][name=productWeight]');
+    let product_weight_len = product_weight_el.length;
+    let product_weight_flag = true;
+    for(let i=0; i<product_weight_len; i++){
+        if(nvl(product_weight_el.eq(i).val(),'') === ''){
+            product_weight_flag = false;
+            break;
+        }
+    }
+    if(!product_weight_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '중량(kg)를 입력해 주세요.', '');
+        return false;
+    }
+
+    // 소재
+    let product_material_el = $('input[type=text][name=productMaterial]');
+    let product_material_len = product_material_el.length;
+    let product_material_flag = true;
+    for(let i=0; i<product_material_len; i++){
+        if(nvl(product_material_el.eq(i).val(),'') === ''){
+            product_material_flag = false;
+            break;
+        }
+    }
+    if(!product_material_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '소재를 입력해 주세요.', '');
+        return false;
+    }
+
+    // 연식
+    let product_year_el = $('input[type=text][name=productYear]');
+    let product_year_len = product_year_el.length;
+    let product_year_flag = true;
+    for(let i=0; i<product_year_len; i++){
+        if(nvl(product_year_el.eq(i).val(),'') === ''){
+            product_year_flag = false;
+            break;
+        }
+    }
+    if(!product_year_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '연식을 입력해 주세요.', '');
+        return false;
+    }
+
+    //전시품정보 Json Create
+    let productList_json_arr = [];
+    if(boatEntryYn === 'Y'){
+        let productCnt = Number.parseInt($('.exhiInfoNum:last').text());
+        if(productCnt > 0){
+            for(let i=0; i<productCnt; i++){
+                let productOptionBig = '';
+                let productOptionSmall = '';
+                let selProductOptionBig = $('select[name=productOptionBig]').eq(i).val();
+                if(nvl(selProductOptionBig,'선택') !== '선택'){
+                    productOptionBig = $('select[name=productOptionBig]').eq(i).val();
+                    productOptionSmall = $('select[name=productOptionSmall]').eq(i).val();
+                }else {
+                    productOptionBig = $('input[type=text][name=preProductOptionBig]').eq(i).val();
+                    productOptionSmall = $('input[type=text][name=preProductOptionSmall]').eq(i).val();
+                }
+                let productList_json_obj = {
+                    seq: $('input[type=hidden][name=productSeq]').eq(i).val(),
+                    exSeq: exhibitorSeq,
+                    productOptionBig: productOptionBig,
+                    productOptionSmall: productOptionSmall,
+                    productNameKo: product_name_ko_el.eq(i).val(),
+                    productQty: product_qty_el.eq(i).val(),
+                    productBrand: product_brand_el.eq(i).val(),
+                    productLength: product_length_el.eq(i).val(),
+                    productWidth: product_width_el.eq(i).val(),
+                    productHeight: product_height_el.eq(i).val(),
+                    productWeight: product_weight_el.eq(i).val(),
+                    productMaterial: product_material_el.eq(i).val(),
+                    productYear: product_year_el.eq(i).val(),
+                    note: (i+1)
+                };
+                productList_json_arr.push(productList_json_obj);
+            }
+        }
+    }
+
+    if(nvl(exhibitorSeq,'') !== ''){
+
+        let exhibitor_json_obj = {
+            seq: exhibitorSeq,
+            boatEntryYn: nvl(boatEntryYn,'N'),
+            productList: productList_json_arr
+        };
+        let resData = ajaxConnect('/apply/step/saveProductNew.do', 'post', exhibitor_json_obj);
+
+        if(resData.resultCode === "0") {
+
+            let timerInterval;
+            Swal.fire({
+                title: "정보 저장 중",
+                html: "입력하신 정보를 저장 중입니다.<br><b></b> milliseconds.<br>현재 화면을 유지해 주세요.",
+                allowOutsideClick: false,
+                timer: 2500,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 1000);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: '[ 전시품 정보 ]',
+                        html: '<span style="font-size: 1.2em;">전시품 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                        allowOutsideClick: false,
+                        confirmButtonColor: '#00a8ff',
+                        confirmButtonText: '확인'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            f_page_move('/apply/step2_1.do', exhibitorSeq);
+                        }
+                    })
+                }
+            });
+        }else{
+            showMessage('', 'error', '[ 전시품 정보 ]', '전시품 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        }
+    }
+}
+/* //////////////////////////////// end:step_2_9 ////////////////////////////////// */
+
 /* //////////////////////////////// begin:step_2_1 ////////////////////////////////// */
 function step_2_1_check(exhibitorSeq){
 
@@ -2829,7 +2842,7 @@ function step_2_1_check(exhibitorSeq){
             title: '[ 전시부스 신청 ]',
             html: '<span style="font-size: 1.2em;">부스 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -2897,7 +2910,7 @@ function step_2_2_check(exhibitorSeq){
             title: '[ 상호간판 신청 ]',
             html: '<span style="font-size: 1.2em;">상호간판 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -2997,7 +3010,7 @@ function step_2_3_check(exhibitorSeq){
             title: '[ 유틸리티 신청 ]',
             html: '<span style="font-size: 1.2em;">유틸리티 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -3122,7 +3135,7 @@ function step_2_4_check(exhibitorSeq){
             title: '[ 출입증 신청 ]',
             html: '<span style="font-size: 1.2em;">출입증 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -3159,7 +3172,7 @@ function step_2_5_check(exhibitorSeq){
             title: '[ 경품제공 신청 ]',
             html: '<span style="font-size: 1.2em;">경품제공 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -3559,7 +3572,7 @@ function step_2_6_check(){
             html: '웹배너 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.',
             icon: 'info',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -3687,7 +3700,7 @@ function f_exhibitor_info_call(){
             html: '입력정보 불러오기를 실패하였습니다.<br>직접 입력하시거나 , 로그인 후 마이페이지에서 진행해 주세요.',
             icon: 'info',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         });
     }
@@ -4002,7 +4015,7 @@ function step_2_8_check(exhibitorSeq){
             title: '[ 디렉토리 정보 ]',
             html: '<span style="font-size: 1.2em;">디렉토리 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -4038,7 +4051,7 @@ function step_03_check(exhibitorSeq){
             title: '[ 참가업체 정보 ]',
             html: '<span style="font-size: 1.2em;">참가 신청이 정상 완료되었습니다.<br>등록하신 담당자 메일로 신청완료 및 안내 메일이 발송됩니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -4071,6 +4084,9 @@ function f_mypage_comp(step, seq){
     switch (step){
         case "01":
             my_step_01_check(seq);
+            break;
+        case "2_9":
+            my_step_2_9_check(seq);
             break;
         case "2_1":
             my_step_2_1_check(seq);
@@ -4200,7 +4216,7 @@ function f_personal_info_save(exhibitorSeq){
                 title: '[ 회원 계정 정보 ]',
                 html: '<span style="font-size: 1.2em;">회원 계정 정보가 저장되었습니다.</span>',
                 allowOutsideClick: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00a8ff',
                 confirmButtonText: '확인'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -4582,268 +4598,6 @@ function my_step_01_check(exhibitorSeq){
     }
     //console.log(field_part);
 
-    /******************** 전시품 정보 ********************/
-
-    let product_option_len = Number.parseInt($('.exhiInfoNum').text());
-
-    // 제품분류(대)
-    let product_option_big_el = $('select[name=productOptionBig]');
-    let product_option_big_len = product_option_big_el.length;
-    let product_option_big_flag = true;
-    for(let i=0; i<product_option_big_len; i++){
-        if(product_option_big_el.eq(i).val() === '선택' || product_option_big_el.eq(i).val() === '선택'){
-            if($('.preOptionList').length === 0){
-                product_option_big_flag = false;
-                break;
-            }
-        }
-    }
-    if(!product_option_big_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
-        return false;
-    }
-
-    // 제품분류(소)
-    let product_option_small_el = $('select[name=productOptionSmall]');
-    let product_option_small_len = product_option_small_el.length;
-    let product_option_small_flag = true;
-    for(let i=0; i<product_option_small_len; i++){
-        if(product_option_small_el.eq(i).val() === '선택' || product_option_small_el.eq(i).val() === '선택'){
-            if($('.preOptionList').length === 0) {
-                product_option_small_flag = false;
-                break;
-            }
-        }
-    }
-    if(!product_option_small_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
-        return false;
-    }
-
-    // 제품명(국문)
-    let product_name_ko_el = $('input[type=text][name=productNameKo]');
-    let product_name_ko_len = product_name_ko_el.length;
-    let product_name_ko_flag = true;
-    for(let i=0; i<product_name_ko_len; i++){
-        if(nvl(product_name_ko_el.eq(i).val(),'') === ''){
-            product_name_ko_flag = false;
-            break;
-        }
-    }
-    if(!product_name_ko_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품명을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 수량
-    let product_qty_el = $('input[type=text][name=productQty]');
-    let product_qty_len = product_qty_el.length;
-    let product_qty_flag = true;
-    for(let i=0; i<product_qty_len; i++){
-        if(nvl(product_qty_el.eq(i).val(),'') === ''){
-            product_qty_flag = false;
-            break;
-        }
-    }
-    if(!product_qty_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '수량을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 제조사(브랜드)
-    let product_brand_el = $('input[type=text][name=productBrand]');
-    let product_brand_len = product_brand_el.length;
-    let product_brand_flag = true;
-    for(let i=0; i<product_brand_len; i++){
-        if(nvl(product_brand_el.eq(i).val(),'') === ''){
-            product_brand_flag = false;
-            break;
-        }
-    }
-    if(!product_brand_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 길이
-    let product_length_el = $('input[type=text][name=productLength]');
-    let product_length_len = product_length_el.length;
-    let product_length_flag = true;
-    for(let i=0; i<product_length_len; i++){
-        if(nvl(product_length_el.eq(i).val(),'') === ''){
-            product_length_flag = false;
-            break;
-        }
-    }
-    if(!product_length_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '길이(cm)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 너비
-    let product_width_el = $('input[type=text][name=productWidth]');
-    let product_width_len = product_width_el.length;
-    let product_width_flag = true;
-    for(let i=0; i<product_width_len; i++){
-        if(nvl(product_width_el.eq(i).val(),'') === ''){
-            product_width_flag = false;
-            break;
-        }
-    }
-    if(!product_width_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '너비(cm)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 높이
-    let product_height_el = $('input[type=text][name=productHeight]');
-    let product_height_len = product_height_el.length;
-    let product_height_flag = true;
-    for(let i=0; i<product_height_len; i++){
-        if(nvl(product_height_el.eq(i).val(),'') === ''){
-            product_height_flag = false;
-            break;
-        }
-    }
-    if(!product_height_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '높이(cm)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 중량
-    let product_weight_el = $('input[type=text][name=productWeight]');
-    let product_weight_len = product_weight_el.length;
-    let product_weight_flag = true;
-    for(let i=0; i<product_weight_len; i++){
-        if(nvl(product_weight_el.eq(i).val(),'') === ''){
-            product_weight_flag = false;
-            break;
-        }
-    }
-    if(!product_weight_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '중량(kg)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 소재
-    let product_material_el = $('input[type=text][name=productMaterial]');
-    let product_material_len = product_material_el.length;
-    let product_material_flag = true;
-    for(let i=0; i<product_material_len; i++){
-        if(nvl(product_material_el.eq(i).val(),'') === ''){
-            product_material_flag = false;
-            break;
-        }
-    }
-    if(!product_material_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '소재를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 연식
-    let product_year_el = $('input[type=text][name=productYear]');
-    let product_year_len = product_year_el.length;
-    let product_year_flag = true;
-    for(let i=0; i<product_year_len; i++){
-        if(nvl(product_year_el.eq(i).val(),'') === ''){
-            product_year_flag = false;
-            break;
-        }
-    }
-    if(!product_year_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '연식을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 제품 설명(국문)
-    let product_intro_ko_el = $('textarea[name=productIntroKo]');
-    /*let product_intro_ko_len = product_intro_ko_el.length;
-    let product_intro_ko_flag = true;
-    for(let i=0; i<product_intro_ko_len; i++){
-        if(product_intro_ko_el.eq(i).val() === ''){
-            product_intro_ko_flag = false;
-        }
-    }
-    if(!product_intro_ko_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품 설명(국문)을 입력해 주세요.', '');
-        return false;
-    }*/
-
-    // 제품 설명(영문)
-    let product_intro_en_el = $('textarea[name=productIntroEn]');
-    /*let product_intro_en_len = product_intro_en_el.length;
-    let product_intro_en_flag = true;
-    for(let i=0; i<product_intro_en_len; i++){
-        if(product_intro_en_el.eq(i).val() === ''){
-            product_intro_en_flag = false;
-        }
-    }
-    if(!product_intro_en_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품 설명(영문)을 입력해 주세요.', '');
-        return false;
-    }*/
-
-    // 제품사진
-    let exhiPrdBox = $('.exhiPrdBox');
-    for(let i=0; i<exhiPrdBox.length; i++){
-        let inputFile = exhiPrdBox.eq(i).find('.upload_name').val();
-        let preFileList = $('.exhiInfoBox').eq(i).find('.preValueList').find('li.productImageFile_li').length;
-        if(nvl(inputFile,"") === "" && preFileList === 0){
-            showMessage('', 'error', '[ 전시품 정보 ]', '제품사진을 첨부해 주세요.', '');
-            return false;
-        }
-    }
-
-    // 제품링크
-    let product_link_el = $('input[type=text][name=productLink]');
-    for(let i=0; i<product_link_el.length; i++){
-        let product_link = product_link_el.eq(i).val();
-        if(nvl(product_link,'') !== ''){
-            if(!checkUrl(product_link)){
-                showMessage('', 'error', '[ 전시품 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
-                return false;
-            }
-        }
-    }
-
-    //전시품정보 Json Create
-    let productList_json_arr = [];
-    let productCnt = Number.parseInt($('.exhiInfoNum:last').text());
-    if(productCnt > 0){
-        for(let i=0; i<productCnt; i++){
-            let productOptionBig = '';
-            let productOptionSmall = '';
-            let selProductOptionBig = $('select[name=productOptionBig]').eq(i).val();
-            if(nvl(selProductOptionBig,'선택') !== '선택'){
-                productOptionBig = $('select[name=productOptionBig]').eq(i).val();
-                productOptionSmall = $('select[name=productOptionSmall]').eq(i).val();
-            }else {
-                productOptionBig = $('input[type=text][name=preProductOptionBig]').eq(i).val();
-                productOptionSmall = $('input[type=text][name=preProductOptionSmall]').eq(i).val();
-            }
-            let productList_json_obj = {
-                seq: $('input[type=hidden][name=productSeq]').eq(i).val(),
-                exSeq: exhibitorSeq,
-                productOptionBig: productOptionBig,
-                productOptionSmall: productOptionSmall,
-                productNameKo: product_name_ko_el.eq(i).val(),
-                productQty: product_qty_el.eq(i).val(),
-                productBrand: product_brand_el.eq(i).val(),
-                productLength: product_length_el.eq(i).val(),
-                productWidth: product_width_el.eq(i).val(),
-                productHeight: product_height_el.eq(i).val(),
-                productWeight: product_weight_el.eq(i).val(),
-                productMaterial: product_material_el.eq(i).val(),
-                productYear: product_year_el.eq(i).val(),
-                productIntroKo: product_intro_ko_el.eq(i).val(),
-                productIntroEn: product_intro_en_el.eq(i).val(),
-                productLink: product_link_el.eq(i).val(),
-                note: (i+1)
-            };
-            productList_json_arr.push(productList_json_obj);
-        }
-    }
-
     /******************** 온라인 전시관 정보 ********************/
 
     let onlineList_json_arr = [];
@@ -5109,8 +4863,6 @@ function my_step_01_check(exhibitorSeq){
         newItemIntroEn: newItemIntroEn,
         promotionPlan: promotionPlan,
         fieldPart: fieldPart,
-        /* 전시품 정보 */
-        productList: productList_json_arr,
         /* 온라인 전시관 정보 */
         onlineList: onlineList_json_arr,
         /* 수출상담회 */
@@ -5169,17 +4921,10 @@ function my_step_01_check(exhibitorSeq){
                         title: '[ 참가업체 정보 ]',
                         html: swal_html,
                         allowOutsideClick: false,
-                        confirmButtonColor: '#3085d6',
+                        confirmButtonColor: '#00a8ff',
                         confirmButtonText: '확인'
                     }).then((result) => {
                         if (result.isConfirmed) {
-
-                            /* 전시품 사진 번호 재부여 */
-                            let product_File_json_obj = {
-                                seq: exhibitorSeq,
-                                productList: productList_json_arr
-                            }
-                            let product_res = ajaxConnect('/mypage/step/updateProductNewFileNote.do', 'post', product_File_json_obj);
 
                             /* 온라인 제품 사진 번호 재부여 */
                             let onlineFile_json_obj = {
@@ -5188,9 +4933,9 @@ function my_step_01_check(exhibitorSeq){
                             }
                             let online_res = ajaxConnect('/mypage/step/updateOnlineNewFileNote.do', 'post', onlineFile_json_obj);
 
-                            if(product_res.resultCode === "0" && online_res.resultCode === "0"){
+                            if(online_res.resultCode === "0"){
                                 if(!link.includes('/mng/')) {
-                                    f_page_move('/mypage/step2_1.do', exhibitorSeq);
+                                    f_page_move('/mypage/step2_9.do', exhibitorSeq);
                                 }else{
                                     window.location.reload();
                                 }
@@ -5202,10 +4947,277 @@ function my_step_01_check(exhibitorSeq){
         }else{
             /*returnPath = "/apply/step2_1.do";
             return returnPath;*/
-            window.location.href = '/mypage/step2_1.do';
+            window.location.href = '/mypage/step2_9.do';
         }
     }else{
         showMessage('', 'error', '[ 참가업체 정보 ]', '기본 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+    }
+}
+
+function my_step_2_9_check(exhibitorSeq){
+
+    /******************** 전시품 정보 ********************/
+
+    let boatEntryYn = $('input[type=radio][name=boatEntryYn]:checked').val();
+    if(nvl(boatEntryYn,'') === ''){
+        showMessage('', 'error', '[ 전시품 정보 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
+        return false;
+    }
+
+    // 제품분류(대)
+    let product_option_big_el = $('select[name=productOptionBig]');
+    let product_option_big_len = product_option_big_el.length;
+    let product_option_big_flag = true;
+    for(let i=0; i<product_option_big_len; i++){
+        if(product_option_big_el.eq(i).val() === '선택' || product_option_big_el.eq(i).val() === '선택'){
+            if($('.preOptionList').length === 0){
+                product_option_big_flag = false;
+                break;
+            }
+        }
+    }
+    if(!product_option_big_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
+        return false;
+    }
+
+    // 제품분류(소)
+    let product_option_small_el = $('select[name=productOptionSmall]');
+    let product_option_small_len = product_option_small_el.length;
+    let product_option_small_flag = true;
+    for(let i=0; i<product_option_small_len; i++){
+        if(product_option_small_el.eq(i).val() === '선택' || product_option_small_el.eq(i).val() === '선택'){
+            if($('.preOptionList').length === 0) {
+                product_option_small_flag = false;
+                break;
+            }
+        }
+    }
+    if(!product_option_small_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
+        return false;
+    }
+
+    // 제품명(국문)
+    let product_name_ko_el = $('input[type=text][name=productNameKo]');
+    let product_name_ko_len = product_name_ko_el.length;
+    let product_name_ko_flag = true;
+    for(let i=0; i<product_name_ko_len; i++){
+        if(nvl(product_name_ko_el.eq(i).val(),'') === ''){
+            product_name_ko_flag = false;
+            break;
+        }
+    }
+    if(!product_name_ko_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '제품명을 입력해 주세요.', '');
+        return false;
+    }
+
+    // 수량
+    let product_qty_el = $('input[type=text][name=productQty]');
+    let product_qty_len = product_qty_el.length;
+    let product_qty_flag = true;
+    for(let i=0; i<product_qty_len; i++){
+        if(nvl(product_qty_el.eq(i).val(),'') === ''){
+            product_qty_flag = false;
+            break;
+        }
+    }
+    if(!product_qty_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '수량을 입력해 주세요.', '');
+        return false;
+    }
+
+    // 제조사(브랜드)
+    let product_brand_el = $('input[type=text][name=productBrand]');
+    let product_brand_len = product_brand_el.length;
+    let product_brand_flag = true;
+    for(let i=0; i<product_brand_len; i++){
+        if(nvl(product_brand_el.eq(i).val(),'') === ''){
+            product_brand_flag = false;
+            break;
+        }
+    }
+    if(!product_brand_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
+        return false;
+    }
+
+    // 길이
+    let product_length_el = $('input[type=text][name=productLength]');
+    let product_length_len = product_length_el.length;
+    let product_length_flag = true;
+    for(let i=0; i<product_length_len; i++){
+        if(nvl(product_length_el.eq(i).val(),'') === ''){
+            product_length_flag = false;
+            break;
+        }
+    }
+    if(!product_length_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '길이(cm)를 입력해 주세요.', '');
+        return false;
+    }
+
+    // 너비
+    let product_width_el = $('input[type=text][name=productWidth]');
+    let product_width_len = product_width_el.length;
+    let product_width_flag = true;
+    for(let i=0; i<product_width_len; i++){
+        if(nvl(product_width_el.eq(i).val(),'') === ''){
+            product_width_flag = false;
+            break;
+        }
+    }
+    if(!product_width_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '너비(cm)를 입력해 주세요.', '');
+        return false;
+    }
+
+    // 높이
+    let product_height_el = $('input[type=text][name=productHeight]');
+    let product_height_len = product_height_el.length;
+    let product_height_flag = true;
+    for(let i=0; i<product_height_len; i++){
+        if(nvl(product_height_el.eq(i).val(),'') === ''){
+            product_height_flag = false;
+            break;
+        }
+    }
+    if(!product_height_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '높이(cm)를 입력해 주세요.', '');
+        return false;
+    }
+
+    // 중량
+    let product_weight_el = $('input[type=text][name=productWeight]');
+    let product_weight_len = product_weight_el.length;
+    let product_weight_flag = true;
+    for(let i=0; i<product_weight_len; i++){
+        if(nvl(product_weight_el.eq(i).val(),'') === ''){
+            product_weight_flag = false;
+            break;
+        }
+    }
+    if(!product_weight_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '중량(kg)를 입력해 주세요.', '');
+        return false;
+    }
+
+    // 소재
+    let product_material_el = $('input[type=text][name=productMaterial]');
+    let product_material_len = product_material_el.length;
+    let product_material_flag = true;
+    for(let i=0; i<product_material_len; i++){
+        if(nvl(product_material_el.eq(i).val(),'') === ''){
+            product_material_flag = false;
+            break;
+        }
+    }
+    if(!product_material_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '소재를 입력해 주세요.', '');
+        return false;
+    }
+
+    // 연식
+    let product_year_el = $('input[type=text][name=productYear]');
+    let product_year_len = product_year_el.length;
+    let product_year_flag = true;
+    for(let i=0; i<product_year_len; i++){
+        if(nvl(product_year_el.eq(i).val(),'') === ''){
+            product_year_flag = false;
+            break;
+        }
+    }
+    if(!product_year_flag){
+        showMessage('', 'error', '[ 전시품 정보 ]', '연식을 입력해 주세요.', '');
+        return false;
+    }
+
+    //전시품정보 Json Create
+    let productList_json_arr = [];
+    if(boatEntryYn === 'Y'){
+        let productCnt = Number.parseInt($('.exhiInfoNum:last').text());
+        if(productCnt > 0){
+            for(let i=0; i<productCnt; i++){
+                let productOptionBig = '';
+                let productOptionSmall = '';
+                let selProductOptionBig = $('select[name=productOptionBig]').eq(i).val();
+                if(nvl(selProductOptionBig,'선택') !== '선택'){
+                    productOptionBig = $('select[name=productOptionBig]').eq(i).val();
+                    productOptionSmall = $('select[name=productOptionSmall]').eq(i).val();
+                }else {
+                    productOptionBig = $('input[type=text][name=preProductOptionBig]').eq(i).val();
+                    productOptionSmall = $('input[type=text][name=preProductOptionSmall]').eq(i).val();
+                }
+                let productList_json_obj = {
+                    seq: $('input[type=hidden][name=productSeq]').eq(i).val(),
+                    exSeq: exhibitorSeq,
+                    productOptionBig: productOptionBig,
+                    productOptionSmall: productOptionSmall,
+                    productNameKo: product_name_ko_el.eq(i).val(),
+                    productQty: product_qty_el.eq(i).val(),
+                    productBrand: product_brand_el.eq(i).val(),
+                    productLength: product_length_el.eq(i).val(),
+                    productWidth: product_width_el.eq(i).val(),
+                    productHeight: product_height_el.eq(i).val(),
+                    productWeight: product_weight_el.eq(i).val(),
+                    productMaterial: product_material_el.eq(i).val(),
+                    productYear: product_year_el.eq(i).val(),
+                    note: (i+1)
+                };
+                productList_json_arr.push(productList_json_obj);
+            }
+        }
+    }
+
+    if(nvl(exhibitorSeq,'') !== ''){
+
+        let exhibitor_json_obj = {
+            seq: exhibitorSeq,
+            boatEntryYn: nvl(boatEntryYn,'N'),
+            productList: productList_json_arr
+        };
+        let resData = ajaxConnect('/apply/step/saveProductNew.do', 'post', exhibitor_json_obj);
+
+        if(resData.resultCode === "0") {
+
+            let timerInterval;
+            Swal.fire({
+                title: "정보 저장 중",
+                html: "입력하신 정보를 저장 중입니다.<br><b></b> milliseconds.<br>현재 화면을 유지해 주세요.",
+                allowOutsideClick: false,
+                timer: 2500,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 1000);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: '[ 전시품 정보 ]',
+                        html: '<span style="font-size: 1.2em;">전시품 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                        allowOutsideClick: false,
+                        confirmButtonColor: '#00a8ff',
+                        confirmButtonText: '확인'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            f_page_move('/apply/step2_1.do', exhibitorSeq);
+                        }
+                    })
+                }
+            });
+        }else{
+            showMessage('', 'error', '[ 전시품 정보 ]', '전시품 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        }
     }
 }
 
@@ -5403,7 +5415,7 @@ function my_step_2_1_check(exhibitorSeq){
             title: '[ 전시부스 신청 ]',
             html: '<span style="font-size: 1.2em;">부스 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -5467,7 +5479,7 @@ function my_step_2_2_check(exhibitorSeq){
             title: '[ 상호간판 신청 ]',
             html: '<span style="font-size: 1.2em;">상호간판 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -5567,7 +5579,7 @@ function my_step_2_3_check(exhibitorSeq){
             title: '[ 유틸리티 신청 ]',
             html: '<span style="font-size: 1.2em;">유틸리티 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -5691,7 +5703,7 @@ function my_step_2_4_check(exhibitorSeq){
             title: '[ 출입증 신청 ]',
             html: '<span style="font-size: 1.2em;">출입증 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -5728,7 +5740,7 @@ function my_step_2_5_check(exhibitorSeq){
             title: '[ 경품제공 신청 ]',
             html: '<span style="font-size: 1.2em;">경품제공 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -5761,7 +5773,7 @@ function my_step_2_8_check(exhibitorSeq){
             title: '[ 디렉토리 정보 ]',
             html: '<span style="font-size: 1.2em;">디렉토리 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -5794,7 +5806,7 @@ function my_step_03_check(exhibitorSeq){
             html: '참가 신청이 정상 완료되었습니다.<br>등록하신 담당자 메일로 신청완료 및 안내 메일이 발송됩니다.',
             icon: 'info',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -5888,7 +5900,7 @@ function f_pre_apply_check_login(){
             title: '[ 참관 신청 확인 ]',
             html: '<span style="font-size: 1.2em;">참관 신청 확인 되었습니다.<br>참관신청확인페이지로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -5901,7 +5913,7 @@ function f_pre_apply_check_login(){
             title: '[ 참관 신청 확인 ]',
             html: '<span style="font-size: 1.2em;">참관 신청 정보가 없습니다.<br>사전등록페이지로 이동합니다.</span>',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -5930,7 +5942,7 @@ function f_en_pre_apply_check_login(){
             html: 'Your application for observation has been confirmed.<br>Go to confirm application Page.',
             icon: 'info',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: 'OK'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -5943,7 +5955,7 @@ function f_en_pre_apply_check_login(){
             html: 'There is no information on the application for observation.<br>Go to the pre-registration page.',
             icon: 'info',
             allowOutsideClick: false,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#00a8ff',
             confirmButtonText: 'OK'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -6133,7 +6145,7 @@ function f_visitor_apply(gbn){
                                 title: '[사전등록하기]',
                                 html: '참관객 사전등록이 완료되었습니다.',
                                 icon: 'info',
-                                confirmButtonColor: '#3085d6',
+                                confirmButtonColor: '#00a8ff',
                                 confirmButtonText: '확인'
                             }).then((result) => {
                                 if (result.isConfirmed) {
@@ -6207,7 +6219,7 @@ function f_visitor_form_valid_check(gbn){
                     html: '이미 사전 등록된 성명, 휴대전화번호 입니다.<br>참관신청확인페이지에서 정보를 확인해 주세요.',
                     icon: 'info',
                     allowOutsideClick: false,
-                    confirmButtonColor: '#3085d6',
+                    confirmButtonColor: '#00a8ff',
                     confirmButtonText: '확인'
                 });
                 return false;
@@ -6440,7 +6452,7 @@ function f_en_visitor_apply(gbn){
                 html: 'This is a pre-registered name, mobile number.<br>Please login and check the information.',
                 icon: 'info',
                 allowOutsideClick: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00a8ff',
                 confirmButtonText: 'OK'
             });
             return;
@@ -6496,7 +6508,7 @@ function f_en_visitor_apply(gbn){
                                 title: '[사전등록하기]',
                                 html: '참관객 사전등록이 완료되었습니다.',
                                 icon: 'info',
-                                confirmButtonColor: '#3085d6',
+                                confirmButtonColor: '#00a8ff',
                                 confirmButtonText: '확인'
                             }).then((result) => {
                                 if (result.isConfirmed) {
@@ -6803,7 +6815,7 @@ function f_ask_request(companyName, id){
                         title: '문의하기',
                         html: '작성하신 내용으로 문의가 정상 접수되었습니다.<br>접수하신 연락처로 문의 답변 예정입니다.<br>감사합니다.',
                         allowOutsideClick: false,
-                        confirmButtonColor: '#3085d6',
+                        confirmButtonColor: '#00a8ff',
                         confirmButtonText: '확인'
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -6923,7 +6935,7 @@ function f_company_uploadFile_call(id, path) {
     }
 
     /* 전시품 정보 - 제품사진 */
-    let productImageFileList = $('input[type=file][name=productImageFile]');
+    /*let productImageFileList = $('input[type=file][name=productImageFile]');
     for(let i=0; i<productImageFileList.length; i++){
         let productImageNum = productImageFileList[i].id;
         productImageNum = productImageNum.toString().replace('productImageFile','');
@@ -6941,7 +6953,7 @@ function f_company_uploadFile_call(id, path) {
 
             f_company_uploadFile(id, 'exhibitor_apply_form', 'productImageFile' + productImageNum, 'exhibitor/company/' + path);
         }
-    }
+    }*/
 
     /* 온라인 전시관 정보 - 제품사진 */
     let onlineImageFileList = document.getElementsByName('onlineImageFile');

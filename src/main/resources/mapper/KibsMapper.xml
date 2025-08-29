@@ -297,9 +297,6 @@
         , product_weight
         , product_material
         , product_year
-        , product_intro_ko
-        , product_intro_en
-        , product_link
         , note
         , init_regi_pic
         , init_regi_dttm
@@ -319,9 +316,6 @@
                , #{productWeight}
                , <![CDATA[#{productMaterial}]]>
                , #{productYear}
-               , <![CDATA[#{productIntroKo}]]>
-               , <![CDATA[#{productIntroEn}]]>
-               , <![CDATA[#{productLink}]]>
                , #{note}
                , 'PRODUCT'
                , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -483,6 +477,7 @@
              , approval_status
              , approval_status_cancel_reason
              , participation_status
+             , boat_entry_yn
              , discount_type
              , registration_cnt
              , registration_fee
@@ -621,9 +616,6 @@
           , product_weight = #{productWeight}
           , product_material = #{productMaterial}
           , product_year = #{productYear}
-          , product_intro_ko = <![CDATA[#{productIntroKo}]]>
-          , product_intro_en = <![CDATA[#{productIntroEn}]]>
-          , product_link = <![CDATA[#{productLink}]]>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
@@ -704,9 +696,6 @@
              , product_weight
              , product_material
              , product_year
-             , product_intro_ko
-             , product_intro_en
-             , product_link
              , note
              , init_regi_pic
              , init_regi_dttm
@@ -2636,9 +2625,6 @@
              , product_weight
              , product_material
              , product_year
-             , product_intro_ko
-             , product_intro_en
-             , product_link
              , note
              , init_regi_pic
              , init_regi_dttm
@@ -2736,9 +2722,6 @@
              , product_weight
              , product_material
              , product_year
-             , product_intro_ko
-             , product_intro_en
-             , product_link
              , note
              , init_regi_pic
              , init_regi_dttm
@@ -4335,5 +4318,19 @@
             , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
             )
     </insert>
+
+    <update id="updateExhibitorNewBoatEntryYn" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.updateExhibitorNewBoatEntryYn */
+        UPDATE exhibitor_new
+        SET boat_entry_yn   = #{boatEntryYn}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <delete id="deleteProductNewExSeq" parameterType="java.lang.String">
+        /* com.mtf.kibs.mapper.kibsMapper.deleteProductNewExSeq */
+        DELETE FROM product_new
+        WHERE ex_seq = #{exSeq}
+    </delete>
 
 </mapper>

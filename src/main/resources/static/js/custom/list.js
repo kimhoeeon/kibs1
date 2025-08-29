@@ -272,7 +272,7 @@ function f_progress_step_change_modal_btn(){
                 icon: 'info',
                 showCancelButton: true,
                 allowOutsideClick: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00a8ff',
                 confirmButtonText: '변경',
                 cancelButtonColor: '#A1A5B7',
                 cancelButtonText: '취소'
@@ -394,7 +394,7 @@ function f_complete_expect_change_modal_btn(){
                 allowOutsideClick: false,
                 allowEnterKey: true,
                 stopKeydownPropagation: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00a8ff',
                 confirmButtonText: '변경',
                 cancelButtonColor: '#A1A5B7',
                 cancelButtonText: '취소'
@@ -511,7 +511,7 @@ function f_request_list_save(seq){
                                 text: '작성된 정보가 저장되었습니다.',
                                 icon: 'info',
                                 allowOutsideClick: false,
-                                confirmButtonColor: '#3085d6',
+                                confirmButtonColor: '#00a8ff',
                                 confirmButtonText: '확인'
                             }).then((result) => {
                                 if (result.isConfirmed) {
@@ -591,40 +591,32 @@ function requestMakeMailFormat(data){
     let note = data.note;
 
     if(nvl(note,'') === '개발사') {
-        let cpEmail1 = 'eh32408@kintex.com';
-        receiverArr.push({
-            email: cpEmail1 //받는이 메일주소,
-        });
-
-        let cpEmail2 = 'eh32508@kintex.com';
-        receiverArr.push({
-            email: cpEmail2 //받는이 메일주소,
-        });
+        receiverArr.push({email: 'eh32408@kintex.com'});
+        receiverArr.push({email: 'eh32508@kintex.com'});
     }else{
         let cpEmail = '';
         // kyj@meetingfan.com
         // khe@meetingfan.com
         // cmn@meetingfan.com
         let subject = data.subject;
-        let gbn = subject.substring(subject.indexOf('(')+1, subject.indexOf(')'));
+        let startIndex = subject.indexOf('('); // 여는 괄호 '('의 위치를 찾음
+        let endIndex = subject.indexOf(')'); // 닫는 괄호 ')'의 위치를 찾음
+        let gbn = subject.substring(startIndex + 1, endIndex).trim();
         switch (gbn) {
             case '뉴스레터':
-                cpEmail = 'kyj@meetingfan.com';
+                receiverArr.push({email: 'kyj@meetingfan.com'});
                 break;
             case '유지보수':
-                cpEmail = 'cmn@meetingfan.com';
+                receiverArr.push({email: 'yks@meetingfan.com'});
+                receiverArr.push({email: 'kyj@meetingfan.com'});
                 break;
             case '기능오류':
-                cpEmail = 'khe@meetingfan.com';
+                receiverArr.push({email: 'khe@meetingfan.com'});
                 break;
             default:
-                cpEmail = 'kyj@meetingfan.com';
+                receiverArr.push({email: 'kyj@meetingfan.com'});
                 break;
         }
-
-        receiverArr.push({
-            email: cpEmail //받는이 메일주소,
-        });
     }
 
     returnJsonObj = {

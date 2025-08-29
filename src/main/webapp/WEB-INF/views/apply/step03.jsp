@@ -110,8 +110,9 @@
                     <ul class="list1">
                         <li><a>기본정보</a></li>
                         <li>
-                            <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_1.do','${info.seq}')">전시 신청 정보</a>
+                            <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')">전시 신청 정보</a>
                             <ul class="list2">
+                                <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')">전시품 정보</a></li>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_1.do','${info.seq}')">전시부스 신청</a></li>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
@@ -144,7 +145,7 @@
                             <p>Step 2</p>전시 신청 정보
                         </div>
                         <div class="gauge">
-                            <progress class="gauge_bar" value="60" max="60"></progress>
+                            <progress class="gauge_bar" value="70" max="70"></progress>
                         </div>
                         <div class="txt">완료됨</div>
                     </div>

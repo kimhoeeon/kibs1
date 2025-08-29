@@ -201,7 +201,7 @@ function f_board_dataroom_save(id){
                                     title: '[ 갤러리 ]',
                                     html: '<span style="font-size: 1.2em;">저장되었습니다.</span>',
                                     allowOutsideClick: false,
-                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonColor: '#00a8ff',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -231,7 +231,7 @@ function f_board_dataroom_save(id){
                                     title: '[ 갤러리 ]',
                                     html: '<span style="font-size: 1.2em;">저장되었습니다.</span>',
                                     allowOutsideClick: false,
-                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonColor: '#00a8ff',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {

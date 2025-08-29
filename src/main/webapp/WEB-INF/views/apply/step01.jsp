@@ -54,7 +54,7 @@
 <body>
 
 <c:choose>
-    <c:when test="${mode eq 'end'}">
+    <c:when test="${mode ne 'open'}">
         <script>
             alert('2026 경기국제보트쇼 참가신청 준비중입니다.');
             window.location.href = '/guide/summary.do';
@@ -133,6 +133,7 @@
                                     <li>
                                         <a>전시 신청 정보</a>
                                         <ul class="list2">
+                                            <li><a>전시품 정보</a></li>
                                             <li><a>전시부스 신청</a></li>
                                             <li><a>상호간판 신청</a></li>
                                             <li><a>유틸리티 신청</a></li>
@@ -1071,7 +1072,7 @@
                                     </div>
 
                                     <!-- 전시정보 -->
-                                    <script src="/js/product.js"></script>
+                                    <%--<script src="/js/product.js"></script>
                                     <div class="form_wrap">
                                         <div class="form_tit">
                                             <div class="big">전시품 정보</div>
@@ -1351,7 +1352,7 @@
                                                                                 </c:if>
                                                                                 <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
                                                                                 <img src="${productImageFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin: 0 10px;"/>
-                                                                                    <%--<a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>--%>
+                                                                                    &lt;%&ndash;<a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>&ndash;%&gt;
                                                                                 <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${productImageFile.folderPath}', '${productImageFile.fullFileName}')">${productImageFile.fileName}</a>
                                                                                 <input type="hidden" name="productImageUploadFile" id="${productImageFile.id}" value="${productImageFile.fullFilePath}">
                                                                                 <button type="button" style="margin-left: 10px; cursor: pointer;" onclick="f_file_remove(this,'${productImageFile.id}')">X</button>
@@ -1385,7 +1386,7 @@
                                             <!-- //이미지교체방법추가 231107 -->
                                             <span class="exhiInfoAdd">추가</span>
                                         </div>
-                                    </div>
+                                    </div>--%>
 
                                     <!-- 온라인 전시관 정보 -->
                                     <script src="/js/online.js"></script>
@@ -1749,10 +1750,10 @@
                                     </div>
 
                                     <div class="form_btn" style="justify-content:flex-end;">
-                                    <%--href="/apply/step2_1.do#apply_s"--%>
+                                        <%--href="/apply/step2_1.do#apply_s"--%>
                                         <a href="javascript:void(0);" onclick="f_apply_comp('01','${info.seq}')" class="form_btn_next">
                                             <div class="big">다음</div>
-                                            <div class="small">전시부스 신청</div>
+                                            <div class="small">전시품 정보</div>
                                         </a>
                                     </div>
                                 </form>

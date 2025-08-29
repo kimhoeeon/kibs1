@@ -132,7 +132,7 @@ function f_member_detail(seq, nameKo){
         title: '[ 회원 목록 ]',
         html: infoMsg,
         allowOutsideClick: false,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#00a8ff',
         confirmButtonText: '확인'
     }).then((result) => {
         if (result.isConfirmed) {

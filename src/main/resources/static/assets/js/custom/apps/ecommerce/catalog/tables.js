@@ -3256,7 +3256,7 @@ let KTAppExhibitorNewApplicationProduct = function () {
             'info': false,
             'paging' : false,
             'select': false,
-            'ordering': true,
+            'ordering': false,
             'order': [[0, 'desc']],
             'columnDefs': [
                 {
@@ -3264,75 +3264,64 @@ let KTAppExhibitorNewApplicationProduct = function () {
                     'className': 'text-center'
                 },
                 {
+                    'targets': 0,
+                    'width': '2%'
+                },
+                {
+                    'targets': 2,
+                    'width': '3%',
+                    'render': function (data, type, row) { return renderBoatEntryYnCell(data, type, row); }
+                },
+                {
                     'targets': 3,
+                    'width': '10%',
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 4,
-                    'render': function (data, type, row) { return renderProductOptionCell(data, type, row); }
+                    'targets': [4,5,6,7,8],
+                    'width': '5%'
                 },
                 {
-                    'targets': 5,
-                    'render': function (data, type, row) { return renderProductNameCell(data, type, row); }
-                },
-                {
-                    'targets': 15,
+                    'targets': 9,
                     'data': 'actions',
+                    'width': '5%',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
                 { visible: false, targets: [1] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
-                { data: 'seq'}, //seq
-                { data: 'transferYear'}, //참가년도
+                { data: 'seq' }, //seq
+                { data: 'boatEntryYn' }, //출품여부
                 { data: 'companyName' }, //회사명
-                { data: 'productOption' }, //제품분류
-                { data: 'productName' }, //제품명
-                { data: 'productQty' }, //제품수량
-                { data: 'productBrand' }, //제조사
-                { data: 'productLength' }, //길이
-                { data: 'productWidth' }, //너비
-                { data: 'productHeight' }, //높이
-                { data: 'productWeight' }, //중량
-                { data: 'productMaterial' }, //소재
-                { data: 'productYear' }, //연식
+                { data: 'name' }, //담당자명
+                { data: 'position' }, //직위
+                { data: 'phone' }, //휴대폰
+                { data: 'productCount' }, //제품수량
                 { data: 'initRegiDttm' }, //등록일시
                 { data: 'actions' }
             ]
         });
     }
 
+    function renderBoatEntryYnCell(data, type, row){
+        let renderHTML = '';
+        renderHTML = '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += '신청';
+        renderHTML += '</div>';
+        let boatEntryYn = row.boatEntryYn;
+        if (nvl(boatEntryYn, 'N') === 'N') {
+            renderHTML = '<div class="badge badge-light-danger fw-bold">';
+                renderHTML += '미신청';
+            renderHTML += '</div>';
+        }
+        return renderHTML;
+    }
+
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
         return companyNameKo + '<br>' + companyNameEn;
-    }
-
-    function renderProductOptionCell(data, type, row){
-        let productOptionBig = row.productOptionBig;
-        let productOptionSmall = row.productOptionSmall;
-        let renderHTML = '-';
-        if(nvl(productOptionBig,'') !== '' && nvl(productOptionSmall,"") !== ""){
-            renderHTML = productOptionBig;
-            renderHTML += '<br>';
-            renderHTML += productOptionSmall;
-        }
-        return renderHTML;
-    }
-
-    function renderProductNameCell(data, type, row){
-        let productNameKo = row.productNameKo;
-        let productNameEn = row.productNameEn;
-        let renderHTML = '-';
-        if(nvl(productNameKo,'') !== ''){
-            renderHTML = productNameKo;
-            if(nvl(productNameEn,'') !== ''){
-                renderHTML += '<br>';
-                renderHTML += productNameEn;
-            }
-        }
-        return renderHTML;
     }
 
     function renderActionsCell(data, type, row){

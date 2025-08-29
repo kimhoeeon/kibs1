@@ -498,7 +498,7 @@ function f_exhibitor_save(seq){
                                         html: '전시 업체 정보가 저장되었습니다.',
                                         icon: 'info',
                                         allowOutsideClick: false,
-                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonColor: '#00a8ff',
                                         confirmButtonText: '확인'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
@@ -1372,7 +1372,7 @@ function f_directory_excel_export(){
         html: '디렉토리 정보를 다운로드하시겠습니까 ?',
         allowOutsideClick: false,
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#00a8ff',
         confirmButtonText: '확인',
         cancelButtonColor: '#A1A5B7',
         cancelButtonText: '취소'
@@ -1411,7 +1411,7 @@ function f_exhibitor_excel_export(){
         html: '전시업체 상세를 다운로드하시겠습니까 ?',
         allowOutsideClick: false,
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#00a8ff',
         confirmButtonText: '확인',
         cancelButtonColor: '#A1A5B7',
         cancelButtonText: '취소'
@@ -1475,7 +1475,7 @@ function f_approval_status_btn_yn(){
                 html: '<span style="font-size: 1.2em;">참가 상태를 변경하시겠습니까 ?<br>[ ' + md_approval_stat_val + ' ]</span>',
                 allowOutsideClick: false,
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00a8ff',
                 confirmButtonText: '확인',
                 cancelButtonColor: '#A1A5B7',
                 cancelButtonText: '취소'
@@ -1534,7 +1534,7 @@ function f_prc_yn_btn(){
                 html: '<span style="font-size: 1.2em;">입금 상태를 변경하시겠습니까 ?<br>[ ' + selTxt + ' ]</span>',
                 allowOutsideClick: false,
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00a8ff',
                 confirmButtonText: '확인',
                 cancelButtonColor: '#A1A5B7',
                 cancelButtonText: '취소'

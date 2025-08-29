@@ -245,7 +245,7 @@ function f_mng_stat_excel_download(){
             '( 데이터가 많을 경우 시간이 소요될 수 있습니다. )<br>( 해당 창이 닫혀도 다운로드가 완료될 때까지<br>대기해 주세요. )</span>',
         allowOutsideClick: false,
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#00a8ff',
         confirmButtonText: '확인',
         cancelButtonColor: '#A1A5B7',
         cancelButtonText: '취소'
@@ -620,7 +620,7 @@ async function f_attach_file_upload(userId, formId, path) {
                 text: "파일 업로드 성공",
                 icon: 'info',
                 allowOutsideClick: false,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#00a8ff',
                 confirmButtonText: '확인'
             }).then((result) => {
                 if (result.isConfirmed) {

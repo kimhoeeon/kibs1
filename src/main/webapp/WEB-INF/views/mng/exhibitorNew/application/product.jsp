@@ -2308,30 +2308,18 @@ if (document.documentElement) {
                                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="text-center">번호</th>
                                                 <th>SEQ</th>
-                                                <th class="text-center">참가년도</th>
+                                                <th class="text-center">출품여부</th>
                                                 <th class="text-center">회사명</th>
-                                                <th class="text-center">제품분류</th>
-                                                <th class="text-center">제품명</th>
+                                                <th class="text-center">대표 담당자명</th>
+                                                <th class="text-center">직책</th>
+                                                <th class="text-center">연락처</th>
                                                 <th class="text-center">수량</th>
-                                                <th class="text-center">제조사</th>
-                                                <th class="text-center">L(cm)</th>
-                                                <th class="text-center">W(cm)</th>
-                                                <th class="text-center">H(cm)</th>
-                                                <th class="text-center">중량(kg)</th>
-                                                <th class="text-center">소재</th>
-                                                <th class="text-center">연식</th>
                                                 <th class="text-center">등록일시</th>
                                                 <th class="text-center">기능</th>
                                             </tr>
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
