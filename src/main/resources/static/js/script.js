@@ -654,21 +654,23 @@ $(document).ready(function () {
 
     // .exhiInfoBox를 추가하는 이벤트 핸들러 추가
     $('.exhiInfoAdd').on('click', function () {
-        if(exhiInfoCount < 40){
-            let newExhiInfoBox = $('.exhiInfoBox:first').clone(true);
+        if(exhiInfoCount < 20){
+
             exhiInfoCount++;
+
+            let newExhiInfoBox = $('.exhiInfoBox:first').clone(true);
             newExhiInfoBox.find('input[type="hidden"]').val('');
             newExhiInfoBox.find('.exhiInfoNum').text(exhiInfoCount);
             newExhiInfoBox.find('textarea').val('');
             newExhiInfoBox.find('input[type="text"]').val('');
 
             // 복제된 .onlineInfoBox 는 제품 사진 하나만 남기기
-            let exhiPrdBoxList = newExhiInfoBox.find('.exhiPrdBox');
+            /*let exhiPrdBoxList = newExhiInfoBox.find('.exhiPrdBox');
             for (let i = 0; i <= exhiPrdBoxList.length; i++) {
                 if (i !== 0) {
                     exhiPrdBoxList.eq(i).remove();
                 }
-            }
+            }*/
 
             // 복제된 .onlineInfoBox 는 제품 기존 값 목록 제거
             newExhiInfoBox.find('.preValueList').remove();
@@ -692,14 +694,14 @@ $(document).ready(function () {
             select2.attr('name', productOptionSmallName);
 
             // 파일 입력 초기화 및 비활성화 속성 제거
-            let exhiPrdBoxes = $(this).closest('.exhiInfoBox').find('.exhiPrdBox');
+            /*let exhiPrdBoxes = $(this).closest('.exhiInfoBox').find('.exhiPrdBox');
             let exhiPrdBoxCount = exhiPrdBoxes.length;
             let newIdSuffix = exhiPrdBoxCount + 1;
             let fileInput = newExhiInfoBox.find('.upload_hidden');
             let fileNameInput = newExhiInfoBox.find('.upload_name');
             fileInput.val('').attr('id', 'productImageFile' + exhiInfoCount + '_' + newIdSuffix);
             fileNameInput.val('').attr('disabled', true).attr('id', 'productImage' + exhiInfoCount + '_' + newIdSuffix);
-            newExhiInfoBox.find('label').attr('for', 'productImageFile' + exhiInfoCount + '_' + newIdSuffix);
+            newExhiInfoBox.find('label').attr('for', 'productImageFile' + exhiInfoCount + '_' + newIdSuffix);*/
 
             newExhiInfoBox.find('.exhiInfoDel').on('click', function () {
                 deleteExhiInfoBox(this);
@@ -707,7 +709,7 @@ $(document).ready(function () {
             $('.exhiInfoBox:last').after(newExhiInfoBox);
             updateExhiInfoNum(this);
         }else{
-            showMessage('', 'info', '[ 전시품 정보 ]', '전시정보는 최대 40개까지만 등록 가능합니다.', '');
+            showMessage('', 'info', '[ 전시품 정보 ]', '전시정보는 최대 20개까지만 등록 가능합니다.', '');
         }
     });
 
@@ -735,7 +737,7 @@ $(document).ready(function () {
                         showMessage('', 'error', '에러 발생', '전시품 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                     }
 
-                    let fileList = $(el).parent().parent().find('.preValueList').find('.file_box ul .productImageFile_li').find('input[type=hidden][name=productImageUploadFile]');
+                    /*let fileList = $(el).parent().parent().find('.preValueList').find('.file_box ul .productImageFile_li').find('input[type=hidden][name=productImageUploadFile]');
                     if(nvl(fileList, "") !== ""){
                         for(let i=0; i<fileList.length; i++){
                             let file_id = fileList[i].id;
@@ -749,7 +751,7 @@ $(document).ready(function () {
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
 
                 $(el).closest('.exhiInfoBox').remove();
