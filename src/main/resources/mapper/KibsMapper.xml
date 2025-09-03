@@ -2463,7 +2463,7 @@
                                     </if>
                                  )
                   ORDER BY LENGTH (en.company_badge) DESC, en.init_regi_dttm DESC
-                )--> /* 2026~ 전시업체 전시품 End */
+                ) /* 2026~ 전시업체 전시품 End */-->
         UNION ALL
                 /* 2026~ 전시업체 온라인 Start */
                 ( SELECT 2 as orderSeq
@@ -3072,7 +3072,7 @@
                           AND en.company_online_view_yn = 'Y'
                           AND en.apply_complt = 'Y'
                           AND en.approval_status = '참가승인'
-                    UNION ALL--> /**/
+                    UNION ALL /**/-->
                     SELECT en.company_name_ko
                          , en.company_name_en
                          , en.transfer_year
