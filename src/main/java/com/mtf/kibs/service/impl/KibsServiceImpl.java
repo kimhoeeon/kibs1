@@ -351,7 +351,6 @@ public class KibsServiceImpl implements KibsService {
 
                         /* File Note */
                         //processUpdateOnlineFileNote(exhibitorSeq, request.getNote());
-
                     }
 
                     /* 이전 참가한 업체라면 이전 정보 온라인전시회 노출 여부 'N'으로 변경 */

@@ -3553,7 +3553,7 @@ public class KibsController {
 
     public String convertOptionBig(String optionBig){
         String result = optionBig;
-        //"보트·요트", "무동력보트", "워크보트", "해양레저", "서핑", "수중레저", "해양관광", "부품&장비", "안전&마리나", "기타"
+        //"보트&요트", "무동력보트", "워크보트", "해양레저", "서핑", "수중레저", "해양관광", "부품&장비", "안전&마리나", "기타"
         //"boat&yacht", "paddler's world", "work boat", "marine leisure", "surfing", "underwater leisure", "marine tourism", "parts&equipment", "safety&marina", "Others"
         if(optionBig != null && !optionBig.isEmpty()){
             switch (optionBig){
@@ -3568,7 +3568,7 @@ public class KibsController {
                     result = "Diving";
                     break;
                 // 기존 -----------------
-                case "보트·요트":
+                case "보트&요트":
                     result = "Boat&Yacht";
                     break;
                 case "무동력보트":
@@ -3605,7 +3605,7 @@ public class KibsController {
     }
 
     public String convertOptionSmall(String optionSmall){
-        // 보트·요트
+        // 보트&요트
         // "파워보트", "세일요트", "고무보트", "콤비보트", "FRP보트", "알루미늄보트", "카본보트", "복합소재보트"
         // "Power Boat", "Sailing Yacht", "Inflatable Boat", "Rigid-hulled Inflatable Boat(RHIB)", "Fiberglass Boat", "Aluminum Boat", "Carbon Fiber Boat", "Composite Boat"
         // 무동력보트
@@ -3640,7 +3640,7 @@ public class KibsController {
 
         if(optionSmall != null && !optionSmall.isEmpty()){
             switch (optionSmall){
-                // 보트·요트
+                // 보트&요트
                 case "파워보트":
                     result = "Power Boat";
                     break;

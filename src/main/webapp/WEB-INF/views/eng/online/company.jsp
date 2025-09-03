@@ -77,7 +77,7 @@
                             <div class="tabOptAct">Exhibitor List</div>
                             <div class="tabOptSel">
                                 <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
-                                <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>">Exhibitor Registration</a>
+                                <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8780/8777');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>">Exhibitor Registration</a>
                                 <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
                                 <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
                                 <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
@@ -99,7 +99,7 @@
                     <div class="exh_sh_select">
                         <select id="productOptionBig">
                             <option value="">ALL</option>
-                            <option value="보트·요트">Boat&Yacht</option>
+                            <option value="보트&요트">Boat&Yacht</option>
                             <option value="무동력보트">Paddler's World</option>
                             <option value="워크보트">Work Boat</option>
                             <option value="해양레저">Marine Leisure</option>

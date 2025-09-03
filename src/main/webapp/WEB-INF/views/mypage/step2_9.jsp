@@ -368,6 +368,7 @@
 
         <script type="text/javascript">
             $(function(){
+
                 $('input[type=radio][name=boatEntryYn]').on('change', function(){
                     let boatEntryYn = $(this).val();
                     if(boatEntryYn === 'N'){
@@ -380,7 +381,9 @@
                     }
                 });
 
-                $('input[type=radio][name=boatEntryYn]').trigger('change');
+                let boatEntryYn = '${info.boatEntryYn}';
+                $('input[type=radio][name=boatEntryYn][value=' + boatEntryYn + ']').trigger('change');
+
             });
         </script>
 

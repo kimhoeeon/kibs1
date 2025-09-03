@@ -3794,44 +3794,51 @@ public class KibsMngController {
     @RequestMapping(value = "/file/download.do", method = RequestMethod.POST)
     public void board_downloadFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("KibsMngController > board_downloadFile");
+        // 1. 요청 파라미터 가져오기
         String path = request.getParameter("path");
-        path = path.replaceAll("\\\\", "/");
-
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
-
-        String file_repo = "";
-        if("mail".equals(path)){
-            file_repo = ResourceUtils.getFile("/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/img/" + path + "/").toPath().toString();
-        }else {
-            // 파일 업로드된 경로
-            file_repo = ResourceUtils.getFile("/usr/local/tomcat/webapps/upload/" + path + "/").toPath().toString();
-        }
-        // 서버에 실제 저장된 파일명
-        //String filename = "20140819151221.zip" ;
         String fileName = request.getParameter("fileName");
 
-        //System.out.println(path + " / " + fileName);
-
-        OutputStream out = response.getOutputStream();
-        String downFile = file_repo + "/" + fileName;
-        File f = new File(downFile);
-        response.setHeader("Cache-Control", "no-cache");
-        // 한글 파일명 처리
-        //fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
-        response.addHeader("Content-disposition","attachment; fileName=" + URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20") + ";");
-
-        FileInputStream in = new FileInputStream(f);
-        byte[] buffer = new byte[1024*8];
-        while(true){
-            int count = in.read(buffer);
-            if(count == -1){
-                break;
-            }
-            out.write(buffer,0,count);
+        if (path == null || fileName == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Required parameters are missing.");
+            return;
         }
-        in.close();
-        out.close();
+        path = path.replaceAll("\\\\", "/");
+
+        // 2. 파일 저장소 경로 결정 (기존 로직 유지)
+        String fileRepoPath;
+        if ("mail".equals(path)) {
+            fileRepoPath = "/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/img/" + path;
+        } else {
+            fileRepoPath = "/usr/local/tomcat/webapps/upload/" + path;
+        }
+
+        // 3. 다운로드할 파일 객체 생성 및 유효성 검사
+        File file = new File(fileRepoPath, fileName);
+        if (!file.exists() || !file.isFile()) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found.");
+            return;
+        }
+
+        // 4. HTTP 응답 헤더 설정 (가장 중요한 부분)
+        // 4-1. Content-Type (MIME 타입) 동적 설정
+        String mimeType = request.getServletContext().getMimeType(file.getAbsolutePath());
+        if (mimeType == null) {
+            mimeType = "application/octet-stream"; // 타입을 알 수 없는 경우를 위한 기본값
+        }
+        response.setContentType(mimeType);
+
+        // 4-2. Content-Length 설정 (모바일 깨짐 방지 핵심)
+        response.setContentLengthLong(file.length());
+
+        // 4-3. Content-Disposition 설정 (다운로드 및 파일명 인코딩)
+        String encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+        response.setHeader("Cache-Control", "no-cache");
+
+        // 5. try-with-resources를 이용한 안전한 파일 스트리밍
+        try (InputStream inputStream = new FileInputStream(file)) {
+            FileCopyUtils.copy(inputStream, response.getOutputStream());
+        }
     }
 
     @RequestMapping(value = "/mng/directory/download.do", method = RequestMethod.GET)

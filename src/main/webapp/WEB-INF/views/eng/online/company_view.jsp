@@ -76,7 +76,7 @@
                         <div class="tabOptAct">Exhibitor List</div>
                         <div class="tabOptSel">
                             <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
-                            <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 1670-8785');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>">Exhibitor Registration</a>
+                            <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8780/8777');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>">Exhibitor Registration</a>
                             <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
                             <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
                             <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
@@ -99,38 +99,16 @@
                         <c:when test="${gbn eq 'E'}">
                             <c:if test="${not empty onlineList}">
                                 <c:if test="${onlineList.get(0).productOptionBig ne null and onlineList.get(0).productOptionBig ne ''}">
-                                    <c:choose>
-                                        <c:when test="${onlineList.get(0).productOptionBig eq '요트·보트'}">Yacht & Boat</c:when>
-                                        <c:when test="${onlineList.get(0).productOptionBig eq '무동력보트'}">Paddling Boat</c:when>
-                                        <c:when test="${onlineList.get(0).productOptionBig eq '워크보트'}">Work Boat</c:when>
-                                        <c:when test="${onlineList.get(0).productOptionBig eq '워터스포츠'}">Water Sports</c:when>
-                                        <c:when test="${onlineList.get(0).productOptionBig eq '다이빙'}">Diving</c:when>
-                                        <c:when test="${onlineList.get(0).productOptionBig eq '아웃도어'}">Outdoor</c:when>
-                                        <c:when test="${onlineList.get(0).productOptionBig eq '해양관광'}">Marine Tourism</c:when>
-                                        <c:when test="${onlineList.get(0).productOptionBig eq '해양부품'}">Marine Equipment</c:when>
-                                        <c:when test="${onlineList.get(0).productOptionBig eq '마리나산업'}">Marina Industry</c:when>
-                                        <c:otherwise>-</c:otherwise>
-                                    </c:choose>
+                                    ${onlineList.get(0).productOptionBig}
                                 </c:if>
                             </c:if>
                         </c:when>
                         <c:otherwise>
-                            <%--<c:if test="${not empty productList}">
-                                <c:if test="${productList.get(0).productOptionBig ne null and productList.get(0).productOptionBig ne ''}">
-                                    <c:choose>
-                                        <c:when test="${productList.get(0).productOptionBig eq '요트·보트'}">Yacht & Boat</c:when>
-                                        <c:when test="${productList.get(0).productOptionBig eq '무동력보트'}">Paddling Boat</c:when>
-                                        <c:when test="${productList.get(0).productOptionBig eq '워크보트'}">Work Boat</c:when>
-                                        <c:when test="${productList.get(0).productOptionBig eq '워터스포츠'}">Water Sports</c:when>
-                                        <c:when test="${productList.get(0).productOptionBig eq '다이빙'}">Diving</c:when>
-                                        <c:when test="${productList.get(0).productOptionBig eq '아웃도어'}">Outdoor</c:when>
-                                        <c:when test="${productList.get(0).productOptionBig eq '해양관광'}">Marine Tourism</c:when>
-                                        <c:when test="${productList.get(0).productOptionBig eq '해양부품'}">Marine Equipment</c:when>
-                                        <c:when test="${productList.get(0).productOptionBig eq '마리나산업'}">Marina Industry</c:when>
-                                        <c:otherwise>-</c:otherwise>
-                                    </c:choose>
+                            <c:if test="${not empty onlineList}">
+                                <c:if test="${onlineList.get(0).onlineOptionBig ne null and onlineList.get(0).onlineOptionBig ne ''}">
+                                    ${onlineList.get(0).onlineOptionBig}
                                 </c:if>
-                            </c:if>--%>
+                            </c:if>
                         </c:otherwise>
                     </c:choose>
                 </div>

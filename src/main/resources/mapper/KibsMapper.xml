@@ -2165,7 +2165,7 @@
                               )
                  ORDER BY LENGTH (e.company_badge) DESC, e.init_regi_dttm DESC
                 ) /* ~2025 전시업체 End */
-        UNION ALL
+        <!--UNION ALL
                 /* 2026~ 전시업체 전시품 Start */
                 ( SELECT 1 as orderSeq
                        , en.seq
@@ -2201,11 +2201,6 @@
                                 <foreach collection="companyBadgeList" item="item" index="index">
                                     AND en1.company_badge LIKE CONCAT('%', #{item}, '%')
                                 </foreach>
-                             <!--AND en.company_badge REGEXP (REGEXP_REPLACE(
-                                 <foreach collection="companyBadge" item="item" index="index" separator="|">
-                                    #{item}
-                                 </foreach>
-                             ,''|'',''))-->
                              </if>
                              AND EXISTS ( SELECT 1
                                           FROM product_new pdn
@@ -2239,7 +2234,7 @@
                                     </if>
                                  )
                   ORDER BY LENGTH (en.company_badge) DESC, en.init_regi_dttm DESC
-                ) /* 2026~ 전시업체 전시품 End */
+                ) /* 2026~ 전시업체 전시품 End */-->
         UNION ALL
                 /* 2026~ 전시업체 온라인 Start */
                 ( SELECT 2 as orderSeq
@@ -2399,7 +2394,7 @@
                               )
                  ORDER BY LENGTH (e.company_badge) DESC, e.init_regi_dttm DESC
                 ) /* ~2025 전시업체 End */
-        UNION ALL
+        <!--UNION ALL
                 /* 2026~ 전시업체 전시품 Start */
                 ( SELECT 1 as orderSeq
                        , en.seq
@@ -2435,11 +2430,6 @@
                                 <foreach collection="companyBadgeList" item="item" index="index">
                                     AND en1.company_badge LIKE CONCAT('%', #{item}, '%')
                                 </foreach>
-                             <!--AND en.company_badge REGEXP (REGEXP_REPLACE(
-                                 <foreach collection="companyBadge" item="item" index="index" separator="|">
-                                    #{item}
-                                 </foreach>
-                             ,''|'',''))-->
                              </if>
                              AND EXISTS ( SELECT 1
                                           FROM product_new pdn
@@ -2473,7 +2463,7 @@
                                     </if>
                                  )
                   ORDER BY LENGTH (en.company_badge) DESC, en.init_regi_dttm DESC
-                ) /* 2026~ 전시업체 전시품 End */
+                )--> /* 2026~ 전시업체 전시품 End */
         UNION ALL
                 /* 2026~ 전시업체 온라인 Start */
                 ( SELECT 2 as orderSeq
@@ -2921,7 +2911,7 @@
                          AND e.company_online_view_yn = 'Y'
                          AND e.apply_complt = 'Y'
                          AND e.approval_status = '참가승인' ) +
-                 ( SELECT COUNT(*)
+                 <!--( SELECT COUNT(*)
                    FROM ( SELECT pdn.ex_seq
                           FROM product_new pdn
                           WHERE 1=1
@@ -2954,7 +2944,7 @@
                          </if>
                          AND en.company_online_view_yn = 'Y'
                          AND en.apply_complt = 'Y'
-                         AND en.approval_status = '참가승인' ) +
+                         AND en.approval_status = '참가승인' ) +-->
                  ( SELECT COUNT(*)
                    FROM ( SELECT oln.ex_seq
                           FROM online_new oln
@@ -3039,7 +3029,7 @@
                      AND e.apply_complt = 'Y'
                      AND e.approval_status = '참가승인'
                    UNION ALL /**/
-                    SELECT en.company_name_ko
+                    <!--SELECT en.company_name_ko
                          , en.company_name_en
                          , en.transfer_year
                          , ot.*
@@ -3082,7 +3072,7 @@
                           AND en.company_online_view_yn = 'Y'
                           AND en.apply_complt = 'Y'
                           AND en.approval_status = '참가승인'
-                    UNION ALL /**/
+                    UNION ALL--> /**/
                     SELECT en.company_name_ko
                          , en.company_name_en
                          , en.transfer_year

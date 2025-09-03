@@ -104,7 +104,7 @@
                     <div class="exh_sh_select">
                         <select id="productOptionBig">
                             <option value="">전체보기</option>
-                            <option value="보트·요트">보트·요트</option>
+                            <option value="보트&요트">보트&요트</option>
                             <option value="무동력보트">무동력보트</option>
                             <option value="워크보트">워크보트</option>
                             <option value="해양레저">해양레저</option>

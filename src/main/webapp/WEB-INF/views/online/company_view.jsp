@@ -109,11 +109,11 @@
                             </c:if>
                         </c:when>
                         <c:otherwise>
-                            <%--<c:if test="${not empty productList}">
-                                <c:if test="${productList.get(0).productOptionBig ne null and productList.get(0).productOptionBig ne ''}">
-                                    ${productList.get(0).productOptionBig}전
+                            <c:if test="${not empty onlineList}">
+                                <c:if test="${onlineList.get(0).onlineOptionBig ne null and onlineList.get(0).onlineOptionBig ne ''}">
+                                    ${onlineList.get(0).onlineOptionBig}전
                                 </c:if>
-                            </c:if>--%>
+                            </c:if>
                         </c:otherwise>
                     </c:choose>
                 </div>

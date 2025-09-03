@@ -195,8 +195,7 @@
                             </li>
                         </ul>
                     </div>
-                    <a class="downBtn btnSt01" href="javascript:void(0);" onclick="alert('준비 중입니다');return false;">2026 브로슈어 다운로드</a>
-                    <%--<a class="downBtn btnSt01" href="/file/2025_경기국제보트쇼_브로슈어_국문.pdf" target="_blank">2025 브로슈어 다운로드</a>--%>
+                    <a class="downBtn btnSt01" href="/file/2026 경기국제보트쇼 브로슈어-국문.pdf" download="2026 경기국제보트쇼 브로슈어-국문.pdf">2026 브로슈어 다운로드</a>
                 </div>
             </div>
 

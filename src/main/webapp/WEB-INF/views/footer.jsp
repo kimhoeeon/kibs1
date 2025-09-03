@@ -134,7 +134,7 @@
                 <div class="sc">경기국제보트쇼 사무국</div>
                 <div class="txt">
                     <p>
-                        <span>T. 1670-8785</span>
+                        <span>T. 031-995-8780/8777</span>
                         <span>F. 031-995-8091</span>
                         <span>E. kibs@kintex.com</span>
                     </p>

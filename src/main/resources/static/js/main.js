@@ -1005,7 +1005,7 @@ function f_pw_init(){
                         Swal.fire({
                             icon: 'info',
                             title: '[ 회원 정보 ]',
-                            html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소로 메일 전송이 실패하였습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 1670-8785</span>',
+                            html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소로 메일 전송이 실패하였습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 031-995-8780/8777</span>',
                             allowOutsideClick: false,
                             confirmButtonColor: '#00a8ff',
                             confirmButtonText: '확인'
@@ -1016,7 +1016,7 @@ function f_pw_init(){
                     Swal.fire({
                         icon: 'info',
                         title: '[ 회원 정보 ]',
-                        html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소가 없습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 1670-8785</span>',
+                        html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소가 없습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 031-995-8780/8777</span>',
                         allowOutsideClick: false,
                         confirmButtonColor: '#00a8ff',
                         confirmButtonText: '확인'
@@ -1776,7 +1776,7 @@ function step_01_check(exhibitorSeq){
         // 연식
         let online_year_el = $('input[type=text][name=onlineYear]');
 
-        let onlineCnt = Number.parseInt($('.exhiInfoNum:last').text());
+        let onlineCnt = Number.parseInt($('.onlineInfoNum:last').text());
         if(onlineCnt > 0){
             for(let i=0; i<onlineCnt; i++){
                 let onlineOptionBig = '';
@@ -4746,7 +4746,7 @@ function my_step_01_check(exhibitorSeq){
         // 연식
         let online_year_el = $('input[type=text][name=onlineYear]');
 
-        let onlineCnt = Number.parseInt($('.exhiInfoNum:last').text());
+        let onlineCnt = Number.parseInt($('.onlineInfoNum:last').text());
         if(onlineCnt > 0){
             for(let i=0; i<onlineCnt; i++){
                 let onlineOptionBig = '';
