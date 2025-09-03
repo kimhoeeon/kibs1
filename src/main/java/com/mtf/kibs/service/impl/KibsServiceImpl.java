@@ -85,6 +85,13 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
+    public String getExhibitorNewRepEmail(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > getExhibitorNewRepEmail : ======");
+        return kibsMapper.getExhibitorNewRepEmail(exhibitorNewDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
     public List<String> preGetExhibitorEmail(ExhibitorDTO exhibitorDTO) {
         System.out.println("KibsServiceImpl > preGetExhibitorEmail : ======");
         return kibsMapper.preGetExhibitorEmail(exhibitorDTO);

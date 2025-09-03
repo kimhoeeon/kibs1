@@ -3240,6 +3240,14 @@ public class KibsController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/getExhibitorNewRepEmail.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> getExhibitorNewRepEmail(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsController > getExhibitorNewRepEmail");
+        String result = kibsService.getExhibitorNewRepEmail(exhibitorNewDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/preGetExhibitorEmail.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<String>> preGetExhibitorEmail(@RequestBody ExhibitorDTO exhibitorDTO) {

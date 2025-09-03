@@ -36,6 +36,13 @@
         AND transfer_year = #{transferYear}
     </select>
 
+    <select id="getExhibitorNewRepEmail" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.KibsMapper.getExhibitorNewRepEmail */
+        SELECT email
+        FROM exhibitor_new
+        WHERE seq = #{seq}
+    </select>
+
     <select id="preGetExhibitorEmail" parameterType="com.mtf.kibs.dto.ExhibitorDTO" resultType="java.lang.String">
         /* com.mtf.kibs.mapper.KibsMapper.preGetExhibitorNewEmail */
         SELECT distinct r.email

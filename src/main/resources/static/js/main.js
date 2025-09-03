@@ -4056,12 +4056,12 @@ function step_03_check(exhibitorSeq){
         }).then((result) => {
             if (result.isConfirmed) {
 
-                let charge_jsonObj = {
-                    exSeq: exhibitorSeq,
+                let exhibitor_new_jsonObj = {
+                    seq: exhibitorSeq,
                 }
-                let charge_resData = ajaxConnect('/apply/step/directory/selectChargeNewInfo.do','post', charge_jsonObj);
+                let exhibitor_new_resData = ajaxConnect('/getExhibitorNewRepEmail.do','post', exhibitor_new_jsonObj);
 
-                let jsonObj = makeJsonFormat(charge_resData);
+                let jsonObj = makeJsonFormat(exhibitor_new_resData);
                 //console.log(JSON.stringify(jsonObj));
                 let resData = ajaxConnect('/mail/send.do', 'post', jsonObj);
                 //console.log(i , resData);
@@ -5789,35 +5789,32 @@ function my_step_2_8_check(exhibitorSeq){
 function my_step_03_check(exhibitorSeq){
 
     let apply_comp_json_obj = {
-        id: sessionStorage.getItem('id'),
-        transferYear: transferYear,
+        seq: exhibitorSeq,
         approvalStatus: '승인요청',
         applyComplt: 'Y'
     }
-
-    let resData = ajaxConnect('/apply/step/updateExhibitStatus.do', 'post', apply_comp_json_obj);
+    let resData = ajaxConnect('/apply/step/updateExhibitorNewStatus.do', 'post', apply_comp_json_obj);
 
     //console.log(resData);
     if(resData.resultCode === "0") {
 
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
-            title: '참가업체 정보',
-            html: '참가 신청이 정상 완료되었습니다.<br>등록하신 담당자 메일로 신청완료 및 안내 메일이 발송됩니다.',
             icon: 'info',
+            title: '[ 참가업체 정보 ]',
+            html: '<span style="font-size: 1.2em;">참가 신청이 정상 완료되었습니다.<br>등록하신 담당자 메일로 신청완료 및 안내 메일이 발송됩니다.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
 
-                let charge_jsonObj = {
-                    id: sessionStorage.getItem('id'),
-                    transferYear: transferYear
+                let exhibitor_new_jsonObj = {
+                    seq: exhibitorSeq,
                 }
-                let charge_resData = ajaxConnect('/apply/step/directory/selectChargeInfo.do','post', charge_jsonObj);
+                let exhibitor_new_resData = ajaxConnect('/getExhibitorNewRepEmail.do','post', exhibitor_new_jsonObj);
 
-                let jsonObj = makeJsonFormat(charge_resData);
+                let jsonObj = makeJsonFormat(exhibitor_new_resData);
                 //console.log(JSON.stringify(jsonObj));
                 let resData = ajaxConnect('/mail/send.do', 'post', jsonObj);
                 //console.log(i , resData);
@@ -5832,8 +5829,7 @@ function my_step_03_check(exhibitorSeq){
     }
 }
 
-
-function exibitloginFormSubmit() {
+function exibitLoginFormSubmit() {
 
     let form = document.getElementById("login_form");
     let id = $("#exhibitId").val();

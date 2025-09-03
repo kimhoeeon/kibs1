@@ -317,4 +317,6 @@ public interface KibsMapper {
     Integer updateExhibitorNewBoatEntryYn(ExhibitorNewDTO exhibitorNewDTO);
 
     void deleteProductNewExSeq(String exSeq);
+
+    String getExhibitorNewRepEmail(ExhibitorNewDTO exhibitorNewDTO);
 }

@@ -241,4 +241,6 @@ public interface KibsService {
     List<ContestDTO> processSelectContestList(SearchDTO searchDTO);
 
     ResponseDTO processSaveProductNew(ExhibitorNewDTO exhibitorNewDTO);
+
+    String getExhibitorNewRepEmail(ExhibitorNewDTO exhibitorNewDTO);
 }
