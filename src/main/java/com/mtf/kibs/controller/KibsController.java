@@ -1530,8 +1530,8 @@ public class KibsController {
                     mv.addObject("exhibitorInfo", exhibitorInfo);
 
                     /* 같은 회사 제품 */
-                    List<ProductNewDTO> productItemList = kibsService.processSelectProductNewInfoList(id);
-                    mv.addObject("productItemList", productItemList);
+                    /*List<ProductNewDTO> productItemList = kibsService.processSelectProductNewInfoList(id);
+                    mv.addObject("productItemList", productItemList);*/
 
                     List<OnlineNewDTO> onlineItemList = kibsService.processSelectOnlineNewInfoList(id);
                     mv.addObject("onlineItemList", onlineItemList);

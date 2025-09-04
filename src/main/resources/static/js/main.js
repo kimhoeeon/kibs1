@@ -2385,195 +2385,193 @@ function check_count(obj){
 function step_2_9_check(exhibitorSeq){
 
     /******************** 전시품 정보 ********************/
-
-    let boatEntryYn = $('input[type=radio][name=boatEntryYn]:checked').val();
-    if(nvl(boatEntryYn,'') === ''){
-        showMessage('', 'error', '[ 전시품 정보 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
-        return false;
-    }
-
-    // 제품분류(대)
-    let product_option_big_el = $('select[name=productOptionBig]');
-    let product_option_big_len = product_option_big_el.length;
-    let product_option_big_flag = true;
-    for(let i=0; i<product_option_big_len; i++){
-        if(product_option_big_el.eq(i).val() === '선택' || product_option_big_el.eq(i).val() === '선택'){
-            if($('.preOptionList').length === 0){
-                product_option_big_flag = false;
-                break;
-            }
-        }
-    }
-    if(!product_option_big_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
-        return false;
-    }
-
-    // 제품분류(소)
-    let product_option_small_el = $('select[name=productOptionSmall]');
-    let product_option_small_len = product_option_small_el.length;
-    let product_option_small_flag = true;
-    for(let i=0; i<product_option_small_len; i++){
-        if(product_option_small_el.eq(i).val() === '선택' || product_option_small_el.eq(i).val() === '선택'){
-            if($('.preOptionList').length === 0) {
-                product_option_small_flag = false;
-                break;
-            }
-        }
-    }
-    if(!product_option_small_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
-        return false;
-    }
-
-    // 제품명(국문)
-    let product_name_ko_el = $('input[type=text][name=productNameKo]');
-    let product_name_ko_len = product_name_ko_el.length;
-    let product_name_ko_flag = true;
-    for(let i=0; i<product_name_ko_len; i++){
-        if(nvl(product_name_ko_el.eq(i).val(),'') === ''){
-            product_name_ko_flag = false;
-            break;
-        }
-    }
-    if(!product_name_ko_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품명을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 수량
-    let product_qty_el = $('input[type=text][name=productQty]');
-    let product_qty_len = product_qty_el.length;
-    let product_qty_flag = true;
-    for(let i=0; i<product_qty_len; i++){
-        if(nvl(product_qty_el.eq(i).val(),'') === ''){
-            product_qty_flag = false;
-            break;
-        }
-    }
-    if(!product_qty_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '수량을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 제조사(브랜드)
-    let product_brand_el = $('input[type=text][name=productBrand]');
-    let product_brand_len = product_brand_el.length;
-    let product_brand_flag = true;
-    for(let i=0; i<product_brand_len; i++){
-        if(nvl(product_brand_el.eq(i).val(),'') === ''){
-            product_brand_flag = false;
-            break;
-        }
-    }
-    if(!product_brand_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 길이
-    let product_length_el = $('input[type=text][name=productLength]');
-    let product_length_len = product_length_el.length;
-    let product_length_flag = true;
-    for(let i=0; i<product_length_len; i++){
-        if(nvl(product_length_el.eq(i).val(),'') === ''){
-            product_length_flag = false;
-            break;
-        }
-    }
-    if(!product_length_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '길이(cm)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 너비
-    let product_width_el = $('input[type=text][name=productWidth]');
-    let product_width_len = product_width_el.length;
-    let product_width_flag = true;
-    for(let i=0; i<product_width_len; i++){
-        if(nvl(product_width_el.eq(i).val(),'') === ''){
-            product_width_flag = false;
-            break;
-        }
-    }
-    if(!product_width_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '너비(cm)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 높이
-    let product_height_el = $('input[type=text][name=productHeight]');
-    let product_height_len = product_height_el.length;
-    let product_height_flag = true;
-    for(let i=0; i<product_height_len; i++){
-        if(nvl(product_height_el.eq(i).val(),'') === ''){
-            product_height_flag = false;
-            break;
-        }
-    }
-    if(!product_height_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '높이(cm)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 중량
-    let product_weight_el = $('input[type=text][name=productWeight]');
-    let product_weight_len = product_weight_el.length;
-    let product_weight_flag = true;
-    for(let i=0; i<product_weight_len; i++){
-        if(nvl(product_weight_el.eq(i).val(),'') === ''){
-            product_weight_flag = false;
-            break;
-        }
-    }
-    if(!product_weight_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '중량(kg)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 소재
-    let product_material_el = $('input[type=text][name=productMaterial]');
-    let product_material_len = product_material_el.length;
-    let product_material_flag = true;
-    for(let i=0; i<product_material_len; i++){
-        if(nvl(product_material_el.eq(i).val(),'') === ''){
-            product_material_flag = false;
-            break;
-        }
-    }
-    if(!product_material_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '소재를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 연식
-    let product_year_el = $('input[type=text][name=productYear]');
-    let product_year_len = product_year_el.length;
-    let product_year_flag = true;
-    for(let i=0; i<product_year_len; i++){
-        if(nvl(product_year_el.eq(i).val(),'') === ''){
-            product_year_flag = false;
-            break;
-        }
-    }
-    if(!product_year_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '연식을 입력해 주세요.', '');
-        return false;
-    }
-
-    //전시품정보 Json Create
     let productList_json_arr = [];
-    if(boatEntryYn === 'Y'){
+
+    let boatEntryYn = nvl($('input[type=radio][name=boatEntryYn]:checked').val(),'N');
+    if(boatEntryYn === 'Y') {
+        /*showMessage('', 'error', '[ 전시품 정보 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
+        return false;*/
+
+        // 제품분류(대)
+        let product_option_big_el = $('select[name=productOptionBig]');
+        let product_option_big_len = product_option_big_el.length;
+        let product_option_big_flag = true;
+        for (let i = 0; i < product_option_big_len; i++) {
+            if (product_option_big_el.eq(i).val() === '선택' || product_option_big_el.eq(i).val() === '선택') {
+                if ($('.preOptionList').length === 0) {
+                    product_option_big_flag = false;
+                    break;
+                }
+            }
+        }
+        if (!product_option_big_flag) {
+            showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
+            return false;
+        }
+
+        // 제품분류(소)
+        let product_option_small_el = $('select[name=productOptionSmall]');
+        let product_option_small_len = product_option_small_el.length;
+        let product_option_small_flag = true;
+        for (let i = 0; i < product_option_small_len; i++) {
+            if (product_option_small_el.eq(i).val() === '선택' || product_option_small_el.eq(i).val() === '선택') {
+                if ($('.preOptionList').length === 0) {
+                    product_option_small_flag = false;
+                    break;
+                }
+            }
+        }
+        if (!product_option_small_flag) {
+            showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
+            return false;
+        }
+
+        // 제품명(국문)
+        let product_name_ko_el = $('input[type=text][name=productNameKo]');
+        let product_name_ko_len = product_name_ko_el.length;
+        let product_name_ko_flag = true;
+        for (let i = 0; i < product_name_ko_len; i++) {
+            if (nvl(product_name_ko_el.eq(i).val(), '') === '') {
+                product_name_ko_flag = false;
+                break;
+            }
+        }
+        if (!product_name_ko_flag) {
+            showMessage('', 'error', '[ 전시품 정보 ]', '제품명을 입력해 주세요.', '');
+            return false;
+        }
+
+        // 수량
+        let product_qty_el = $('input[type=text][name=productQty]');
+        let product_qty_len = product_qty_el.length;
+        let product_qty_flag = true;
+        for (let i = 0; i < product_qty_len; i++) {
+            if (nvl(product_qty_el.eq(i).val(), '') === '') {
+                product_qty_flag = false;
+                break;
+            }
+        }
+        if (!product_qty_flag) {
+            showMessage('', 'error', '[ 전시품 정보 ]', '수량을 입력해 주세요.', '');
+            return false;
+        }
+
+        // 제조사(브랜드)
+        let product_brand_el = $('input[type=text][name=productBrand]');
+        let product_brand_len = product_brand_el.length;
+        let product_brand_flag = true;
+        for (let i = 0; i < product_brand_len; i++) {
+            if (nvl(product_brand_el.eq(i).val(), '') === '') {
+                product_brand_flag = false;
+                break;
+            }
+        }
+        if (!product_brand_flag) {
+            showMessage('', 'error', '[ 전시품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
+            return false;
+        }
+
+        // 길이
+        let product_length_el = $('input[type=text][name=productLength]');
+        let product_length_len = product_length_el.length;
+        let product_length_flag = true;
+        for (let i = 0; i < product_length_len; i++) {
+            if (nvl(product_length_el.eq(i).val(), '') === '') {
+                product_length_flag = false;
+                break;
+            }
+        }
+        if (!product_length_flag) {
+            showMessage('', 'error', '[ 전시품 정보 ]', '길이(cm)를 입력해 주세요.', '');
+            return false;
+        }
+
+        // 너비
+        let product_width_el = $('input[type=text][name=productWidth]');
+        let product_width_len = product_width_el.length;
+        let product_width_flag = true;
+        for (let i = 0; i < product_width_len; i++) {
+            if (nvl(product_width_el.eq(i).val(), '') === '') {
+                product_width_flag = false;
+                break;
+            }
+        }
+        if (!product_width_flag) {
+            showMessage('', 'error', '[ 전시품 정보 ]', '너비(cm)를 입력해 주세요.', '');
+            return false;
+        }
+
+        // 높이
+        let product_height_el = $('input[type=text][name=productHeight]');
+        let product_height_len = product_height_el.length;
+        let product_height_flag = true;
+        for (let i = 0; i < product_height_len; i++) {
+            if (nvl(product_height_el.eq(i).val(), '') === '') {
+                product_height_flag = false;
+                break;
+            }
+        }
+        if (!product_height_flag) {
+            showMessage('', 'error', '[ 전시품 정보 ]', '높이(cm)를 입력해 주세요.', '');
+            return false;
+        }
+
+        // 중량
+        let product_weight_el = $('input[type=text][name=productWeight]');
+        let product_weight_len = product_weight_el.length;
+        let product_weight_flag = true;
+        for (let i = 0; i < product_weight_len; i++) {
+            if (nvl(product_weight_el.eq(i).val(), '') === '') {
+                product_weight_flag = false;
+                break;
+            }
+        }
+        if (!product_weight_flag) {
+            showMessage('', 'error', '[ 전시품 정보 ]', '중량(kg)를 입력해 주세요.', '');
+            return false;
+        }
+
+        // 소재
+        let product_material_el = $('input[type=text][name=productMaterial]');
+        let product_material_len = product_material_el.length;
+        let product_material_flag = true;
+        for (let i = 0; i < product_material_len; i++) {
+            if (nvl(product_material_el.eq(i).val(), '') === '') {
+                product_material_flag = false;
+                break;
+            }
+        }
+        if (!product_material_flag) {
+            showMessage('', 'error', '[ 전시품 정보 ]', '소재를 입력해 주세요.', '');
+            return false;
+        }
+
+        // 연식
+        let product_year_el = $('input[type=text][name=productYear]');
+        let product_year_len = product_year_el.length;
+        let product_year_flag = true;
+        for (let i = 0; i < product_year_len; i++) {
+            if (nvl(product_year_el.eq(i).val(), '') === '') {
+                product_year_flag = false;
+                break;
+            }
+        }
+        if (!product_year_flag) {
+            showMessage('', 'error', '[ 전시품 정보 ]', '연식을 입력해 주세요.', '');
+            return false;
+        }
+
+        //전시품정보 Json Create
         let productCnt = Number.parseInt($('.exhiInfoNum:last').text());
-        if(productCnt > 0){
-            for(let i=0; i<productCnt; i++){
+        if (productCnt > 0) {
+            for (let i = 0; i < productCnt; i++) {
                 let productOptionBig = '';
                 let productOptionSmall = '';
                 let selProductOptionBig = $('select[name=productOptionBig]').eq(i).val();
-                if(nvl(selProductOptionBig,'선택') !== '선택'){
+                if (nvl(selProductOptionBig, '선택') !== '선택') {
                     productOptionBig = $('select[name=productOptionBig]').eq(i).val();
                     productOptionSmall = $('select[name=productOptionSmall]').eq(i).val();
-                }else {
+                } else {
                     productOptionBig = $('input[type=text][name=preProductOptionBig]').eq(i).val();
                     productOptionSmall = $('input[type=text][name=preProductOptionSmall]').eq(i).val();
                 }
@@ -2591,18 +2589,20 @@ function step_2_9_check(exhibitorSeq){
                     productWeight: product_weight_el.eq(i).val(),
                     productMaterial: product_material_el.eq(i).val(),
                     productYear: product_year_el.eq(i).val(),
-                    note: (i+1)
+                    note: (i + 1)
                 };
                 productList_json_arr.push(productList_json_obj);
             }
         }
+    }else{
+        productList_json_arr = [];
     }
 
     if(nvl(exhibitorSeq,'') !== ''){
 
         let exhibitor_json_obj = {
             seq: exhibitorSeq,
-            boatEntryYn: nvl(boatEntryYn,'N'),
+            boatEntryYn: boatEntryYn,
             productList: productList_json_arr
         };
         let resData = ajaxConnect('/apply/step/saveProductNew.do', 'post', exhibitor_json_obj);
@@ -4057,11 +4057,16 @@ function step_03_check(exhibitorSeq){
             if (result.isConfirmed) {
 
                 let exhibitor_new_jsonObj = {
-                    seq: exhibitorSeq,
+                    seq: exhibitorSeq
                 }
-                let exhibitor_new_resData = ajaxConnect('/getExhibitorNewRepEmail.do','post', exhibitor_new_jsonObj);
+                let email = ajaxConnectSimple('/getExhibitorNewRepEmail.do','post', exhibitor_new_jsonObj);
 
-                let jsonObj = makeJsonFormat(exhibitor_new_resData);
+                let jsonObj = {
+                    subject: '[2026 경기국제보트쇼] 참가업체 접수 완료', //제목
+                    body: "", //본문
+                    template: "6", //템플릿 번호
+                    receiver: [{email: email}]
+                }
                 //console.log(JSON.stringify(jsonObj));
                 let resData = ajaxConnect('/mail/send.do', 'post', jsonObj);
                 //console.log(i , resData);
@@ -4957,185 +4962,183 @@ function my_step_01_check(exhibitorSeq){
 function my_step_2_9_check(exhibitorSeq){
 
     /******************** 전시품 정보 ********************/
-
-    let boatEntryYn = $('input[type=radio][name=boatEntryYn]:checked').val();
-    if(nvl(boatEntryYn,'') === ''){
-        showMessage('', 'error', '[ 전시품 정보 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
-        return false;
-    }
-
-    // 제품분류(대)
-    let product_option_big_el = $('select[name=productOptionBig]');
-    let product_option_big_len = product_option_big_el.length;
-    let product_option_big_flag = true;
-    for(let i=0; i<product_option_big_len; i++){
-        if(product_option_big_el.eq(i).val() === '선택' || product_option_big_el.eq(i).val() === '선택'){
-            if($('.preOptionList').length === 0){
-                product_option_big_flag = false;
-                break;
-            }
-        }
-    }
-    if(!product_option_big_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
-        return false;
-    }
-
-    // 제품분류(소)
-    let product_option_small_el = $('select[name=productOptionSmall]');
-    let product_option_small_len = product_option_small_el.length;
-    let product_option_small_flag = true;
-    for(let i=0; i<product_option_small_len; i++){
-        if(product_option_small_el.eq(i).val() === '선택' || product_option_small_el.eq(i).val() === '선택'){
-            if($('.preOptionList').length === 0) {
-                product_option_small_flag = false;
-                break;
-            }
-        }
-    }
-    if(!product_option_small_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
-        return false;
-    }
-
-    // 제품명(국문)
-    let product_name_ko_el = $('input[type=text][name=productNameKo]');
-    let product_name_ko_len = product_name_ko_el.length;
-    let product_name_ko_flag = true;
-    for(let i=0; i<product_name_ko_len; i++){
-        if(nvl(product_name_ko_el.eq(i).val(),'') === ''){
-            product_name_ko_flag = false;
-            break;
-        }
-    }
-    if(!product_name_ko_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제품명을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 수량
-    let product_qty_el = $('input[type=text][name=productQty]');
-    let product_qty_len = product_qty_el.length;
-    let product_qty_flag = true;
-    for(let i=0; i<product_qty_len; i++){
-        if(nvl(product_qty_el.eq(i).val(),'') === ''){
-            product_qty_flag = false;
-            break;
-        }
-    }
-    if(!product_qty_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '수량을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 제조사(브랜드)
-    let product_brand_el = $('input[type=text][name=productBrand]');
-    let product_brand_len = product_brand_el.length;
-    let product_brand_flag = true;
-    for(let i=0; i<product_brand_len; i++){
-        if(nvl(product_brand_el.eq(i).val(),'') === ''){
-            product_brand_flag = false;
-            break;
-        }
-    }
-    if(!product_brand_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 길이
-    let product_length_el = $('input[type=text][name=productLength]');
-    let product_length_len = product_length_el.length;
-    let product_length_flag = true;
-    for(let i=0; i<product_length_len; i++){
-        if(nvl(product_length_el.eq(i).val(),'') === ''){
-            product_length_flag = false;
-            break;
-        }
-    }
-    if(!product_length_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '길이(cm)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 너비
-    let product_width_el = $('input[type=text][name=productWidth]');
-    let product_width_len = product_width_el.length;
-    let product_width_flag = true;
-    for(let i=0; i<product_width_len; i++){
-        if(nvl(product_width_el.eq(i).val(),'') === ''){
-            product_width_flag = false;
-            break;
-        }
-    }
-    if(!product_width_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '너비(cm)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 높이
-    let product_height_el = $('input[type=text][name=productHeight]');
-    let product_height_len = product_height_el.length;
-    let product_height_flag = true;
-    for(let i=0; i<product_height_len; i++){
-        if(nvl(product_height_el.eq(i).val(),'') === ''){
-            product_height_flag = false;
-            break;
-        }
-    }
-    if(!product_height_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '높이(cm)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 중량
-    let product_weight_el = $('input[type=text][name=productWeight]');
-    let product_weight_len = product_weight_el.length;
-    let product_weight_flag = true;
-    for(let i=0; i<product_weight_len; i++){
-        if(nvl(product_weight_el.eq(i).val(),'') === ''){
-            product_weight_flag = false;
-            break;
-        }
-    }
-    if(!product_weight_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '중량(kg)를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 소재
-    let product_material_el = $('input[type=text][name=productMaterial]');
-    let product_material_len = product_material_el.length;
-    let product_material_flag = true;
-    for(let i=0; i<product_material_len; i++){
-        if(nvl(product_material_el.eq(i).val(),'') === ''){
-            product_material_flag = false;
-            break;
-        }
-    }
-    if(!product_material_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '소재를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 연식
-    let product_year_el = $('input[type=text][name=productYear]');
-    let product_year_len = product_year_el.length;
-    let product_year_flag = true;
-    for(let i=0; i<product_year_len; i++){
-        if(nvl(product_year_el.eq(i).val(),'') === ''){
-            product_year_flag = false;
-            break;
-        }
-    }
-    if(!product_year_flag){
-        showMessage('', 'error', '[ 전시품 정보 ]', '연식을 입력해 주세요.', '');
-        return false;
-    }
-
     //전시품정보 Json Create
     let productList_json_arr = [];
+
+    let boatEntryYn = nvl($('input[type=radio][name=boatEntryYn]:checked').val(),'N');
     if(boatEntryYn === 'Y'){
+        /*showMessage('', 'error', '[ 전시품 정보 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
+        return false;*/
+
+        // 제품분류(대)
+        let product_option_big_el = $('select[name=productOptionBig]');
+        let product_option_big_len = product_option_big_el.length;
+        let product_option_big_flag = true;
+        for(let i=0; i<product_option_big_len; i++){
+            if(product_option_big_el.eq(i).val() === '선택' || product_option_big_el.eq(i).val() === '선택'){
+                if($('.preOptionList').length === 0){
+                    product_option_big_flag = false;
+                    break;
+                }
+            }
+        }
+        if(!product_option_big_flag){
+            showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
+            return false;
+        }
+    
+        // 제품분류(소)
+        let product_option_small_el = $('select[name=productOptionSmall]');
+        let product_option_small_len = product_option_small_el.length;
+        let product_option_small_flag = true;
+        for(let i=0; i<product_option_small_len; i++){
+            if(product_option_small_el.eq(i).val() === '선택' || product_option_small_el.eq(i).val() === '선택'){
+                if($('.preOptionList').length === 0) {
+                    product_option_small_flag = false;
+                    break;
+                }
+            }
+        }
+        if(!product_option_small_flag){
+            showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
+            return false;
+        }
+    
+        // 제품명(국문)
+        let product_name_ko_el = $('input[type=text][name=productNameKo]');
+        let product_name_ko_len = product_name_ko_el.length;
+        let product_name_ko_flag = true;
+        for(let i=0; i<product_name_ko_len; i++){
+            if(nvl(product_name_ko_el.eq(i).val(),'') === ''){
+                product_name_ko_flag = false;
+                break;
+            }
+        }
+        if(!product_name_ko_flag){
+            showMessage('', 'error', '[ 전시품 정보 ]', '제품명을 입력해 주세요.', '');
+            return false;
+        }
+    
+        // 수량
+        let product_qty_el = $('input[type=text][name=productQty]');
+        let product_qty_len = product_qty_el.length;
+        let product_qty_flag = true;
+        for(let i=0; i<product_qty_len; i++){
+            if(nvl(product_qty_el.eq(i).val(),'') === ''){
+                product_qty_flag = false;
+                break;
+            }
+        }
+        if(!product_qty_flag){
+            showMessage('', 'error', '[ 전시품 정보 ]', '수량을 입력해 주세요.', '');
+            return false;
+        }
+    
+        // 제조사(브랜드)
+        let product_brand_el = $('input[type=text][name=productBrand]');
+        let product_brand_len = product_brand_el.length;
+        let product_brand_flag = true;
+        for(let i=0; i<product_brand_len; i++){
+            if(nvl(product_brand_el.eq(i).val(),'') === ''){
+                product_brand_flag = false;
+                break;
+            }
+        }
+        if(!product_brand_flag){
+            showMessage('', 'error', '[ 전시품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
+            return false;
+        }
+    
+        // 길이
+        let product_length_el = $('input[type=text][name=productLength]');
+        let product_length_len = product_length_el.length;
+        let product_length_flag = true;
+        for(let i=0; i<product_length_len; i++){
+            if(nvl(product_length_el.eq(i).val(),'') === ''){
+                product_length_flag = false;
+                break;
+            }
+        }
+        if(!product_length_flag){
+            showMessage('', 'error', '[ 전시품 정보 ]', '길이(cm)를 입력해 주세요.', '');
+            return false;
+        }
+    
+        // 너비
+        let product_width_el = $('input[type=text][name=productWidth]');
+        let product_width_len = product_width_el.length;
+        let product_width_flag = true;
+        for(let i=0; i<product_width_len; i++){
+            if(nvl(product_width_el.eq(i).val(),'') === ''){
+                product_width_flag = false;
+                break;
+            }
+        }
+        if(!product_width_flag){
+            showMessage('', 'error', '[ 전시품 정보 ]', '너비(cm)를 입력해 주세요.', '');
+            return false;
+        }
+    
+        // 높이
+        let product_height_el = $('input[type=text][name=productHeight]');
+        let product_height_len = product_height_el.length;
+        let product_height_flag = true;
+        for(let i=0; i<product_height_len; i++){
+            if(nvl(product_height_el.eq(i).val(),'') === ''){
+                product_height_flag = false;
+                break;
+            }
+        }
+        if(!product_height_flag){
+            showMessage('', 'error', '[ 전시품 정보 ]', '높이(cm)를 입력해 주세요.', '');
+            return false;
+        }
+    
+        // 중량
+        let product_weight_el = $('input[type=text][name=productWeight]');
+        let product_weight_len = product_weight_el.length;
+        let product_weight_flag = true;
+        for(let i=0; i<product_weight_len; i++){
+            if(nvl(product_weight_el.eq(i).val(),'') === ''){
+                product_weight_flag = false;
+                break;
+            }
+        }
+        if(!product_weight_flag){
+            showMessage('', 'error', '[ 전시품 정보 ]', '중량(kg)를 입력해 주세요.', '');
+            return false;
+        }
+    
+        // 소재
+        let product_material_el = $('input[type=text][name=productMaterial]');
+        let product_material_len = product_material_el.length;
+        let product_material_flag = true;
+        for(let i=0; i<product_material_len; i++){
+            if(nvl(product_material_el.eq(i).val(),'') === ''){
+                product_material_flag = false;
+                break;
+            }
+        }
+        if(!product_material_flag){
+            showMessage('', 'error', '[ 전시품 정보 ]', '소재를 입력해 주세요.', '');
+            return false;
+        }
+    
+        // 연식
+        let product_year_el = $('input[type=text][name=productYear]');
+        let product_year_len = product_year_el.length;
+        let product_year_flag = true;
+        for(let i=0; i<product_year_len; i++){
+            if(nvl(product_year_el.eq(i).val(),'') === ''){
+                product_year_flag = false;
+                break;
+            }
+        }
+        if(!product_year_flag){
+            showMessage('', 'error', '[ 전시품 정보 ]', '연식을 입력해 주세요.', '');
+            return false;
+        }
+    
         let productCnt = Number.parseInt($('.exhiInfoNum:last').text());
         if(productCnt > 0){
             for(let i=0; i<productCnt; i++){
@@ -5168,13 +5171,15 @@ function my_step_2_9_check(exhibitorSeq){
                 productList_json_arr.push(productList_json_obj);
             }
         }
+    }else{
+        productList_json_arr = [];
     }
-
+    
     if(nvl(exhibitorSeq,'') !== ''){
 
         let exhibitor_json_obj = {
             seq: exhibitorSeq,
-            boatEntryYn: nvl(boatEntryYn,'N'),
+            boatEntryYn: boatEntryYn,
             productList: productList_json_arr
         };
         let resData = ajaxConnect('/apply/step/saveProductNew.do', 'post', exhibitor_json_obj);
@@ -5810,11 +5815,16 @@ function my_step_03_check(exhibitorSeq){
             if (result.isConfirmed) {
 
                 let exhibitor_new_jsonObj = {
-                    seq: exhibitorSeq,
+                    seq: exhibitorSeq
                 }
-                let exhibitor_new_resData = ajaxConnect('/getExhibitorNewRepEmail.do','post', exhibitor_new_jsonObj);
+                let email = ajaxConnectSimple('/getExhibitorNewRepEmail.do','post', exhibitor_new_jsonObj);
 
-                let jsonObj = makeJsonFormat(exhibitor_new_resData);
+                let jsonObj = {
+                    subject: '[2026 경기국제보트쇼] 참가업체 접수 완료', //제목
+                    body: "", //본문
+                    template: "6", //템플릿 번호
+                    receiver: [{email: email}]
+                }
                 //console.log(JSON.stringify(jsonObj));
                 let resData = ajaxConnect('/mail/send.do', 'post', jsonObj);
                 //console.log(i , resData);

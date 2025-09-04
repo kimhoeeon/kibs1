@@ -63,13 +63,68 @@
     <script src="/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
     <style>
-        .mainLayerPopup { display:block; width:auto; min-height:100px; height: 100%; background:#fff; z-index:9999; }
-        .mainLayerPopup .popupBox { text-align: center; min-height:150px; height:100%; }
-        .mainLayerPopup .popupBox img { display: block; margin: 0 0;}
-        .mainLayerPopup .popupClose {text-align:right; background:#111; padding:10px;}
-        .mainLayerPopup .popupClose input {vertical-align:middle;}
-        .mainLayerPopup .popupClose label {color:#fff; font-size:14px; vertical-align:middle;  margin-left:3px;}
-        .mainLayerPopup .popupClose input[type="checkbox"] {border:1px solid #ccc; background:#fff; width: 20px; height: 20px; margin: 0; vertical-align: middle; border-radius: 0;}
+        /* 기본 리셋 및 전체 설정 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Flexbox 레이아웃 설정 */
+        .mainLayerPopup {
+            display: flex;
+            flex-direction: column;
+            width: auto;
+            min-height: 100px;
+            height: auto; /* 내용에 맞게 높이 자동 조절 */
+            background: #fff;
+            z-index: 9999;
+        }
+
+        /* 콘텐츠 영역 (중복 제거 및 통합) */
+        .mainLayerPopup .popupBox {
+            flex: 1; /* 남는 공간 모두 차지 */
+            text-align: center;
+            min-height: 150px;
+        }
+
+        /* 콘텐츠 내부 이미지 */
+        .mainLayerPopup .popupBox img {
+            display: block;
+            margin: 0;
+        }
+
+        /* 하단 닫기 영역 */
+        .mainLayerPopup .popupClose {
+            text-align: right;
+            background: #111;
+            padding: 10px;
+        }
+
+        .mainLayerPopup .popupClose input {
+            vertical-align: middle;
+        }
+
+        .mainLayerPopup .popupClose label {
+            color: #fff;
+            font-size: 14px;
+            vertical-align: middle;
+            margin-left: 3px;
+        }
+
+        .mainLayerPopup .popupClose input[type="checkbox"] {
+            border: 1px solid #ccc;
+            background: #fff;
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            vertical-align: middle;
+            border-radius: 0;
+        }
     </style>
 </head>
 
@@ -93,29 +148,26 @@
     </div>
 
     <script>
-        $(function() {
+        $(window).on('load', function() {
 
-            let strWidth;
-            let strHeight;
+            // 1. 실제 콘텐츠의 높이를 측정합니다.
+            const contentHeight = $('.mainLayerPopup').outerHeight();
+            const contentWidth = $('.mainLayerPopup').outerWidth();
 
-            if (window.innerWidth && window.innerHeight && window.outerWidth && window.outerHeight) {
-                strWidth = $('.mainLayerPopup').outerWidth() + (window.outerWidth - window.innerWidth);
-                strHeight = $('.mainLayerPopup').outerHeight() + (window.outerHeight - window.innerHeight);
-            } else {
-                let strDocumentWidth = $(document).outerWidth();
-                let strDocumentHeight = $(document).outerHeight();
-                window.resizeTo(strDocumentWidth, strDocumentHeight);
-
-                let strMenuWidth = strDocumentWidth - $(window).width();
-                let strMenuHeight = strDocumentHeight - $(window).height();
-
-                strWidth = $('.mainLayerPopup').outerWidth() + strMenuWidth;
-                strHeight = $('.mainLayerPopup').outerHeight() + strMenuHeight;
+            // 2. (핵심) 현재 창의 내부 높이가 콘텐츠 높이보다 크거나 같다면,
+            //    이미 크기가 충분하므로 스크립트를 즉시 종료합니다.
+            if (window.innerHeight >= contentHeight) {
+                return;
             }
 
-            //resize
-            window.resizeTo( strWidth, strHeight );
+            // 3. 창이 콘텐츠보다 작을 때만 아래 리사이징 로직을 실행합니다.
+            const browserChromeHeight = window.outerHeight - window.innerHeight;
+            const browserChromeWidth = window.outerWidth - window.innerWidth;
 
+            const finalHeight = contentHeight + browserChromeHeight + 7;
+            const finalWidth = contentWidth + browserChromeWidth + 5;
+
+            window.resizeTo(finalWidth, finalHeight);
         });
     </script>
 </body>

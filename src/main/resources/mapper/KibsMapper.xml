@@ -2319,7 +2319,7 @@
                 ) /* 2026~ 전시업체 온라인 End */
             ) r
         GROUP BY r.orderSeq, r.seq, r.id, r.transfer_year, r.company_name_ko , r.company_name_en, r.company_badge, r.logoFilePath, r.promotionImageFilePath, r.totalRecords
-        HAVING r.orderSeq <![CDATA[<]]> 2
+        /*HAVING r.orderSeq <![CDATA[<]]> 2*/
         ORDER BY r.transfer_year DESC, r.orderSeq, LENGTH (r.company_badge) DESC, RAND()
         LIMIT #{pageNum} , #{rows}
     </select>
@@ -2548,7 +2548,7 @@
                 ) /* 2026~ 전시업체 온라인 End */
             ) r
         GROUP BY r.orderSeq, r.seq, r.id, r.transfer_year, r.company_name_ko , r.company_name_en, r.company_badge, r.logoFilePath, r.promotionImageFilePath, r.totalRecords
-        HAVING r.orderSeq <![CDATA[<]]> 2
+        /*HAVING r.orderSeq <![CDATA[<]]> 2*/
         ORDER BY r.transfer_year DESC, r.orderSeq, LENGTH (r.company_badge) DESC, RAND()
         LIMIT #{pageNum} , #{rows}
     </select>
@@ -2821,10 +2821,10 @@
         FROM file
         WHERE user_id = #{userId}
           AND file_yn = 'Y'
-          <if test="note != null and note.contains('ON')">
+          <if test="note != null and userId.contains('EN')">
             AND note LIKE CONCAT('onlineImage', #{note}, '\\_', '%') ESCAPE '\\'
           </if>
-          <if test="note != null and !note.contains('ON')">
+          <if test="note != null and !userId.contains('EN')">
             AND note LIKE CONCAT('productImage', #{note}, '\\_', '%') ESCAPE '\\'
           </if>
     </select>
