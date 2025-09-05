@@ -1118,7 +1118,7 @@
                                                         <select id="onlineOptionBig_${status.index + 1}" name="onlineOptionBig" class="w50"></select>
                                                         <select id="onlineOptionSmall_${status.index + 1}" name="onlineOptionSmall" class="w50"></select>
                                                         <script>
-                                                            $(function(){
+                                                            $(document).ready(function () {
                                                                 $('#onlineOptionBig_${status.index + 1}').val('${online.onlineOptionBig}').prop('selected', true).trigger('change');
                                                                 $('#onlineOptionSmall_${status.index + 1}').val('${online.onlineOptionSmall}').prop('selected', true);
                                                             })

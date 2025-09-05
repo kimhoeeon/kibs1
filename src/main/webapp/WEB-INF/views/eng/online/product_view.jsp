@@ -431,7 +431,7 @@
                                     <a href="<c:url value="/online/company_view.do?seq=${productInfo.seq}"/>" class="exhGo btnSt01">Go to see Company</a>
                                 </c:when>
                                 <c:when test="${gbn eq 'ON'}">
-                                    <a href="<c:url value="/online/company_view.do?seq=${onlineInfo.seq}"/>" class="exhGo btnSt01">Go to see Company</a>
+                                    <a href="<c:url value="/online/company_view.do?seq=${onlineInfo.exSeq}"/>" class="exhGo btnSt01">Go to see Company</a>
                                 </c:when>
                                 <c:otherwise>
                                     <a href="<c:url value="/online/company_view.do?seq=${onlineInfo.id}"/>" class="exhGo btnSt01">Go to see Company</a>

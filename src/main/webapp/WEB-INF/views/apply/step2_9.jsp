@@ -317,7 +317,7 @@
                                                     <select id="productOptionBig_${status.index + 1}" name="productOptionBig" class="w50"></select>
                                                     <select id="productOptionSmall_${status.index + 1}" name="productOptionSmall" class="w50"></select>
                                                     <script>
-                                                        $(function(){
+                                                        $(document).ready(function () {
                                                             $('#productOptionBig_${status.index + 1}').val('${product.productOptionBig}').prop('selected', true).trigger('change');
                                                             $('#productOptionSmall_${status.index + 1}').val('${product.productOptionSmall}').prop('selected', true);
                                                         })
@@ -426,20 +426,40 @@
     <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
     <script type="text/javascript">
-        $(function(){
-            $('input[type=radio][name=boatEntryYn]').on('change', function(){
-                let boatEntryYn = $(this).val();
-                if(boatEntryYn === 'N'){
-                    let flag = false;
-                    let productName_el = $('input[type=text][name=productNameKo]');
-                    for(let i=0; i<productName_el.length; i++){
-                        if(productName_el.eq(i).val() !== ''){
-                            flag = true;
-                            break;
-                        }
-                    }
+        $(document).ready(function() {
+            // 이전 값을 저장할 변수를 선언하고, 페이지 로드 시 선택된 값으로 초기화합니다.
+            let previousBoatEntryYn = $('input[type=radio][name=boatEntryYn]:checked').val();
 
-                    if(flag){
+            // --- 페이지 로드 시 초기 상태 설정 ---
+            // 기존의 trigger('change')를 대체하여, 확인창 없이 UI만 설정합니다.
+            if (previousBoatEntryYn === 'Y') {
+                $('.productInfoWrap').show();
+            } else {
+                $('.productInfoWrap').hide();
+            }
+
+            // --- 라디오 버튼 변경 이벤트 핸들러 ---
+            $('input[type=radio][name=boatEntryYn]').on('change', function() {
+                const currentBoatEntryYn = $(this).val();
+
+                // 💡 이전 값과 현재 값이 동일하면 아무것도 하지 않고 함수를 종료합니다.
+                if (currentBoatEntryYn === previousBoatEntryYn) {
+                    return;
+                }
+
+                if (currentBoatEntryYn === 'N') {
+                    let flag = false;
+                    const productName_el = $('input[type=text][name=productNameKo]');
+
+                    // 입력된 전시품 정보가 있는지 확인
+                    productName_el.each(function() {
+                        if ($(this).val() !== '') {
+                            flag = true;
+                            return false; // .each() 루프 중단
+                        }
+                    });
+
+                    if (flag) {
                         Swal.fire({
                             icon: 'warning',
                             title: '[ 전시품 정보 ]',
@@ -452,24 +472,30 @@
                             cancelButtonText: '취소'
                         }).then((result) => {
                             if (result.isConfirmed) {
+                                // '변경'을 누르면 필드를 초기화하고, 이전 값을 현재 값으로 업데이트
                                 $('.productInfoWrap').hide();
                                 $('.exhiInfoBox:not(:first)').remove();
                                 $('select').prop('selectedIndex', 0).trigger('change');
                                 $('input[type=text]').val('');
+                                previousBoatEntryYn = currentBoatEntryYn;
+                            } else {
+                                // 💡 '취소'를 누르면 라디오 버튼 선택을 이전 상태로 되돌립니다.
+                                $('input[type=radio][name=boatEntryYn][value="' + previousBoatEntryYn + '"]').prop('checked', true);
                             }
                         });
-                    }else{
+                    } else {
+                        // 입력된 정보가 없으면 확인 없이 바로 숨김 처리 및 값 업데이트
                         $('.productInfoWrap').hide();
                         $('.exhiInfoBox:not(:first)').remove();
                         $('select').prop('selectedIndex', 0).trigger('change');
                         $('input[type=text]').val('');
+                        previousBoatEntryYn = currentBoatEntryYn;
                     }
-                }else{
+                } else { // 'Y'를 선택한 경우
                     $('.productInfoWrap').show();
+                    previousBoatEntryYn = currentBoatEntryYn;
                 }
             });
-
-            $('input[type=radio][name=boatEntryYn]').trigger('change');
         });
     </script>
 

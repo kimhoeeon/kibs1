@@ -4523,22 +4523,25 @@ function my_step_01_check(exhibitorSeq){
     let chargePersonCnt = Number.parseInt($('.managerInfoNum:last').text());
     if(chargePersonCnt > 0){
         for(let i=0; i<chargePersonCnt; i++){
-            let chargePersonEmail_val = charge_person_email_el.eq(i).val();
-            let chargePersonEmail = '';
-            if(nvl(chargePersonEmail_val,'') !== ''){
-                chargePersonEmail = chargePersonEmail_val + '@' + charge_person_domain_el.eq(i).val();
+            let chargePersonName = charge_person_name_el.eq(i).val();
+            if(nvl(chargePersonName,'') !== '') {
+                let chargePersonEmail_val = charge_person_email_el.eq(i).val();
+                let chargePersonEmail = '';
+                if (nvl(chargePersonEmail_val, '') !== '') {
+                    chargePersonEmail = chargePersonEmail_val + '@' + charge_person_domain_el.eq(i).val();
+                }
+                let chargePersonList_json_obj = {
+                    seq: $('input[type=hidden][name=chargeSeq]').eq(i).val(),
+                    exSeq: exhibitorSeq,
+                    chargePersonName: chargePersonName,
+                    chargePersonPosition: charge_person_position_el.eq(i).val(),
+                    chargePersonDepart: charge_person_depart_el.eq(i).val(),
+                    chargePersonTel: charge_person_tel_el.eq(i).val(),
+                    chargePersonPhone: charge_person_phone_el.eq(i).val(),
+                    chargePersonEmail: chargePersonEmail,
+                };
+                chargePersonList_json_arr.push(chargePersonList_json_obj);
             }
-            let chargePersonList_json_obj = {
-                seq: $('input[type=hidden][name=chargeSeq]').eq(i).val(),
-                exSeq: exhibitorSeq,
-                chargePersonName: charge_person_name_el.eq(i).val(),
-                chargePersonPosition: charge_person_position_el.eq(i).val(),
-                chargePersonDepart: charge_person_depart_el.eq(i).val(),
-                chargePersonTel: charge_person_tel_el.eq(i).val(),
-                chargePersonPhone: charge_person_phone_el.eq(i).val(),
-                chargePersonEmail: chargePersonEmail,
-            };
-            chargePersonList_json_arr.push(chargePersonList_json_obj);
         }
     }
 
