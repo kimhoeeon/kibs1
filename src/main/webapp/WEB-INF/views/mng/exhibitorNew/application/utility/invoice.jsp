@@ -198,7 +198,7 @@
                                     <td>${utilityIdx}</td>
                                     <td>압축공기 기본형</td>
                                     <td>${info.utilityCompressedAirCnt}개</td>
-                                    <td>180,000원</td>
+                                    <td>200,000원</td>
                                     <td class="text-r sub_total">
                                         <fmt:formatNumber value="${info.utilityCompressedAirFee eq null ? 0 : info.utilityCompressedAirFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
                                     </td>
@@ -210,7 +210,7 @@
                                     <td>${utilityIdx}</td>
                                     <td>급배수 기본형</td>
                                     <td>${info.utilityWaterBasicCnt}개</td>
-                                    <td>180,000원</td>
+                                    <td>200,000원</td>
                                     <td class="text-r sub_total">
                                         <fmt:formatNumber value="${info.utilityWaterBasicFee eq null ? 0 : info.utilityWaterBasicFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
                                     </td>
@@ -222,7 +222,7 @@
                                     <td>${utilityIdx}</td>
                                     <td>인터넷</td>
                                     <td>${info.utilityInternetCnt}개</td>
-                                    <td>160,000원</td>
+                                    <td>200,000원</td>
                                     <td class="text-r sub_total">
                                         <fmt:formatNumber value="${info.utilityInternetFee eq null ? 0 : info.utilityInternetFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
                                     </td>

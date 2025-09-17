@@ -128,7 +128,7 @@
                                     </li>
                                     <li>
                                         <div class="cate">220v For Day Use</div>
-                                        <div class="cost">￦ 70,000/1kw</div>
+                                        <div class="cost">￦ 80,000/1kw</div>
                                         <div class="quantity">
                                             <p class="j_num">
                                                 <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_jugan_cnt">
@@ -143,7 +143,7 @@
                                     </li>
                                     <li>
                                         <div class="cate">220v For 24 Hours</div>
-                                        <div class="cost">￦ 80,000/1kw</div>
+                                        <div class="cost">￦ 100,000/1kw</div>
                                         <div class="quantity">
                                             <p class="j_num">
                                                 <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_day_cnt">
@@ -158,7 +158,7 @@
                                     </li>
                                     <li>
                                         <div class="cate">Compressed Air Basic Type</div>
-                                        <div class="cost">￦ 180,000</div>
+                                        <div class="cost">￦ 200,000</div>
                                         <div class="quantity">
                                             <p class="j_num">
                                                 <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_compressed_air_cnt">
@@ -173,7 +173,7 @@
                                     </li>
                                     <li>
                                         <div class="cate">Multiplication Basic Type</div>
-                                        <div class="cost">￦ 180,000</div>
+                                        <div class="cost">￦ 200,000</div>
                                         <div class="quantity">
                                             <p class="j_num">
                                                 <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_water_basic_cnt">
@@ -188,7 +188,7 @@
                                     </li>
                                     <li>
                                         <div class="cate">Internet</div>
-                                        <div class="cost">￦ 160,000</div>
+                                        <div class="cost">￦ 200,000</div>
                                         <div class="quantity">
                                             <p class="j_num">
                                                 <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_internet_cnt">

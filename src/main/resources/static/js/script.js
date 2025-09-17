@@ -504,7 +504,6 @@ $(document).ready(function () {
         $(this).closest('.form_chuga_list').remove();
     });*/
 
-
     // 참관객 신청 직장명 검색
     $('.companyNameSh').on('click', function () {
         $('.popCompanyName').toggleClass('on');
@@ -545,14 +544,14 @@ $(document).ready(function () {
         var item8 = parseInt($("#utility_pytex_re_cnt").val() || 0);
         var item9 = parseInt($("#utility_barcode_cnt").val() || 0);
 
-        var price1 = item1 * 70000;
-        var price2 = item2 * 80000;
-        var price3 = item3 * 180000;
-        var price4 = item4 * 180000;
-        var price6 = item6 * 160000;
-        var price7 = item7 * 80000;
-        var price8 = item8 * 50000;
-        var price9 = item9 * 200000;
+        var price1 = item1 * 80000; //주간 단상 220v
+        var price2 = item2 * 100000; //24시간용 220v
+        var price3 = item3 * 200000; //압축공기 기본형
+        var price4 = item4 * 200000; //급배수 기본형
+        var price6 = item6 * 200000; //인터넷
+        var price7 = item7 * 80000; //파이텍스 (신품)
+        var price8 = item8 * 50000; //파이텍스 (재사용품)
+        var price9 = item9 * 200000; //참관객/바이어 바코드 리더기
         var total = price1 + price2 + price3 + price4 + price6 + price7 + price8 + price9;
         // var vat = total * 10 / 100;
         // var sum = total + vat;
@@ -1156,9 +1155,19 @@ $(document).ready(function () {
         }
     })
 
+    // 홈페이지 여부
+    $('input[name="noPage"]').on('change', function () {
+        const $textInput = $(this).closest('.input').find('input[type="text"]');
+        if (this.checked) {
+            $textInput.prop('disabled', true).val('');
+        } else {
+            $textInput.prop('disabled', false);
+        }
+    })
+
     $('#industryPart').on('change', function(){
         let industryPart = $(this).val();
-        if(industryPart === '기타'){
+        if(industryPart.includes('기타')){
             $('#industryPartEtc').prop('disabled', false).val('');
             $('#industryPartEtc').trigger('focus');
         }else{

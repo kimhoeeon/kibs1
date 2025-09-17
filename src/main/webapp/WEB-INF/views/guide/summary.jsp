@@ -183,7 +183,7 @@
                             </li>
                             <li>
                                 <p class="icon"><img src="/img/summ_img04.png?ver=20250423"></p>
-                                <p class="txt">부품&장비</p>
+                                <p class="txt">해양부품&장비</p>
                             </li>
                             <li>
                                 <p class="icon"><img src="/img/summ_img08.png?ver=20250423"></p>

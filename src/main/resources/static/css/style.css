@@ -2872,6 +2872,16 @@ label:last-child {
     color: #777;
 }
 
+.form_s .form_tit.flex{
+    display: flex;
+    align-items: end;
+}
+.form_s .form_tit.flex .assist{
+    margin-left: 5px;
+    margin-bottom: 2px;
+    color: var(--mainColor1);
+}
+
 .form_s .form_box {
     background: #fff;
     margin-bottom: 10px;
@@ -2910,6 +2920,10 @@ label:last-child {
 
 .form_s .form_box li.w50 {
     width: 50%;
+}
+
+.form_s .form_box li select.w30 {
+    width: 30%;
 }
 
 .form_s .form_box li .item,

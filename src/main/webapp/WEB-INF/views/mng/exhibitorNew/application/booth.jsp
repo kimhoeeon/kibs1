@@ -2378,7 +2378,8 @@ if (document.documentElement) {
                                                     <option disabled>- 할인여부 -</option>
                                                     <option value="discountEarly1">1차 조기신청 할인</option>
                                                     <option value="discountEarly2">2차 조기신청 할인</option>
-                                                    <option value="discountFirst">첫 참가 할인</option>
+                                                    <option value="discountFirstUnder10">첫 참가 할인(10부스미만)</option>
+                                                    <option value="discountFirstOver10">첫 참가 할인(10부스이상)</option>
                                                     <option value="discountRe">재참가 할인</option>
                                                     <option value="discountScale1">규모할인 1 (10부스 이상) 할인</option>
                                                     <option value="discountScale2">규모할인 2 (20부스 이상) 할인</option>

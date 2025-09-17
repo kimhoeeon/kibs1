@@ -161,7 +161,6 @@
         , company_fax
         , industry_part
         , industry_part_etc
-        , employee_cnt
         , pre_part_year
         , member_company_yn
         , name
@@ -170,7 +169,6 @@
         , tel
         , phone
         , email
-        , email_marketing_yn
         , company_intro_video
         , company_intro_ko
         , company_intro_en
@@ -179,7 +177,10 @@
         , new_item_intro_ko
         , new_item_intro_en
         , promotion_plan
-        , field_part
+        , field_participatory
+        , field_participatory_1
+        , field_participatory_2
+        , field_participatory_3
         , export_meeting_yn
         , apply_complt
         , approval_status
@@ -217,7 +218,6 @@
                , #{companyFax}
                , #{industryPart}
                , <![CDATA[#{industryPartEtc}]]>
-               , #{employeeCnt}
                , #{prePartYear}
                , #{memberCompanyYn}
                , #{name}
@@ -226,7 +226,6 @@
                , #{tel}
                , #{phone}
                , #{email}
-               , #{emailMarketingYn}
                , <![CDATA[#{companyIntroVideo}]]>
                , <![CDATA[#{companyIntroKo}]]>
                , <![CDATA[#{companyIntroEn}]]>
@@ -235,7 +234,10 @@
                , <![CDATA[#{newItemIntroKo}]]>
                , <![CDATA[#{newItemIntroEn}]]>
                , #{promotionPlan}
-               , #{fieldPart}
+               , #{fieldParticipatory}
+               , #{fieldParticipatory1}
+               , #{fieldParticipatory2}
+               , #{fieldParticipatory3}
                , #{exportMeetingYn}
                , #{applyComplt}
                , #{approvalStatus}
@@ -454,7 +456,6 @@
              , company_fax
              , industry_part
              , industry_part_etc
-             , employee_cnt
              , pre_part_year
              , member_company_yn
              , name
@@ -463,7 +464,6 @@
              , tel
              , phone
              , email
-             , email_marketing_yn
              , company_intro_video
              , company_intro_ko
              , company_intro_en
@@ -472,7 +472,10 @@
              , new_item_intro_ko
              , new_item_intro_en
              , promotion_plan
-             , field_part
+             , field_participatory
+             , field_participatory_1
+             , field_participatory_2
+             , field_participatory_3
              , export_meeting_yn
              , part_want_yn
              , company_online_view_yn
@@ -498,6 +501,8 @@
              , discount_early_1
              , discount_early_2
              , discount_first
+             , discount_first_under_10
+             , discount_first_over_10
              , discount_re
              , discount_scale_1
              , discount_scale_2
@@ -571,7 +576,6 @@
           , company_fax = #{companyFax}
           , industry_part = #{industryPart}
           , industry_part_etc = <![CDATA[#{industryPartEtc}]]>
-          , employee_cnt = #{employeeCnt}
           , pre_part_year = #{prePartYear}
           , member_company_yn = #{memberCompanyYn}
           , name = #{name}
@@ -580,7 +584,6 @@
           , tel = #{tel}
           , phone = #{phone}
           , email = #{email}
-          , email_marketing_yn = #{emailMarketingYn}
           , company_intro_video = <![CDATA[#{companyIntroVideo}]]>
           , company_intro_ko = <![CDATA[#{companyIntroKo}]]>
           , company_intro_en = <![CDATA[#{companyIntroEn}]]>
@@ -589,7 +592,10 @@
           , new_item_intro_ko = <![CDATA[#{newItemIntroKo}]]>
           , new_item_intro_en = <![CDATA[#{newItemIntroEn}]]>
           , promotion_plan = <![CDATA[#{promotionPlan}]]>
-          , field_part = #{fieldPart}
+          , field_participatory = #{fieldParticipatory}
+          , field_participatory_1 = #{fieldParticipatory1}
+          , field_participatory_2 = #{fieldParticipatory2}
+          , field_participatory_3 = #{fieldParticipatory3}
           , export_meeting_yn = #{exportMeetingYn}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -768,36 +774,40 @@
     <update id="updateExhibitorNewBooth" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.KibsMapper.updateExhibitorNewBooth */
         UPDATE exhibitor_new
-        SET booth_type = #{boothType}
-          , discount_type = #{discountType}
-          , registration_cnt = #{registrationCnt}
-          , registration_fee = #{registrationFee}
-          , stand_alone_booth_cnt = #{standAloneBoothCnt}
-          , stand_alone_booth_fee = #{standAloneBoothFee}
-          , assembly_booth_cnt = #{assemblyBoothCnt}
-          , assembly_booth_fee = #{assemblyBoothFee}
-          , online_booth_cnt = #{onlineBoothCnt}
-          , online_booth_fee = #{onlineBoothFee}
-          , discount_early_1 = #{discountEarly1}
-          , discount_early_2 = #{discountEarly2}
-          , discount_first = #{discountFirst}
-          , discount_re = #{discountRe}
-          , discount_scale_1 = #{discountScale1}
-          , discount_scale_2 = #{discountScale2}
-          , discount_scale_3 = #{discountScale3}
-          , discount_scale_4 = #{discountScale4}
-          , discount_scale_5 = #{discountScale5}
-          , discount_scale_6 = #{discountScale6}
-          , discount_leisure = #{discountLeisure}
-          , booth_prc_sum = #{boothPrcSum}
-          , discount_prc_sum = #{discountPrcSum}
-          , discount_yn = #{discountYn}
-          , prc_sum = (#{boothPrcSum} - #{discountPrcSum})
-          , prc_vat = (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
-          , prc_total = ((#{boothPrcSum} - #{discountPrcSum})) + (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
-          , balance = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) + (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
-          , note = #{note}
-          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        SET booth_type              = #{boothType}
+          , discount_type           = #{discountType}
+          , registration_cnt        = #{registrationCnt}
+          , registration_fee        = #{registrationFee}
+          , stand_alone_booth_cnt   = #{standAloneBoothCnt}
+          , stand_alone_booth_fee   = #{standAloneBoothFee}
+          , assembly_booth_cnt      = #{assemblyBoothCnt}
+          , assembly_booth_fee      = #{assemblyBoothFee}
+          , online_booth_cnt        = #{onlineBoothCnt}
+          , online_booth_fee        = #{onlineBoothFee}
+          , discount_early_1        = #{discountEarly1}
+          , discount_early_2        = #{discountEarly2}
+          , discount_first_under_10 = #{discountFirstUnder10}
+          , discount_first_over_10  = #{discountFirstOver10}
+          , discount_first          = #{discountFirst}
+          , discount_re             = #{discountRe}
+          , discount_scale_1        = #{discountScale1}
+          , discount_scale_2        = #{discountScale2}
+          , discount_scale_3        = #{discountScale3}
+          , discount_scale_4        = #{discountScale4}
+          , discount_scale_5        = #{discountScale5}
+          , discount_scale_6        = #{discountScale6}
+          , discount_leisure        = #{discountLeisure}
+          , booth_prc_sum           = #{boothPrcSum}
+          , discount_prc_sum        = #{discountPrcSum}
+          , discount_yn             = #{discountYn}
+          , prc_sum                 = (#{boothPrcSum} - #{discountPrcSum})
+          , prc_vat                 = (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
+          , prc_total               = ((#{boothPrcSum} - #{discountPrcSum})) +
+                                      (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
+          , balance                 = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) +
+                                       (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
+          , note                    = #{note}
+          , final_regi_dttm         = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
@@ -1058,7 +1068,6 @@
           , tel = #{tel}
           , phone = #{phone}
           , email = #{email}
-          , email_marketing_yn = #{emailMarketingYn}
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>

@@ -106,7 +106,7 @@
                             <option value="서핑">Surfing</option>
                             <option value="수중레저">Underwater Leisure</option>
                             <option value="해양관광">Marine Tourism</option>
-                            <option value="부품&장비">Parts&Equipment</option>
+                            <option value="해양부품&장비">Parts&Equipment</option>
                             <option value="안전&마리나">Safety&Marina</option>
                             <option value="기타">Others</option>
                         </select>

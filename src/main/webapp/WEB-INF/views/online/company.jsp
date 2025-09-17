@@ -111,7 +111,7 @@
                             <option value="서핑">서핑</option>
                             <option value="수중레저">수중레저</option>
                             <option value="해양관광">해양관광</option>
-                            <option value="부품&장비">부품&장비</option>
+                            <option value="해양부품&장비">해양부품&장비</option>
                             <option value="안전&마리나">안전&마리나</option>
                             <option value="기타">기타</option>
                         </select>

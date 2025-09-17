@@ -97,10 +97,10 @@
                             <ul class="list1">
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step01.do','${info.seq}')">기본정보</a></li>
                                 <li class="active">
-                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시 신청 정보</a>
+                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
@@ -224,14 +224,6 @@
                                             <c:if test="${info.industryPart eq '기타'}">
                                                 ( ${info.industryPartEtc} )
                                             </c:if>
-                                        </div>
-                                    </li>
-                                    <li class="w50">
-                                        <div class="item">
-                                            <p>임직원 수</p>
-                                        </div>
-                                        <div class="input">
-                                            ${info.employeeCnt}
                                         </div>
                                     </li>
                                     <li class="w50">
@@ -383,7 +375,7 @@
                             <!-- //담당자정보 -->
 
                             <!-- 전시품 정보 -->
-                            <div class="form_wrap">
+                            <%--<div class="form_wrap">
                                 <div class="form_tit">
                                     <div class="big">전시품 정보</div>
                                 </div>
@@ -476,7 +468,7 @@
                                         </ul>
                                     </c:forEach>
                                 </c:if>
-                            </div>
+                            </div>--%>
                             <!-- //전시품 정보 -->
 
                             <!-- 상세정보 -->

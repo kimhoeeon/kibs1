@@ -112,8 +112,8 @@
                         <li class="active">
                             <a>전시 신청 정보</a>
                             <ul class="list2">
-                                <li><a>전시품 정보</a></li>
                                 <li><a>전시부스 신청</a></li>
+                                <li><a>전시품 정보</a></li>
                                 <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                 <li><a>유틸리티 신청</a></li>
                                 <li><a>출입증 신청</a></li>
@@ -176,17 +176,17 @@
 
                     <!-- 부스신청 -->
                     <div class="form_wrap">
-                        <div class="form_tit">
+                        <div class="form_tit flex">
                             <div class="big">상호간판 신청</div>
+                            <div class="assist">(조립부스 참가업체 필수 입력)</div>
                         </div>
                         <ul class="form_box">
                             <li>
-                                <div class="item req">
+                                <div class="item <c:if test="${info.assemblyBoothCnt > 0}">req</c:if>">
                                     <p>상호간판명</p>
                                 </div>
                                 <div class="input">
-                                    <%--<input type="hidden" id="standAloneBoothCnt" value="${info.standAloneBoothCnt}">
-                                    <input type="hidden" id="assemblyBoothCnt" value="${info.assemblyBoothCnt}">--%>
+                                    <input type="hidden" id="assemblyBoothCnt" value="${info.assemblyBoothCnt}">
                                     <input type="text" id="companySignNameKo" value="${info.companySignNameKo}" placeholder="국문">
                                     <input type="text" id="companySignNameEn" value="${info.companySignNameEn}" placeholder="영문" class="onlyNumEng">
                                 </div>

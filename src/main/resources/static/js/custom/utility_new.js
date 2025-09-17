@@ -31,15 +31,15 @@ $(function(){
         let item8 = parseInt($("#utility_pytex_re_cnt").val() || 0);
         let item9 = parseInt($("#utility_barcode_cnt").val() || 0);
 
-        let price1 = item1 * 70000;
-        let price2 = item2 * 80000;
-        let price3 = item3 * 180000;
-        let price4 = item4 * 180000;
-        let price6 = item6 * 160000;
-        let price7 = item7 * 80000;
-        let price8 = item8 * 50000;
-        let price9 = item9 * 200000;
-        let total = price1 + price2 + price3 + price4 + price6 + price7 + price8 + price9;
+        var price1 = item1 * 80000; //주간 단상 220v
+        var price2 = item2 * 100000; //24시간용 220v
+        var price3 = item3 * 200000; //압축공기 기본형
+        var price4 = item4 * 200000; //급배수 기본형
+        var price6 = item6 * 200000; //인터넷
+        var price7 = item7 * 80000; //파이텍스 (신품)
+        var price8 = item8 * 50000; //파이텍스 (재사용품)
+        var price9 = item9 * 200000; //참관객/바이어 바코드 리더기
+        var total = price1 + price2 + price3 + price4 + price6 + price7 + price8 + price9;
 
         //console.log(sum);
         $("#utility_jugan_fee").val("￦ " + comma(price1));

@@ -94,10 +94,10 @@
                             <ul class="list1">
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step01.do','${info.seq}')">기본정보</a></li>
                                 <li>
-                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시 신청 정보</a>
+                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
@@ -215,8 +215,8 @@
                                         <table>
                                             <colgroup>
                                                 <col width="10%">
-                                                <col width="15%">
                                                 <col>
+                                                <col width="25%">
                                                 <col width="10%">
                                                 <col width="20%">
                                             </colgroup>
@@ -225,135 +225,139 @@
                                                 <th>No</th>
                                                 <th>구분</th>
                                                 <th>단가</th>
-                                                <th>신청개수</th>
+                                                <th>적용부스 수</th>
                                                 <th>할인 합계</th>
                                             </tr>
                                             </thead>
                                             <tbody>
 
-                                            <c:set var="boothCnt" value="${info.standAloneBoothCnt + info.assemblyBoothCnt + info.onlineBoothCnt}"/>
+                                            <%-- [수정] 할인은 온라인 부스를 제외한 오프라인 부스 수량 기준으로 계산 --%>
+                                            <c:set var="physicalBoothCnt" value="${info.standAloneBoothCnt + info.assemblyBoothCnt}"/>
                                             <c:set var="discountRownum" value="0"/>
+
                                             <c:if test="${info.discountEarly1}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>1차 조기신청</td>
+                                                    <td>(1차) 조기신청 할인 ( ~2025.11.14 금)</td>
                                                     <td>1 부스당 300,000 원 할인</td>
-                                                    <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 300000}"/></td>
+                                                    <td><c:out value="${physicalBoothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 300000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountEarly2}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>2차 조기신청</td>
+                                                    <td>(2차) 조기신청 할인 ( ~2025.12.12 금)</td>
                                                     <td>1 부스당 200,000 원 할인</td>
-                                                    <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 200000}"/></td>
-                                                </tr>
-                                            </c:if>
-                                            <c:if test="${info.discountFirst}">
-                                                <c:set var="discountRownum" value="${discountRownum + 1}"/>
-                                                <tr>
-                                                    <td>${discountRownum}</td>
-                                                    <td>첫 참가</td>
-                                                    <c:choose>
-                                                        <c:when test="${info.discountScale1 || info.discountScale2 || info.discountScale3 || info.discountScale4 || info.discountScale5 || info.discountScale6}">
-                                                            <td>1 부스당 500,000 원 할인</td>
-                                                            <td><c:out value="${boothCnt}"/></td>
-                                                            <td>- <fmt:formatNumber value="${boothCnt * 500000}"/></td>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <td>1 부스당 300,000 원 할인</td>
-                                                            <td><c:out value="${boothCnt}"/></td>
-                                                            <td>- <fmt:formatNumber value="${boothCnt * 300000}"/></td>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </tr>
-                                            </c:if>
-                                            <c:if test="${info.discountRe}">
-                                                <c:set var="discountRownum" value="${discountRownum + 1}"/>
-                                                <tr>
-                                                    <td>${discountRownum}</td>
-                                                    <td>재참가</td>
-                                                    <td>1 부스당 200,000 원 할인</td>
-                                                    <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 200000}"/></td>
+                                                    <td><c:out value="${physicalBoothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 200000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountScale1}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>규모 1 (10부스 이상)</td>
-                                                    <td>1 부스당 400,000 원 할인</td>
-                                                    <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 400000}"/></td>
+                                                    <td>10부스 이상 참가업체</td>
+                                                    <td>1 부스당 470,000 원 할인</td>
+                                                    <td><c:out value="${physicalBoothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 470000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountScale2}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>규모 2 (20부스 이상)</td>
-                                                    <td>1 부스당 650,000 원 할인</td>
-                                                    <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 650000}"/></td>
+                                                    <td>20부스 이상 참가업체</td>
+                                                    <td>1 부스당 700,000 원 할인</td>
+                                                    <td><c:out value="${physicalBoothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 700000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountScale3}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>규모 3 (30부스 이상)</td>
-                                                    <td>1 부스당 750,000 원 할인</td>
-                                                    <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 750000}"/></td>
+                                                    <td>30부스 이상 참가업체</td>
+                                                    <td>1 부스당 780,000 원 할인</td>
+                                                    <td><c:out value="${physicalBoothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 780000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountScale4}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>규모 4 (40부스 이상)</td>
-                                                    <td>1 부스당 800,000 원 할인</td>
-                                                    <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 800000}"/></td>
+                                                    <td>40부스 이상 참가업체</td>
+                                                    <td>1 부스당 830,000 원 할인</td>
+                                                    <td><c:out value="${physicalBoothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 830000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountScale5}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>규모 5 (50부스 이상)</td>
-                                                    <td>1 부스당 850,000 원 할인</td>
-                                                    <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 850000}"/></td>
+                                                    <td>50부스 이상 참가업체</td>
+                                                    <td>1 부스당 870,000 원 할인</td>
+                                                    <td><c:out value="${physicalBoothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 870000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountScale6}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>규모 6 (100부스 이상)</td>
-                                                    <td>1 부스당 900,000 원 할인</td>
-                                                    <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 900000}"/></td>
+                                                    <td>100부스 이상 참가업체</td>
+                                                    <td>1 부스당 930,000 원 할인</td>
+                                                    <td><c:out value="${physicalBoothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 930000}"/></td>
+                                                </tr>
+                                            </c:if>
+                                            <c:if test="${info.discountRe}">
+                                                <c:set var="discountRownum" value="${discountRownum + 1}"/>
+                                                <tr>
+                                                    <td>${discountRownum}</td>
+                                                    <td>2015년 ~ 2025년 참가 업체</td>
+                                                    <td>1 부스당 200,000 원 할인</td>
+                                                    <td><c:out value="${physicalBoothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 200000}"/></td>
+                                                </tr>
+                                            </c:if>
+                                            <c:if test="${info.discountFirstUnder10}">
+                                                <c:set var="discountRownum" value="${discountRownum + 1}"/>
+                                                <tr>
+                                                    <td>${discountRownum}</td>
+                                                    <td>최초 참가 업체 10부스 미만 참가</td>
+                                                    <td>1 부스당 500,000 원 할인</td>
+                                                    <td><c:out value="${physicalBoothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 500000}"/></td>
+                                                </tr>
+                                            </c:if>
+                                            <c:if test="${info.discountFirstOver10}">
+                                                <c:set var="discountRownum" value="${discountRownum + 1}"/>
+                                                <tr>
+                                                    <td>${discountRownum}</td>
+                                                    <td>최초 참가 업체 10부스 이상 참가</td>
+                                                    <td>1 부스당 300,000 원 할인</td>
+                                                    <td><c:out value="${physicalBoothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 300000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountLeisure}">
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>한국해양레저산업협회</td>
+                                                    <td>한국해양레저산업협회 회원사</td>
                                                     <td>1 부스당 200,000 원 할인</td>
-                                                    <td><c:out value="${boothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${boothCnt * 200000}"/></td>
+                                                    <td><c:out value="${physicalBoothCnt}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 200000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <tr class="txtBold">
                                                 <td colspan="4">총액</td>
+                                                <%-- DB에 저장된 최종 할인 총액을 표시 --%>
                                                 <td>- <fmt:formatNumber value="${info.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></td>
                                             </tr>
                                             </tbody>
@@ -399,7 +403,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>주간 단상 220V</td>
                                                     <td>${info.utilityJuganCnt}</td>
-                                                    <td>￦ 70,000/1kw</td>
+                                                    <td>￦ 80,000/1kw</td>
                                                     <td><fmt:formatNumber value="${info.utilityJuganFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -411,7 +415,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>24시간용 220V</td>
                                                     <td>${info.utilityDayCnt}</td>
-                                                    <td>￦ 80,000/1kw</td>
+                                                    <td>￦ 100,000/1kw</td>
                                                     <td><fmt:formatNumber value="${info.utilityDayFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -423,7 +427,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>압축공기 기본형</td>
                                                     <td>${info.utilityCompressedAirCnt}</td>
-                                                    <td>￦ 180,000</td>
+                                                    <td>￦ 200,000</td>
                                                     <td><fmt:formatNumber value="${info.utilityCompressedAirFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -435,7 +439,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>급배수 기본형</td>
                                                     <td>${info.utilityWaterBasicCnt}</td>
-                                                    <td>￦ 180,000</td>
+                                                    <td>￦ 200,000</td>
                                                     <td><fmt:formatNumber value="${info.utilityWaterBasicFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -447,7 +451,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>인터넷</td>
                                                     <td>${info.utilityInternetCnt}</td>
-                                                    <td>￦ 160,000</td>
+                                                    <td>￦ 200,000</td>
                                                     <td><fmt:formatNumber value="${info.utilityInternetFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>

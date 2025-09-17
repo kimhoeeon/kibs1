@@ -113,8 +113,8 @@
                             <li class="active">
                                 <a>전시 신청 정보</a>
                                 <ul class="list2">
-                                    <li><a>전시품 정보</a></li>
                                     <li><a>전시부스 신청</a></li>
+                                    <li><a>전시품 정보</a></li>
                                     <li><a>상호간판 신청</a></li>
                                     <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                     <li><a>출입증 신청</a></li>
@@ -194,7 +194,7 @@
                                         </li>
                                         <li>
                                             <div class="cate">주간 단상 220v</div>
-                                            <div class="cost">￦ 70,000/1kw</div>
+                                            <div class="cost">￦ 80,000/1kw</div>
                                             <div class="quantity">
                                                 <p class="j_num">
                                                     <input type="text" id="utility_jugan_cnt" class="num_sum onlyNum" value="${info.utilityJuganCnt}" placeholder="수량 입력">
@@ -209,7 +209,7 @@
                                         </li>
                                         <li>
                                             <div class="cate">24시간용 220v</div>
-                                            <div class="cost">￦ 80,000/1kw</div>
+                                            <div class="cost">￦ 100,000/1kw</div>
                                             <div class="quantity">
                                                 <p class="j_num">
                                                     <input type="text" id="utility_day_cnt" class="num_sum onlyNum" value="${info.utilityDayCnt}" placeholder="수량 입력">
@@ -224,7 +224,7 @@
                                         </li>
                                         <li>
                                             <div class="cate">압축공기 기본형</div>
-                                            <div class="cost">￦ 180,000</div>
+                                            <div class="cost">￦ 200,000</div>
                                             <div class="quantity">
                                                 <p class="j_num">
                                                     <input type="text" id="utility_compressed_air_cnt" class="num_sum onlyNum" value="${info.utilityCompressedAirCnt}" placeholder="수량 입력">
@@ -239,7 +239,7 @@
                                         </li>
                                         <li>
                                             <div class="cate">급배수 기본형</div>
-                                            <div class="cost">￦ 180,000</div>
+                                            <div class="cost">￦ 200,000</div>
                                             <div class="quantity">
                                                 <p class="j_num">
                                                     <input type="text" id="utility_water_basic_cnt" class="num_sum onlyNum" value="${info.utilityWaterBasicCnt}" placeholder="수량 입력">
@@ -254,7 +254,7 @@
                                         </li>
                                         <li>
                                             <div class="cate">인터넷</div>
-                                            <div class="cost">￦ 160,000</div>
+                                            <div class="cost">￦ 200,000</div>
                                             <div class="quantity">
                                                 <p class="j_num">
                                                     <input type="text" id="utility_internet_cnt" class="num_sum onlyNum" value="${info.utilityInternetCnt}" placeholder="수량 입력">

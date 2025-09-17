@@ -105,10 +105,10 @@
                             <ul class="list1">
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step01.do','${info.seq}')">기본정보</a></li>
                                 <li class="active">
-                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시 신청 정보</a>
+                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
                                         <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
@@ -374,7 +374,7 @@
                                                 <div class="note">한국해양레저산업협회 회원사</div>
                                             </li>
                                         </ul>
-                                        <div style="margin-top: 10px;">※ 중복할인 가능하며 자세한 사항은 경기국제보트쇼 사무국으로 문의 바랍니다.</div>
+                                        <div style="margin-top: 10px;">※ 중복할인 가능</div>
                                     </div>
                                     <div class="form_ptag_sum">
                                         <div class="cate2">총액(VAT 미포함)</div>
@@ -389,13 +389,13 @@
                             <!-- //할인적용 선택-->
 
                             <div class="form_btn">
-                                <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')" class="form_btn_prev">
+                                <a href="javascript:void(0);" onclick="f_page_move('/mypage/step01.do','${info.seq}')" class="form_btn_prev">
                                     <div class="big">이전</div>
-                                    <div class="small">기본정보</div>
+                                    <div class="small">전시 신청 정보</div>
                                 </a>
                                 <a href="javascript:void(0);" onclick="f_mypage_comp('2_1','${info.seq}')" class="form_btn_next">
                                     <div class="big">다음</div>
-                                    <div class="small">상호간판 신청</div>
+                                    <div class="small">전시품 정보</div>
                                 </a>
                             </div>
 
@@ -408,89 +408,85 @@
 
         <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-        <script type="text/javascript">
-            $(function(){
+    <script type="text/javascript">
+        $(function(){
 
-                // 첫 참가할인, 재참가 할인 중복 선택 방지 로직 추가
-                $('#discountFirst, #discountRe').on('change', function() {
-                    const d3 = $('#discountFirst');
-                    const d4 = $('#discountRe');
-                    const changedCheckbox = $(this);
-                    const changedId = changedCheckbox.attr('id');
+            // 첫 참가할인, 재참가 할인 중복 선택 방지 및 DB 연동 로직
+            const firstTimerDiscounts = $('#discountFirstUnder10, #discountFirstOver10');
+            const reParticipantDiscount = $('#discountRe');
+            const participationDiscounts = firstTimerDiscounts.add(reParticipantDiscount);
 
-                    // 1. 잠금된 항목 해제 시도 방지
-                    if (!changedCheckbox.prop('checked')) { // 체크를 해제하려는 경우
-                        if ((changedId === 'discountFirst' && d3.data('db-val') === 'first') ||
-                            (changedId === 'discountRe' && d4.data('db-val') !== 'first')) {
-                            alert('기참가연도 선택에 따라 할인이 자동 적용되었습니다.');
-                            changedCheckbox.prop('checked', true); // 선택 상태로 되돌림
-                            return; // 함수 종료
-                        }
+            participationDiscounts.on('change', function() {
+                const changedCheckbox = $(this);
+                const isFirstTimerCheckbox = changedCheckbox.is(firstTimerDiscounts);
+                const isReParticipantCheckbox = changedCheckbox.is(reParticipantDiscount);
+
+                // 1. DB 값에 의해 체크된 항목 해제 시도 방지
+                if (!changedCheckbox.prop('checked')) {
+                    const dbVal = changedCheckbox.data('db-val');
+                    // 첫 참가 할인 해제 시도 시
+                    if (isFirstTimerCheckbox && dbVal === 'first') {
+                        alert('첫 참가 할인은 부스 수량에 따라 자동으로 적용되며, 해제할 수 없습니다.');
+                        changedCheckbox.prop('checked', true); // 선택 상태로 되돌림
+                        return; // 함수 종료
                     }
-
-                    if (d3.prop('checked') && d4.prop('checked')) {
-                        if (changedCheckbox.is('#discountRe')) { // 재참가 할인이 선택된 상태에서 첫 참가할인을 클릭
-                            alert('첫 참가 할인과 중복 선택할 수 없습니다.');
-                            changedCheckbox.prop('checked', false);
-                        } else { // 첫 참가 할인이 선택된 상태에서 재참가 할인을 클릭
-                            alert('재참가 할인과 중복 선택할 수 없습니다.');
-                            changedCheckbox.prop('checked', false);
-                        }
+                    // 재참가 할인 해제 시도 시
+                    if (isReParticipantCheckbox && dbVal !== 'first') {
+                        alert('기참가연도 선택에 따라 할인이 자동 적용되었습니다.');
+                        changedCheckbox.prop('checked', true); // 선택 상태로 되돌림
+                        return; // 함수 종료
                     }
+                }
 
-                    // [신규] 할인 3번이 방금 선택되었을 때, 5~10번 그룹이 선택되어 있는지 확인 후 alert
-                    if (changedCheckbox.is('#discountFirst') && changedCheckbox.prop('checked')) {
-                        const isSingleChoiceSelected = $('.single-choice-discount input:checked').length > 0;
-                        if (isSingleChoiceSelected) {
-                            alert('첫 참가 할인과 규모할인을 함께 적용할 경우,\n부스당 첫 참가 할인 금액은 30만 원으로 조정됩니다.');
-                        }
+                // 2. 상호 배제 로직: 하나를 선택하면 다른 그룹은 해제
+                if (changedCheckbox.prop('checked')) {
+                    if (isFirstTimerCheckbox) {
+                        firstTimerDiscounts.not(changedCheckbox).prop('checked', false); // 첫참가 할인 내에서 중복 방지
+                        reParticipantDiscount.prop('checked', false); // 재참가 할인 해제
+                    } else if (isReParticipantCheckbox) {
+                        firstTimerDiscounts.prop('checked', false); // 모든 첫참가 할인 해제
                     }
-                    // 로직 처리 후 최종적으로 계산 함수 호출
-                    calculateTotal();
-                });
+                }
 
-                // 할인 5~10번 중 하나만 선택 가능 로직
-                $('.single-choice-discount input[type="checkbox"]').on('change', function() {
-                    const clickedCheckbox = $(this);
-                    if (clickedCheckbox.prop('checked')) {
-                        $('.single-choice-discount input[type="checkbox"]').not(clickedCheckbox).prop('checked', false);
-
-                        // [신규] 할인 3번이 이미 선택되어 있는지 확인 후 alert
-                        if ($('#discountFirst').prop('checked')) {
-                            alert('첫 참가 할인과 규모할인을 함께 적용할 경우,\n부스당 첫 참가 할인 금액은 30만 원으로 조정됩니다.');
-                        }
-                    }
-                    calculateTotal();
-                });
-
-                $('#discountLeisure').on('change', function() {
-                    // DB Lock 값이 'Y'이고, 사용자가 체크를 해제하려고 할 때
-                    if ($(this).data('db-lock') === 'Y' && !$(this).prop('checked')) {
-                        alert('한국해양레저산업협회 회원사 여부 체크 시 할인 해제 불가합니다.');
-                        $(this).prop('checked', true); // 강제로 다시 체크 상태로 변경
-                    }else{
-                        alert('한국해양레저산업협회 회원사 여부 체크 시 할인 불가합니다.');
-                        $(this).prop('checked', false); // 강제로 다시 체크 상태로 변경
-                    }
-                    calculateTotal();
-                });
-
-                // 수량 입력 변경 시 계산
-                $('#standAloneBoothCnt, #assemblyBoothCnt').on('input', calculateTotal);
-                // 온라인 부스 select box 변경 시 계산
-                $('#onlineBoothCnt').on('change', calculateTotal);
-
-                // 일반 할인 체크박스 변경 시 계산 (할인 1, 2, 3, 4, 5~9번 제외)
-                $('input[type="checkbox"]:not(#discountEarly1, #discountEarly2, #discountFirst, #discountRe, .single-choice-discount input, #discountLeisure)').on('change', calculateTotal);
-
-                // 초기 로드 시 계산 및 할인 1, 2번 상태 설정
-                handleDiscountEarly1();
-                handleDiscountEarly2();
                 calculateTotal();
-
             });
-        </script>
-    </c:if>
+
+            // 규모 할인(5~10번) 중 하나만 선택 가능 로직
+            $('.single-choice-discount input[type="checkbox"]').on('change', function() {
+                if ($(this).prop('checked')) {
+                    $('.single-choice-discount input[type="checkbox"]').not(this).prop('checked', false);
+                }
+                calculateTotal();
+            });
+
+            // 협회 할인 DB 연동 로직
+            $('#discountLeisure').on('change', function() {
+                // DB Lock 값이 'Y'이고, 사용자가 체크를 해제하려고 할 때
+                if ($(this).data('db-lock') === 'Y' && !$(this).prop('checked')) {
+                    alert('한국해양레저산업협회 회원사 여부 체크 시 할인 해제 불가합니다.');
+                    $(this).prop('checked', true); // 강제로 다시 체크 상태로 변경
+                } else if ($(this).data('db-lock') !== 'Y' && $(this).prop('checked')) {
+                    alert('한국해양레저산업협회 회원사가 아니므로 할인 적용이 불가합니다.');
+                    $(this).prop('checked', false); // 강제로 체크 해제
+                }
+                calculateTotal();
+            });
+
+            // 수량 입력 변경 시 계산
+            $('#standAloneBoothCnt, #assemblyBoothCnt').on('input', calculateTotal);
+            // 온라인 부스 select box 변경 시 계산
+            $('#onlineBoothCnt').on('change', calculateTotal);
+
+            // 기타 할인 체크박스 변경 시 계산
+            $('input[name="discount"]').not(participationDiscounts).not('.single-choice-discount input').not('#discountLeisure').on('change', calculateTotal);
+
+            // 페이지 로드 시 초기 계산 및 할인 상태 설정
+            handleDiscountEarly1();
+            handleDiscountEarly2();
+            calculateTotal();
+
+        });
+    </script>
 
 </body>
 </html>

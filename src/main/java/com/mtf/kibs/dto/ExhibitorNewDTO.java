@@ -87,6 +87,10 @@ public class ExhibitorNewDTO {
     String newItemIntroEn; //신제품소개(영문)
     String promotionPlan; //이벤트진행계획
     String fieldPart; //참가분야
+    String fieldParticipatory;
+    String fieldParticipatory1;
+    String fieldParticipatory2;
+    String fieldParticipatory3;
 
     //전시품 정보
     String boatEntryYn; // 요트/보트 출품 여부
@@ -118,6 +122,8 @@ public class ExhibitorNewDTO {
     Integer onlineBoothFee; //온라인부스 신청비용
     Boolean discountEarly1; //1차조기신청
     Boolean discountEarly2; //2차조기신청
+    Boolean discountFirstUnder10; //첫참가할인(10부스미만)
+    Boolean discountFirstOver10; //첫참가할인(10부스이상)
     Boolean discountFirst; //첫참가할인
     Boolean discountRe; //재참가할인
     Boolean discountScale1; //규모할인1(10부스이상)

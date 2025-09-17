@@ -297,7 +297,7 @@ public class KibsController {
         }else {
             DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
             String today = dateFormat.format(new Date());
-            if (Long.parseLong(today) > Long.parseLong("202509080859")) {
+            if (Long.parseLong(today) > Long.parseLong("202509220959")) {
                 mv.addObject("mode", "open");
             }
         }
@@ -3561,21 +3561,30 @@ public class KibsController {
 
     public String convertOptionBig(String optionBig){
         String result = optionBig;
-        //"보트&요트", "무동력보트", "워크보트", "해양레저", "서핑", "수중레저", "해양관광", "부품&장비", "안전&마리나", "기타"
-        //"boat&yacht", "paddler's world", "work boat", "marine leisure", "surfing", "underwater leisure", "marine tourism", "parts&equipment", "safety&marina", "Others"
+        //"보트&요트", "무동력보트", "워크보트", "해양부품&장비", "안전&마리나", "해양레저", "수중레저", "서핑", "해양관광",
+        //"boat&yacht", "paddler's world", "work boat", "parts&equipment", "safety&marina", "marine leisure", "underwater leisure", "surfing", "marine tourism", "Others"
         if(optionBig != null && !optionBig.isEmpty()){
             switch (optionBig){
-                // 기존 -----------------
+                // 기존 Start -----------------
+                case "해양부품":
+                    result = "Marine parts";
+                    break;
                 case "요트·보트":
                     result = "Yacht&Boat";
+                    break;
+                case "아웃도어":
+                    result = "Outdoor";
                     break;
                 case "워터스포츠":
                     result = "Water sports";
                     break;
+                case "마리나산업":
+                    result = "Marina industry";
+                    break;
                 case "다이빙":
                     result = "Diving";
                     break;
-                // 기존 -----------------
+                // 기존 End -----------------
                 case "보트&요트":
                     result = "Boat&Yacht";
                     break;
@@ -3585,23 +3594,23 @@ public class KibsController {
                 case "워크보트":
                     result = "Work Boat";
                     break;
-                case "해양레저":
-                    result = "Marine Leisure";
-                    break;
-                case "서핑":
-                    result = "Surfing";
-                    break;
-                case "수중레저":
-                    result = "Underwater Leisure";
-                    break;
-                case "해양관광":
-                    result = "Marine Tourism";
-                    break;
-                case "부품&장비":
+                case "해양부품&장비":
                     result = "Parts&Equipment";
                     break;
                 case "안전&마리나":
                     result = "Safety&Marina";
+                    break;
+                case "해양레저":
+                    result = "Marine Leisure";
+                    break;
+                case "수중레저":
+                    result = "Underwater Leisure";
+                    break;
+                case "서핑":
+                    result = "Surfing";
+                    break;
+                case "해양관광":
+                    result = "Marine Tourism";
                     break;
                 case "기타":
                     result = "Others";
@@ -3622,24 +3631,24 @@ public class KibsController {
         // 워크보트
         // "관공선", "소방선", "구조선", "감시선", "행정선", "고속단정", "특수선박"
         // "Government Vessel", "Firefighting Vessel", "Rescue Vessel", "Patrol Vessel", "Public Service Vessel", "High-Speed RIB", "Special Purpose Vessel"
-        // 해양레저
-        // "수상오토바이", "수상스키", "웨이크보드", "해양레저 서비스"
-        // "Personal Watercraft", "Water Skis", "Wakeboard", "Marine Leisure Services"
-        // 서핑
-        // "서핑장비", "서프웨어&라이프 스타일", "서핑체험"
-        // "Surfing Equipment", "Surfwear & Lifestyle", "Surfing Experience"
-        // 수중레저
-        // "다이빙 장비", "다이빙 서비스", "다이빙 교육", "스킨스쿠버", "스노우쿨링"
-        // "Diving Equipment", "Diving Services", "Diving Education", "Scuba Diving", "Snorkeling"
-        // 해양관광
-        // "관광 서비스", "보트대여", "요트대여", "관광상품"
-        // "Tourism Services", "Boat Rental", "Yacht Rental", "Tour Products"
-        // 부품&장비
+        // 해양부품&장비
         // "선외기", "선내기", "스턴드라이브 엔진", "가이드모터", "프로펠러", "마린스피커", "케이블류", "앵커", "무어링", "어군탐지기", "네비게이션", "레이더", "무선통신장비", "기타"
         // "Outboard Engine", "Inboard Engine", "Stern Drive Engine", "Trolling Motor", "Propeller", "Marine Speaker", "Marine Cables", "Anchor", "Mooring", "Fish Finder", "Marine Navigation System", "Marine Radar", "Marine Radio Equipment", "ETC"
         // 안전&마리나
         // "선박 보관 임대", "선박 유지보수", "방제장비", "워터프론트 개발", "보트용 전자장비", "도시/광택", "보트 소재 및 원료"
         // "Boat Storage and Rental", "Boat Maintenance and Repair", "Spill Response Equipment", "Waterfront Development", "Marine Electronics for Boats", "Boat Polishing/Detailing", "Boat Materials and Raw Components"
+        // 해양레저
+        // "수상오토바이", "수상스키", "웨이크보드", "해양레저 서비스"
+        // "Personal Watercraft", "Water Skis", "Wakeboard", "Marine Leisure Services"
+        // 수중레저
+        // "다이빙 장비", "다이빙 서비스", "다이빙 교육", "스킨스쿠버", "스노우쿨링"
+        // "Diving Equipment", "Diving Services", "Diving Education", "Scuba Diving", "Snorkeling"
+        // 서핑
+        // "서핑장비", "의류&패션", "체험&교육프로그램", "라이프 스타일"
+        // "Surfing Gear", "Apparel & Fashion", "Experience & Education Programs", "Lifestyle"
+        // 해양관광
+        // "해양레저 관광상품", "지역관광콘텐츠", "치유&생태관광", "체험 콘텐츠"
+        // "Marine Leisure Tour Products", "Local Tourism Content", "Healing & Ecotourism", "Experience Content"
         // 기타
         // "트레일러", "견인장치", "캠핑카", "아웃도어용품", "기타"
         // "Trailer", "Towing Equipment", "Recreational Vehicle", "Outdoor Equipment", "Others"
@@ -3720,63 +3729,7 @@ public class KibsController {
                     result = "Special Purpose Vessel";
                     break;
 
-                // 해양레저
-                case "수상오토바이":
-                    result = "Personal Watercraft";
-                    break;
-                case "수상스키":
-                    result = "Water Skis";
-                    break;
-                case "웨이크보드":
-                    result = "Wakeboard";
-                    break;
-                case "해양레저 서비스":
-                    result = "Marine Leisure Services";
-                    break;
-
-                // 서핑
-                case "서핑장비":
-                    result = "Surfing Equipment";
-                    break;
-                case "서프웨어&라이프 스타일":
-                    result = "Surfwear & Lifestyle";
-                    break;
-                case "서핑체험":
-                    result = "Surfing Experience";
-                    break;
-
-                // 수중레저
-                case "다이빙 장비":
-                    result = "Diving Equipment";
-                    break;
-                case "다이빙 서비스":
-                    result = "Diving Services";
-                    break;
-                case "다이빙 교육":
-                    result = "Diving Education";
-                    break;
-                case "스킨스쿠버":
-                    result = "Scuba Diving";
-                    break;
-                case "스노우쿨링":
-                    result = "Snorkeling";
-                    break;
-
-                // 해양관광
-                case "관광 서비스":
-                    result = "Tourism Services";
-                    break;
-                case "보트대여":
-                    result = "Boat Rental";
-                    break;
-                case "요트대여":
-                    result = "Yacht Rental";
-                    break;
-                case "관광상품":
-                    result = "Tour Products";
-                    break;
-
-                // 부품&장비
+                // 해양부품&장비
                 case "선외기":
                     result = "Outboard Engine";
                     break;
@@ -3841,6 +3794,65 @@ public class KibsController {
                     break;
                 case "보트 소재 및 원료":
                     result = "Boat Materials and Raw Components";
+                    break;
+
+                // 해양레저
+                case "수상오토바이":
+                    result = "Personal Watercraft";
+                    break;
+                case "수상스키":
+                    result = "Water Skis";
+                    break;
+                case "웨이크보드":
+                    result = "Wakeboard";
+                    break;
+                case "해양레저 서비스":
+                    result = "Marine Leisure Services";
+                    break;
+
+                // 수중레저
+                case "다이빙 장비":
+                    result = "Diving Equipment";
+                    break;
+                case "다이빙 서비스":
+                    result = "Diving Services";
+                    break;
+                case "다이빙 교육":
+                    result = "Diving Education";
+                    break;
+                case "스킨스쿠버":
+                    result = "Scuba Diving";
+                    break;
+                case "스노우쿨링":
+                    result = "Snorkeling";
+                    break;
+
+                // 서핑
+                case "서핑장비":
+                    result = "Surfing Gear";
+                    break;
+                case "의류&패션":
+                    result = "Apparel & Fashion";
+                    break;
+                case "체험&교육프로그램":
+                    result = "Experience & Education Programs";
+                    break;
+                case "라이프스타일":
+                    result = "Lifestyle";
+                    break;
+
+                // 해양관광
+                case "해양레저 관광상품":
+                    result = "Marine Leisure Tour Products";
+                    break;
+                case "지역관광콘텐츠":
+                    result = "Local Tourism Content";
+                    break;
+                case "치유&생태관광":
+                    result = "Healing & Ecotourism";
+                    break;
+                case "체험 콘텐츠":
+                    result = "Experience Content";
                     break;
 
                 // 기타 (기존 "기타"와 중복될 수 있으니 주의)

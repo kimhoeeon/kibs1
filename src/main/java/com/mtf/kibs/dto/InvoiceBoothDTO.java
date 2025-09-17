@@ -30,6 +30,8 @@ public class InvoiceBoothDTO {
     Integer boothPrcSum; //부스신청총액
     Boolean discountEarly1; //1차조기신청
     Boolean discountEarly2; //2차조기신청
+    Boolean discountFirstUnder10; //첫참가할인(10부스미만)
+    Boolean discountFirstOver10; //첫참가할인(10부스이상)
     Boolean discountFirst; //첫참가할인
     Boolean discountRe; //재참가할인
     Boolean discountScale1; //규모할인1(10부스이상)

@@ -93,10 +93,10 @@
                             <ul class="list1">
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step01.do','${info.seq}')">기본정보</a></li>
                                 <li class="active">
-                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시 신청 정보</a>
+                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
-                                        <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
+                                        <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
@@ -131,11 +131,11 @@
                                             <div class="input check">
                                                 <label>
                                                     <input type="radio" id="boatEntryY" name="boatEntryYn" value="Y" <c:if test="${info.boatEntryYn eq 'Y'}">checked</c:if> />
-                                                    신청
+                                                    출품
                                                 </label>
                                                 <label>
                                                     <input type="radio" id="boatEntryN" name="boatEntryYn" value="N" <c:if test="${info.boatEntryYn eq 'N' or info.boatEntryYn eq null or info.boatEntryYn eq ''}">checked</c:if>/>
-                                                    미신청
+                                                    미출품
                                                 </label>
                                             </div>
                                         </li>
@@ -345,13 +345,13 @@
                                 </div>
 
                                 <div class="form_btn">
-                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step01.do','${info.seq}')" class="form_btn_prev">
+                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')" class="form_btn_prev">
                                         <div class="big">이전</div>
-                                        <div class="small">기본정보</div>
+                                        <div class="small">전시부스 신청</div>
                                     </a>
                                     <a href="javascript:void(0);" onclick="f_mypage_comp('2_9','${info.seq}')" class="form_btn_next">
                                         <div class="big">다음</div>
-                                        <div class="small">전시부스 신청</div>
+                                        <div class="small">상호간판 신청</div>
                                     </a>
                                 </div>
                             </div>

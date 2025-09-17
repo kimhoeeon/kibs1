@@ -275,14 +275,6 @@
                             </li>
                             <li class="w50">
                                 <div class="item">
-                                    <p>임직원 수</p>
-                                </div>
-                                <div class="input">
-                                    ${info.employeeCnt}
-                                </div>
-                            </li>
-                            <li class="w50">
-                                <div class="item">
                                     <p>사업자등록증</p>
                                 </div>
                                 <div class="input file_box">
@@ -430,7 +422,7 @@
                     <!-- //담당자정보 -->
 
                     <!-- 전시품 정보 -->
-                    <div class="form_wrap">
+                    <%--<div class="form_wrap">
                         <div class="form_tit">
                             <div class="big">전시품 정보</div>
                         </div>
@@ -523,7 +515,7 @@
                                 </ul>
                             </c:forEach>
                         </c:if>
-                    </div>
+                    </div>--%>
                     <!-- //전시품 정보 -->
 
                     <!-- 상세정보 -->

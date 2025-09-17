@@ -111,6 +111,7 @@
                             <a href="/apply/step2_1.do">전시 신청 정보</a>
                             <ul class="list2">
                                 <li><a href="/apply/step2_1.do">전시부스 신청</a></li>
+                                <li><a href="/apply/step2_9.do">전시품 정보</a></li>
                                 <li><a href="/apply/step2_2.do">상호간판 신청</a></li>
                                 <li><a href="/apply/step2_3.do">유틸리티 신청</a></li>
                                 <li><a href="/apply/step2_4.do">출입증 신청</a></li>

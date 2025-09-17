@@ -94,10 +94,10 @@
                             <ul class="list1">
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step01.do','${info.seq}')">기본정보</a></li>
                                 <li>
-                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시 신청 정보</a>
+                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
@@ -210,11 +210,6 @@
                                                 <option <c:if test="${domain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
                                                 <option <c:if test="${domain eq 'gmail.com'}">selected</c:if> >gmail.com</option>
                                             </select>
-                                            <div class="check mktCheck">
-                                                <p>E-mail 마케팅정보 수신동의</p>
-                                                <label><input type="radio" name="emailMarketingYn" value="Y" <c:if test="${info.emailMarketingYn eq 'Y'}">checked</c:if>>수신동의</label>
-                                                <label><input type="radio" name="emailMarketingYn" value="N" <c:if test="${info.emailMarketingYn eq 'N'}">checked</c:if>>동의 안함</label>
-                                            </div>
                                         </div>
                                     </li>
                                 </ul>

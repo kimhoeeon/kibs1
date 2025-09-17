@@ -480,44 +480,44 @@ public class KibsMngController {
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/mng/exhibitor/participant/company/detail.do", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/mng/exhibitor/participant/company/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_company_detail(String seq) {
         System.out.println("KibsMngController > mng_exhibitor_company");
         //System.out.println(seq);
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
-        if(seq != null && !"".equals(seq)){
-            /* 전시업체정보 */
+        if(seq != null && !seq.isEmpty()){
+            *//* 전시업체정보 *//*
             ExhibitorDTO requestDto = new ExhibitorDTO();
             requestDto.setSeq(seq);
             ExhibitorDTO info = kibsMngService.processSelectExhibitorSingle(requestDto);
             mv.addObject("info", info);
 
-            /* 담당자정보*/
+            *//* 담당자정보*//*
             ChargePersonDTO chargeReq = new ChargePersonDTO();
             chargeReq.setId(seq);
             List<ChargePersonDTO> chargeList = kibsMngService.processSelectChargeList(chargeReq);
             mv.addObject("chargeList", chargeList);
 
-            /* 전시정보 */
+            *//* 전시정보 *//*
             DisplayDTO displayReq = new DisplayDTO();
             displayReq.setId(seq);
             List<DisplayDTO> displayList = kibsMngService.processSelectDisplayList(displayReq);
             mv.addObject("displayList", displayList);
 
-            /* 온라인정보 */
+            *//* 온라인정보 *//*
             OnlineDTO onlineReq = new OnlineDTO();
             onlineReq.setId(seq);
             List<OnlineDTO> onlineList = kibsMngService.processSelectOnlineList(onlineReq);
             mv.addObject("onlineList", onlineList);
 
-            /* 바이어정보 */
+            *//* 바이어정보 *//*
             BuyerDTO buyerReq = new BuyerDTO();
             buyerReq.setId(seq);
             List<BuyerDTO> buyerList = kibsMngService.processSelectBuyerList(buyerReq);
             mv.addObject("buyerList", buyerList);
 
-            /* 파일정보 */
+            *//* 파일정보 *//*
             FileDTO fileReq = new FileDTO();
             fileReq.setUserId(seq);
             List<FileDTO> fileList = kibsMngService.processSelectFileList(fileReq);
@@ -548,7 +548,7 @@ public class KibsMngController {
         }
         mv.setViewName("/mng/exhibitor/participant/company/detail");
         return mv;
-    }
+    }*/
 
     @RequestMapping(value = "/mng/exhibitorNew/participant/company/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_company_detail(String seq) {
@@ -561,7 +561,6 @@ public class KibsMngController {
             ExhibitorNewDTO requestDto = new ExhibitorNewDTO();
             requestDto.setSeq(seq);
             ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewSingle(requestDto);
-            mv.addObject("info", info);
 
             if(info != null){
                 mv.addObject("info", info);
@@ -4236,7 +4235,7 @@ public class KibsMngController {
                     "회사소개영상", "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)",
                     "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
                     /* 참가분야 */
-                    "보트&요트 (Boat & Yacht)", "무동력보트 (Paddling Boat)", "워크보트 (Work Boat)", "부품&장비 (Marine Equipment)",
+                    "보트&요트 (Boat & Yacht)", "무동력보트 (Paddling Boat)", "워크보트 (Work Boat)", "해양부품&장비 (Marine Equipment)",
                     "안전&마리나 (Safety & Marina)", "해양관광 (Marine Tourism)", "해양레저 (Marine Leisure)",
                     "수중레저 (Water Sports)", "서핑 (Surfing)",
                     "카라반&캠핑 (Caravan&Camping)",
@@ -5454,10 +5453,10 @@ public class KibsMngController {
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(fieldPart.contains("워크보트") ? "O" : "");
 
-                //부품&장비
+                //해양부품&장비
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(fieldPart.contains("부품&장비") ? "O" : "");
+                cell.setCellValue(fieldPart.contains("해양부품&장비") ? "O" : "");
 
                 //안전&마리나
                 cell = row.createCell(cellCnt++);

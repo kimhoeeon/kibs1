@@ -3607,6 +3607,8 @@ public class KibsMngServiceImpl implements KibsMngService {
             invoiceBoothDTO.setBoothPrcSum(exhibitorNewBoothInfo.getBoothPrcSum());
             invoiceBoothDTO.setDiscountEarly1(exhibitorNewBoothInfo.getDiscountEarly1());
             invoiceBoothDTO.setDiscountEarly2(exhibitorNewBoothInfo.getDiscountEarly2());
+            invoiceBoothDTO.setDiscountFirstUnder10(exhibitorNewBoothInfo.getDiscountFirstUnder10());
+            invoiceBoothDTO.setDiscountFirstOver10(exhibitorNewBoothInfo.getDiscountFirstOver10());
             invoiceBoothDTO.setDiscountFirst(exhibitorNewBoothInfo.getDiscountFirst());
             invoiceBoothDTO.setDiscountRe(exhibitorNewBoothInfo.getDiscountRe());
             invoiceBoothDTO.setDiscountScale1(exhibitorNewBoothInfo.getDiscountScale1());

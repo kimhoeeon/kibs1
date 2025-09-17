@@ -2380,7 +2380,7 @@ if (document.documentElement) {
                                                                 </td>
                                                                 <td>
                                                                     <div class="cost booth_cost">
-                                                                        <span class="fw-semibold d-block fs-7">￦ 70,000/1kw</span>
+                                                                        <span class="fw-semibold d-block fs-7">￦ 80,000/1kw</span>
                                                                     </div>
                                                                 </td>
                                                                 <td>
@@ -2409,7 +2409,7 @@ if (document.documentElement) {
                                                                 </td>
                                                                 <td>
                                                                     <div class="cost booth_cost">
-                                                                        <span class="fw-semibold d-block fs-7">￦ 80,000/1kw</span>
+                                                                        <span class="fw-semibold d-block fs-7">￦ 100,000/1kw</span>
                                                                     </div>
                                                                 </td>
                                                                 <td>
@@ -2438,7 +2438,7 @@ if (document.documentElement) {
                                                                 </td>
                                                                 <td>
                                                                     <div class="cost booth_cost">
-                                                                        <span class="fw-semibold d-block fs-7">￦ 180,000</span>
+                                                                        <span class="fw-semibold d-block fs-7">￦ 200,000</span>
                                                                     </div>
                                                                 </td>
                                                                 <td>
@@ -2467,7 +2467,7 @@ if (document.documentElement) {
                                                                 </td>
                                                                 <td>
                                                                     <div class="cost booth_cost">
-                                                                        <span class="fw-semibold d-block fs-7">￦ 180,000</span>
+                                                                        <span class="fw-semibold d-block fs-7">￦ 200,000</span>
                                                                     </div>
                                                                 </td>
                                                                 <td>
@@ -2496,7 +2496,7 @@ if (document.documentElement) {
                                                                 </td>
                                                                 <td>
                                                                     <div class="cost booth_cost">
-                                                                        <span class="fw-semibold d-block fs-7">￦ 160,000</span>
+                                                                        <span class="fw-semibold d-block fs-7">￦ 200,000</span>
                                                                     </div>
                                                                 </td>
                                                                 <td>

@@ -74,6 +74,9 @@
     .swiper_award_hist_prev:after, .swiper_award_hist_next:after {font-size: 20px;}
     .award_hist_box .list {width:calc(100% - 270px);}
 
+    .form_s .form_box li select.w30 {
+    width: 100%;
+    }
 }
 
 
@@ -2374,4 +2377,7 @@
 
     .swiper_award_hist_prev, .swiper_award_hist_next {width: 25px; height: 25px;}
     .swiper_award_hist_prev:after, .swiper_award_hist_next:after {font-size: 15px;}
+
+    .form_s .form_tit.flex{flex-direction: column; align-items: start;}
+    .form_s .form_tit.flex .assist{margin-left: 0;margin-bottom: 0;margin-top: 10px;}
 }

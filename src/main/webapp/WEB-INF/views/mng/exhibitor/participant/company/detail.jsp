@@ -249,6 +249,7 @@
                                     </div>
                                     <div class="input">
                                         <input type="text" id="companyHomepage" name="companyHomepage" value="${info.companyHomepage}" placeholder="https://">
+                                        <label><input type="checkbox" name="noPage" <c:if test="${empty info.companyHomepage}">checked</c:if> >홈페이지 없음</label>
                                     </div>
                                 </li>
                                 <li class="w50">
@@ -259,36 +260,46 @@
                                         <input type="tel" id="companyFax" name="companyFax" value="${info.companyFax}" class="onlyNumh" maxlength="25" placeholder="숫자만 입력해 주세요.">
                                     </div>
                                 </li>
-                                <li class="w50">
+                                <li>
                                     <div class="item req">
                                         <p>산업 분류</p>
                                     </div>
                                     <div class="input">
                                         <select name="industryPart" id="industryPart">
-                                            <option value="" selected>선택</option>
-                                            <option value="요트/보트 제조" <c:if test="${info.industryPart eq '요트/보트 제조'}">selected</c:if> >요트/보트 제조</option>
-                                            <option value="요트/보트 유통(수입 판매)" <c:if test="${info.industryPart eq '요트/보트 유통(수입 판매)'}">selected</c:if> >요트/보트 유통(수입 판매)</option>
-                                            <option value="해양 부품(엔진 및 구성품) 제조" <c:if test="${info.industryPart eq '해양 부품(엔진 및 구성품) 제조'}">selected</c:if> >해양 부품(엔진 및 구성품) 제조</option>
-                                            <option value="해양 부품(엔진 및 구성품) 판매" <c:if test="${info.industryPart eq '해양 부품(엔진 및 구성품) 판매'}">selected</c:if> >해양 부품(엔진 및 구성품) 판매</option>
-                                            <option value="해양 관련 기자재 제조 및 판매" <c:if test="${info.industryPart eq '해양 관련 기자재 제조 및 판매'}">selected</c:if> >해양 관련 기자재 제조 및 판매</option>
-                                            <option value="수상레저 용품 제조 및 판매" <c:if test="${info.industryPart eq '수상레저 용품 제조 및 판매'}">selected</c:if> >수상레저 용품 제조 및 판매</option>
-                                            <option value="수중레저 용품 제조 및 판매" <c:if test="${info.industryPart eq '수중레저 용품 제조 및 판매'}">selected</c:if> >수중레저 용품 제조 및 판매</option>
-                                            <option value="아웃도어 용품 제조 및 판매" <c:if test="${info.industryPart eq '아웃도어 용품 제조 및 판매'}">selected</c:if> >아웃도어 용품 제조 및 판매</option>
-                                            <option value="마리나산업" <c:if test="${info.industryPart eq '마리나산업'}">selected</c:if> >마리나산업</option>
-                                            <option value="해양관광산업" <c:if test="${info.industryPart eq '해양관광산업'}">selected</c:if> >해양관광산업</option>
-                                            <option value="교육/면허" <c:if test="${info.industryPart eq '교육/면허'}">selected</c:if> >교육/면허</option>
-                                            <option value="수리" <c:if test="${info.industryPart eq '수리'}">selected</c:if> >수리</option>
-                                            <option value="기타" <c:if test="${info.industryPart eq '기타'}">selected</c:if> >기타</option>
+                                            <option value="" <c:if test="${empty info.industryPart}">selected</c:if>>선택</option>
+
+                                            <optgroup label="---- 경기국제보트쇼 ----">
+                                                <option value="요트/보트 제조" <c:if test="${info.industryPart eq '요트/보트 제조'}">selected</c:if>>요트/보트 제조</option>
+                                                <option value="요트/보트 유통(수입 판매)" <c:if test="${info.industryPart eq '요트/보트 유통(수입 판매)'}">selected</c:if>>요트/보트 유통(수입 판매)</option>
+                                                <option value="해양 부품(엔진 및 구성품) 제조" <c:if test="${info.industryPart eq '해양 부품(엔진 및 구성품) 제조'}">selected</c:if>>해양 부품(엔진 및 구성품) 제조</option>
+                                                <option value="해양 부품(엔진 및 구성품) 판매" <c:if test="${info.industryPart eq '해양 부품(엔진 및 구성품) 판매'}">selected</c:if>>해양 부품(엔진 및 구성품) 판매</option>
+                                                <option value="해양 관련 기자재 제조 및 판매" <c:if test="${info.industryPart eq '해양 관련 기자재 제조 및 판매'}">selected</c:if>>해양 관련 기자재 제조 및 판매</option>
+                                                <option value="수상레저 용품 제조 및 판매" <c:if test="${info.industryPart eq '수상레저 용품 제조 및 판매'}">selected</c:if>>수상레저 용품 제조 및 판매</option>
+                                                <option value="수중레저 용품 제조 및 판매" <c:if test="${info.industryPart eq '수중레저 용품 제조 및 판매'}">selected</c:if>>수중레저 용품 제조 및 판매</option>
+                                                <option value="아웃도어 용품 제조 및 판매" <c:if test="${info.industryPart eq '아웃도어 용품 제조 및 판매'}">selected</c:if>>아웃도어 용품 제조 및 판매</option>
+                                                <option value="마리나 산업" <c:if test="${info.industryPart eq '마리나 산업'}">selected</c:if>>마리나 산업</option>
+                                                <option value="교육/면허" <c:if test="${info.industryPart eq '교육/면허'}">selected</c:if>>교육/면허</option>
+                                                <option value="수리" <c:if test="${info.industryPart eq '수리'}">selected</c:if>>수리</option>
+                                                <option value="기타(경기국제보트쇼)" <c:if test="${info.industryPart eq '기타(경기국제보트쇼)'}">selected</c:if>>기타</option>
+                                            </optgroup>
+
+                                            <optgroup label="---- 코리아서프쇼 ----">
+                                                <option value="서핑장비" <c:if test="${info.industryPart eq '서핑장비'}">selected</c:if>>서핑장비</option>
+                                                <option value="의류&패션" <c:if test="${info.industryPart eq '의류&패션'}">selected</c:if>>의류&패션</option>
+                                                <option value="체험&교육프로그램" <c:if test="${info.industryPart eq '체험&교육프로그램'}">selected</c:if>>체험&교육프로그램</option>
+                                                <option value="라이프스타일" <c:if test="${info.industryPart eq '라이프스타일'}">selected</c:if>>라이프스타일</option>
+                                                <option value="기타(코리아서프쇼)" <c:if test="${info.industryPart eq '기타(코리아서프쇼)'}">selected</c:if>>기타</option>
+                                            </optgroup>
+
+                                            <optgroup label="---- 코리아마린트레블쇼 ----">
+                                                <option value="해양레저 관광상품" <c:if test="${info.industryPart eq '해양레저 관광상품'}">selected</c:if>>해양레저 관광상품</option>
+                                                <option value="지역관광콘텐츠" <c:if test="${info.industryPart eq '지역관광콘텐츠'}">selected</c:if>>지역관광콘텐츠</option>
+                                                <option value="치유&생태관광" <c:if test="${info.industryPart eq '치유&생태관광'}">selected</c:if>>치유&생태관광</option>
+                                                <option value="체험 콘텐츠" <c:if test="${info.industryPart eq '체험 콘텐츠'}">selected</c:if>>체험 콘텐츠</option>
+                                                <option value="기타(코리아마린트레블쇼)" <c:if test="${info.industryPart eq '기타(코리아마린트레블쇼)'}">selected</c:if>>기타</option>
+                                            </optgroup>
                                         </select>
-                                        <input type="text" id="industryPartEtc" name="industryPartEtc" value="${info.industryPartEtc}" placeholder="직접 입력" disabled>
-                                    </div>
-                                </li>
-                                <li class="w50">
-                                    <div class="item req">
-                                        <p>임직원 수</p>
-                                    </div>
-                                    <div class="input">
-                                        <input type="text" id="employeeCnt" name="employeeCnt" value="${info.employeeCnt}" class="onlyNum" maxlength="5" placeholder="숫자만 입력해 주세요.">
+                                        <input type="text" id="industryPartEtc" name="industryPartEtc" class="w50" value="${info.industryPartEtc}" placeholder="직접 입력" disabled>
                                     </div>
                                 </li>
                                 <li>
@@ -453,11 +464,6 @@
                                             <option value="hanmail.net" <c:if test="${domain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
                                             <option value="gmail.com" <c:if test="${domain eq 'gmail.com'}">selected</c:if> >gmail.com</option>
                                         </select>
-                                        <div class="check mktCheck">
-                                            <p>E-mail 마케팅정보 수신동의</p>
-                                            <label><input type="radio" name="emailMarketingYn" value="Y" <c:if test="${info.emailMarketingYn eq 'Y' or empty info}">checked</c:if>>수신동의</label>
-                                            <label><input type="radio" name="emailMarketingYn" value="N" <c:if test="${info.emailMarketingYn eq 'N'}">checked</c:if>>동의 안함</label>
-                                        </div>
                                     </div>
                                 </li>
                             </ul>
@@ -604,6 +610,46 @@
                         </div>
                         <!-- 담당자 정보 -->
 
+                        <!-- 참가분야 -->
+                        <div class="form_wrap" id="eventParticipationModule"
+                             data-event="${info.fieldParticipatory}"
+                             data-field1="${info.fieldParticipatory1}"
+                             data-field2="${info.fieldParticipatory2}"
+                             data-field3="${info.fieldParticipatory3}">
+                            <div class="form_tit">
+                                <div class="big">참가행사 및 분야</div>
+                                <%--<div class="small">최대 3개 선택 가능합니다.</div>--%>
+                            </div>
+                            <ul class="form_box">
+                                <li>
+                                    <div class="item req">
+                                        <p>참가행사</p>
+                                    </div>
+                                    <div class="input check">
+                                        <label><input type="radio" name="fieldParticipatory" value="boatShow">경기국제보트쇼</label>
+                                        <label><input type="radio" name="fieldParticipatory" value="surfShow">코리아서프쇼</label>
+                                        <label><input type="radio" name="fieldParticipatory" value="travelShow">코리아마린트레블쇼</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item req">
+                                        <p>참가분야</p>
+                                    </div>
+                                    <div class="input" id="participationFields">
+                                        <select class="w30" id="field1" name="fieldParticipatory1">
+                                            <option selected disabled hidden>1순위</option>
+                                        </select>
+                                        <select class="w30" id="field2" name="fieldParticipatory2">
+                                            <option selected disabled hidden>2순위</option>
+                                        </select>
+                                        <select class="w30" id="field3" name="fieldParticipatory3">
+                                            <option selected disabled hidden>3순위</option>
+                                        </select>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
                         <!-- 상세정보 -->
                         <div class="form_wrap">
                             <div class="form_tit">
@@ -676,64 +722,6 @@
                             </ul>
 
                         </div>
-
-                        <!-- 참가분야 -->
-                        <div class="form_wrap">
-                            <div class="form_tit">
-                                <div class="big">참가분야</div>
-                                <div class="small">최대 3개 선택 가능합니다.</div>
-                            </div>
-                            <ul class="form_box">
-                                <li>
-                                    <div class="item req">
-                                        <p>참가분야</p>
-                                    </div>
-                                    <div class="input check">
-                                        <label>
-                                            <input type="checkbox" name="fieldPart" value="보트&요트" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '보트&요트')}">checked</c:if>/>
-                                            보트&요트 (Boat & Yacht)
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" name="fieldPart" value="무동력보트" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '무동력보트')}">checked</c:if>/>
-                                            무동력보트 (Paddling Boat)
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" name="fieldPart" value="워크보트" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '워크보트')}">checked</c:if>/>
-                                            워크보트 (Work Boat)
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" name="fieldPart" value="부품&장비" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '부품&장비')}">checked</c:if>/>
-                                            부품&장비 (Marine Equipment)
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" name="fieldPart" value="안전&마리나" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '안전&마리나')}">checked</c:if>/>
-                                            안전&마리나 (Safety & Marina)
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" name="fieldPart" value="해양관광" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '해양관광')}">checked</c:if>/>
-                                            해양관광 (Marine Tourism)
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" name="fieldPart" value="해양레저" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '해양레저')}">checked</c:if>/>
-                                            해양레저 (Marine Leisure)
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" name="fieldPart" value="수중레저" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '수중레저')}">checked</c:if>/>
-                                            수중레저 (Water Sports)
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" name="fieldPart" value="서핑" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '서핑')}">checked</c:if>/>
-                                            서핑 (Surfing)
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" name="fieldPart" value="카라반&캠핑" onclick="check_count(this);" <c:if test="${fn:contains(info.fieldPart, '카라반&캠핑')}">checked</c:if>/>
-                                            카라반&캠핑 (Caravan&Camping)
-                                        </label>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- 참가분야 -->
 
                         <!-- 온라인 전시관 정보 -->
                         <script src="/js/online.js"></script>
@@ -1272,6 +1260,116 @@
         </c:if>
     </c:if>
 
+    <script>
+        (function($) {
+            $(document).ready(function () {
+                const $module = $('#eventParticipationModule');
+                const $field1 = $module.find('#field1');
+                const $field2 = $module.find('#field2');
+                const $field3 = $module.find('#field3');
+
+                const optionsData = {
+                    boatShow: ['보트&요트', '무동력보트', '워크보트', '해양부품&장비', '안전&마리나', '해양관광', '해양레저', '서핑', '수중레저'],
+                    surfShow: ['서핑장비', '의류&패션', '체험&교육프로그램', '라이프스타일'],
+                    travelShow: ['해양레저 관광상품', '지역관광콘텐츠', '치유&생태관광', '체험콘텐츠']
+                };
+
+                /**
+                 * 사용자가 직접 form을 변경했을 때 호출되는 함수
+                 */
+                function updateFormState() {
+                    const selectedEvent = $module.find('input[name="fieldParticipatory"]:checked').val();
+                    const fullOptions = optionsData[selectedEvent] || [];
+
+                    const val1 = $field1.val();
+                    const val2 = $field2.val();
+                    const val3 = $field3.val();
+
+                    $field1.empty().append('<option selected disabled hidden>1순위</option>');
+                    fullOptions.forEach(option => {
+                        $field1.append($('<option></option>').val(option).text(option));
+                    });
+                    if (val1 && fullOptions.includes(val1)) {
+                        $field1.val(val1);
+                    }
+
+                    const currentVal1 = $field1.val();
+                    $field2.empty().append('<option selected disabled hidden>2순위</option>');
+                    if (currentVal1) {
+                        const optionsForField2 = fullOptions.filter(opt => opt !== currentVal1);
+                        optionsForField2.forEach(option => {
+                            $field2.append($('<option></option>').val(option).text(option));
+                        });
+                        if (val2 && optionsForField2.includes(val2)) {
+                            $field2.val(val2);
+                        }
+                    }
+
+                    const currentVal2 = $field2.val();
+                    $field3.empty().append('<option selected disabled hidden>3순위</option>');
+                    if (currentVal1 && currentVal2) {
+                        const optionsForField3 = fullOptions.filter(opt => opt !== currentVal1 && opt !== currentVal2);
+                        optionsForField3.forEach(option => {
+                            $field3.append($('<option></option>').val(option).text(option));
+                        });
+                        if (val3 && optionsForField3.includes(val3)) {
+                            $field3.val(val3);
+                        }
+                    }
+                }
+
+                /**
+                 * 페이지 로딩 시 DB 값을 form에 적용하는 독립적인 함수
+                 */
+                function applyDbValues() {
+                    const savedEvent = ($module.data('event') || '').toString().trim();
+                    const savedField1 = ($module.data('field1') || '').toString().trim();
+                    const savedField2 = ($module.data('field2') || '').toString().trim();
+                    const savedField3 = ($module.data('field3') || '').toString().trim();
+
+                    if (savedEvent) {
+                        // 1. 라디오 버튼 설정
+                        $module.find(`input[name="fieldParticipatory"][value="` + savedEvent + `"]`).prop('checked', true);
+                        const fullOptions = optionsData[savedEvent] || [];
+
+                        // 2. 1순위 옵션 채우고 값 설정
+                        $field1.empty().append('<option selected disabled hidden>1순위</option>');
+                        fullOptions.forEach(option => $field1.append($('<option>').val(option).text(option)));
+                        $field1.val(savedField1);
+
+                        // 3. 2순위 옵션 채우고 값 설정
+                        $field2.empty().append('<option selected disabled hidden>2순위</option>');
+                        const currentVal1 = $field1.val();
+                        if (currentVal1) {
+                            const optionsForField2 = fullOptions.filter(opt => opt !== currentVal1);
+                            optionsForField2.forEach(option => $field2.append($('<option>').val(option).text(option)));
+                            $field2.val(savedField2);
+                        }
+
+                        // 4. 3순위 옵션 채우고 값 설정
+                        $field3.empty().append('<option selected disabled hidden>3순위</option>');
+                        const currentVal2 = $field2.val();
+                        if (currentVal1 && currentVal2) {
+                            const optionsForField3 = fullOptions.filter(opt => opt !== currentVal1 && opt !== currentVal2);
+                            optionsForField3.forEach(option => $field3.append($('<option>').val(option).text(option)));
+                            $field3.val(savedField3);
+                        }
+
+                    } else {
+                        // DB 값이 없을 경우 (신규 등록): 기본값 설정 후 화면 업데이트
+                        $module.find('input[name="fieldParticipatory"][value="boatShow"]').prop('checked', true);
+                        updateFormState(); // 이 경우에만 updateFormState를 호출하여 초기화
+                    }
+                }
+
+                // --- 이벤트 핸들러 연결 ---
+                $module.find('input[name="fieldParticipatory"], #participationFields select').on('change', updateFormState);
+
+                // --- 페이지 로드 시 실행 ---
+                applyDbValues();
+            });
+        })(jQuery);
+    </script>
 </body>
 <!--end::Body-->
 </html>

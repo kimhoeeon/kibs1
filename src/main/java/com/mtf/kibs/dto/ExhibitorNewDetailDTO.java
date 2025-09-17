@@ -120,6 +120,8 @@ public class ExhibitorNewDetailDTO {
     private Integer onlineBoothCnt; //온라인부스 신청수량
     private Boolean discountEarly1; //1차조기신청
     private Boolean discountEarly2; //2차조기신청
+    private Boolean discountFirstUnder10; //첫참가할인(10부스미만)
+    private Boolean discountFirstOver10; //첫참가할인(10부스이상)
     private Boolean discountFirst; //첫참가할인
     private Boolean discountRe; //재참가할인
     private Boolean discountScale1; //규모할인1(10부스이상)

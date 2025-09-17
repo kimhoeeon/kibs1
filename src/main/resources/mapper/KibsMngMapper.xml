@@ -3439,6 +3439,8 @@
              , en.online_booth_fee
              , en.discount_early_1
              , en.discount_early_2
+             , en.discount_first_under_10
+             , en.discount_first_over_10
              , en.discount_first
              , en.discount_re
              , en.discount_scale_1
@@ -3491,8 +3493,11 @@
             <if test='discountYn eq "discountEarly2"'>
                 AND en.discount_early_2 <![CDATA[>]]> 0
             </if>
-            <if test='discountYn eq "discountFirst"'>
-                AND en.discount_first <![CDATA[>]]> 0
+            <if test='discountYn eq "discountFirstUnder10"'>
+                AND en.discount_first_under_10 <![CDATA[>]]> 0
+            </if>
+            <if test='discountYn eq "discountFirstOver10"'>
+                AND en.discount_first_over_10 <![CDATA[>]]> 0
             </if>
             <if test='discountYn eq "discountRe"'>
                 AND en.discount_re <![CDATA[>]]> 0
@@ -3965,35 +3970,39 @@
     <update id="updateExhibitorNewBooth" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorNewBooth */
         UPDATE exhibitor_new
-        SET booth_type = #{boothType}
-          , discount_type = #{discountType}
-          , registration_cnt = #{registrationCnt}
-          , registration_fee = #{registrationFee}
-          , stand_alone_booth_cnt = #{standAloneBoothCnt}
-          , stand_alone_booth_fee = #{standAloneBoothFee}
-          , assembly_booth_cnt = #{assemblyBoothCnt}
-          , assembly_booth_fee = #{assemblyBoothFee}
-          , online_booth_cnt = #{onlineBoothCnt}
-          , online_booth_fee = #{onlineBoothFee}
-          , discount_early_1 = #{discountEarly1}
-          , discount_early_2 = #{discountEarly2}
-          , discount_first = #{discountFirst}
-          , discount_re = #{discountRe}
-          , discount_scale_1 = #{discountScale1}
-          , discount_scale_2 = #{discountScale2}
-          , discount_scale_3 = #{discountScale3}
-          , discount_scale_4 = #{discountScale4}
-          , discount_scale_5 = #{discountScale5}
-          , discount_scale_6 = #{discountScale6}
-          , discount_leisure = #{discountLeisure}
-          , booth_prc_sum = #{boothPrcSum}
-          , discount_prc_sum = #{discountPrcSum}
-          , discount_yn = #{discountYn}
-          , prc_sum = (#{boothPrcSum} - #{discountPrcSum})
-          , prc_vat = (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
-          , prc_total = ((#{boothPrcSum} - #{discountPrcSum})) + (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
-          , balance = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) + (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
-          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        SET booth_type              = #{boothType}
+          , discount_type           = #{discountType}
+          , registration_cnt        = #{registrationCnt}
+          , registration_fee        = #{registrationFee}
+          , stand_alone_booth_cnt   = #{standAloneBoothCnt}
+          , stand_alone_booth_fee   = #{standAloneBoothFee}
+          , assembly_booth_cnt      = #{assemblyBoothCnt}
+          , assembly_booth_fee      = #{assemblyBoothFee}
+          , online_booth_cnt        = #{onlineBoothCnt}
+          , online_booth_fee        = #{onlineBoothFee}
+          , discount_early_1        = #{discountEarly1}
+          , discount_early_2        = #{discountEarly2}
+          , discount_first_under_10 = #{discountFirstUnder10}
+          , discount_first_over_10  = #{discountFirstOver10}
+          , discount_first          = #{discountFirst}
+          , discount_re             = #{discountRe}
+          , discount_scale_1        = #{discountScale1}
+          , discount_scale_2        = #{discountScale2}
+          , discount_scale_3        = #{discountScale3}
+          , discount_scale_4        = #{discountScale4}
+          , discount_scale_5        = #{discountScale5}
+          , discount_scale_6        = #{discountScale6}
+          , discount_leisure        = #{discountLeisure}
+          , booth_prc_sum           = #{boothPrcSum}
+          , discount_prc_sum        = #{discountPrcSum}
+          , discount_yn             = #{discountYn}
+          , prc_sum                 = (#{boothPrcSum} - #{discountPrcSum})
+          , prc_vat                 = (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
+          , prc_total               = ((#{boothPrcSum} - #{discountPrcSum})) +
+                                      (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
+          , balance                 = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) +
+                                       (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
+          , final_regi_dttm         = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
