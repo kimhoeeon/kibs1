@@ -1293,15 +1293,20 @@ function step_01_check(exhibitorSeq){
     }
 
     // 홈페이지
-    let no_companyHomepage = $('input[type=checkbox][name=noPage]').is(':checked');
-    let companyHomepage = '';
-    if(no_companyHomepage === false){
-        companyHomepage = $('#companyHomepage').val();
-        if(nvl(companyHomepage,'') !== ''){
+    let companyHomepage = $('#companyHomepage').val();
+    if(nvl(companyHomepage,'') !== ''){
+        let no_companyHomepage = $('input[type=checkbox][name=noPage]').is(':checked');
+        if(no_companyHomepage === false){
             if(!checkUrl(companyHomepage)){
                 showMessage('#companyHomepage', 'error', '[ 참가업체 정보 ]', '홈페이지 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
                 return false;
             }
+        }
+    }else{
+        let no_companyHomepage = $('input[type=checkbox][name=noPage]').is(':checked');
+        if(no_companyHomepage === false){
+            showMessage('#companyHomepage', 'error', '[ 참가업체 정보 ]', '홈페이지가 없다면 \"홈페이지 없음\" 에 체크해 주세요.', '');
+            return false;
         }
     }
 
@@ -4214,15 +4219,20 @@ function my_step_01_check(exhibitorSeq){
     }
 
     // 홈페이지
-    let no_companyHomepage = $('input[type=checkbox][name=noPage]').is(':checked');
-    let companyHomepage = '';
-    if(no_companyHomepage === false) {
-        companyHomepage = $('#companyHomepage').val();
-        if (nvl(companyHomepage, '') !== '') {
-            if (!checkUrl(companyHomepage)) {
+    let companyHomepage = $('#companyHomepage').val();
+    if(nvl(companyHomepage,'') !== ''){
+        let no_companyHomepage = $('input[type=checkbox][name=noPage]').is(':checked');
+        if(no_companyHomepage === false){
+            if(!checkUrl(companyHomepage)){
                 showMessage('#companyHomepage', 'error', '[ 참가업체 정보 ]', '홈페이지 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
                 return false;
             }
+        }
+    }else{
+        let no_companyHomepage = $('input[type=checkbox][name=noPage]').is(':checked');
+        if(no_companyHomepage === false){
+            showMessage('#companyHomepage', 'error', '[ 참가업체 정보 ]', '홈페이지가 없다면 \"홈페이지 없음\" 에 체크해 주세요.', '');
+            return false;
         }
     }
 
@@ -4864,7 +4874,7 @@ function my_step_01_check(exhibitorSeq){
 
                             if(online_res.resultCode === "0"){
                                 if(!link.includes('/mng/')) {
-                                    f_page_move('/mypage/step2_9.do', exhibitorSeq);
+                                    f_page_move('/mypage/step2_1.do', exhibitorSeq);
                                 }else{
                                     window.location.reload();
                                 }
@@ -4876,7 +4886,7 @@ function my_step_01_check(exhibitorSeq){
         }else{
             /*returnPath = "/apply/step2_1.do";
             return returnPath;*/
-            window.location.href = '/mypage/step2_9.do';
+            window.location.href = '/mypage/step2_1.do';
         }
     }else{
         showMessage('', 'error', '[ 참가업체 정보 ]', '기본 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');

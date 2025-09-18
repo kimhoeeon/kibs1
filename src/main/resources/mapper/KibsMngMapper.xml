@@ -1977,7 +1977,6 @@
              , company_fax
              , industry_part
              , industry_part_etc
-             , employee_cnt
              , pre_part_year
              , member_company_yn
              , name
@@ -1986,7 +1985,6 @@
              , tel
              , phone
              , email
-             , email_marketing_yn
              , company_intro_video
              , company_intro_ko
              , company_intro_en
@@ -1995,7 +1993,10 @@
              , new_item_intro_ko
              , new_item_intro_en
              , promotion_plan
-             , field_part
+             , field_participatory
+             , field_participatory_1
+             , field_participatory_2
+             , field_participatory_3
              , export_meeting_yn
              , part_want_yn
              , company_online_view_yn
@@ -5459,7 +5460,6 @@
              , e.company_fax
              , e.industry_part
              , e.industry_part_etc
-             , e.employee_cnt
              , e.company_intro_video
              , e.company_intro_ko
              , e.company_intro_en

@@ -2980,7 +2980,12 @@ if (document.documentElement) {
             $('#onlineBoothCnt').on('change', calculateTotal);
 
             // 기타 할인 체크박스 변경 시 계산
-            $('input[name="discount"]').not(participationDiscounts).not('.single-choice-discount input').not('#discountLeisure').on('change', calculateTotal);
+            $('input[name="discount"]')
+                .not(participationDiscounts)
+                .not('.single-choice-discount input')
+                .not('#discountLeisure')
+                .not('#discountEarly1, #discountEarly2')
+                .on('change', calculateTotal);
 
             // 페이지 로드 시 초기 계산 및 할인 상태 설정
             handleDiscountEarly1();
