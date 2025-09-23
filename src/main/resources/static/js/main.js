@@ -2551,7 +2551,7 @@ function step_2_9_check(exhibitorSeq){
     Swal.fire({
         icon: 'info',
         title: '[ 전시품 정보 ]',
-        html: '<span style="font-size: 1.2em;">\'지금 계속하기\' 클릭 시 작성 내용이 저장됩니다.<br><br>\'나중에 하기\' 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
+        html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
@@ -2841,7 +2841,7 @@ function step_2_2_check(exhibitorSeq){
     Swal.fire({
         icon: 'info',
         title: '[ 상호간판 신청 ]',
-        html: '<span style="font-size: 1.2em;">\'지금 계속하기\' 클릭 시 작성 내용이 저장됩니다.<br><br>\'나중에 하기\' 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
+        html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
@@ -2916,7 +2916,7 @@ function step_2_3_check(exhibitorSeq){
     Swal.fire({
         icon: 'info',
         title: '[ 유틸리티 신청 ]',
-        html: '<span style="font-size: 1.2em;">\'지금 계속하기\' 클릭 시 작성 내용이 저장됩니다.<br><br>\'나중에 하기\' 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
+        html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
@@ -3038,7 +3038,7 @@ function step_2_4_check(exhibitorSeq){
     Swal.fire({
         icon: 'info',
         title: '[ 출입증 정보 ]',
-        html: '<span style="font-size: 1.2em;">\'지금 계속하기\' 클릭 시 작성 내용이 저장됩니다.<br><br>\'나중에 하기\' 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
+        html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
@@ -3184,7 +3184,7 @@ function step_2_5_check(exhibitorSeq){
     Swal.fire({
         icon: 'info',
         title: '[ 경품제공 신청 ]',
-        html: '<span style="font-size: 1.2em;">\'지금 계속하기\' 클릭 시 작성 내용이 저장됩니다.<br><br>\'나중에 하기\' 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
+        html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
