@@ -297,7 +297,7 @@
                         <div class="form_wrap">
                             <div class="form_tit">
                                 <div class="big">할인적용 선택</div>
-                                <div class="small">* 실제 정보와 다르게 입력시 참가 취소 등 불이익을 받으실 수 있습니다.</div>
+                                <div class="small">* 참가신청 및 부스 신청 정보에 따라 자동 반영됩니다.</div>
                             </div>
                             <div class="form_disc form_ptag">
                                 <div class="form_ptag_box">
@@ -316,7 +316,7 @@
                                             </div>
                                             <div class="cate rowspan-2">조기신청 할인<%-- (종료)--%></div>
                                             <div class="note">300,000 원</div>
-                                            <div class="discount">(1차) 조기신청 할인 ( ~2025.11.14 금)</div>
+                                            <div class="discount">(1차) 조기신청 할인 (~2025.11.14 금)</div>
 
                                             <div class="select">
                                                 <label class="discount-item" id="discountItem2">
@@ -324,7 +324,7 @@
                                                 </label>
                                             </div>
                                             <div class="note">200,000 원</div>
-                                            <div class="discount">(2차) 조기신청 할인 ( ~2025.12.12 금)</div>
+                                            <div class="discount">(2차) 조기신청 할인 (~2025.12.12 금)</div>
 
                                             <div class="select">
                                                 <label class="discount-item single-choice-discount">
@@ -391,7 +391,7 @@
                                             </div>
                                             <div class="cate rowspan-2">첫참가 할인</div>
                                             <div class="note">500,000 원</div>
-                                            <div class="discount">최초 참가 업체 10부스 미만 참가</div>
+                                            <div class="discount">최초 참가업체 (10부스 미만 참가)</div>
 
                                             <div class="select">
                                                 <label class="discount-item">
@@ -399,7 +399,7 @@
                                                 </label>
                                             </div>
                                             <div class="note">300,000 원</div>
-                                            <div class="discount">최초 참가 업체 10부스 이상 참가</div>
+                                            <div class="discount">최초 참가업체 (10부스 이상 참가)</div>
 
                                             <div class="select">
                                                 <label class="discount-item">
@@ -448,79 +448,26 @@
     <script type="text/javascript">
         $(function(){
 
-            // 첫 참가할인, 재참가 할인 중복 선택 방지 및 DB 연동 로직
-            const firstTimerDiscounts = $('#discountFirstUnder10, #discountFirstOver10');
-            const reParticipantDiscount = $('#discountRe');
-            const participationDiscounts = firstTimerDiscounts.add(reParticipantDiscount);
-
-            participationDiscounts.on('change', function() {
-                const changedCheckbox = $(this);
-                const isFirstTimerCheckbox = changedCheckbox.is(firstTimerDiscounts);
-                const isReParticipantCheckbox = changedCheckbox.is(reParticipantDiscount);
-
-                // 1. DB 값에 의해 체크된 항목 해제 시도 방지
-                if (!changedCheckbox.prop('checked')) {
-                    const dbVal = changedCheckbox.data('db-val');
-                    // 첫 참가 할인 해제 시도 시
-                    if (isFirstTimerCheckbox && dbVal === 'first') {
-                        alert('첫 참가 할인은 부스 수량에 따라 자동으로 적용되며, 해제할 수 없습니다.');
-                        changedCheckbox.prop('checked', true); // 선택 상태로 되돌림
-                        return; // 함수 종료
-                    }
-                    // 재참가 할인 해제 시도 시
-                    if (isReParticipantCheckbox && dbVal !== 'first') {
-                        alert('기참가연도 선택에 따라 할인이 자동 적용되었습니다.');
-                        changedCheckbox.prop('checked', true); // 선택 상태로 되돌림
-                        return; // 함수 종료
-                    }
-                }
-
-                // 2. 상호 배제 로직: 하나를 선택하면 다른 그룹은 해제
-                if (changedCheckbox.prop('checked')) {
-                    if (isFirstTimerCheckbox) {
-                        firstTimerDiscounts.not(changedCheckbox).prop('checked', false); // 첫참가 할인 내에서 중복 방지
-                        reParticipantDiscount.prop('checked', false); // 재참가 할인 해제
-                    } else if (isReParticipantCheckbox) {
-                        firstTimerDiscounts.prop('checked', false); // 모든 첫참가 할인 해제
-                    }
-                }
-
-                calculateTotal();
+            // --- 모든 할인 체크박스의 '임의 체크/해제 시도'를 원천 차단하는 로직 ---
+            // mousedown 시점에 체크박스의 현재 상태를 저장
+            $(document).on('mousedown', 'input[name="discount"]', function() {
+                $(this).data('waschecked', this.checked);
             });
 
-            // 규모 할인(5~10번) 중 하나만 선택 가능 로직
-            $('.single-choice-discount input[type="checkbox"]').on('change', function() {
-                if ($(this).prop('checked')) {
-                    $('.single-choice-discount input[type="checkbox"]').not(this).prop('checked', false);
+            // click 시점에 상태 변경이 있었는지 확인
+            $(document).on('click', 'input[name="discount"]', function(e) {
+                // 클릭 전과 후의 상태가 달라졌다면 (체크 시도 또는 해제 시도)
+                if ($(this).data('waschecked') !== this.checked) {
+                    // 1. 상태 변경 동작을 막습니다.
+                    e.preventDefault();
+                    // 2. 통합 경고창을 띄웁니다.
+                    alert('참가신청 및 부스 신청 정보에 따라 자동 반영되므로,\n임의 체크 및 해제 불가합니다.');
                 }
-                calculateTotal();
             });
 
-            // 협회 할인 DB 연동 로직
-            $('#discountLeisure').on('change', function() {
-                // DB Lock 값이 'Y'이고, 사용자가 체크를 해제하려고 할 때
-                if ($(this).data('db-lock') === 'Y' && !$(this).prop('checked')) {
-                    alert('한국해양레저산업협회 회원사 여부 체크 시 할인 해제 불가합니다.');
-                    $(this).prop('checked', true); // 강제로 다시 체크 상태로 변경
-                } else if ($(this).data('db-lock') !== 'Y' && $(this).prop('checked')) {
-                    alert('한국해양레저산업협회 회원사가 아니므로 할인 적용이 불가합니다.');
-                    $(this).prop('checked', false); // 강제로 체크 해제
-                }
-                calculateTotal();
-            });
-
-            // 수량 입력 변경 시 계산
-            $('#standAloneBoothCnt, #assemblyBoothCnt').on('input', calculateTotal);
-            // 온라인 부스 select box 변경 시 계산
-            $('#onlineBoothCnt').on('change', calculateTotal);
-
-            // 기타 할인 체크박스 변경 시 계산
-            $('input[name="discount"]')
-                .not(participationDiscounts)
-                .not('.single-choice-discount input')
-                .not('#discountLeisure')
-                .not('#discountEarly1, #discountEarly2')
-                .on('change', calculateTotal);
+            // --- 모든 자동 계산을 시작하는 핵심 트리거 ---
+            // 부스 수량 변경 시 실시간으로 총액을 다시 계산합니다.
+            $('#standAloneBoothCnt, #assemblyBoothCnt, #onlineBoothCnt').on('input change', calculateTotal);
 
             // 페이지 로드 시 초기 계산 및 할인 상태 설정
             handleDiscountEarly1();

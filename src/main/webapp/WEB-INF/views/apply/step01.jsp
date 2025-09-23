@@ -591,8 +591,8 @@
                                                     <p>홈페이지</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" id="companyHomepage" name="companyHomepage" value="${info.companyHomepage}" placeholder="https://" disabled>
-                                                    <label><input type="checkbox" name="noPage" <c:if test="${empty info.companyHomepage}">checked</c:if> >홈페이지 없음</label>
+                                                    <input type="text" id="companyHomepage" name="companyHomepage" value="${info.companyHomepage}" placeholder="https://">
+                                                    <label><input type="checkbox" name="noPage">홈페이지 없음</label>
                                                 </div>
                                             </li>
                                             <li class="w50">
@@ -986,6 +986,7 @@
                                                     <select class="w30" id="field3" name="fieldParticipatory3">
                                                         <option selected disabled hidden>3순위</option>
                                                     </select>
+                                                    <div class="cmnt">연관성이 높은 분야 순으로 선택하여 주시기 바랍니다.(최대 3개까지 선택 가능)</div>
                                                 </div>
                                             </li>
                                         </ul>
@@ -1381,11 +1382,11 @@
                                         </div>
                                     </div>--%>
 
-                                    <!-- 온라인 전시관 정보 -->
+                                    <!-- 온라인 전시관 참가 -->
                                     <script src="/js/online.js"></script>
                                     <div class="form_wrap">
                                         <div class="form_tit">
-                                            <div class="big">온라인 전시관 정보</div>
+                                            <div class="big">온라인 전시관 참가</div>
                                             <div class="small">온라인 전시관에 추가 전시를 원하는 제품 정보를 입력해 주세요.</div>
                                         </div>
 

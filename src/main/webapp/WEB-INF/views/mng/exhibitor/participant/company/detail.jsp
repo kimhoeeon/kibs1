@@ -244,12 +244,12 @@
                                     </div>
                                 </li>
                                 <li class="w50">
-                                    <div class="item">
+                                    <div class="item req">
                                         <p>홈페이지</p>
                                     </div>
                                     <div class="input">
                                         <input type="text" id="companyHomepage" name="companyHomepage" value="${info.companyHomepage}" placeholder="https://">
-                                        <label><input type="checkbox" name="noPage" <c:if test="${empty info.companyHomepage}">checked</c:if> >홈페이지 없음</label>
+                                        <label><input type="checkbox" name="noPage">홈페이지 없음</label>
                                     </div>
                                 </li>
                                 <li class="w50">

@@ -459,8 +459,38 @@ const discount1Deadline = new Date('2025-11-14T23:59:59');
 const discount2StartDate = new Date('2025-11-15T00:00:00');
 const discount2Deadline = new Date('2025-12-12T23:59:59');
 
+/**
+ * 오프라인 부스 수량에 따라 규모 할인을 자동으로 선택하고 비활성화하는 함수
+ */
+function updateScaleDiscountState(physicalBooths) {
+    const scaleCheckboxes = $('.single-choice-discount input[type="checkbox"]');
 
-// --- 함수 정의 ---
+    // 1. 모든 규모 할인 체크박스를 비활성화하여 사용자가 직접 수정하지 못하게 합니다.
+    //scaleCheckboxes.prop('disabled', true);
+
+    // 2. 모든 규모 할인 체크를 초기화합니다.
+    scaleCheckboxes.prop('checked', false);
+
+    // 3. 부스 수량에 맞는 할인 항목을 찾아 자동으로 체크합니다.
+    let targetCheckbox = null;
+    if (physicalBooths >= 100) {
+        targetCheckbox = $('#discountScale6');
+    } else if (physicalBooths >= 50) {
+        targetCheckbox = $('#discountScale5');
+    } else if (physicalBooths >= 40) {
+        targetCheckbox = $('#discountScale4');
+    } else if (physicalBooths >= 30) {
+        targetCheckbox = $('#discountScale3');
+    } else if (physicalBooths >= 20) {
+        targetCheckbox = $('#discountScale2');
+    } else if (physicalBooths >= 10) {
+        targetCheckbox = $('#discountScale1');
+    }
+
+    if (targetCheckbox) {
+        targetCheckbox.prop('checked', true);
+    }
+}
 
 /**
  * 1차 조기신청 할인 체크박스의 상태와 이벤트를 제어합니다.
@@ -588,6 +618,9 @@ function calculateTotal() {
     // 오프라인 부스 총 수량 계산
     let physicalBooths = standAloneQty + assemblyQty;
 
+    // 부스 수량에 따라 규모 할인을 자동으로 업데이트합니다.
+    updateScaleDiscountState(physicalBooths);
+
     const firstUnder10 = $('#discountFirstUnder10');
 
     // 이 참가자가 '첫 참가'일 경우에만 아래 로직을 실행
@@ -616,9 +649,11 @@ function calculateTotal() {
     let totalDiscount = 0;
 
     // 체크된 모든 할인 항목을 순회하며 할인액을 더함
-    $('input[name="discount"]:checked').each(function() {
-        let discountPerBooth = parseInt($(this).data('discount')) || 0;
-        totalDiscount += (physicalBooths * discountPerBooth);
+    $('input[name="discount"]').each(function() {
+        if ($(this).prop('checked')) { // 체크된 상태인지 직접 확인
+            let discountPerBooth = parseInt($(this).data('discount')) || 0;
+            totalDiscount += (physicalBooths * discountPerBooth);
+        }
     });
 
     // 4. 최종 금액 계산 (부스비 총액 + 등록비 - 총 할인액)

@@ -231,7 +231,7 @@
                         <div class="small">출입증 신청</div>
                     </a>
                     <a href="javascript:void(0);" onclick="f_apply_comp('2_5','${info.seq}')" class="form_btn_next">
-                        <div class="big">다음</div>
+                        <div class="big">다음 / 건너뛰기</div>
                         <div class="small">디렉토리 정보</div>
                     </a>
                 </div>

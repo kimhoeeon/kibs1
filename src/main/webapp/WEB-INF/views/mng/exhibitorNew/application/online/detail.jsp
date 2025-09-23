@@ -2234,7 +2234,7 @@ if (document.documentElement) {
                                         <div class="card-header border-0">
                                             <!--begin::Card title-->
                                             <div class="card-title m-0">
-                                                <h3 class="fw-bold m-0">온라인 전시관 정보</h3>
+                                                <h3 class="fw-bold m-0">온라인 전시관 참가</h3>
                                             </div>
                                             <!--end::Card title-->
                                         </div>

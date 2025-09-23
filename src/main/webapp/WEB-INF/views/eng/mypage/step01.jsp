@@ -594,7 +594,7 @@
                         <div class="formAddBtn"><span class="proImgAdd">Add</span></div>
                     </div>
 
-                    <!-- 온라인 전시관 정보 -->
+                    <!-- 온라인 전시관 참가 -->
                     <div class="form_wrap">
                         <div class="form_tit">
                             <div class="big">About The Online Exhibition</div>

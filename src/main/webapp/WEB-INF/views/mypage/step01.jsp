@@ -482,12 +482,12 @@
                                             </div>
                                         </li>
                                         <li class="w50">
-                                            <div class="item">
+                                            <div class="item req">
                                                 <p>홈페이지</p>
                                             </div>
                                             <div class="input">
                                                 <input type="text" id="companyHomepage" name="companyHomepage" value="${info.companyHomepage}" placeholder="https://">
-                                                <label><input type="checkbox" name="noPage" <c:if test="${empty info.companyHomepage}">checked</c:if> >홈페이지 없음</label>
+                                                <label><input type="checkbox" name="noPage">홈페이지 없음</label>
                                             </div>
                                         </li>
                                         <li class="w50">
@@ -961,11 +961,11 @@
 
                                 </div>
 
-                                <!-- 온라인 전시관 정보 -->
+                                <!-- 온라인 전시관 참가 -->
                                 <script src="/js/online.js"></script>
                                 <div class="form_wrap">
                                     <div class="form_tit">
-                                        <div class="big">온라인 전시관 정보</div>
+                                        <div class="big">온라인 전시관 참가</div>
                                         <div class="small">온라인 전시관에 추가 전시를 원하는 제품 정보를 입력해 주세요.</div>
                                     </div>
 

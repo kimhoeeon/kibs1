@@ -113,10 +113,10 @@
             <div class="my_form form_s">
                 <div class="inner">
                     <div class="apply_tit">온라인 전시관 신청</div>
-                    <!-- 온라인 전시관 정보 -->
+                    <!-- 온라인 전시관 참가 -->
                     <div class="form_wrap">
                         <div class="form_tit">
-                            <div class="big">온라인 전시관 정보</div>
+                            <div class="big">온라인 전시관 참가</div>
                             <div class="small">최대 3개 이미지를 각각의 설명과 함께 등록하시고 3개 이상 등록이 필요하신 경우 사무국으로 문의 바랍니다.</div>
                         </div>
                         <ul class="form_box">

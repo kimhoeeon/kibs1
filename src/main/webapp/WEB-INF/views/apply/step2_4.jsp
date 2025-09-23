@@ -233,7 +233,7 @@
                             <div class="small">유틸리티 신청</div>
                         </a>
                         <a href="javascript:void(0);" onclick="f_apply_comp('2_4','${info.seq}')" class="form_btn_next">
-                            <div class="big">다음</div>
+                            <div class="big">다음 / 건너뛰기</div>
                             <div class="small">경품제공 신청</div>
                         </a>
                     </div>

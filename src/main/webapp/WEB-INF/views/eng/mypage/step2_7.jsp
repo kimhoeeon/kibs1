@@ -96,7 +96,7 @@
             <div class="my_form form_s">
                 <div class="inner">
                     <div class="apply_tit">Online Exhibition</div>
-                    <!-- 온라인 전시관 정보 -->
+                    <!-- 온라인 전시관 참가 -->
                     <div class="form_wrap">
                         <div class="form_tit">
                             <div class="big">About The Online Exhibition</div>
