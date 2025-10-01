@@ -201,6 +201,12 @@
                                 <li><a href="<c:url value="/online/product.do"/>"><span>제품 검색하기</span></a></li>
                             </ul>
                         </li>
+                        <li class="kiss_nav">
+                            <a href="<c:url value="/guide/summary_kiss.do"/>"><span>KISS<br>(코리아 서프쇼)</span></a>
+                        </li>
+                        <li class="kmts_nav">
+                            <a href="<c:url value="/guide/summary_kmts.do"/>"><span>KMTS<br>(해양관광전)</span></a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -299,6 +305,14 @@
                                 <li><a href="<c:url value="/online/company.do"/>"><span>참가기업 미리보기</span></a></li>
                                 <li><a href="<c:url value="/online/product.do"/>"><span>제품 검색하기</span></a></li>
                             </ul>
+                        </li>
+                    </ul>
+                    <ul class="link_dept1 site_map_new">
+                        <li class="kiss_nav">
+                            <a href="<c:url value="/guide/summary_kiss.do"/>"><span>KISS<br>(코리아 서프쇼)</span></a>
+                        </li>
+                        <li class="kmts_nav">
+                            <a href="<c:url value="/guide/summary_kmts.do"/>"><span>KMTS<br>(해양관광전)</span></a>
                         </li>
                     </ul>
                 </div>

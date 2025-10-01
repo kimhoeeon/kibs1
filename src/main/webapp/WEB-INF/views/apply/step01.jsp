@@ -103,6 +103,8 @@
                                         <a href="/visitor/guide_off.do">참관객</a>
                                         <a href="/guide/notice.do">미디어센터</a>
                                         <a href="/online/kibstv.do">온라인 전시관</a>
+                                        <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
+                                        <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
                                     </div>
                                 </div>
                                 <div class="tabOpt2 tabOption">
@@ -634,12 +636,12 @@
                                                             <option value="기타(코리아서프쇼)" <c:if test="${info.industryPart eq '기타(코리아서프쇼)'}">selected</c:if>>기타</option>
                                                         </optgroup>
 
-                                                        <optgroup label="---- 코리아마린트레블쇼 ----">
+                                                        <optgroup label="---- 해양관광전 ----">
                                                             <option value="해양레저 관광상품" <c:if test="${info.industryPart eq '해양레저 관광상품'}">selected</c:if>>해양레저 관광상품</option>
                                                             <option value="지역관광콘텐츠" <c:if test="${info.industryPart eq '지역관광콘텐츠'}">selected</c:if>>지역관광콘텐츠</option>
                                                             <option value="치유&생태관광" <c:if test="${info.industryPart eq '치유&생태관광'}">selected</c:if>>치유&생태관광</option>
                                                             <option value="체험 콘텐츠" <c:if test="${info.industryPart eq '체험 콘텐츠'}">selected</c:if>>체험 콘텐츠</option>
-                                                            <option value="기타(코리아마린트레블쇼)" <c:if test="${info.industryPart eq '기타(코리아마린트레블쇼)'}">selected</c:if>>기타</option>
+                                                            <option value="기타(해양관광전)" <c:if test="${info.industryPart eq '기타(해양관광전)'}">selected</c:if>>기타</option>
                                                         </optgroup>
                                                     </select>
                                                     <input type="text" id="industryPartEtc" name="industryPartEtc" class="w50" value="${info.industryPartEtc}" placeholder="직접 입력" disabled>
@@ -969,7 +971,7 @@
                                                 <div class="input check">
                                                     <label><input type="radio" name="fieldParticipatory" value="boatShow">경기국제보트쇼</label>
                                                     <label><input type="radio" name="fieldParticipatory" value="surfShow">코리아서프쇼</label>
-                                                    <label><input type="radio" name="fieldParticipatory" value="travelShow">코리아마린트레블쇼</label>
+                                                    <label><input type="radio" name="fieldParticipatory" value="travelShow">해양관광전</label>
                                                 </div>
                                             </li>
                                             <li>

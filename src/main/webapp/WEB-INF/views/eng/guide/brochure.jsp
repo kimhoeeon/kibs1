@@ -110,7 +110,7 @@
                     <div class="img"><img src="/img/img_flag_korea.jpg"></div>
                     <div class="txt1">KIBS 2025 - Korean</div>
                     <div class="txt2">한국어</div>
-                    <a href="/file/2026 경기국제보트쇼 브로슈어-국문.pdf" class="btnSt01" download="2026 경기국제보트쇼 브로슈어-국문.pdf">Download E-brochure</a>
+                    <a href="/file/2026 KIBS-KISS-KMTS 국문 브로슈어 합본.pdf" class="btnSt01" download="2026 KIBS-KISS-KMTS 국문 브로슈어 합본.pdf">Download E-brochure</a>
                 </li>
                 <li>
                     <div class="img"><img src="/img/img_flag_germany.jpg"></div>

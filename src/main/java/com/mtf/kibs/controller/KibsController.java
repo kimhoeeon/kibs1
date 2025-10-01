@@ -250,6 +250,22 @@ public class KibsController {
         return mv;
     }
 
+    @RequestMapping(value = "/guide/summary_kiss.do", method = RequestMethod.GET)
+    public ModelAndView guide_summary_kiss() {
+        System.out.println("KibsController > guide_summary_kiss");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/summary_kiss");
+        return mv;
+    }
+
+    @RequestMapping(value = "/guide/summary_kmts.do", method = RequestMethod.GET)
+    public ModelAndView guide_summary_kmts() {
+        System.out.println("KibsController > guide_summary_kmts");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/guide/summary_kmts");
+        return mv;
+    }
+
     @RequestMapping(value = "/guide/program.do", method = RequestMethod.GET)
     public ModelAndView guide_program() {
         System.out.println("KibsController > guide_program");
@@ -297,7 +313,7 @@ public class KibsController {
         }else {
             DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
             String today = dateFormat.format(new Date());
-            if (Long.parseLong(today) > Long.parseLong("202509220959")) {
+            if (Long.parseLong(today) > Long.parseLong("202510200859")) {
                 mv.addObject("mode", "open");
             }
         }

@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The interface GoingSool service.
@@ -212,10 +213,6 @@ public interface KibsMngService {
     ResponseDTO processUpdateBooth(ExhibitorDTO exhibitorDTO);
 
     ResponseDTO processUpdateExhibitorNewBooth(ExhibitorNewDTO exhibitorNewDTO);
-
-    ResponseDTO processInsertExhibitorNewBoothInvoice(InvoiceBoothDTO invoiceBoothDTO);
-
-    ResponseDTO processInsertExhibitorNewUtilityInvoice(InvoiceUtilityDTO invoiceUtilityDTO);
 
     InvoiceBoothDTO processSelectInvoiceBoothSingle(String seq);
 
@@ -454,4 +451,34 @@ public interface KibsMngService {
     ResponseDTO processInsertContest(ContestDTO contestDTO);
 
     void createAndDownloadProductExcel(HttpServletResponse response) throws Exception;
+
+    ExhibitorNewDTO processSelectExhibitorNewInvoiceDetail(String seq);
+
+    int processUpdateExhibitorNewSpecialDiscount(ExhibitorNewDTO dto);
+
+    List<DepositHistoryDTO> selectDepositHistoryList(String exhibitorSeq);
+
+    DepositHistoryDTO insertDepositHistory(DepositHistoryDTO dto);
+
+    Map<String, Object> updateDepositHistory(DepositHistoryDTO dto);
+
+    Map<String, Object> deleteDepositHistory(int depositSeq);
+
+    InvoiceBoothDTO createAndInsertInvoiceBooth(String exhibitorSeq) throws Exception;
+
+    List<InvoiceBoothDTO> getInvoiceBoothList(String exhibitorSeq);
+
+    boolean updateInvoiceBoothFilePath(InvoiceBoothDTO invoiceDto);
+
+    boolean sendInvoiceBooth(InvoiceBoothDTO invoiceDto);
+
+    boolean deleteInvoiceBooth(int invoiceSeq);
+
+    Map<String, Object> sendInvoices(List<Integer> invoiceSeqList, String adminId) throws Exception;
+
+    InvoiceUtilityDTO createAndInsertInvoiceUtility(String exhibitorSeq) throws Exception;
+
+    List<InvoiceUtilityDTO> getInvoiceUtilityList(String seq);
+
+    boolean deleteInvoiceUtility(int invoiceSeq);
 }

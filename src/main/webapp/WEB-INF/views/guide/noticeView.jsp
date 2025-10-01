@@ -48,6 +48,8 @@
         <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
         <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
+
+    <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
@@ -82,6 +84,8 @@
                             <a href="/visitor/guide_off.do">참관객</a>
                             <a class="active" href="/board/notice.do">미디어센터</a>
                             <a href="/online/kibstv.do">온라인 전시관</a>
+                            <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
+                            <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">

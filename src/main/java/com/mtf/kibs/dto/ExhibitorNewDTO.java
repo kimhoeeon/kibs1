@@ -133,6 +133,16 @@ public class ExhibitorNewDTO {
     Boolean discountScale5; //규모할인5(50부스이상)
     Boolean discountScale6; //규모할인6(100부스이상)
     Boolean discountLeisure; //한국해양레저산업협회할인
+    boolean discountSpecial1Yn;
+    boolean discountSpecial2Yn;
+    String discountSpecial2Reason;
+    int discountSpecial2Amount;
+    boolean discountSpecial3Yn;
+    String discountSpecial3Reason;
+    int discountSpecial3Amount;
+    String discountSpecial1Note;
+    String discountSpecial2Note;
+    String discountSpecial3Note;
     Integer boothPrcSum; //부스신청총액
     Integer discountPrcSum; //할인총액
     Integer prcSum; //소개

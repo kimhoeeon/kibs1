@@ -240,6 +240,14 @@
     .prd_sh_select {flex-wrap: wrap;}
     .prd_sh_select > select {width: calc(50% - 10px);}
 
+    .site_map_new{gap: 27px;}
+
+    .summ_join .table_box td span{font-size: inherit;}
+    .summ_join .sub_cont_tit{padding-left: 10px;}
+    .summ_join .sub_cont_tit .tit{font-size: 1.6rem;}
+    .sub_cont_tit::before{height: 80%;}
+    .summ_join .summ_wrap .desc{font-size: 2rem;}
+    .summ_join .summ_wrap .desc span{font-size: 1.6rem;}
 }
 
 /* 900px ~ 1024px */
@@ -344,12 +352,12 @@
 
     .hd_site_map .site_map_nav .dept1 {
         display: block;
-        padding: 40px;
+        padding: 20px 40px;
     }
 
     .hd_site_map .site_map_nav .dept1>li {
         width: 100%;
-        padding-bottom: 20px;
+        padding-bottom: 10px;
         cursor: pointer;
     }
 
@@ -842,7 +850,15 @@
 
     .g_p_box .img .hoverCont {width: 100%; left: 0;}
 
-
+    .hd_site_map .site_map_nav .dept1>li{width: 100% !important;}
+    .hd_site_map .site_map_new.dept1{padding-top: 0;}
+    .hd_site_map .site_map_nav .link_dept1{display: block;padding: 0 40px 20px 40px;}
+    .hd_site_map .site_map_nav .link_dept1 li a{
+        font-size: 2.2rem;
+        padding-bottom: 15px;
+    }
+    .hd_site_map .site_map_nav .site_map_new li {width: 100% !important; padding-bottom: 10px;}
+    .hd_site_map .site_map_nav{gap: 0;}
 }
 
 /* 769px ~ 899px */
@@ -874,7 +890,7 @@
     .marina_s2 .box .item .descrip {font-size: 1.4rem;}
     
 
-
+    
 }
 
 /* 481px ~ 768px */
@@ -1744,7 +1760,9 @@
     .g_p_box .box {padding: 15px;}
     .g_p_box .cont .tit {font-size: 1.4rem;}
     .g_p_box .cont .nae {font-size: 1.2rem;}
+    .summ_join .summ_wrap{flex-direction: column; gap: 20px;}
 
+    
 }
 
 /* ~ 480px */
@@ -1800,6 +1818,10 @@
     }
 
     .hd_site_map .site_map_nav .dept1>li>a {
+        font-size: 2rem;
+    }
+
+    .hd_site_map .site_map_nav .link_dept1 li a{
         font-size: 2rem;
     }
 
@@ -2380,4 +2402,9 @@
 
     .form_s .form_tit.flex{flex-direction: column; align-items: start;}
     .form_s .form_tit.flex .assist{margin-left: 0;margin-bottom: 0;margin-top: 10px;}
+
+    .summ_venue .txt_box .tit img{height: 20px;}
+    .summ_venue .txt_box .tit{font-size: 2.4rem;}
+    
+    .summ_join .summ_wrap .desc span.summ_tit{display: block;}
 }

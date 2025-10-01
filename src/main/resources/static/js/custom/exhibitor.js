@@ -1585,6 +1585,23 @@ function f_exhibitor_select_login(seq){
     loadPostInIframe('exhibitorDetailForm', url, params);
 }
 
+function f_exhibitor_invoice_detail(seq){
+    let hiddenField_seq = document.createElement('input');
+    hiddenField_seq.type = 'hidden';
+    hiddenField_seq.name = 'seq';
+    hiddenField_seq.value = seq;
+
+    let sendForm = document.createElement('form');
+    sendForm.method = 'POST';
+    sendForm.appendChild(hiddenField_seq);
+
+    document.body.appendChild(sendForm);
+    sendForm.action = '/mng/exhibitorNew/participant/company/invoice/detail.do';
+
+    sendForm.submit();
+}
+
+
 function loadPostInIframe(iframeName, url, params) {
     // 1. 동적으로 form 요소 생성
     const $form = $('<form>').attr({

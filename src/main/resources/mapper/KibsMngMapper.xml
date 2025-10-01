@@ -1957,69 +1957,70 @@
 
     <select id="selectExhibitorNewSingle" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewSingle */
-        SELECT seq
-             , lang
-             , id
-             , transfer_year
-             , salt
-             , password
-             , booth_type
-             , company_license_num
-             , company_name_ko
-             , company_name_en
-             , company_address
-             , company_address_detail
-             , factory_address
-             , factory_address_detail
-             , company_ceo
-             , company_tel
-             , company_homepage
-             , company_fax
-             , industry_part
-             , industry_part_etc
-             , pre_part_year
-             , member_company_yn
-             , name
-             , position
-             , depart
-             , tel
-             , phone
-             , email
-             , company_intro_video
-             , company_intro_ko
-             , company_intro_en
-             , company_purpose_ko
-             , company_purpose_en
-             , new_item_intro_ko
-             , new_item_intro_en
-             , promotion_plan
-             , field_participatory
-             , field_participatory_1
-             , field_participatory_2
-             , field_participatory_3
-             , export_meeting_yn
-             , part_want_yn
-             , company_online_view_yn
-             , company_badge
-             , discount_yn
-             , apply_complt
-             , prc_yn
-             , cancel_yn
-             , refund_yn
-             , approval_status
-             , approval_status_cancel_reason
-             , participation_status
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
-             , stand_alone_booth_cnt
-             , assembly_booth_cnt
-             , online_booth_cnt
+        SELECT *
         FROM exhibitor_new
         WHERE seq = #{seq}
     </select>
+
+    <select id="selectExhibitorNewInvoiceDetail" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewInvoiceDetail */
+        SELECT *
+        FROM exhibitor_new
+        WHERE seq = #{value}
+    </select>
+
+    <update id="updateExhibitorNewSpecialDiscount" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorNewSpecialDiscount */
+        UPDATE exhibitor_new
+        SET
+            discount_special_1_yn     = #{discountSpecial1Yn},
+            discount_special_1_note   = #{discountSpecial1Note},
+            discount_special_2_yn     = #{discountSpecial2Yn},
+            discount_special_2_reason = #{discountSpecial2Reason},
+            discount_special_2_amount = #{discountSpecial2Amount},
+            discount_special_2_note   = #{discountSpecial2Note},
+            discount_special_3_yn     = #{discountSpecial3Yn},
+            discount_special_3_reason = #{discountSpecial3Reason},
+            discount_special_3_amount = #{discountSpecial3Amount},
+            discount_special_3_note   = #{discountSpecial3Note},
+            discount_prc_sum          = #{discountPrcSum},
+            prc_sum                   = #{prcSum},
+            prc_vat                   = #{prcVat},
+            prc_total                 = #{prcTotal},
+            final_regi_dttm           = NOW()
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectDepositHistoryList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.DepositHistoryDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectDepositHistoryList */
+        SELECT * FROM deposit_history WHERE exhibitor_seq = #{value} ORDER BY deposit_seq DESC
+    </select>
+
+    <insert id="insertDepositHistory" parameterType="com.mtf.kibs.dto.DepositHistoryDTO" useGeneratedKeys="true" keyProperty="depositSeq">
+        /* com.mtf.kibs.mapper.kibsMngMapper.insertDepositHistory */
+        INSERT INTO deposit_history (exhibitor_seq, amount, content_type, tax_invoice_status, deposit_date, scheduled_date, depositor_name, confirmer_name, comment, payment_status)
+        VALUES (#{exhibitorSeq}, #{amount}, #{contentType}, #{taxInvoiceStatus}, #{depositDate}, #{scheduledDate}, #{depositorName}, #{confirmerName}, #{comment}, #{paymentStatus})
+    </insert>
+
+    <update id="updateDepositHistory" parameterType="com.mtf.kibs.dto.DepositHistoryDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateDepositHistory */
+        UPDATE deposit_history
+        SET amount = #{amount},
+            content_type = #{contentType},
+            tax_invoice_status = #{taxInvoiceStatus},
+            deposit_date = #{depositDate},
+            scheduled_date = #{scheduledDate},
+            depositor_name = #{depositorName},
+            confirmer_name = #{confirmerName},
+            comment = #{comment},
+            payment_status = #{paymentStatus}
+        WHERE deposit_seq = #{depositSeq}
+    </update>
+
+    <delete id="deleteDepositHistory" parameterType="java.lang.Integer">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteDepositHistory */
+        DELETE FROM deposit_history WHERE deposit_seq = #{value}
+    </delete>
 
     <select id="getExhibitorSeq" resultType="java.lang.String">
         /* com.mtf.kibs.mapper.kibsMngMapper.getExhibitorSeq */
@@ -3599,21 +3600,30 @@
         WHERE seq = #{value}
     </select>
 
-    <select id="selectInvoiceBoothExSeqList" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO" resultType="com.mtf.kibs.dto.InvoiceBoothDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceBoothExSeqList */
-        SELECT seq
-             , ex_seq
-             , invoice_code
-             , title
-             , send_dttm
-             , send_status
-             , send_result
-             , send_result_msg
-             , file_path
-        FROM invoice_booth
-        WHERE ex_seq = #{exSeq}
+    <select id="selectInvoiceBoothList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.InvoiceBoothDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceBoothList */
+        SELECT
+            *
+        FROM
+            invoice_booth
+        WHERE
+            exhibitor_seq = #{value}
           AND del_yn = 'N'
-        ORDER BY seq
+        ORDER BY
+            invoice_seq DESC
+    </select>
+
+    <select id="selectInvoiceUtilityList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.InvoiceUtilityDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceUtilityList */
+        SELECT
+            *
+        FROM
+            invoice_utility
+        WHERE
+            exhibitor_seq = #{value}
+          AND del_yn = 'N'
+        ORDER BY
+            invoice_seq DESC
     </select>
 
     <select id="getExhibitorNewInfo" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
@@ -3626,47 +3636,13 @@
 
     <select id="selectInvoiceBoothSingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.InvoiceBoothDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceBoothSingle */
-        SELECT ib.seq
-             , ib.ex_seq
-             , ib.invoice_code
-             , ib.send_status
-             , ib.title
-             , ib.email
-             , ib.send_dttm
-             , ib.end_dttm
-             , ib.discount_type
-             , ib.registration_cnt
-             , ib.registration_fee
-             , ib.stand_alone_booth_cnt
-             , ib.stand_alone_booth_fee
-             , ib.assembly_booth_cnt
-             , ib.assembly_booth_fee
-             , ib.online_booth_cnt
-             , ib.online_booth_fee
-             , ib.booth_prc_sum
-             , ib.discount_early_1
-             , ib.discount_early_2
-             , ib.discount_first
-             , ib.discount_re
-             , ib.discount_scale_1
-             , ib.discount_scale_2
-             , ib.discount_scale_3
-             , ib.discount_scale_4
-             , ib.discount_scale_5
-             , ib.discount_scale_6
-             , ib.discount_leisure
-             , ib.discount_prc_sum
-             , ib.prc_total
-             , ib.send_result
-             , ib.file_path
-             , ib.del_yn
-             , ib.note
-             , ib.init_regi_pic
-             , ib.init_regi_dttm
-             , ib.final_regi_pic
-             , ib.final_regi_dttm
-        FROM invoice_booth ib
-        WHERE ib.seq = #{seq}
+        SELECT
+            *
+        FROM
+            invoice_booth
+        WHERE
+            invoice_seq = #{value}
+          AND del_yn = 'N'
     </select>
 
     <select id="getInvoiceBoothSeq" resultType="java.lang.String">
@@ -3675,157 +3651,79 @@
         FROM DUAL
     </select>
 
-    <insert id="insertInvoiceBooth" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
+    <select id="selectInvoiceBoothBySeq" parameterType="int" resultType="com.mtf.kibs.dto.InvoiceBoothDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceBoothBySeq */
+        SELECT * FROM invoice_booth
+        WHERE invoice_seq = #{value}
+    </select>
+
+    <select id="selectInvoiceUtilityBySeq" parameterType="int" resultType="com.mtf.kibs.dto.InvoiceUtilityDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceUtilityBySeq */
+        SELECT * FROM invoice_utility
+        WHERE invoice_seq = #{value}
+    </select>
+
+    <select id="countInvoiceBoothByExhibitorSeq" parameterType="java.lang.String" resultType="java.lang.Integer">
+        /* com.mtf.kibs.mapper.kibsMngMapper.countInvoiceBoothByExhibitorSeq */
+        SELECT COUNT(*)
+        FROM invoice_booth
+        WHERE exhibitor_seq = #{value}
+    </select>
+
+    <insert id="insertInvoiceBooth" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO" useGeneratedKeys="true" keyProperty="invoiceSeq">
         /* com.mtf.kibs.mapper.KibsMapper.insertInvoiceBooth */
-        INSERT INTO invoice_booth
-        ( seq
-        , ex_seq
-        , invoice_code
-        , send_status
-        , title
-        , email
-        , send_dttm
-        , end_dttm
-        , discount_type
-        , registration_cnt
-        , registration_fee
-        , stand_alone_booth_cnt
-        , stand_alone_booth_fee
-        , assembly_booth_cnt
-        , assembly_booth_fee
-        , online_booth_cnt
-        , online_booth_fee
-        , booth_prc_sum
-        , discount_early_1
-        , discount_early_2
-        , discount_first
-        , discount_re
-        , discount_scale_1
-        , discount_scale_2
-        , discount_scale_3
-        , discount_scale_4
-        , discount_scale_5
-        , discount_scale_6
-        , discount_leisure
-        , discount_prc_sum
-        , prc_total
-        , send_result
-        , send_result_msg
-        , file_path
-        , note
-        , init_regi_pic
-        , init_regi_dttm
-        , final_regi_pic
-        , final_regi_dttm)
-        VALUES ( #{seq}
-               , #{exSeq}
-               , CONCAT('KIBS', SUBSTRING(#{exSeq}, 6, LENGTH(#{exSeq})), '-', (SELECT COUNT(*)
-                                                                                FROM invoice_booth ib2
-                                                                                WHERE ib2.ex_seq = #{exSeq}) + 1)
-               , #{sendStatus}
-               , #{title}
-               , #{email}
-               , null
-               , DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 14 DAY), '%Y-%m-%d')
-               , #{discountType}
-               , #{registrationCnt}
-               , #{registrationFee}
-               , #{standAloneBoothCnt}
-               , #{standAloneBoothFee}
-               , #{assemblyBoothCnt}
-               , #{assemblyBoothFee}
-               , #{onlineBoothCnt}
-               , #{onlineBoothFee}
-               , #{boothPrcSum}
-               , #{discountEarly1}
-               , #{discountEarly2}
-               , #{discountFirst}
-               , #{discountRe}
-               , #{discountScale1}
-               , #{discountScale2}
-               , #{discountScale3}
-               , #{discountScale4}
-               , #{discountScale5}
-               , #{discountScale6}
-               , #{discountLeisure}
-               , #{discountPrcSum}
-               , (#{boothPrcSum} + (#{boothPrcSum} * 0.1) - #{discountPrcSum})
-               , null
-               , null
-               , null
-               , #{note}
-               , 'INVOICE'
-               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-               , 'INVOICE'
-               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+        INSERT INTO invoice_booth (
+            exhibitor_seq, invoice_code, title,
+            booth_prc_sum, discount_prc_sum, prc_sum, prc_vat, prc_total,
+            end_dttm, init_regi_dttm
+        ) VALUES (
+                     #{exhibitorSeq}, #{invoiceCode}, #{title},
+                     #{boothPrcSum}, #{discountPrcSum}, #{prcSum}, #{prcVat}, #{prcTotal},
+                     #{endDttm}, NOW()
+                 )
     </insert>
 
-    <update id="updateInvoiceBoothDelYn" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceBoothDelYn */
+    <update id="deleteInvoiceBooth" parameterType="java.lang.Integer">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteInvoiceBooth */
         UPDATE invoice_booth
-        SET del_yn = #{delYn}
-          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        WHERE seq = #{seq}
+        SET del_yn = 'Y',
+            final_regi_dttm = NOW()
+        WHERE invoice_seq = #{value}
+    </update>
+
+    <update id="deleteInvoiceUtility" parameterType="java.lang.Integer">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteInvoiceUtility */
+        UPDATE invoice_utility
+        SET del_yn = 'Y',
+            final_regi_dttm = NOW()
+        WHERE invoice_seq = #{value}
     </update>
 
     <update id="updateInvoiceBoothFilePath" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceBoothFilePath */
         UPDATE invoice_booth
-        SET file_path = #{filePath}
-          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        WHERE seq = #{seq}
+        SET file_path = #{filePath},
+            final_regi_dttm = NOW()
+        WHERE invoice_seq = #{invoiceSeq}
     </update>
 
-    <update id="updateInvoiceBoothSendResult" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceBoothSendResult */
+    <update id="updateInvoiceBoothSendStatus" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceBoothSendStatus */
         UPDATE invoice_booth
-        SET send_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-          , send_result = #{sendResult}
-          , send_result_msg = #{sendResultMsg}
-          , send_status = #{sendStatus}
-          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        WHERE seq = #{seq}
+        SET send_status = #{sendStatus},
+            send_result = #{sendResult},
+            send_result_msg = #{sendResultMsg},
+            send_dttm = NOW(),
+            final_regi_dttm = NOW()
+        WHERE invoice_seq = #{invoiceSeq}
     </update>
 
     <select id="selectInvoiceUtilitySingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.InvoiceUtilityDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceUtilitySingle */
-        SELECT iu.seq
-             , iu.ex_seq
-             , iu.invoice_code
-             , iu.send_status
-             , iu.title
-             , iu.email
-             , iu.send_dttm
-             , iu.end_dttm
-             , iu.utility_jugan_cnt
-             , iu.utility_jugan_fee
-             , iu.utility_day_cnt
-             , iu.utility_day_fee
-             , iu.utility_compressed_air_cnt
-             , iu.utility_compressed_air_fee
-             , iu.utility_water_basic_cnt
-             , iu.utility_water_basic_fee
-             , iu.utility_internet_cnt
-             , iu.utility_internet_fee
-             , iu.utility_pytex_new_cnt
-             , iu.utility_pytex_new_fee
-             , iu.utility_pytex_re_cnt
-             , iu.utility_pytex_re_fee
-             , iu.utility_barcode_cnt
-             , iu.utility_barcode_fee
-             , iu.utility_prc_sum
-             , iu.prc_total
-             , iu.send_result
-             , iu.send_result_msg
-             , iu.file_path
-             , iu.del_yn
-             , iu.note
-             , iu.init_regi_pic
-             , iu.init_regi_dttm
-             , iu.final_regi_pic
-             , iu.final_regi_dttm
-        FROM invoice_utility iu
-        WHERE iu.seq = #{seq}
+        SELECT *
+        FROM invoice_utility
+        WHERE invoice_seq = #{value}
+          AND del_yn = 'N'
     </select>
 
     <select id="getInvoiceUtilitySeq" resultType="java.lang.String">
@@ -3834,106 +3732,51 @@
         FROM DUAL
     </select>
 
-    <insert id="insertInvoiceUtility" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
-        /* com.mtf.kibs.mapper.KibsMapper.insertInvoiceUtility */
-        INSERT INTO invoice_utility
-        ( seq
-        , ex_seq
-        , invoice_code
-        , send_status
-        , title
-        , email
-        , send_dttm
-        , end_dttm
-        , utility_jugan_cnt
-        , utility_jugan_fee
-        , utility_day_cnt
-        , utility_day_fee
-        , utility_compressed_air_cnt
-        , utility_compressed_air_fee
-        , utility_water_basic_cnt
-        , utility_water_basic_fee
-        , utility_internet_cnt
-        , utility_internet_fee
-        , utility_pytex_new_cnt
-        , utility_pytex_new_fee
-        , utility_pytex_re_cnt
-        , utility_pytex_re_fee
-        , utility_barcode_cnt
-        , utility_barcode_fee
-        , utility_prc_sum
-        , prc_total
-        , send_result
-        , send_result_msg
-        , file_path
-        , note
-        , init_regi_pic
-        , init_regi_dttm
-        , final_regi_pic
-        , final_regi_dttm)
-        VALUES ( #{seq}
-               , #{exSeq}
-               , CONCAT('KIBS', SUBSTRING(#{exSeq}, 6, LENGTH(#{exSeq})), '-', (SELECT COUNT(*)
-                                                                                FROM invoice_utility iu2
-                                                                                WHERE iu2.ex_seq = #{exSeq}) + 1)
-               , #{sendStatus}
-               , #{title}
-               , #{email}
-               , null
-               , DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 14 DAY), '%Y-%m-%d')
-               , #{utilityJuganCnt}
-               , #{utilityJuganFee}
-               , #{utilityDayCnt}
-               , #{utilityDayFee}
-               , #{utilityCompressedAirCnt}
-               , #{utilityCompressedAirFee}
-               , #{utilityWaterBasicCnt}
-               , #{utilityWaterBasicFee}
-               , #{utilityInternetCnt}
-               , #{utilityInternetFee}
-               , #{utilityPytexNewCnt}
-               , #{utilityPytexNewFee}
-               , #{utilityPytexReCnt}
-               , #{utilityPytexReFee}
-               , #{utilityBarcodeCnt}
-               , #{utilityBarcodeFee}
-               , #{utilityPrcSum}
-               , (#{utilityPrcSum} + (#{utilityPrcSum} * 0.1))
-               , null
-               , null
-               , null
-               , #{note}
-               , 'INVOICE'
-               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-               , 'INVOICE'
-               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+    <select id="countInvoiceUtilityByExhibitorSeq" parameterType="java.lang.String" resultType="int">
+        SELECT COUNT(*)
+        FROM invoice_utility
+        WHERE exhibitor_seq = #{value}
+    </select>
+
+    <insert id="insertInvoiceUtility" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO" useGeneratedKeys="true" keyProperty="invoiceSeq">
+        INSERT INTO invoice_utility (
+            exhibitor_seq,          invoice_code,               title,
+            utility_jugan_cnt,      utility_jugan_fee,          utility_day_cnt,            utility_day_fee,
+            utility_compressed_air_cnt, utility_compressed_air_fee, utility_water_basic_cnt,    utility_water_basic_fee,
+            utility_internet_cnt,   utility_internet_fee,       utility_pytex_new_cnt,      utility_pytex_new_fee,
+            utility_pytex_re_cnt,   utility_pytex_re_fee,       utility_barcode_cnt,        utility_barcode_fee,
+            utility_prc_sum,
+            prc_sum,                prc_vat,                    prc_total,
+            end_dttm,               init_regi_dttm
+        ) VALUES (
+                     #{exhibitorSeq},          #{invoiceCode},               #{title},
+                     #{utilityJuganCnt},      #{utilityJuganFee},          #{utilityDayCnt},            #{utilityDayFee},
+                     #{utilityCompressedAirCnt}, #{utilityCompressedAirFee}, #{utilityWaterBasicCnt},    #{utilityWaterBasicFee},
+                     #{utilityInternetCnt},   #{utilityInternetFee},       #{utilityPytexNewCnt},      #{utilityPytexNewFee},
+                     #{utilityPytexReCnt},   #{utilityPytexReFee},       #{utilityBarcodeCnt},        #{utilityBarcodeFee},
+                     #{utilityPrcSum},
+                     #{prcSum},                #{prcVat},                    #{prcTotal},
+                     #{endDttm},               NOW()
+                 )
     </insert>
 
-    <update id="updateInvoiceUtilityDelYn" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceUtilityDelYn */
+    <update id="updateInvoiceUtilitySendStatus" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceUtilitySendStatus */
         UPDATE invoice_utility
-        SET del_yn = #{delYn}
-          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        WHERE seq = #{seq}
+        SET send_status = #{sendStatus},
+            send_result = #{sendResult},
+            send_result_msg = #{sendResultMsg},
+            send_dttm = NOW(),
+            final_regi_dttm = NOW()
+        WHERE invoice_seq = #{invoiceSeq}
     </update>
 
     <update id="updateInvoiceUtilityFilePath" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceUtilityFilePath */
         UPDATE invoice_utility
-        SET file_path = #{filePath}
-          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        WHERE seq = #{seq}
-    </update>
-
-    <update id="updateInvoiceUtilitySendResult" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceUtilitySendResult */
-        UPDATE invoice_utility
-        SET send_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-          , send_result = #{sendResult}
-          , send_result_msg = #{sendResultMsg}
-          , send_status = #{sendStatus}
-          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        WHERE seq = #{seq}
+        SET file_path = #{filePath},
+            final_regi_dttm = NOW()
+        WHERE invoice_seq = #{invoiceSeq}
     </update>
 
     <update id="updateBooth" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
@@ -6369,18 +6212,6 @@
     <delete id="deleteBuyerNew" parameterType="com.mtf.kibs.dto.BuyerNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.deleteBuyerNew */
         DELETE FROM buyer_new
-        WHERE ex_seq = #{exSeq}
-    </delete>
-
-    <delete id="deleteInvoiceBooth" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.deleteInvoiceBooth */
-        DELETE FROM invoice_booth
-        WHERE ex_seq = #{exSeq}
-    </delete>
-
-    <delete id="deleteInvoiceUtility" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.deleteInvoiceUtility */
-        DELETE FROM invoice_utility
         WHERE ex_seq = #{exSeq}
     </delete>
 

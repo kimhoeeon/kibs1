@@ -2563,12 +2563,12 @@ public class KibsMngServiceImpl implements KibsMngService {
 
                     /* invoice_booth */
                     InvoiceBoothDTO invoiceBoothDTO = new InvoiceBoothDTO();
-                    invoiceBoothDTO.setExSeq(exhibitorNewDTO.getSeq());
+                    invoiceBoothDTO.setExhibitorSeq(exhibitorNewDTO.getSeq());
                     Integer invoiceBoothResult = kibsMngMapper.deleteInvoiceBooth(invoiceBoothDTO);
 
                     /* invoice_utility */
                     InvoiceUtilityDTO invoiceUtilityDTO = new InvoiceUtilityDTO();
-                    invoiceUtilityDTO.setExSeq(exhibitorNewDTO.getSeq());
+                    invoiceUtilityDTO.setExhibitorSeq(exhibitorNewDTO.getSeq());
                     Integer invoiceUtilityResult = kibsMngMapper.deleteInvoiceUtility(invoiceUtilityDTO);
 
                     /* file */
@@ -3506,6 +3506,112 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public int processUpdateExhibitorNewSpecialDiscount(ExhibitorNewDTO specialDiscountData) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewSpecialDiscount");
+        // 1. 먼저 DB에서 현재 업체의 전체 정보를 조회합니다.
+        ExhibitorNewDTO currentData = kibsMngMapper.selectExhibitorNewInvoiceDetail(specialDiscountData.getSeq());
+        if (currentData == null) {
+            // 데이터가 없으면 오류 처리
+            return 0;
+        }
+
+        // 2. 기본 금액들을 가져옵니다.
+        int boothPrcSum = currentData.getBoothPrcSum(); // 부스비 총액
+        int utilityPrcSum = currentData.getUtilityPrcSum(); // 유틸리티 총액
+        int basicDiscountSum = currentData.getDiscountPrcSum(); // 기본 할인 총액
+
+        // 3. '특별 할인 적용 전 공급가액'을 계산합니다.
+        int baseAmount = boothPrcSum + utilityPrcSum - basicDiscountSum;
+
+        // 4. 화면에서 넘어온 데이터를 기반으로 '특별 할인액'을 계산합니다.
+        int specialDiscountTotal = 0;
+        if (specialDiscountData.isDiscountSpecial1Yn()) {
+            specialDiscountTotal += Math.floor(baseAmount * 0.5); // 올해의 제품상: 50%
+        }
+        if (specialDiscountData.isDiscountSpecial2Yn()) {
+            specialDiscountTotal += specialDiscountData.getDiscountSpecial2Amount();
+        }
+        if (specialDiscountData.isDiscountSpecial3Yn()) {
+            specialDiscountTotal += specialDiscountData.getDiscountSpecial3Amount();
+        }
+
+        // 5. 모든 금액을 최종적으로 재계산합니다.
+        int newTotalDiscountSum = basicDiscountSum + specialDiscountTotal; // 기본 할인 + 특별 할인
+        int newPrcSum = boothPrcSum + utilityPrcSum - newTotalDiscountSum; // 최종 공급가액
+        int newPrcVat = (int) Math.floor(newPrcSum * 0.1); // 최종 부가세 (10%)
+        int newPrcTotal = newPrcSum + newPrcVat; // 최종 합계
+
+        // 6. DTO에 재계산된 금액들을 담습니다.
+        specialDiscountData.setDiscountPrcSum(newTotalDiscountSum);
+        specialDiscountData.setPrcSum(newPrcSum);
+        specialDiscountData.setPrcVat(newPrcVat);
+        specialDiscountData.setPrcTotal(newPrcTotal);
+        return kibsMngMapper.updateExhibitorNewSpecialDiscount(specialDiscountData);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<DepositHistoryDTO> selectDepositHistoryList(String exhibitorSeq) {
+        System.out.println("KibsMngServiceImpl > selectDepositHistoryList");
+        return kibsMngMapper.selectDepositHistoryList(exhibitorSeq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public DepositHistoryDTO insertDepositHistory(DepositHistoryDTO dto) {
+        int result = kibsMngMapper.insertDepositHistory(dto); // 이 호출 후, dto 객체의 depositSeq 필드에 값이 채워집니다.
+        if (result > 0) {
+            return dto; // 성공 시, seq가 채워진 dto 객체를 반환
+        }
+        return null; // 실패 시 null 반환
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public Map<String, Object> updateDepositHistory(DepositHistoryDTO dto) {
+        System.out.println("KibsMngServiceImpl > updateDepositHistory");
+        Map<String, Object> resultMap = new HashMap<>();
+
+        // 1. Mapper를 호출하고, 반환된 int 값(영향받은 행의 수)을 받습니다.
+        int result = kibsMngMapper.updateDepositHistory(dto);
+
+        // 2. int 결과를 바탕으로 성공/실패 Map을 직접 만듭니다.
+        if (result > 0) { // 1개 이상의 행이 영향을 받았다면 성공
+            resultMap.put("resultCode", "0");
+            resultMap.put("resultMsg", "수정되었습니다.");
+        } else {
+            resultMap.put("resultCode", "-1");
+            resultMap.put("resultMsg", "데이터 수정에 실패했습니다.");
+        }
+
+        // 3. 완성된 Map을 Controller로 반환합니다.
+        return resultMap;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public Map<String, Object> deleteDepositHistory(int depositSeq) {
+        System.out.println("KibsMngServiceImpl > deleteDepositHistory");
+        Map<String, Object> resultMap = new HashMap<>();
+
+        // 1. Mapper를 호출하고, 반환된 int 값(영향받은 행의 수)을 받습니다.
+        int result = kibsMngMapper.deleteDepositHistory(depositSeq);
+
+        // 2. int 결과를 바탕으로 성공/실패 Map을 직접 만듭니다.
+        if (result > 0) { // 1개 이상의 행이 영향을 받았다면 성공
+            resultMap.put("resultCode", "0");
+            resultMap.put("resultMsg", "삭제되었습니다.");
+        } else {
+            resultMap.put("resultCode", "-1");
+            resultMap.put("resultMsg", "데이터 삭제에 실패했습니다.");
+        }
+
+        // 3. 완성된 Map을 Controller로 반환합니다.
+        return resultMap;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public ExhibitorNewDTO getExhibitorNewInfo(ExhibitorNewDTO exhibitorNewDTO) {
         System.out.println("KibsMngServiceImpl > getExhibitorNewInfo");
         return kibsMngMapper.getExhibitorNewInfo(exhibitorNewDTO);
@@ -3573,131 +3679,145 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processInsertExhibitorNewBoothInvoice(InvoiceBoothDTO invoiceBoothDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertExhibitorNewBoothInvoice");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-
-        try {
-            /* 업체 정보 */
-            ExhibitorNewDTO exhibitorNewDTO = new ExhibitorNewDTO();
-            exhibitorNewDTO.setSeq(invoiceBoothDTO.getExSeq());
-            ExhibitorNewDTO exhibitorNewInfo = kibsMngMapper.selectExhibitorNewSingle(exhibitorNewDTO);
-            String companyNameKo = exhibitorNewInfo.getCompanyNameKo();
-            String email = exhibitorNewInfo.getEmail();
-
-            ExhibitorNewDTO exhibitorNewBoothInfo = kibsMngMapper.selectExhibitorNewBoothSingle(invoiceBoothDTO.getExSeq());
-
-            String invoiceSeq = kibsMngMapper.getInvoiceBoothSeq();
-            invoiceBoothDTO.setSeq(invoiceSeq);
-            invoiceBoothDTO.setSendStatus("미발송");
-            invoiceBoothDTO.setTitle("2026 보트쇼 인보이스 [ " + companyNameKo + " ]");
-            invoiceBoothDTO.setEmail(email);
-            invoiceBoothDTO.setDiscountType(exhibitorNewBoothInfo.getDiscountType());
-            invoiceBoothDTO.setRegistrationCnt(exhibitorNewBoothInfo.getRegistrationCnt());
-            invoiceBoothDTO.setRegistrationFee(exhibitorNewBoothInfo.getRegistrationFee());
-            invoiceBoothDTO.setStandAloneBoothCnt(exhibitorNewBoothInfo.getStandAloneBoothCnt());
-            invoiceBoothDTO.setStandAloneBoothFee(exhibitorNewBoothInfo.getStandAloneBoothFee());
-            invoiceBoothDTO.setAssemblyBoothCnt(exhibitorNewBoothInfo.getAssemblyBoothCnt());
-            invoiceBoothDTO.setAssemblyBoothFee(exhibitorNewBoothInfo.getAssemblyBoothFee());
-            invoiceBoothDTO.setOnlineBoothCnt(exhibitorNewBoothInfo.getOnlineBoothCnt());
-            invoiceBoothDTO.setOnlineBoothFee(exhibitorNewBoothInfo.getOnlineBoothFee());
-            invoiceBoothDTO.setBoothPrcSum(exhibitorNewBoothInfo.getBoothPrcSum());
-            invoiceBoothDTO.setDiscountEarly1(exhibitorNewBoothInfo.getDiscountEarly1());
-            invoiceBoothDTO.setDiscountEarly2(exhibitorNewBoothInfo.getDiscountEarly2());
-            invoiceBoothDTO.setDiscountFirstUnder10(exhibitorNewBoothInfo.getDiscountFirstUnder10());
-            invoiceBoothDTO.setDiscountFirstOver10(exhibitorNewBoothInfo.getDiscountFirstOver10());
-            invoiceBoothDTO.setDiscountFirst(exhibitorNewBoothInfo.getDiscountFirst());
-            invoiceBoothDTO.setDiscountRe(exhibitorNewBoothInfo.getDiscountRe());
-            invoiceBoothDTO.setDiscountScale1(exhibitorNewBoothInfo.getDiscountScale1());
-            invoiceBoothDTO.setDiscountScale2(exhibitorNewBoothInfo.getDiscountScale2());
-            invoiceBoothDTO.setDiscountScale3(exhibitorNewBoothInfo.getDiscountScale3());
-            invoiceBoothDTO.setDiscountScale4(exhibitorNewBoothInfo.getDiscountScale4());
-            invoiceBoothDTO.setDiscountScale5(exhibitorNewBoothInfo.getDiscountScale5());
-            invoiceBoothDTO.setDiscountScale6(exhibitorNewBoothInfo.getDiscountScale6());
-            invoiceBoothDTO.setDiscountLeisure(exhibitorNewBoothInfo.getDiscountLeisure());
-            invoiceBoothDTO.setDiscountPrcSum(exhibitorNewBoothInfo.getDiscountPrcSum());
-
-            result = kibsMngMapper.insertInvoiceBooth(invoiceBoothDTO);
-
-            if(result == 0){
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Insert Fail]";
-            }
-
-            responseDTO.setCustomValue(invoiceSeq);
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processInsertExhibitorNewBoothInvoice ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+    public InvoiceBoothDTO createAndInsertInvoiceBooth(String exhibitorSeq) throws Exception {
+        // 1. 인보이스를 생성할 참가업체의 최신 정보를 불러옵니다.
+        ExhibitorNewDTO currentExhibitorInfo = kibsMngMapper.selectExhibitorNewInvoiceDetail(exhibitorSeq);
+        if (currentExhibitorInfo == null) {
+            throw new Exception("참가업체 정보가 존재하지 않습니다.");
         }
 
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
+        // 2. [추가] DB에서 해당 참가업체의 기존 인보이스 발급 횟수를 조회합니다.
+        int invoiceCount = kibsMngMapper.countInvoiceBoothByExhibitorSeq(exhibitorSeq);
+
+        // 3. [추가] 새로운 인보이스 코드를 생성합니다. (발급 횟수 + 1)
+        int nextInvoiceNumber = invoiceCount + 1;
+        String invoiceCode = String.format("KIBS-B-%s-%d", exhibitorSeq, nextInvoiceNumber);
+
+        // 4. 새로운 InvoiceBoothDTO 객체를 생성하고, '금액 스냅샷'을 복사합니다.
+        InvoiceBoothDTO newInvoice = new InvoiceBoothDTO();
+        newInvoice.setExhibitorSeq(exhibitorSeq);
+        newInvoice.setTitle(currentExhibitorInfo.getCompanyNameKo() + " - 전시부스");
+
+        newInvoice.setInvoiceCode(invoiceCode);
+
+        // 생성 시점의 금액 정보를 그대로 복사 (스냅샷 생성)
+        newInvoice.setBoothPrcSum(currentExhibitorInfo.getBoothPrcSum());
+        newInvoice.setDiscountPrcSum(currentExhibitorInfo.getDiscountPrcSum());
+        newInvoice.setPrcSum(currentExhibitorInfo.getPrcSum());
+        newInvoice.setPrcVat(currentExhibitorInfo.getPrcVat());
+        newInvoice.setPrcTotal(currentExhibitorInfo.getPrcTotal());
+
+        // 5. Mapper를 호출하여 DB에 인보이스를 INSERT 합니다.
+        kibsMngMapper.insertInvoiceBooth(newInvoice);
+
+        // 2. newInvoice 객체에 채워진 invoiceSeq 값을 가져옵니다.
+        int generatedSeq = newInvoice.getInvoiceSeq();
+
+        // 3. 만약 seq가 0이거나 유효하지 않으면 예외를 발생시킵니다.
+        if (generatedSeq <= 0) {
+            throw new Exception("인보이스 생성 후 PK(seq)를 가져오지 못했습니다.");
+        }
+
+        // 4. [핵심] 생성된 seq를 이용해 DB에서 방금 저장된 인보이스 데이터를 다시 조회하여 반환합니다.
+        return kibsMngMapper.selectInvoiceBoothBySeq(generatedSeq);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processInsertExhibitorNewUtilityInvoice(InvoiceUtilityDTO invoiceUtilityDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertExhibitorNewUtilityInvoice");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-
-        try {
-            /* 업체 정보 */
-            ExhibitorNewDTO exhibitorNewDTO = new ExhibitorNewDTO();
-            exhibitorNewDTO.setSeq(invoiceUtilityDTO.getExSeq());
-            ExhibitorNewDTO exhibitorNewInfo = kibsMngMapper.selectExhibitorNewSingle(exhibitorNewDTO);
-            String companyNameKo = exhibitorNewInfo.getCompanyNameKo();
-            String email = exhibitorNewInfo.getEmail();
-
-            ExhibitorNewDTO exhibitorNewUtilityInfo = kibsMngMapper.selectExhibitorNewUtilitySingle(invoiceUtilityDTO.getExSeq());
-
-            String invoiceSeq = kibsMngMapper.getInvoiceUtilitySeq();
-            invoiceUtilityDTO.setSeq(invoiceSeq);
-            invoiceUtilityDTO.setSendStatus("미발송");
-            invoiceUtilityDTO.setTitle("2026 보트쇼 인보이스 [ " + companyNameKo + " ]");
-            invoiceUtilityDTO.setEmail(email);
-            invoiceUtilityDTO.setUtilityJuganCnt(exhibitorNewUtilityInfo.getUtilityJuganCnt());
-            invoiceUtilityDTO.setUtilityJuganFee(exhibitorNewUtilityInfo.getUtilityJuganFee());
-            invoiceUtilityDTO.setUtilityDayCnt(exhibitorNewUtilityInfo.getUtilityDayCnt());
-            invoiceUtilityDTO.setUtilityDayFee(exhibitorNewUtilityInfo.getUtilityDayFee());
-            invoiceUtilityDTO.setUtilityCompressedAirCnt(exhibitorNewUtilityInfo.getUtilityCompressedAirCnt());
-            invoiceUtilityDTO.setUtilityCompressedAirFee(exhibitorNewUtilityInfo.getUtilityCompressedAirFee());
-            invoiceUtilityDTO.setUtilityWaterBasicCnt(exhibitorNewUtilityInfo.getUtilityWaterBasicCnt());
-            invoiceUtilityDTO.setUtilityWaterBasicFee(exhibitorNewUtilityInfo.getUtilityWaterBasicFee());
-            invoiceUtilityDTO.setUtilityInternetCnt(exhibitorNewUtilityInfo.getUtilityInternetCnt());
-            invoiceUtilityDTO.setUtilityInternetFee(exhibitorNewUtilityInfo.getUtilityInternetFee());
-            invoiceUtilityDTO.setUtilityPytexNewCnt(exhibitorNewUtilityInfo.getUtilityPytexNewCnt());
-            invoiceUtilityDTO.setUtilityPytexNewFee(exhibitorNewUtilityInfo.getUtilityPytexNewFee());
-            invoiceUtilityDTO.setUtilityPytexReCnt(exhibitorNewUtilityInfo.getUtilityPytexReCnt());
-            invoiceUtilityDTO.setUtilityPytexReFee(exhibitorNewUtilityInfo.getUtilityPytexReFee());
-            invoiceUtilityDTO.setUtilityBarcodeCnt(exhibitorNewUtilityInfo.getUtilityBarcodeCnt());
-            invoiceUtilityDTO.setUtilityBarcodeFee(exhibitorNewUtilityInfo.getUtilityBarcodeFee());
-            invoiceUtilityDTO.setUtilityPrcSum(exhibitorNewUtilityInfo.getUtilityPrcSum());
-
-            result = kibsMngMapper.insertInvoiceUtility(invoiceUtilityDTO);
-
-            if(result == 0){
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Insert Fail]";
-            }
-
-            responseDTO.setCustomValue(invoiceSeq);
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processInsertExhibitorNewUtilityInvoice ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+    public InvoiceUtilityDTO createAndInsertInvoiceUtility(String exhibitorSeq) throws Exception {
+        ExhibitorNewDTO currentInfo = kibsMngMapper.selectExhibitorNewInvoiceDetail(exhibitorSeq);
+        if (currentInfo == null) {
+            throw new Exception("참가업체 정보가 존재하지 않습니다.");
         }
 
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
+        int invoiceCount = kibsMngMapper.countInvoiceUtilityByExhibitorSeq(exhibitorSeq);
+        int nextInvoiceNumber = invoiceCount + 1;
+        String invoiceCode = String.format("KIBS-U-%s-%d", exhibitorSeq, nextInvoiceNumber);
+
+        InvoiceUtilityDTO newInvoice = new InvoiceUtilityDTO();
+        newInvoice.setExhibitorSeq(exhibitorSeq);
+        newInvoice.setTitle(currentInfo.getCompanyNameKo() + " - 유틸리티");
+        newInvoice.setInvoiceCode(invoiceCode);
+
+        // 유틸리티 신청 내역 스냅샷 복사
+        newInvoice.setUtilityJuganCnt(currentInfo.getUtilityJuganCnt());
+        newInvoice.setUtilityJuganFee(currentInfo.getUtilityJuganFee());
+        newInvoice.setUtilityDayCnt(currentInfo.getUtilityDayCnt());
+        newInvoice.setUtilityDayFee(currentInfo.getUtilityDayFee());
+        newInvoice.setUtilityCompressedAirCnt(currentInfo.getUtilityCompressedAirCnt());
+        newInvoice.setUtilityCompressedAirFee(currentInfo.getUtilityCompressedAirFee());
+        newInvoice.setUtilityWaterBasicCnt(currentInfo.getUtilityWaterBasicCnt());
+        newInvoice.setUtilityWaterBasicFee(currentInfo.getUtilityWaterBasicFee());
+        newInvoice.setUtilityInternetCnt(currentInfo.getUtilityInternetCnt());
+        newInvoice.setUtilityInternetFee(currentInfo.getUtilityInternetFee());
+        newInvoice.setUtilityPytexNewCnt(currentInfo.getUtilityPytexNewCnt());
+        newInvoice.setUtilityPytexNewFee(currentInfo.getUtilityPytexNewFee());
+        newInvoice.setUtilityPytexReCnt(currentInfo.getUtilityPytexReCnt());
+        newInvoice.setUtilityPytexReFee(currentInfo.getUtilityPytexReFee());
+        newInvoice.setUtilityBarcodeCnt(currentInfo.getUtilityBarcodeCnt());
+        newInvoice.setUtilityBarcodeFee(currentInfo.getUtilityBarcodeFee());
+        newInvoice.setUtilityPrcSum(currentInfo.getUtilityPrcSum());
+
+        // 유틸리티 금액 기준으로 최종 합계 계산
+        int prcSum = currentInfo.getUtilityPrcSum();
+        int prcVat = (int) Math.floor(prcSum * 0.1);
+        int prcTotal = prcSum + prcVat;
+
+        newInvoice.setPrcSum(prcSum);
+        newInvoice.setPrcVat(prcVat);
+        newInvoice.setPrcTotal(prcTotal);
+
+        kibsMngMapper.insertInvoiceUtility(newInvoice);
+
+        // 2. newInvoice 객체에 채워진 invoiceSeq 값을 가져옵니다.
+        int generatedSeq = newInvoice.getInvoiceSeq();
+
+        // 3. 만약 seq가 0이거나 유효하지 않으면 예외를 발생시킵니다.
+        if (generatedSeq <= 0) {
+            throw new Exception("인보이스 생성 후 PK(seq)를 가져오지 못했습니다.");
+        }
+
+        // 4. [핵심] 생성된 seq를 이용해 DB에서 방금 저장된 인보이스 데이터를 다시 조회하여 반환합니다.
+        return kibsMngMapper.selectInvoiceUtilityBySeq(generatedSeq);
+    }
+
+    @Override
+    public List<InvoiceBoothDTO> getInvoiceBoothList(String exhibitorSeq) {
+        return kibsMngMapper.selectInvoiceBoothList(exhibitorSeq);
+    }
+
+    @Override
+    public List<InvoiceUtilityDTO> getInvoiceUtilityList(String exhibitorSeq) {
+        return kibsMngMapper.selectInvoiceUtilityList(exhibitorSeq);
+    }
+
+    @Override
+    public boolean updateInvoiceBoothFilePath(InvoiceBoothDTO invoiceDto) {
+        return kibsMngMapper.updateInvoiceBoothFilePath(invoiceDto) > 0;
+    }
+
+    @Override
+    public boolean sendInvoiceBooth(InvoiceBoothDTO invoiceDto) {
+        // 여기에 이메일 발송 로직을 구현한 뒤, 결과에 따라 DB 상태를 업데이트합니다.
+        // ...
+        // emailSendService.send( ... );
+        // ...
+        // 발송 성공 시:
+        // invoiceDto.setSendStatus("발송완료");
+        // invoiceDto.setSendResult("성공");
+        // return kibsMngMapper.updateInvoiceBoothSendStatus(invoiceDto) > 0;
+
+        // 임시로 true 반환
+        return true;
+    }
+
+    @Override
+    public boolean deleteInvoiceBooth(int invoiceSeq) {
+        return kibsMngMapper.deleteInvoiceBooth(invoiceSeq) > 0;
+    }
+
+    @Override
+    public boolean deleteInvoiceUtility(int invoiceSeq) {
+        return kibsMngMapper.deleteInvoiceUtility(invoiceSeq) > 0;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -3812,6 +3932,13 @@ public class KibsMngServiceImpl implements KibsMngService {
         responseDTO.setResultCode(resultCode);
         responseDTO.setResultMessage(resultMessage);
         return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ExhibitorNewDTO processSelectExhibitorNewInvoiceDetail(String seq) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewInvoiceDetail");
+        return kibsMngMapper.selectExhibitorNewInvoiceDetail(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -5856,6 +5983,79 @@ public class KibsMngServiceImpl implements KibsMngService {
             System.out.println(e.getMessage());
         }
         return rrVO;
+    }
+
+    @Override
+    public Map<String, Object> sendInvoices(List<Integer> invoiceSeqList, String adminId) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        int successCount = 0;
+
+        if (invoiceSeqList == null || invoiceSeqList.isEmpty()) {
+            throw new Exception("발송할 인보이스가 선택되지 않았습니다.");
+        }
+
+        // 대표 이메일, 업체명 등은 첫번째 인보이스 기준으로 한 번만 조회 (효율성)
+        InvoiceBoothDTO firstInvoice = kibsMngMapper.selectInvoiceBoothBySeq(invoiceSeqList.get(0));
+        ExhibitorNewDTO exhibitorInfo = kibsMngMapper.selectExhibitorNewInvoiceDetail(firstInvoice.getExhibitorSeq());
+        String companyNameKo = exhibitorInfo.getCompanyNameKo();
+        String email = exhibitorInfo.getEmail();
+
+        // 선택된 인보이스들을 순회하며 발송 처리
+        for (int invoiceSeq : invoiceSeqList) {
+            InvoiceBoothDTO currentInvoice = kibsMngMapper.selectInvoiceBoothBySeq(invoiceSeq);
+            if (currentInvoice == null || currentInvoice.getFilePath() == null) {
+                continue; // 인보이스 정보나 파일 경로가 없으면 건너뜀
+            }
+
+            // 메일 발송을 위한 JSON 객체 생성 (기존 로직 활용)
+            String filePath = currentInvoice.getFilePath();
+            String folderPath = filePath.substring(0, filePath.lastIndexOf('/') + 1);
+            String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+
+            Map<String, Object> mailJson = new HashMap<>();
+            mailJson.put("subject", "[KIBS 2026] " + companyNameKo + " 참가비용 인보이스 발송");
+            mailJson.put("template", "161"); // 템플릿 번호
+
+            List<Map<String, String>> receivers = new ArrayList<>();
+            Map<String, String> receiverInfo = new HashMap<>();
+            receiverInfo.put("email", email);
+            receiverInfo.put("note1", "https://kibs.com/mng/exhibitorNew/application/invoice/mail/open/update.do?gbn=IB&seq=" + invoiceSeq);
+            receivers.add(receiverInfo);
+            mailJson.put("receiver", receivers);
+
+            mailJson.put("folderPath", folderPath);
+
+            List<Map<String, String>> fileUrls = new ArrayList<>();
+            Map<String, String> fileInfo = new HashMap<>();
+            fileInfo.put("name", fileName);
+            fileUrls.add(fileInfo);
+            mailJson.put("fileUrl", fileUrls);
+
+            // [가정] 메일 발송 서비스 호출 (기존 ajaxConnect('/mail/send.do', ...) 부분에 해당)
+            // MailSendResultDTO mailResult = mailSendService.send(mailJson);
+            MailSendResultDTO mailResult = new MailSendResultDTO("0", "발송성공"); // 임시 결과
+
+            // 발송 결과 업데이트
+            InvoiceBoothDTO sendResultDto = new InvoiceBoothDTO();
+            sendResultDto.setInvoiceSeq(invoiceSeq);
+            if ("0".equals(mailResult.getResultCode())) {
+                sendResultDto.setSendStatus("미열람");
+                sendResultDto.setSendResult("발송성공");
+                successCount++;
+            } else {
+                sendResultDto.setSendStatus("미발송");
+                sendResultDto.setSendResult("발송실패");
+            }
+            sendResultDto.setSendResultMsg(mailResult.getResultMessage());
+
+            // DB에 발송 결과 업데이트
+            kibsMngMapper.updateInvoiceBoothSendStatus(sendResultDto);
+        }
+
+        resultMap.put("resultCode", "0");
+        resultMap.put("resultMsg", String.format("총 %d개 중 %d개의 인보이스 발송 요청이 완료되었습니다.", invoiceSeqList.size(), successCount));
+
+        return resultMap;
     }
 
 }

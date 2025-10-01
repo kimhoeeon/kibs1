@@ -614,6 +614,48 @@ public class KibsMngController {
         return mv;
     }
 
+    // 특정 참가업체의 입금 내역 전체를 불러오는 API
+    @GetMapping("/mng/deposits/{exhibitorSeq}")
+    @ResponseBody
+    public List<DepositHistoryDTO> selectDepositHistoryList(@PathVariable String exhibitorSeq) {
+        return kibsMngService.selectDepositHistoryList(exhibitorSeq);
+    }
+
+    // 새로운 입금 내역을 저장하는 API
+    @PostMapping("/mng/deposits")
+    @ResponseBody
+    public Map<String, Object> addDepositHistory(@RequestBody DepositHistoryDTO dto) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            DepositHistoryDTO savedDto = kibsMngService.insertDepositHistory(dto);
+
+            if (savedDto != null) {
+                resultMap.put("resultCode", "0");
+                resultMap.put("resultMsg", "추가되었습니다.");
+                resultMap.put("data", savedDto); // [핵심] 저장된 데이터를 'data' 키에 담아 반환
+            } else {
+                resultMap.put("resultCode", "-1");
+                resultMap.put("resultMsg", "데이터 추가에 실패했습니다.");
+            }
+        } catch (Exception e) {
+        }
+        return resultMap;
+    }
+
+    // 기존 입금 내역을 수정하는 API
+    @PutMapping("/mng/deposits/{depositSeq}")
+    @ResponseBody
+    public Map<String, Object> updateDepositHistory(@RequestBody DepositHistoryDTO dto) {
+        return kibsMngService.updateDepositHistory(dto);
+    }
+
+    // 입금 내역을 삭제하는 API
+    @PostMapping("/mng/deposits/{depositSeq}")
+    @ResponseBody
+    public Map<String, Object> deleteDepositHistory(@PathVariable int depositSeq) {
+        return kibsMngService.deleteDepositHistory(depositSeq);
+    }
+
     @RequestMapping(value = "/mng/exhibitor/participant/company/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ExhibitorDTO> mng_exhibitor_participant_company_selectSingle(@RequestBody ExhibitorDTO exhibitorDTO) {
@@ -995,7 +1037,7 @@ public class KibsMngController {
 
             if(info != null) {
                 InvoiceBoothDTO invoiceBoothDTO = new InvoiceBoothDTO();
-                invoiceBoothDTO.setExSeq(info.getSeq());
+                invoiceBoothDTO.setExhibitorSeq(info.getSeq());
                 List<InvoiceBoothDTO> invoiceList = kibsMngService.processSelectInvoiceBoothExSeqList(invoiceBoothDTO);
 
                 if(!invoiceList.isEmpty()){
@@ -1012,13 +1054,13 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
-            InvoiceUtilityDTO info = kibsMngService.processSelectInvoiceUtilitySingle(seq);
-            mv.addObject("info", info);
+            InvoiceUtilityDTO invoiceInfo = kibsMngService.processSelectInvoiceUtilitySingle(seq);
+            mv.addObject("invoiceInfo", invoiceInfo);
 
             ExhibitorNewDTO exhibitorNewDTO = new ExhibitorNewDTO();
-            exhibitorNewDTO.setSeq(info.getExSeq());
-            ExhibitorNewDTO exhibitorNewInfo = kibsMngService.processSelectExhibitorNewSingle(exhibitorNewDTO);
-            mv.addObject("exhibitorNewInfo", exhibitorNewInfo);
+            exhibitorNewDTO.setSeq(invoiceInfo.getExhibitorSeq());
+            ExhibitorNewDTO exhibitorBaseInfo = kibsMngService.processSelectExhibitorNewSingle(exhibitorNewDTO);
+            mv.addObject("exhibitorBaseInfo", exhibitorBaseInfo);
         }
         mv.setViewName("/mng/exhibitorNew/application/utility/invoice");
         return mv;
@@ -1032,14 +1074,6 @@ public class KibsMngController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/mng/exhibitorNew/application/booth/invoice/insert.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_invoice_insert(@RequestBody InvoiceBoothDTO invoiceBoothDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_insert");
-        ResponseDTO response = kibsMngService.processInsertExhibitorNewBoothInvoice(invoiceBoothDTO);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/mng/exhibitorNew/application/booth/invoice/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_booth_invoice_detail(String seq) {
         System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_detail");
@@ -1049,7 +1083,7 @@ public class KibsMngController {
             mv.addObject("info", info);
 
             ExhibitorNewDTO exhibitorNewDTO = new ExhibitorNewDTO();
-            exhibitorNewDTO.setSeq(info.getExSeq());
+            exhibitorNewDTO.setSeq(info.getExhibitorSeq());
             ExhibitorNewDTO exhibitorNewInfo = kibsMngService.processSelectExhibitorNewSingle(exhibitorNewDTO);
             mv.addObject("exhibitorNewInfo", exhibitorNewInfo);
         }
@@ -1181,7 +1215,7 @@ public class KibsMngController {
 
             if(info != null) {
                 InvoiceUtilityDTO invoiceUtilityDTO = new InvoiceUtilityDTO();
-                invoiceUtilityDTO.setExSeq(info.getSeq());
+                invoiceUtilityDTO.setExhibitorSeq(info.getSeq());
                 List<InvoiceUtilityDTO> invoiceList = kibsMngService.processSelectInvoiceUtilityExSeqList(invoiceUtilityDTO);
 
                 if(!invoiceList.isEmpty()){
@@ -1191,14 +1225,6 @@ public class KibsMngController {
         }
         mv.setViewName("/mng/exhibitorNew/application/utility/detail");
         return mv;
-    }
-
-    @RequestMapping(value = "/mng/exhibitorNew/application/utility/invoice/insert.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_invoice_insert(@RequestBody InvoiceUtilityDTO invoiceUtilityDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_insert");
-        ResponseDTO response = kibsMngService.processInsertExhibitorNewUtilityInvoice(invoiceUtilityDTO);
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/utility/update.do", method = RequestMethod.POST)
@@ -9474,4 +9500,167 @@ public class KibsMngController {
         return result;
     }
 
+    @RequestMapping(value = "/mng/exhibitorNew/participant/company/invoice/detail.do", method = RequestMethod.POST)
+    public ModelAndView mng_exhibitorNew_company_invoice_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitorNew_company_invoice_detail");
+        //System.out.println(seq);
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !seq.isEmpty()){
+            // 1. 참가업체 통합 정보 조회 (기존 로직)
+            ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewInvoiceDetail(seq);
+            mv.addObject("info", info);
+
+            // 3. 해당 참가업체의 '전시부스 인보이스' 목록 조회
+            List<InvoiceBoothDTO> boothInvoiceList  = kibsMngService.getInvoiceBoothList(seq);
+            mv.addObject("boothInvoiceList", boothInvoiceList);
+
+            // 4. 유틸리티 인보이스 목록 조회 로직 추가
+            List<InvoiceUtilityDTO> utilityInvoiceList = kibsMngService.getInvoiceUtilityList(seq); // 이 Service 메소드를 새로 만들어야 합니다.
+            mv.addObject("utilityInvoiceList", utilityInvoiceList);
+        }
+
+        mv.setViewName("/mng/exhibitor/participant/company/invoice/detail");
+        return mv;
+    }
+
+    /**
+     * [신규] 생성된 PDF 파일 경로를 DB에 업데이트하는 API
+     * - JavaScript의 createAndUploadPdfFromIframe 함수 성공 후 호출될 것으로 예상
+     */
+    @PostMapping("/mng/exhibitorNew/application/invoice/updateFilePath.do")
+    @ResponseBody
+    public Map<String, Object> updateInvoiceFilePath(@RequestBody InvoiceBoothDTO dto) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            boolean isSuccess = kibsMngService.updateInvoiceBoothFilePath(dto);
+            if (isSuccess) {
+                resultMap.put("resultCode", "0");
+                resultMap.put("resultMsg", "파일 경로가 업데이트되었습니다.");
+            } else {
+                resultMap.put("resultCode", "-1");
+                resultMap.put("resultMsg", "파일 경로 업데이트에 실패했습니다.");
+            }
+        } catch (Exception e) {
+            resultMap.put("resultCode", "-1");
+            resultMap.put("resultMsg", "오류가 발생했습니다.");
+        }
+        return resultMap;
+    }
+
+    /**
+     * [신규] 선택된 인보이스들을 삭제하는 API
+     */
+    @PostMapping("/mng/exhibitorNew/application/invoice/booth/delete.do")
+    @ResponseBody
+    public Map<String, Object> deleteInvoicesBooth(@RequestBody List<Integer> invoiceSeqList) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            for (int invoiceSeq : invoiceSeqList) {
+                kibsMngService.deleteInvoiceBooth(invoiceSeq);
+            }
+            resultMap.put("resultCode", "0");
+            resultMap.put("resultMsg", "선택한 인보이스가 삭제되었습니다.");
+        } catch (Exception e) {
+            resultMap.put("resultCode", "-1");
+            resultMap.put("resultMsg", "삭제 중 오류가 발생했습니다.");
+        }
+        return resultMap;
+    }
+
+    @PostMapping("/mng/exhibitorNew/application/invoice/utility/delete.do")
+    @ResponseBody
+    public Map<String, Object> deleteInvoicesUtility(@RequestBody List<Integer> invoiceSeqList) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            for (int invoiceSeq : invoiceSeqList) {
+                kibsMngService.deleteInvoiceUtility(invoiceSeq);
+            }
+            resultMap.put("resultCode", "0");
+            resultMap.put("resultMsg", "선택한 인보이스가 삭제되었습니다.");
+        } catch (Exception e) {
+            resultMap.put("resultCode", "-1");
+            resultMap.put("resultMsg", "삭제 중 오류가 발생했습니다.");
+        }
+        return resultMap;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/participant/company/invoice/saveSpecialDiscount.do", method = RequestMethod.POST)
+    @ResponseBody // AJAX 통신을 위해 ResponseBody 추가
+    public Map<String, Object> mng_exhibitorNew_saveSpecialDiscount(@RequestBody ExhibitorNewDTO dto) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            // 특별 할인 정보 업데이트 서비스 호출
+            int result = kibsMngService.processUpdateExhibitorNewSpecialDiscount(dto);
+            if (result > 0) {
+                resultMap.put("resultCode", "0");
+                resultMap.put("resultMsg", "저장되었습니다.");
+            } else {
+                resultMap.put("resultCode", "-1");
+                resultMap.put("resultMsg", "저장에 실패했습니다.");
+            }
+        } catch (Exception e) {
+            resultMap.put("resultCode", "-1");
+            resultMap.put("resultMsg", "오류가 발생했습니다: " + e.getMessage());
+        }
+        return resultMap;
+    }
+
+    /**
+     * [신규] 전시부스 인보이스 생성 API
+     * - Service를 호출하여 인보이스 데이터를 생성하고, 생성된 인보이스의 PK(invoiceSeq)를 반환합니다.
+     */
+    @PostMapping("/mng/exhibitorNew/application/booth/invoice/insert.do")
+    @ResponseBody
+    public Map<String, Object> createBoothInvoice(@RequestBody Map<String, String> payload) {
+        Map<String, Object> resultMap = new HashMap<>();
+        String exhibitorSeq = payload.get("exSeq");
+
+        try {
+            InvoiceBoothDTO newInvoice = kibsMngService.createAndInsertInvoiceBooth(exhibitorSeq);
+            resultMap.put("resultCode", "0");
+            resultMap.put("resultMsg", "인보이스가 생성되었습니다.");
+            resultMap.put("customValue", newInvoice.getInvoiceSeq()); // JavaScript에서 사용할 수 있도록 PK 반환
+        } catch (Exception e) {
+            resultMap.put("resultCode", "-1");
+            resultMap.put("resultMsg", "인보이스 생성 중 오류 발생: " + e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @PostMapping("/mng/exhibitorNew/application/utility/invoice/insert.do")
+    @ResponseBody
+    public Map<String, Object> createUtilityInvoice(@RequestBody Map<String, String> payload) {
+        Map<String, Object> resultMap = new HashMap<>();
+        String exhibitorSeq = payload.get("exSeq");
+
+        try {
+            InvoiceUtilityDTO newInvoice = kibsMngService.createAndInsertInvoiceUtility(exhibitorSeq);
+            resultMap.put("resultCode", "0");
+            resultMap.put("resultMsg", "유틸리티 인보이스가 생성되었습니다.");
+            resultMap.put("customValue", newInvoice.getInvoiceSeq());
+        } catch (Exception e) {
+            resultMap.put("resultCode", "-1");
+            resultMap.put("resultMsg", "유틸리티 인보이스 생성 중 오류 발생: " + e.getMessage());
+        }
+        return resultMap;
+    }
+
+    /**
+     * [신규] 선택된 인보이스들을 이메일로 발송하는 API
+     */
+    @PostMapping("/mng/exhibitorNew/application/invoice/send.do")
+    @ResponseBody
+    public Map<String, Object> sendInvoices(@RequestBody List<Integer> invoiceSeqList) {
+        // String adminId = (String) session.getAttribute("adminId");
+        String adminId = "admin"; // 임시 관리자 ID
+        try {
+            return kibsMngService.sendInvoices(invoiceSeqList, adminId);
+        } catch (Exception e) {
+            Map<String, Object> errorMap = new HashMap<>();
+            errorMap.put("resultCode", "-1");
+            errorMap.put("resultMsg", "발송 중 오류가 발생했습니다: " + e.getMessage());
+            return errorMap;
+        }
+    }
 }

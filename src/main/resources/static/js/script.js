@@ -43,16 +43,16 @@ $(document).ready(function () {
     }
 
     // Handle .dept1 click on page load
-    $('.site_map_nav .dept1 > li').on('click', handleDept1Click);
+    $('.site_map_nav .dept1 > li:has(.dept2)').on('click', handleDept1Click);
 
     // Handle .dept1 click on window resize
     $( window ).on('resize', function() {
-        $('.site_map_nav .dept1 > li').off('click', handleDept1Click);
-        $('.site_map_nav .dept1 > li').on('click', handleDept1Click);
+        // 여기에도 동일하게 적용해야 합니다.
+        $('.site_map_nav .dept1 > li').off('click', handleDept1Click); // off는 그대로 두어도 괜찮습니다.
+        $('.site_map_nav .dept1 > li:has(.dept2)').on('click', handleDept1Click);
     });
 
-
-    // 좋아요 버튼    
+    // 좋아요 버튼
     $('.btnLike').on('click', function () {
         var likeImage = $(this).find('.likeImg');
         var currentSrc = likeImage.attr('src');
@@ -119,7 +119,7 @@ $(document).ready(function () {
     });
 
     // 팝업 폼
-    $('*').on('click', function () {
+    $('[data-pop]').on('click', function () {
         let onFlag = true;
         var pop_id = $(this).attr('data-pop');
         if(pop_id === 'popFormInfoLoad'){ // 참가신청 정보 불러오기

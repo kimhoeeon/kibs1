@@ -258,8 +258,6 @@ public interface KibsMngMapper {
 
     String getInvoiceBoothSeq();
 
-    Integer insertInvoiceBooth(InvoiceBoothDTO invoiceBoothDTO);
-
     String getInvoiceUtilitySeq();
 
     Integer insertInvoiceUtility(InvoiceUtilityDTO invoiceUtilityDTO);
@@ -267,8 +265,6 @@ public interface KibsMngMapper {
     Integer updateInvoiceBoothDelYn(InvoiceBoothDTO invoiceBoothDTO);
 
     Integer updateInvoiceUtilityDelYn(InvoiceUtilityDTO invoiceUtilityDTO);
-
-    Integer updateInvoiceBoothFilePath(InvoiceBoothDTO invoiceBoothDTO);
 
     Integer updateInvoiceUtilityFilePath(InvoiceUtilityDTO invoiceUtilityDTO);
 
@@ -573,4 +569,38 @@ public interface KibsMngMapper {
     List<StatDTO> selectStatAccessMonthList();
 
     List<StatDTO> selectExhNewFieldList();
+
+    ExhibitorNewDTO selectExhibitorNewInvoiceDetail(String seq);
+
+    int updateExhibitorNewSpecialDiscount(ExhibitorNewDTO dto);
+
+    List<DepositHistoryDTO> selectDepositHistoryList(String exhibitorSeq);
+
+    int insertDepositHistory(DepositHistoryDTO dto);
+
+    int updateDepositHistory(DepositHistoryDTO dto);
+
+    int deleteDepositHistory(int depositSeq);
+
+    int insertInvoiceBooth(InvoiceBoothDTO invoiceDto);
+
+    List<InvoiceBoothDTO> selectInvoiceBoothList(String exhibitorSeq);
+
+    int updateInvoiceBoothFilePath(InvoiceBoothDTO invoiceDto);
+
+    int updateInvoiceBoothSendStatus(InvoiceBoothDTO invoiceDto);
+
+    int deleteInvoiceBooth(int invoiceSeq);
+
+    int countInvoiceBoothByExhibitorSeq(String exhibitorSeq);
+
+    InvoiceBoothDTO selectInvoiceBoothBySeq(Integer integer);
+
+    int countInvoiceUtilityByExhibitorSeq(String exhibitorSeq);
+
+    InvoiceUtilityDTO selectInvoiceUtilityBySeq(int generatedSeq);
+
+    List<InvoiceUtilityDTO> selectInvoiceUtilityList(String exhibitorSeq);
+
+    int deleteInvoiceUtility(int invoiceSeq);
 }
