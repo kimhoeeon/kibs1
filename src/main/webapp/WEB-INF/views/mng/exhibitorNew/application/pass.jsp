@@ -2228,19 +2228,11 @@ if (document.documentElement) {
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                                     <!--begin::Export dropdown-->
-                                    <button type="button" onclick="f_excel_export('kt_exhibitor_application_pass_new_table', '출입증_신청')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                    <button type="button" onclick="f_exhibitor_pass_excel_export()" class="btn btn-success btn-active-light-success" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
-                                        </i>Export as Excel</button>
-                                    <!--end::Export dropdown-->
-
-                                    <!--begin::Export dropdown-->
-                                    <%--<button type="button" onclick="f_exhibitor_pass_excel_export()" class="btn btn-warning btn-active-light-warning" data-kt-menu-placement="bottom-end">
-                                        <i class="ki-duotone ki-exit-down fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>전체 출입증 정보 상세 다운로드</button>--%>
+                                        </i>전체 출입증 정보 상세 다운로드</button>
                                     <!--end::Export dropdown-->
                                 </div>
                                 <!--end::Actions-->

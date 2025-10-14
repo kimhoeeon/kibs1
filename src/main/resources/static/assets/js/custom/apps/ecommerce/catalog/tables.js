@@ -1190,6 +1190,14 @@ let KTAppExhibitorNewApplicationSign = function () {
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderCompanySignNameKoCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderCompanySignNameEnCell(data, type, row); }
+                },
+                {
                     'targets': 8,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
@@ -1214,6 +1222,14 @@ let KTAppExhibitorNewApplicationSign = function () {
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
         return companyNameKo + '<br>' + companyNameEn;
+    }
+
+    function renderCompanySignNameKoCell(data, type, row){
+        return nvl(row.companySignNameKo,'-');
+    }
+
+    function renderCompanySignNameEnCell(data, type, row){
+        return nvl(row.companySignNameEn,'-');
     }
 
     function renderActionsCell(data, type, row){

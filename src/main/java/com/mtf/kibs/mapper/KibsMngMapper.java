@@ -488,7 +488,7 @@ public interface KibsMngMapper {
 
     List<VisitorDetailDTO> selectTransferVisitorDetailList(VisitorDetailDTO visitorDetailDTO);
 
-    List<PassDetailDTO> selectExcelPassDetailList(PassDetailDTO passDetailDTO);
+    List<PassDetailDTO> selectExcelPassDetailList(String transferYear);
 
     Integer saveAccessIp(AccessDTO info);
 
@@ -588,8 +588,6 @@ public interface KibsMngMapper {
 
     int updateInvoiceBoothFilePath(InvoiceBoothDTO invoiceDto);
 
-    int updateInvoiceBoothSendStatus(InvoiceBoothDTO invoiceDto);
-
     int deleteInvoiceBooth(int invoiceSeq);
 
     int countInvoiceBoothByExhibitorSeq(String exhibitorSeq);
@@ -603,4 +601,14 @@ public interface KibsMngMapper {
     List<InvoiceUtilityDTO> selectInvoiceUtilityList(String exhibitorSeq);
 
     int deleteInvoiceUtility(int invoiceSeq);
+
+    Integer updateInvoiceBoothSendStatus(InvoiceBoothDTO invoiceBoothDTO);
+
+    Integer updateInvoiceUtilitySendStatus(InvoiceUtilityDTO invoiceUtilityDTO);
+
+    List<SignDetailDTO> selectExcelSignDetailList(String transferYear);
+
+    List<UtilityDetailDTO> selectExcelUtilityDetailList(String transferYear);
+
+    List<ProductDetailDTO> selectExcelProductDetailList(String transferYear);
 }

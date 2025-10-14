@@ -12,6 +12,7 @@ public class InvoiceUtilityDTO {
     private String exhibitorSeq;
     private String invoiceCode;
     private String title;
+    private String recipientEmail;
 
     // 유틸리티 스냅샷 필드
     private int utilityJuganCnt;

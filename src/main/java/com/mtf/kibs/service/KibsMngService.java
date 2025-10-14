@@ -410,7 +410,7 @@ public interface KibsMngService {
 
     ResponseDTO processUpdateTransferVisitor(VisitorDTO visitorDTO);
 
-    List<PassDetailDTO> processSelectExcelPassDetailList(PassDetailDTO passDetailDTO);
+    List<PassDetailDTO> processSelectExcelPassDetailList(String transferYear);
 
     ResponseDTO processSaveAccessIp(List<AccessDTO> accessDTOList);
 
@@ -481,4 +481,10 @@ public interface KibsMngService {
     List<InvoiceUtilityDTO> getInvoiceUtilityList(String seq);
 
     boolean deleteInvoiceUtility(int invoiceSeq);
+
+    List<SignDetailDTO> processSelectExcelSignDetailList(String transferYear);
+
+    List<UtilityDetailDTO> processSelectExcelUtilityDetailList(String transferYear);
+
+    List<ProductDetailDTO> processSelectExcelProductDetailList(String transferYear);
 }

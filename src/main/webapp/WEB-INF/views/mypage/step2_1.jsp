@@ -177,6 +177,36 @@
                             </div>
                             <!-- //등록비-->
 
+                            <c:if test="${info.memberCompanyYn == 'Y'}">
+                                <div class="form_wrap">
+                                    <div class="form_tit">
+                                        <div class="big">한국해양레저산업협회 발전기금</div>
+                                    </div>
+                                    <div class="form_booth form_ptag">
+                                        <div class="form_ptag_box">
+                                            <ul class="form_ptag_list">
+                                                <li class="form_ptag_hd">
+                                                    <div class="cate">구분</div>
+                                                    <div class="amount">금액 (원)</div>
+                                                    <div class="note">비고</div>
+                                                </li>
+                                                <li>
+                                                    <div class="cate">해양레저산업협회<br>발전기금</div>
+                                                    <div class="amount">
+                                                        <p class="price">
+                                                            <fmt:formatNumber value="${info.boothPrcSum * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                                        </p>
+                                                    </div>
+                                                    <div class="note">
+                                                        참가비 내역 합계(공급가)의 10%
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:if>
+
                             <!-- 부스 신청 -->
                             <div class="form_wrap">
                                 <div class="form_tit">

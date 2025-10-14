@@ -49,85 +49,63 @@
 </head>
 
 <body>
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-<div id="container">
+    <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-    <!-- section -->
-    <div class="sub_top">
-        <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>홈</span><span>참관객</span><span>참관신청확인</span>
+    <div id="container">
+
+        <!-- section -->
+        <div class="sub_top">
+            <div class="inner">
+                <div class="sub_top_box">
+                    <div class="sub_top_nav">
+                        <span>홈</span><span>해상전시회</span>
+                    </div>
+                    <div class="sub_top_tit">해상전시회</div>
                 </div>
-                <div class="sub_top_tit">참관신청확인</div>
             </div>
         </div>
-    </div>
-    <!-- //section -->
+        <!-- //section -->
 
-    <!-- section -->
-    <div class="sub_tab">
-        <div class="inner">
-            <div class="sub_tab_box">
-                <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
-                <div class="optionBox">
-                    <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">참관객</div>
-                        <div class="tabOptSel">
-                            <a href="/guide/summary.do">KIBS 안내</a>
-                            <a href="/exhibitor/guide.do">참가기업</a>
-                            <a class="active" href="/visitor/guide_off.do">참관객</a>
-                            <a href="/guide/notice.do">미디어센터</a>
-                            <a href="/online/kibstv.do">온라인 전시관</a>
-                            <a href="/guide/maritime_expo.do">해상전시회</a>
-                            <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
-                            <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
-                        </div>
-                    </div>
-                    <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">참관신청확인</div>
-                        <div class="tabOptSel">
-                            <a href="/visitor/guide_off.do">참관안내</a>
-                            <a href="/visitor/apply.do">사전등록</a>
-                            <a href="/guide/conference.do">컨퍼런스</a>
-                            <a href="/guide/program.do">체험 프로그램</a>
-                            <a class="active" href="/visitor/login.do">참관신청확인</a>
-                            <a href="/visitor/faq.do">FAQ</a>
+        <!-- section -->
+        <div class="sub_tab">
+            <div class="inner">
+                <div class="sub_tab_box">
+                    <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
+                    <div class="optionBox">
+                        <div class="tabOpt1 tabOption">
+                            <div class="tabOptAct">해상전시회</div>
+                            <div class="tabOptSel">
+                                <a href="/guide/summary.do">KIBS 안내</a>
+                                <a href="/exhibitor/guide.do">참가기업</a>
+                                <a href="/visitor/guide_off.do">참관객</a>
+                                <a href="/guide/notice.do">미디어센터</a>
+                                <a href="/online/kibstv.do">온라인 전시관</a>
+                                <a class="active" href="/guide/maritime_expo.do">해상전시회</a>
+                                <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
+                                <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- section -->
+        <!-- section -->
 
-    <!-- section -->
-    <div class="login_s padding_tb">
-        <div class="inner">
-            <div class="login_top_txt">사전등록 신청 시 등록하셨던 정보를 입력해 주세요.</div>
-            <div class="login_box">
-                <div class="login_form">
-                    <div class="loginInfo">
-                        <p>이름</p>
-                        <input type="text" id="name" name="name" placeholder="이름을 입력해 주세요.">
-                    </div>
-                    <div class="loginInfo">
-                        <p>휴대전화</p>
-                        <input type="tel" id="phone" name="phone" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
-                    </div>
-                    <div class="btnLogin"><a href="javascript:void(0);" onclick="f_pre_apply_check_login()" class="btnSt01">등록 확인하기</a></div>
+        <!-- section -->
+        <div class="maritime padding_tb summ_join">
+            <div class="inner">
+                <div class="maritime_wrap">
+                    <img src="/img/maritim_01.jpg" alt="해양전시회 이미지">
+                    <img src="/img/maritim_02.jpg" alt="해양전시회 이미지">
+                    <img src="/img/maritim_03.jpg" alt="해양전시회 이미지">
                 </div>
             </div>
         </div>
+
     </div>
-    <!-- //section -->
 
-</div>
-
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
-
-
+    <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
 </body>
 </html>

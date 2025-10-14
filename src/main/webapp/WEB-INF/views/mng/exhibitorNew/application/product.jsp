@@ -2218,18 +2218,14 @@ if (document.documentElement) {
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                                     <!--begin::Export dropdown-->
-                                    <button type="button" onclick="f_excel_export('kt_exhibitor_application_product_new_table', '온라인전시관')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                    <button type="button" onclick="f_exhibitor_product_new_excel_export()" class="btn btn-success btn-active-light-success" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
-                                        </i>Export as Excel</button>
+                                        </i>전체 전시품 신청 정보 상세 다운로드</button>
                                     <!--end::Export dropdown-->
                                 </div>
                                 <!--end::Actions-->
-
-                                <!--begin::Hide default export buttons-->
-                                <div id="kt_datatable_excel_hidden_buttons" class="d-none"></div>
-                                <!--end::Hide default export buttons-->
                             </div>
                             <!--end::Toolbar container-->
                         </div>

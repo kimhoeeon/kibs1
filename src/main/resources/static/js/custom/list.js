@@ -594,7 +594,6 @@ function requestMakeMailFormat(data){
         receiverArr.push({email: 'eh32408@kintex.com'});
         receiverArr.push({email: 'eh32508@kintex.com'});
     }else{
-        let cpEmail = '';
         // kyj@meetingfan.com
         // khe@meetingfan.com
         // cmn@meetingfan.com

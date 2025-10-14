@@ -3456,7 +3456,7 @@
              , en.discount_prc_sum
              , en.init_regi_dttm
              , en.final_regi_dttm
-             , IF(( SELECT COUNT(*) FROM invoice_booth ib WHERE ib.ex_seq = en.seq AND ib.del_yn = 'N') <![CDATA[>]]> 0, 'Y', 'N') AS invoiceYn
+             , IF(( SELECT COUNT(*) FROM invoice_booth ib WHERE ib.exhibitor_seq = en.seq AND ib.del_yn = 'N') <![CDATA[>]]> 0, 'Y', 'N') AS invoiceYn
         FROM exhibitor_new en
         WHERE 1=1
         <if test='transferYear != null and transferYear != ""'>
@@ -3672,15 +3672,12 @@
 
     <insert id="insertInvoiceBooth" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO" useGeneratedKeys="true" keyProperty="invoiceSeq">
         /* com.mtf.kibs.mapper.KibsMapper.insertInvoiceBooth */
-        INSERT INTO invoice_booth (
-            exhibitor_seq, invoice_code, title,
-            booth_prc_sum, discount_prc_sum, prc_sum, prc_vat, prc_total,
-            end_dttm, init_regi_dttm
-        ) VALUES (
-                     #{exhibitorSeq}, #{invoiceCode}, #{title},
-                     #{boothPrcSum}, #{discountPrcSum}, #{prcSum}, #{prcVat}, #{prcTotal},
-                     #{endDttm}, NOW()
-                 )
+        INSERT INTO invoice_booth (exhibitor_seq, invoice_code, title, recipient_email,
+                                   booth_prc_sum, discount_prc_sum, prc_sum, prc_vat, prc_total,
+                                   end_dttm, init_regi_dttm)
+        VALUES (#{exhibitorSeq}, #{invoiceCode}, #{title}, #{recipientEmail},
+                #{boothPrcSum}, #{discountPrcSum}, #{prcSum}, #{prcVat}, #{prcTotal},
+                #{endDttm}, NOW())
     </insert>
 
     <update id="deleteInvoiceBooth" parameterType="java.lang.Integer">
@@ -3739,28 +3736,29 @@
     </select>
 
     <insert id="insertInvoiceUtility" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO" useGeneratedKeys="true" keyProperty="invoiceSeq">
-        INSERT INTO invoice_utility (
-            exhibitor_seq,          invoice_code,               title,
-            utility_jugan_cnt,      utility_jugan_fee,          utility_day_cnt,            utility_day_fee,
-            utility_compressed_air_cnt, utility_compressed_air_fee, utility_water_basic_cnt,    utility_water_basic_fee,
-            utility_internet_cnt,   utility_internet_fee,       utility_pytex_new_cnt,      utility_pytex_new_fee,
-            utility_pytex_re_cnt,   utility_pytex_re_fee,       utility_barcode_cnt,        utility_barcode_fee,
-            utility_prc_sum,
-            prc_sum,                prc_vat,                    prc_total,
-            end_dttm,               init_regi_dttm
-        ) VALUES (
-                     #{exhibitorSeq},          #{invoiceCode},               #{title},
-                     #{utilityJuganCnt},      #{utilityJuganFee},          #{utilityDayCnt},            #{utilityDayFee},
-                     #{utilityCompressedAirCnt}, #{utilityCompressedAirFee}, #{utilityWaterBasicCnt},    #{utilityWaterBasicFee},
-                     #{utilityInternetCnt},   #{utilityInternetFee},       #{utilityPytexNewCnt},      #{utilityPytexNewFee},
-                     #{utilityPytexReCnt},   #{utilityPytexReFee},       #{utilityBarcodeCnt},        #{utilityBarcodeFee},
-                     #{utilityPrcSum},
-                     #{prcSum},                #{prcVat},                    #{prcTotal},
-                     #{endDttm},               NOW()
-                 )
+        INSERT INTO invoice_utility (exhibitor_seq, invoice_code, title, recipient_email,
+                                     utility_jugan_cnt, utility_jugan_fee, utility_day_cnt, utility_day_fee,
+                                     utility_compressed_air_cnt, utility_compressed_air_fee, utility_water_basic_cnt,
+                                     utility_water_basic_fee,
+                                     utility_internet_cnt, utility_internet_fee, utility_pytex_new_cnt,
+                                     utility_pytex_new_fee,
+                                     utility_pytex_re_cnt, utility_pytex_re_fee, utility_barcode_cnt,
+                                     utility_barcode_fee,
+                                     utility_prc_sum,
+                                     prc_sum, prc_vat, prc_total,
+                                     end_dttm, init_regi_dttm)
+        VALUES (#{exhibitorSeq}, #{invoiceCode}, #{title}, #{recipientEmail},
+                #{utilityJuganCnt}, #{utilityJuganFee}, #{utilityDayCnt}, #{utilityDayFee},
+                #{utilityCompressedAirCnt}, #{utilityCompressedAirFee}, #{utilityWaterBasicCnt},
+                #{utilityWaterBasicFee},
+                #{utilityInternetCnt}, #{utilityInternetFee}, #{utilityPytexNewCnt}, #{utilityPytexNewFee},
+                #{utilityPytexReCnt}, #{utilityPytexReFee}, #{utilityBarcodeCnt}, #{utilityBarcodeFee},
+                #{utilityPrcSum},
+                #{prcSum}, #{prcVat}, #{prcTotal},
+                #{endDttm}, NOW())
     </insert>
 
-    <update id="updateInvoiceUtilitySendStatus" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
+    <update id="updateInvoiceUtilitySendStatus" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceUtilitySendStatus */
         UPDATE invoice_utility
         SET send_status = #{sendStatus},
@@ -4062,7 +4060,7 @@
              , IFNULL(en.utility_prc_sum,0) as utility_prc_sum
              , en.init_regi_dttm
              , en.final_regi_dttm
-             , IF(( SELECT COUNT(*) FROM invoice_booth ib WHERE ib.ex_seq = en.seq AND ib.del_yn = 'N') <![CDATA[>]]> 0, 'Y', 'N') AS invoiceYn
+             , IF(( SELECT COUNT(*) FROM invoice_booth ib WHERE ib.exhibitor_seq = en.seq AND ib.del_yn = 'N') <![CDATA[>]]> 0, 'Y', 'N') AS invoiceYn
         FROM exhibitor_new en
         WHERE 1=1
         <if test='transferYear != null and transferYear != ""'>
@@ -4249,7 +4247,7 @@
         UPDATE invoice_booth
         SET send_status                = '열람'
           , final_regi_dttm            = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        WHERE seq = #{seq}
+        WHERE invoice_seq = #{seq}
     </update>
 
     <update id="updateInvoiceUtilityMailOpen" parameterType="com.mtf.kibs.dto.MailOpenDTO">
@@ -4257,7 +4255,7 @@
         UPDATE invoice_utility
         SET send_status                = '열람'
           , final_regi_dttm            = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        WHERE seq = #{seq}
+        WHERE invoice_seq = #{seq}
     </update>
 
     <select id="selectPassList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.MngPassDTO">
@@ -5338,146 +5336,77 @@
 
     <select id="selectExhibitorNewDetailList" parameterType="com.mtf.kibs.dto.ExhibitorNewDetailDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDetailDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewDetailList */
-        SELECT e.participation_status
-             , e.approval_status
-             , e.booth_num
-             , e.id
-             , e.init_regi_dttm
-             , e.final_regi_dttm
-             , e.prc_yn
-             , e.bp_num
-             , e.contact_writer
-             , e.contact_date
-             , e.contact_content
-             , e.reference_writer
-             , e.reference_date
-             , e.reference_content
-             , e.company_license_num
-             , e.company_name_ko
-             , e.company_name_en
-             , e.company_address
-             , e.company_address_detail
-             , e.factory_address
-             , e.factory_address_detail
-             , e.company_ceo
-             , e.company_tel
-             , e.company_homepage
-             , e.company_fax
-             , e.industry_part
-             , e.industry_part_etc
-             , e.employee_cnt
-             , e.pre_part_year
-             , e.member_company_yn
-             , e.name
-             , e.position
-             , e.depart
-             , e.tel
-             , e.phone
-             , e.email
-             , e.email_marketing_yn
-             , IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_name,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonName
-             , IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_position,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonPosition
-             , IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_depart,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonDepart
-             , IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_tel,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonTel
-             , IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_phone,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonPhone
-             , IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_email,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonEmail
-             , e.company_intro_video
-             , e.company_intro_ko
-             , e.company_intro_en
-             , e.company_purpose_ko
-             , e.company_purpose_en
-             , e.new_item_intro_ko
-             , e.new_item_intro_en
-             , e.promotion_plan
-             , e.field_part
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_option_big,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productOptionBig
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_option_small,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productOptionSmall
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_name_ko,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productNameKo
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_name_en,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productNameEn
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_qty,'0') separator '^') from product_new p where p.ex_seq = e.seq),'') as productQty
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_brand,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productBrand
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_length,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productLength
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_width,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productWidth
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_height,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productHeight
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_weight,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productWeight
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_material,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productMaterial
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_year,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productYear
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_intro_ko,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productIntroKo
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_intro_en,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productIntroEn
-             , IFNULL((select GROUP_CONCAT(coalesce(p.product_link,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productLink
-             , e.company_badge
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_option_big,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineOptionBig
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_option_small,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineOptionSmall
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_name_ko,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineNameKo
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_name_en,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineNameEn
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_intro_ko,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineIntroKo
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_intro_en,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineIntroEn
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_link,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineLink
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_length,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineLength
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_width,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineWidth
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_height,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineHeight
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_weight,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineWeight
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_material,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineMaterial
-             , IFNULL((select GROUP_CONCAT(coalesce(o.online_year,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineYear
-             , e.export_meeting_yn
-             , e.registration_cnt
-             , e.stand_alone_booth_cnt
-             , e.assembly_booth_cnt
-             , IFNULL(e.booth_prc_sum,'0') as boothPrcSum
-             , e.online_booth_cnt
-             , e.discount_early_1
-             , e.discount_early_2
-             , e.discount_first
-             , e.discount_re
-             , e.discount_scale_1
-             , e.discount_scale_2
-             , e.discount_scale_3
-             , e.discount_scale_4
-             , e.discount_scale_5
-             , e.discount_scale_6
-             , e.discount_leisure
-             , IFNULL(e.discount_prc_sum,'0') as discountPrcSum
-             , e.company_sign_name_ko
-             , e.company_sign_name_en
-             , IFNULL(e.utility_jugan_cnt,'0') as utilityJuganCnt
-             , IFNULL(e.utility_day_cnt,'0') as utilityDayCnt
-             , IFNULL(e.utility_compressed_air_cnt,'0') as utilityCompressedAirCnt
-             , IFNULL(e.utility_water_basic_cnt,'0') as utilityWaterBasicCnt
-             , IFNULL(e.utility_internet_cnt,'0') as utilityInternetCnt
-             , IFNULL(e.utility_pytex_new_cnt,'0') as utilityPytexNewCnt
-             , IFNULL(e.utility_pytex_re_cnt,'0') as utilityPytexReCnt
-             , IFNULL(e.utility_barcode_cnt,'0') as utilityBarcodeCnt
-             , IFNULL(e.utility_prc_sum,'0') as utilityPrcSum
-             , IFNULL((select GROUP_CONCAT(coalesce(p.pass_name,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passName
-             , IFNULL((select GROUP_CONCAT(coalesce(p.pass_last_name,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passLastName
-             , IFNULL((select GROUP_CONCAT(coalesce(p.pass_first_name,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passFirstName
-             , IFNULL((select GROUP_CONCAT(coalesce(p.pass_position_ko,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passPositionKo
-             , IFNULL((select GROUP_CONCAT(coalesce(p.pass_position_en,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passPositionEn
-             , IFNULL((select GROUP_CONCAT(coalesce(p.pass_note,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passNote
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_name,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyName
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_country,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyCountry
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_location,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyLocation
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_homepage,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyHomepage
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_depart,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyDepart
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_position,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyPosition
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_email,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyEmail
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_tel,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyTel
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_phone,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyPhone
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_fax,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyFax
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_item,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyItem
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_invite_reason,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyInviteReason
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_progress_yn,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyProgressYn
-             , IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_hope,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyHope
-             , IFNULL((select GROUP_CONCAT(coalesce(g.gift_gbn,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftGbn
-             , IFNULL((select GROUP_CONCAT(coalesce(g.gift_cnt,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftCnt
-             , IFNULL((select GROUP_CONCAT(coalesce(g.gift_classify,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftClassify
-             , IFNULL((select GROUP_CONCAT(coalesce(g.gift_name,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftName
-             , IFNULL((select GROUP_CONCAT(coalesce(g.gift_content,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftContent
-             , IFNULL((select GROUP_CONCAT(coalesce(g.gift_photo,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftPhoto
-             , IFNULL((select GROUP_CONCAT(coalesce(g.gift_company_logo,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftCompanyLogo
-             , IFNULL((select GROUP_CONCAT(coalesce(g.gift_price,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftPrice
-             , IFNULL((select GROUP_CONCAT(coalesce(g.gift_sponsor_price,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftSponsorPrice
-             , IFNULL((select GROUP_CONCAT(coalesce(g.gift_note,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftNote
+        SELECT
+            e.*,
+            IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_name,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonName,
+            IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_position,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonPosition,
+            IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_depart,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonDepart,
+            IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_tel,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonTel,
+            IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_phone,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonPhone,
+            IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_email,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonEmail,
+
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_option_big,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productOptionBig,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_option_small,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productOptionSmall,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_name_ko,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productNameKo,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_name_en,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productNameEn,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_qty,'0') separator '^') from product_new p where p.ex_seq = e.seq),'') as productQty,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_brand,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productBrand,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_length,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productLength,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_width,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productWidth,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_height,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productHeight,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_weight,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productWeight,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_material,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productMaterial,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_year,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productYear,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_intro_ko,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productIntroKo,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_intro_en,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productIntroEn,
+            IFNULL((select GROUP_CONCAT(coalesce(p.product_link,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productLink,
+
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_option_big,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineOptionBig,
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_option_small,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineOptionSmall,
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_name_ko,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineNameKo,
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_name_en,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineNameEn,
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_intro_ko,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineIntroKo,
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_intro_en,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineIntroEn,
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_link,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineLink,
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_length,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineLength,
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_width,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineWidth,
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_height,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineHeight,
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_weight,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineWeight,
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_material,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineMaterial,
+            IFNULL((select GROUP_CONCAT(coalesce(o.online_year,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineYear,
+
+            IFNULL((select GROUP_CONCAT(coalesce(p.pass_name,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passName,
+            IFNULL((select GROUP_CONCAT(coalesce(p.pass_last_name,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passLastName,
+            IFNULL((select GROUP_CONCAT(coalesce(p.pass_first_name,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passFirstName,
+            IFNULL((select GROUP_CONCAT(coalesce(p.pass_position_ko,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passPositionKo,
+            IFNULL((select GROUP_CONCAT(coalesce(p.pass_position_en,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passPositionEn,
+            IFNULL((select GROUP_CONCAT(coalesce(p.pass_note,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passNote,
+
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_name,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyName,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_country,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyCountry,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_location,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyLocation,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_homepage,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyHomepage,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_depart,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyDepart,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_position,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyPosition,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_email,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyEmail,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_tel,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyTel,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_phone,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyPhone,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_fax,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyFax,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_item,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyItem,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_invite_reason,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyInviteReason,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_progress_yn,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyProgressYn,
+            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_hope,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyHope,
+
+            IFNULL((select GROUP_CONCAT(coalesce(g.gift_gbn,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftGbn,
+            IFNULL((select GROUP_CONCAT(coalesce(g.gift_cnt,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftCnt,
+            IFNULL((select GROUP_CONCAT(coalesce(g.gift_classify,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftClassify,
+            IFNULL((select GROUP_CONCAT(coalesce(g.gift_name,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftName,
+            IFNULL((select GROUP_CONCAT(coalesce(g.gift_content,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftContent,
+            IFNULL((select GROUP_CONCAT(coalesce(g.gift_photo,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftPhoto,
+            IFNULL((select GROUP_CONCAT(coalesce(g.gift_company_logo,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftCompanyLogo,
+            IFNULL((select GROUP_CONCAT(coalesce(g.gift_price,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftPrice,
+            IFNULL((select GROUP_CONCAT(coalesce(g.gift_sponsor_price,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftSponsorPrice,
+            IFNULL((select GROUP_CONCAT(coalesce(g.gift_note,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftNote
         FROM exhibitor_new e
         WHERE e.transfer_year = #{transferYear}
         ORDER BY e.init_regi_dttm asc, e.company_name_ko asc
@@ -5938,30 +5867,85 @@
         WHERE id = #{id}
     </update>
 
-    <select id="selectExcelPassDetailList" parameterType="com.mtf.kibs.dto.PassDetailDTO" resultType="com.mtf.kibs.dto.PassDetailDTO">
+    <select id="selectExcelPassDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.PassDetailDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExcelPassDetailList */
-        SELECT e.seq
-             , e.transfer_year
-             , p.user_id
-             , e.company_name_ko
-             , e.company_name_en
-             , p.pass_name
-             , p.pass_first_name
-             , p.pass_last_name
-             , p.pass_position_ko
-             , p.pass_position_en
-             , p.pass_note
-             , p.init_regi_dttm
-             , p.final_regi_dttm
-        FROM exhibitor e
-        LEFT JOIN pass p
-        ON e.seq = p.id
-        WHERE 1=1
-        AND e.transfer_year = #{transferYear}
-        AND p.user_id IS NOT NULL
-        ORDER BY NULLIF(p.pass_name, '') IS NOT NULL DESC
-               , e.company_name_ko DESC
-               , p.init_regi_dttm DESC
+        SELECT e.company_name_ko                                    as companyNameKo,
+               e.name                                               as representativeName,
+               e.phone                                              as representativePhone,
+               e.approval_status                                    as approvalStatus,
+               e.init_regi_dttm                                     as initRegiDttm,
+               p.pass_name                                          as passName,
+               p.pass_position_ko                                   as passPositionKo,
+               (SELECT COUNT(*) FROM pass_new WHERE ex_seq = e.seq) as passTotalCount
+        FROM pass_new p
+        JOIN exhibitor_new e
+            ON p.ex_seq = e.seq
+        WHERE e.transfer_year = #{transferYear}
+        ORDER BY e.company_name_ko ASC, p.seq ASC
+    </select>
+
+    <select id="selectExcelSignDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.SignDetailDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExcelSignDetailList */
+        SELECT
+            company_name_ko         as companyNameKo,
+            name                    as representativeName,
+            position                as representativePosition,
+            phone                   as representativePhone,
+            booth_type              as boothType,
+            company_sign_name_ko    as companySignNameKo,
+            company_sign_name_en    as companySignNameEn,
+            init_regi_dttm          as initRegiDttm,
+            approval_status         as approvalStatus
+        FROM
+            exhibitor_new
+        WHERE
+            transfer_year = #{transferYear}
+          AND (company_sign_name_ko IS NOT NULL OR company_sign_name_en IS NOT NULL)
+        ORDER BY
+            company_name_ko ASC
+    </select>
+
+    <select id="selectExcelUtilityDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.UtilityDetailDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExcelUtilityDetailList */
+        SELECT
+            company_name_ko     as companyNameKo,
+            name                as representativeName,
+            position            as representativePosition,
+            phone               as representativePhone,
+            booth_type          as boothType,
+            utility_prc_sum     as utilityPrcSum,
+            init_regi_dttm      as initRegiDttm
+        FROM
+            exhibitor_new
+        WHERE
+            transfer_year = #{transferYear}
+        ORDER BY
+            company_name_ko ASC
+    </select>
+
+    <select id="selectExcelProductDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ProductDetailDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExcelProductDetailList */
+        SELECT
+            e.seq as exhibitorSeq,
+            e.company_name_ko as companyNameKo,
+            p.product_option_big,
+            p.product_option_small,
+            p.product_name_ko,
+            p.product_qty,
+            p.product_brand,
+            p.product_length,
+            p.product_width,
+            p.product_height,
+            p.product_weight,
+            p.product_material,
+            p.product_year
+        FROM exhibitor_new e
+        INNER JOIN product_new p
+            ON e.seq = p.ex_seq
+        WHERE
+            e.transfer_year = #{transferYear}
+        ORDER BY
+            e.seq ASC, p.seq ASC
     </select>
 
     <update id="updateFileUseN" parameterType="com.mtf.kibs.dto.FileDTO">

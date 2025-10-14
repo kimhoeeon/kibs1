@@ -3520,13 +3520,19 @@ public class KibsMngServiceImpl implements KibsMngService {
         int utilityPrcSum = currentData.getUtilityPrcSum(); // 유틸리티 총액
         int basicDiscountSum = currentData.getDiscountPrcSum(); // 기본 할인 총액
 
-        // 3. '특별 할인 적용 전 공급가액'을 계산합니다.
+        int developmentFund = 0;
+        // 3. 해양레저산업협회 회원사('Y')일 경우, 발전기금을 계산합니다.
+        if ("Y".equals(currentData.getMemberCompanyYn())) {
+            developmentFund = (int) Math.floor(boothPrcSum * 0.1); // 부스 총액의 10%
+        }
+
+        // 4. '특별 할인 적용 전 공급가액'을 계산합니다.
         int baseAmount = boothPrcSum + utilityPrcSum - basicDiscountSum;
 
-        // 4. 화면에서 넘어온 데이터를 기반으로 '특별 할인액'을 계산합니다.
+        // 5. 화면에서 넘어온 데이터를 기반으로 '특별 할인액'을 계산합니다.
         int specialDiscountTotal = 0;
         if (specialDiscountData.isDiscountSpecial1Yn()) {
-            specialDiscountTotal += Math.floor(baseAmount * 0.5); // 올해의 제품상: 50%
+            specialDiscountTotal += Math.floor(baseAmount * 0.5);
         }
         if (specialDiscountData.isDiscountSpecial2Yn()) {
             specialDiscountTotal += specialDiscountData.getDiscountSpecial2Amount();
@@ -3535,17 +3541,22 @@ public class KibsMngServiceImpl implements KibsMngService {
             specialDiscountTotal += specialDiscountData.getDiscountSpecial3Amount();
         }
 
-        // 5. 모든 금액을 최종적으로 재계산합니다.
-        int newTotalDiscountSum = basicDiscountSum + specialDiscountTotal; // 기본 할인 + 특별 할인
-        int newPrcSum = boothPrcSum + utilityPrcSum - newTotalDiscountSum; // 최종 공급가액
-        int newPrcVat = (int) Math.floor(newPrcSum * 0.1); // 최종 부가세 (10%)
+        // 6. [수정] 모든 금액을 최종적으로 재계산합니다. (발전기금 포함)
+        int newTotalDiscountSum = basicDiscountSum + specialDiscountTotal;
+
+        // 최종 공급가액 = (부스비 + 유틸리티비 + 발전기금) - 총 할인액
+        int newPrcSum = (boothPrcSum + utilityPrcSum + developmentFund) - newTotalDiscountSum;
+
+        int newPrcVat = (int) Math.floor(newPrcSum * 0.1); // 최종 부가세
         int newPrcTotal = newPrcSum + newPrcVat; // 최종 합계
 
-        // 6. DTO에 재계산된 금액들을 담습니다.
+        // 7. DTO에 재계산된 금액들을 담습니다.
         specialDiscountData.setDiscountPrcSum(newTotalDiscountSum);
         specialDiscountData.setPrcSum(newPrcSum);
         specialDiscountData.setPrcVat(newPrcVat);
         specialDiscountData.setPrcTotal(newPrcTotal);
+
+        // 8. 확장된 UPDATE 쿼리를 호출하여 DB에 모든 정보를 한번에 저장합니다.
         return kibsMngMapper.updateExhibitorNewSpecialDiscount(specialDiscountData);
     }
 
@@ -3696,6 +3707,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         // 4. 새로운 InvoiceBoothDTO 객체를 생성하고, '금액 스냅샷'을 복사합니다.
         InvoiceBoothDTO newInvoice = new InvoiceBoothDTO();
         newInvoice.setExhibitorSeq(exhibitorSeq);
+        newInvoice.setRecipientEmail(currentExhibitorInfo.getEmail());
         newInvoice.setTitle(currentExhibitorInfo.getCompanyNameKo() + " - 전시부스");
 
         newInvoice.setInvoiceCode(invoiceCode);
@@ -3735,6 +3747,7 @@ public class KibsMngServiceImpl implements KibsMngService {
 
         InvoiceUtilityDTO newInvoice = new InvoiceUtilityDTO();
         newInvoice.setExhibitorSeq(exhibitorSeq);
+        newInvoice.setRecipientEmail(currentInfo.getEmail());
         newInvoice.setTitle(currentInfo.getCompanyNameKo() + " - 유틸리티");
         newInvoice.setInvoiceCode(invoiceCode);
 
@@ -3951,7 +3964,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         Integer result = 0;
 
         try {
-            result = kibsMngMapper.updateInvoiceBoothSendResult(invoiceBoothDTO);
+            result = kibsMngMapper.updateInvoiceBoothSendStatus(invoiceBoothDTO);
 
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -3979,7 +3992,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         Integer result = 0;
 
         try {
-            result = kibsMngMapper.updateInvoiceUtilitySendResult(invoiceUtilityDTO);
+            result = kibsMngMapper.updateInvoiceUtilitySendStatus(invoiceUtilityDTO);
 
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -4186,12 +4199,12 @@ public class KibsMngServiceImpl implements KibsMngService {
         System.out.println("KibsMngServiceImpl > processUpdateInvoiceMailOpen");
         Integer result = 0;
 
-        if("IB".equals(mailOpenDTO.getGbn())){
+        if("BOOTH".equals(mailOpenDTO.getGbn())){
             InvoiceBoothDTO invoiceBoothDTO = kibsMngMapper.selectInvoiceBoothSingle(mailOpenDTO.getSeq());
             if("미열람".equals(invoiceBoothDTO.getSendStatus())){
                 result = kibsMngMapper.updateInvoiceBoothMailOpen(mailOpenDTO);
             }
-        }else if("IU".equals(mailOpenDTO.getGbn())){
+        }else if("UTILITY".equals(mailOpenDTO.getGbn())){
             InvoiceUtilityDTO invoiceUtilityDTO = kibsMngMapper.selectInvoiceUtilitySingle(mailOpenDTO.getSeq());
             if("미열람".equals(invoiceUtilityDTO.getSendStatus())) {
                 result = kibsMngMapper.updateInvoiceUtilityMailOpen(mailOpenDTO);
@@ -5162,9 +5175,30 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public  List<PassDetailDTO> processSelectExcelPassDetailList(PassDetailDTO passDetailDTO) {
+    public List<PassDetailDTO> processSelectExcelPassDetailList(String transferYear) {
         System.out.println("KibsMngServiceImpl > processSelectExcelPassDetailList");
-        return kibsMngMapper.selectExcelPassDetailList(passDetailDTO);
+        return kibsMngMapper.selectExcelPassDetailList(transferYear);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<SignDetailDTO> processSelectExcelSignDetailList(String transferYear) {
+        System.out.println("KibsMngServiceImpl > processSelectExcelSignDetailList");
+        return kibsMngMapper.selectExcelSignDetailList(transferYear);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<UtilityDetailDTO> processSelectExcelUtilityDetailList(String transferYear) {
+        System.out.println("KibsMngServiceImpl > processSelectExcelUtilityDetailList");
+        return kibsMngMapper.selectExcelUtilityDetailList(transferYear);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<ProductDetailDTO> processSelectExcelProductDetailList(String transferYear) {
+        System.out.println("KibsMngServiceImpl > processSelectExcelProductDetailList");
+        return kibsMngMapper.selectExcelProductDetailList(transferYear);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})

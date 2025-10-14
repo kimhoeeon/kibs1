@@ -2641,7 +2641,7 @@ if (document.documentElement) {
                                     <!--begin::Basic info-->
                                     <div class="card mb-5 mb-xl-10">
                                         <div class="card-body p-9">
-                                                <%-- JavaScript에서 계산을 위해 기본값들을 hidden 필드로 저장 --%>
+                                            <%-- JavaScript에서 계산을 위해 기본값들을 hidden 필드로 저장 --%>
                                             <input type="hidden" id="baseBoothSum" value="${info.boothPrcSum}" />
                                             <input type="hidden" id="baseUtilitySum" value="${info.utilityPrcSum}" />
                                             <input type="hidden" id="baseDiscountSum" value="${info.discountPrcSum}" />
@@ -2671,28 +2671,24 @@ if (document.documentElement) {
                                                     </tr>
                                                     <tr>
                                                         <th class="text-gray-700 fw-semibold fs-6">특별 할인</th>
-                                                            <%-- JS가 이 부분을 실시간으로 업데이트합니다 --%>
                                                         <td id="summary_special_discount" class="text-end fw-bold fs-6 text-danger">
                                                             - ￦ 0
                                                         </td>
                                                     </tr>
                                                     <tr class="border-top border-gray-300 border-top-dashed">
                                                         <th class="text-gray-800 fw-bolder fs-5">합계 (공급가액)</th>
-                                                            <%-- JS가 이 부분을 실시간으로 업데이트합니다 --%>
                                                         <td id="summary_subtotal" class="text-end fw-bolder fs-5">
                                                             ￦ 0
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <th class="text-gray-800 fw-bolder fs-5">부가세 (VAT)</th>
-                                                            <%-- JS가 이 부분을 실시간으로 업데이트합니다 --%>
                                                         <td id="summary_vat" class="text-end fw-bolder fs-5">
                                                             ￦ 0
                                                         </td>
                                                     </tr>
                                                     <tr class="bg-light-primary">
                                                         <th class="text-primary fw-bolder fs-4">최종 합계 (총액)</th>
-                                                            <%-- JS가 이 부분을 실시간으로 업데이트합니다 --%>
                                                         <td id="summary_final_total" class="text-end text-primary fw-bolder fs-4">
                                                             ￦ 0
                                                         </td>
@@ -2800,7 +2796,7 @@ if (document.documentElement) {
                                                 <a href="/mng/exhibitorNew/participant/company.do" class="btn btn-info btn-active-light-info cursor-pointer">목록</a>
                                             </div>
                                             <div>
-                                                <button type="button" onclick="f_application_booth_new_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger">변경내용취소</button>
+                                                <button type="button" onclick="f_exhibitor_invoice_detail('${info.seq}')" class="btn btn-danger btn-active-light-danger">변경내용취소</button>
                                                 <button type="button" id="saveSpecialDiscountBtn" class="btn btn-primary btn-active-light-primary ms-2 me-2">변경내용저장</button>
                                                 <button type="button" class="btn btn-dark btn-active-light-dark" data-bs-toggle="modal" data-bs-target="#kt_modal_create_invoice">인보이스 생성</button>
                                             </div>
@@ -2820,6 +2816,10 @@ if (document.documentElement) {
                                             <h3 class="fw-bold m-0">인보이스</h3>
                                         </div>
                                         <!--end::Card title-->
+                                        <div class="card-toolbar">
+                                            <span class="text-muted me-2">발송 대상 이메일:</span>
+                                            <span class="fw-bold">${info.email}</span>
+                                        </div>
                                     </div>
                                     <!--begin::Card header-->
                                     <!--begin::Content-->
@@ -2836,6 +2836,8 @@ if (document.documentElement) {
                                                             <th>선택</th>
                                                             <th>NO</th>
                                                             <th>제목</th>
+                                                            <th>발송유형</th>
+                                                            <th>수신메일</th>
                                                             <th>수신상태</th>
                                                             <th>발송결과</th>
                                                             <th>발송일시</th>
@@ -2845,7 +2847,7 @@ if (document.documentElement) {
                                                     <!--begin::Table body-->
                                                     <tbody>
                                                         <c:if test="${empty boothInvoiceList && empty utilityInvoiceList}">
-                                                            <tr><td colspan="6" class="text-center">인보이스 내역 없음</td></tr>
+                                                            <tr><td colspan="8" class="text-center">인보이스 내역 없음</td></tr>
                                                         </c:if>
 
                                                         <%-- 1. 전시부스 인보이스 목록 표시 --%>
@@ -2860,6 +2862,8 @@ if (document.documentElement) {
                                                                 </td>
                                                                 <td>${invoice.invoiceCode}</td>
                                                                 <td>${invoice.title}</td>
+                                                                <td>전시부스</td>
+                                                                <td>${invoice.recipientEmail}</td>
                                                                 <td>${invoice.sendStatus}</td>
                                                                 <td>[${invoice.sendResult eq null ? '-' : invoice.sendResult}] ${invoice.sendResultMsg eq null ? '-' : invoice.sendResultMsg}</td>
                                                                 <td>${invoice.sendDttm eq null ? '-' : invoice.sendDttm}</td>
@@ -2878,6 +2882,8 @@ if (document.documentElement) {
                                                                 </td>
                                                                 <td>${invoice.invoiceCode}</td>
                                                                 <td>${invoice.title}</td>
+                                                                <td>유틸리티</td>
+                                                                <td>${invoice.recipientEmail}</td>
                                                                 <td>${invoice.sendStatus}</td>
                                                                 <td>[${invoice.sendResult eq null ? '-' : invoice.sendResult}] ${invoice.sendResultMsg eq null ? '-' : invoice.sendResultMsg}</td>
                                                                 <td>${invoice.sendDttm eq null ? '-' : invoice.sendDttm}</td>

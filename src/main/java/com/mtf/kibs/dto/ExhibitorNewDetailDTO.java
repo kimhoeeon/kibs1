@@ -189,4 +189,21 @@ public class ExhibitorNewDetailDTO {
     private Integer boothPrcSum;
     private Integer discountPrcSum;
     private Integer utilityPrcSum;
+
+    // 최종 계산 금액
+    private Integer prcSum;
+    private Integer prcVat;
+    private Integer prcTotal;
+
+    // 특별 할인
+    private boolean discountSpecial1Yn;
+    private String  discountSpecial1Note;
+    private boolean discountSpecial2Yn;
+    private String  discountSpecial2Reason;
+    private int     discountSpecial2Amount;
+    private String  discountSpecial2Note;
+    private boolean discountSpecial3Yn;
+    private String  discountSpecial3Reason;
+    private int     discountSpecial3Amount;
+    private String  discountSpecial3Note;
 }

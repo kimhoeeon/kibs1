@@ -8,21 +8,16 @@ import lombok.ToString;
 @Setter
 @ToString
 public class PassDetailDTO {
-    String seq; //SEQ
-    String id; //업체ID
-    String userId; //ID
-    String companyNameKo;
-    String companyNameEn;
-    String transferYear; //연도
-    String passName; //출입증 성명(국문)
-    String passLastName; //출입증 성(영문)
-    String passFirstName; //출입증 이름(영문)
-    String passPositionKo; //직책(국문)
-    String passPositionEn; //직책(영문)
-    String passNote; //출입증 비고
-    String note; //비고
-    String initRegiPic; //최초 등록 담당자
-    String initRegiDttm; //최초 등록 일시
-    String finalRegiPic; //최종 변경 담당자
-    String finalRegiDttm; //최종 변경 일시
+    private String companyNameKo;
+    private String representativeName; // 대표 담당자명 (e.g., info.name)
+    private String representativePhone; // 대표 담당자 연락처 (e.g., info.phone)
+    private String approvalStatus;
+    private String initRegiDttm;
+
+    // pass_new 테이블에서 가져올 정보
+    private String passName;
+    private String passPositionKo;
+
+    // 계산된 값
+    private int passTotalCount; // 해당 업체의 총 출입증 신청 인원
 }

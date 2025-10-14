@@ -63,363 +63,399 @@
 <!--begin::Body-->
 <body>
 
-    <input type="hidden" id="filePath" name="filePath" value="${info.filePath}"/>
+    <input type="hidden" id="filePath" name="filePath" value="${invoiceInfo.filePath}"/>
 
     <!-- pdf추출용 width=794px -->
     <div class="inv_wrap">
-        <div class="inv_box">
 
-            <!-- box -->
-            <div class="top_box">
-                <div class="box">
-                    <div class="event">
-                        <div class="logo"><img src="/img/invoce_logo_kibs.png"></div>
-                        <div class="date">2026.3.6(FRI) ~ 2025.3.8.(SUN), KINTEX</div>
-                    </div>
-                    <div class="doc">견적서</div>
+        <%-- ========================= ▼ PDF 1페이지 시작 ▼ ========================= --%>
+
+        <!-- box -->
+        <div class="top_box">
+            <div class="box">
+                <div class="event">
+                    <div class="logo"><img src="/img/invoce_logo_kibs.png"></div>
+                    <div class="date">2026.3.6(FRI) ~ 2025.3.8.(SUN), KINTEX</div>
                 </div>
-                <div class="box">
-                    <div class="info">
-                        <div class="secr">2026 경기국제보트쇼 사무국</div>
-                        <div>경기도 고양시 일산서구 킨텍스로 217-60 킨텍스 제1전시장</div>
-                        <div>전화 : 031-995-8780/8777</div>
-                        <div>팩스 : 031-995-8091</div>
-                    </div>
-                    <div class="issue">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th>발행일자</th>
-                                <td>${fn:split(info.initRegiDttm,' ')[0]}</td>
-                            </tr>
-                            <tr>
-                                <th>INVOICE</th>
-                                <td>${info.invoiceCode}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <div class="doc">견적서</div>
             </div>
-            <!-- //box -->
-
-            <!-- box -->
-            <div class="cont_box">
-                <div class="title">1. 참가업체 기본 정보</div>
-                <!-- table -->
-                <div class="table">
+            <div class="box">
+                <div class="info">
+                    <div class="secr">2026 경기국제보트쇼 사무국</div>
+                    <div>경기도 고양시 일산서구 킨텍스로 217-60 킨텍스 제1전시장</div>
+                    <div>전화 : 031-995-8780/8777</div>
+                    <div>팩스 : 031-995-8091</div>
+                </div>
+                <div class="issue">
                     <table>
-                        <colgroup>
-                            <col width="20%">
-                            <col width="30%">
-                            <col width="20%">
-                            <col width="30%">
-                        </colgroup>
                         <tbody>
                         <tr>
-                            <th>업체명</th>
-                            <td colspan="3">${exhibitorNewInfo.companyNameKo}</td>
+                            <th>발행일자</th>
+                            <td>${fn:split(invoiceInfo.initRegiDttm,' ')[0]}</td>
                         </tr>
                         <tr>
-                            <c:set var="totalBoothCnt" value="${exhibitorNewInfo.standAloneBoothCnt + exhibitorNewInfo.assemblyBoothCnt + exhibitorNewInfo.onlineBoothCnt}"/>
-                            <c:set var="physicalBoothCnt" value="${exhibitorNewInfo.standAloneBoothCnt + exhibitorNewInfo.assemblyBoothCnt}"/>
-                            <th>참가규모</th>
-                            <td>${totalBoothCnt} 부스</td>
-                            <th>면적</th>
-                            <td>${physicalBoothCnt * 9}㎡</td>
-                        </tr>
-                        <tr>
-                            <th>전화</th>
-                            <td>${exhibitorNewInfo.phone}</td>
-                            <th>E-mail</th>
-                            <td>${exhibitorNewInfo.email}</td>
-                        </tr>
-                        <tr>
-                            <th>담당자</th>
-                            <td colspan="2">${exhibitorNewInfo.name}</td>
-                            <td>${exhibitorNewInfo.position}</td>
+                            <th>INVOICE</th>
+                            <td>${invoiceInfo.invoiceCode}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <!-- table -->
             </div>
-            <!-- //box -->
+        </div>
+        <!-- //box -->
 
-            <!-- box -->
+        <!-- box -->
+        <div class="cont_box">
+            <div class="title">1. 참가업체 기본 정보</div>
+            <!-- table -->
+            <div class="table">
+                <table>
+                    <colgroup>
+                        <col width="20%">
+                        <col width="30%">
+                        <col width="20%">
+                        <col width="30%">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>업체명</th>
+                        <td colspan="3">${exhibitorNewInfo.companyNameKo}</td>
+                    </tr>
+                    <tr>
+                        <c:set var="totalBoothCnt" value="${exhibitorNewInfo.standAloneBoothCnt + exhibitorNewInfo.assemblyBoothCnt + exhibitorNewInfo.onlineBoothCnt}"/>
+                        <c:set var="physicalBoothCnt" value="${exhibitorNewInfo.standAloneBoothCnt + exhibitorNewInfo.assemblyBoothCnt}"/>
+                        <th>참가규모</th>
+                        <td>${totalBoothCnt} 부스</td>
+                        <th>면적</th>
+                        <td>${physicalBoothCnt * 9}㎡</td>
+                    </tr>
+                    <tr>
+                        <th>전화</th>
+                        <td>${exhibitorNewInfo.phone}</td>
+                        <th>E-mail</th>
+                        <td>${exhibitorNewInfo.email}</td>
+                    </tr>
+                    <tr>
+                        <th>담당자</th>
+                        <td colspan="2">${exhibitorNewInfo.name}</td>
+                        <td>${exhibitorNewInfo.position}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- table -->
+        </div>
+        <!-- //box -->
+
+        <!-- box -->
+        <div class="cont_box">
+            <div class="title">2. 등록비</div>
+            <!-- table -->
+            <div class="table">
+                <table>
+                    <colgroup>
+                        <col width="50">
+                        <col width="50">
+                        <col width="200">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>금액</th>
+                        <th>비고</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>등록비</td>
+                            <td>100,000원</td>
+                            <td>
+                                2019년부터 참가업체의 홍보 지원을 위하여 업체당 참가신청 등록비를 받습니다.<br>
+                                등록비는 참가업체의 각종 온라인 홍보 및 대외 홍보에 사용됩니다.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- table -->
+        </div>
+        <!-- //box -->
+
+        <!-- box -->
+        <div class="cont_box">
+            <div class="title">3. 참가비 내역</div>
+            <!-- table -->
+            <div class="table">
+                <table>
+                    <colgroup>
+                        <col width="50">
+                        <col>
+                        <col>
+                        <col width="150">
+                        <col width="150">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>상세</th>
+                            <th>수량</th>
+                            <th>단가</th>
+                            <th>소계</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td><td>등록비</td><td>${exhibitorNewInfo.registrationCnt}</td><td>100,000원</td>
+                            <td class="text-r"><fmt:formatNumber value="${exhibitorNewInfo.registrationFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        </tr>
+                        <c:set var="boothIdx" value="2"/>
+                        <c:if test="${exhibitorNewInfo.standAloneBoothCnt > 0}">
+                            <tr>
+                                <td>${boothIdx}</td><td>독립부스(9㎡ = 3m×3m)</td><td>${exhibitorNewInfo.standAloneBoothCnt}부스</td><td>1,800,000원</td>
+                                <td class="text-r"><fmt:formatNumber value="${exhibitorNewInfo.standAloneBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                            </tr>
+                            <c:set var="boothIdx" value="${boothIdx + 1}"/>
+                        </c:if>
+                        <c:if test="${exhibitorNewInfo.assemblyBoothCnt > 0}">
+                            <tr>
+                                <td>${boothIdx}</td><td>조립부스(9㎡ = 3m×3m)</td><td>${exhibitorNewInfo.assemblyBoothCnt}부스</td><td>2,100,000원</td>
+                                <td class="text-r"><fmt:formatNumber value="${exhibitorNewInfo.assemblyBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                            </tr>
+                            <c:set var="boothIdx" value="${boothIdx + 1}"/>
+                        </c:if>
+                        <c:if test="${exhibitorNewInfo.onlineBoothCnt > 0}">
+                            <tr>
+                                <td>${boothIdx}</td><td>온라인 전시회 참가</td><td>${exhibitorNewInfo.onlineBoothCnt} 식</td><td>1,000,000원</td>
+                                <td class="text-r"><fmt:formatNumber value="${exhibitorNewInfo.onlineBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                            </tr>
+                        </c:if>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="none"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="none"></td><th>참가비 합계</th>
+                            <td class="text-r total"><fmt:formatNumber value="${exhibitorNewInfo.boothPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- table -->
+        </div>
+        <!-- //box -->
+
+        <c:if test="${exhibitorNewInfo.memberCompanyYn == 'Y'}">
             <div class="cont_box">
-                <div class="title">1. 등록비</div>
-                <!-- table -->
+                <div class="title">4. 한국해양레저산업협회 발전기금</div>
                 <div class="table">
                     <table>
                         <colgroup>
-                            <col width="50">
-                            <col width="50">
-                            <col width="200">
+                            <col width="50"><col><col width="150">
                         </colgroup>
                         <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>상세</th>
+                            <th>금액</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>한국해양레저산업협회 발전기금 (참가비 합계의 10%)</td>
+                            <td class="text-r">
+                                <fmt:formatNumber value="${exhibitorNewInfo.boothPrcSum * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </c:if>
+
+        <!-- box -->
+        <div class="cont_box">
+            <div class="title"><c:choose><c:when test="${exhibitorNewInfo.memberCompanyYn == 'Y'}">5</c:when><c:otherwise>4</c:otherwise></c:choose>. 할인액 내역</div>
+            <!-- table -->
+            <div class="table">
+                <table>
+                    <colgroup>
+                        <col width="50"><col><col width="100"><col width="150"><col width="150">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>번호</th><th>상세</th><th>수량</th><th>단가</th><th>소계</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:set var="discountIdx" value="1"/>
+                    <c:if test="${exhibitorNewInfo.discountEarly1}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>(1차) 조기신청 할인</td><td>${physicalBoothCnt}부스</td><td>300,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 300000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountEarly2}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>(2차) 조기신청 할인</td><td>${physicalBoothCnt}부스</td><td>200,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 200000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountFirstUnder10}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>첫 참가 할인 (10부스 미만)</td><td>${physicalBoothCnt}부스</td><td>500,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 500000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountFirstOver10}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>첫 참가 할인 (10부스 이상)</td><td>${physicalBoothCnt}부스</td><td>300,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 300000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountRe}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>재참가 할인</td><td>${physicalBoothCnt}부스</td><td>200,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 200000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountScale1}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>규모 할인 (10부스 이상)</td><td>${physicalBoothCnt}부스</td><td>470,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 470000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountScale2}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>규모 할인 (20부스 이상)</td><td>${physicalBoothCnt}부스</td><td>700,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 700000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountScale3}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>규모 할인 (30부스 이상)</td><td>${physicalBoothCnt}부스</td><td>780,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 780000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountScale4}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>규모 할인 (40부스 이상)</td><td>${physicalBoothCnt}부스</td><td>830,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 830000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountScale5}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>규모 할인 (50부스 이상)</td><td>${physicalBoothCnt}부스</td><td>870,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 870000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountScale6}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>규모 할인 (100부스 이상)</td><td>${physicalBoothCnt}부스</td><td>930,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 930000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountLeisure}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>한국해양레저산업협회 할인</td><td>${physicalBoothCnt}부스</td><td>200,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 200000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountSpecial1Yn}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>특별 할인: 올해의 제품상</td><td colspan="2">공급가액의 50%</td>
+                            <c:set var="baseAmountForSpecial" value="${exhibitorNewInfo.boothPrcSum + exhibitorNewInfo.utilityPrcSum - exhibitorNewInfo.discountPrcSum}" />
+                            <td class="text-r">- <fmt:formatNumber value="${baseAmountForSpecial * 0.5}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountSpecial2Yn}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>특별 할인: ${exhibitorNewInfo.discountSpecial2Reason}</td><td colspan="2">${exhibitorNewInfo.discountSpecial2Note}</td>
+                            <td class="text-r">- <fmt:formatNumber value="${exhibitorNewInfo.discountSpecial2Amount}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    <c:if test="${exhibitorNewInfo.discountSpecial3Yn}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
+                        <tr><td>${discountIdx-1}</td><td>특별 할인: ${exhibitorNewInfo.discountSpecial3Reason}</td><td colspan="2">${exhibitorNewInfo.discountSpecial3Note}</td>
+                            <td class="text-r">- <fmt:formatNumber value="${exhibitorNewInfo.discountSpecial3Amount}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                    </tbody>
+                </table>
+            </div>
+            <!-- table -->
+        </div>
+        <!-- //box -->
+
+        <div class="cont_box">
+            <div class="table">
+                <table class="total_sum">
+                    <tbody>
+                    <%-- [수정] JSP에서 재계산하는 대신, DB에 저장된 최종 금액을 사용 --%>
+                    <tr>
+                        <td colspan="2" class="none"></td>
+                        <th>할인 총액</th>
+                        <td class="text-r sub_total">- <fmt:formatNumber value="${exhibitorNewInfo.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="none"></td>
+                        <th>공급가액 (Sub Total)</th>
+                        <td class="text-r sub_total"><fmt:formatNumber value="${exhibitorNewInfo.prcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="none"></td>
+                        <th>부가세 (V.A.T)</th>
+                        <td class="text-r sub_total"><fmt:formatNumber value="${exhibitorNewInfo.prcVat}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="none"></td>
+                        <th>최종 합계 (Grand Total)</th>
+                        <td class="text-r final_total"><fmt:formatNumber value="${exhibitorNewInfo.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <%-- ========================= ▲ PDF 1페이지 종료 ▲ ========================= --%>
+
+        <%-- ========================= ▼ PDF 2페이지 시작 ▼ ========================= --%>
+        <!-- box -->
+        <div class="cont_box">
+            <div class="title"><c:choose><c:when test="${exhibitorNewInfo.memberCompanyYn == 'Y'}">6</c:when><c:otherwise>5</c:otherwise></c:choose>. 납부 기한</div>
+            <!-- table -->
+            <div class="table">
+                <table>
+                    <colgroup>
+                        <col>
+                        <col>
+                        <col>
+                    </colgroup>
+                    <thead>
                         <tr>
                             <th>구분</th>
                             <th>금액</th>
-                            <th>비고</th>
+                            <th>납부기한</th>
                         </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>등록비</td>
-                                <td>100,000원</td>
-                                <td>
-                                    2019년부터 참가업체의 홍보 지원을 위하여 업체당 참가신청 등록비를 받습니다.<br>
-                                    등록비는 참가업체의 각종 온라인 홍보 및 대외 홍보에 사용됩니다.
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- table -->
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>참가비</td>
+                        <%-- [수정] DB에 저장된 최종 금액 사용 --%>
+                        <td class="final_total"><fmt:formatNumber value="${exhibitorNewInfo.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        <td style="color: red; font-size: 15px; font-weight: 700;">인보이스 발행일로부터 7일 이내</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-            <!-- //box -->
-
-            <!-- box -->
-            <div class="cont_box">
-                <div class="title">2. 참가비 내역</div>
-                <!-- table -->
-                <div class="table">
-                    <table>
-                        <colgroup>
-                            <col width="50">
-                            <col>
-                            <col>
-                            <col width="150">
-                            <col width="150">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>번호</th>
-                                <th>상세</th>
-                                <th>수량</th>
-                                <th>단가</th>
-                                <th>소계</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td><td>등록비</td><td>${exhibitorNewInfo.registrationCnt}</td><td>100,000원</td>
-                                <td class="text-r"><fmt:formatNumber value="${exhibitorNewInfo.registrationFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                            </tr>
-                            <c:set var="boothIdx" value="2"/>
-                            <c:if test="${exhibitorNewInfo.standAloneBoothCnt > 0}">
-                                <tr>
-                                    <td>${boothIdx}</td><td>독립부스(9㎡ = 3m×3m)</td><td>${exhibitorNewInfo.standAloneBoothCnt}부스</td><td>1,800,000원</td>
-                                    <td class="text-r"><fmt:formatNumber value="${exhibitorNewInfo.standAloneBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                                </tr>
-                                <c:set var="boothIdx" value="${boothIdx + 1}"/>
-                            </c:if>
-                            <c:if test="${exhibitorNewInfo.assemblyBoothCnt > 0}">
-                                <tr>
-                                    <td>${boothIdx}</td><td>조립부스(9㎡ = 3m×3m)</td><td>${exhibitorNewInfo.assemblyBoothCnt}부스</td><td>2,100,000원</td>
-                                    <td class="text-r"><fmt:formatNumber value="${exhibitorNewInfo.assemblyBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                                </tr>
-                                <c:set var="boothIdx" value="${boothIdx + 1}"/>
-                            </c:if>
-                            <c:if test="${exhibitorNewInfo.onlineBoothCnt > 0}">
-                                <tr>
-                                    <td>${boothIdx}</td><td>온라인 전시회 참가</td><td>${exhibitorNewInfo.onlineBoothCnt} 식</td><td>1,000,000원</td>
-                                    <td class="text-r"><fmt:formatNumber value="${exhibitorNewInfo.onlineBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                                </tr>
-                            </c:if>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="5" class="none"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" class="none"></td><th>참가비 합계</th>
-                                <td class="text-r total"><fmt:formatNumber value="${exhibitorNewInfo.boothPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <!-- table -->
-            </div>
-            <!-- //box -->
-
-            <!-- box -->
-            <div class="cont_box">
-                <div class="title">3. 할인액 내역</div>
-                <!-- table -->
-                <div class="table">
-                    <table>
-                        <colgroup>
-                            <col width="50"><col><col width="100"><col width="150"><col width="150">
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <th>번호</th><th>상세</th><th>수량</th><th>단가</th><th>소계</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:set var="discountIdx" value="1"/>
-                        <c:if test="${exhibitorNewInfo.discountEarly1}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>(1차) 조기신청 할인</td><td>${physicalBoothCnt}부스</td><td>300,000원</td>
-                                <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 300000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountEarly2}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>(2차) 조기신청 할인</td><td>${physicalBoothCnt}부스</td><td>200,000원</td>
-                                <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 200000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountFirstUnder10}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>첫 참가 할인 (10부스 미만)</td><td>${physicalBoothCnt}부스</td><td>500,000원</td>
-                                <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 500000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountFirstOver10}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>첫 참가 할인 (10부스 이상)</td><td>${physicalBoothCnt}부스</td><td>300,000원</td>
-                                <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 300000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountRe}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>재참가 할인</td><td>${physicalBoothCnt}부스</td><td>200,000원</td>
-                                <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 200000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountScale1}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>규모 할인 (10부스 이상)</td><td>${physicalBoothCnt}부스</td><td>470,000원</td>
-                                <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 470000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountScale2}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>규모 할인 (20부스 이상)</td><td>${physicalBoothCnt}부스</td><td>700,000원</td>
-                                <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 700000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountScale3}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>규모 할인 (30부스 이상)</td><td>${physicalBoothCnt}부스</td><td>780,000원</td>
-                                <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 780000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountScale4}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>규모 할인 (40부스 이상)</td><td>${physicalBoothCnt}부스</td><td>830,000원</td>
-                                <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 830000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountScale5}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>규모 할인 (50부스 이상)</td><td>${physicalBoothCnt}부스</td><td>870,000원</td>
-                                <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 870000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountScale6}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>규모 할인 (100부스 이상)</td><td>${physicalBoothCnt}부스</td><td>930,000원</td>
-                                <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 930000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountLeisure}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>한국해양레저산업협회 할인</td><td>${physicalBoothCnt}부스</td><td>200,000원</td>
-                                <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 200000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountSpecial1Yn}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>특별 할인: 올해의 제품상</td><td colspan="2">공급가액의 50%</td>
-                                <c:set var="baseAmountForSpecial" value="${exhibitorNewInfo.boothPrcSum + exhibitorNewInfo.utilityPrcSum - exhibitorNewInfo.discountPrcSum}" />
-                                <td class="text-r">- <fmt:formatNumber value="${baseAmountForSpecial * 0.5}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountSpecial2Yn}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>특별 할인: ${exhibitorNewInfo.discountSpecial2Reason}</td><td colspan="2">${exhibitorNewInfo.discountSpecial2Note}</td>
-                                <td class="text-r">- <fmt:formatNumber value="${exhibitorNewInfo.discountSpecial2Amount}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        <c:if test="${exhibitorNewInfo.discountSpecial3Yn}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                            <tr><td>${discountIdx-1}</td><td>특별 할인: ${exhibitorNewInfo.discountSpecial3Reason}</td><td colspan="2">${exhibitorNewInfo.discountSpecial3Note}</td>
-                                <td class="text-r">- <fmt:formatNumber value="${exhibitorNewInfo.discountSpecial3Amount}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- table -->
-            </div>
-            <!-- //box -->
-
-            <div class="cont_box">
-                <div class="table">
-                    <table class="total_sum">
-                        <tbody>
-                        <tr>
-                            <th>할인 총액</th>
-                            <td class="text-r sub_total">- <fmt:formatNumber value="${exhibitorNewInfo.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                        </tr>
-                        <tr>
-                            <th>공급가액 (Sub Total)</th>
-                            <td class="text-r sub_total"><fmt:formatNumber value="${exhibitorNewInfo.prcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                        </tr>
-                        <tr>
-                            <th>부가세 (V.A.T)</th>
-                            <td class="text-r sub_total"><fmt:formatNumber value="${exhibitorNewInfo.prcVat}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                        </tr>
-                        <tr>
-                            <th>최종 합계 (Grand Total)</th>
-                            <td class="text-r final_total"><fmt:formatNumber value="${exhibitorNewInfo.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div style="page-break-after: always;"></div>
-
-            <!-- box -->
-            <div class="cont_box">
-                <div class="title">4. 납부 기한</div>
-                <!-- table -->
-                <div class="table">
-                    <table>
-                        <colgroup>
-                            <col>
-                            <col>
-                            <col>
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>구분</th>
-                                <th>금액</th>
-                                <th>납부기한</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>참가비</td>
-                            <td class="final_total"><fmt:formatNumber value="${exhibitorNewInfo.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                            <td style="color: red; font-size: 15px; font-weight: 700;">인보이스 발행일로부터 7일 이내</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- table -->
-            </div>
-            <!-- //box -->
-
-            <!-- box -->
-            <div class="cont_box">
-                <div class="title">5. 납부 계좌 정보</div>
-                <!-- table -->
-                <div class="table">
-                    <table>
-                        <colgroup>
-                            <col>
-                            <col>
-                        </colgroup>
-                        <tbody>
-                            <tr>
-                                <th>은행명</th>
-                                <td>농협</td>
-                            </tr>
-                            <tr>
-                                <th>계좌번호</th>
-                                <td>301-0350-8985-51</td>
-                            </tr>
-                            <tr>
-                                <th>예금주</th>
-                                <td>(주)킨텍스</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- table -->
-                <div style="margin-top: 10px; font-size: 12px;">※ 부대시설비용 신청 시 추가 청구서 별도 발행 / 부스비 및 부대시설비의 세금계산서는 E-mail을 통해 전자세금계산서 발행</div>
-            </div>
-            <!-- //box -->
-
-            <!-- box -->
-            <div class="cont_box">
-                <div class="cmnt">
-                    <div>문의처 : 킨텍스 경기국제보트쇼 사무국 (Tel : 031-995-8780/8777) (E-mail : kibs@kintex.com)</div>
-                    <div>귀사의 관심과 참여에 깊은 감사 드립니다.</div>
-                    <div>동 전시회를 통해 조기 목표하신 성과를 거양하시도록 최선을 다하겠습니다.</div>
-                </div>
-            </div>
-            <!-- //box -->
-
-            <!-- box -->
-            <div class="bot_box">
-                <div class="secr">2026 경기국제보트쇼 사무국<span class="sm">(관인생략)</span></div>
-                <div class="logo"><img src="/img/invoce_logo_kintex.png"></div>
-            </div>
-            <!-- //box -->
-
+            <!-- table -->
         </div>
+        <!-- //box -->
+
+        <!-- box -->
+        <div class="cont_box">
+            <div class="title"><c:choose><c:when test="${exhibitorNewInfo.memberCompanyYn == 'Y'}">7</c:when><c:otherwise>6</c:otherwise></c:choose>. 납부 계좌 정보</div>
+            <!-- table -->
+            <div class="table">
+                <table>
+                    <colgroup>
+                        <col>
+                        <col>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>은행명</th>
+                            <td>농협</td>
+                        </tr>
+                        <tr>
+                            <th>계좌번호</th>
+                            <td>301-0350-8985-51</td>
+                        </tr>
+                        <tr>
+                            <th>예금주</th>
+                            <td>(주)킨텍스</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- table -->
+            <div style="margin-top: 10px; font-size: 12px;">※ 부대시설비용 신청 시 추가 청구서 별도 발행 / 부스비 및 부대시설비의 세금계산서는 E-mail을 통해 전자세금계산서 발행</div>
+        </div>
+        <!-- //box -->
+
+        <!-- box -->
+        <div class="cont_box">
+            <div class="cmnt">
+                <div>문의처 : 킨텍스 경기국제보트쇼 사무국 (Tel : 031-995-8780/8777) (E-mail : kibs@kintex.com)</div>
+                <div>귀사의 관심과 참여에 깊은 감사 드립니다.</div>
+                <div>동 전시회를 통해 조기 목표하신 성과를 거양하시도록 최선을 다하겠습니다.</div>
+            </div>
+        </div>
+        <!-- //box -->
+
+        <!-- box -->
+        <div class="bot_box">
+            <div class="secr">2026 경기국제보트쇼 사무국<span class="sm">(관인생략)</span></div>
+            <div class="logo"><img src="/img/invoce_logo_kintex.png"></div>
+        </div>
+        <!-- //box -->
+
+        <%-- ========================= ▲ PDF 2페이지 종료 ▲ ========================= --%>
     </div>
 
 </body>

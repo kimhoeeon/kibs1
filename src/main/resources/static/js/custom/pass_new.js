@@ -382,7 +382,7 @@ function f_exhibitor_pass_excel_export(){
             let obj = document.createElement('input');
             obj.setAttribute('type', 'hidden');
             obj.setAttribute('name', 'fileName');
-            obj.setAttribute('value', 'exhibitor_pass_list_' + getCurrentDate() + '.xlsx');
+            obj.setAttribute('value', '출입증_정보_' + getCurrentDate() + '.xlsx');
 
             let obj2 = document.createElement('input');
             obj2.setAttribute('type', 'hidden');

@@ -53,7 +53,7 @@ License: For each use you must have a valid license purchased only from above li
 </head>
 <!--end::Head-->
 <!--begin::Body-->
-<body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
+<body id="kt_app_body" data-exhibitor-seq="${info.seq}" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
       data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
       data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
       data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
@@ -2269,7 +2269,7 @@ if (document.documentElement) {
                                     </div>
                                     <!--end::Basic info-->
 
-                                    <input type="hidden" id="prcTotal" value="${info.prcTotal}"/>
+                                    <input type="hidden" id="baseTotalAmount" value="${info.boothPrcSum - info.discountPrcSum}" />
 
                                     <!--begin::Basic info-->
                                     <div class="card mb-5 mb-xl-10">
@@ -2347,302 +2347,188 @@ if (document.documentElement) {
                                         <!--end::Content-->
                                     </div>
                                     <!--end::Basic info-->
+
                                     <!--begin::Basic info-->
                                     <div class="card mb-5 mb-xl-10">
                                         <!--begin::Card header-->
                                         <div class="card-header border-0">
                                             <!--begin::Card title-->
                                             <div class="card-title m-0">
-                                                <h3 class="fw-bold m-0">부스 신청 정보</h3>
+                                                <h3 class="fw-bold m-0">전시부스 신청 정보</h3>
                                             </div>
                                             <!--end::Card title-->
                                         </div>
                                         <!--begin::Card header-->
-                                        <!--begin::Content-->
-                                        <div id="kt_booth_info">
-                                            <!--begin::Card body-->
-                                            <div class="card-body border-top p-9">
-                                                <!--begin::Table container-->
-                                                <div class="table-responsive">
-                                                    <!--begin::Table-->
-                                                    <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border gy-7 gs-7">
-                                                        <!--begin::Table head-->
-                                                        <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
-                                                            <tr class="text-center">
-                                                                <th class="w-150px">구분</th>
-                                                                <th class="w-150px">단가</th>
-                                                                <th class="w-150px">신청수량</th>
-                                                                <th class="w-175px">금액 (원)</th>
-                                                                <th>비고</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <!--end::Table head-->
-                                                        <!--begin::Table body-->
-                                                        <tbody>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <div class="cate">
-                                                                        <span class="fw-semibold d-block fs-7">독립부스</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="cost">
-                                                                        <span class="fw-semibold d-block fs-7">￦ 1,800,000</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="quantity">
-                                                                        <p class="j_num">
-                                                                            <input type="number" id="standAloneBoothCnt" value="${info.standAloneBoothCnt}" placeholder="수량 입력" min="0" class="form-control form-control-lg form-control-solid-bg" onblur="minCnt(this,2);" onkeyup="checkBooth();">
-                                                                        </p>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="amount">
-                                                                        <p class="price">
-                                                                            <input type="text" id="standAloneBoothFee" value="<fmt:formatNumber value="${info.standAloneBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" style="background:unset; border: 0; text-align: center;" disabled>
-                                                                        </p>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7">독립부스는 2부스부터 신청 가능합니다.</span>
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <div class="cate">
-                                                                        <span class="fw-semibold d-block fs-7">조립부스</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="cost">
-                                                                        <span class="fw-semibold d-block fs-7">￦ 2,100,000</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="quantity">
-                                                                        <p class="j_num">
-                                                                            <input type="number" id="assemblyBoothCnt" value="${info.assemblyBoothCnt}" min="0" placeholder="수량 입력" class="form-control form-control-lg form-control-solid-bg" onkeyup="checkBooth();">
-                                                                        </p>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="amount">
-                                                                        <p class="price">
-                                                                            <input type="text" id="assemblyBoothFee" value="<fmt:formatNumber value="${info.assemblyBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" style="background:unset; border: 0; text-align: center;" disabled>
-                                                                        </p>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7"></span>
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <div class="cate">
-                                                                        <span class="fw-semibold d-block fs-7">온라인부스</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="cost">
-                                                                        <span class="fw-semibold d-block fs-7">￦ 1,000,000</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="quantity">
-                                                                        <p class="j_num">
-                                                                            <select id="onlineBoothCnt" class="form-select form-select-solid" onchange="checkBooth();">
-                                                                                <option value="0" <c:if test="${info.onlineBoothCnt eq 0}">selected</c:if> >0</option>
-                                                                                <option value="1" <c:if test="${info.onlineBoothCnt eq 1}">selected</c:if> >1</option>
-                                                                            </select>
-                                                                        </p>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="amount">
-                                                                        <p class="price">
-                                                                            <input type="text" id="onlineBoothFee" value="<fmt:formatNumber value="${info.onlineBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" style="background:unset; border: 0; text-align: center;" disabled>
-                                                                        </p>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7">영상 제작 별도 : 영상 제작 희망 시 사무국 문의</span>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <!--end::Table body-->
-                                                    </table>
-                                                    <!--end::Table-->
-                                                </div>
-                                                <!--begin::Table container-->
+                                        <!--begin::Card body-->
+                                        <div class="card-body border-top p-9">
+                                            <!--begin::Table container-->
+                                            <div class="table-responsive">
+                                                <!--begin::Table-->
+                                                <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border gy-7 gs-7">
+                                                    <!--begin::Table head-->
+                                                    <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
+                                                        <tr class="text-center">
+                                                            <th class="w-150px">구분</th>
+                                                            <th class="w-150px">단가</th>
+                                                            <th class="w-150px">신청수량</th>
+                                                            <th class="w-175px">금액 (원)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <!--end::Table head-->
+                                                    <!--begin::Table body-->
+                                                    <tbody>
+                                                        <tr class="text-center align-middle">
+                                                            <td><span class="fw-semibold d-block fs-7">독립부스</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">￦ 1,800,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">${info.standAloneBoothCnt}</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.standAloneBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><span class="fw-semibold d-block fs-7">조립부스</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">￦ 2,100,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">${info.assemblyBoothCnt}</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.assemblyBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><span class="fw-semibold d-block fs-7">온라인부스</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">￦ 1,000,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">${info.onlineBoothCnt}</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.onlineBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <!--end::Table body-->
+                                                </table>
+                                                <!--end::Table-->
                                             </div>
-                                            <!--end::Card body-->
+                                            <!--begin::Table container-->
+                                            <div class="table-responsive mt-5">
+                                                <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
+                                                    <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
+                                                    <tr class="text-center"><th colspan="4">기본 할인 내역</th></tr>
+                                                    <tr class="text-center">
+                                                        <th style="width: 8%;">선택</th>
+                                                        <th style="width: 15%;">구분</th>
+                                                        <th>내용</th>
+                                                        <th style="width: 20%;">할인금액(부스당)</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr class="text-center align-middle">
+                                                        <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountEarly1}">checked</c:if> disabled></td>
+                                                        <td rowspan="2">조기신청 할인</td>
+                                                        <td>(1차) 조기신청 할인 (~2025.11.14 금)</td>
+                                                        <td>300,000 원</td>
+                                                    </tr>
+                                                    <tr class="text-center align-middle">
+                                                        <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountEarly2}">checked</c:if> disabled></td>
+                                                        <td>(2차) 조기신청 할인 (~2025.12.12 금)</td>
+                                                        <td>200,000 원</td>
+                                                    </tr>
+                                                    <tr class="text-center align-middle">
+                                                        <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale1}">checked</c:if> disabled></td>
+                                                        <td rowspan="6">규모 할인</td>
+                                                        <td>10부스 이상 참가업체</td>
+                                                        <td>470,000 원</td>
+                                                    </tr>
+                                                    <tr class="text-center align-middle">
+                                                        <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale2}">checked</c:if> disabled></td>
+                                                        <td>20부스 이상 참가업체</td>
+                                                        <td>700,000 원</td>
+                                                    </tr>
+                                                    <tr class="text-center align-middle">
+                                                        <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale3}">checked</c:if> disabled></td>
+                                                        <td>30부스 이상 참가업체</td>
+                                                        <td>780,000 원</td>
+                                                    </tr>
+                                                    <tr class="text-center align-middle">
+                                                        <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale4}">checked</c:if> disabled></td>
+                                                        <td>40부스 이상 참가업체</td>
+                                                        <td>830,000 원</td>
+                                                    </tr>
+                                                    <tr class="text-center align-middle">
+                                                        <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale5}">checked</c:if> disabled></td>
+                                                        <td>50부스 이상 참가업체</td>
+                                                        <td>870,000 원</td>
+                                                    </tr>
+                                                    <tr class="text-center align-middle">
+                                                        <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale6}">checked</c:if> disabled></td>
+                                                        <td>100부스 이상 참가업체</td>
+                                                        <td>930,000 원</td>
+                                                    </tr>
+                                                    <tr class="text-center align-middle">
+                                                        <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountRe}">checked</c:if> disabled></td>
+                                                        <td>재참가 할인</td>
+                                                        <td>2015년 ~ 2025년 참가 업체</td>
+                                                        <td>200,000 원</td>
+                                                    </tr>
+                                                    <tr class="text-center align-middle">
+                                                        <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountFirstUnder10}">checked</c:if> disabled></td>
+                                                        <td rowspan="2">첫참가 할인</td>
+                                                        <td>최초 참가업체 (10부스 미만 참가)</td>
+                                                        <td>500,000 원</td>
+                                                    </tr>
+                                                    <tr class="text-center align-middle">
+                                                        <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountFirstOver10}">checked</c:if> disabled></td>
+                                                        <td>최초 참가업체 (10부스 이상 참가)</td>
+                                                        <td>300,000 원</td>
+                                                    </tr>
+                                                    <tr class="text-center align-middle">
+                                                        <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountLeisure}">checked</c:if> disabled></td>
+                                                        <td>협회 할인</td>
+                                                        <td>한국해양레저산업협회 회원사</td>
+                                                        <td>200,000 원</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                        <!--end::Content-->
+                                        <!--end::Card body-->
                                     </div>
                                     <!--end::Basic info-->
+
                                     <!--begin::Basic info-->
                                     <div class="card mb-5 mb-xl-10">
                                         <!--begin::Card header-->
                                         <div class="card-header border-0">
                                             <!--begin::Card title-->
                                             <div class="card-title m-0">
-                                                <h3 class="fw-bold m-0">할인적용 선택</h3>
+                                                <h3 class="fw-bold m-0">특별 할인</h3>
                                             </div>
                                             <!--end::Card title-->
                                         </div>
                                         <!--begin::Card header-->
                                         <!--begin::Content-->
-                                        <div id="kt_discount_info">
+                                        <div id="kt_discount_special_info">
                                             <div class="card-body border-top p-9">
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border gy-7 gs-7">
+                                                    <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
                                                         <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
-                                                            <tr class="text-center">
-                                                                <th style="width: 8%;">선택</th>
-                                                                <th style="width: 15%;">구분</th>
-                                                                <th>내용</th>
-                                                                <th style="width: 20%;">할인금액(부스당)</th>
-                                                            </tr>
+                                                        <tr class="text-center">
+                                                            <th style="width: 8%;">선택</th>
+                                                            <th style="width: 25%;">할인 사유</th>
+                                                            <th style="width: 25%;">할인 금액(단위: 원)</th>
+                                                            <th>비고</th>
+                                                        </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item" id="discountItem1">
-                                                                        <input type="checkbox" id="discountEarly1" name="discount" data-discount="300000"
-                                                                               class="form-check-input form-control-solid-bg" onchange="calculateTotal();"
-                                                                               <c:if test="${info.discountEarly1}">checked</c:if> >
-                                                                    </span>
-                                                                </td>
-                                                                <td rowspan="2">조기신청 할인</td>
-                                                                <td>(1차) 조기신청 할인 (~2025.11.14 금)</td>
-                                                                <td>300,000 원</td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item" id="discountItem2">
-                                                                        <input type="checkbox" id="discountEarly2" name="discount" data-discount="200000"
-                                                                               class="form-check-input form-control-solid-bg" onchange="calculateTotal();"
-                                                                               <c:if test="${info.discountEarly2}">checked</c:if> >
-                                                                    </span>
-                                                                </td>
-                                                                <td>(2차) 조기신청 할인 (~2025.12.12 금)</td>
-                                                                <td>200,000 원</td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item single-choice-discount">
-                                                                        <input type="checkbox" id="discountScale1" name="discount" data-discount="470000"
-                                                                               class="form-check-input form-control-solid-bg" onchange="calculateTotal();"
-                                                                               <c:if test="${info.discountScale1}">checked</c:if> >
-                                                                    </span>
-                                                                </td>
-                                                                <td rowspan="6">규모 할인</td>
-                                                                <td>10부스 이상 참가업체</td>
-                                                                <td>470,000 원</td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item single-choice-discount">
-                                                                        <input type="checkbox" id="discountScale2" name="discount" data-discount="700000"
-                                                                               class="form-check-input form-control-solid-bg" onchange="calculateTotal();"
-                                                                               <c:if test="${info.discountScale2}">checked</c:if> >
-                                                                    </span>
-                                                                </td>
-                                                                <td>20부스 이상 참가업체</td>
-                                                                <td>700,000 원</td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item single-choice-discount">
-                                                                        <input type="checkbox" id="discountScale3" name="discount" data-discount="780000"
-                                                                               class="form-check-input form-control-solid-bg" onchange="calculateTotal();"
-                                                                               <c:if test="${info.discountScale3}">checked</c:if> >
-                                                                    </span>
-                                                                </td>
-                                                                <td>30부스 이상 참가업체</td>
-                                                                <td>780,000 원</td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item single-choice-discount">
-                                                                        <input type="checkbox" id="discountScale4" name="discount" data-discount="830000"
-                                                                               class="form-check-input form-control-solid-bg" onchange="calculateTotal();"
-                                                                               <c:if test="${info.discountScale4}">checked</c:if> >
-                                                                    </span>
-                                                                </td>
-                                                                <td>40부스 이상 참가업체</td>
-                                                                <td>830,000 원</td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item single-choice-discount">
-                                                                        <input type="checkbox" id="discountScale5" name="discount" data-discount="870000"
-                                                                               class="form-check-input form-control-solid-bg" onchange="calculateTotal();"
-                                                                               <c:if test="${info.discountScale5}">checked</c:if> >
-                                                                    </span>
-                                                                </td>
-                                                                <td>50부스 이상 참가업체</td>
-                                                                <td>870,000 원</td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item single-choice-discount">
-                                                                        <input type="checkbox" id="discountScale6" name="discount" data-discount="930000"
-                                                                               class="form-check-input form-control-solid-bg" onchange="calculateTotal();"
-                                                                               <c:if test="${info.discountScale6}">checked</c:if> >
-                                                                    </span>
-                                                                </td>
-                                                                <td>100부스 이상 참가업체</td>
-                                                                <td>930,000 원</td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item">
-                                                                        <input type="checkbox" id="discountRe" name="discount" data-discount="200000"
-                                                                               class="form-check-input form-control-solid-bg" onchange="calculateTotal();"
-                                                                               data-db-val="${info.prePartYear}" ${info.prePartYear != 'first' ? 'checked' : ''}>
-                                                                    </span>
-                                                                </td>
-                                                                <td>재참가 할인</td>
-                                                                <td>2015년 ~ 2025년 참가 업체</td>
-                                                                <td>200,000 원</td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item">
-                                                                        <input type="checkbox" id="discountFirstUnder10" name="discount" data-discount="500000"
-                                                                               class="form-check-input form-control-solid-bg" onchange="calculateTotal();"
-                                                                               data-db-val="${info.prePartYear}" ${info.prePartYear == 'first' && info.standAloneBoothCnt + info.assemblyBoothCnt < 10 ? 'checked' : ''}>
-                                                                    </span>
-                                                                </td>
-                                                                <td rowspan="2">첫참가 할인</td>
-                                                                <td>최초 참가업체 (10부스 미만 참가)</td>
-                                                                <td>500,000 원</td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item">
-                                                                        <input type="checkbox" id="discountFirstOver10" name="discount" data-discount="300000"
-                                                                               class="form-check-input form-control-solid-bg" onchange="calculateTotal();"
-                                                                               data-db-val="${info.prePartYear}" ${info.prePartYear == 'first' && info.standAloneBoothCnt + info.assemblyBoothCnt >= 10 ? 'checked' : ''}>
-                                                                    </span>
-                                                                </td>
-                                                                <td>최초 참가업체 (10부스 이상 참가)</td>
-                                                                <td>300,000 원</td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7 discount-item">
-                                                                        <input type="checkbox" id="discountLeisure" name="discount" data-discount="200000"
-                                                                               class="form-check-input form-control-solid-bg" onchange="calculateTotal();"
-                                                                               data-db-lock="${info.memberCompanyYn}" ${info.memberCompanyYn == 'Y' ? 'checked' : ''} >
-                                                                    </span>
-                                                                </td>
-                                                                <td>협회 할인</td>
-                                                                <td>한국해양레저산업협회 회원사</td>
-                                                                <td>200,000 원</td>
-                                                            </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" id="discountSpecial1Yn" class="form-check-input special-discount-checkbox" <c:if test="${info.discountSpecial1Yn}">checked</c:if>></td>
+                                                            <td>올해의 제품상 할인</td>
+                                                            <td>50%</td>
+                                                            <td><input type="text" id="discountSpecial1Note" value="${info.discountSpecial1Note}" class="form-control form-control-solid-bg"/></td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" id="discountSpecial2Yn" class="form-check-input special-discount-checkbox" <c:if test="${info.discountSpecial2Yn}">checked</c:if>></td>
+                                                            <td><input type="text" id="discountSpecial2Reason" value="${info.discountSpecial2Reason}" placeholder="할인 사유 입력" class="form-control form-control-solid-bg"/></td>
+                                                            <td><input type="text" id="discountSpecial2Amount" value="${info.discountSpecial2Amount}" placeholder="할인 금액 입력" class="form-control form-control-solid-bg special-discount-amount"/></td>
+                                                            <td><input type="text" id="discountSpecial2Note" value="${info.discountSpecial2Note}" class="form-control form-control-solid-bg"/></td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" id="discountSpecial3Yn" class="form-check-input special-discount-checkbox" <c:if test="${info.discountSpecial3Yn}">checked</c:if>></td>
+                                                            <td><input type="text" id="discountSpecial3Reason" value="${info.discountSpecial3Reason}" placeholder="할인 사유 입력" class="form-control form-control-solid-bg"/></td>
+                                                            <td><input type="text" id="discountSpecial3Amount" value="${info.discountSpecial3Amount}" placeholder="할인 금액 입력" class="form-control form-control-solid-bg special-discount-amount"/></td>
+                                                            <td><input type="text" id="discountSpecial3Note" value="${info.discountSpecial3Note}" class="form-control form-control-solid-bg"/></td>
+                                                        </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -2654,16 +2540,63 @@ if (document.documentElement) {
 
                                     <!--begin::Basic info-->
                                     <div class="card mb-5 mb-xl-10">
-                                        <!--begin::Actions-->
-                                        <div class="card-footer d-flex align-items-center justify-content-end py-6 px-9">
-                                            <div class="">
-                                                <span class="fw-semibold fs-2">총액 (VAT 미포함)</span>
-                                            </div>
-                                            <div>
-                                                <input type="text" class="fw-bold fs-3x text-end mw-300px" id="totalAmount" value="<fmt:formatNumber value="${info.boothPrcSum - info.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" style="background:unset; border: 0;" disabled>
+                                        <div class="card-body p-9">
+                                                <%-- JavaScript에서 계산을 위해 기본값들을 hidden 필드로 저장 --%>
+                                            <input type="hidden" id="baseBoothSum" value="${info.boothPrcSum}" />
+                                            <input type="hidden" id="baseUtilitySum" value="${info.utilityPrcSum}" />
+                                            <input type="hidden" id="baseDiscountSum" value="${info.discountPrcSum}" />
+
+                                            <h3 class="fw-bold m-0 mb-5">계산서</h3>
+
+                                            <div class="table-responsive">
+                                                <table class="table table-row-bordered table-row-gray-300 gy-4">
+                                                    <tbody>
+                                                    <tr>
+                                                        <th class="text-gray-700 fw-semibold fs-6" style="width: 70%;">부스 총액</th>
+                                                        <td class="text-end fw-bold fs-6">
+                                                            <fmt:formatNumber value="${info.boothPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-gray-700 fw-semibold fs-6">유틸리티 총액</th>
+                                                        <td class="text-end fw-bold fs-6">
+                                                            + <fmt:formatNumber value="${info.utilityPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-gray-700 fw-semibold fs-6">기본 할인</th>
+                                                        <td class="text-end fw-bold fs-6 text-danger">
+                                                            - <fmt:formatNumber value="${info.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-gray-700 fw-semibold fs-6">특별 할인</th>
+                                                        <td id="summary_special_discount" class="text-end fw-bold fs-6 text-danger">
+                                                            - ￦ 0
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="border-top border-gray-300 border-top-dashed">
+                                                        <th class="text-gray-800 fw-bolder fs-5">합계 (공급가액)</th>
+                                                        <td id="summary_subtotal" class="text-end fw-bolder fs-5">
+                                                            ￦ 0
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-gray-800 fw-bolder fs-5">부가세 (VAT)</th>
+                                                        <td id="summary_vat" class="text-end fw-bolder fs-5">
+                                                            ￦ 0
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="bg-light-primary">
+                                                        <th class="text-primary fw-bolder fs-4">최종 합계 (총액)</th>
+                                                        <td id="summary_final_total" class="text-end text-primary fw-bolder fs-4">
+                                                            ￦ 0
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
-                                        <!--end::Actions-->
                                     </div>
                                     <!--end::Basic info-->
 
@@ -2676,8 +2609,8 @@ if (document.documentElement) {
                                             </div>
                                             <div>
                                                 <button type="button" onclick="f_application_booth_new_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger">변경내용취소</button>
-                                                <button type="button" onclick="f_application_booth_new_save('${info.seq}')" class="btn btn-primary btn-active-light-primary ms-2 me-2">변경내용저장</button>
-                                                <button type="button" onclick="f_invoice_booth_create('${info.seq}', '${info.companyNameKo}')" class="btn btn-dark btn-active-light-dark">인보이스 생성</button>
+                                                <button type="button" id="saveSpecialDiscountBtn" class="btn btn-primary btn-active-light-primary ms-2 me-2">변경내용저장</button>
+                                                <button type="button" class="btn btn-dark btn-active-light-dark" data-bs-toggle="modal" data-bs-target="#kt_modal_create_invoice">인보이스 생성</button>
                                             </div>
                                         </div>
                                         <!--end::Actions-->
@@ -2695,6 +2628,10 @@ if (document.documentElement) {
                                             <h3 class="fw-bold m-0">인보이스</h3>
                                         </div>
                                         <!--end::Card title-->
+                                        <div class="card-toolbar">
+                                            <span class="text-muted me-2">발송 대상 이메일:</span>
+                                            <span class="fw-bold">${info.email}</span>
+                                        </div>
                                     </div>
                                     <!--begin::Card header-->
                                     <!--begin::Content-->
@@ -2711,6 +2648,8 @@ if (document.documentElement) {
                                                             <th>선택</th>
                                                             <th>NO</th>
                                                             <th>제목</th>
+                                                            <th>발송유형</th>
+                                                            <th>수신메일</th>
                                                             <th>수신상태</th>
                                                             <th>발송결과</th>
                                                             <th>발송일시</th>
@@ -2719,35 +2658,29 @@ if (document.documentElement) {
                                                     <!--end::Table head-->
                                                     <!--begin::Table body-->
                                                     <tbody>
-                                                        <c:if test="${not empty invoiceList}">
-                                                            <c:forEach var="invoice" items="${invoiceList}" begin="0" end="${invoiceList.size()}" step="1" varStatus="status">
+                                                        <c:if test="${empty boothInvoiceList}">
+                                                            <tr><td colspan="8" style="text-align: center;">인보이스 내역 없음</td></tr>
+                                                        </c:if>
+
+                                                        <c:if test="${not empty boothInvoiceList}">
+                                                            <c:forEach var="invoice" items="${boothInvoiceList}">
                                                                 <tr class="text-center align-middle">
                                                                     <td>
-                                                                        <span class="fw-semibold d-block fs-7">
-                                                                            <input type="hidden" name="filePath" value="${invoice.filePath}"/>
-                                                                            <input type="checkbox" name="invoiceSeq" value="${invoice.seq}" class="form-check-input form-control-solid-bg" onclick="f_invoice_checkbox_sel(this);">
-                                                                        </span>
+                                                                        <%-- [수정] data-type="booth" 추가 --%>
+                                                                        <span class="fw-semibold d-block fs-7 invoice-item">
+                                                                        <input type="hidden" name="filePath" value="${invoice.filePath}"/>
+                                                                        <input type="checkbox" name="invoiceSeq" value="${invoice.invoiceSeq}" data-type="booth" class="form-check-input">
+                                                                    </span>
                                                                     </td>
-                                                                    <td>
-                                                                        <span class="fw-semibold d-block fs-7">${invoice.invoiceCode}</span>
-                                                                    </td>
-                                                                    <td class="td_title">
-                                                                        <span class="fw-semibold d-block fs-7">${invoice.title}</span>
-                                                                    </td>
-                                                                    <td class="td_sendStatus">
-                                                                        <span class="fw-semibold d-block fs-7">${invoice.sendStatus}</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <span class="fw-semibold d-block fs-7">[${invoice.sendResult eq null ? '-' : invoice.sendResult}] ${invoice.sendResultMsg eq null ? '-' : invoice.sendResultMsg}</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        <span class="fw-semibold d-block fs-7">${invoice.sendDttm eq null ? '-' : invoice.sendDttm}</span>
-                                                                    </td>
+                                                                    <td>${invoice.invoiceCode}</td>
+                                                                    <td>${invoice.title}</td>
+                                                                    <td>전시부스</td>
+                                                                    <td>${invoice.recipientEmail}</td>
+                                                                    <td>${invoice.sendStatus}</td>
+                                                                    <td>[${invoice.sendResult eq null ? '-' : invoice.sendResult}] ${invoice.sendResultMsg eq null ? '-' : invoice.sendResultMsg}</td>
+                                                                    <td>${invoice.sendDttm eq null ? '-' : invoice.sendDttm}</td>
                                                                 </tr>
                                                             </c:forEach>
-                                                        </c:if>
-                                                        <c:if test="${empty invoiceList}">
-                                                            <tr><td colspan="6" style="text-align: center;">인보이스 내역 없음</td></tr>
                                                         </c:if>
                                                     </tbody>
                                                     <!--end::Table body-->
@@ -2760,9 +2693,9 @@ if (document.documentElement) {
                                         <!--begin::Basic info-->
                                         <div class="card-footer d-flex justify-content-end py-6 px-9">
                                             <div>
-                                                <button type="button" onclick="f_invoice_booth_delete('${info.seq}')" class="btn btn-danger btn-active-light-danger">삭제</button>
-                                                <button type="button" id="previewBtn" class="btn btn-primary btn-active-light-primary ms-2 me-2" data-bs-target="#kt_modal_invoice_form">미리보기</button>
-                                                <button type="button" onclick="f_invoice_booth_send('${info.seq}')" class="btn btn-dark btn-active-light-dark">발송</button>
+                                                <button type="button" id="deleteInvoicesBtn" class="btn btn-danger btn-active-light-danger">삭제</button>
+                                                <button type="button" id="previewBtn" class="btn btn-primary btn-active-light-primary ms-2 me-2">미리보기</button>
+                                                <button type="button" id="sendInvoicesBtn" class="btn btn-dark btn-active-light-dark">발송</button>
                                             </div>
                                         </div>
                                         <!--end::Basic info-->
@@ -2824,6 +2757,34 @@ if (document.documentElement) {
         </i>
     </div>
     <!--end::Scrolltop-->
+
+    <div class="modal fade" id="kt_modal_create_invoice" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-450px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="fw-bold">인보이스 생성</h2>
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                        <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                </div>
+                <div class="modal-body py-10 px-lg-17">
+                    <div class="mb-10">
+                        <label for="invoiceTypeSelect" class="form-label fw-semibold">인보이스 종류:</label>
+                        <select id="invoiceTypeSelect" class="form-select form-select-solid">
+                            <option value="booth">전시부스</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer flex-center">
+                    <button type="button" class="btn btn-light me-3" data-bs-dismiss="modal">취소</button>
+                    <button type="button" id="createInvoiceConfirmBtn" data-company-name="${info.companyNameKo}" class="btn btn-primary">생성</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!--begin::Modal - 수정이력-->
     <div class="modal fade" id="kt_modal_invoice_form" tabindex="-1" aria-hidden="true">
@@ -2908,39 +2869,7 @@ if (document.documentElement) {
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="/js/custom/booth_new.js?ver=<%=System.currentTimeMillis()%>"></script>
-
-    <script type="text/javascript">
-        $(function(){
-
-            // --- 모든 할인 체크박스의 '임의 체크/해제 시도'를 원천 차단하는 로직 ---
-            // mousedown 시점에 체크박스의 현재 상태를 저장
-            $(document).on('mousedown', 'input[name="discount"]', function() {
-                $(this).data('waschecked', this.checked);
-            });
-
-            // click 시점에 상태 변경이 있었는지 확인
-            $(document).on('click', 'input[name="discount"]', function(e) {
-                // 클릭 전과 후의 상태가 달라졌다면 (체크 시도 또는 해제 시도)
-                if ($(this).data('waschecked') !== this.checked) {
-                    // 1. 상태 변경 동작을 막습니다.
-                    e.preventDefault();
-                    // 2. 통합 경고창을 띄웁니다.
-                    alert('참가신청 및 부스 신청 정보에 따라 자동 반영되므로,\n임의 체크 및 해제 불가합니다.');
-                }
-            });
-
-            // --- 모든 자동 계산을 시작하는 핵심 트리거 ---
-            // 부스 수량 변경 시 실시간으로 총액을 다시 계산합니다.
-            $('#standAloneBoothCnt, #assemblyBoothCnt, #onlineBoothCnt').on('input change', calculateTotal);
-
-            // 페이지 로드 시 초기 계산 및 할인 상태 설정
-            handleDiscountEarly1();
-            handleDiscountEarly2();
-            calculateTotal();
-
-        });
-    </script>
+    <script src="/js/custom/invoice.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->

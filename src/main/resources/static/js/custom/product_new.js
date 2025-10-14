@@ -2,7 +2,7 @@
  * mng/exhibitor/application/online.js
  * 참가신청서 관리 > 전시품 정보
  * */
-
+var transferYear = '2026';
 $(function(){
     $('#kt_online_info .form-check-label').css({'color': '#000', 'opacity': 1});
     $('#kt_online_info .form-check-input').css({'color': '#000', 'opacity': 1});
@@ -124,4 +124,43 @@ function f_search_condition_sel_change(){
 
 function f_application_product_new_modify_init_set(seq){
     window.location.href = '/mng/exhibitorNew/application/product/detail.do?seq=' + seq;
+}
+
+function f_exhibitor_product_new_excel_export(){
+    Swal.fire({
+        title: '[ 전체 전시품 신청 정보 상세 다운로드 ]',
+        html: '전체 전시품 신청 정보 상세를 다운로드하시겠습니까 ?',
+        icon: 'info',
+        allowOutsideClick: false,
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '다운로드',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            /* 로딩페이지 */
+            loadingBarShow();
+
+            let form = document.createElement('form');
+            form.setAttribute('action','/mng/exhibitor/product/download.do');
+            form.setAttribute('method','get');
+
+            let obj = document.createElement('input');
+            obj.setAttribute('type', 'hidden');
+            obj.setAttribute('name', 'fileName');
+            obj.setAttribute('value', '전시품_신청_정보_' + getCurrentDate() + '.xlsx');
+
+            let obj2 = document.createElement('input');
+            obj2.setAttribute('type', 'hidden');
+            obj2.setAttribute('name', 'transferYear');
+            obj2.setAttribute('value', transferYear);
+
+            form.appendChild(obj);
+            form.appendChild(obj2);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
 }
