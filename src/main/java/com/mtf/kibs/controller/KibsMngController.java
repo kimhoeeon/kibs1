@@ -632,7 +632,7 @@ public class KibsMngController {
             if (savedDto != null) {
                 resultMap.put("resultCode", "0");
                 resultMap.put("resultMsg", "추가되었습니다.");
-                resultMap.put("data", savedDto); // [핵심] 저장된 데이터를 'data' 키에 담아 반환
+                resultMap.put("data", savedDto); // 저장된 데이터를 'data' 키에 담아 반환
             } else {
                 resultMap.put("resultCode", "-1");
                 resultMap.put("resultMsg", "데이터 추가에 실패했습니다.");
@@ -4547,7 +4547,7 @@ public class KibsMngController {
             }
 
             // =============================================================
-            // ▼▼▼ Pricing 시트 생성 로직 ▼▼▼
+            // Pricing 시트 생성 로직 ▼▼▼
             // =============================================================
             XSSFSheet sheet2 = workbook.createSheet("Pricing");
             int rowCnt2 = 0;

@@ -231,7 +231,7 @@
                                             </thead>
                                             <tbody>
 
-                                            <%-- [수정] 할인은 온라인 부스를 제외한 오프라인 부스 수량 기준으로 계산 --%>
+                                            <%-- 할인은 온라인 부스를 제외한 오프라인 부스 수량 기준으로 계산 --%>
                                             <c:set var="physicalBoothCnt" value="${info.standAloneBoothCnt + info.assemblyBoothCnt}"/>
                                             <c:set var="discountRownum" value="0"/>
 

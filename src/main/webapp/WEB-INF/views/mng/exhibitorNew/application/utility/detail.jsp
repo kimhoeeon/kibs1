@@ -53,7 +53,8 @@ License: For each use you must have a valid license purchased only from above li
 </head>
 <!--end::Head-->
 <!--begin::Body-->
-<body id="kt_app_body" data-exhibitor-seq="${info.seq}" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
+<body id="kt_app_body" data-exhibitor-seq="${info.seq}" data-company-name-ko="${info.companyNameKo}"
+      data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
       data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
       data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
       data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
@@ -2607,16 +2608,14 @@ if (document.documentElement) {
                     <!--end::Modal title-->
 
                     <div>
-                        <!--begin::Btn-->
-                        <div class="btn btn-sm btn-icon btn-active-color-primary" onclick="f_invoice_utility_download();">
+                        <%-- 다운로드와 프린트 버튼 추가 --%>
+                        <div id="invoiceDownloadBtn" class="btn btn-sm btn-icon btn-active-color-primary" title="PDF 다운로드">
                             <i class="ki-duotone ki-file-down fs-1">
                                 <span class="path1"></span>
                                 <span class="path2"></span>
                             </i>
                         </div>
-                        <!--end::Btn-->
-                        <!--begin::Btn-->
-                        <div class="btn btn-sm btn-icon btn-active-color-primary" onclick="f_invoice_utility_print();">
+                        <div id="invoicePrintBtn" class="btn btn-sm btn-icon btn-active-color-primary" title="인쇄">
                             <i class="ki-duotone ki-printer fs-1">
                                 <span class="path1"></span>
                                 <span class="path2"></span>
@@ -2625,7 +2624,7 @@ if (document.documentElement) {
                                 <span class="path5"></span>
                             </i>
                         </div>
-                        <!--end::Btn-->
+                        <%-- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ --%>
                         <!--begin::Btn-->
                         <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
                             <i class="ki-duotone ki-cross fs-1">

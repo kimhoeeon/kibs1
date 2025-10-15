@@ -346,28 +346,32 @@
         <div class="cont_box">
             <div class="table">
                 <table class="total_sum">
+                    <colgroup>
+                        <col>
+                        <col width="150">
+                        <col width="150">
+                    </colgroup>
                     <tbody>
-                    <%-- [수정] JSP에서 재계산하는 대신, DB에 저장된 최종 금액을 사용 --%>
-                    <tr>
-                        <td colspan="2" class="none"></td>
-                        <th>할인 총액</th>
-                        <td class="text-r sub_total">- <fmt:formatNumber value="${exhibitorNewInfo.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="none"></td>
-                        <th>공급가액 (Sub Total)</th>
-                        <td class="text-r sub_total"><fmt:formatNumber value="${exhibitorNewInfo.prcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="none"></td>
-                        <th>부가세 (V.A.T)</th>
-                        <td class="text-r sub_total"><fmt:formatNumber value="${exhibitorNewInfo.prcVat}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="none"></td>
-                        <th>최종 합계 (Grand Total)</th>
-                        <td class="text-r final_total"><fmt:formatNumber value="${exhibitorNewInfo.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                    </tr>
+                        <tr>
+                            <td class="none"></td>
+                            <th>할인 총액</th>
+                            <td class="text-r sub_total">- <fmt:formatNumber value="${exhibitorNewInfo.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        </tr>
+                        <tr>
+                            <td class="none"></td>
+                            <th>공급가액 (Sub Total)</th>
+                            <td class="text-r sub_total"><fmt:formatNumber value="${exhibitorNewInfo.prcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        </tr>
+                        <tr>
+                            <td class="none"></td>
+                            <th>부가세 (V.A.T)</th>
+                            <td class="text-r sub_total"><fmt:formatNumber value="${exhibitorNewInfo.prcVat}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        </tr>
+                        <tr>
+                            <td class="none"></td>
+                            <th>최종 합계 (Total)</th>
+                            <td class="text-r final_total"><fmt:formatNumber value="${exhibitorNewInfo.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -396,7 +400,7 @@
                     <tbody>
                     <tr>
                         <td>참가비</td>
-                        <%-- [수정] DB에 저장된 최종 금액 사용 --%>
+                        <%-- DB에 저장된 최종 금액 사용 --%>
                         <td class="final_total"><fmt:formatNumber value="${exhibitorNewInfo.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         <td style="color: red; font-size: 15px; font-weight: 700;">인보이스 발행일로부터 7일 이내</td>
                     </tr>

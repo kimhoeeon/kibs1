@@ -1,5 +1,5 @@
 $(function(){
-    // --- ▼▼▼ [신규] 페이지 로드 시 맨 아래로 스크롤하는 로직 ▼▼▼ ---
+    // --- [신규] 페이지 로드 시 맨 아래로 스크롤하는 로직 ---
     if (sessionStorage.getItem('scrollToBottom') === 'true') {
         // 애니메이션 효과와 함께 페이지 맨 아래로 부드럽게 스크롤
         $('html, body').animate({ scrollTop: $(document).height() }, "slow");
@@ -8,7 +8,6 @@ $(function(){
         sessionStorage.removeItem('scrollToBottom');
     }
     // --- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ ---
-
 
     // 전역에서 사용할 참가업체 SEQ (JSP의 body 태그에 data-exhibitor-seq="..."가 있어야 함)
     const exhibitorSeq = $('body').data('exhibitor-seq');
@@ -324,7 +323,7 @@ $(function(){
                             companyNameKo: $('#createInvoiceConfirmBtn').data('company-name')
                         };
 
-                        createAndUploadPdfFromIframe(param, 'detailForm', pdfSavePath, invoiceType)
+                        createAndUploadPdfFromIframe(param, pdfSavePath, invoiceType)
                             .then(() => {
                                 KTApp.hidePageLoading();
                                 Swal.fire({
@@ -388,7 +387,7 @@ $(function(){
                     if (response.resultCode === "0") {
                         alert(response.resultMsg);
 
-                        // --- ▼▼▼ 새로고침 전 스크롤 명령 저장 ▼▼▼ ---
+                        // --- 새로고침 전 스크롤 명령 저장 ---
                         sessionStorage.setItem('scrollToBottom', 'true');
                         location.reload();
                     } else {
@@ -489,7 +488,7 @@ $(function(){
                                 confirmButtonText: '확인'
                             }).then(() => {
 
-                                // --- ▼▼▼ 새로고침 전 스크롤 명령 저장 ▼▼▼ ---
+                                // --- 새로고침 전 스크롤 명령 저장 ---
                                 sessionStorage.setItem('scrollToBottom', 'true');
                                 location.reload();
                             });
@@ -534,7 +533,10 @@ $(function(){
         // '/usr/local/tomcat/webapps' 부분을 잘라내어 웹에서 접근 가능한 경로만 남깁니다.
         const webPath = serverPath.replace('/usr/local/tomcat/webapps', '');
 
-        // --- PDF 뷰어 옵션을 URL에 추가 ▼▼▼ ---
+        // [핵심] 다운로드 버튼이 사용할 수 있도록, 파일 경로를 모달 엘리먼트의 data 속성에 저장
+        $(previewModalEl).data('current-pdf-path', webPath);
+
+        // --- PDF 뷰어 옵션을 URL에 추가 ---
         // #toolbar=0 : 상단 툴바 숨김
         // #navpanes=0 : 왼쪽 네비게이션(미리보기 탭) 숨김
         // #view=FitH : 가로 폭에 맞추기
@@ -550,7 +552,49 @@ $(function(){
     // 모달이 닫힐 때, iframe의 내용을 비워서 리소스를 정리합니다.
     previewModalEl.addEventListener('hidden.bs.modal', function () {
         $('#detailForm').attr('src', 'about:blank'); // src를 비워줍니다.
+        $(previewModalEl).data('current-pdf-path', ''); // 저장된 경로도 초기화
     });
+
+    /******************************************************
+     * 인보이스 미리보기 팝업 (프린트, 다운로드)
+     ******************************************************/
+
+    // 1. 프린트 버튼 클릭 이벤트
+    $('#invoicePrintBtn').on('click', function() {
+        const iframe = document.getElementById('detailForm');
+        if (iframe && iframe.contentWindow) {
+            // iframe의 내용을 인쇄하는 브라우저 기본 기능 호출
+            iframe.contentWindow.focus(); // 일부 브라우저 호환성을 위해 focus 추가
+            iframe.contentWindow.print();
+        } else {
+            alert('미리보기 내용을 찾을 수 없습니다.');
+        }
+    });
+
+    // 2. 다운로드 버튼 클릭 이벤트
+    $('#invoiceDownloadBtn').on('click', function() {
+        // 미리보기 시 모달에 저장해둔 파일 경로를 가져옴
+        const pdfPath = $(previewModalEl).data('current-pdf-path');
+
+        if (!pdfPath) {
+            alert('미리보기 중인 파일이 없습니다.');
+            return;
+        }
+
+        // 파일명을 만들기 위해 body에 저장된 회사명을 가져옴
+        let companyName = $('body').data('company-name-ko') || "invoice";
+        companyName = companyName.replace(/[^a-zA-Z0-9ㄱ-힣]/g, '');
+        const fileName = `invoice_${companyName}_${new Date().getTime()}.pdf`;
+
+        // 눈에 보이지 않는 <a> 태그를 만들어 다운로드를 실행
+        const link = document.createElement('a');
+        link.href = pdfPath;
+        link.download = fileName; // 다운로드될 파일명 지정
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
 });
 
 /**
@@ -558,7 +602,7 @@ $(function(){
  * 이 함수는 이미 프로젝트 내에 존재하거나 별도로 관리된다고 가정합니다.
  * invoiceType에 따라 동적으로 동작하도록 수정된 최종 버전입니다.
  */
-async function createAndUploadPdfFromIframe(param, iframeId, uploadPath, invoiceType) {
+async function createAndUploadPdfFromIframe(param, uploadPath, invoiceType) {
     const seq = param.seq;
     let companyNameKo = param.companyNameKo;
     companyNameKo = companyNameKo.replace(/[^a-zA-Z0-9ㄱ-힣]/g, '');
@@ -641,7 +685,7 @@ async function createAndUploadPdfFromIframe(param, iframeId, uploadPath, invoice
         const margin = 15;
         const contentWidth = a4Width - (margin * 2);
 
-        // --- ▼▼▼ [핵심] '블록 조합' 방식 페이지 분할 로직 ▼▼▼ ---
+        // --- '블록 조합' 방식 페이지 분할 로직 ---
 
         // 1. 모든 내용 블록을 각각의 캔버스로 캡처합니다.
         const contentBlocks = Array.from(doc.querySelectorAll('.inv_wrap > div'));
@@ -703,7 +747,7 @@ async function createAndUploadPdfFromIframe(param, iframeId, uploadPath, invoice
     }
 }
 
-function f_exhibitor_invoice_detail(seq){
+/*function f_exhibitor_invoice_detail(seq){
     let hiddenField_seq = document.createElement('input');
     hiddenField_seq.type = 'hidden';
     hiddenField_seq.name = 'seq';
@@ -717,7 +761,7 @@ function f_exhibitor_invoice_detail(seq){
     sendForm.action = '/mng/exhibitorNew/participant/company/invoice/detail.do';
 
     sendForm.submit();
-}
+}*/
 
 function f_application_booth_new_modify_init_set(seq){
     window.location.href = '/mng/exhibitorNew/application/booth/detail.do?seq=' + seq;

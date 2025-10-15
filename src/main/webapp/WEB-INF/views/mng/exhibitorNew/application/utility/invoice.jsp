@@ -154,86 +154,86 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <c:choose>
-                        <%-- 1. 유틸리티 총액(utilityPrcSum)이 0일 경우 --%>
-                        <c:when test="${invoiceInfo.utilityPrcSum == 0}">
-                            <tr>
-                                <td colspan="5" class="text-center">부대시설 신청 내역이 없습니다.</td>
-                            </tr>
-                        </c:when>
+                        <c:choose>
+                            <%-- 1. 유틸리티 총액(utilityPrcSum)이 0일 경우 --%>
+                            <c:when test="${invoiceInfo.utilityPrcSum == 0}">
+                                <tr>
+                                    <td colspan="5" class="text-center">부대시설 신청 내역이 없습니다.</td>
+                                </tr>
+                            </c:when>
 
-                        <%-- 2. 유틸리티 신청 내역이 하나라도 있을 경우 (기존 로직) --%>
-                        <c:otherwise>
+                            <%-- 2. 유틸리티 신청 내역이 하나라도 있을 경우 (기존 로직) --%>
+                            <c:otherwise>
 
-                            <c:set var="utilityIdx" value="1"/>
-                            <c:if test="${invoiceInfo.utilityJuganCnt > 0}">
-                                <tr>
-                                    <td>${utilityIdx}</td><td>주간 단상 220V / 1kw</td><td>${invoiceInfo.utilityJuganCnt}개</td><td>80,000원</td>
-                                    <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityJuganFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                                </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
-                            </c:if>
-                            <c:if test="${invoiceInfo.utilityDayCnt > 0}">
-                                <tr>
-                                    <td>${utilityIdx}</td><td>24시간용 220V / 1kw</td><td>${invoiceInfo.utilityDayCnt}개</td><td>100,000원</td>
-                                    <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                                </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
-                            </c:if>
-                            <c:if test="${invoiceInfo.utilityCompressedAirCnt > 0}">
-                                <tr>
-                                    <td>${utilityIdx}</td><td>압축공기 기본형</td><td>${invoiceInfo.utilityCompressedAirCnt}개</td><td>200,000원</td>
-                                    <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityCompressedAirFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                                </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
-                            </c:if>
-                            <c:if test="${invoiceInfo.utilityWaterBasicCnt > 0}">
-                                <tr>
-                                    <td>${utilityIdx}</td><td>급배수 기본형</td><td>${invoiceInfo.utilityWaterBasicCnt}개</td><td>200,000원</td>
-                                    <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityWaterBasicFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                                </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
-                            </c:if>
-                            <c:if test="${invoiceInfo.utilityInternetCnt > 0}">
-                                <tr>
-                                    <td>${utilityIdx}</td><td>인터넷</td><td>${invoiceInfo.utilityInternetCnt}개</td><td>200,000원</td>
-                                    <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityInternetFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                                </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
-                            </c:if>
-                            <c:if test="${invoiceInfo.utilityPytexNewCnt > 0}">
-                                <tr>
-                                    <td>${utilityIdx}</td><td>파이텍스(신)</td><td>${invoiceInfo.utilityPytexNewCnt}개</td><td>80,000원</td>
-                                    <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityPytexNewFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                                </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
-                            </c:if>
-                            <c:if test="${invoiceInfo.utilityPytexReCnt > 0}">
-                                <tr>
-                                    <td>${utilityIdx}</td><td>파이텍스(재)</td><td>${invoiceInfo.utilityPytexReCnt}개</td><td>50,000원</td>
-                                    <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityPytexReFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                                </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
-                            </c:if>
-                            <c:if test="${invoiceInfo.utilityBarcodeCnt > 0}">
-                                <tr>
-                                    <td>${utilityIdx}</td><td>참관객/바이어 바코드 리더기</td><td>${invoiceInfo.utilityBarcodeCnt}개</td><td>200,000원</td>
-                                    <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityBarcodeFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                                </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
-                            </c:if>
-                        </c:otherwise>
-                    </c:choose>
+                                <c:set var="utilityIdx" value="1"/>
+                                <c:if test="${invoiceInfo.utilityJuganCnt > 0}">
+                                    <tr>
+                                        <td>${utilityIdx}</td><td>주간 단상 220V / 1kw</td><td>${invoiceInfo.utilityJuganCnt}개</td><td>80,000원</td>
+                                        <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityJuganFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                                    </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
+                                </c:if>
+                                <c:if test="${invoiceInfo.utilityDayCnt > 0}">
+                                    <tr>
+                                        <td>${utilityIdx}</td><td>24시간용 220V / 1kw</td><td>${invoiceInfo.utilityDayCnt}개</td><td>100,000원</td>
+                                        <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                                    </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
+                                </c:if>
+                                <c:if test="${invoiceInfo.utilityCompressedAirCnt > 0}">
+                                    <tr>
+                                        <td>${utilityIdx}</td><td>압축공기 기본형</td><td>${invoiceInfo.utilityCompressedAirCnt}개</td><td>200,000원</td>
+                                        <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityCompressedAirFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                                    </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
+                                </c:if>
+                                <c:if test="${invoiceInfo.utilityWaterBasicCnt > 0}">
+                                    <tr>
+                                        <td>${utilityIdx}</td><td>급배수 기본형</td><td>${invoiceInfo.utilityWaterBasicCnt}개</td><td>200,000원</td>
+                                        <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityWaterBasicFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                                    </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
+                                </c:if>
+                                <c:if test="${invoiceInfo.utilityInternetCnt > 0}">
+                                    <tr>
+                                        <td>${utilityIdx}</td><td>인터넷</td><td>${invoiceInfo.utilityInternetCnt}개</td><td>200,000원</td>
+                                        <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityInternetFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                                    </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
+                                </c:if>
+                                <c:if test="${invoiceInfo.utilityPytexNewCnt > 0}">
+                                    <tr>
+                                        <td>${utilityIdx}</td><td>파이텍스(신)</td><td>${invoiceInfo.utilityPytexNewCnt}개</td><td>80,000원</td>
+                                        <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityPytexNewFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                                    </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
+                                </c:if>
+                                <c:if test="${invoiceInfo.utilityPytexReCnt > 0}">
+                                    <tr>
+                                        <td>${utilityIdx}</td><td>파이텍스(재)</td><td>${invoiceInfo.utilityPytexReCnt}개</td><td>50,000원</td>
+                                        <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityPytexReFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                                    </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
+                                </c:if>
+                                <c:if test="${invoiceInfo.utilityBarcodeCnt > 0}">
+                                    <tr>
+                                        <td>${utilityIdx}</td><td>참관객/바이어 바코드 리더기</td><td>${invoiceInfo.utilityBarcodeCnt}개</td><td>200,000원</td>
+                                        <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityBarcodeFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                                    </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
+                                </c:if>
+                            </c:otherwise>
+                        </c:choose>
                     </tbody>
                     <tfoot>
-                    <tr><td colspan="5" class="none"></td></tr>
-                    <tr>
-                        <td colspan="3" class="none"></td>
-                        <th>공급가액</th>
-                        <td class="text-r sub_total"><fmt:formatNumber value="${invoiceInfo.prcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" class="none"></td>
-                        <th>부가세</th>
-                        <td class="text-r sub_total"><fmt:formatNumber value="${invoiceInfo.prcVat}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" class="none"></td>
-                        <th>합계</th>
-                        <td class="text-r total"><fmt:formatNumber value="${invoiceInfo.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                    </tr>
+                        <tr><td colspan="5" class="none"></td></tr>
+                        <tr>
+                            <td colspan="3" class="none"></td>
+                            <th>공급가액</th>
+                            <td class="text-r sub_total"><fmt:formatNumber value="${invoiceInfo.prcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="none"></td>
+                            <th>부가세</th>
+                            <td class="text-r sub_total"><fmt:formatNumber value="${invoiceInfo.prcVat}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="none"></td>
+                            <th>합계</th>
+                            <td class="text-r total"><fmt:formatNumber value="${invoiceInfo.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        </tr>
                     </tfoot>
                 </table>
             </div>

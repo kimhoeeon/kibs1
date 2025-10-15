@@ -3541,7 +3541,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             specialDiscountTotal += specialDiscountData.getDiscountSpecial3Amount();
         }
 
-        // 6. [수정] 모든 금액을 최종적으로 재계산합니다. (발전기금 포함)
+        // 6. 모든 금액을 최종적으로 재계산합니다. (발전기금 포함)
         int newTotalDiscountSum = basicDiscountSum + specialDiscountTotal;
 
         // 최종 공급가액 = (부스비 + 유틸리티비 + 발전기금) - 총 할인액
@@ -3730,7 +3730,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             throw new Exception("인보이스 생성 후 PK(seq)를 가져오지 못했습니다.");
         }
 
-        // 4. [핵심] 생성된 seq를 이용해 DB에서 방금 저장된 인보이스 데이터를 다시 조회하여 반환합니다.
+        // 4. 생성된 seq를 이용해 DB에서 방금 저장된 인보이스 데이터를 다시 조회하여 반환합니다.
         return kibsMngMapper.selectInvoiceBoothBySeq(generatedSeq);
     }
 
@@ -3789,7 +3789,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             throw new Exception("인보이스 생성 후 PK(seq)를 가져오지 못했습니다.");
         }
 
-        // 4. [핵심] 생성된 seq를 이용해 DB에서 방금 저장된 인보이스 데이터를 다시 조회하여 반환합니다.
+        // 4. 생성된 seq를 이용해 DB에서 방금 저장된 인보이스 데이터를 다시 조회하여 반환합니다.
         return kibsMngMapper.selectInvoiceUtilityBySeq(generatedSeq);
     }
 

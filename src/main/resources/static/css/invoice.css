@@ -9,7 +9,7 @@
     color: #000;
 }
 
-/* [수정] 각 내용 블록의 상/하 간격을 35px에서 45px로 늘렸습니다. */
+/* 각 내용 블록의 상/하 간격을 35px에서 45px로 늘렸습니다. */
 .inv_wrap .cont_box {
     margin-bottom: 45px;
 }
@@ -171,7 +171,7 @@
     height: 25px;
 }
 
-/* [수정] 최종 금액 테이블의 border: none; 속성을 제거하여 다른 테이블과 동일한 테두리를 갖도록 합니다. */
+/* 최종 금액 테이블의 border: none; 속성을 제거하여 다른 테이블과 동일한 테두리를 갖도록 합니다. */
 /* .inv_wrap .total_sum th,
 .inv_wrap .total_sum td {
     border: none;

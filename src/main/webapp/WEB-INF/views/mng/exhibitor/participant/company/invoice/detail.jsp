@@ -53,7 +53,8 @@ License: For each use you must have a valid license purchased only from above li
 </head>
 <!--end::Head-->
 <!--begin::Body-->
-<body id="kt_app_body" data-exhibitor-seq="${info.seq}" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
+<body id="kt_app_body" data-exhibitor-seq="${info.seq}" data-company-name-ko="${info.companyNameKo}"
+      data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
       data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
       data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
       data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
@@ -2796,7 +2797,7 @@ if (document.documentElement) {
                                                 <a href="/mng/exhibitorNew/participant/company.do" class="btn btn-info btn-active-light-info cursor-pointer">목록</a>
                                             </div>
                                             <div>
-                                                <button type="button" onclick="f_exhibitor_invoice_detail('${info.seq}')" class="btn btn-danger btn-active-light-danger">변경내용취소</button>
+                                                <button type="button" onclick="window.location.reload();" class="btn btn-danger btn-active-light-danger">변경내용취소</button>
                                                 <button type="button" id="saveSpecialDiscountBtn" class="btn btn-primary btn-active-light-primary ms-2 me-2">변경내용저장</button>
                                                 <button type="button" class="btn btn-dark btn-active-light-dark" data-bs-toggle="modal" data-bs-target="#kt_modal_create_invoice">인보이스 생성</button>
                                             </div>
@@ -2854,7 +2855,7 @@ if (document.documentElement) {
                                                         <c:forEach var="invoice" items="${boothInvoiceList}">
                                                             <tr class="text-center align-middle">
                                                                 <td>
-                                                                    <%-- [수정] data-type="booth" 추가 --%>
+                                                                    <%-- data-type="booth" 추가 --%>
                                                                     <span class="fw-semibold d-block fs-7 invoice-item">
                                                                         <input type="hidden" name="filePath" value="${invoice.filePath}"/>
                                                                         <input type="checkbox" name="invoiceSeq" value="${invoice.invoiceSeq}" data-type="booth" class="form-check-input">
@@ -2874,7 +2875,7 @@ if (document.documentElement) {
                                                         <c:forEach var="invoice" items="${utilityInvoiceList}">
                                                             <tr class="text-center align-middle">
                                                                 <td>
-                                                                    <%-- [수정] data-type="utility" 추가 --%>
+                                                                    <%-- data-type="utility" 추가 --%>
                                                                     <span class="fw-semibold d-block fs-7 invoice-item">
                                                                         <input type="hidden" name="filePath" value="${invoice.filePath}"/>
                                                                         <input type="checkbox" name="invoiceSeq" value="${invoice.invoiceSeq}" data-type="utility" class="form-check-input">
@@ -3007,16 +3008,14 @@ if (document.documentElement) {
                     <!--end::Modal title-->
 
                     <div>
-                        <!--begin::Btn-->
-                        <div class="btn btn-sm btn-icon btn-active-color-primary" onclick="f_invoice_booth_download();">
+                        <%-- 다운로드와 프린트 버튼 추가 --%>
+                        <div id="invoiceDownloadBtn" class="btn btn-sm btn-icon btn-active-color-primary" title="PDF 다운로드">
                             <i class="ki-duotone ki-file-down fs-1">
                                 <span class="path1"></span>
                                 <span class="path2"></span>
                             </i>
                         </div>
-                        <!--end::Btn-->
-                        <!--begin::Btn-->
-                        <div class="btn btn-sm btn-icon btn-active-color-primary" onclick="f_invoice_booth_print();">
+                        <div id="invoicePrintBtn" class="btn btn-sm btn-icon btn-active-color-primary" title="인쇄">
                             <i class="ki-duotone ki-printer fs-1">
                                 <span class="path1"></span>
                                 <span class="path2"></span>
@@ -3025,7 +3024,7 @@ if (document.documentElement) {
                                 <span class="path5"></span>
                             </i>
                         </div>
-                        <!--end::Btn-->
+                        <%-- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ --%>
                         <!--begin::Btn-->
                         <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
                             <i class="ki-duotone ki-cross fs-1">
