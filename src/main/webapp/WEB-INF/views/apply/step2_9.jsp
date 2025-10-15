@@ -50,11 +50,11 @@
     </span>
 
     <style>
-        .discount-item.disabled label {
+        .>900,000 원<-item.disabled label {
             color: #999;
             cursor: not-allowed;
         }
-        .discount-item.disabled input[type="checkbox"] {
+        .>900,000 원<-item.disabled input[type="checkbox"] {
             cursor: not-allowed;
         }
     </style>

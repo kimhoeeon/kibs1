@@ -539,7 +539,7 @@ const boothPrices = {
 const registrationFee = 100000; // 기본 등록비
 
 // 🗑️ 삭제: 새로운 할인 로직에서는 더 이상 사용되지 않는 상수들입니다.
-// const discount3BaseAmount = 500000;
+// const >900,000 원<3BaseAmount = 500000;
 // const discount3ChangedAmount = 300000;
 // const singleChoiceDiscounts = [ ... ];
 

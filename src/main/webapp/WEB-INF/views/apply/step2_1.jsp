@@ -331,48 +331,48 @@
 
                                             <div class="select">
                                                 <label class="discount-item single-choice-discount">
-                                                    <input type="checkbox" id="discountScale1" name="discount" data-discount="470000" onchange="calculateTotal();" <c:if test="${info.discountScale1}">checked</c:if> >
+                                                    <input type="checkbox" id="discountScale1" name="discount" data-discount="400000" onchange="calculateTotal();" <c:if test="${info.discountScale1}">checked</c:if> >
                                                 </label>
                                             </div>
                                             <div class="cate rowspan-6">규모 할인</div>
-                                            <div class="note">470,000 원</div>
+                                            <div class="note">400,000 원</div>
                                             <div class="discount">10부스 이상 참가업체</div>
 
                                             <div class="select">
                                                 <label class="discount-item single-choice-discount">
-                                                    <input type="checkbox" id="discountScale2" name="discount" data-discount="700000" onchange="calculateTotal();" <c:if test="${info.discountScale2}">checked</c:if> >
+                                                    <input type="checkbox" id="discountScale2" name="discount" data-discount="650000" onchange="calculateTotal();" <c:if test="${info.discountScale2}">checked</c:if> >
                                                 </label>
                                             </div>
-                                            <div class="note">700,000 원</div>
+                                            <div class="note">650,000 원</div>
                                             <div class="discount">20부스 이상 참가업체</div>
 
                                             <div class="select">
                                                 <label class="discount-item single-choice-discount">
-                                                    <input type="checkbox" id="discountScale3" name="discount" data-discount="780000" onchange="calculateTotal();" <c:if test="${info.discountScale3}">checked</c:if> >
+                                                    <input type="checkbox" id="discountScale3" name="discount" data-discount="750000" onchange="calculateTotal();" <c:if test="${info.discountScale3}">checked</c:if> >
                                                 </label>
                                             </div>
-                                            <div class="note">780,000 원</div>
+                                            <div class="note">750,000 원</div>
                                             <div class="discount">30부스 이상 참가업체</div>
 
                                             <div class="select">
                                                 <label class="discount-item single-choice-discount">
-                                                    <input type="checkbox" id="discountScale4" name="discount" data-discount="830000" onchange="calculateTotal();" <c:if test="${info.discountScale4}">checked</c:if> >
+                                                    <input type="checkbox" id="discountScale4" name="discount" data-discount="800000" onchange="calculateTotal();" <c:if test="${info.discountScale4}">checked</c:if> >
                                                 </label>
                                             </div>
-                                            <div class="note">830,000 원</div>
+                                            <div class="note">800,000 원</div>
                                             <div class="discount">40부스 이상 참가업체</div>
 
                                             <div class="select">
                                                 <label class="discount-item single-choice-discount">
-                                                    <input type="checkbox" id="discountScale5" name="discount" data-discount="870000" onchange="calculateTotal();" <c:if test="${info.discountScale5}">checked</c:if> >
+                                                    <input type="checkbox" id="discountScale5" name="discount" data-discount="850000" onchange="calculateTotal();" <c:if test="${info.discountScale5}">checked</c:if> >
                                                 </label>
                                             </div>
-                                            <div class="note">870,000 원</div>
+                                            <div class="note">850,000 원</div>
                                             <div class="discount">50부스 이상 참가업체</div>
 
                                             <div class="select">
                                                 <label class="discount-item single-choice-discount">
-                                                    <input type="checkbox" id="discountScale6" name="discount" data-discount="930000" onchange="calculateTotal();" <c:if test="${info.discountScale6}">checked</c:if> >
+                                                    <input type="checkbox" id="discountScale6" name="discount" data-discount="900000" onchange="calculateTotal();" <c:if test="${info.discountScale6}">checked</c:if> >
                                                 </label>
                                             </div>
                                             <div class="note">930,000 원</div>

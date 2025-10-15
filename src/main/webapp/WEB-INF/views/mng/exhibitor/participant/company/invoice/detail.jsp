@@ -2441,27 +2441,27 @@ if (document.documentElement) {
                                                             <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale1}">checked</c:if> disabled></td>
                                                             <td rowspan="6">규모 할인</td>
                                                             <td>10부스 이상 참가업체</td>
-                                                            <td>470,000 원</td>
+                                                            <td>400,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale2}">checked</c:if> disabled></td>
                                                             <td>20부스 이상 참가업체</td>
-                                                            <td>700,000 원</td>
+                                                            <td>650,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale3}">checked</c:if> disabled></td>
                                                             <td>30부스 이상 참가업체</td>
-                                                            <td>780,000 원</td>
+                                                            <td>750,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale4}">checked</c:if> disabled></td>
                                                             <td>40부스 이상 참가업체</td>
-                                                            <td>830,000 원</td>
+                                                            <td>800,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale5}">checked</c:if> disabled></td>
                                                             <td>50부스 이상 참가업체</td>
-                                                            <td>870,000 원</td>
+                                                            <td>850,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale6}">checked</c:if> disabled></td>

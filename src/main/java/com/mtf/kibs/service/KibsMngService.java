@@ -9,25 +9,10 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The interface GoingSool service.
- */
 public interface KibsMngService {
 
-    /**
-     * Login check customer dto.
-     *
-     * @param adminDTO the admin dto
-     * @param session     the session
-     * @return the customer dto
-     */
     AdminDTO login(AdminDTO adminDTO, HttpSession session);
 
-    /**
-     * Logout check.
-     *
-     * @param session the session
-     */
     void logoutCheck(HttpSession session);
 
     List<?> uploadExcelFile(MultipartFile file);

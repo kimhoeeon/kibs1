@@ -306,23 +306,23 @@
                         <tr><td>${discountIdx-1}</td><td>재참가 할인</td><td>${physicalBoothCnt}부스</td><td>200,000원</td>
                             <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 200000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountScale1}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                        <tr><td>${discountIdx-1}</td><td>규모 할인 (10부스 이상)</td><td>${physicalBoothCnt}부스</td><td>470,000원</td>
-                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 470000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                        <tr><td>${discountIdx-1}</td><td>규모 할인 (10부스 이상)</td><td>${physicalBoothCnt}부스</td><td>400,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 400000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountScale2}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                        <tr><td>${discountIdx-1}</td><td>규모 할인 (20부스 이상)</td><td>${physicalBoothCnt}부스</td><td>700,000원</td>
-                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 700000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                        <tr><td>${discountIdx-1}</td><td>규모 할인 (20부스 이상)</td><td>${physicalBoothCnt}부스</td><td>650,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 650000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountScale3}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                        <tr><td>${discountIdx-1}</td><td>규모 할인 (30부스 이상)</td><td>${physicalBoothCnt}부스</td><td>780,000원</td>
-                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 780000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                        <tr><td>${discountIdx-1}</td><td>규모 할인 (30부스 이상)</td><td>${physicalBoothCnt}부스</td><td>750,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 750000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountScale4}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                        <tr><td>${discountIdx-1}</td><td>규모 할인 (40부스 이상)</td><td>${physicalBoothCnt}부스</td><td>830,000원</td>
-                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 830000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                        <tr><td>${discountIdx-1}</td><td>규모 할인 (40부스 이상)</td><td>${physicalBoothCnt}부스</td><td>800,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 800000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountScale5}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                        <tr><td>${discountIdx-1}</td><td>규모 할인 (50부스 이상)</td><td>${physicalBoothCnt}부스</td><td>870,000원</td>
-                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 870000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                        <tr><td>${discountIdx-1}</td><td>규모 할인 (50부스 이상)</td><td>${physicalBoothCnt}부스</td><td>850,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 850000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountScale6}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
-                        <tr><td>${discountIdx-1}</td><td>규모 할인 (100부스 이상)</td><td>${physicalBoothCnt}부스</td><td>930,000원</td>
-                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 930000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                        <tr><td>${discountIdx-1}</td><td>규모 할인 (100부스 이상)</td><td>${physicalBoothCnt}부스</td><td>900,000원</td>
+                            <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 900000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountLeisure}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
                         <tr><td>${discountIdx-1}</td><td>한국해양레저산업협회 할인</td><td>${physicalBoothCnt}부스</td><td>200,000원</td>
                             <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 200000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
