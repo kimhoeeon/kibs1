@@ -747,22 +747,6 @@ async function createAndUploadPdfFromIframe(param, uploadPath, invoiceType) {
     }
 }
 
-/*function f_exhibitor_invoice_detail(seq){
-    let hiddenField_seq = document.createElement('input');
-    hiddenField_seq.type = 'hidden';
-    hiddenField_seq.name = 'seq';
-    hiddenField_seq.value = seq;
-
-    let sendForm = document.createElement('form');
-    sendForm.method = 'POST';
-    sendForm.appendChild(hiddenField_seq);
-
-    document.body.appendChild(sendForm);
-    sendForm.action = '/mng/exhibitorNew/participant/company/invoice/detail.do';
-
-    sendForm.submit();
-}*/
-
 function f_application_booth_new_modify_init_set(seq){
     window.location.href = '/mng/exhibitorNew/application/booth/detail.do?seq=' + seq;
 }

@@ -2742,23 +2742,23 @@ if (document.documentElement) {
                                                     </div>
                                                     <div class="col-md-3">
                                                         <label class="form-label required">입금일</label>
-                                                        <input type="date" id="depositDate" class="form-control" />
+                                                        <input type="date" id="depositDate" class="form-control"/>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <label class="form-label">입금예정일</label>
-                                                        <input type="date" id="depositScheduledDate" class="form-control" />
+                                                        <input type="date" id="depositScheduledDate" class="form-control"/>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <label class="form-label">입금자명</label>
-                                                        <input type="text" id="depositDepositorName" class="form-control" />
+                                                        <input type="text" id="depositDepositorName" class="form-control" placeholder="입금자명 입력"/>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <label class="form-label">확인자명</label>
-                                                        <input type="text" id="depositConfirmerName" class="form-control" />
+                                                        <input type="text" id="depositConfirmerName" class="form-control" placeholder="확인자명 입력"/>
                                                     </div>
                                                     <div class="col-12">
                                                         <label class="form-label">코멘트</label>
-                                                        <input type="text" id="depositComment" class="form-control" />
+                                                        <input type="text" id="depositComment" class="form-control" placeholder="코멘트 입력"/>
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-end mt-4">
@@ -2794,7 +2794,7 @@ if (document.documentElement) {
                                         <!--begin::Actions-->
                                         <div class="card-footer d-flex justify-content-between py-6 px-9">
                                             <div>
-                                                <a href="/mng/exhibitorNew/participant/company.do" class="btn btn-info btn-active-light-info cursor-pointer">목록</a>
+                                                <a href="/mng/exhibitor/participant/company.do" class="btn btn-info btn-active-light-info cursor-pointer">목록</a>
                                             </div>
                                             <div>
                                                 <button type="button" onclick="window.location.reload();" class="btn btn-danger btn-active-light-danger">변경내용취소</button>
