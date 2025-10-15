@@ -375,7 +375,7 @@
                                                     <input type="checkbox" id="discountScale6" name="discount" data-discount="900000" onchange="calculateTotal();" <c:if test="${info.discountScale6}">checked</c:if> >
                                                 </label>
                                             </div>
-                                            <div class="note">930,000 원</div>
+                                            <div class="note">900,000 원</div>
                                             <div class="discount">100부스 이상 참가업체</div>
 
                                             <div class="select">

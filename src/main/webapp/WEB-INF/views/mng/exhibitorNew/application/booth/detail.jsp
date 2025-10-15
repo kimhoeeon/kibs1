@@ -2454,7 +2454,7 @@ if (document.documentElement) {
                                                     <tr class="text-center align-middle">
                                                         <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale6}">checked</c:if> disabled></td>
                                                         <td>100부스 이상 참가업체</td>
-                                                        <td>930,000 원</td>
+                                                        <td>900,000 원</td>
                                                     </tr>
                                                     <tr class="text-center align-middle">
                                                         <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountRe}">checked</c:if> disabled></td>
