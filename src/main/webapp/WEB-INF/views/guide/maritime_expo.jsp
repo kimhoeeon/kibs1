@@ -95,13 +95,16 @@
         <!-- section -->
         <div class="maritime padding_tb summ_join">
             <div class="inner">
-                <div class="maritime_wrap">
-                    <img src="/img/maritim_01.jpg" alt="해양전시회 이미지">
-                    <img src="/img/maritim_02.jpg" alt="해양전시회 이미지">
-                    <img src="/img/maritim_03.jpg" alt="해양전시회 이미지">
+                <div class="summ_box">
+                    <div class="summ_poster"><img src="/img/maritim_01.jpg" alt="해양전시회 이미지"></div>
+                    <div class="summ_info">
+                        <img src="/img/maritim_02.jpg" alt="해양전시회 이미지">
+                        <img src="/img/maritim_03.jpg" alt="해양전시회 이미지">
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- section -->
 
     </div>
 
