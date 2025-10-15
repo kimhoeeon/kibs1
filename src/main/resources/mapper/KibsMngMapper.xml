@@ -3680,6 +3680,18 @@
                 #{endDttm}, NOW())
     </insert>
 
+    <update id="deleteExhibitorNewInvoiceBooth" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteExhibitorNewInvoiceBooth */
+        DELETE FROM invoice_booth
+        WHERE exhibitor_seq = #{exhibitorSeq}
+    </update>
+
+    <update id="deleteExhibitorNewInvoiceUtility" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteExhibitorNewInvoiceUtility */
+        DELETE FROM invoice_utility
+        WHERE exhibitor_seq = #{exhibitorSeq}
+    </update>
+
     <update id="deleteInvoiceBooth" parameterType="java.lang.Integer">
         /* com.mtf.kibs.mapper.kibsMngMapper.deleteInvoiceBooth */
         UPDATE invoice_booth

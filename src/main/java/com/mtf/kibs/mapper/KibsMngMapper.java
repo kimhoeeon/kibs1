@@ -611,4 +611,8 @@ public interface KibsMngMapper {
     List<UtilityDetailDTO> selectExcelUtilityDetailList(String transferYear);
 
     List<ProductDetailDTO> selectExcelProductDetailList(String transferYear);
+
+    Integer deleteExhibitorNewInvoiceBooth(InvoiceBoothDTO invoiceBoothDTO);
+
+    Integer deleteExhibitorNewInvoiceUtility(InvoiceUtilityDTO invoiceUtilityDTO);
 }

@@ -2564,12 +2564,12 @@ public class KibsMngServiceImpl implements KibsMngService {
                     /* invoice_booth */
                     InvoiceBoothDTO invoiceBoothDTO = new InvoiceBoothDTO();
                     invoiceBoothDTO.setExhibitorSeq(exhibitorNewDTO.getSeq());
-                    Integer invoiceBoothResult = kibsMngMapper.deleteInvoiceBooth(invoiceBoothDTO);
+                    Integer invoiceBoothResult = kibsMngMapper.deleteExhibitorNewInvoiceBooth(invoiceBoothDTO);
 
                     /* invoice_utility */
                     InvoiceUtilityDTO invoiceUtilityDTO = new InvoiceUtilityDTO();
                     invoiceUtilityDTO.setExhibitorSeq(exhibitorNewDTO.getSeq());
-                    Integer invoiceUtilityResult = kibsMngMapper.deleteInvoiceUtility(invoiceUtilityDTO);
+                    Integer invoiceUtilityResult = kibsMngMapper.deleteExhibitorNewInvoiceUtility(invoiceUtilityDTO);
 
                     /* file */
                     FileDTO fileDTO = new FileDTO();
