@@ -2819,7 +2819,10 @@ if (document.documentElement) {
                                         <!--end::Card title-->
                                         <div class="card-toolbar">
                                             <span class="text-muted me-2">발송 대상 이메일:</span>
-                                            <span class="fw-bold">${info.email}</span>
+                                            <span class="fw-bold">
+                                                <input type="hidden" id="defaultEmail" value="${info.email}"/>
+                                                ${info.email}
+                                            </span>
                                         </div>
                                     </div>
                                     <!--begin::Card header-->
@@ -2861,7 +2864,7 @@ if (document.documentElement) {
                                                                         <input type="checkbox" name="invoiceSeq" value="${invoice.invoiceSeq}" data-type="booth" class="form-check-input">
                                                                     </span>
                                                                 </td>
-                                                                <td>${invoice.invoiceCode}</td>
+                                                                <td class="td_invoiceCode">${invoice.invoiceCode}</td>
                                                                 <td>${invoice.title}</td>
                                                                 <td>전시부스</td>
                                                                 <td>${invoice.recipientEmail}</td>
@@ -2881,7 +2884,7 @@ if (document.documentElement) {
                                                                         <input type="checkbox" name="invoiceSeq" value="${invoice.invoiceSeq}" data-type="utility" class="form-check-input">
                                                                     </span>
                                                                 </td>
-                                                                <td>${invoice.invoiceCode}</td>
+                                                                <td class="td_invoiceCode">${invoice.invoiceCode}</td>
                                                                 <td>${invoice.title}</td>
                                                                 <td>유틸리티</td>
                                                                 <td>${invoice.recipientEmail}</td>
@@ -3049,6 +3052,38 @@ if (document.documentElement) {
         <!--end::Modal dialog-->
     </div>
     <!--end::Modal - 수정이력-->
+
+    <div class="modal fade" id="kt_modal_send_invoice" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-500px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="fw-bold">인보이스 발송</h2>
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                </div>
+                <div class="modal-body py-10 px-lg-17">
+                    <input type="hidden" id="sendInvoiceSeq" />
+                    <input type="hidden" id="sendInvoiceType" />
+                    <input type="hidden" id="sendInvoiceFilePath" />
+
+                    <div class="mb-5">
+                        <div class="fs-6 text-gray-600">아래 이메일 주소로 인보이스를 발송합니다.</div>
+                        <div id="sendInvoiceCodeDisplay" class="fs-5 fw-bold text-gray-800"></div>
+                    </div>
+
+                    <div class="fv-row">
+                        <label for="sendInvoiceEmailInput" class="form-label fw-semibold">수신 이메일 주소:</label>
+                        <input type="email" id="sendInvoiceEmailInput" class="form-control form-control-solid" placeholder="name@example.com"/>
+                    </div>
+                </div>
+                <div class="modal-footer flex-center">
+                    <button type="button" class="btn btn-light me-3" data-bs-dismiss="modal">취소</button>
+                    <button type="button" id="sendInvoiceConfirmBtn" class="btn btn-primary">발송</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>var hostUrl = "/assets/";</script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->

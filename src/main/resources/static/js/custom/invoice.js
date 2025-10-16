@@ -408,104 +408,132 @@ $(function(){
             return;
         }
 
+        // 1. 발송에 필요한 정보 수집
         const invoiceSeq = checkedInvoice.val();
         const invoiceType = checkedInvoice.data('type');
+        const filePath = checkedInvoice.closest('.invoice-item').find('input[name="filePath"]').val();
+        const invoiceCode = checkedInvoice.closest('tr').find('.td_invoiceCode').text().trim(); // 화면에 표시된 인보이스 코드
+        const defaultEmail = $('#defaultEmail').val();
+        const invoiceTypeTxt = invoiceType === 'booth' ? '전시부스' : '유틸리티';
 
-        if (confirm('선택한 인보이스를 발송하시겠습니까?')) {
-            KTApp.showPageLoading();
+        if (!filePath) {
+            alert('인보이스 파일이 없습니다. 먼저 인보이스를 생성해주세요.');
+            return;
+        }
 
-            // 1. 공통 정보인 참가업체 정보 조회 (기존 로직 활용)
-            const exhibitorInfo = ajaxConnect('/mng/getExhibitorNewInfo.do', 'post', { seq: exhibitorSeq });
+        // 2. 팝업(Modal)의 각 필드에 정보 채우기
+        $('#sendInvoiceSeq').val(invoiceSeq);
+        $('#sendInvoiceType').val(invoiceType);
+        $('#sendInvoiceFilePath').val(filePath);
+        $('#sendInvoiceCodeDisplay').text(`인보이스 정보 : ${invoiceCode} [ ${invoiceTypeTxt} ]`);
+        $('#sendInvoiceEmailInput').val(defaultEmail);
 
-            if (exhibitorInfo) {
-                const companyNameKo = exhibitorInfo.companyNameKo;
-                const email = exhibitorInfo.email;
-                const filePath = checkedInvoice.closest('.invoice-item').find('input[name="filePath"]').val();
+        // 3. 팝업 열기
+        const sendModal = new bootstrap.Modal(document.getElementById('kt_modal_send_invoice'));
+        sendModal.show();
+    });
 
-                if (!filePath) {
-                    KTApp.hidePageLoading();
-                    alert('인보이스 파일 경로가 없습니다. PDF 생성 후 다시 시도해주세요.');
-                    return;
-                }
+    // --- 팝업 안의 최종 '발송' 버튼 클릭 이벤트 ---
+    $('#sendInvoiceConfirmBtn').on('click', function() {
+        // 1. 팝업에 저장/입력된 정보 가져오기
+        const invoiceSeq = $('#sendInvoiceSeq').val();
+        const invoiceType = $('#sendInvoiceType').val();
+        const filePath = $('#sendInvoiceFilePath').val();
+        const recipientEmail = $('#sendInvoiceEmailInput').val();
 
-                // 2. 파일 경로 파싱
-                const folderPath_r = filePath.replace('/usr/local/tomcat/webapps/','');
-                const folderPath_s = folderPath_r.substring(0, folderPath_r.lastIndexOf('/') + 1);
-                const fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+        // 이메일 유효성 검사 (간단)
+        if (!recipientEmail || !recipientEmail.includes('@')) {
+            alert('올바른 이메일 주소를 입력해주세요.');
+            return;
+        }
 
-                // 3. 인보이스 타입에 따라 메일 제목, gbn, 결과 업데이트 URL 분기
-                let subject = '';
-                let gbn = '';
-                let updateUrl = '';
+        const modal = bootstrap.Modal.getInstance(document.getElementById('kt_modal_send_invoice'));
+        modal.hide();
+        KTApp.showPageLoading();
 
-                if (invoiceType === 'booth') {
-                    subject = `[KIBS 2026] ${companyNameKo} 전시부스 인보이스 발송`;
-                    gbn = 'BOOTH';
-                    updateUrl = '/mng/exhibitorNew/application/booth/invoice/mail/result/update.do';
-                } else if (invoiceType === 'utility') {
-                    subject = `[KIBS 2026] ${companyNameKo} 유틸리티 인보이스 발송`;
-                    gbn = 'UTILITY';
-                    updateUrl = '/mng/exhibitorNew/application/utility/invoice/mail/result/update.do';
-                }
+        // 2. 참가업체 공통 정보 조회 (기존 로직 활용)
+        const exhibitorInfo = ajaxConnect('/mng/getExhibitorNewInfo.do', 'post', { seq: exhibitorSeq });
+        if (!exhibitorInfo) {
+            KTApp.hidePageLoading();
+            alert('발송에 필요한 참가업체 정보를 찾지 못했습니다.');
+        }else{
+            const companyNameKo = exhibitorInfo.companyNameKo;
 
-                // 4. 메일 발송 API에 보낼 데이터 구성
-                const mailJson = {
-                    subject: subject,
-                    body: '', //템플릿 사용시 빈값
-                    template: "161",
-                    receiver: [{ email: email, note1: encodeURI(`https://kibs.com/mng/exhibitorNew/application/invoice/mail/open/update.do?gbn=${gbn}&seq=${invoiceSeq}`) }],
-                    gbn: gbn,
-                    folderPath: encodeURI(folderPath_s),
-                    fileUrl: [{ name: encodeURI(fileName) }]
-                };
-
-                // 5. 메일 발송 실행
-                const mailResult = ajaxConnect('/mail/send.do', 'post', mailJson);
-
-                // 6. 발송 결과에 따라 DB 업데이트
-                const sendStatus = (mailResult.resultCode === "0") ? '미열람' : '미발송';
-                const sendResult = (mailResult.resultCode === "0") ? '발송성공' : '발송실패';
-
-                const updateData = {
-                    invoiceSeq: invoiceSeq,
-                    sendStatus: sendStatus,
-                    sendResult: sendResult,
-                    sendResultMsg: mailResult.resultMessage
-                };
-
-                $.ajax({
-                    url: updateUrl,
-                    method: 'POST',
-                    contentType: 'application/json; charset=utf-8',
-                    data: JSON.stringify(updateData),
-                    success: function (updateResponse) {
-                        KTApp.hidePageLoading();
-                        if (updateResponse.resultCode === "0") {
-                            Swal.fire({
-                                icon: 'info',
-                                title: '[ 인보이스 ]',
-                                text: '인보이스가 발송되었습니다.',
-                                confirmButtonText: '확인'
-                            }).then(() => {
-
-                                // --- 새로고침 전 스크롤 명령 저장 ---
-                                sessionStorage.setItem('scrollToBottom', 'true');
-                                location.reload();
-                            });
-                        } else {
-                            alert('메일은 발송되었으나, 발송 상태를 업데이트하는 데 실패했습니다.');
-                        }
-                    },
-                    error: function() {
-                        KTApp.hidePageLoading();
-                        alert('발송 상태 업데이트 중 서버 통신 오류가 발생했습니다.');
-                    }
-                });
-
-            } else {
+            if (!filePath) {
                 KTApp.hidePageLoading();
-                alert('발송에 필요한 참가업체 정보를 찾지 못했습니다.');
+                alert('인보이스 파일 경로가 없습니다. PDF 생성 후 다시 시도해주세요.');
+                return;
             }
+
+            // 3. 파일 경로 파싱
+            const folderPath_r = filePath.replace('/usr/local/tomcat/webapps/','');
+            const folderPath_s = folderPath_r.substring(0, folderPath_r.lastIndexOf('/') + 1);
+            const fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+
+            // 4. 인보이스 타입에 따라 메일 제목, gbn, 결과 업데이트 URL 분기
+            let subject = '', gbn = '', updateUrl = '';
+            if (invoiceType === 'booth') {
+                subject = `[KIBS 2026] ` + companyNameKo + ` 전시부스 인보이스 발송`;
+                gbn = 'BOOTH';
+                updateUrl = '/mng/exhibitorNew/application/booth/invoice/mail/result/update.do';
+            } else if (invoiceType === 'utility') {
+                subject = `[KIBS 2026] ` + companyNameKo + ` 유틸리티 인보이스 발송`;
+                gbn = 'UTILITY';
+                updateUrl = '/mng/exhibitorNew/application/utility/invoice/mail/result/update.do';
+            }
+
+            // 5. 메일 발송 API에 보낼 데이터 구성
+            const mailJson = {
+                subject: subject,
+                body: '', //템플릿 사용시 빈값
+                template: "161",
+                // 수신자 이메일을 팝업에서 입력한 값으로 사용
+                receiver: [{ email: recipientEmail, note1: encodeURI(`https://kibs.com/mng/exhibitorNew/application/invoice/mail/open/update.do?gbn=IB&seq=${invoiceSeq}`) }],
+                gbn: gbn,
+                folderPath: encodeURI(folderPath_s),
+                fileUrl: [{ name: encodeURI(fileName) }]
+            };
+
+            // 6. 메일 발송 실행 및 결과 처리 (기존 로직 재활용)
+            const mailResult = ajaxConnect('/mail/send.do', 'post', mailJson);
+            const sendStatus = (mailResult.resultCode === "0") ? '미열람' : '미발송';
+            const sendResult = (mailResult.resultCode === "0") ? '발송성공' : '발송실패';
+
+            const updateData = {
+                invoiceSeq: invoiceSeq,
+                sendStatus: sendStatus,
+                sendResult: sendResult,
+                sendResultMsg: mailResult.resultMessage
+            };
+
+            $.ajax({
+                url: updateUrl,
+                method: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(updateData),
+                success: function (updateResponse) {
+                    KTApp.hidePageLoading();
+                    if (updateResponse.resultCode === "0") {
+                        Swal.fire({
+                            icon: 'info',
+                            title: '[ 인보이스 ]',
+                            text: '인보이스가 발송되었습니다.',
+                            confirmButtonText: '확인'
+                        }).then(() => {
+
+                            // --- 새로고침 전 스크롤 명령 저장 ---
+                            sessionStorage.setItem('scrollToBottom', 'true');
+                            location.reload();
+                        });
+                    } else {
+                        alert('메일은 발송되었으나, 발송 상태를 업데이트하는 데 실패했습니다.');
+                    }
+                },
+                error: function() {
+                    KTApp.hidePageLoading();
+                    alert('발송 상태 업데이트 중 서버 통신 오류가 발생했습니다.');
+                }
+            });
         }
     });
 
