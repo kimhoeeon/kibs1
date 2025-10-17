@@ -53,7 +53,7 @@ License: For each use you must have a valid license purchased only from above li
 </head>
 <!--end::Head-->
 <!--begin::Body-->
-<body id="kt_app_body" data-exhibitor-seq="${info.seq}" data-company-name-ko="${info.companyNameKo}"
+<body id="kt_app_body" data-exhibitor-seq="${info.seq}" data-company-name-ko="${info.companyNameKo}" data-member-yn="${info.memberCompanyYn}"
       data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
       data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
       data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
@@ -2374,6 +2374,14 @@ if (document.documentElement) {
                                                             + <fmt:formatNumber value="${info.utilityPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>
                                                         </td>
                                                     </tr>
+                                                    <c:if test="${info.memberCompanyYn == 'Y' || info.discountLeisure}">
+                                                        <tr id="developmentFundRow"> <%-- JS에서 제어할 수 있도록 id 추가 --%>
+                                                            <th class="text-gray-700 fw-semibold fs-6">협회 발전기금</th>
+                                                            <td id="summary_development_fund" class="text-end fw-bold fs-6">
+                                                                + ￦ 0
+                                                            </td>
+                                                        </tr>
+                                                    </c:if>
                                                     <tr>
                                                         <th class="text-gray-700 fw-semibold fs-6">기본 할인</th>
                                                         <td class="text-end fw-bold fs-6 text-danger">
@@ -2458,19 +2466,20 @@ if (document.documentElement) {
                                                 <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
                                                     <!--begin::Table head-->
                                                     <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
-                                                    <tr class="text-center">
-                                                        <th>선택</th>
-                                                        <th>NO</th>
-                                                        <th>제목</th>
-                                                        <th>발송유형</th>
-                                                        <th>발송이력</th>
-                                                    </tr>
+                                                        <tr class="text-center">
+                                                            <th>선택</th>
+                                                            <th>NO</th>
+                                                            <th>제목</th>
+                                                            <th>발송유형</th>
+                                                            <th>발행일시</th>
+                                                            <th>발송이력</th>
+                                                        </tr>
                                                     </thead>
                                                     <!--end::Table head-->
                                                     <!--begin::Table body-->
                                                     <tbody>
                                                     <c:if test="${empty utilityInvoiceList}">
-                                                        <tr><td colspan="5" class="text-center">인보이스 내역 없음</td></tr>
+                                                        <tr><td colspan="6" class="text-center">인보이스 내역 없음</td></tr>
                                                     </c:if>
 
                                                     <%-- 2. 유틸리티 인보이스 목록 표시 --%>
@@ -2485,6 +2494,7 @@ if (document.documentElement) {
                                                             <td class="td_invoiceCode">${invoice.invoiceCode}</td>
                                                             <td>${invoice.title}</td>
                                                             <td>유틸리티</td>
+                                                            <td><span class="fw-semibold d-block fs-7">${fn:substring(invoice.initRegiDttm, 0, 16)}</span></td>
                                                             <td>
                                                                 <button type="button" class="btn btn-sm btn-light-info view-history-btn"
                                                                         data-invoice-seq="${invoice.invoiceSeq}"

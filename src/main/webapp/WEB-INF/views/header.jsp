@@ -201,8 +201,8 @@
                                 <li><a href="<c:url value="/online/product.do"/>"><span>제품 검색하기</span></a></li>
                             </ul>
                         </li>
-                        <li>
-                            <a href="<c:url value="/guide/maritime_expo.do"/>"><span>해상전시회</span></a>
+                        <li class="expo">
+                            <a href="<c:url value="/guide/maritime_expo.do"/>"><span>해상전시회<br>(시흥 거북섬마리나)</span></a>
                         </li>
                         <li class="kiss_nav">
                             <a href="<c:url value="/guide/summary_kiss.do"/>"><span>KISS<br>(코리아 서프쇼)</span></a>
@@ -312,7 +312,7 @@
                     </ul>
                     <ul class="link_dept1 site_map_new">
                         <li>
-                            <a href="<c:url value="/guide/maritime_expo.do"/>"><span>해상전시회</span></a>
+                            <a href="<c:url value="/guide/maritime_expo.do"/>"><span>해상전시회<br>(시흥 거북섬마리나)</span></a>
                         </li>
                         <li class="kiss_nav">
                             <a href="<c:url value="/guide/summary_kiss.do"/>"><span>KISS<br>(코리아 서프쇼)</span></a>

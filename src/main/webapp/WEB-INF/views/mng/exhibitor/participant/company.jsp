@@ -2258,7 +2258,7 @@ if (document.documentElement) {
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
-                                        </i>Export to Excel</button>
+                                        </i>전시업체 상세 엑셀 다운로드</button>
                                     <!--end::Export dropdown-->
                                 </div>
                                 <!--end::Actions-->

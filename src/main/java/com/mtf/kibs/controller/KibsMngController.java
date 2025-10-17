@@ -643,14 +643,15 @@ public class KibsMngController {
     }
 
     // 기존 입금 내역을 수정하는 API
-    @PutMapping("/mng/deposits/{depositSeq}")
+    @PostMapping("/mng/deposits/{depositSeq}")
     @ResponseBody
-    public Map<String, Object> updateDepositHistory(@RequestBody DepositHistoryDTO dto) {
+    public Map<String, Object> updateDepositHistory(@RequestBody DepositHistoryDTO dto, @PathVariable("depositSeq") int depositSeq) {
+        dto.setDepositSeq(depositSeq);
         return kibsMngService.updateDepositHistory(dto);
     }
 
     // 입금 내역을 삭제하는 API
-    @PostMapping("/mng/deposits/{depositSeq}")
+    @PostMapping("/mng/deposits/{depositSeq}/delete")
     @ResponseBody
     public Map<String, Object> deleteDepositHistory(@PathVariable int depositSeq) {
         return kibsMngService.deleteDepositHistory(depositSeq);
@@ -4233,562 +4234,180 @@ public class KibsMngController {
     }
 
     @RequestMapping(value = "/mng/exhibitor/download.do", method = RequestMethod.GET)
-    public void exhibitor_download(HttpServletRequest req, HttpServletResponse res) throws UnsupportedEncodingException {
+    public void exhibitor_download(HttpServletRequest req, HttpServletResponse res) {
         System.out.println("KibsMngController > exhibitor_download");
         String fileName = req.getParameter("fileName");
         String transferYear = req.getParameter("transferYear");
 
-        try (XSSFWorkbook workbook = new XSSFWorkbook()) {
+        // [수정] XSSFWorkbook 대신 SXSSFWorkbook 사용
+        try (SXSSFWorkbook workbook = new SXSSFWorkbook()) {
 
             // [최종 수정] 모든 컬럼명이 포함된 헤더 배열
             final String[] colNames_ex = {
-                    /* 업체정보 (31개) */
-                    "No", "참가상태", "승인구분", "부스번호", "아이디", "등록일", "최종수정일", "참가비수납여부", "BP번호", "컨택내역-작성자", "컨택내역-날짜", "컨택내역-내용", "참고사항-작성자", "참고사항-날짜", "참고사항-내용", "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소", "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "임직원 수", "기참가연도", "회원사 여부",
-                    /* 대표담당자 (7개) */
-                    "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "E-mail 마케팅정보 수신동의",
-                    /* 담당자 정보 1~3 (각 6개, 총 18개) */
-                    "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
-                    /* 업체정보(소개) (8개) */
-                    "회사소개영상", "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)", "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
-                    /* 참가분야 (10개) */
-                    "보트&요트", "무동력보트", "워크보트", "해양부품&장비", "안전&마리나", "해양관광", "해양레저", "수중레저", "서핑", "카라반&캠핑",
-                    /* [복원] 전시품 정보 1~20 (각 10개, 총 200개) */
-                    "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
-                    /* 기업뱃지 (4개) */
-                    "보트쇼 3회 이상 참가", "올해의 제품상 수상", "보트쇼와 제작한 영상", "제품 등록 우수",
-                    /* 온라인 제품 정보 1~30 (각 11개, 총 330개) */
-                    "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
-                    /* 신청내역 */
-                    "수출상담회 참가희망여부", "등록비", "독립부스", "조립부스", "온라인부스", "총 부스 수", "1차 조기신청", "2차 조기신청", "첫 참가(10부스 미만)", "첫 참가(10부스 이상)", "재참가", "규모(10+)", "규모(20+)", "규모(30+)", "규모(40+)", "규모(50+)", "규모(100+)", "협회할인", "협회 발전기금", "특할1(제품상)", "특할1 비고", "특할2 사유", "특할2 금액", "특할2 비고", "특할3 사유", "특할3 금액", "특할3 비고", "소계(공급가액)", "부가세", "총계"
+                    /* 업체정보 (31) */ "No", "참가상태", "승인구분", "부스번호", "아이디", "등록일", "최종수정일", "참가비수납여부", "BP번호", "컨택내역-작성자", "컨택내역-날짜", "컨택내역-내용", "참고사항-작성자", "참고사항-날짜", "참고사항-내용", "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소", "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "임직원 수", "기참가연도", "회원사 여부",
+                    /* 대표담당자 (7) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "E-mail 마케팅정보 수신동의",
+                    /* 담당자 1~3 (18) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
+                    /* 업체소개 (8) */ "회사소개영상", "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)", "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
+                    /* 참가분야 (10) */ "보트&요트", "무동력보트", "워크보트", "해양부품&장비", "안전&마리나", "해양관광", "해양레저", "수중레저", "서핑", "카라반&캠핑",
+                    /* 전시품 1~20 (200) */ "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
+                    /* 기업뱃지 (4) */ "보트쇼 3회 이상 참가", "올해의 제품상 수상", "보트쇼와 제작한 영상", "제품 등록 우수",
+                    /* 온라인 제품 1~30 (330) */ "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
+                    /* 신청내역 (31) */ "수출상담회 참가희망여부", "등록비", "독립부스", "조립부스", "온라인부스", "총 부스 수", "1차 조기신청", "2차 조기신청", "첫 참가(10부스 미만)", "첫 참가(10부스 이상)", "재참가", "규모(10+)", "규모(20+)", "규모(30+)", "규모(40+)", "규모(50+)", "규모(100+)", "협회할인", "협회 발전기금", "특할1(제품상)", "특할1 비고", "특할2 사유", "특할2 금액", "특할2 비고", "특할3 사유", "특할3 금액", "특할3 비고", "소계(공급가액)", "부가세", "총계"
             };
 
-            // 컬럼 너비 설정
             final int[] colWidths_ex = new int[colNames_ex.length];
             Arrays.fill(colWidths_ex, 5000);
             colWidths_ex[0] = 3000;
 
-            // *** Style 정의 ***
-            Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");
-            fontHeader.setFontHeight((short)(9 * 20));
-            fontHeader.setBold(true);
-            Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");
-            font9.setFontHeight((short)(9 * 20));
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index);
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true);
-            CellStyle bodyStyle = workbook.createCellStyle();
-            bodyStyle.setAlignment(HorizontalAlignment.CENTER);
-            bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyStyle.setBorderRight(BorderStyle.THIN);
-            bodyStyle.setBorderLeft(BorderStyle.THIN);
-            bodyStyle.setBorderTop(BorderStyle.THIN);
-            bodyStyle.setBorderBottom(BorderStyle.THIN);
-            bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true);
+            Font fontHeader = workbook.createFont(); fontHeader.setFontName("맑은 고딕"); fontHeader.setFontHeightInPoints((short) 9); fontHeader.setBold(true);
+            Font font9 = workbook.createFont(); font9.setFontName("맑은 고딕"); font9.setFontHeightInPoints((short) 9);
+            CellStyle headerStyle = workbook.createCellStyle(); headerStyle.setAlignment(HorizontalAlignment.CENTER); headerStyle.setVerticalAlignment(VerticalAlignment.CENTER); headerStyle.setBorderRight(BorderStyle.THIN); headerStyle.setBorderLeft(BorderStyle.THIN); headerStyle.setBorderTop(BorderStyle.THIN); headerStyle.setBorderBottom(BorderStyle.THIN); headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index); headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND); headerStyle.setFont(fontHeader); headerStyle.setWrapText(true);
+            CellStyle bodyStyle = workbook.createCellStyle(); bodyStyle.setAlignment(HorizontalAlignment.CENTER); bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER); bodyStyle.setBorderRight(BorderStyle.THIN); bodyStyle.setBorderLeft(BorderStyle.THIN); bodyStyle.setBorderTop(BorderStyle.THIN); bodyStyle.setBorderBottom(BorderStyle.THIN); bodyStyle.setFont(font9); bodyStyle.setWrapText(true);
 
-            // Sheet 생성
-            XSSFSheet sheet = workbook.createSheet("참가업체");
+            SXSSFSheet sheet = workbook.createSheet("참가업체");
+            sheet.trackAllColumnsForAutoSizing();
             int rowCnt = 0;
 
-            // [최종 수정] 셀 병합 인덱스 전체 재계산
-            XSSFRow headerRow = sheet.createRow(rowCnt++);
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 30));   // 업체정보
-            headerRow.createCell(0).setCellValue("참가업체정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 31, 37));  // 대표 담당자
-            headerRow.createCell(31).setCellValue("대표 담당자");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 38, 55));  // 기타 담당자 정보
-            headerRow.createCell(38).setCellValue("기타 담당자 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 56, 63));  // 업체정보(소개)
-            headerRow.createCell(56).setCellValue("업체정보(소개)");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 64, 73));  // 참가분야
-            headerRow.createCell(64).setCellValue("참가분야");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 74, 273)); // 전시품 정보
-            headerRow.createCell(74).setCellValue("전시품 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 274, 277)); // 기업 뱃지
-            headerRow.createCell(274).setCellValue("기업 뱃지");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 278, 607)); // 온라인 제품 정보
-            headerRow.createCell(278).setCellValue("온라인 제품 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 608, 638)); // 신청내역
-            headerRow.createCell(608).setCellValue("신청내역");
-            // 병합된 셀에 스타일 적용
-            for(int i=0; i < colNames_ex.length; i++){
+            Row headerRow = sheet.createRow(rowCnt++);
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 30));   headerRow.createCell(0).setCellValue("참가업체정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 31, 37));  headerRow.createCell(31).setCellValue("대표 담당자");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 38, 55));  headerRow.createCell(38).setCellValue("기타 담당자 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 56, 63));  headerRow.createCell(56).setCellValue("업체정보(소개)");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 64, 73));  headerRow.createCell(64).setCellValue("참가분야");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 74, 273)); headerRow.createCell(74).setCellValue("전시품 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 274, 277)); headerRow.createCell(274).setCellValue("기업 뱃지");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 278, 607)); headerRow.createCell(278).setCellValue("온라인 제품 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 608, 637)); headerRow.createCell(608).setCellValue("신청내역");
+
+            for(int i=0; i < 638; i++){
                 if(headerRow.getCell(i) == null) headerRow.createCell(i);
                 headerRow.getCell(i).setCellStyle(headerStyle);
             }
 
-            // 2행: 소분류 헤더 생성
-            XSSFRow subHeaderRow = sheet.createRow(rowCnt++);
+            Row subHeaderRow = sheet.createRow(rowCnt++);
             for (int i = 0; i < colNames_ex.length; i++) {
-                XSSFCell cell = subHeaderRow.createCell(i);
+                Cell cell = subHeaderRow.createCell(i);
                 cell.setCellStyle(headerStyle);
                 cell.setCellValue(colNames_ex[i]);
                 sheet.setColumnWidth(i, colWidths_ex[i]);
             }
 
-            // 데이터 조회
-            ExhibitorNewDetailDTO exhibitorNewDetailDTO = new ExhibitorNewDetailDTO();
-            exhibitorNewDetailDTO.setTransferYear(transferYear);
-            List<ExhibitorNewDetailDTO> exhibitorDetailList = kibsMngService.processSelectExhibitorNewDetailList(exhibitorNewDetailDTO);
-
+            ExhibitorNewDetailDTO exhibitorDetailDTO = new ExhibitorNewDetailDTO();
+            exhibitorDetailDTO.setTransferYear(transferYear);
+            List<ExhibitorNewDetailDTO> exhibitorDetailList = kibsMngService.processSelectExhibitorNewDetailList(exhibitorDetailDTO);
             int listNum = exhibitorDetailList.size();
             DecimalFormat df = new DecimalFormat("#,##0");
 
-            // 데이터 행 생성
             for (ExhibitorNewDetailDTO info : exhibitorDetailList) {
-                XSSFRow dataRow = sheet.createRow(rowCnt++);
+                Row dataRow = sheet.createRow(rowCnt++);
                 int cellCnt = 0;
 
-                // --- 업체정보 (0 ~ 30) ---
-                dataRow.createCell(cellCnt++).setCellValue(listNum--); // No
-                dataRow.createCell(cellCnt++).setCellValue(info.getApprovalStatus() != null && info.getApprovalStatus().contains("승인") ? "참가" : "취소");
-                dataRow.createCell(cellCnt++).setCellValue(info.getApprovalStatus());
-                dataRow.createCell(cellCnt++).setCellValue(info.getBoothNum());
-                dataRow.createCell(cellCnt++).setCellValue(info.getId());
-                dataRow.createCell(cellCnt++).setCellValue(info.getInitRegiDttm());
-                dataRow.createCell(cellCnt++).setCellValue(info.getFinalRegiDttm());
-                String prcYn = info.getPrcYn();
-                String prcYn_val = "";
-                if (prcYn != null) {
-                    switch (prcYn) {
-                        case "0": prcYn_val = "미납"; break;
-                        case "1": prcYn_val = "참가비 납부"; break;
-                        case "2": prcYn_val = "50% 납부"; break;
-                        case "3": prcYn_val = "전액 납부"; break;
-                        case "4": prcYn_val = "완납(부대시설비)"; break;
-                    }
-                }
-                dataRow.createCell(cellCnt++).setCellValue(prcYn_val);
-                dataRow.createCell(cellCnt++).setCellValue(info.getBpNum());
-                dataRow.createCell(cellCnt++).setCellValue(info.getContactWriter());
-                dataRow.createCell(cellCnt++).setCellValue(info.getContactDate());
-                dataRow.createCell(cellCnt++).setCellValue(info.getContactContent());
-                dataRow.createCell(cellCnt++).setCellValue(info.getReferenceWriter());
-                dataRow.createCell(cellCnt++).setCellValue(info.getReferenceDate());
-                dataRow.createCell(cellCnt++).setCellValue(info.getReferenceContent());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyLicenseNum());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyNameKo());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyNameEn());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyAddress());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyAddressDetail());
-                dataRow.createCell(cellCnt++).setCellValue(info.getFactoryAddress());
-                dataRow.createCell(cellCnt++).setCellValue(info.getFactoryAddressDetail());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyCeo());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyTel());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyHomepage());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyFax());
-                dataRow.createCell(cellCnt++).setCellValue(info.getIndustryPart());
-                dataRow.createCell(cellCnt++).setCellValue(info.getIndustryPartEtc());
-                dataRow.createCell(cellCnt++).setCellValue(info.getEmployeeCnt());
-                dataRow.createCell(cellCnt++).setCellValue(info.getPrePartYear());
-                dataRow.createCell(cellCnt++).setCellValue(info.getMemberCompanyYn());
+                cellCnt = writeCompanyInfo(dataRow, cellCnt, info, listNum--);
+                cellCnt = writeRepresentativeInfo(dataRow, cellCnt, info);
+                cellCnt = writeOtherContactsInfo(dataRow, cellCnt, info);
+                cellCnt = writeCompanyIntroInfo(dataRow, cellCnt, info);
+                cellCnt = writeParticipationFields(dataRow, cellCnt, info);
+                cellCnt = writeExhibitionItems(dataRow, cellCnt, info);
+                cellCnt = writeCompanyBadges(dataRow, cellCnt, info);
+                cellCnt = writeOnlineProducts(dataRow, cellCnt, info);
+                cellCnt = writeApplicationDetails(dataRow, cellCnt, info, df);
 
-                // --- 대표 담당자 (31 ~ 37) ---
-                dataRow.createCell(cellCnt++).setCellValue(info.getName());
-                dataRow.createCell(cellCnt++).setCellValue(info.getPosition());
-                dataRow.createCell(cellCnt++).setCellValue(info.getDepart());
-                dataRow.createCell(cellCnt++).setCellValue(info.getTel());
-                dataRow.createCell(cellCnt++).setCellValue(info.getPhone());
-                dataRow.createCell(cellCnt++).setCellValue(info.getEmail());
-                dataRow.createCell(cellCnt++).setCellValue("N".equals(info.getEmailMarketingYn()) ? "미동의" : "동의");
-
-                // --- 담당자 정보 1~3 (38 ~ 55) ---
-                for(int i=0; i<3; i++){
-                    String[] chargePersonNameSplit = info.getChargePersonName() != null ? info.getChargePersonName().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(chargePersonNameSplit, i));
-                    String[] chargePersonPositionSplit = info.getChargePersonPosition() != null ? info.getChargePersonPosition().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(chargePersonPositionSplit, i));
-                    String[] chargePersonDepartSplit = info.getChargePersonDepart() != null ? info.getChargePersonDepart().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(chargePersonDepartSplit, i));
-                    String[] chargePersonTelSplit = info.getChargePersonTel() != null ? info.getChargePersonTel().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(chargePersonTelSplit, i));
-                    String[] chargePersonPhoneSplit = info.getChargePersonPhone() != null ? info.getChargePersonPhone().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(chargePersonPhoneSplit, i));
-                    String[] chargePersonEmailSplit = info.getChargePersonEmail() != null ? info.getChargePersonEmail().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(chargePersonEmailSplit, i));
-                }
-
-                // --- 업체정보(소개) (56 ~ 63) ---
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyIntroVideo());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyIntroKo());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyIntroEn());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyPurposeKo());
-                dataRow.createCell(cellCnt++).setCellValue(info.getCompanyPurposeEn());
-                dataRow.createCell(cellCnt++).setCellValue(info.getNewItemIntroKo());
-                dataRow.createCell(cellCnt++).setCellValue(info.getNewItemIntroEn());
-                dataRow.createCell(cellCnt++).setCellValue(info.getPromotionPlan());
-
-                // --- 참가분야 (64 ~ 73) ---
-                String fieldPart = info.getFieldPart() != null ? info.getFieldPart().replaceAll(" ","") : "";
-                dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("보트&요트") ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("무동력보트") ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("워크보트") ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("해양부품&장비") ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("안전&마리나") ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("해양관광") ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("해양레저") ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("수중레저") ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("서핑") ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("카라반&캠핑") ? "O" : "");
-
-                // --- 전시품 정보 1~20 (74 ~ 273) ---
-                for(int i=0; i<20; i++){
-                    String[] productOptionBigSplit = info.getProductOptionBig() != null ? info.getProductOptionBig().split("\\^") : new String[0];
-                    String[] productOptionSmallSplit = info.getProductOptionSmall() != null ? info.getProductOptionSmall().split("\\^") : new String[0];
-                    String productOptionBig = convertValue(productOptionBigSplit, i);
-                    String productOptionVal = (productOptionBig != null && !productOptionBig.isEmpty()) ? productOptionBig + " / " + convertValue(productOptionSmallSplit, i) : "";
-                    dataRow.createCell(cellCnt++).setCellValue(productOptionVal);
-                    String[] productNameKoSplit = info.getProductNameKo() != null ? info.getProductNameKo().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(productNameKoSplit, i));
-                    String[] productQtySplit = info.getProductQty() != null ? info.getProductQty().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(productQtySplit, i));
-                    String[] productBrandSplit = info.getProductBrand() != null ? info.getProductBrand().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(productBrandSplit, i));
-                    String[] productLengthSplit = info.getProductLength() != null ? info.getProductLength().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(productLengthSplit, i));
-                    String[] productWidthSplit = info.getProductWidth() != null ? info.getProductWidth().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(productWidthSplit, i));
-                    String[] productHeightSplit = info.getProductHeight() != null ? info.getProductHeight().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(productHeightSplit, i));
-                    String[] productWeightSplit = info.getProductWeight() != null ? info.getProductWeight().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(productWeightSplit, i));
-                    String[] productMaterialSplit = info.getProductMaterial() != null ? info.getProductMaterial().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(productMaterialSplit, i));
-                    String[] productYearSplit = info.getProductYear() != null ? info.getProductYear().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(productYearSplit, i));
-                }
-
-                // --- 기업 뱃지 (274 ~ 277) ---
-                String companyBadge = info.getCompanyBadge() != null ? info.getCompanyBadge().replaceAll(" ","") : "";
-                dataRow.createCell(cellCnt++).setCellValue(companyBadge.contains("3회") ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(companyBadge.contains("제품상") ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(companyBadge.contains("제작한") ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(companyBadge.contains("우수") ? "O" : "");
-
-                // --- 온라인 제품 정보 1~30 (278 ~ 607) ---
-                for(int i=0; i<30; i++) {
-                    String[] onlineOptionBigSplit = info.getOnlineOptionBig() != null ? info.getOnlineOptionBig().split("\\^") : new String[0];
-                    String[] onlineOptionSmallSplit = info.getOnlineOptionSmall() != null ? info.getOnlineOptionSmall().split("\\^") : new String[0];
-                    String onlineOptionBig = convertValue(onlineOptionBigSplit, i);
-                    String onlineOptionVal = (onlineOptionBig != null && !onlineOptionBig.isEmpty()) ? onlineOptionBig + " / " + convertValue(onlineOptionSmallSplit, i) : "";
-                    dataRow.createCell(cellCnt++).setCellValue(onlineOptionVal);
-                    String[] onlineNameKoSplit = info.getOnlineNameKo() != null ? info.getOnlineNameKo().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineNameKoSplit, i));
-                    String[] onlineIntroKoSplit = info.getOnlineIntroKo() != null ? info.getOnlineIntroKo().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineIntroKoSplit, i));
-                    String[] onlineIntroEnSplit = info.getOnlineIntroEn() != null ? info.getOnlineIntroEn().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineIntroEnSplit, i));
-                    String[] onlineLinkSplit = info.getOnlineLink() != null ? info.getOnlineLink().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineLinkSplit, i));
-                    String[] onlineLengthSplit = info.getOnlineLength() != null ? info.getOnlineLength().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineLengthSplit, i));
-                    String[] onlineWidthSplit = info.getOnlineWidth() != null ? info.getOnlineWidth().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineWidthSplit, i));
-                    String[] onlineHeightSplit = info.getOnlineHeight() != null ? info.getOnlineHeight().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineHeightSplit, i));
-                    String[] onlineWeightSplit = info.getOnlineWeight() != null ? info.getOnlineWeight().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineWeightSplit, i));
-                    String[] onlineMaterialSplit = info.getOnlineMaterial() != null ? info.getOnlineMaterial().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineMaterialSplit, i));
-                    String[] onlineYearSplit = info.getOnlineYear() != null ? info.getOnlineYear().split("\\^") : new String[0];
-                    dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineYearSplit, i));
-                }
-
-                // --- 신청내역 (30개) ---
-                dataRow.createCell(cellCnt++).setCellValue("Y".equals(info.getExportMeetingYn()) ? "참가" : "참가 안 함");
-                dataRow.createCell(cellCnt++).setCellValue(info.getRegistrationCnt() != null ? df.format(info.getRegistrationCnt() * 100000) + " 원" : "0 원");
-                int standAlone = info.getStandAloneBoothCnt() != null ? info.getStandAloneBoothCnt() : 0;
-                int assembly = info.getAssemblyBoothCnt() != null ? info.getAssemblyBoothCnt() : 0;
-                int online = info.getOnlineBoothCnt() != null ? info.getOnlineBoothCnt() : 0;
-                dataRow.createCell(cellCnt++).setCellValue(String.valueOf(standAlone));
-                dataRow.createCell(cellCnt++).setCellValue(String.valueOf(assembly));
-                dataRow.createCell(cellCnt++).setCellValue(String.valueOf(online));
-                dataRow.createCell(cellCnt++).setCellValue(String.valueOf(standAlone + assembly + online)); // 총 부스 수
-
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountEarly1() ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountEarly2() ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountFirstUnder10() ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountFirstOver10() ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountRe() ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountScale1() ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountScale2() ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountScale3() ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountScale4() ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountScale5() ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountScale6() ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountLeisure() ? "O" : "");
-
-                if ("Y".equals(info.getMemberCompanyYn()) && info.getBoothPrcSum() != null) {
-                    dataRow.createCell(cellCnt++).setCellValue(df.format(info.getBoothPrcSum() * 0.1) + " 원");
-                } else {
-                    dataRow.createCell(cellCnt++).setCellValue("0 원");
-                }
-
-                dataRow.createCell(cellCnt++).setCellValue(info.isDiscountSpecial1Yn() ? "O" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial1Note());
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Reason());
-                dataRow.createCell(cellCnt++).setCellValue(info.isDiscountSpecial2Yn() ? df.format(info.getDiscountSpecial2Amount()) + " 원" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Note());
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Reason());
-                dataRow.createCell(cellCnt++).setCellValue(info.isDiscountSpecial3Yn() ? df.format(info.getDiscountSpecial3Amount()) + " 원" : "");
-                dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Note());
-
-                dataRow.createCell(cellCnt++).setCellValue(info.getPrcSum() != null ? df.format(info.getPrcSum()) + " 원" : "0 원");
-                dataRow.createCell(cellCnt++).setCellValue(info.getPrcVat() != null ? df.format(info.getPrcVat()) + " 원" : "0 원");
-                dataRow.createCell(cellCnt++).setCellValue(info.getPrcTotal() != null ? df.format(info.getPrcTotal()) + " 원" : "0 원");
-
-                // 모든 셀에 bodyStyle 적용 (필요 시)
                 for(int i=0; i < cellCnt; i++){
-                    if(dataRow.getCell(i) != null) dataRow.getCell(i).setCellStyle(bodyStyle);
+                    Cell cell = dataRow.getCell(i);
+                    if (cell == null) {
+                        cell = dataRow.createCell(i);
+                    }
+                    cell.setCellStyle(bodyStyle);
                 }
             }
 
             // =============================================================
             // Pricing 시트 생성 로직 ▼▼▼
             // =============================================================
-            XSSFSheet sheet2 = workbook.createSheet("Pricing");
+            SXSSFSheet sheet2 = workbook.createSheet("Pricing");
+            sheet2.trackAllColumnsForAutoSizing();
+
             int rowCnt2 = 0;
 
-            // --- 폰트 정의 ---
-            Font titleFont = workbook.createFont();
-            titleFont.setFontName("맑은 고딕");
-            titleFont.setBold(true);
-            titleFont.setFontHeightInPoints((short) 12);
-
-            Font headerFont = workbook.createFont();
-            headerFont.setFontName("맑은 고딕");
-            headerFont.setBold(true);
-            headerFont.setFontHeightInPoints((short) 10);
-
-            Font bodyFont = workbook.createFont();
-            bodyFont.setFontName("맑은 고딕");
-            bodyFont.setFontHeightInPoints((short) 10);
-
-            Font noteFont = workbook.createFont();
-            noteFont.setFontName("맑은 고딕");
-            noteFont.setFontHeightInPoints((short) 10);
-            noteFont.setColor(IndexedColors.GREY_50_PERCENT.getIndex());
-
-
-            // --- 셀 스타일 정의 ---
-            // 타이틀 스타일 (예: ■ 부스)
-            CellStyle titleStyle = workbook.createCellStyle();
-            titleStyle.setFont(titleFont);
-
-            // 메인 헤더 스타일 (진한 회색 배경)
-            CellStyle mainHeaderStyle = workbook.createCellStyle();
-            mainHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
-            mainHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            mainHeaderStyle.setBorderTop(BorderStyle.THIN); mainHeaderStyle.setBorderBottom(BorderStyle.THIN);
-            mainHeaderStyle.setBorderLeft(BorderStyle.THIN); mainHeaderStyle.setBorderRight(BorderStyle.THIN);
-            mainHeaderStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.index);
-            mainHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            mainHeaderStyle.setFont(headerFont);
-
-            // 서브 헤더 스타일 (옅은 회색 배경)
-            CellStyle subHeaderStyle = workbook.createCellStyle();
-            subHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
-            subHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            subHeaderStyle.setBorderTop(BorderStyle.THIN); subHeaderStyle.setBorderBottom(BorderStyle.THIN);
-            subHeaderStyle.setBorderLeft(BorderStyle.THIN); subHeaderStyle.setBorderRight(BorderStyle.THIN);
-            subHeaderStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index);
-            subHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            subHeaderStyle.setFont(headerFont);
-
-            // 본문 스타일 (왼쪽 정렬)
-            CellStyle bodyLeftStyle = workbook.createCellStyle();
-            bodyLeftStyle.setAlignment(HorizontalAlignment.LEFT);
-            bodyLeftStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyLeftStyle.setBorderTop(BorderStyle.THIN); bodyLeftStyle.setBorderBottom(BorderStyle.THIN);
-            bodyLeftStyle.setBorderLeft(BorderStyle.THIN); bodyLeftStyle.setBorderRight(BorderStyle.THIN);
-            bodyLeftStyle.setFont(bodyFont);
-            bodyLeftStyle.setWrapText(true);
-
-            // 본문 스타일 (가운데 정렬)
-            CellStyle bodyCenterStyle = workbook.createCellStyle();
-            bodyCenterStyle.cloneStyleFrom(bodyLeftStyle);
-            bodyCenterStyle.setAlignment(HorizontalAlignment.CENTER);
-
-            // 본문 스타일 (오른쪽 정렬 - 금액용)
-            CellStyle bodyRightStyle = workbook.createCellStyle();
-            bodyRightStyle.cloneStyleFrom(bodyLeftStyle);
-            bodyRightStyle.setAlignment(HorizontalAlignment.RIGHT);
-
-            // 비고 스타일 (회색 글씨)
-            CellStyle noteStyle = workbook.createCellStyle();
-            noteStyle.cloneStyleFrom(bodyLeftStyle);
-            noteStyle.setFont(noteFont);
+            // --- 폰트 및 스타일 정의 ---
+            Font titleFont = workbook.createFont(); titleFont.setFontName("맑은 고딕"); titleFont.setBold(true); titleFont.setFontHeightInPoints((short) 12);
+            Font headerFont = workbook.createFont(); headerFont.setFontName("맑은 고딕"); headerFont.setBold(true); headerFont.setFontHeightInPoints((short) 10);
+            Font bodyFont = workbook.createFont(); bodyFont.setFontName("맑은 고딕"); bodyFont.setFontHeightInPoints((short) 10);
+            Font noteFont = workbook.createFont(); noteFont.setFontName("맑은 고딕"); noteFont.setFontHeightInPoints((short) 10); noteFont.setColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            CellStyle titleStyle = workbook.createCellStyle(); titleStyle.setFont(titleFont);
+            CellStyle mainHeaderStyle = workbook.createCellStyle(); mainHeaderStyle.setAlignment(HorizontalAlignment.CENTER); mainHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER); mainHeaderStyle.setBorderTop(BorderStyle.THIN); mainHeaderStyle.setBorderBottom(BorderStyle.THIN); mainHeaderStyle.setBorderLeft(BorderStyle.THIN); mainHeaderStyle.setBorderRight(BorderStyle.THIN); mainHeaderStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.index); mainHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND); mainHeaderStyle.setFont(headerFont);
+            CellStyle subHeaderStyle = workbook.createCellStyle(); subHeaderStyle.setAlignment(HorizontalAlignment.CENTER); subHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER); subHeaderStyle.setBorderTop(BorderStyle.THIN); subHeaderStyle.setBorderBottom(BorderStyle.THIN); subHeaderStyle.setBorderLeft(BorderStyle.THIN); subHeaderStyle.setBorderRight(BorderStyle.THIN); subHeaderStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index); subHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND); subHeaderStyle.setFont(headerFont);
+            CellStyle bodyLeftStyle = workbook.createCellStyle(); bodyLeftStyle.setAlignment(HorizontalAlignment.LEFT); bodyLeftStyle.setVerticalAlignment(VerticalAlignment.CENTER); bodyLeftStyle.setBorderTop(BorderStyle.THIN); bodyLeftStyle.setBorderBottom(BorderStyle.THIN); bodyLeftStyle.setBorderLeft(BorderStyle.THIN); bodyLeftStyle.setBorderRight(BorderStyle.THIN); bodyLeftStyle.setFont(bodyFont); bodyLeftStyle.setWrapText(true);
+            CellStyle bodyCenterStyle = workbook.createCellStyle(); bodyCenterStyle.cloneStyleFrom(bodyLeftStyle); bodyCenterStyle.setAlignment(HorizontalAlignment.CENTER);
+            CellStyle bodyRightStyle = workbook.createCellStyle(); bodyRightStyle.cloneStyleFrom(bodyLeftStyle); bodyRightStyle.setAlignment(HorizontalAlignment.RIGHT);
+            CellStyle noteStyle = workbook.createCellStyle(); noteStyle.cloneStyleFrom(bodyLeftStyle); noteStyle.setFont(noteFont);
 
             // --- ■ 부스 (VAT 별도) ---
-            XSSFRow row = sheet2.createRow(rowCnt2++);
-            row.createCell(0).setCellValue("■ 부스(vat 별도)");
-            row.getCell(0).setCellStyle(titleStyle);
-            rowCnt2++; // 간격
-
-            String[][] boothData = {
-                    {"부스구분", "가격"},
-                    {"독립부스 1차", "1,500,000"},
-                    {"조립부스 1차", "1,800,000"},
-                    {"독립부스 2차", "1,600,000"},
-                    {"조립부스 2차", "1,900,000"},
-                    {"독립부스", "1,800,000"},
-                    {"조립부스", "2,100,000"}
-            };
+            SXSSFRow row = sheet2.createRow(rowCnt2++);
+            row.createCell(0).setCellValue("■ 부스(vat 별도)"); row.getCell(0).setCellStyle(titleStyle);
+            rowCnt2++;
+            String[][] boothData = { {"부스구분", "가격"}, {"독립부스 1차", "1,500,000"}, {"조립부스 1차", "1,800,000"}, {"독립부스 2차", "1,600,000"}, {"조립부스 2차", "1,900,000"}, {"독립부스", "1,800,000"}, {"조립부스", "2,100,000"} };
             for (int i=0; i<boothData.length; i++) {
                 row = sheet2.createRow(rowCnt2++);
-                row.createCell(0).setCellValue(boothData[i][0]);
-                row.createCell(1).setCellValue(boothData[i][1]);
-                if (i==0) {
-                    row.getCell(0).setCellStyle(mainHeaderStyle);
-                    row.getCell(1).setCellStyle(mainHeaderStyle);
-                } else {
-                    row.getCell(0).setCellStyle(bodyCenterStyle);
-                    row.getCell(1).setCellStyle(bodyRightStyle);
-                }
+                row.createCell(0).setCellValue(boothData[i][0]); row.createCell(1).setCellValue(boothData[i][1]);
+                if (i==0) { row.getCell(0).setCellStyle(mainHeaderStyle); row.getCell(1).setCellStyle(mainHeaderStyle); }
+                else { row.getCell(0).setCellStyle(bodyCenterStyle); row.getCell(1).setCellStyle(bodyRightStyle); }
             }
-            rowCnt2+=2; // 간격
+            rowCnt2+=2;
 
             // --- ■ 할인내역 (VAT 별도) ---
             row = sheet2.createRow(rowCnt2++);
-            row.createCell(0).setCellValue("■ 할인내역(vat 별도)");
-            row.getCell(0).setCellStyle(titleStyle);
-            rowCnt2++; // 간격
-
+            row.createCell(0).setCellValue("■ 할인내역(vat 별도)"); row.getCell(0).setCellStyle(titleStyle);
+            rowCnt2++;
             row = sheet2.createRow(rowCnt2++);
-            row.createCell(0).setCellValue("구분");
-            row.createCell(1).setCellValue("할인항목");
-            row.createCell(2).setCellValue("가격");
-            row.createCell(3).setCellValue("비고");
+            row.createCell(0).setCellValue("구분"); row.createCell(1).setCellValue("할인항목"); row.createCell(2).setCellValue("가격"); row.createCell(3).setCellValue("비고");
             for(int i=0; i<4; i++) row.getCell(i).setCellStyle(mainHeaderStyle);
-
-            String[][] discountData = {
-                    {"기본할인", "1차 조기신청 할인", "300,000", "부스당"},
-                    {"기본할인", "2차 조기신청 할인", "200,000", "부스당"},
-                    {"규모할인", "10부스 이상", "400,000", "첫참가 업체 30만원/부스 추가 할인"},
-                    {"규모할인", "20부스 이상", "650,000", ""},
-                    {"규모할인", "30부스 이상", "750,000", ""},
-                    {"규모할인", "40부스 이상", "800,000", ""},
-                    {"규모할인", "50부스 이상", "850,000", ""},
-                    {"규모할인", "100부스 이상", "900,000", ""},
-                    {"기본할인", "재참가 기업 할인", "200,000", ""},
-                    {"기본할인", "첫참가 기업 할인", "500,000", "10부스 미만 신청시에만 적용"},
-                    {"기본할인", "협회 회원사", "200,000", ""},
-                    {"특별할인(비공개)", "올해의 제품상", "최종 참가비용의 50% 할인", "=할인 적용 된 금액의 50%"},
-                    {"특별할인(비공개)", "특별관", "기본할인 적용가격의 최대 80% 할인", ""},
-                    {"기타", "해양레저산업협회 발전기금 납부", "참가비의 10% 납부", ""}
-            };
+            String[][] discountData = { {"기본할인", "1차 조기신청 할인", "300,000", "부스당"}, {"기본할인", "2차 조기신청 할인", "200,000", "부스당"}, {"규모할인", "10부스 이상", "400,000", "첫참가 업체 30만원/부스 추가 할인"}, {"규모할인", "20부스 이상", "650,000", ""}, {"규모할인", "30부스 이상", "750,000", ""}, {"규모할인", "40부스 이상", "800,000", ""}, {"규모할인", "50부스 이상", "850,000", ""}, {"규모할인", "100부스 이상", "900,000", ""}, {"기본할인", "재참가 기업 할인", "200,000", ""}, {"기본할인", "첫참가 기업 할인", "500,000", "10부스 미만 신청시에만 적용"}, {"기본할인", "협회 회원사", "200,000", ""}, {"특별할인(비공개)", "올해의 제품상", "최종 참가비용의 50% 할인", "=할인 적용 된 금액의 50%"}, {"특별할인(비공개)", "특별관", "기본할인 적용가격의 최대 80% 할인", ""}, {"기타", "해양레저산업협회 발전기금 납부", "참가비의 10% 납부", ""} };
+            int discountStartRow = rowCnt2;
             for(String[] d : discountData){
                 row = sheet2.createRow(rowCnt2++);
-                row.createCell(0).setCellValue(d[0]);
-                row.createCell(1).setCellValue(d[1]);
-                row.createCell(2).setCellValue(d[2]);
-                row.createCell(3).setCellValue(d[3]);
-                row.getCell(0).setCellStyle(subHeaderStyle);
-                row.getCell(1).setCellStyle(bodyLeftStyle);
-                row.getCell(2).setCellStyle(bodyRightStyle);
-                row.getCell(3).setCellStyle(noteStyle);
+                row.createCell(0).setCellValue(d[0]); row.createCell(1).setCellValue(d[1]); row.createCell(2).setCellValue(d[2]); row.createCell(3).setCellValue(d[3]);
+                row.getCell(0).setCellStyle(subHeaderStyle); row.getCell(1).setCellStyle(bodyLeftStyle); row.getCell(2).setCellStyle(bodyRightStyle); row.getCell(3).setCellStyle(noteStyle);
             }
-            // 셀 병합
-            sheet2.addMergedRegion(new CellRangeAddress(rowCnt2-14, rowCnt2-11, 0, 0)); // 기본할인
-            sheet2.addMergedRegion(new CellRangeAddress(rowCnt2-10, rowCnt2-5, 0, 0)); // 규모할인
-            sheet2.addMergedRegion(new CellRangeAddress(rowCnt2-4, rowCnt2-4, 0, 0)); // 기본할인
-            sheet2.addMergedRegion(new CellRangeAddress(rowCnt2-3, rowCnt2-3, 0, 0)); // 기본할인
-            sheet2.addMergedRegion(new CellRangeAddress(rowCnt2-2, rowCnt2-2, 0, 0)); // 기본할인
-            sheet2.addMergedRegion(new CellRangeAddress(rowCnt2-3, rowCnt2-2, 0, 0)); // 특별할인
-            sheet2.addMergedRegion(new CellRangeAddress(rowCnt2-1, rowCnt2-1, 0, 0)); // 기타
-            rowCnt2+=2; // 간격
+            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow, discountStartRow + 1, 0, 0)); // 기본할인
+            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 2, discountStartRow + 7, 0, 0)); // 규모할인
+            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 8, discountStartRow + 10, 0, 0)); // 기본할인
+            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 11, discountStartRow + 12, 0, 0)); // 특별할인
+            rowCnt2+=2;
 
             // --- ■ 유틸리티(부대시설) ---
             row = sheet2.createRow(rowCnt2++);
-            row.createCell(0).setCellValue("■ 유틸리티(부대시설)");
-            row.getCell(0).setCellStyle(titleStyle);
-            rowCnt2++; // 간격
+            row.createCell(0).setCellValue("■ 유틸리티(부대시설)"); row.getCell(0).setCellStyle(titleStyle);
+            rowCnt2++;
+            row = sheet2.createRow(rowCnt2++);
+            row.createCell(0).setCellValue("구분"); row.createCell(1).setCellValue("기술지원 항목"); row.createCell(2).setCellValue("가격(원)"); row.createCell(3).setCellValue("비고");
+            for(int i=0; i<4; i++) row.getCell(i).setCellStyle(mainHeaderStyle);
+            String[][] utilityData = { {"파이텍스", "신품", "80,000", ""}, {"파이텍스", "재사용품", "50,000", ""}, {"전기", "주간 단상 220v", "70,000", "원/kw"}, {"전기", "24시간용 220v", "80,000", "원/kw"}, {"인터넷", "인터넷", "160,000", "원/1회선"}, {"급배수 및 압축공기", "급배수", "180,000", "원/1구"}, {"급배수 및 압축공기", "압축공기", "180,000", "원/1구"}, {"바코드 리더기", "바코드 리더기", "200,000", "원/1개"} };
+            int utilityStartRow = rowCnt2;
+            for(String[] u : utilityData){
+                row = sheet2.createRow(rowCnt2++);
+                row.createCell(0).setCellValue(u[0]); row.createCell(1).setCellValue(u[1]); row.createCell(2).setCellValue(u[2]); row.createCell(3).setCellValue(u[3]);
+            }
 
-            row = sheet2.createRow(rowCnt2++);
-            row.createCell(0).setCellValue("기술지원 항목");
-            row.createCell(1).setCellValue("가격(원)");
-            row.createCell(2).setCellValue("비고");
-            for(int i=0; i<3; i++) row.getCell(i).setCellStyle(mainHeaderStyle);
+            // [최종 수정] 유틸리티 셀 병합 로직 수정
+            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow, utilityStartRow + 1, 0, 0)); // 파이텍스
+            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow + 2, utilityStartRow + 3, 0, 0)); // 전기
+            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow + 5, utilityStartRow + 6, 0, 0)); // 급배수 및 압축공기
+            // 인터넷과 바코드 리더기는 1줄이므로 병합하지 않음
 
-            String[][] utilityData = {
-                    {"파이텍스", "신품", "80,000", ""},
-                    {"파이텍스", "재사용품", "50,000", ""},
-                    {"전기", "주간 단상 220v", "70,000", "원/kw"},
-                    {"전기", "24시간용 220v", "80,000", "원/kw"},
-                    {"인터넷", "인터넷", "160,000", "원/1회선"},
-                    {"급배수 및 압축공기", "급배수", "180,000", "원/1구"},
-                    {"급배수 및 압축공기", "압축공기", "180,000", "원/1구"},
-                    {"바코드 리더기", "바코드 리더기", "200,000", "원/1개"}
-            };
-
-            row = sheet2.createRow(rowCnt2++);
-            row.createCell(1).setCellValue(utilityData[0][1]);
-            row.createCell(2).setCellValue(utilityData[0][2]);
-            row.createCell(3).setCellValue(utilityData[0][3]);
-            row = sheet2.createRow(rowCnt2++);
-            row.createCell(1).setCellValue(utilityData[1][1]);
-            row.createCell(2).setCellValue(utilityData[1][2]);
-            row.createCell(3).setCellValue(utilityData[1][3]);
-            row = sheet2.createRow(rowCnt2++);
-            row.createCell(1).setCellValue(utilityData[2][1]);
-            row.createCell(2).setCellValue(utilityData[2][2]);
-            row.createCell(3).setCellValue(utilityData[2][3]);
-            row = sheet2.createRow(rowCnt2++);
-            row.createCell(1).setCellValue(utilityData[3][1]);
-            row.createCell(2).setCellValue(utilityData[3][2]);
-            row.createCell(3).setCellValue(utilityData[3][3]);
-            row = sheet2.createRow(rowCnt2++);
-            row.createCell(0).setCellValue(utilityData[4][0]);
-            row.createCell(1).setCellValue(utilityData[4][1]);
-            row.createCell(2).setCellValue(utilityData[4][2]);
-            row.createCell(3).setCellValue(utilityData[4][3]);
-            row = sheet2.createRow(rowCnt2++);
-            row.createCell(1).setCellValue(utilityData[5][1]);
-            row.createCell(2).setCellValue(utilityData[5][2]);
-            row.createCell(3).setCellValue(utilityData[5][3]);
-            row = sheet2.createRow(rowCnt2++);
-            row.createCell(1).setCellValue(utilityData[6][1]);
-            row.createCell(2).setCellValue(utilityData[6][2]);
-            row.createCell(3).setCellValue(utilityData[6][3]);
-            row = sheet2.createRow(rowCnt2++);
-            row.createCell(0).setCellValue(utilityData[7][0]);
-            row.createCell(1).setCellValue(utilityData[7][1]);
-            row.createCell(2).setCellValue(utilityData[7][2]);
-            row.createCell(3).setCellValue(utilityData[7][3]);
-
-            // 스타일 적용 및 셀 병합
-            sheet2.getRow(rowCnt2-8).createCell(0).setCellValue(utilityData[0][0]);
-            sheet2.addMergedRegion(new CellRangeAddress(rowCnt2-8, rowCnt2-7, 0, 0)); // 파이텍스
-            sheet2.getRow(rowCnt2-6).createCell(0).setCellValue(utilityData[2][0]);
-            sheet2.addMergedRegion(new CellRangeAddress(rowCnt2-6, rowCnt2-5, 0, 0)); // 전기
-            sheet2.addMergedRegion(new CellRangeAddress(rowCnt2-4, rowCnt2-4, 0, 0)); // 인터넷
-            sheet2.getRow(rowCnt2-3).createCell(0).setCellValue(utilityData[5][0]);
-            sheet2.addMergedRegion(new CellRangeAddress(rowCnt2-3, rowCnt2-2, 0, 0)); // 급배수
-            sheet2.addMergedRegion(new CellRangeAddress(rowCnt2-1, rowCnt2-1, 0, 0)); // 바코드
-
-            for(int i=rowCnt2-8; i < rowCnt2; i++){
-                for(int j=0; j<4; j++) {
-                    if(sheet2.getRow(i).getCell(j) == null) continue;
-                    if(j==0) sheet2.getRow(i).getCell(j).setCellStyle(subHeaderStyle);
-                    else if (j==2) sheet2.getRow(i).getCell(j).setCellStyle(bodyRightStyle);
-                    else sheet2.getRow(i).getCell(j).setCellStyle(bodyLeftStyle);
-                }
+            for(int i = utilityStartRow; i < rowCnt2; i++){
+                row = sheet2.getRow(i);
+                row.getCell(0).setCellStyle(subHeaderStyle);
+                row.getCell(1).setCellStyle(bodyLeftStyle);
+                row.getCell(2).setCellStyle(bodyRightStyle);
+                row.getCell(3).setCellStyle(bodyLeftStyle);
             }
 
             // 컬럼 너비 자동 조정
-            sheet2.autoSizeColumn(0); sheet2.autoSizeColumn(1); sheet2.autoSizeColumn(2); sheet2.autoSizeColumn(3);
-            sheet2.setColumnWidth(0, sheet2.getColumnWidth(0) + 1024);
-            sheet2.setColumnWidth(1, sheet2.getColumnWidth(1) + 1024);
-            sheet2.setColumnWidth(3, sheet2.getColumnWidth(3) + 2048);
+            for (int i=0; i<4; i++) {
+                sheet.autoSizeColumn(i);
+                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
+            }
 
             // 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -4798,6 +4417,211 @@ public class KibsMngController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private int writeCompanyInfo(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info, int listNum) {
+        dataRow.createCell(cellCnt++).setCellValue(listNum);
+        dataRow.createCell(cellCnt++).setCellValue(info.getApprovalStatus() != null && info.getApprovalStatus().contains("승인") ? "참가" : "취소");
+        dataRow.createCell(cellCnt++).setCellValue(info.getApprovalStatus());
+        dataRow.createCell(cellCnt++).setCellValue(info.getBoothNum());
+        dataRow.createCell(cellCnt++).setCellValue(info.getId());
+        dataRow.createCell(cellCnt++).setCellValue(info.getInitRegiDttm());
+        dataRow.createCell(cellCnt++).setCellValue(info.getFinalRegiDttm());
+        String prcYn = info.getPrcYn(); String prcYn_val = "";
+        if (prcYn != null) { switch (prcYn) { case "0": prcYn_val = "미납"; break; case "1": prcYn_val = "참가비 납부"; break; case "2": prcYn_val = "50% 납부"; break; case "3": prcYn_val = "전액 납부"; break; case "4": prcYn_val = "완납(부대시설비)"; break; } }
+        dataRow.createCell(cellCnt++).setCellValue(prcYn_val);
+        dataRow.createCell(cellCnt++).setCellValue(info.getBpNum());
+        dataRow.createCell(cellCnt++).setCellValue(info.getContactWriter());
+        dataRow.createCell(cellCnt++).setCellValue(info.getContactDate());
+        dataRow.createCell(cellCnt++).setCellValue(info.getContactContent());
+        dataRow.createCell(cellCnt++).setCellValue(info.getReferenceWriter());
+        dataRow.createCell(cellCnt++).setCellValue(info.getReferenceDate());
+        dataRow.createCell(cellCnt++).setCellValue(info.getReferenceContent());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyLicenseNum());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyNameKo());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyNameEn());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyAddress());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyAddressDetail());
+        dataRow.createCell(cellCnt++).setCellValue(info.getFactoryAddress());
+        dataRow.createCell(cellCnt++).setCellValue(info.getFactoryAddressDetail());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyCeo());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyTel());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyHomepage());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyFax());
+        dataRow.createCell(cellCnt++).setCellValue(info.getIndustryPart());
+        dataRow.createCell(cellCnt++).setCellValue(info.getIndustryPartEtc());
+        dataRow.createCell(cellCnt++).setCellValue(info.getEmployeeCnt() != null ? String.valueOf(info.getEmployeeCnt()) : "");
+        dataRow.createCell(cellCnt++).setCellValue(info.getPrePartYear());
+        dataRow.createCell(cellCnt++).setCellValue(info.getMemberCompanyYn());
+        return cellCnt;
+    }
+
+    private int writeRepresentativeInfo(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
+        dataRow.createCell(cellCnt++).setCellValue(info.getName());
+        dataRow.createCell(cellCnt++).setCellValue(info.getPosition());
+        dataRow.createCell(cellCnt++).setCellValue(info.getDepart());
+        dataRow.createCell(cellCnt++).setCellValue(info.getTel());
+        dataRow.createCell(cellCnt++).setCellValue(info.getPhone());
+        dataRow.createCell(cellCnt++).setCellValue(info.getEmail());
+        dataRow.createCell(cellCnt++).setCellValue("N".equals(info.getEmailMarketingYn()) ? "미동의" : "동의");
+        return cellCnt;
+    }
+
+    private int writeOtherContactsInfo(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
+        for(int i=0; i<3; i++){
+            String[] chargePersonNameSplit = info.getChargePersonName() != null ? info.getChargePersonName().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(chargePersonNameSplit, i));
+            String[] chargePersonPositionSplit = info.getChargePersonPosition() != null ? info.getChargePersonPosition().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(chargePersonPositionSplit, i));
+            String[] chargePersonDepartSplit = info.getChargePersonDepart() != null ? info.getChargePersonDepart().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(chargePersonDepartSplit, i));
+            String[] chargePersonTelSplit = info.getChargePersonTel() != null ? info.getChargePersonTel().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(chargePersonTelSplit, i));
+            String[] chargePersonPhoneSplit = info.getChargePersonPhone() != null ? info.getChargePersonPhone().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(chargePersonPhoneSplit, i));
+            String[] chargePersonEmailSplit = info.getChargePersonEmail() != null ? info.getChargePersonEmail().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(chargePersonEmailSplit, i));
+        }
+        return cellCnt;
+    }
+
+    private int writeCompanyIntroInfo(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyIntroVideo());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyIntroKo());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyIntroEn());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyPurposeKo());
+        dataRow.createCell(cellCnt++).setCellValue(info.getCompanyPurposeEn());
+        dataRow.createCell(cellCnt++).setCellValue(info.getNewItemIntroKo());
+        dataRow.createCell(cellCnt++).setCellValue(info.getNewItemIntroEn());
+        dataRow.createCell(cellCnt++).setCellValue(info.getPromotionPlan());
+        return cellCnt;
+    }
+
+    private int writeParticipationFields(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
+        String fieldPart = info.getFieldPart() != null ? info.getFieldPart().replaceAll(" ","") : "";
+        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("보트&요트") ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("무동력보트") ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("워크보트") ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("해양부품&장비") ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("안전&마리나") ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("해양관광") ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("해양레저") ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("수중레저") ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("서핑") ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("카라반&캠핑") ? "O" : "");
+        return cellCnt;
+    }
+
+    private int writeExhibitionItems(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
+        for(int i=0; i<20; i++){
+            String[] productOptionBigSplit = info.getProductOptionBig() != null ? info.getProductOptionBig().split("\\^", -1) : new String[0];
+            String[] productOptionSmallSplit = info.getProductOptionSmall() != null ? info.getProductOptionSmall().split("\\^", -1) : new String[0];
+            String productOptionBig = convertValue(productOptionBigSplit, i);
+            dataRow.createCell(cellCnt++).setCellValue((productOptionBig != null && !productOptionBig.isEmpty()) ? productOptionBig + " / " + convertValue(productOptionSmallSplit, i) : "");
+            String[] productNameKoSplit = info.getProductNameKo() != null ? info.getProductNameKo().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(productNameKoSplit, i));
+            String[] productQtySplit = info.getProductQty() != null ? info.getProductQty().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(productQtySplit, i));
+            String[] productBrandSplit = info.getProductBrand() != null ? info.getProductBrand().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(productBrandSplit, i));
+            String[] productLengthSplit = info.getProductLength() != null ? info.getProductLength().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(productLengthSplit, i));
+            String[] productWidthSplit = info.getProductWidth() != null ? info.getProductWidth().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(productWidthSplit, i));
+            String[] productHeightSplit = info.getProductHeight() != null ? info.getProductHeight().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(productHeightSplit, i));
+            String[] productWeightSplit = info.getProductWeight() != null ? info.getProductWeight().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(productWeightSplit, i));
+            String[] productMaterialSplit = info.getProductMaterial() != null ? info.getProductMaterial().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(productMaterialSplit, i));
+            String[] productYearSplit = info.getProductYear() != null ? info.getProductYear().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(productYearSplit, i));
+        }
+        return cellCnt;
+    }
+
+    private int writeCompanyBadges(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
+        String companyBadge = info.getCompanyBadge() != null ? info.getCompanyBadge().replaceAll(" ","") : "";
+        dataRow.createCell(cellCnt++).setCellValue(companyBadge.contains("3회") ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(companyBadge.contains("제품상") ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(companyBadge.contains("제작한") ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(companyBadge.contains("우수") ? "O" : "");
+        return cellCnt;
+    }
+
+    private int writeOnlineProducts(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
+        for(int i=0; i<30; i++) {
+            String[] onlineOptionBigSplit = info.getOnlineOptionBig() != null ? info.getOnlineOptionBig().split("\\^", -1) : new String[0];
+            String[] onlineOptionSmallSplit = info.getOnlineOptionSmall() != null ? info.getOnlineOptionSmall().split("\\^", -1) : new String[0];
+            String onlineOptionBig = convertValue(onlineOptionBigSplit, i);
+            dataRow.createCell(cellCnt++).setCellValue((onlineOptionBig != null && !onlineOptionBig.isEmpty()) ? onlineOptionBig + " / " + convertValue(onlineOptionSmallSplit, i) : "");
+            String[] onlineNameKoSplit = info.getOnlineNameKo() != null ? info.getOnlineNameKo().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineNameKoSplit, i));
+            String[] onlineIntroKoSplit = info.getOnlineIntroKo() != null ? info.getOnlineIntroKo().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineIntroKoSplit, i));
+            String[] onlineIntroEnSplit = info.getOnlineIntroEn() != null ? info.getOnlineIntroEn().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineIntroEnSplit, i));
+            String[] onlineLinkSplit = info.getOnlineLink() != null ? info.getOnlineLink().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineLinkSplit, i));
+            String[] onlineLengthSplit = info.getOnlineLength() != null ? info.getOnlineLength().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineLengthSplit, i));
+            String[] onlineWidthSplit = info.getOnlineWidth() != null ? info.getOnlineWidth().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineWidthSplit, i));
+            String[] onlineHeightSplit = info.getOnlineHeight() != null ? info.getOnlineHeight().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineHeightSplit, i));
+            String[] onlineWeightSplit = info.getOnlineWeight() != null ? info.getOnlineWeight().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineWeightSplit, i));
+            String[] onlineMaterialSplit = info.getOnlineMaterial() != null ? info.getOnlineMaterial().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineMaterialSplit, i));
+            String[] onlineYearSplit = info.getOnlineYear() != null ? info.getOnlineYear().split("\\^", -1) : new String[0];
+            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineYearSplit, i));
+        }
+        return cellCnt;
+    }
+
+    private int writeApplicationDetails(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info, DecimalFormat df) {
+        dataRow.createCell(cellCnt++).setCellValue("Y".equals(info.getExportMeetingYn()) ? "참가" : "참가 안 함");
+        dataRow.createCell(cellCnt++).setCellValue("100000 원");
+        int standAlone = info.getStandAloneBoothCnt() != null ? info.getStandAloneBoothCnt() : 0;
+        int assembly = info.getAssemblyBoothCnt() != null ? info.getAssemblyBoothCnt() : 0;
+        int online = info.getOnlineBoothCnt() != null ? info.getOnlineBoothCnt() : 0;
+        dataRow.createCell(cellCnt++).setCellValue(standAlone);
+        dataRow.createCell(cellCnt++).setCellValue(assembly);
+        dataRow.createCell(cellCnt++).setCellValue(online);
+        dataRow.createCell(cellCnt++).setCellValue(standAlone + assembly + online); // 총 부스 수
+
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountEarly1()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountEarly2()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountFirstUnder10()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountFirstOver10()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountRe()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale1()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale2()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale3()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale4()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale5()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale6()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountLeisure()) ? "O" : "");
+
+        if ("Y".equals(info.getMemberCompanyYn()) && info.getBoothPrcSum() != null) {
+            dataRow.createCell(cellCnt++).setCellValue(df.format(info.getBoothPrcSum() * 0.1) + " 원");
+        } else {
+            dataRow.createCell(cellCnt++).setCellValue("0 원");
+        }
+
+        dataRow.createCell(cellCnt++).setCellValue(info.isDiscountSpecial1Yn() ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial1Note());
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Reason());
+        dataRow.createCell(cellCnt++).setCellValue(info.isDiscountSpecial2Yn() ? df.format(info.getDiscountSpecial2Amount()) + " 원" : "");
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Note());
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Reason());
+        dataRow.createCell(cellCnt++).setCellValue(info.isDiscountSpecial3Yn() ? df.format(info.getDiscountSpecial3Amount()) + " 원" : "");
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Note());
+
+        dataRow.createCell(cellCnt++).setCellValue(info.getPrcSum() != null ? df.format(info.getPrcSum()) + " 원" : "0 원");
+        dataRow.createCell(cellCnt++).setCellValue(info.getPrcVat() != null ? df.format(info.getPrcVat()) + " 원" : "0 원");
+        dataRow.createCell(cellCnt++).setCellValue(info.getPrcTotal() != null ? df.format(info.getPrcTotal()) + " 원" : "0 원");
+        return cellCnt;
     }
 
     @RequestMapping(value = "/mng/exhibitor/transfer/download.do", method = RequestMethod.GET)
@@ -8250,13 +8074,11 @@ public class KibsMngController {
         }
     }
 
-    private String convertValue(String[] splitVal, int index){
-        int length = splitVal.length;
-        String returnVal = "";
-        if(index < length){
-            returnVal = splitVal[index] == null ? "" : splitVal[index];
+    private String convertValue(String[] split, int index) {
+        if (split != null && index < split.length && split[index] != null) {
+            return split[index];
         }
-        return returnVal;
+        return "";
     }
 
     /*********************** excel upload ***********************/

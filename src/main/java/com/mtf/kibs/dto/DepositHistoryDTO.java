@@ -19,5 +19,6 @@ public class DepositHistoryDTO {
     private String confirmerName;
     private String comment;
     private String paymentStatus;
-    // Getters and Setters
+    private String initRegiDttm;
+    private String finalRegiDttm;
 }

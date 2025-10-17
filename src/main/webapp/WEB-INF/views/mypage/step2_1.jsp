@@ -177,6 +177,7 @@
                             </div>
                             <!-- //등록비-->
 
+                            <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}"/>
                             <c:if test="${info.memberCompanyYn == 'Y'}">
                                 <div class="form_wrap">
                                     <div class="form_tit">

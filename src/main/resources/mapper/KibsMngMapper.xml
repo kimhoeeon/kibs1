@@ -1972,8 +1972,7 @@
     <update id="updateExhibitorNewSpecialDiscount" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorNewSpecialDiscount */
         UPDATE exhibitor_new
-        SET
-            discount_special_1_yn     = #{discountSpecial1Yn},
+        SET discount_special_1_yn     = #{discountSpecial1Yn},
             discount_special_1_note   = #{discountSpecial1Note},
             discount_special_2_yn     = #{discountSpecial2Yn},
             discount_special_2_reason = #{discountSpecial2Reason},
@@ -1987,8 +1986,31 @@
             prc_sum                   = #{prcSum},
             prc_vat                   = #{prcVat},
             prc_total                 = #{prcTotal},
+            balance                   = #{balance},
             final_regi_dttm           = NOW()
         WHERE seq = #{seq}
+    </update>
+
+    <select id="getExhibitorSeqByDepositSeq" parameterType="java.lang.Integer" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.kibsMngMapper.getExhibitorSeqByDepositSeq */
+        SELECT exhibitor_seq
+        FROM deposit_history
+        WHERE deposit_seq = #{value}
+    </select>
+
+    <select id="sumDepositAmountByExhibitor" parameterType="java.lang.String" resultType="java.lang.Integer">
+        /* com.mtf.kibs.mapper.kibsMngMapper.sumDepositAmountByExhibitor */
+        SELECT IFNULL(SUM(amount), 0)
+        FROM deposit_history
+        WHERE exhibitor_seq = #{value}
+    </select>
+
+    <update id="updateExhibitorPaymentStatus">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorPaymentStatus */
+        UPDATE exhibitor_new
+        SET deposit = #{deposit},
+            balance = #{balance}
+        WHERE seq = #{exhibitorSeq}
     </update>
 
     <select id="selectDepositHistoryList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.DepositHistoryDTO">
@@ -4933,6 +4955,10 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorNewPrcYn */
         UPDATE exhibitor_new
         SET prc_yn = #{prcYn}
+        <if test='deposit != null and deposit != ""'>
+          , deposit = #{deposit}
+          , balance = prc_total - #{deposit}
+        </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
@@ -5382,78 +5408,89 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewDetailList */
         SELECT
             e.*,
-            IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_name,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonName,
-            IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_position,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonPosition,
-            IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_depart,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonDepart,
-            IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_tel,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonTel,
-            IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_phone,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonPhone,
-            IFNULL((select GROUP_CONCAT(coalesce(c.charge_person_email,'') separator '^') from charge_new c where c.ex_seq = e.seq),'') as chargePersonEmail,
+            GROUP_CONCAT(DISTINCT c.charge_person_name ORDER BY c.seq SEPARATOR '^') as chargePersonName,
+            GROUP_CONCAT(DISTINCT c.charge_person_position ORDER BY c.seq SEPARATOR '^') as chargePersonPosition,
+            GROUP_CONCAT(DISTINCT c.charge_person_depart ORDER BY c.seq SEPARATOR '^') as chargePersonDepart,
+            GROUP_CONCAT(DISTINCT c.charge_person_tel ORDER BY c.seq SEPARATOR '^') as chargePersonTel,
+            GROUP_CONCAT(DISTINCT c.charge_person_phone ORDER BY c.seq SEPARATOR '^') as chargePersonPhone,
+            GROUP_CONCAT(DISTINCT c.charge_person_email ORDER BY c.seq SEPARATOR '^') as chargePersonEmail,
 
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_option_big,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productOptionBig,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_option_small,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productOptionSmall,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_name_ko,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productNameKo,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_name_en,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productNameEn,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_qty,'0') separator '^') from product_new p where p.ex_seq = e.seq),'') as productQty,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_brand,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productBrand,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_length,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productLength,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_width,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productWidth,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_height,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productHeight,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_weight,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productWeight,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_material,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productMaterial,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_year,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productYear,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_intro_ko,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productIntroKo,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_intro_en,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productIntroEn,
-            IFNULL((select GROUP_CONCAT(coalesce(p.product_link,'') separator '^') from product_new p where p.ex_seq = e.seq),'') as productLink,
+            GROUP_CONCAT(DISTINCT p.product_option_big ORDER BY p.seq SEPARATOR '^') as productOptionBig,
+            GROUP_CONCAT(DISTINCT p.product_option_small ORDER BY p.seq SEPARATOR '^') as productOptionSmall,
+            GROUP_CONCAT(DISTINCT p.product_name_ko ORDER BY p.seq SEPARATOR '^') as productNameKo,
+            GROUP_CONCAT(DISTINCT p.product_name_en ORDER BY p.seq SEPARATOR '^') as productNameEn,
+            GROUP_CONCAT(DISTINCT p.product_qty ORDER BY p.seq SEPARATOR '^') as productQty,
+            GROUP_CONCAT(DISTINCT p.product_brand ORDER BY p.seq SEPARATOR '^') as productBrand,
+            GROUP_CONCAT(DISTINCT p.product_length ORDER BY p.seq SEPARATOR '^') as productLength,
+            GROUP_CONCAT(DISTINCT p.product_width ORDER BY p.seq SEPARATOR '^') as productWidth,
+            GROUP_CONCAT(DISTINCT p.product_height ORDER BY p.seq SEPARATOR '^') as productHeight,
+            GROUP_CONCAT(DISTINCT p.product_weight ORDER BY p.seq SEPARATOR '^') as productWeight,
+            GROUP_CONCAT(DISTINCT p.product_material ORDER BY p.seq SEPARATOR '^') as productMaterial,
+            GROUP_CONCAT(DISTINCT p.product_year ORDER BY p.seq SEPARATOR '^') as productYear,
+            GROUP_CONCAT(DISTINCT p.product_intro_ko ORDER BY p.seq SEPARATOR '^') as productIntroKo,
+            GROUP_CONCAT(DISTINCT p.product_intro_en ORDER BY p.seq SEPARATOR '^') as productIntroEn,
+            GROUP_CONCAT(DISTINCT p.product_link ORDER BY p.seq SEPARATOR '^') as productLink,
 
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_option_big,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineOptionBig,
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_option_small,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineOptionSmall,
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_name_ko,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineNameKo,
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_name_en,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineNameEn,
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_intro_ko,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineIntroKo,
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_intro_en,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineIntroEn,
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_link,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineLink,
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_length,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineLength,
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_width,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineWidth,
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_height,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineHeight,
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_weight,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineWeight,
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_material,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineMaterial,
-            IFNULL((select GROUP_CONCAT(coalesce(o.online_year,'') separator '^') from online_new o where o.ex_seq = e.seq),'') as onlineYear,
+            GROUP_CONCAT(DISTINCT o.online_option_big ORDER BY o.seq SEPARATOR '^') as onlineOptionBig,
+            GROUP_CONCAT(DISTINCT o.online_option_small ORDER BY o.seq SEPARATOR '^') as onlineOptionSmall,
+            GROUP_CONCAT(DISTINCT o.online_name_ko ORDER BY o.seq SEPARATOR '^') as onlineNameKo,
+            GROUP_CONCAT(DISTINCT o.online_name_en ORDER BY o.seq SEPARATOR '^') as onlineNameEn,
+            GROUP_CONCAT(DISTINCT o.online_intro_ko ORDER BY o.seq SEPARATOR '^') as onlineIntroKo,
+            GROUP_CONCAT(DISTINCT o.online_intro_en ORDER BY o.seq SEPARATOR '^') as onlineIntroEn,
+            GROUP_CONCAT(DISTINCT o.online_link ORDER BY o.seq SEPARATOR '^') as onlineLink,
+            GROUP_CONCAT(DISTINCT o.online_length ORDER BY o.seq SEPARATOR '^') as onlineLength,
+            GROUP_CONCAT(DISTINCT o.online_width ORDER BY o.seq SEPARATOR '^') as onlineWidth,
+            GROUP_CONCAT(DISTINCT o.online_height ORDER BY o.seq SEPARATOR '^') as onlineHeight,
+            GROUP_CONCAT(DISTINCT o.online_weight ORDER BY o.seq SEPARATOR '^') as onlineWeight,
+            GROUP_CONCAT(DISTINCT o.online_material ORDER BY o.seq SEPARATOR '^') as onlineMaterial,
+            GROUP_CONCAT(DISTINCT o.online_year ORDER BY o.seq SEPARATOR '^') as onlineYear,
 
-            IFNULL((select GROUP_CONCAT(coalesce(p.pass_name,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passName,
-            IFNULL((select GROUP_CONCAT(coalesce(p.pass_last_name,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passLastName,
-            IFNULL((select GROUP_CONCAT(coalesce(p.pass_first_name,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passFirstName,
-            IFNULL((select GROUP_CONCAT(coalesce(p.pass_position_ko,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passPositionKo,
-            IFNULL((select GROUP_CONCAT(coalesce(p.pass_position_en,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passPositionEn,
-            IFNULL((select GROUP_CONCAT(coalesce(p.pass_note,'') separator '^') from pass_new p where p.ex_seq = e.seq),'') as passNote,
+            GROUP_CONCAT(DISTINCT ps.pass_name ORDER BY ps.seq SEPARATOR '^') as passName,
+            GROUP_CONCAT(DISTINCT ps.pass_last_name ORDER BY ps.seq SEPARATOR '^') as passLastName,
+            GROUP_CONCAT(DISTINCT ps.pass_first_name ORDER BY ps.seq SEPARATOR '^') as passFirstName,
+            GROUP_CONCAT(DISTINCT ps.pass_position_ko ORDER BY ps.seq SEPARATOR '^') as passPositionKo,
+            GROUP_CONCAT(DISTINCT ps.pass_position_en ORDER BY ps.seq SEPARATOR '^') as passPositionEn,
+            GROUP_CONCAT(DISTINCT ps.pass_note ORDER BY ps.seq SEPARATOR '^') as passNote,
 
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_name,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyName,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_country,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyCountry,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_location,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyLocation,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_homepage,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyHomepage,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_depart,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyDepart,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_position,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyPosition,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_email,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyEmail,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_tel,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyTel,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_phone,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyPhone,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_fax,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyFax,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_item,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyItem,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_invite_reason,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyInviteReason,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_progress_yn,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyProgressYn,
-            IFNULL((select GROUP_CONCAT(coalesce(b.buyer_company_hope,'') separator '^') from buyer_new b where b.ex_seq = e.seq),'') as buyerCompanyHope,
+            GROUP_CONCAT(DISTINCT b.buyer_company_name ORDER BY b.seq SEPARATOR '^') as buyerCompanyName,
+            GROUP_CONCAT(DISTINCT b.buyer_company_country ORDER BY b.seq SEPARATOR '^') as buyerCompanyCountry,
+            GROUP_CONCAT(DISTINCT b.buyer_company_location ORDER BY b.seq SEPARATOR '^') as buyerCompanyLocation,
+            GROUP_CONCAT(DISTINCT b.buyer_company_homepage ORDER BY b.seq SEPARATOR '^') as buyerCompanyHomepage,
+            GROUP_CONCAT(DISTINCT b.buyer_company_depart ORDER BY b.seq SEPARATOR '^') as buyerCompanyDepart,
+            GROUP_CONCAT(DISTINCT b.buyer_company_position ORDER BY b.seq SEPARATOR '^') as buyerCompanyPosition,
+            GROUP_CONCAT(DISTINCT b.buyer_company_email ORDER BY b.seq SEPARATOR '^') as buyerCompanyEmail,
+            GROUP_CONCAT(DISTINCT b.buyer_company_tel ORDER BY b.seq SEPARATOR '^') as buyerCompanyTel,
+            GROUP_CONCAT(DISTINCT b.buyer_company_phone ORDER BY b.seq SEPARATOR '^') as buyerCompanyPhone,
+            GROUP_CONCAT(DISTINCT b.buyer_company_fax ORDER BY b.seq SEPARATOR '^') as buyerCompanyFax,
+            GROUP_CONCAT(DISTINCT b.buyer_company_item ORDER BY b.seq SEPARATOR '^') as buyerCompanyItem,
+            GROUP_CONCAT(DISTINCT b.buyer_company_invite_reason ORDER BY b.seq SEPARATOR '^') as buyerCompanyInviteReason,
+            GROUP_CONCAT(DISTINCT b.buyer_company_progress_yn ORDER BY b.seq SEPARATOR '^') as buyerCompanyProgressYn,
+            GROUP_CONCAT(DISTINCT b.buyer_company_hope ORDER BY b.seq SEPARATOR '^') as buyerCompanyHope,
 
-            IFNULL((select GROUP_CONCAT(coalesce(g.gift_gbn,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftGbn,
-            IFNULL((select GROUP_CONCAT(coalesce(g.gift_cnt,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftCnt,
-            IFNULL((select GROUP_CONCAT(coalesce(g.gift_classify,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftClassify,
-            IFNULL((select GROUP_CONCAT(coalesce(g.gift_name,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftName,
-            IFNULL((select GROUP_CONCAT(coalesce(g.gift_content,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftContent,
-            IFNULL((select GROUP_CONCAT(coalesce(g.gift_photo,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftPhoto,
-            IFNULL((select GROUP_CONCAT(coalesce(g.gift_company_logo,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftCompanyLogo,
-            IFNULL((select GROUP_CONCAT(coalesce(g.gift_price,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftPrice,
-            IFNULL((select GROUP_CONCAT(coalesce(g.gift_sponsor_price,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftSponsorPrice,
-            IFNULL((select GROUP_CONCAT(coalesce(g.gift_note,'') separator '^') from gift_new g where g.ex_seq = e.seq),'') as giftNote
-        FROM exhibitor_new e
-        WHERE e.transfer_year = #{transferYear}
-        ORDER BY e.init_regi_dttm asc, e.company_name_ko asc
+            GROUP_CONCAT(DISTINCT g.gift_gbn ORDER BY g.seq SEPARATOR '^') as giftGbn,
+            GROUP_CONCAT(DISTINCT g.gift_cnt ORDER BY g.seq SEPARATOR '^') as giftCnt,
+            GROUP_CONCAT(DISTINCT g.gift_classify ORDER BY g.seq SEPARATOR '^') as giftClassify,
+            GROUP_CONCAT(DISTINCT g.gift_name ORDER BY g.seq SEPARATOR '^') as giftName,
+            GROUP_CONCAT(DISTINCT g.gift_content ORDER BY g.seq SEPARATOR '^') as giftContent,
+            GROUP_CONCAT(DISTINCT g.gift_photo ORDER BY g.seq SEPARATOR '^') as giftPhoto,
+            GROUP_CONCAT(DISTINCT g.gift_company_logo ORDER BY g.seq SEPARATOR '^') as giftCompanyLogo,
+            GROUP_CONCAT(DISTINCT g.gift_price ORDER BY g.seq SEPARATOR '^') as giftPrice,
+            GROUP_CONCAT(DISTINCT g.gift_sponsor_price ORDER BY g.seq SEPARATOR '^') as giftSponsorPrice,
+            GROUP_CONCAT(DISTINCT g.gift_note ORDER BY g.seq SEPARATOR '^') as giftNote
+        FROM
+            exhibitor_new e
+                LEFT JOIN charge_new c ON e.seq = c.ex_seq
+                LEFT JOIN product_new p ON e.seq = p.ex_seq
+                LEFT JOIN online_new o ON e.seq = o.ex_seq
+                LEFT JOIN pass_new ps ON e.seq = ps.ex_seq
+                LEFT JOIN buyer_new b ON e.seq = b.ex_seq
+                LEFT JOIN gift_new g ON e.seq = g.ex_seq
+        WHERE
+            e.transfer_year = #{transferYear}
+        GROUP BY
+            e.seq
+        ORDER BY
+            e.init_regi_dttm asc, e.company_name_ko asc
     </select>
 
     <select id="selectExhibitorDetailList" parameterType="com.mtf.kibs.dto.ExhibitorDetailDTO" resultType="com.mtf.kibs.dto.ExhibitorDetailDTO">

@@ -624,4 +624,10 @@ public interface KibsMngMapper {
     Integer updateInvoiceSendHistoryResult(InvoiceSendHistoryDTO historyDto);
 
     void updateInvoiceHistoryStatusToOpen(int historySeq);
+
+    String getExhibitorSeqByDepositSeq(int depositSeq);
+
+    Integer sumDepositAmountByExhibitor(String exhibitorSeq);
+
+    void updateExhibitorPaymentStatus(@Param("exhibitorSeq") String exhibitorSeq, @Param("deposit") int deposit, @Param("balance") int balance);
 }

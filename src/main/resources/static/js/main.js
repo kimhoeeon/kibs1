@@ -707,6 +707,9 @@ function calculateTotal() {
     let assemblyFee = assemblyQty * boothPrices.assembly;
     let onlineFee = onlineQty * boothPrices.online;
 
+    // 부스 관련 금액 총합 (등록비 포함)
+    let boothPrcSum = registrationFee + standAloneFee + assemblyFee + onlineFee;
+
     $('#standAloneBoothFee').val('￦ ' + standAloneFee.toLocaleString());
     $('#assemblyBoothFee').val('￦ ' + assemblyFee.toLocaleString());
     $('#onlineBoothFee').val('￦ ' + onlineFee.toLocaleString());
@@ -752,13 +755,20 @@ function calculateTotal() {
         }
     });
 
-    // 4. 최종 금액 계산 (부스비 총액 + 등록비 - 총 할인액)
-    let subtotal = standAloneFee + assemblyFee + onlineFee;
+    // --- 발전기금 계산 로직 ---
+    let developmentFund = 0;
+    // 3. 협회 회원사(DB값)이거나 협회 할인 체크박스가 체크되어 있는지 확인
+    const isMember = $('#memberCompanyYn').val() === 'Y'; // hidden input으로 memberCompanyYn 값 필요
+    const isLeisureDiscountChecked = $('#discountLeisure').is(':checked');
 
-    let finalAmount = subtotal + registrationFee - totalDiscount;
-    if($('#discountLeisure').is(':checked')){
-        finalAmount = (subtotal + registrationFee) + ((subtotal + registrationFee) * 0.1) - totalDiscount;
+    if (isMember || isLeisureDiscountChecked) {
+        // 발전기금 = (등록비 + 모든 부스비)의 10%
+        developmentFund = Math.floor(boothPrcSum * 0.1);
     }
+
+    // 4. 최종 금액 계산
+    // 최종 금액 = (부스비 총액 + 발전기금) - 총 할인액
+    let finalAmount = (boothPrcSum + developmentFund) - totalDiscount;
 
     // 화면에 최종 금액 표시 (0원 미만 방지)
     $('#totalAmount').val('￦ ' + Math.max(0, finalAmount).toLocaleString());
@@ -2410,52 +2420,32 @@ function check_count(obj){
 function step_2_1_check(exhibitorSeq){
 
     // --- 1. 부스 정보 수집 ---
-    let boothPrcSum = 0;
-
-    // 부스 타입 문자열 (예: "등록비,독립부스,조립부스")
-    let boothType = '등록비';
-
-    // 등록비 (기본 포함)
     const registrationCnt = 1;
     const registrationFee = 100000;
-    boothPrcSum += registrationFee;
-
-    // 독립부스
     const standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val()) || 0;
-    const standAloneBoothFee = wonToNumber($('#standAloneBoothFee').val());
-    if (standAloneBoothCnt > 0) {
-        boothType += ',독립부스';
-    }
-    boothPrcSum += standAloneBoothFee;
-
-    // 조립부스
     const assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val()) || 0;
-    const assemblyBoothFee = wonToNumber($('#assemblyBoothFee').val());
-    if (assemblyBoothCnt > 0) {
-        boothType += ',조립부스';
-    }
-    boothPrcSum += assemblyBoothFee;
-
-    // 온라인부스
     const onlineBoothCnt = parseInt($('#onlineBoothCnt').val()) || 0;
-    const onlineBoothFee = wonToNumber($('#onlineBoothFee').val());
-    if (onlineBoothCnt > 0) {
-        boothType += ',온라인부스';
-    }
-    boothPrcSum += onlineBoothFee;
+    const physicalBooths = standAloneBoothCnt + assemblyBoothCnt;
+
+    const standAloneBoothFee = standAloneBoothCnt * boothPrices.standAlone;
+    const assemblyBoothFee = assemblyBoothCnt * boothPrices.assembly;
+    const onlineBoothFee = onlineBoothCnt * boothPrices.online;
+
+    // 부스 관련 총액 (등록비 포함)
+    const boothPrcSum = registrationFee + standAloneBoothFee + assemblyBoothFee + onlineBoothFee;
+
+    let boothType = '등록비';
+    if (standAloneBoothCnt > 0) boothType += ',독립부스';
+    if (assemblyBoothCnt > 0) boothType += ',조립부스';
+    if (onlineBoothCnt > 0) boothType += ',온라인부스';
 
     // --- 2. 할인 정보 수집 및 계산 (전면 수정) ---
     let discountType = '';
     let discountPrcSum = 0;
-
-    // 중요: 할인은 온라인 부스를 제외한 '오프라인 부스'에만 적용됩니다.
-    const physicalBooths = standAloneBoothCnt + assemblyBoothCnt;
-
-    // ✅ 개선: 체크된 모든 할인을 순회하며 할인 총액과 할인 타입을 동적으로 생성합니다.
+    // 체크된 모든 할인을 순회하며 할인 총액과 할인 타입을 동적으로 생성합니다.
     $('input[name="discount"]:checked').each(function() {
         const id = $(this).attr('id');
         const discountAmount = parseInt($(this).data('discount')) || 0;
-
         discountPrcSum += (physicalBooths * discountAmount);
 
         // discountType 문자열을 ID 기반으로 생성
@@ -2475,13 +2465,25 @@ function step_2_1_check(exhibitorSeq){
         }
     });
 
-    // 맨 앞의 쉼표(,) 제거
     if (discountType.startsWith(',')) {
         discountType = discountType.substring(1);
     }
 
-    const discountYn = (discountType !== '') ? 'Y' : 'N';
+    // --- 3. [신규] 발전기금 계산 ---
+    let developmentFund = 0;
+    const isMember = $('#memberCompanyYn').val() === 'Y';
+    const isLeisureDiscountChecked = $('#discountLeisure').is(':checked');
+    if (isMember || isLeisureDiscountChecked) {
+        developmentFund = Math.floor(boothPrcSum * 0.1);
+    }
 
+    // --- 4. 최종 금액 계산 ---
+    // 공급가액 = (부스총액 + 발전기금) - 할인총액
+    const prcSum = (boothPrcSum + developmentFund) - discountPrcSum;
+    const prcVat = Math.floor(prcSum * 0.1);
+    const prcTotal = prcSum + prcVat;
+
+    // --- 5. 유효성 검사 및 서버 전송 데이터 구성 ---
     const totalBooths = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
     if (totalBooths === 0) {
         showMessage('', 'error', '[ 전시부스 신청 ]', '부스(독립, 조립, 온라인)를 하나 이상 신청해 주세요.', '');
@@ -2514,9 +2516,12 @@ function step_2_1_check(exhibitorSeq){
         discountScale5: $('#discountScale5').is(':checked'),
         discountScale6: $('#discountScale6').is(':checked'),
         discountLeisure: $('#discountLeisure').is(':checked'),
-        discountYn: discountYn,
+        discountYn: (discountType !== '') ? 'Y' : 'N',
         boothPrcSum: boothPrcSum,
-        discountPrcSum: discountPrcSum
+        discountPrcSum: discountPrcSum,
+        prcSum: prcSum,
+        prcVat: prcVat,
+        prcTotal: prcTotal
     };
 
     let resData = ajaxConnect('/apply/step/updateExhibitorNewBooth.do', 'post', booth_json_obj);
@@ -5278,52 +5283,32 @@ function my_step_2_1_check(exhibitorSeq){
     /*f_page_move('/mypage/step2_2.do', exhibitorSeq);*/
 
     // --- 1. 부스 정보 수집 ---
-    let boothPrcSum = 0;
-
-    // 부스 타입 문자열 (예: "등록비,독립부스,조립부스")
-    let boothType = '등록비';
-
-    // 등록비 (기본 포함)
     const registrationCnt = 1;
     const registrationFee = 100000;
-    boothPrcSum += registrationFee;
-
-    // 독립부스
     const standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val()) || 0;
-    const standAloneBoothFee = wonToNumber($('#standAloneBoothFee').val());
-    if (standAloneBoothCnt > 0) {
-        boothType += ',독립부스';
-    }
-    boothPrcSum += standAloneBoothFee;
-
-    // 조립부스
     const assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val()) || 0;
-    const assemblyBoothFee = wonToNumber($('#assemblyBoothFee').val());
-    if (assemblyBoothCnt > 0) {
-        boothType += ',조립부스';
-    }
-    boothPrcSum += assemblyBoothFee;
-
-    // 온라인부스
     const onlineBoothCnt = parseInt($('#onlineBoothCnt').val()) || 0;
-    const onlineBoothFee = wonToNumber($('#onlineBoothFee').val());
-    if (onlineBoothCnt > 0) {
-        boothType += ',온라인부스';
-    }
-    boothPrcSum += onlineBoothFee;
+    const physicalBooths = standAloneBoothCnt + assemblyBoothCnt;
+
+    const standAloneBoothFee = standAloneBoothCnt * boothPrices.standAlone;
+    const assemblyBoothFee = assemblyBoothCnt * boothPrices.assembly;
+    const onlineBoothFee = onlineBoothCnt * boothPrices.online;
+
+    // 부스 관련 총액 (등록비 포함)
+    const boothPrcSum = registrationFee + standAloneBoothFee + assemblyBoothFee + onlineBoothFee;
+
+    let boothType = '등록비';
+    if (standAloneBoothCnt > 0) boothType += ',독립부스';
+    if (assemblyBoothCnt > 0) boothType += ',조립부스';
+    if (onlineBoothCnt > 0) boothType += ',온라인부스';
 
     // --- 2. 할인 정보 수집 및 계산 (전면 수정) ---
     let discountType = '';
     let discountPrcSum = 0;
-
-    // 중요: 할인은 온라인 부스를 제외한 '오프라인 부스'에만 적용됩니다.
-    const physicalBooths = standAloneBoothCnt + assemblyBoothCnt;
-
-    // ✅ 개선: 체크된 모든 할인을 순회하며 할인 총액과 할인 타입을 동적으로 생성합니다.
+    // 체크된 모든 할인을 순회하며 할인 총액과 할인 타입을 동적으로 생성합니다.
     $('input[name="discount"]:checked').each(function() {
         const id = $(this).attr('id');
         const discountAmount = parseInt($(this).data('discount')) || 0;
-
         discountPrcSum += (physicalBooths * discountAmount);
 
         // discountType 문자열을 ID 기반으로 생성
@@ -5339,17 +5324,29 @@ function my_step_2_1_check(exhibitorSeq){
             case 'discountRe': discountType += ',재참가'; break;
             case 'discountFirstUnder10': discountType += ',첫참가(10미만)'; break;
             case 'discountFirstOver10': discountType += ',첫참가(10이상)'; break;
-            case 'discountLeisure': discountType += ',해양레저산업협회'; boothPrcSum += (boothPrcSum * 0.1); break;
+            case 'discountLeisure': discountType += ',해양레저산업협회'; break;
         }
     });
 
-    // 맨 앞의 쉼표(,) 제거
     if (discountType.startsWith(',')) {
         discountType = discountType.substring(1);
     }
 
-    const discountYn = (discountType !== '') ? 'Y' : 'N';
+    // --- 3. [신규] 발전기금 계산 ---
+    let developmentFund = 0;
+    const isMember = $('#memberCompanyYn').val() === 'Y';
+    const isLeisureDiscountChecked = $('#discountLeisure').is(':checked');
+    if (isMember || isLeisureDiscountChecked) {
+        developmentFund = Math.floor(boothPrcSum * 0.1);
+    }
 
+    // --- 4. 최종 금액 계산 ---
+    // 공급가액 = (부스총액 + 발전기금) - 할인총액
+    const prcSum = (boothPrcSum + developmentFund) - discountPrcSum;
+    const prcVat = Math.floor(prcSum * 0.1);
+    const prcTotal = prcSum + prcVat;
+
+    // --- 5. 유효성 검사 및 서버 전송 데이터 구성 ---
     const totalBooths = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
     if (totalBooths === 0) {
         showMessage('', 'error', '[ 전시부스 신청 ]', '부스(독립, 조립, 온라인)를 하나 이상 신청해 주세요.', '');
@@ -5382,9 +5379,12 @@ function my_step_2_1_check(exhibitorSeq){
         discountScale5: $('#discountScale5').is(':checked'),
         discountScale6: $('#discountScale6').is(':checked'),
         discountLeisure: $('#discountLeisure').is(':checked'),
-        discountYn: discountYn,
+        discountYn: (discountType !== '') ? 'Y' : 'N',
         boothPrcSum: boothPrcSum,
-        discountPrcSum: discountPrcSum
+        discountPrcSum: discountPrcSum,
+        prcSum: prcSum,
+        prcVat: prcVat,
+        prcTotal: prcTotal
     };
 
     let resData = ajaxConnect('/apply/step/updateExhibitorNewBooth.do', 'post', booth_json_obj);

@@ -800,12 +800,10 @@
           , booth_prc_sum           = #{boothPrcSum}
           , discount_prc_sum        = #{discountPrcSum}
           , discount_yn             = #{discountYn}
-          , prc_sum                 = (#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum
-          , prc_vat                 = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1)
-          , prc_total               = ((#{boothPrcSum} - #{discountPrcSum})  + utility_prc_sum) +
-                                      (((#{boothPrcSum} - #{discountPrcSum})  + utility_prc_sum) * 0.1)
-          , balance                 = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) +
-                                       (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
+          , prc_sum                 = #{prcSum}
+          , prc_vat                 = #{prcVat}
+          , prc_total               = #{prcTotal}
+          , balance                 = #{prcTotal} - IFNULL(deposit,0)
           , note                    = #{note}
           , final_regi_dttm         = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
@@ -844,8 +842,6 @@
           , prc_sum                    = ((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0))
           , prc_vat                    = (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1)
           , prc_total                  = (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) +
-                                          (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1))
-          , balance                    = (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) +
                                           (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1))
           , note                       = #{note}
           , final_regi_dttm            = DATE_FORMAT(NOW(), '%Y-%m-%d %T')

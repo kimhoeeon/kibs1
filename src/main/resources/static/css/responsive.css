@@ -1,3 +1,13 @@
+@media screen and (max-width:1680px) {
+    #header .nav .dept1>li{
+        margin: 0 40px;
+    }
+}
+@media screen and (max-width:1500px) {
+    #header .nav .dept1>li{
+        margin: 0 30px;
+    }
+}
 @media screen and (max-width:1400px) {
     .apply_form .form_box li.w50 {
         width: 100%;
@@ -82,7 +92,12 @@
 
 /* 1025px ~ 1300px */
 @media screen and (max-width:1300px) {
-
+    #header .nav .dept1>li{
+        margin: 0 20px;
+    }
+    .link_dept1 li a{
+        font-size: 2.4rem;
+    }
     .hd_site_map .site_map_nav .dept1>li>a {
         font-size: 2.4rem; padding-bottom: 10px;
     }

@@ -64,25 +64,37 @@ $(function(){
         const boothSum = parseInt($('#baseBoothSum').val()) || 0;
         const utilitySum = parseInt($('#baseUtilitySum').val()) || 0;
         const basicDiscountSum = parseInt($('#baseDiscountSum').val()) || 0;
-        let specialDiscountTotal = 0;
 
+        // --- 발전기금 계산 로직 ---
+        let developmentFund = 0;
+        // 2. 협회 회원사('Y')이거나, 협회 할인 체크박스가 체크되어 있는지 확인
+        const isMember = $('body').data('member-yn') === 'Y'; // body 태그에 data-member-yn="Y/N" 추가 필요
+        const isLeisureDiscountChecked = $('#discountLeisure').is(':checked'); // 협회 할인 체크박스 ID
+
+        if (isMember || isLeisureDiscountChecked) {
+            // 부스 총액(boothPrcSum)의 10%를 발전기금으로 계산
+            developmentFund = Math.floor(boothSum * 0.1);
+        }
+
+        // 3. 특별 할인 총액을 계산합니다.
+        let specialDiscountTotal = 0;
         const baseAmountForSpecial = boothSum + utilitySum - basicDiscountSum;
 
         if ($('#discountSpecial1Yn').is(':checked')) {
             specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
         }
         $('.special-discount-amount').each(function() {
-            const isChecked = $(this).closest('tr').find('.special-discount-checkbox').is(':checked');
-            if (isChecked) {
-                const amount = parseInt($(this).val().replace(/,/g, '')) || 0;
-                specialDiscountTotal += amount;
+            if ($(this).closest('tr').find('.special-discount-checkbox').is(':checked')) {
+                specialDiscountTotal += parseInt($(this).val().replace(/,/g, '')) || 0;
             }
         });
 
-        const subtotal = baseAmountForSpecial - specialDiscountTotal;
+        // 4. 최종 금액들을 발전기금을 포함하여 재계산합니다.
+        const subtotal = (boothSum + utilitySum + developmentFund) - (basicDiscountSum + specialDiscountTotal);
         const vat = Math.floor(subtotal * 0.1);
         const finalTotal = subtotal + vat;
 
+        $('#summary_development_fund').text('￦ ' + developmentFund.toLocaleString());
         $('#summary_special_discount').text('- ￦ ' + specialDiscountTotal.toLocaleString());
         $('#summary_subtotal').text('￦ ' + subtotal.toLocaleString());
         $('#summary_vat').text('￦ ' + vat.toLocaleString());
@@ -137,7 +149,7 @@ $(function(){
         let url, method;
         if (depositSeq) {
             url = '/mng/deposits/' + depositSeq;
-            method = 'PUT';
+            method = 'POST';
             depositData.depositSeq = depositSeq;
         } else {
             url = '/mng/deposits';
@@ -152,13 +164,15 @@ $(function(){
             success: function(response) {
                 if (response.resultCode === "0") {
                     alert(response.resultMsg);
-                    if (method === 'POST' && response.data) {
+                    /*if (method === 'POST' && response.data) {
                         $('#depositHistoryTable .no-data-row').remove();
                         addRowToDepositTable(response.data);
                         clearDepositForm();
-                    } else {
-                        location.reload();
-                    }
+                    } else {*/
+                    // --- 새로고침 전 스크롤 명령 저장 ---
+                    sessionStorage.setItem('scrollToBottom', 'true');
+                    location.reload();
+                    /*}*/
                 } else {
                     alert(response.resultMsg || '오류가 발생했습니다.');
                 }
@@ -192,7 +206,7 @@ $(function(){
         if (confirm('해당 항목을 정말 삭제하시겠습니까?')) {
             const depositSeq = $(this).data('seq');
             $.ajax({
-                url: '/mng/deposits/' + depositSeq,
+                url: '/mng/deposits/' + depositSeq + '/delete',
                 type: 'POST', // DELETE 대신 POST 사용
                 success: function(response) {
                     if (response.resultCode === "0") {
@@ -218,9 +232,13 @@ $(function(){
                 const tableBody = $('#depositHistoryTable tbody');
                 tableBody.empty();
                 if (historyList && historyList.length > 0) {
-                    historyList.forEach(item => addRowToDepositTable(item));
+                    const totalCount = historyList.length; // 전체 개수
+                    historyList.forEach((item, index) => {
+                        const rowNumber = totalCount - index;
+                        addRowToDepositTable(item, rowNumber); // 내림차순 번호를 전달
+                    });
                 } else {
-                    tableBody.append('<tr class="no-data-row"><td colspan="10" class="text-center">입금 내역이 없습니다.</td></tr>');
+                    tableBody.append('<tr class="no-data-row"><td colspan="13" class="text-center">입금 내역이 없습니다.</td></tr>');
                 }
             },
             error: function() {
@@ -230,7 +248,7 @@ $(function(){
         });
     }
 
-    function addRowToDepositTable(rowData) {
+    function addRowToDepositTable(rowData, number) {
         const contentTypeDisplay = rowData.contentType || '-';
         const paymentStatusDisplay = rowData.paymentStatus || '-';
         const depositDateDisplay = rowData.depositDate ? rowData.depositDate.split('T')[0] : '-';
@@ -239,9 +257,12 @@ $(function(){
         const depositorNameDisplay = rowData.depositorName || '-';
         const confirmerNameDisplay = rowData.confirmerName || '-';
         const commentDisplay = rowData.comment || '-';
+        const initRegiDttmDisplay = rowData.initRegiDttm || '-';
+        const finalRegiDttmDisplay = rowData.finalRegiDttm || '-';
 
         const row =
             '<tr class="text-center" id="depositRow-' + rowData.depositSeq + '">' +
+            '<td>' + number + '</td>' +
             '<td>' + (rowData.amount || 0).toLocaleString() + ' 원</td>' +
             '<td>' + contentTypeDisplay + '</td>' +
             '<td>' + paymentStatusDisplay + '</td>' +
@@ -251,6 +272,8 @@ $(function(){
             '<td>' + depositorNameDisplay + '</td>' +
             '<td>' + confirmerNameDisplay + '</td>' +
             '<td>' + commentDisplay + '</td>' +
+            '<td>' + initRegiDttmDisplay + '</td>' +
+            '<td>' + finalRegiDttmDisplay + '</td>' +
             '<td>' +
             '<button class="btn btn-sm btn-light-primary edit-btn">수정</button>' +
             '<button class="btn btn-sm btn-light-danger delete-btn" data-seq="' + rowData.depositSeq + '">삭제</button>' +
@@ -259,7 +282,7 @@ $(function(){
 
         const $row = $(row);
         $row.find('.edit-btn').data('row', rowData);
-        $('#depositHistoryTable tbody').prepend($row);
+        $('#depositHistoryTable tbody').append($row);
     }
 
     function clearDepositForm() {

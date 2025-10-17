@@ -8,6 +8,12 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ExhibitorNewDetailDTO {
+    private String seq;
+    private String lang;
+    private String boothType;
+    private String deposit; //선금
+    private String balance; //잔액
+    private String taxYn; //세금계산서 발행여부
     private String transferYear; //연도
     
     /* 참가업체정보 */

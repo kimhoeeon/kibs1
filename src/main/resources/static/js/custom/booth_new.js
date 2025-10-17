@@ -611,6 +611,9 @@ function calculateTotal() {
     let assemblyFee = assemblyQty * boothPrices.assembly;
     let onlineFee = onlineQty * boothPrices.online;
 
+    // 부스 관련 금액 총합 (등록비 포함)
+    let boothPrcSum = registrationFee + standAloneFee + assemblyFee + onlineFee;
+
     $('#standAloneBoothFee').val('￦ ' + standAloneFee.toLocaleString());
     $('#assemblyBoothFee').val('￦ ' + assemblyFee.toLocaleString());
     $('#onlineBoothFee').val('￦ ' + onlineFee.toLocaleString());
@@ -656,9 +659,20 @@ function calculateTotal() {
         }
     });
 
-    // 4. 최종 금액 계산 (부스비 총액 + 등록비 - 총 할인액)
-    let subtotal = standAloneFee + assemblyFee + onlineFee;
-    let finalAmount = subtotal + registrationFee - totalDiscount;
+    // --- 발전기금 계산 로직 ---
+    let developmentFund = 0;
+    // 3. 협회 회원사(DB값)이거나 협회 할인 체크박스가 체크되어 있는지 확인
+    const isMember = $('#memberCompanyYn').val() === 'Y'; // hidden input으로 memberCompanyYn 값 필요
+    const isLeisureDiscountChecked = $('#discountLeisure').is(':checked');
+
+    if (isMember || isLeisureDiscountChecked) {
+        // 발전기금 = (등록비 + 모든 부스비)의 10%
+        developmentFund = Math.floor(boothPrcSum * 0.1);
+    }
+
+    // 4. 최종 금액 계산
+    // 최종 금액 = (부스비 총액 + 발전기금) - 총 할인액
+    let finalAmount = (boothPrcSum + developmentFund) - totalDiscount;
 
     // 화면에 최종 금액 표시 (0원 미만 방지)
     $('#totalAmount').val('￦ ' + Math.max(0, finalAmount).toLocaleString());

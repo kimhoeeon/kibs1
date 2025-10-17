@@ -53,7 +53,7 @@ License: For each use you must have a valid license purchased only from above li
 </head>
 <!--end::Head-->
 <!--begin::Body-->
-<body id="kt_app_body" data-exhibitor-seq="${info.seq}" data-company-name-ko="${info.companyNameKo}"
+<body id="kt_app_body" data-exhibitor-seq="${info.seq}" data-company-name-ko="${info.companyNameKo}" data-member-yn="${info.memberCompanyYn}"
       data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
       data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
       data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
@@ -2349,6 +2349,7 @@ if (document.documentElement) {
                                     </div>
                                     <!--end::Basic info-->
 
+                                    <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}"/>
                                     <c:if test="${info.memberCompanyYn == 'Y'}">
                                         <!--begin::Basic info-->
                                         <div class="card mb-5 mb-xl-10">
@@ -2387,7 +2388,7 @@ if (document.documentElement) {
                                                             <td>
                                                                 <div class="amount">
                                                                     <p class="price">
-                                                                        <input type="text" value="<fmt:formatNumber value="${info.boothPrcSum * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" style="background:unset; border: 0; text-align: center;" disabled>
+                                                                        <input type="text" value="<fmt:formatNumber value="${info.boothPrcSum * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" style="background:unset; border: 0; text-align: center; color: #000000;" disabled>
                                                                     </p>
                                                                 </div>
                                                             </td>
@@ -2624,6 +2625,14 @@ if (document.documentElement) {
                                                             + <fmt:formatNumber value="${info.utilityPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>
                                                         </td>
                                                     </tr>
+                                                    <c:if test="${info.memberCompanyYn == 'Y' || info.discountLeisure}">
+                                                        <tr id="developmentFundRow"> <%-- JS에서 제어할 수 있도록 id 추가 --%>
+                                                            <th class="text-gray-700 fw-semibold fs-6">협회 발전기금</th>
+                                                            <td id="summary_development_fund" class="text-end fw-bold fs-6">
+                                                                + ￦ 0
+                                                            </td>
+                                                        </tr>
+                                                    </c:if>
                                                     <tr>
                                                         <th class="text-gray-700 fw-semibold fs-6">기본 할인</th>
                                                         <td class="text-end fw-bold fs-6 text-danger">
@@ -2713,6 +2722,7 @@ if (document.documentElement) {
                                                             <th>NO</th>
                                                             <th>제목</th>
                                                             <th>발송유형</th>
+                                                            <th>발행일시</th>
                                                             <th>발송이력</th>
                                                         </tr>
                                                     </thead>
@@ -2720,7 +2730,7 @@ if (document.documentElement) {
                                                     <!--begin::Table body-->
                                                     <tbody>
                                                         <c:if test="${empty boothInvoiceList}">
-                                                            <tr><td colspan="5" style="text-align: center;">인보이스 내역 없음</td></tr>
+                                                            <tr><td colspan="6" style="text-align: center;">인보이스 내역 없음</td></tr>
                                                         </c:if>
 
                                                         <c:if test="${not empty boothInvoiceList}">
@@ -2736,6 +2746,7 @@ if (document.documentElement) {
                                                                     <td class="td_invoiceCode">${invoice.invoiceCode}</td>
                                                                     <td>${invoice.title}</td>
                                                                     <td>전시부스</td>
+                                                                    <td><span class="fw-semibold d-block fs-7">${fn:substring(invoice.initRegiDttm, 0, 16)}</span></td>
                                                                     <td>
                                                                         <button type="button" class="btn btn-sm btn-light-info view-history-btn"
                                                                                 data-invoice-seq="${invoice.invoiceSeq}"

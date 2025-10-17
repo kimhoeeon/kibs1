@@ -5840,7 +5840,7 @@ position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-w
 
 /* kiss,kmts 페이지 추가 */
 .hd_nav .kiss_nav,
-.hd_nav .kmts_nav{text-align: center; display: inline-block;}
+.hd_nav .kmts_nav,.expo{text-align: center; display: inline-block;}
 .kiss_nav a span{color: #00b7ed !important;}
 .kmts_nav a span{color: #2db5a8 !important;}
 .site_map_new{justify-content: left !important; gap: 40px;}
@@ -5876,7 +5876,6 @@ position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-w
 .summ_join .sub_cont_tit::before{background: #ed6c00;}
 .summ_join .summ_wrap div{width: inherit;}
 .summ_join .summ_wrap .desc span{color: #111; font-size: 1.8rem; font-weight: 500;}
-.summ_join .summ_wrap .desc span.summ_tit{font-size: inherit; font-weight: bold;}
 
 .summ_join.aqua .table_box td span{color: #2db5a8;}
 .summ_join.aqua .table_box table th{background: #2db5a8;}

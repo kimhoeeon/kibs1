@@ -59,9 +59,9 @@
             <div class="inner">
                 <div class="sub_top_box">
                     <div class="sub_top_nav">
-                        <span>홈</span><span>해상전시회</span>
+                        <span>홈</span><span>해상전시회(시흥 거북섬마리나)</span>
                     </div>
-                    <div class="sub_top_tit">해상전시회</div>
+                    <div class="sub_top_tit">해상전시회(시흥 거북섬마리나)</div>
                 </div>
             </div>
         </div>
@@ -74,14 +74,14 @@
                     <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
                     <div class="optionBox">
                         <div class="tabOpt1 tabOption">
-                            <div class="tabOptAct">해상전시회</div>
+                            <div class="tabOptAct">해상전시회(시흥 거북섬마리나)</div>
                             <div class="tabOptSel">
                                 <a href="/guide/summary.do">KIBS 안내</a>
                                 <a href="/exhibitor/guide.do">참가기업</a>
                                 <a href="/visitor/guide_off.do">참관객</a>
                                 <a href="/guide/notice.do">미디어센터</a>
                                 <a href="/online/kibstv.do">온라인 전시관</a>
-                                <a class="active" href="/guide/maritime_expo.do">해상전시회</a>
+                                <a class="active" href="/guide/maritime_expo.do">해상전시회(시흥 거북섬마리나)</a>
                                 <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
                                 <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
                             </div>

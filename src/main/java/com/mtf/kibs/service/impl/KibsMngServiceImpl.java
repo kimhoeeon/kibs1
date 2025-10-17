@@ -3522,8 +3522,8 @@ public class KibsMngServiceImpl implements KibsMngService {
 
         int developmentFund = 0;
         // 3. 해양레저산업협회 회원사('Y')일 경우, 발전기금을 계산합니다.
-        if ("Y".equals(currentData.getMemberCompanyYn())) {
-            developmentFund = (int) Math.floor(boothPrcSum * 0.1); // 부스 총액의 10%
+        if ("Y".equals(currentData.getMemberCompanyYn()) || Boolean.TRUE.equals(currentData.getDiscountLeisure())) {
+            developmentFund = (int) Math.floor(boothPrcSum * 0.1);
         }
 
         // 4. '특별 할인 적용 전 공급가액'을 계산합니다.
@@ -3543,18 +3543,21 @@ public class KibsMngServiceImpl implements KibsMngService {
 
         // 6. 모든 금액을 최종적으로 재계산합니다. (발전기금 포함)
         int newTotalDiscountSum = basicDiscountSum + specialDiscountTotal;
-
-        // 최종 공급가액 = (부스비 + 유틸리티비 + 발전기금) - 총 할인액
         int newPrcSum = (boothPrcSum + utilityPrcSum + developmentFund) - newTotalDiscountSum;
+        int newPrcVat = (int) Math.floor(newPrcSum * 0.1);
+        int newPrcTotal = newPrcSum + newPrcVat;
 
-        int newPrcVat = (int) Math.floor(newPrcSum * 0.1); // 최종 부가세
-        int newPrcTotal = newPrcSum + newPrcVat; // 최종 합계
+        int depositAmount = currentData.getDeposit() != null ? Integer.parseInt(currentData.getDeposit()) : 0;
+
+        // 6-2. 새로운 잔액을 계산합니다. (잔액 = 최종 합계 - 선금)
+        int newBalance = newPrcTotal - depositAmount;
 
         // 7. DTO에 재계산된 금액들을 담습니다.
         specialDiscountData.setDiscountPrcSum(newTotalDiscountSum);
         specialDiscountData.setPrcSum(newPrcSum);
         specialDiscountData.setPrcVat(newPrcVat);
         specialDiscountData.setPrcTotal(newPrcTotal);
+        specialDiscountData.setBalance(String.valueOf(newBalance));
 
         // 8. 확장된 UPDATE 쿼리를 호출하여 DB에 모든 정보를 한번에 저장합니다.
         return kibsMngMapper.updateExhibitorNewSpecialDiscount(specialDiscountData);
@@ -3592,10 +3595,14 @@ public class KibsMngServiceImpl implements KibsMngService {
                 break;
         }
         exhibitorInfo.setPrcYn(prcYn);
+        exhibitorInfo.setDeposit(String.valueOf(dto.getAmount()));
         kibsMngMapper.updateExhibitorNewPrcYn(exhibitorInfo);
 
         int result = kibsMngMapper.insertDepositHistory(dto); // 이 호출 후, dto 객체의 depositSeq 필드에 값이 채워집니다.
         if (result > 0) {
+
+            recalculateAndUpdatePayments(dto.getExhibitorSeq());
+
             return dto; // 성공 시, seq가 채워진 dto 객체를 반환
         }
         return null; // 실패 시 null 반환
@@ -3628,6 +3635,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                 break;
         }
         exhibitorInfo.setPrcYn(prcYn);
+        exhibitorInfo.setDeposit(String.valueOf(dto.getAmount()));
         kibsMngMapper.updateExhibitorNewPrcYn(exhibitorInfo);
 
         // 1. Mapper를 호출하고, 반환된 int 값(영향받은 행의 수)을 받습니다.
@@ -3635,6 +3643,9 @@ public class KibsMngServiceImpl implements KibsMngService {
 
         // 2. int 결과를 바탕으로 성공/실패 Map을 직접 만듭니다.
         if (result > 0) { // 1개 이상의 행이 영향을 받았다면 성공
+
+            recalculateAndUpdatePayments(dto.getExhibitorSeq());
+
             resultMap.put("resultCode", "0");
             resultMap.put("resultMsg", "수정되었습니다.");
         } else {
@@ -3649,6 +3660,9 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Map<String, Object> deleteDepositHistory(int depositSeq) {
+        // 삭제 전에 exhibitor_seq를 먼저 조회해야 합니다.
+        String exhibitorSeq = kibsMngMapper.getExhibitorSeqByDepositSeq(depositSeq);
+
         System.out.println("KibsMngServiceImpl > deleteDepositHistory");
         Map<String, Object> resultMap = new HashMap<>();
 
@@ -3656,7 +3670,10 @@ public class KibsMngServiceImpl implements KibsMngService {
         int result = kibsMngMapper.deleteDepositHistory(depositSeq);
 
         // 2. int 결과를 바탕으로 성공/실패 Map을 직접 만듭니다.
-        if (result > 0) { // 1개 이상의 행이 영향을 받았다면 성공
+        if (result > 0 && exhibitorSeq != null) {
+            // 잔액 재계산 로직 호출
+            recalculateAndUpdatePayments(exhibitorSeq);
+
             resultMap.put("resultCode", "0");
             resultMap.put("resultMsg", "삭제되었습니다.");
         } else {
@@ -3666,6 +3683,26 @@ public class KibsMngServiceImpl implements KibsMngService {
 
         // 3. 완성된 Map을 Controller로 반환합니다.
         return resultMap;
+    }
+
+    private void recalculateAndUpdatePayments(String exhibitorSeq) {
+        // 1. 해당 업체의 최종 합계(prc_total)를 조회합니다.
+        ExhibitorNewDTO exhibitorInfo = kibsMngMapper.selectExhibitorNewInvoiceDetail(exhibitorSeq);
+        if (exhibitorInfo == null) {
+            // 예외 처리 또는 로그
+            return;
+        }
+        int prcTotal = exhibitorInfo.getPrcTotal() != null ? exhibitorInfo.getPrcTotal() : 0;
+
+        // 2. 해당 업체의 총 입금액을 deposit_history 테이블에서 합산하여 조회합니다.
+        Integer totalDeposit = kibsMngMapper.sumDepositAmountByExhibitor(exhibitorSeq);
+        int newDepositSum = (totalDeposit != null) ? totalDeposit : 0;
+
+        // 3. 새로운 잔액을 계산합니다. (잔액 = 최종 합계 - 총 입금액)
+        int newBalance = prcTotal - newDepositSum;
+
+        // 4. 계산된 잔액을 exhibitor_new 테이블에 업데이트합니다.
+        kibsMngMapper.updateExhibitorPaymentStatus(exhibitorSeq, newDepositSum, newBalance);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
