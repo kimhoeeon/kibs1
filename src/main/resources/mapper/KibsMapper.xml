@@ -800,10 +800,10 @@
           , booth_prc_sum           = #{boothPrcSum}
           , discount_prc_sum        = #{discountPrcSum}
           , discount_yn             = #{discountYn}
-          , prc_sum                 = (#{boothPrcSum} - #{discountPrcSum})
-          , prc_vat                 = (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
-          , prc_total               = ((#{boothPrcSum} - #{discountPrcSum})) +
-                                      (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
+          , prc_sum                 = (#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum
+          , prc_vat                 = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1)
+          , prc_total               = ((#{boothPrcSum} - #{discountPrcSum})  + utility_prc_sum) +
+                                      (((#{boothPrcSum} - #{discountPrcSum})  + utility_prc_sum) * 0.1)
           , balance                 = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) +
                                        (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
           , note                    = #{note}

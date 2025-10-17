@@ -1131,6 +1131,12 @@ public class KibsMngController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/mng/invoices/history")
+    @ResponseBody
+    public List<InvoiceSendHistoryDTO> getInvoiceHistory(@RequestParam("invoiceSeq") int invoiceSeq, @RequestParam("invoiceType") String invoiceType) {
+        return kibsMngService.getInvoiceSendHistory(invoiceSeq, invoiceType);
+    }
+
     @RequestMapping(value = "/mng/exhibitorNew/application/utility/invoice/mail/result/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_invoice_mail_result_update(@RequestBody InvoiceUtilityDTO invoiceUtilityDTO) {
@@ -1235,9 +1241,9 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/invoice/mail/open/update.do", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public void mng_exhibitorNew_application_invoice_mail_open_update(MailOpenDTO mailOpenDTO) {
+    public void mng_exhibitorNew_application_invoice_mail_open_update(@RequestParam("hseq") int historySeq) {
         System.out.println("KibsMngController > mng_exhibitorNew_application_invoice_mail_open_update");
-        kibsMngService.processUpdateInvoiceMailOpen(mailOpenDTO);
+        kibsMngService.updateInvoiceHistoryStatusToOpen(historySeq);
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/pass.do", method = RequestMethod.GET)

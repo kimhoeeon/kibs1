@@ -3770,6 +3770,24 @@
                 #{endDttm}, NOW())
     </insert>
 
+    <update id="updateInvoiceSendHistoryResult" parameterType="com.mtf.kibs.dto.InvoiceSendHistoryDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceSendHistoryResult */
+        UPDATE invoice_send_history
+        SET send_status = #{sendStatus},
+            send_result = #{sendResult},
+            send_result_msg = #{sendResultMsg},
+            send_dttm = NOW()
+        WHERE invoice_seq = #{invoiceSeq}
+    </update>
+
+    <update id="updateInvoiceHistoryStatusToOpen" parameterType="int">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceHistoryStatusToOpen */
+        UPDATE invoice_send_history
+        SET send_status = '열람'
+        WHERE history_seq = #{value}
+          AND send_status = '미열람' -- 중복 업데이트 방지
+    </update>
+
     <update id="updateInvoiceUtilitySendStatus" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceUtilitySendStatus */
         UPDATE invoice_utility
@@ -3788,6 +3806,20 @@
             final_regi_dttm = NOW()
         WHERE invoice_seq = #{invoiceSeq}
     </update>
+
+    <insert id="insertInvoiceSendHistory" parameterType="com.mtf.kibs.dto.InvoiceSendHistoryDTO" useGeneratedKeys="true" keyProperty="historySeq">
+        /* com.mtf.kibs.mapper.kibsMngMapper.insertInvoiceSendHistory */
+        INSERT INTO invoice_send_history
+        (invoice_seq, invoice_type, recipient_email, send_status, send_result, send_result_msg, send_dttm)
+        VALUES (#{invoiceSeq}, #{invoiceType}, #{recipientEmail}, #{sendStatus}, #{sendResult}, #{sendResultMsg}, NOW())
+    </insert>
+
+    <select id="selectInvoiceSendHistory" resultType="com.mtf.kibs.dto.InvoiceSendHistoryDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceSendHistory */
+        SELECT * FROM invoice_send_history
+        WHERE invoice_seq = #{invoiceSeq} AND invoice_type = #{invoiceType}
+        ORDER BY history_seq DESC
+    </select>
 
     <update id="updateBooth" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateBooth */
@@ -3850,10 +3882,10 @@
           , booth_prc_sum           = #{boothPrcSum}
           , discount_prc_sum        = #{discountPrcSum}
           , discount_yn             = #{discountYn}
-          , prc_sum                 = (#{boothPrcSum} - #{discountPrcSum})
-          , prc_vat                 = (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
-          , prc_total               = ((#{boothPrcSum} - #{discountPrcSum})) +
-                                      (((#{boothPrcSum} - #{discountPrcSum})) * 0.1)
+          , prc_sum                 = (#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum
+          , prc_vat                 = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1)
+          , prc_total               = ((#{boothPrcSum} - #{discountPrcSum})  + utility_prc_sum) +
+                                      (((#{boothPrcSum} - #{discountPrcSum})  + utility_prc_sum) * 0.1)
           , balance                 = (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) +
                                        (((#{boothPrcSum} - #{discountPrcSum}) + utility_prc_sum) * 0.1))
           , final_regi_dttm         = DATE_FORMAT(NOW(), '%Y-%m-%d %T')

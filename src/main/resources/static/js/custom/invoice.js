@@ -98,9 +98,11 @@ $(function(){
     /******************************************************
      * 입금 현황 관련 로직
      ******************************************************/
-
     // 1. 페이지 로드 시 AJAX로 입금 내역 불러오기
-    loadDepositHistory();
+    // 참가자 관리 > 전시업체 목록 > 인보이스 정보 페이지에만 입금 현황 로드 수행
+    if(window.location.pathname === '/mng/exhibitorNew/participant/company/invoice/detail.do'){
+        loadDepositHistory();
+    }
 
     // 2. '입금 현황 변경 내용 저장' 버튼 클릭 이벤트 (추가/수정)
     $('#saveDepositBtn').on('click', function() {
@@ -331,7 +333,12 @@ $(function(){
                                     title: '[ 인보이스 ]',
                                     text: '인보이스가 생성되었습니다.',
                                     confirmButtonText: '확인'
-                                }).then(() => location.reload());
+                                }).then(() => {
+
+                                    // --- 새로고침 전 스크롤 명령 저장 ---
+                                    sessionStorage.setItem('scrollToBottom', 'true');
+                                    location.reload();
+                                });
                             })
                             .catch(err => {
                                 KTApp.hidePageLoading();
@@ -488,10 +495,13 @@ $(function(){
                 body: '', //템플릿 사용시 빈값
                 template: "161",
                 // 수신자 이메일을 팝업에서 입력한 값으로 사용
-                receiver: [{ email: recipientEmail, note1: encodeURI(`https://kibs.com/mng/exhibitorNew/application/invoice/mail/open/update.do?gbn=IB&seq=${invoiceSeq}`) }],
+                receiver: [{ email: recipientEmail }],
                 gbn: gbn,
                 folderPath: encodeURI(folderPath_s),
-                fileUrl: [{ name: encodeURI(fileName) }]
+                fileUrl: [{ name: encodeURI(fileName) }],
+                invoiceSeq: invoiceSeq,
+                invoiceType: invoiceType,
+                recipientEmail: recipientEmail
             };
 
             // 6. 메일 발송 실행 및 결과 처리 (기존 로직 재활용)
@@ -501,6 +511,8 @@ $(function(){
 
             const updateData = {
                 invoiceSeq: invoiceSeq,
+                invoiceType: invoiceType,
+                recipientEmail: recipientEmail,
                 sendStatus: sendStatus,
                 sendResult: sendResult,
                 sendResultMsg: mailResult.resultMessage
@@ -623,6 +635,51 @@ $(function(){
         document.body.removeChild(link);
     });
 
+    /******************************************************
+     * 인보이스 발송 이력 보기
+     ******************************************************/
+    const historyModal = new bootstrap.Modal(document.getElementById('kt_modal_send_history'));
+
+    // '이력보기' 버튼 클릭 이벤트 (이벤트 위임)
+    $('#kt_invoice_info').on('click', '.view-history-btn', function() {
+        const button = $(this);
+        const invoiceSeq = button.data('invoice-seq');
+        const invoiceType = button.data('invoice-type');
+        const invoiceCode = button.data('invoice-code');
+        const tableBody = $('#historyTableBody');
+
+        $('#kt_modal_send_history .modal-header h2').text(`발송 이력 (${invoiceCode})`);
+
+        tableBody.html('<tr><td colspan="4" class="text-center">이력을 불러오는 중입니다...</td></tr>');
+        historyModal.show();
+
+        // 서버에 해당 인보이스의 이력 요청
+        $.ajax({
+            url: `/mng/invoices/history?invoiceSeq=${invoiceSeq}&invoiceType=${invoiceType}`,
+            type: 'GET',
+            success: function(historyList) {
+                tableBody.empty(); // 내용 비우기
+                if (historyList && historyList.length > 0) {
+                    historyList.forEach(history => {
+                        const row = `
+                            <tr>
+                                <td>${history.recipientEmail || '-'}</td>
+                                <td>${history.sendStatus || '-'}</td>
+                                <td>[${history.sendResult || '-'}] ${history.sendResultMsg || ''}</td>
+                                <td>${history.sendDttm || '-'}</td>
+                            </tr>
+                        `;
+                        tableBody.append(row);
+                    });
+                } else {
+                    tableBody.append('<tr><td colspan="4" class="text-center">발송 이력이 없습니다.</td></tr>');
+                }
+            },
+            error: function() {
+                tableBody.html('<tr><td colspan="4" class="text-center">이력을 불러오는 데 실패했습니다.</td></tr>');
+            }
+        });
+    });
 });
 
 /**

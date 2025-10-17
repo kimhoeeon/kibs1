@@ -3570,6 +3570,30 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public DepositHistoryDTO insertDepositHistory(DepositHistoryDTO dto) {
+
+        ExhibitorNewDTO exhibitorInfo = new ExhibitorNewDTO();
+        exhibitorInfo.setSeq(dto.getExhibitorSeq());
+        String prcYn = "";
+        switch (dto.getPaymentStatus()){
+            case "미납":
+                prcYn = "0";
+                break;
+            case "참가비 납부":
+                prcYn = "1";
+                break;
+            case "50% 납부":
+                prcYn = "2";
+                break;
+            case "전액 납부":
+                prcYn = "3";
+                break;
+            case "완납(부대시설비)":
+                prcYn = "4";
+                break;
+        }
+        exhibitorInfo.setPrcYn(prcYn);
+        kibsMngMapper.updateExhibitorNewPrcYn(exhibitorInfo);
+
         int result = kibsMngMapper.insertDepositHistory(dto); // 이 호출 후, dto 객체의 depositSeq 필드에 값이 채워집니다.
         if (result > 0) {
             return dto; // 성공 시, seq가 채워진 dto 객체를 반환
@@ -3582,6 +3606,29 @@ public class KibsMngServiceImpl implements KibsMngService {
     public Map<String, Object> updateDepositHistory(DepositHistoryDTO dto) {
         System.out.println("KibsMngServiceImpl > updateDepositHistory");
         Map<String, Object> resultMap = new HashMap<>();
+
+        ExhibitorNewDTO exhibitorInfo = new ExhibitorNewDTO();
+        exhibitorInfo.setSeq(dto.getExhibitorSeq());
+        String prcYn = "";
+        switch (dto.getPaymentStatus()){
+            case "미납":
+                prcYn = "0";
+                break;
+            case "참가비 납부":
+                prcYn = "1";
+                break;
+            case "50% 납부":
+                prcYn = "2";
+                break;
+            case "전액 납부":
+                prcYn = "3";
+                break;
+            case "완납(부대시설비)":
+                prcYn = "4";
+                break;
+        }
+        exhibitorInfo.setPrcYn(prcYn);
+        kibsMngMapper.updateExhibitorNewPrcYn(exhibitorInfo);
 
         // 1. Mapper를 호출하고, 반환된 int 값(영향받은 행의 수)을 받습니다.
         int result = kibsMngMapper.updateDepositHistory(dto);
@@ -3702,7 +3749,8 @@ public class KibsMngServiceImpl implements KibsMngService {
 
         // 3. [추가] 새로운 인보이스 코드를 생성합니다. (발급 횟수 + 1)
         int nextInvoiceNumber = invoiceCount + 1;
-        String invoiceCode = String.format("KIBS-B-%s-%d", exhibitorSeq, nextInvoiceNumber);
+        String invoiceCodeCount = exhibitorSeq.substring(exhibitorSeq.length() - 4);
+        String invoiceCode = String.format("KIBS-B%s-%d", invoiceCodeCount, nextInvoiceNumber);
 
         // 4. 새로운 InvoiceBoothDTO 객체를 생성하고, '금액 스냅샷'을 복사합니다.
         InvoiceBoothDTO newInvoice = new InvoiceBoothDTO();
@@ -3743,7 +3791,8 @@ public class KibsMngServiceImpl implements KibsMngService {
 
         int invoiceCount = kibsMngMapper.countInvoiceUtilityByExhibitorSeq(exhibitorSeq);
         int nextInvoiceNumber = invoiceCount + 1;
-        String invoiceCode = String.format("KIBS-U-%s-%d", exhibitorSeq, nextInvoiceNumber);
+        String invoiceCodeCount = exhibitorSeq.substring(exhibitorSeq.length() - 4);
+        String invoiceCode = String.format("KIBS-U%s-%d", invoiceCodeCount, nextInvoiceNumber);
 
         InvoiceUtilityDTO newInvoice = new InvoiceUtilityDTO();
         newInvoice.setExhibitorSeq(exhibitorSeq);
@@ -3964,7 +4013,15 @@ public class KibsMngServiceImpl implements KibsMngService {
         Integer result = 0;
 
         try {
-            result = kibsMngMapper.updateInvoiceBoothSendStatus(invoiceBoothDTO);
+
+            InvoiceSendHistoryDTO historyDto = new InvoiceSendHistoryDTO();
+            historyDto.setInvoiceSeq(invoiceBoothDTO.getInvoiceSeq());
+            historyDto.setInvoiceType(invoiceBoothDTO.getInvoiceType());
+            historyDto.setRecipientEmail(invoiceBoothDTO.getRecipientEmail());
+            historyDto.setSendStatus(invoiceBoothDTO.getSendStatus());
+            historyDto.setSendResult(invoiceBoothDTO.getSendResult());
+            historyDto.setSendResultMsg(invoiceBoothDTO.getSendResultMsg());
+            result = kibsMngMapper.updateInvoiceSendHistoryResult(historyDto);
 
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
@@ -3992,11 +4049,19 @@ public class KibsMngServiceImpl implements KibsMngService {
         Integer result = 0;
 
         try {
-            result = kibsMngMapper.updateInvoiceUtilitySendStatus(invoiceUtilityDTO);
+
+            InvoiceSendHistoryDTO historyDto = new InvoiceSendHistoryDTO();
+            historyDto.setInvoiceSeq(invoiceUtilityDTO.getInvoiceSeq());
+            historyDto.setInvoiceType(invoiceUtilityDTO.getInvoiceType());
+            historyDto.setRecipientEmail(invoiceUtilityDTO.getRecipientEmail());
+            historyDto.setSendStatus(invoiceUtilityDTO.getSendStatus());
+            historyDto.setSendResult(invoiceUtilityDTO.getSendResult());
+            historyDto.setSendResultMsg(invoiceUtilityDTO.getSendResultMsg());
+            result = kibsMngMapper.updateInvoiceSendHistoryResult(historyDto);
 
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Delete Fail]";
+                resultMessage = "[Data Update Fail]";
             }
 
         }catch (Exception e){
@@ -4008,6 +4073,11 @@ public class KibsMngServiceImpl implements KibsMngService {
         responseDTO.setResultCode(resultCode);
         responseDTO.setResultMessage(resultMessage);
         return responseDTO;
+    }
+
+    // 2. 이력 조회를 위한 새로운 서비스 메소드 추가
+    public List<InvoiceSendHistoryDTO> getInvoiceSendHistory(int invoiceSeq, String invoiceType) {
+        return kibsMngMapper.selectInvoiceSendHistory(invoiceSeq, invoiceType);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -4195,22 +4265,9 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public void processUpdateInvoiceMailOpen(MailOpenDTO mailOpenDTO) {
+    public void updateInvoiceHistoryStatusToOpen(int historySeq) {
         System.out.println("KibsMngServiceImpl > processUpdateInvoiceMailOpen");
-        Integer result = 0;
-
-        if("BOOTH".equals(mailOpenDTO.getGbn())){
-            InvoiceBoothDTO invoiceBoothDTO = kibsMngMapper.selectInvoiceBoothSingle(mailOpenDTO.getSeq());
-            if("미열람".equals(invoiceBoothDTO.getSendStatus())){
-                result = kibsMngMapper.updateInvoiceBoothMailOpen(mailOpenDTO);
-            }
-        }else if("UTILITY".equals(mailOpenDTO.getGbn())){
-            InvoiceUtilityDTO invoiceUtilityDTO = kibsMngMapper.selectInvoiceUtilitySingle(mailOpenDTO.getSeq());
-            if("미열람".equals(invoiceUtilityDTO.getSendStatus())) {
-                result = kibsMngMapper.updateInvoiceUtilityMailOpen(mailOpenDTO);
-            }
-        }
-
+        kibsMngMapper.updateInvoiceHistoryStatusToOpen(historySeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -5747,6 +5804,22 @@ public class KibsMngServiceImpl implements KibsMngService {
             String username = "meetingfan";              //필수입력
             String key = "L7QNsEQIyrAzNHO";           //필수입력
 
+            //인보이스 발송에만 해당되는 프로세스
+            String note1 = "";
+            if(mailRequestDTO.getGbn() != null){
+                if("BOOTH".equals(mailRequestDTO.getGbn()) || "UTILITY".equals(mailRequestDTO.getGbn())) {
+                    InvoiceSendHistoryDTO historyDto = new InvoiceSendHistoryDTO();
+                    historyDto.setInvoiceSeq(mailRequestDTO.getInvoiceSeq());
+                    historyDto.setInvoiceType(mailRequestDTO.getInvoiceType());
+                    historyDto.setRecipientEmail(mailRequestDTO.getRecipientEmail()); // 실제 발송될 이메일 주소
+                    historyDto.setSendStatus("발송중"); // 초기 상태
+
+                    // 2. 이력을 먼저 DB에 INSERT 하고, 생성된 history_seq를 받아옴
+                    kibsMngMapper.insertInvoiceSendHistory(historyDto);
+                    int historySeq = historyDto.getHistorySeq();
+                    note1 = URLEncoder.encode("https://kibs.com/mng/exhibitorNew/application/invoice/mail/open/update.do?hseq=" + historySeq, "UTF-8");
+                }
+            }
             //수신자 정보 추가 - 필수 입력(주소록 미사용시), 치환문자 미사용시 치환문자 데이터를 입력하지 않고 사용할수 있습니다.
             //치환문자 미사용시 {\"email\":\"aaaa@naver.com\"} 이메일만 입력 해주시기 바랍니다.
             JSONArray jsonArray = new JSONArray();
@@ -5757,6 +5830,8 @@ public class KibsMngServiceImpl implements KibsMngService {
                 jsonObject.addProperty("email", receiverInfo.getEmail());
                 if(receiverInfo.getNote1() != null) {
                     jsonObject.addProperty("note1", receiverInfo.getNote1());
+                }else{
+                    jsonObject.addProperty("note1", note1);
                 }
                 jsonArray.add(jsonObject);
             }

@@ -253,7 +253,7 @@ public interface KibsMngService {
 
     ResponseDTO processUpdateExhibitorNewUtility(ExhibitorNewDTO exhibitorNewDTO);
 
-    void processUpdateInvoiceMailOpen(MailOpenDTO mailOpenDTO);
+    void updateInvoiceHistoryStatusToOpen(int historySeq);
 
     List<MngPassDTO> processSelectPassList(SearchDTO searchDTO);
 
@@ -472,4 +472,6 @@ public interface KibsMngService {
     List<UtilityDetailDTO> processSelectExcelUtilityDetailList(String transferYear);
 
     List<ProductDetailDTO> processSelectExcelProductDetailList(String transferYear);
+
+    List<InvoiceSendHistoryDTO> getInvoiceSendHistory(int invoiceSeq, String invoiceType);
 }

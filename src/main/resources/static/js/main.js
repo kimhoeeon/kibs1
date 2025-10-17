@@ -754,7 +754,11 @@ function calculateTotal() {
 
     // 4. 최종 금액 계산 (부스비 총액 + 등록비 - 총 할인액)
     let subtotal = standAloneFee + assemblyFee + onlineFee;
+
     let finalAmount = subtotal + registrationFee - totalDiscount;
+    if($('#discountLeisure').is(':checked')){
+        finalAmount = (subtotal + registrationFee) + ((subtotal + registrationFee) * 0.1) - totalDiscount;
+    }
 
     // 화면에 최종 금액 표시 (0원 미만 방지)
     $('#totalAmount').val('￦ ' + Math.max(0, finalAmount).toLocaleString());
@@ -5335,7 +5339,7 @@ function my_step_2_1_check(exhibitorSeq){
             case 'discountRe': discountType += ',재참가'; break;
             case 'discountFirstUnder10': discountType += ',첫참가(10미만)'; break;
             case 'discountFirstOver10': discountType += ',첫참가(10이상)'; break;
-            case 'discountLeisure': discountType += ',해양레저산업협회'; break;
+            case 'discountLeisure': discountType += ',해양레저산업협회'; boothPrcSum += (boothPrcSum * 0.1); break;
         }
     });
 

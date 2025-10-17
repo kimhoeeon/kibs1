@@ -9,6 +9,7 @@ import lombok.ToString;
 @ToString
 public class InvoiceUtilityDTO {
     private int invoiceSeq;
+    private String invoiceType;
     private String exhibitorSeq;
     private String invoiceCode;
     private String title;

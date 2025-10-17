@@ -400,7 +400,14 @@
                                         <div class="cate2">총액(VAT 미포함)</div>
                                         <div class="amount2">
                                             <p class="price">
-                                                <input type="text" id="totalAmount" value="<fmt:formatNumber value="${info.boothPrcSum - info.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                <c:choose>
+                                                    <c:when test="${info.memberCompanyYn == 'Y'}">
+                                                        <input type="text" id="totalAmount" value="<fmt:formatNumber value="${(info.boothPrcSum + (info.boothPrcSum * 0.1)) - info.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <input type="text" id="totalAmount" value="<fmt:formatNumber value="${info.boothPrcSum - info.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </p>
                                         </div>
                                     </div>

@@ -11,6 +11,7 @@ import java.util.List;
 @ToString
 public class InvoiceBoothDTO {
     private int invoiceSeq;
+    private String invoiceType;
     private String exhibitorSeq;
     private String invoiceCode;
     private String title;

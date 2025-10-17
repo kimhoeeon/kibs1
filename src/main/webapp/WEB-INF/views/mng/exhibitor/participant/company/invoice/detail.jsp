@@ -2361,6 +2361,66 @@ if (document.documentElement) {
                                     </div>
                                     <!--end::Basic info-->
 
+                                    <c:if test="${info.memberCompanyYn == 'Y'}">
+                                        <!--begin::Basic info-->
+                                        <div class="card mb-5 mb-xl-10">
+                                            <!--begin::Card header-->
+                                            <div class="card-header border-0">
+                                                <!--begin::Card title-->
+                                                <div class="card-title m-0">
+                                                    <h3 class="fw-bold m-0">한국해양레저산업협회 발전기금</h3>
+                                                </div>
+                                                <!--end::Card title-->
+                                            </div>
+                                            <!--begin::Card header-->
+                                            <!--begin::Card body-->
+                                            <div class="card-body border-top p-9">
+                                                <!--begin::Table container-->
+                                                <div class="table-responsive">
+                                                    <!--begin::Table-->
+                                                    <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
+                                                        <!--begin::Table head-->
+                                                        <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
+                                                        <tr class="text-center">
+                                                            <th class="w-150px">구분</th>
+                                                            <th class="w-175px">금액 (원)</th>
+                                                            <th>비고</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <!--end::Table head-->
+                                                        <!--begin::Table body-->
+                                                        <tbody>
+                                                        <tr class="text-center align-middle">
+                                                            <td>
+                                                                <div class="cate">
+                                                                    <span class="fw-semibold d-block fs-7">해양레저산업협회<br>발전기금</span>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="amount">
+                                                                    <p class="price">
+                                                                        <input type="text" value="<fmt:formatNumber value="${info.boothPrcSum * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" style="background:unset; border: 0; text-align: center;" disabled>
+                                                                    </p>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <span class="fw-semibold d-block fs-7">
+                                                                    참가비 내역 합계(공급가)의 10%
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                        <!--end::Table body-->
+                                                    </table>
+                                                    <!--end::Table-->
+                                                </div>
+                                                <!--begin::Table container-->
+                                            </div>
+                                            <!--end::Card body-->
+                                        </div>
+                                        <!--end::Basic info-->
+                                    </c:if>
+
                                     <!--begin::Basic info-->
                                     <div class="card mb-5 mb-xl-10">
                                         <!--begin::Card header-->
@@ -2841,17 +2901,14 @@ if (document.documentElement) {
                                                             <th>NO</th>
                                                             <th>제목</th>
                                                             <th>발송유형</th>
-                                                            <th>수신메일</th>
-                                                            <th>수신상태</th>
-                                                            <th>발송결과</th>
-                                                            <th>발송일시</th>
+                                                            <th>발송이력</th>
                                                         </tr>
                                                     </thead>
                                                     <!--end::Table head-->
                                                     <!--begin::Table body-->
                                                     <tbody>
                                                         <c:if test="${empty boothInvoiceList && empty utilityInvoiceList}">
-                                                            <tr><td colspan="8" class="text-center">인보이스 내역 없음</td></tr>
+                                                            <tr><td colspan="5" class="text-center">인보이스 내역 없음</td></tr>
                                                         </c:if>
 
                                                         <%-- 1. 전시부스 인보이스 목록 표시 --%>
@@ -2867,10 +2924,13 @@ if (document.documentElement) {
                                                                 <td class="td_invoiceCode">${invoice.invoiceCode}</td>
                                                                 <td>${invoice.title}</td>
                                                                 <td>전시부스</td>
-                                                                <td>${invoice.recipientEmail}</td>
-                                                                <td>${invoice.sendStatus}</td>
-                                                                <td>[${invoice.sendResult eq null ? '-' : invoice.sendResult}] ${invoice.sendResultMsg eq null ? '-' : invoice.sendResultMsg}</td>
-                                                                <td>${invoice.sendDttm eq null ? '-' : invoice.sendDttm}</td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-sm btn-light-info view-history-btn"
+                                                                            data-invoice-seq="${invoice.invoiceSeq}"
+                                                                            data-invoice-type="booth"
+                                                                            data-invoice-code="${invoice.invoiceCode}">이력보기
+                                                                    </button>
+                                                                </td>
                                                             </tr>
                                                         </c:forEach>
 
@@ -2887,10 +2947,13 @@ if (document.documentElement) {
                                                                 <td class="td_invoiceCode">${invoice.invoiceCode}</td>
                                                                 <td>${invoice.title}</td>
                                                                 <td>유틸리티</td>
-                                                                <td>${invoice.recipientEmail}</td>
-                                                                <td>${invoice.sendStatus}</td>
-                                                                <td>[${invoice.sendResult eq null ? '-' : invoice.sendResult}] ${invoice.sendResultMsg eq null ? '-' : invoice.sendResultMsg}</td>
-                                                                <td>${invoice.sendDttm eq null ? '-' : invoice.sendDttm}</td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-sm btn-light-info view-history-btn"
+                                                                            data-invoice-seq="${invoice.invoiceSeq}"
+                                                                            data-invoice-type="utility"
+                                                                            data-invoice-code="${invoice.invoiceCode}">이력보기
+                                                                    </button>
+                                                                </td>
                                                             </tr>
                                                         </c:forEach>
                                                     </tbody>
@@ -3080,6 +3143,39 @@ if (document.documentElement) {
                 <div class="modal-footer flex-center">
                     <button type="button" class="btn btn-light me-3" data-bs-dismiss="modal">취소</button>
                     <button type="button" id="sendInvoiceConfirmBtn" class="btn btn-primary">발송</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="kt_modal_send_history" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="fw-bold">인보이스 발송 이력</h2>
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                </div>
+                <div class="modal-body py-10 px-lg-17">
+                    <div class="table-responsive">
+                        <table class="table table-row-dashed">
+                            <thead>
+                            <tr class="fw-bold fs-6 text-gray-800 border-bottom border-gray-200">
+                                <th>수신메일</th>
+                                <th>수신상태</th>
+                                <th>발송결과</th>
+                                <th>발송일시</th>
+                            </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <%-- JavaScript가 이 영역을 동적으로 채웁니다. --%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer flex-center">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">닫기</button>
                 </div>
             </div>
         </div>

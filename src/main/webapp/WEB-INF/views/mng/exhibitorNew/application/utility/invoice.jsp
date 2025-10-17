@@ -147,7 +147,7 @@
                     <thead>
                         <tr>
                             <th>번호</th>
-                            <th>상세</th>
+                            <th>구분</th>
                             <th>수량</th>
                             <th>단가</th>
                             <th>소계</th>

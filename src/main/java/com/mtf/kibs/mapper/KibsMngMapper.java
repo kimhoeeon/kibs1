@@ -1,6 +1,7 @@
 package com.mtf.kibs.mapper;
 
 import com.mtf.kibs.dto.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -615,4 +616,12 @@ public interface KibsMngMapper {
     Integer deleteExhibitorNewInvoiceBooth(InvoiceBoothDTO invoiceBoothDTO);
 
     Integer deleteExhibitorNewInvoiceUtility(InvoiceUtilityDTO invoiceUtilityDTO);
+
+    Integer insertInvoiceSendHistory(InvoiceSendHistoryDTO historyDto);
+
+    List<InvoiceSendHistoryDTO> selectInvoiceSendHistory(@Param("invoiceSeq") int invoiceSeq, @Param("invoiceType") String invoiceType);
+
+    Integer updateInvoiceSendHistoryResult(InvoiceSendHistoryDTO historyDto);
+
+    void updateInvoiceHistoryStatusToOpen(int historySeq);
 }
