@@ -60,7 +60,7 @@
 <body>
 
 <c:choose>
-    <c:when test="${mode eq 'end'}">
+    <c:when test="${mode ne 'open'}">
         <script>
             alert('2026 경기국제보트쇼 참관객 사전등록 신청 준비중입니다.');
             history.back();

@@ -233,6 +233,94 @@
     <!-- section -->
 
     <!-- section -->
+    <div class="exh_g exh_g2 padding_b">
+        <div class="inner">
+            <div class="sub_cont_tit">
+                <div class="big">참가비 할인</div>
+            </div>
+            <div class="exh_g_table">
+                <div class="table_box">
+                    <table>
+                        <colgroup>
+                            <col width="20%">
+                            <col width="40%">
+                            <col width="">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>내용</th>
+                            <th colspan="2">할인금액(부스당)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td rowspan="2">조기신청 할인</td>
+                            <td>(1차) 조기신청 할인(~2025. 11. 14_금)</td>
+                            <td>300,000원</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>(2차) 조기신청 할인(~2025. 12. 12_금)</td>
+                            <td>200,000원</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="6">규모 할인</td>
+                            <td>10부스 이상 참가업체</td>
+                            <td>400,000원</td>
+                            <td rowspan="6">※ 최초 참가업체<br>부스당 30만원 추가 할인</td>
+                        </tr>
+                        <tr>
+                            <td>20부스 이상 참가업체</td>
+                            <td style="border: 1px solid #ddd;">650,000원</td>
+                        </tr>
+                        <tr>
+                            <td>30부스 이상 참가업체</td>
+                            <td style="border: 1px solid #ddd;">750,000원</td>
+                        </tr>
+                        <tr>
+                            <td>40부스 이상 참가업체</td>
+                            <td style="border: 1px solid #ddd;">800,000원</td>
+                        </tr>
+                        <tr>
+                            <td>50부스 이상 참가업체</td>
+                            <td style="border: 1px solid #ddd;">850,000원</td>
+                        </tr>
+                        <tr>
+                            <td>100부스 이상 참가업체</td>
+                            <td style="border: 1px solid #ddd;">900,000원</td>
+                        </tr>
+                        <tr>
+                            <td>재참가 할인</td>
+                            <td>2015년 ~ 2025년 참가업체</td>
+                            <td>200,000원</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>첫참가 할인</td>
+                            <td>최초 참가업체(10부스 미만 참가)</td>
+                            <td>500,000원</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>협회 할인</td>
+                            <td>한국해양레저산업협회 회원사</td>
+                            <td>200,000원</td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table_cmnt">
+                    <p>중복할인 가능</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- section -->
+
+    <!-- section -->
     <div class="exh_g exh_g3 padding_b">
         <div class="inner">
             <div class="sub_cont_tit">

@@ -630,4 +630,6 @@ public interface KibsMngMapper {
     Integer sumDepositAmountByExhibitor(String exhibitorSeq);
 
     void updateExhibitorPaymentStatus(@Param("exhibitorSeq") String exhibitorSeq, @Param("deposit") int deposit, @Param("balance") int balance);
+
+    Integer deletePartnerSeq(PartnerDTO partnerDTO);
 }

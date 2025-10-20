@@ -3164,6 +3164,12 @@
         WHERE visitor_seq = #{visitorSeq}
     </delete>
 
+    <delete id="deletePartnerSeq" parameterType="com.mtf.kibs.dto.PartnerDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deletePartnerSeq */
+        DELETE FROM partner
+        WHERE seq = #{seq}
+    </delete>
+
     <select id="selectPartnerList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.PartnerDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectPartnerList */
         SELECT seq

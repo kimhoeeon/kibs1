@@ -19,27 +19,32 @@ $(function(){
     });
 
     ///////////////// 동반자 추가 /////////////////
-    let partnerInfoCount = 1;
+    let partnerInfoCount = $('.partner_info_box:last .partnerInfoNum').text();
 
     // .partner_info_box를 추가하는 이벤트 핸들러 추가
     $('#kt_partner_info_add').on('click', function () {
-        let newPartnerInfoBox = $('.partner_info_box:first').clone();
-        partnerInfoCount++;
-        newPartnerInfoBox.find('.partnerInfoNum').text(partnerInfoCount);
-        newPartnerInfoBox.find('input[type="text"]').val('');
+        if(partnerInfoCount < 3){
+            let newPartnerInfoBox = $('.partner_info_box:first').clone();
+            partnerInfoCount++;
+            newPartnerInfoBox.find('.partnerInfoNum').text(partnerInfoCount);
+            newPartnerInfoBox.find('input[type="text"]').val('');
+            newPartnerInfoBox.find('input[type="hidden"]').val('');
 
-        // 복제된 .display_info_box 내의 삭제 버튼 보이기
-        newPartnerInfoBox.find('.partnerInfoDel').show();
+            // 복제된 .display_info_box 내의 삭제 버튼 보이기
+            newPartnerInfoBox.find('.partnerInfoDel').show();
 
-        newPartnerInfoBox.find('.partnerInfoDel').on('click', function () {
-            deletePartnerInfoBox();
-        });
-        $('.partner_info_box:last').after(newPartnerInfoBox);
-        updatePartnerInfoNum();
+            newPartnerInfoBox.find('.partnerInfoDel').on('click', function () {
+                deletePartnerInfoBox(this);
+            });
+            $('.partner_info_box:last').after(newPartnerInfoBox);
+            updatePartnerInfoNum();
+        }else{
+            alert('동반자는 최대 3명까지 등록 가능합니다.\nUp to 3 people can register');
+        }
     });
 
     // .partner_info_box를 삭제하는 이벤트 핸들러
-    function deletePartnerInfoBox() {
+    function deletePartnerInfoBox(el) {
         Swal.fire({
             icon: 'warning',
             title: '[ 동반자 정보 ]',
@@ -52,7 +57,7 @@ $(function(){
             cancelButtonText: '취소'
         }).then((result) => {
             if (result.isConfirmed) {
-                let seq = $(this).siblings('input').val();
+                let seq = $(el).siblings('input[type=hidden]').val();
                 if(nvl(seq,"") !== ""){
                     let jsonObj = {
                         seq: seq
@@ -63,7 +68,7 @@ $(function(){
                     }
                 }
 
-                $(this).closest('.partner_info_box').remove();
+                $(el).closest('.partner_info_box').remove();
                 partnerInfoCount--;
                 updatePartnerInfoNum();
             }//isConfirmed
@@ -82,7 +87,7 @@ $(function(){
 
     // 첫 번째 .partner_info_box의 삭제 버튼에 대한 초기 이벤트 핸들러 추가
     $('.partnerInfoDel').on('click', function () {
-        deletePartnerInfoBox();
+        deletePartnerInfoBox(this);
     });
 
     // 동반자 여부 라디오 버튼 변경 시
@@ -215,7 +220,7 @@ function f_search_condition_sel_change(){
 
 function f_participant_visitor_remove(rowId){
     //console.log('삭제버튼');
-    if(nullToEmpty(rowId) !== ""){
+    if(nvl(rowId,'') !== ""){
         let jsonObj = {
             seq: rowId
         }

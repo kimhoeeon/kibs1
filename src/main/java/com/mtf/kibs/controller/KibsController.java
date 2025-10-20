@@ -787,14 +787,23 @@ public class KibsController {
     public ModelAndView visitor_apply(String mode) {
         System.out.println("KibsController > visitor_apply");
         ModelAndView mv = new ModelAndView();
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-        String today = dateFormat.format(new Date());
-        if(Long.parseLong(today) > Long.parseLong("202502260000")){
-            mv.addObject("mode", "end");
-        }
-
-        if(mode != null && !"".equals(mode)){
+        if(mode != null && !mode.isEmpty()){
             mv.addObject("mode", mode);
+        }else {
+            DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+            String today = dateFormat.format(new Date());
+            if (Long.parseLong(today) > Long.parseLong("202610200859")) {
+                if (Long.parseLong(today) > Long.parseLong("202611200859")) {
+                    System.out.println("close");
+                    mv.addObject("mode", "close");
+                }else{
+                    System.out.println("open");
+                    mv.addObject("mode", "open");
+                }
+            }else{
+                System.out.println("soon");
+                mv.addObject("mode", "soon");
+            }
         }
         mv.setViewName("/visitor/apply");
         return mv;

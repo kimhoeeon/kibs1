@@ -2682,7 +2682,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                 List<PartnerDTO> partnerList = visitorDTO.getPartner();
                 if(!partnerList.isEmpty()){
                     for(PartnerDTO partnerDTO : partnerList){
-                        if(partnerDTO.getSeq() != null && !"".equals(partnerDTO.getSeq())){
+                        if(partnerDTO.getSeq() != null && !partnerDTO.getSeq().isEmpty()){
                             Integer updPartnerResult = kibsMngMapper.updatePartner(partnerDTO);
                         }else{
                             String partSeq = kibsMngMapper.getPartnerSeq();
@@ -2758,7 +2758,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         Integer result = 0;
         try {
             if(partnerDTO.getSeq() != null){
-                result = kibsMngMapper.deletePartner(partnerDTO);
+                result = kibsMngMapper.deletePartnerSeq(partnerDTO);
                 if(result == 0){
                     resultCode = CommConstants.RESULT_CODE_FAIL;
                     resultMessage = "[Data Delete Fail] Seq : " + partnerDTO.getSeq();

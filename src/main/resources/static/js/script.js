@@ -275,52 +275,61 @@ $(document).ready(function () {
     // 파일 입력 변경에 대한 이벤트 핸들러 추가
     $('.upload_hidden').on('change', function () {
 
-        let fileName = $(this).val();
-        if(nvl(fileName,'') !== ''){
-            let fileExt = fileName.split('.').pop().toLowerCase(); //확장자분리
-            let fileInputName = fileName.split('\\').pop().toLowerCase();
-            fileInputName = fileInputName.slice(0,fileInputName.lastIndexOf(".")).toLowerCase();
+        const _self = $(this); // $(this)를 변수에 저장하여 반복 사용 방지
+        const fileInput = this;
+        const fileNameInput = _self.siblings('.upload_name');
 
-            //특수문자가 속해있는지 확인하는 정규식
-            let pattern= /[^ㄱ-힣a-zA-Z0-9-_()\s]/;
-            if(pattern.test(fileInputName)){
-                alert('파일명에 허용되지 않는 특수문자가 포함되어 있습니다.\n허용된 특수문자는 - _ ( ) 입니다.');
-                $(this).val(''); //업로드한 파일 제거
-                let fileNameInput = $(this).siblings('.upload_name');
-                fileNameInput.val('File');
-                return;
-            }
-
-            let acceptArr = $(this).attr('accept').toString().replaceAll('.','').split(', ');
-            if(!acceptArr.includes(fileExt)){
-                let alertMsg = '파일 첨부는 ' + $(this).attr('accept').toString() + ' 파일만 가능합니다.';
-                alert(alertMsg);
-                $(this).val(''); //업로드한 파일 제거
-                let fileNameInput = $(this).siblings('.upload_name');
-                fileNameInput.val('File');
-                return;
-            }
-
-            if (this.files && this.files[0]) {
-                let maxSize = 10 * 1024 * 1024; //* 10MB 사이즈 제한
-                let file = this.files[0];
-                if (file.size > maxSize) {
-                    alert("파일 첨부는 10MB 이내 파일만 가능합니다.");
-                    $(this).val(''); //업로드한 파일 제거
-                    let fileNameInput = $(this).siblings('.upload_name');
-                    fileNameInput.val('File');
-                } else {
-                    let fileName = $(this).val().split('\\').pop();
-                    let fileNameInput = $(this).siblings('.upload_name');
-                    fileNameInput.val(fileName);
-                }
-            }
-
-        }else{
-            $(this).val(''); //업로드한 파일 제거
-            let fileNameInput = $(this).siblings('.upload_name');
-            fileNameInput.val('File');
+        // 파일 선택을 취소했을 경우
+        if (!fileInput.files || fileInput.files.length === 0) {
+            _self.val('');
+            fileNameInput.val('');
+            return;
         }
+
+        const file = fileInput.files[0];
+        const fullPath = _self.val();
+
+        // 1. 크로스 플랫폼(PC/모바일)을 위한 순수 파일명 추출
+        const lastSlash = Math.max(fullPath.lastIndexOf('\\'), fullPath.lastIndexOf('/'));
+        const pureFileName = fullPath.substring(lastSlash + 1);
+
+        // 2. 확장자 검사
+        const acceptAttr = _self.attr('accept');
+        if (acceptAttr) {
+            const extension = pureFileName.slice(pureFileName.lastIndexOf(".") + 1).toLowerCase();
+            const allowedExtensions = acceptAttr.toString().replaceAll('.', '').split(', ');
+            if (!allowedExtensions.includes(extension)) {
+                alert(`파일 첨부는 ${acceptAttr} 파일만 가능합니다.`);
+                _self.val('');
+                fileNameInput.val('');
+                return;
+            }
+        }
+
+        // 3. 파일명 특수문자 검사 (macOS/iOS 한글 자소 분리 문제 해결 포함)
+        // normalize('NFC')를 통해 'ㅊㅓㅇ' 같은 자소 분리 문자를 '청'으로 합쳐줍니다.
+        const fileNameWithoutExt = pureFileName.substring(0, pureFileName.lastIndexOf('.')).normalize('NFC');
+        const pattern = /[^ㄱ-힣a-zA-Z0-9-_.()\s]/; // 허용: 한글,영문,숫자,-,_,.,(),공백
+
+        if (pattern.test(fileNameWithoutExt)) {
+            alert('파일명에 허용되지 않는 특수문자가 포함되어 있습니다.\n(허용 문자: 한글,영문,숫자,-,_,.,(),공백)');
+            _self.val('');
+            fileNameInput.val('');
+            return;
+        }
+
+        // 4. 파일 크기 검사
+        const maxSize = 10 * 1024 * 1024; // 10MB
+        if (file.size > maxSize) {
+            alert("파일 첨부는 10MB 이내 파일만 가능합니다.");
+            _self.val('');
+            fileNameInput.val('');
+            return;
+        }
+
+        // ✅ 모든 유효성 검사 통과: 화면에 파일명 표시
+        fileNameInput.val(pureFileName);
+
     });
 
     // 숫자만 입력

@@ -811,7 +811,7 @@ public class KibsMngController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "'/mng/exhibitor/participant/visitor/deletePartner.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/mng/exhibitor/participant/visitor/deletePartner.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_visitor_deletePartner(@RequestBody PartnerDTO partnerDTO) {
         System.out.println("KibsMngController > mng_exhibitor_visitor_deletePartner");
