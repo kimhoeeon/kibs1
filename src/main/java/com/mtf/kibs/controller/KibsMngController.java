@@ -4382,7 +4382,7 @@ public class KibsMngController {
             row = sheet2.createRow(rowCnt2++);
             row.createCell(0).setCellValue("구분"); row.createCell(1).setCellValue("기술지원 항목"); row.createCell(2).setCellValue("가격(원)"); row.createCell(3).setCellValue("비고");
             for(int i=0; i<4; i++) row.getCell(i).setCellStyle(mainHeaderStyle);
-            String[][] utilityData = { {"파이텍스", "신품", "80,000", ""}, {"파이텍스", "재사용품", "50,000", ""}, {"전기", "주간 단상 220v", "70,000", "원/kw"}, {"전기", "24시간용 220v", "80,000", "원/kw"}, {"인터넷", "인터넷", "160,000", "원/1회선"}, {"급배수 및 압축공기", "급배수", "180,000", "원/1구"}, {"급배수 및 압축공기", "압축공기", "180,000", "원/1구"}, {"바코드 리더기", "바코드 리더기", "200,000", "원/1개"} };
+            String[][] utilityData = { {"파이텍스", "신품", "80,000", ""}, {"파이텍스", "재사용품", "50,000", ""}, {"전기", "주간 단상 220v", "80,000", "원/kw"}, {"전기", "24시간용 220v", "100,000", "원/kw"}, {"인터넷", "인터넷", "160,000", "원/1회선"}, {"급배수 및 압축공기", "급배수", "180,000", "원/1구"}, {"급배수 및 압축공기", "압축공기", "180,000", "원/1구"}, {"바코드 리더기", "바코드 리더기", "200,000", "원/1개"} };
             int utilityStartRow = rowCnt2;
             for(String[] u : utilityData){
                 row = sheet2.createRow(rowCnt2++);

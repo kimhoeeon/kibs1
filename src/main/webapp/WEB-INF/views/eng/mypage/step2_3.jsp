@@ -128,7 +128,7 @@
                                     </li>
                                     <li>
                                         <div class="cate">220v For Day Use</div>
-                                        <div class="cost">￦ 80,000/1kw</div>
+                                        <div class="cost">￦ 100,000/1kw</div>
                                         <div class="quantity">
                                             <p class="j_num">
                                                 <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_jugan_cnt">

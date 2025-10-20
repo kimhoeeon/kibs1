@@ -2383,7 +2383,7 @@ if (document.documentElement) {
                                                                 </td>
                                                                 <td>
                                                                     <div class="cost booth_cost">
-                                                                        <span class="fw-semibold d-block fs-7">￦ 80,000/1kw</span>
+                                                                        <span class="fw-semibold d-block fs-7">￦ 100,000/1kw</span>
                                                                     </div>
                                                                 </td>
                                                                 <td>
