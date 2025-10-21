@@ -1577,7 +1577,6 @@ function f_prc_yn_btn(){
 
 function f_exhibitor_select_login(seq){
     $('#exhibitorDetailForm').removeAttr('src');
-
     const url = '/mypage/step01.do';
     const params = {
         seq: seq

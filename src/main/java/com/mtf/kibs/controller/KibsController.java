@@ -46,6 +46,8 @@ public class KibsController {
 
     private final CommService commService;
 
+    private final String transferYear = "2026";
+
     public KibsController(KibsService ks, CommService cs){
         this.kibsService = ks;
         this.commService = cs;
@@ -330,10 +332,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             if(id != null && !id.equals("null") && !id.isEmpty()) {
                 ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
                 reqDTO.setId(id);
@@ -401,10 +403,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
@@ -439,10 +441,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
@@ -470,10 +472,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
@@ -500,10 +502,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
@@ -535,7 +537,6 @@ public class KibsController {
             passList = kibsService.processSelectPassNewList(passNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
 
             ExhibitorNewDTO exDTO = new ExhibitorNewDTO();
             exDTO.setId(id);
@@ -550,7 +551,7 @@ public class KibsController {
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exhibitorNewDTO);
             mv.addObject("passList", passList);
-
+            exhibitorNewDTO.setTransferYear(transferYear);
             ExhibitorNewDTO exhibitorInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
             mv.addObject("exhibitorInfo", exhibitorInfo);
         }
@@ -573,7 +574,6 @@ public class KibsController {
             giftList = kibsService.processSelectGiftNewList(giftNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
 
             ExhibitorNewDTO exDTO = new ExhibitorNewDTO();
             exDTO.setId(id);
@@ -618,11 +618,11 @@ public class KibsController {
         /* 기본정보 - 참가업체 정보 */
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
-        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.equals("")){
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             if(id != null && !id.equals("null") && !id.isEmpty()) {
                 ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
                 reqDTO.setId(id);
@@ -696,10 +696,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
@@ -794,14 +794,11 @@ public class KibsController {
             String today = dateFormat.format(new Date());
             if (Long.parseLong(today) > Long.parseLong("202610200859")) {
                 if (Long.parseLong(today) > Long.parseLong("202611200859")) {
-                    System.out.println("close");
                     mv.addObject("mode", "close");
                 }else{
-                    System.out.println("open");
                     mv.addObject("mode", "open");
                 }
             }else{
-                System.out.println("soon");
                 mv.addObject("mode", "soon");
             }
         }
@@ -1675,10 +1672,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
@@ -1716,10 +1713,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
@@ -1871,10 +1868,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
@@ -1909,10 +1906,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
@@ -1950,10 +1947,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
@@ -1991,10 +1988,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
@@ -2037,7 +2034,6 @@ public class KibsController {
             passList = kibsService.processSelectPassNewList(passNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
 
             ExhibitorNewDTO exDTO = new ExhibitorNewDTO();
             exDTO.setId(id);
@@ -2052,7 +2048,7 @@ public class KibsController {
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exhibitorNewDTO);
             mv.addObject("passList", passList);
-
+            exhibitorNewDTO.setTransferYear(transferYear);
             ExhibitorNewDTO exhibitorInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
             mv.addObject("exhibitorInfo", exhibitorInfo);
         }else{
@@ -2142,10 +2138,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             if(id != null && !id.equals("null") && !id.isEmpty()) {
                 ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
                 reqDTO.setId(id);
@@ -2224,10 +2220,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
@@ -2256,10 +2252,10 @@ public class KibsController {
         ExhibitorNewDTO exInfo = null;
         String exhibitor_new_seq = exhibitorNewDTO.getSeq();
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(transferYear);
             exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
         }else{
             String id = String.valueOf(session.getAttribute("id"));
-            String transferYear = String.valueOf(session.getAttribute("transferYear"));
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);

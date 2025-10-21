@@ -79,7 +79,6 @@ public interface KibsService {
 
     ExhibitorDTO processSelectPreExhibitorSingle(ExhibitorDTO exhibitorDTO);
 
-
     ResponseDTO processUpdateExhibitBooth(ExhibitorDTO exhibitorDTO);
 
     ResponseDTO processUpdateCompanySign(ExhibitorDTO exhibitorDTO);
