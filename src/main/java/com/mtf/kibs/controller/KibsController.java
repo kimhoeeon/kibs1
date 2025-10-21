@@ -1709,69 +1709,67 @@ public class KibsController {
         System.out.println("KibsController > mypage_step01");
         ModelAndView mv = new ModelAndView();
 
-        /* 기본정보 - 참가업체 정보 */
-        ExhibitorNewDTO exInfo = null;
-        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
-        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
-            exhibitorNewDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
+        // 세션 ID로만 사용자 정보를 가져옵니다.
+        String id = (String) session.getAttribute("id");
+        if (id == null) {
+            mv.setViewName("redirect:/main.do");
+            return mv;
         }else{
-            String id = String.valueOf(session.getAttribute("id"));
+            /* 기본정보 - 참가업체 정보 */
             ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
             reqDTO.setId(id);
             reqDTO.setTransferYear(transferYear);
-            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
+            ExhibitorNewDTO exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
             if(exInfo != null){
-                exhibitor_new_seq = exInfo.getSeq();
-            }
-        }
+                String exhibitor_new_seq = exInfo.getSeq();
 
-        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
-            mv.addObject("info", exInfo);
+                mv.addObject("info", exInfo);
 
-            /* 부담당자 정보*/
-            ChargeNewDTO chargeNewReq = new ChargeNewDTO();
-            chargeNewReq.setExSeq(exhibitor_new_seq);
-            List<ChargeNewDTO> chargeList = kibsService.processSelectChargeNewList(chargeNewReq);
-            mv.addObject("chargeList", chargeList);
+                /* 부담당자 정보*/
+                ChargeNewDTO chargeNewReq = new ChargeNewDTO();
+                chargeNewReq.setExSeq(exhibitor_new_seq);
+                List<ChargeNewDTO> chargeList = kibsService.processSelectChargeNewList(chargeNewReq);
+                mv.addObject("chargeList", chargeList);
 
-            /* 온라인정보 */
-            OnlineNewDTO onlineNewReq = new OnlineNewDTO();
-            onlineNewReq.setExSeq(exhibitor_new_seq);
-            List<OnlineNewDTO> onlineList = kibsService.processSelectOnlineNewList(onlineNewReq);
-            mv.addObject("onlineList", onlineList);
+                /* 온라인정보 */
+                OnlineNewDTO onlineNewReq = new OnlineNewDTO();
+                onlineNewReq.setExSeq(exhibitor_new_seq);
+                List<OnlineNewDTO> onlineList = kibsService.processSelectOnlineNewList(onlineNewReq);
+                mv.addObject("onlineList", onlineList);
 
-            /* 바이어정보 */
-            BuyerNewDTO buyerNewReq = new BuyerNewDTO();
-            buyerNewReq.setExSeq(exhibitor_new_seq);
-            List<BuyerNewDTO> buyerList = kibsService.processSelectBuyerNewList(buyerNewReq);
-            mv.addObject("buyerList", buyerList);
+                /* 바이어정보 */
+                BuyerNewDTO buyerNewReq = new BuyerNewDTO();
+                buyerNewReq.setExSeq(exhibitor_new_seq);
+                List<BuyerNewDTO> buyerList = kibsService.processSelectBuyerNewList(buyerNewReq);
+                mv.addObject("buyerList", buyerList);
 
-            /* 파일정보 */
-            List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_new_seq);
-            List<FileDTO> onlineImageFileList = new ArrayList<>();
-            for (FileDTO fileInfo : fileList) {
-                String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
-                switch (fileNote) {
-                    case "companyLicense":
-                        mv.addObject("companyLicenseFile", fileInfo);
-                        break;
-                    case "logo":
-                        mv.addObject("logoFile", fileInfo);
-                        break;
-                    case "onlineImage":
-                        onlineImageFileList.add(fileInfo);
-                        break;
-                    default:
-                        break;
+                /* 파일정보 */
+                List<FileDTO> fileList = kibsService.processSelectFileList(exhibitor_new_seq);
+                List<FileDTO> onlineImageFileList = new ArrayList<>();
+                for (FileDTO fileInfo : fileList) {
+                    String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
+                    switch (fileNote) {
+                        case "companyLicense":
+                            mv.addObject("companyLicenseFile", fileInfo);
+                            break;
+                        case "logo":
+                            mv.addObject("logoFile", fileInfo);
+                            break;
+                        case "onlineImage":
+                            onlineImageFileList.add(fileInfo);
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                mv.addObject("onlineImageFileList", onlineImageFileList);
+            }else{
+                session.invalidate(); //세션 초기화
             }
-            mv.addObject("onlineImageFileList", onlineImageFileList);
-        }else{
-            session.invalidate(); //세션 초기화
+
+            mv.setViewName("/mypage/step01");
         }
 
-        mv.setViewName("/mypage/step01");
         return mv;
     }
 

@@ -1969,6 +1969,13 @@
         WHERE seq = #{value}
     </select>
 
+    <select id="getExhibitorInfoForLogin" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.getExhibitorInfoForLogin */
+        SELECT *
+        FROM exhibitor_new
+        WHERE seq = #{value}
+    </select>
+
     <update id="updateExhibitorNewSpecialDiscount" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorNewSpecialDiscount */
         UPDATE exhibitor_new

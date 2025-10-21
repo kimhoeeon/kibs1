@@ -140,6 +140,37 @@ $(function(){
         }
     });
 
+    $('#modal_exhibitor_new_mypage_info').on('hidden.bs.modal', function () {
+        // 팝업이 닫힐 때, 업체로 로그인 중인 상태였는지 확인
+        if (isAdminImpersonating) {
+            // 상태 변수를 즉시 초기화
+            isAdminImpersonating = false;
+
+            // 서버에 관리자 세션 복구 API 호출
+            $.ajax({
+                url: '/mng/exhibitor/logoutAs',
+                type: 'POST',
+                async: false, // 페이지가 이동하기 전에 요청이 완료되도록 동기식으로 설정
+                success: function(response) {
+                    if (response.resultCode === '0') {
+                        // 세션 복구 성공 시, 페이지를 새로고침하여 관리자 상태를 완전히 복원
+                        location.reload();
+                    } else {
+                        alert('관리자 세션 복구에 실패했습니다. 페이지를 새로고침합니다.');
+                        location.reload();
+                    }
+                },
+                error: function() {
+                    alert('세션 복구 중 서버 오류가 발생했습니다. 페이지를 새로고침합니다.');
+                    location.reload();
+                }
+            });
+        }
+
+        // 팝업이 닫힐 때마다 iframe 내용 초기화
+        $('#exhibitorDetailForm').attr('src', 'about:blank');
+    });
+
 });
 
 function check_count(obj){
@@ -1575,15 +1606,6 @@ function f_prc_yn_btn(){
 
 }
 
-function f_exhibitor_select_login(seq){
-    $('#exhibitorDetailForm').removeAttr('src');
-    const url = '/mypage/step01.do';
-    const params = {
-        seq: seq
-    };
-    loadPostInIframe('exhibitorDetailForm', url, params);
-}
-
 function f_exhibitor_invoice_detail(seq){
     let hiddenField_seq = document.createElement('input');
     hiddenField_seq.type = 'hidden';
@@ -1600,32 +1622,35 @@ function f_exhibitor_invoice_detail(seq){
     sendForm.submit();
 }
 
+// 현재 관리자가 업체로 로그인 중인지 상태를 기억하는 변수
+let isAdminImpersonating = false;
 
-function loadPostInIframe(iframeName, url, params) {
-    // 1. 동적으로 form 요소 생성
-    const $form = $('<form>').attr({
-        action: url,
-        method: 'post',
-        target: iframeName
-    }).css('display', 'none');
+function f_exhibitor_select_login(seq, companyNameKo){
+    // 1. '업체로 로그인' API 호출
+    $.ajax({
+        url: '/mng/exhibitor/loginAs',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ seq: seq }),
+        success: function(response) {
+            if (response.resultCode === '0') {
+                // 1. 업체로 로그인에 성공하면, 상태 변수를 true로 설정
+                isAdminImpersonating = true;
 
-    // 2. 파라미터 수만큼 hidden input 생성하여 form에 추가
-    for (const key in params) {
-        if (params.hasOwnProperty(key)) {
-            $('<input>').attr({
-                type: 'hidden',
-                name: key,
-                value: params[key]
-            }).appendTo($form);
+                // 2. 로그인 성공 시, iframe에 마이페이지를 로드
+                $('#exhibitorDetailForm').attr('src', '/mypage/step01.do');
+
+                // 3. 팝업(Modal) 열기
+                const mypageModal = new bootstrap.Modal(document.getElementById('modal_exhibitor_new_mypage_info'));
+                mypageModal.show();
+            } else {
+                alert('업체로 로그인하는 데 실패했습니다: ' + response.resultMsg);
+            }
+        },
+        error: function() {
+            alert('서버 통신 중 오류가 발생했습니다.');
         }
-    }
-
-    // 3. 생성된 form을 body에 추가하고 즉시 submit
-    $('body').append($form);
-    $form.submit();
-
-    // 4. submit 후 form 제거
-    $form.remove();
+    });
 }
 
 /*

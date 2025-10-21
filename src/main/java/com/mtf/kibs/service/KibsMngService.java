@@ -1,7 +1,6 @@
 package com.mtf.kibs.service;
 
 import com.mtf.kibs.dto.*;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -474,4 +473,6 @@ public interface KibsMngService {
     List<ProductDetailDTO> processSelectExcelProductDetailList(String transferYear);
 
     List<InvoiceSendHistoryDTO> getInvoiceSendHistory(int invoiceSeq, String invoiceType);
+
+    ExhibitorNewDTO getExhibitorInfoForLogin(String exhibitorSeq);
 }

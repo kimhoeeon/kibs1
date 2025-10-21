@@ -174,6 +174,7 @@ let KTAppExhibitorMng = function () {
     function renderActionsCell(data, type, row){
         //console.log(row.seq);
         let rowSeq = row.seq;
+        let companyNameKo = row.companyNameKo;
         let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
         renderHTML += 'Actions';
         renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
@@ -185,7 +186,7 @@ let KTAppExhibitorMng = function () {
         renderHTML += '<a onclick="f_exhibitor_detail_modal_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">수정이력</a>';
         renderHTML += '</div>';*/
         renderHTML += '<div class="menu-item px-3">';
-        renderHTML += '<a onclick="f_exhibitor_select_login(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_mypage_info">이 업체로 로그인</a>';
+        renderHTML += '<a onclick="f_exhibitor_select_login(' + '\'' + rowSeq + '\',\'' + companyNameKo + '\'' + ')" class="menu-link px-3">이 업체로 로그인</a>';
         renderHTML += '</div>';
         renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_exhibitor_invoice_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">인보이스 정보</a>';

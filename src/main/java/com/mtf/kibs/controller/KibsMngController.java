@@ -850,6 +850,66 @@ public class KibsMngController {
     // exhibitor/transfer Folder
     //***************************************************************************
 
+    @PostMapping("/mng/exhibitor/loginAs")
+    @ResponseBody
+    public Map<String, Object> loginAsExhibitor(@RequestBody Map<String, String> payload, HttpSession session) {
+        String exhibitorSeq = payload.get("seq");
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+            // 1. seq로 업체의 ID를 조회합니다.
+            ExhibitorNewDTO exhibitorInfo = kibsMngService.getExhibitorInfoForLogin(exhibitorSeq);
+
+            if (exhibitorInfo != null) {
+                // 2. 현재 관리자 세션 정보를 잠시 백업합니다.
+                session.setAttribute("admin_origin_id", session.getAttribute("id"));
+                session.setAttribute("admin_origin_status", session.getAttribute("status"));
+
+                // 3. 업체 정보로 세션을 '스위칭'합니다.
+                session.setAttribute("id", exhibitorInfo.getId());
+                session.setAttribute("status", "logon"); // 업체로 로그인한 상태임을 명시
+
+                resultMap.put("resultCode", "0");
+                resultMap.put("resultMsg", "업체로 로그인되었습니다.");
+            } else {
+                throw new Exception("업체 정보를 찾을 수 없습니다.");
+            }
+        } catch (Exception e) {
+            resultMap.put("resultCode", "-1");
+            resultMap.put("resultMsg", e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @PostMapping("/mng/exhibitor/logoutAs")
+    @ResponseBody
+    public Map<String, Object> logoutAsExhibitor(HttpSession session) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            // 1. 백업해 둔 관리자 ID가 세션에 있는지 확인합니다.
+            String adminOriginId = (String) session.getAttribute("admin_origin_id");
+
+            if (adminOriginId != null) {
+                // 2. 원래 관리자 ID와 상태로 세션을 복구합니다.
+                session.setAttribute("id", adminOriginId);
+                session.setAttribute("status", "logon");
+
+                // 3. 사용했던 백업 정보는 세션에서 삭제합니다.
+                session.removeAttribute("admin_origin_id");
+                session.removeAttribute("admin_origin_status");
+
+                resultMap.put("resultCode", "0");
+                resultMap.put("resultMsg", "관리자 세션으로 복구되었습니다.");
+            } else {
+                throw new Exception("복구할 관리자 세션 정보가 없습니다.");
+            }
+        } catch (Exception e) {
+            resultMap.put("resultCode", "-1");
+            resultMap.put("resultMsg", e.getMessage());
+        }
+        return resultMap;
+    }
+
     @RequestMapping(value = "/mng/exhibitor/transfer/company.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_transfer_company() {
         System.out.println("KibsMngController > mng_exhibitor_transfer_company");

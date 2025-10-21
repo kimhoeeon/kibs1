@@ -3506,6 +3506,13 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ExhibitorNewDTO getExhibitorInfoForLogin(String exhibitorSeq) {
+        System.out.println("KibsMngServiceImpl > getExhibitorInfoForLogin");
+        return kibsMngMapper.getExhibitorInfoForLogin(exhibitorSeq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public int processUpdateExhibitorNewSpecialDiscount(ExhibitorNewDTO specialDiscountData) {
         System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewSpecialDiscount");
         // 1. 먼저 DB에서 현재 업체의 전체 정보를 조회합니다.
