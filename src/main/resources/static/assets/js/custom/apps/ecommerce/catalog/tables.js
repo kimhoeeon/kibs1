@@ -1167,6 +1167,150 @@ let KTAppExhibitorApplicationBooth = function () {
     };
 }();
 
+let KTAppExhibitorNewApplicationMaritime = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 2,
+                    'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderMaritimeExhibitionYnCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderMaritimeExhibitionGbnCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' }, //순번
+                { data: 'seq'}, //seq
+                { data: 'companyNameKo' }, //회사명(국문)
+                { data: 'maritimeExhibitionYn' }, //해상전시회 참가여부
+                { data: 'maritimeExhibitionYn' }, //해상전시회 참가구분
+                { data: 'initRegiDttm' }, //등록일시
+                { data: 'finalRegiDttm' }, //수정일시
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderCompanyNameCell(data, type, row){
+        let companyNameKo = row.companyNameKo;
+        let companyNameEn = row.companyNameEn;
+        let renderHTML = '<span class="fw-bold">';
+        renderHTML += '<a href="/mng/exhibitorNew/application/maritime/detail.do?seq=' + row.seq + '"';
+        renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
+        renderHTML += companyNameKo + '<br>' + companyNameEn;
+        renderHTML += '</a>';
+        renderHTML += '</span>';
+        return renderHTML;
+    }
+
+    function renderMaritimeExhibitionYnCell(data, type, row){
+        let renderHTML = '';
+        let maritimeExhibitionYn = row.maritimeExhibitionYn;
+        if(maritimeExhibitionYn === 'Y'){
+            renderHTML = '참가';
+        }else{
+            renderHTML = '미참가';
+        }
+        return renderHTML;
+    }
+
+    function renderMaritimeExhibitionGbnCell(data, type, row){
+        let renderHTML = '';
+        let maritimeExhibitionYn = row.maritimeExhibitionYn;
+        let maritimeExhibitionSea = row.maritimeExhibitionSea;
+        let maritimeExhibitionLand = row.maritimeExhibitionLand;
+
+        if(maritimeExhibitionYn === 'N'){
+            renderHTML = '-';
+        }else{
+            if(!maritimeExhibitionSea && !maritimeExhibitionLand) {
+                renderHTML = '-';
+            }else{
+                if (maritimeExhibitionSea) {
+                    renderHTML = '해상 전시(시승체험)';
+                    if (maritimeExhibitionLand) {
+                        renderHTML += '<br>';
+                        renderHTML += '육상 전시';
+                    }
+                } else {
+                    renderHTML = '육상 전시';
+                }
+            }
+        }
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.seq);
+        let rowSeq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+            renderHTML += '<div class="menu-item px-3">';
+                renderHTML += '<a onclick="f_application_maritime_new_modify_init_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">상세/수정</a>';
+            renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#kt_exhibitor_application_maritime_new_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#kt_exhibitor_application_maritime_new_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_application_maritime_new_search();
+        }
+    };
+}();
+
 let KTAppExhibitorNewApplicationSign = function () {
     // Shared variables
     let table;
@@ -6033,6 +6177,7 @@ KTUtil.onDOMContentLoaded(function () {
 
     // 전시회>참가신청서 관리 (2026~)
     KTAppExhibitorNewApplicationBooth.init(); // /mng/exhibitorNew/application/booth.do
+    KTAppExhibitorNewApplicationMaritime.init(); // /mng/exhibitorNew/application/maritime.do
     KTAppExhibitorNewApplicationSign.init(); // /mng/exhibitorNew/application/sign.do
     KTAppExhibitorNewApplicationUtility.init(); // /mng/exhibitorNew/application/utility.do
     KTAppExhibitorNewApplicationPass.init(); // /mng/exhibitorNew/application/pass.do

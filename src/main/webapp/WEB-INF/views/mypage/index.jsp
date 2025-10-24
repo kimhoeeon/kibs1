@@ -98,13 +98,12 @@
                             <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                             <ul class="list2">
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
+                                <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>q
+                                <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 신청</a></li>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_5.do','${info.seq}')">경품제공 신청</a></li>
-                                <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_6.do','${info.seq}')">웹 배너 신청</a></li>--%>
-                                <%--<li><a href="/mypage/step2_7.do">온라인 전시관 신청</a></li>--%>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_8.do','${info.seq}')">디렉토리 정보</a></li>
                             </ul>
                         </li>
@@ -133,7 +132,16 @@
                                         <div class="icon"><img src="/img/icon_my01.png"></div>
                                         <div class="txt_box">
                                             <div class="gubun">부스 참가비</div>
-                                            <div class="txt"><fmt:formatNumber value="${info.boothPrcSum}" pattern="#,###"/> 원</div>
+                                            <div class="txt">
+                                                <c:choose>
+                                                    <c:when test="${info.memberCompanyYn eq 'Y'}">
+                                                        <fmt:formatNumber value="${info.boothPrcSum + (info.boothPrcSum * 0.1)}" pattern="#,###"/> 원
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <fmt:formatNumber value="${info.boothPrcSum}" pattern="#,###"/> 원
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
                                         </div>
                                     </div>
                                     <a class="btn" href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">┼</a>

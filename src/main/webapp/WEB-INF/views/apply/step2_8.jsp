@@ -110,21 +110,19 @@
         <div class="inner">
 
             <div class="apply_nav">
-                <!-- <div class="apply_nav_tit">기본정보</div> -->
                 <div class="apply_nav_list">
                     <ul class="list1">
                         <li><a>기본정보</a></li>
                         <li class="active">
                             <a>전시 신청 정보</a>
                             <ul class="list2">
-                                <li><a>전시품 정보</a></li>
                                 <li><a>전시부스 신청</a></li>
+                                <li><a>해상전시회 신청</a></li>
+                                <li><a>전시품 신청</a></li>
                                 <li><a>상호간판 신청</a></li>
                                 <li><a>유틸리티 신청</a></li>
                                 <li><a>출입증 신청</a></li>
                                 <li><a>경품제공 신청</a></li>
-                                <%--<li><a href="/apply/step2_6.do">웹 배너 신청</a></li>--%>
-                                <%--<li><a href="/apply/step2_7.do">온라인 전시관 신청</a></li>--%>
                                 <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_8.do','${info.seq}')">디렉토리 정보</a></li>
                             </ul>
                         </li>
@@ -150,9 +148,9 @@
                             <p>Step 2</p>전시 신청 정보
                         </div>
                         <div class="gauge">
-                            <progress class="gauge_bar" value="60" max="70"></progress>
+                            <progress class="gauge_bar" value="70" max="80"></progress>
                         </div>
-                        <div class="txt">진행중...<p>(총 <span>7</span>개 중 <span>6</span> 완료)</p></div>
+                        <div class="txt">진행중...<p>(총 <span>8</span>개 중 <span>7</span> 완료)</p></div>
                     </div>
                     <div class="apply_step_box step3">
                         <div class="gubun">
@@ -424,16 +422,16 @@
                     </div>
                     <!-- //담당자정보 -->
 
-                    <!-- 전시품 정보 -->
+                    <!-- 전시품 신청 -->
                     <%--<div class="form_wrap">
                         <div class="form_tit">
-                            <div class="big">전시품 정보</div>
+                            <div class="big">전시품 신청</div>
                         </div>
                         <c:if test="${not empty productList}">
                             <c:forEach var="product" items="${productList}" begin="0" end="${productList.size()}" step="1" varStatus="status">
                                 <ul class="form_box exhiInfoBox">
                                     <li class="form_in_tit">
-                                        전시품 정보 #<span class="exhiInfoNum">${status.index + 1}</span>
+                                        전시품 신청 #<span class="exhiInfoNum">${status.index + 1}</span>
                                     </li>
                                     <li>
                                         <div class="item">
@@ -519,7 +517,7 @@
                             </c:forEach>
                         </c:if>
                     </div>--%>
-                    <!-- //전시품 정보 -->
+                    <!-- //전시품 신청 -->
 
                     <!-- 상세정보 -->
                     <div class="form_wrap">

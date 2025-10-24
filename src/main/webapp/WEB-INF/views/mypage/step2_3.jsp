@@ -78,7 +78,6 @@
             </div>
             <!-- //section -->
 
-
             <!-- section -->
             <div class="apply_s padding_tb" id="apply_s">
                 <div class="inner">
@@ -98,13 +97,12 @@
                                     <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_5.do','${info.seq}')">경품제공 신청</a></li>
-                                        <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_6.do','${info.seq}')">웹 배너 신청</a></li>--%>
-                                            <%--<li><a href="/mypage/step2_7.do">온라인 전시관 신청</a></li>--%>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_8.do','${info.seq}')">디렉토리 정보</a></li>
                                     </ul>
                                 </li>
@@ -127,6 +125,10 @@
                                     <%--<li>2025 경기국제보트쇼 종료로 인해 <span class="emRed">전시 정보 수정이 불가</span>합니다</li>--%>
                                 </ul>
                             </div>
+
+                            <input type="hidden" id="boothPrcSum" value="${info.boothPrcSum}"/>
+                            <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}"/>
+                            <input type="hidden" id="discountPrcSum" value="${info.discountPrcSum}"/>
 
                             <!-- 유틸리티 신청정보 -->
                             <div class="form_wrap">

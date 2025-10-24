@@ -108,7 +108,6 @@
         <div class="inner">
 
             <div class="apply_nav">
-                <!-- <div class="apply_nav_tit">기본정보</div> -->
                 <div class="apply_nav_list">
                     <ul class="list1">
                         <li><a>기본정보</a></li>
@@ -116,13 +115,12 @@
                             <a>전시 신청 정보</a>
                             <ul class="list2">
                                 <li><a>전시부스 신청</a></li>
-                                <li><a>전시품 정보</a></li>
+                                <li><a>해상전시회 신청</a></li>
+                                <li><a>전시품 신청</a></li>
                                 <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                 <li><a>유틸리티 신청</a></li>
                                 <li><a>출입증 신청</a></li>
                                 <li><a>경품제공 신청</a></li>
-                                <%--<li><a href="/apply/step2_6.do">웹 배너 신청</a></li>--%>
-                                <%--<li><a href="/apply/step2_7.do">온라인 전시관 신청</a></li>--%>
                                 <li><a>디렉토리 정보</a></li>
                             </ul>
                         </li>
@@ -148,9 +146,9 @@
                             <p>Step 2</p>전시 신청 정보
                         </div>
                         <div class="gauge">
-                            <progress class="gauge_bar" value="20" max="70"></progress>
+                            <progress class="gauge_bar" value="30" max="80"></progress>
                         </div>
-                        <div class="txt">진행중...<p>(총 <span>7</span>개 중 <span>2</span> 완료)</p></div>
+                        <div class="txt">진행중...<p>(총 <span>8</span>개 중 <span>3</span> 완료)</p></div>
                     </div>
                     <div class="apply_step_box step3">
                         <div class="gubun">
@@ -200,7 +198,7 @@
                     <div class="form_btn">
                         <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')" class="form_btn_prev">
                             <div class="big">이전</div>
-                            <div class="small">전시품 정보</div>
+                            <div class="small">전시품 신청</div>
                         </a>
                         <a href="javascript:void(0);" onclick="f_apply_comp('2_2','${info.seq}')" class="form_btn_next">
                             <div class="big">다음 / 건너뛰기</div>

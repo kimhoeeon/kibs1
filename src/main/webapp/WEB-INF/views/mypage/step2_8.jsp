@@ -100,13 +100,12 @@
                                     <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_5.do','${info.seq}')">경품제공 신청</a></li>
-                                        <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_6.do','${info.seq}')">웹 배너 신청</a></li>--%>
-                                        <%--<li><a href="/mypage/step2_7.do">온라인 전시관 신청</a></li>--%>
                                         <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_8.do','${info.seq}')">디렉토리 정보</a></li>
                                     </ul>
                                 </li>
@@ -374,16 +373,16 @@
                             </div>
                             <!-- //담당자정보 -->
 
-                            <!-- 전시품 정보 -->
+                            <!-- 전시품 신청 -->
                             <%--<div class="form_wrap">
                                 <div class="form_tit">
-                                    <div class="big">전시품 정보</div>
+                                    <div class="big">전시품 신청</div>
                                 </div>
                                 <c:if test="${not empty productList}">
                                     <c:forEach var="product" items="${productList}" begin="0" end="${productList.size()}" step="1" varStatus="status">
                                         <ul class="form_box exhiInfoBox">
                                             <li class="form_in_tit">
-                                                전시품 정보 #<span class="exhiInfoNum">${status.index + 1}</span>
+                                                전시품 신청 #<span class="exhiInfoNum">${status.index + 1}</span>
                                             </li>
                                             <li>
                                                 <div class="item">
@@ -469,7 +468,7 @@
                                     </c:forEach>
                                 </c:if>
                             </div>--%>
-                            <!-- //전시품 정보 -->
+                            <!-- //전시품 신청 -->
 
                             <!-- 상세정보 -->
                             <div class="form_wrap">

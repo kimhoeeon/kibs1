@@ -93,22 +93,143 @@
         <!-- section -->
 
         <!-- section -->
-        <div class="maritime padding_tb summ_join">
+        <div class="maritime padding_tb summ_join expo">
             <div class="inner">
                 <div class="summ_box">
-                    <div class="summ_poster"><img src="/img/maritim_01.jpg" alt="해양전시회 이미지"></div>
+                    <div class="summ_poster"><img src="/img/maritim_logo.png" alt="해양전시회 로고"></div>
                     <div class="summ_info">
-                        <img src="/img/maritim_02.jpg" alt="해양전시회 이미지">
-                        <img src="/img/maritim_03.jpg" alt="해양전시회 이미지">
+                        <ul class="infoBox">
+                            <li>
+                                <div class="icon"><img src="/img/maritime_icon01.png"></div>
+                                <div class="txt">
+                                    <div class="gubun">행사명</div>
+                                    <div class="cont">2026 경기국제보트쇼 해상전시회 @시흥 거북섬마리나</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon"><img src="/img/maritime_icon02.png"></div>
+                                <div class="txt">
+                                    <div class="gubun">일자</div>
+                                    <div class="cont">2026년 5월</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon"><img src="/img/maritime_icon04.png"></div>
+                                <div class="txt">
+                                    <div class="gubun">행사장소</div>
+                                    <div class="cont"><img src="/img/summ_expo01.png"></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="hostLogo">
+                            <li>
+                                <div class="gubun">주최</div>
+                                <div class="cont"><img src="/img/summ_logo02.png"><img src="/img/summ_expo02.png"></div>
+                            </li>
+                            <li>
+                                <div class="gubun">주관</div>
+                                <div class="cont"><img src="/img/summ_logo03.png"><img src="/img/summ_logo06.png"><img src="/img/summ_expo03.png"></div>
+                            </li>
+                        </ul>
+                        <div class="eventField">
+                            <div class="subContTit">행사내용</div>
+                            <ul class="eventFieldBox">
+                                <li>
+                                    <p class="icon"><img src="/img/maritime_img01.png"></p>
+                                    <p class="txt">[육상전시]<br> 육상 주정장 내 보트 및 관련장비 전시</p>
+                                </li>
+                                <li>
+                                    <p class="icon"><img src="/img/maritime_img02.png"></p>
+                                    <p class="txt">[해상시승]<br> 보트 시승 및 체험</p>
+                                </li>
+                                <li>
+                                    <p class="icon"><img src="/img/maritime_img03.png"></p>
+                                    <p class="txt">[체험행사]<br> 선상투어, 트레일링 체험 등</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- section -->
+
+        <!-- section -->
+        <div class="summ_s padding_b summ_join expo">
+            <div class="inner">
+                <div class="summ_venue">
+                    <div class="txt_box">
+                        <div class="tit">2025년 개최결과</div>
+                    </div>
+                    <div class="maritime_img">
+                        <img src="/img/maritime_img02.jpg" alt="해상전시회 사진">
+                        <img src="/img/maritime_img03.jpg" alt="해상전시회 사진">
+                        <img src="/img/maritime_img04.jpg" alt="해상전시회 사진">
+                    </div>
+                    <div class="video_wrap">
+                        <div id="player"></div>
+                    </div>
+                    <div class="maritime_poster">
+                        <img src="/img/maritim_01.jpg" alt="해상전시회 포스터">
+                        <img src="/img/maritim_02.jpg" alt="해상전시회 포스터">
+                        <img src="/img/maritim_03.jpg" alt="해상전시회 포스터">
                     </div>
                 </div>
             </div>
         </div>
         <!-- section -->
-
     </div>
 
     <c:import url="../footer.jsp" charEncoding="UTF-8"/>
+
+    <script>
+        // 유튜브 교체 재생
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api?nocache=" + new Date().getTime();
+        document.head.appendChild(tag);
+
+        const VID1 = 'K4pRZRbJEkQ';
+        const VID2 = 'mhjoPPnuRNk';
+
+        let player;
+        let next = VID2;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                videoId: VID1,
+                playerVars: {
+                    autoplay: 1,
+                    controls: 0,
+                    mute: 1,
+                    rel: 0,
+                    playsinline: 1,
+                    modestbranding: 1
+                },
+                events: {
+                    onReady: (e) => {
+
+                        const p = e.target.playVideo();
+                        if (p && p.catch) {
+                            p.catch(()=> {
+                                overlay.classList.remove('hidden');
+                            });
+                        }
+                    },
+                    onStateChange: handleStateChange
+                }
+            });
+        }
+
+        function handleStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                const currentNext = next;
+                next = (currentNext === VID1) ? VID2 : VID1;
+                player.loadVideoById(currentNext);
+                player.playVideo();
+            }
+        }
+    </script>
 
 </body>
 </html>

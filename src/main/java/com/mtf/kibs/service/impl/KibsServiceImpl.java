@@ -531,6 +531,30 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public ResponseDTO processUpdateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsServiceImpl > processUpdateExhibitorNewMaritime : ======");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
+        try {
+            String note = "step2_10";
+            exhibitorNewDTO.setNote(note);
+            Integer step2_10_ex_result = kibsMapper.updateExhibitorNewMaritime(exhibitorNewDTO);
+
+        } catch (Exception e) {
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            String eMessage = "[step2_10] processUpdateExhibitorNewMaritime Error : ";
+            resultMessage = String.format(STR_RESULT_H, eMessage, e.getMessage() == null ? "" : e.getMessage());
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public ResponseDTO processUpdateExhibitorNewCompanySign(ExhibitorNewDTO exhibitorNewDTO) {
         System.out.println("KibsServiceImpl > processUpdateExhibitorNewCompanySign : ======");
         ResponseDTO responseDTO = new ResponseDTO();

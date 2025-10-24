@@ -87,6 +87,10 @@
     .form_s .form_box li select.w30 {
     width: 100%;
     }
+
+    .form_s .form_guide.m_br li br{
+        display: none;
+    }
 }
 
 
@@ -904,9 +908,7 @@
     .marina_s2 .box .item {width: 100%;}
     .marina_s2 .box .item .tit {font-size: 1.6rem;}
     .marina_s2 .box .item .descrip {font-size: 1.4rem;}
-    
 
-    
 }
 
 /* 481px ~ 768px */
@@ -1778,7 +1780,10 @@
     .g_p_box .cont .nae {font-size: 1.2rem;}
     .summ_join .summ_wrap{flex-direction: column; gap: 20px;}
 
-    
+    .form_wrap.maritime .maritime_cont .maritime_img{grid-template-columns: repeat(2, 1fr);}
+
+    .expo .maritime_img{grid-template-columns: repeat(2,1fr);}
+    .expo .maritime_poster{grid-template-columns: repeat(2,1fr);}
 }
 
 /* ~ 480px */
@@ -2421,4 +2426,13 @@
 
     .summ_venue .txt_box .tit img{height: 20px;}
     .summ_venue .txt_box .tit{font-size: 2.4rem;}
+
+    .form_s .check.m_check label{margin: 10px 7px 10px 0;}
+    .form_s .check.m_check div{width: 100%;}
+
+    .form_wrap.maritime .maritime_cont .maritime_img{grid-template-columns: repeat(1, 1fr);}
+
+    .expo .maritime_img{grid-template-columns: repeat(1,1fr); gap: 20px;}
+    .expo .maritime_img img{ max-height: 200px; object-fit: cover; width: 100%;}
+    .expo .maritime_poster{grid-template-columns: repeat(1,1fr);}
 }

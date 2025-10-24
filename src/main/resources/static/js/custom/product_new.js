@@ -1,6 +1,6 @@
 /***
  * mng/exhibitor/application/online.js
- * 참가신청서 관리 > 전시품 정보
+ * 참가신청서 관리 > 전시품 신청
  * */
 var transferYear = '2026';
 $(function(){

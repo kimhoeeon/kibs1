@@ -92,7 +92,7 @@ public class ExhibitorNewDTO {
     String fieldParticipatory2;
     String fieldParticipatory3;
 
-    //전시품 정보
+    //전시품 신청
     String boatEntryYn; // 요트/보트 출품 여부
     List<ProductNewDTO> productList; //전시품정보
 
@@ -149,6 +149,12 @@ public class ExhibitorNewDTO {
     Integer prcVat; //부가세
     Integer prcTotal; //총계
     /* end:step2_1 */
+
+    /* begin:step2_10 */
+    String maritimeExhibitionYn;
+    boolean maritimeExhibitionSea;
+    boolean maritimeExhibitionLand;
+    /* end:step2_10 */
 
     /* begin:step2_2 */
     String companySignNameKo; //상호간판명(국문)

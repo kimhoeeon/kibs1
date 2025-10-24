@@ -108,7 +108,6 @@
         <div class="inner">
 
             <div class="apply_nav">
-                <!-- <div class="apply_nav_tit">기본정보</div> -->
                 <div class="apply_nav_list">
                     <ul class="list1">
                         <li><a>기본정보</a></li>
@@ -116,13 +115,12 @@
                             <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')">전시 신청 정보</a>
                             <ul class="list2">
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')">전시품 정보</a></li>
+                                <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
+                                <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')">전시품 신청</a></li>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_4.do','${info.seq}')">출입증 신청</a></li>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_5.do','${info.seq}')">경품제공 신청</a></li>
-                                <%--<li><a href="/apply/step2_6.do">웹 배너 신청</a></li>--%>
-                                <%--<li><a href="/apply/step2_7.do">온라인 전시관 신청</a></li>--%>
                                 <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_8.do','${info.seq}')">디렉토리 정보</a></li>
                             </ul>
                         </li>
@@ -148,7 +146,7 @@
                             <p>Step 2</p>전시 신청 정보
                         </div>
                         <div class="gauge">
-                            <progress class="gauge_bar" value="70" max="70"></progress>
+                            <progress class="gauge_bar" value="80" max="80"></progress>
                         </div>
                         <div class="txt">완료됨</div>
                     </div>

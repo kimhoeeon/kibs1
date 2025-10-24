@@ -3963,6 +3963,67 @@
                , init_regi_dttm DESC
     </select>
 
+    <select id="selectExhibitorNewMaritimeList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewMaritimeList */
+        SELECT seq
+             , company_name_ko
+             , company_name_en
+             , maritime_exhibition_yn
+             , maritime_exhibition_sea
+             , maritime_exhibition_land
+             , init_regi_dttm
+             , final_regi_dttm
+        FROM exhibitor_new
+        WHERE 1=1
+        <if test='transferYear != null and transferYear != ""'>
+            AND transfer_year = #{transferYear}
+        </if>
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "companyNameKo"'>
+                AND company_name_ko LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition eq "companyNameEn"'>
+                AND company_name_en LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        <if test='maritimeExhibitionYn != null and maritimeExhibitionYn != ""'>
+            AND maritime_exhibition_yn = #{maritimeExhibitionYn}
+        </if>
+        <if test='maritimeExhibitionGbn != null and maritimeExhibitionGbn != ""'>
+            <if test='maritimeExhibitionGbn eq "sea"'>
+                AND maritime_exhibition_sea = true
+            </if>
+            <if test='maritimeExhibitionGbn eq "land"'>
+                AND maritime_exhibition_land = true
+            </if>
+        </if>
+        ORDER BY init_regi_dttm DESC
+    </select>
+
+    <select id="selectExhibitorNewMaritimeSingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewMaritimeSingle */
+        SELECT seq
+             , company_name_ko
+             , company_name_en
+             , maritime_exhibition_yn
+             , maritime_exhibition_sea
+             , maritime_exhibition_land
+             , init_regi_dttm
+             , final_regi_dttm
+        FROM exhibitor_new
+        WHERE seq = #{value}
+    </select>
+
+    <update id="updateExhibitorNewMaritime" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateExhibitorNewMaritime */
+        UPDATE exhibitor_new
+        SET maritime_exhibition_yn = #{maritimeExhibitionYn}
+          , maritime_exhibition_sea = #{maritimeExhibitionSea}
+          , maritime_exhibition_land = #{maritimeExhibitionLand}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <select id="selectExhibitorNewSignList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewSignList */
         SELECT seq

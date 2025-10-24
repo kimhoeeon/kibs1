@@ -634,4 +634,10 @@ public interface KibsMngMapper {
     Integer deletePartnerSeq(PartnerDTO partnerDTO);
 
     ExhibitorNewDTO getExhibitorInfoForLogin(String exhibitorSeq);
+
+    List<ExhibitorNewDTO> selectExhibitorNewMaritimeList(SearchDTO searchDTO);
+
+    ExhibitorNewDTO selectExhibitorNewMaritimeSingle(String seq);
+
+    Integer updateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO);
 }

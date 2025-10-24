@@ -118,7 +118,6 @@
             <div class="inner">
 
                 <div class="apply_nav">
-                    <!-- <div class="apply_nav_tit">기본정보</div> -->
                     <div class="apply_nav_list">
                         <ul class="list1">
                             <li><a>기본정보</a></li>
@@ -126,13 +125,12 @@
                                 <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                 <ul class="list2">
                                     <li><a>전시부스 신청</a></li>
-                                    <li class="active"><a>전시품 정보</a></li>
+                                    <li><a>해상전시회 신청</a></li>
+                                    <li class="active"><a>전시품 신청</a></li>
                                     <li><a>상호간판 신청</a></li>
                                     <li><a>유틸리티 신청</a></li>
                                     <li><a>출입증 신청</a></li>
                                     <li><a>경품제공 신청</a></li>
-                                    <%--<li><a href="/apply/step2_6.do">웹 배너 신청</a></li>--%>
-                                    <%--<li><a href="/apply/step2_7.do">온라인 전시관 신청</a></li>--%>
                                     <li><a>디렉토리 정보</a></li>
                                 </ul>
                             </li>
@@ -142,7 +140,7 @@
                 </div>
 
                 <div class="apply_step">
-                    <div class="apply_tit">전시품 정보</div>
+                    <div class="apply_tit">전시품 신청</div>
                     <div class="apply_step_wrap">
                         <div class="apply_step_box step1">
                             <div class="gubun">
@@ -158,9 +156,9 @@
                                 <p>Step 2</p>전시 신청 정보
                             </div>
                             <div class="gauge">
-                                <progress class="gauge_bar" value="10" max="70"></progress>
+                                <progress class="gauge_bar" value="20" max="80"></progress>
                             </div>
-                            <div class="txt">진행중...<p>(총 <span>7</span>개 중 <span>1</span> 완료)</p></div>
+                            <div class="txt">진행중...<p>(총 <span>8</span>개 중 <span>2</span> 완료)</p></div>
                         </div>
                         <div class="apply_step_box step3">
                             <div class="gubun">
@@ -184,7 +182,7 @@
                             <div class="form_wrap">
                                 <div class="form_tit">
                                     <div class="big">요트/보트 출품 정보</div>
-                                    <div class="small">신청하실 경우 전시품 정보는 1개 이상 필수 등록입니다.</div>
+                                    <div class="small">신청하실 경우 전시품 신청는 1개 이상 필수 등록입니다.</div>
                                 </div>
                                 <ul class="form_box">
                                     <li>
@@ -209,15 +207,15 @@
                             <script src="/js/product.js"></script>
                             <div class="form_wrap productInfoWrap" style="display: none;">
                                 <div class="form_tit">
-                                    <div class="big">전시품 정보</div>
-                                    <div class="small">입력하신 전시품 정보는 온라인 전시관에 자동 노출됩니다.</div>
+                                    <div class="big">전시품 신청</div>
+                                    <div class="small">입력하신 전시품 신청는 온라인 전시관에 자동 노출됩니다.</div>
                                 </div>
 
                                 <c:if test="${empty productList}">
                                     <ul class="form_box exhiInfoBox">
                                         <li class="form_in_tit">
                                             <input type="hidden" name="productSeq" value="">
-                                            전시품 정보 #<span class="exhiInfoNum">1</span>
+                                            전시품 신청 #<span class="exhiInfoNum">1</span>
                                             <span class="del_btn exhiInfoDel">삭제</span>
                                         </li>
                                         <li>
@@ -408,9 +406,9 @@
                             </div>
 
                             <div class="form_btn">
-                                <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_1.do','${info.seq}')" class="form_btn_prev">
+                                <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_10.do','${info.seq}')" class="form_btn_prev">
                                     <div class="big">이전</div>
-                                    <div class="small">전시부스 신청</div>
+                                    <div class="small">해상전시회 신청</div>
                                 </a>
                                 <a href="javascript:void(0);" onclick="f_apply_comp('2_9','${info.seq}')" class="form_btn_next">
                                     <div class="big">다음 / 건너뛰기</div>
@@ -454,7 +452,7 @@
                     let flag = false;
                     const productName_el = $('input[type=text][name=productNameKo]');
 
-                    // 입력된 전시품 정보가 있는지 확인
+                    // 입력된 전시품 신청가 있는지 확인
                     productName_el.each(function() {
                         if ($(this).val() !== '') {
                             flag = true;
@@ -465,8 +463,8 @@
                     if (flag) {
                         Swal.fire({
                             icon: 'warning',
-                            title: '[ 전시품 정보 ]',
-                            html: '<span style="font-size: 1.2em;">요트/보트 출품 여부 \'미신청\' 으로 변경 시<br>등록한 전시품 정보가 모두 삭제됩니다.<br>변경하시겠습니까?</span>',
+                            title: '[ 전시품 신청 ]',
+                            html: '<span style="font-size: 1.2em;">요트/보트 출품 여부 \'미신청\' 으로 변경 시<br>등록한 전시품 신청가 모두 삭제됩니다.<br>변경하시겠습니까?</span>',
                             allowOutsideClick: false,
                             showCancelButton: true,
                             confirmButtonColor: '#00a8ff',

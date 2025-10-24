@@ -118,7 +118,6 @@
             <div class="inner">
 
                 <div class="apply_nav">
-                    <!-- <div class="apply_nav_tit">기본정보</div> -->
                     <div class="apply_nav_list">
                         <ul class="list1">
                             <li><a>기본정보</a></li>
@@ -126,13 +125,12 @@
                                 <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                 <ul class="list2">
                                     <li class="active"><a>전시부스 신청</a></li>
-                                    <li><a>전시품 정보</a></li>
+                                    <li><a>해상전시회 신청</a></li>
+                                    <li><a>전시품 신청</a></li>
                                     <li><a>상호간판 신청</a></li>
                                     <li><a>유틸리티 신청</a></li>
                                     <li><a>출입증 신청</a></li>
                                     <li><a>경품제공 신청</a></li>
-                                    <%--<li><a href="/apply/step2_6.do">웹 배너 신청</a></li>--%>
-                                    <%--<li><a href="/apply/step2_7.do">온라인 전시관 신청</a></li>--%>
                                     <li><a>디렉토리 정보</a></li>
                                 </ul>
                             </li>
@@ -158,9 +156,9 @@
                                 <p>Step 2</p>전시 신청 정보
                             </div>
                             <div class="gauge">
-                                <progress class="gauge_bar" value="3" max="70"></progress>
+                                <progress class="gauge_bar" value="3" max="80"></progress>
                             </div>
-                            <div class="txt">진행중...<p>(총 <span>7</span>개 중 <span>0</span> 완료)</p></div>
+                            <div class="txt">진행중...<p>(총 <span>8</span>개 중 <span>0</span> 완료)</p></div>
                         </div>
                         <div class="apply_step_box step3">
                             <div class="gubun">
@@ -194,6 +192,7 @@
                             </ul>
                         </div>
 
+                        <input type="hidden" id="utilityPrcSum" value="${info.utilityPrcSum}"/>
                         <input type="hidden" id="prcTotal" value="${info.prcTotal}"/>
 
                         <!-- 등록비 -->
@@ -420,7 +419,7 @@
                                     <div class="cate2">총액(VAT 미포함)</div>
                                     <div class="amount2">
                                         <p class="price">
-                                            <input type="text" id="totalAmount" value="<fmt:formatNumber value="${info.boothPrcSum - info.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                            <input type="text" id="totalAmount" value="" disabled>
                                         </p>
                                     </div>
                                 </div>
@@ -435,7 +434,7 @@
                             </a>
                             <a href="javascript:void(0);" onclick="f_apply_comp('2_1','${info.seq}')" class="form_btn_next">
                                 <div class="big">다음</div>
-                                <div class="small">전시품 정보</div>
+                                <div class="small">해상전시회 신청</div>
                             </a>
                         </div>
 

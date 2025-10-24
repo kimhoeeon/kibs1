@@ -1071,6 +1071,9 @@ function f_apply_comp(step, seq){
         case "2_1":
             step_2_1_check(seq);
             break;
+        case "2_10":
+            step_2_10_check(seq);
+            break;
         case "2_9":
             step_2_9_check(seq);
             break;
@@ -2419,6 +2422,8 @@ function check_count(obj){
 /* //////////////////////////////// begin:step_2_1 ////////////////////////////////// */
 function step_2_1_check(exhibitorSeq){
 
+    let utilityPrcSum = parseInt($('#utilityPrcSum').val()) || 0;
+
     // --- 1. 부스 정보 수집 ---
     const registrationCnt = 1;
     const registrationFee = 100000;
@@ -2478,8 +2483,8 @@ function step_2_1_check(exhibitorSeq){
     }
 
     // --- 4. 최종 금액 계산 ---
-    // 공급가액 = (부스총액 + 발전기금) - 할인총액
-    const prcSum = (boothPrcSum + developmentFund) - discountPrcSum;
+    // 공급가액 = ((부스총액 + 발전기금) - 할인총액) + 유틸리티총액
+    const prcSum = ((boothPrcSum + developmentFund) - discountPrcSum) + utilityPrcSum;
     const prcVat = Math.floor(prcSum * 0.1);
     const prcTotal = prcSum + prcVat;
 
@@ -2526,7 +2531,6 @@ function step_2_1_check(exhibitorSeq){
 
     let resData = ajaxConnect('/apply/step/updateExhibitorNewBooth.do', 'post', booth_json_obj);
 
-    let returnPath = "";
     //console.log(resData);
     if(resData.resultCode === "0") {
 
@@ -2540,7 +2544,7 @@ function step_2_1_check(exhibitorSeq){
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/apply/step2_9.do', exhibitorSeq);
+                f_page_move('/apply/step2_10.do', exhibitorSeq);
             }
         });
     }else{
@@ -2551,15 +2555,14 @@ function step_2_1_check(exhibitorSeq){
 function wonToInt(won){
     return won.replace(/\s/g, '').replace(/\￦/g, '').replace(/\,/g, '');
 }
-
 /* //////////////////////////////// end:step_2_1 ////////////////////////////////// */
 
-/* //////////////////////////////// begin:step_2_9 ////////////////////////////////// */
-function step_2_9_check(exhibitorSeq){
+/* //////////////////////////////// begin:step_2_10 ////////////////////////////////// */
+function step_2_10_check(exhibitorSeq){
 
     Swal.fire({
         icon: 'info',
-        title: '[ 전시품 정보 ]',
+        title: '[ 해상전시회 신청 ]',
         html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
@@ -2572,12 +2575,87 @@ function step_2_9_check(exhibitorSeq){
 
         if (result.isConfirmed) {
 
-            /******************** 전시품 정보 ********************/
+            const participationChoice = $('input[name="maritimeExhibitionYn"]:checked').val();
+            const isSeaChecked = $('#maritimeDetailBox input[name="maritimeExhibitionSea"]').is(':checked');
+            const isLandChecked = $('#maritimeDetailBox input[name="maritimeExhibitionLand"]').is(':checked');
+
+            // 1. '참가'를 선택한 경우
+            if (participationChoice === 'Y') {
+                // 1-1. 해상 전시 또는 육상 전시 둘 다 선택하지 않은 경우
+                if (!isSeaChecked && !isLandChecked) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '[ 해상전시회 신청 ]',
+                        text: '해상전시회 참가를 선택했을 경우, 참가 항목(해상/육상)을 1개 이상 선택해주세요.',
+                        confirmButtonColor: '#00a8ff',
+                        confirmButtonText: '확인'
+                    });
+                    return; // 서버 전송 중단
+                }
+            }
+
+            let formData = {
+                seq: exhibitorSeq,
+                maritimeExhibitionYn: participationChoice,
+                maritimeExhibitionSea: isSeaChecked,
+                maritimeExhibitionLand: isLandChecked
+            };
+
+            let resData = ajaxConnect('/apply/step/updateExhibitorNewMaritime.do', 'post', formData);
+
+            //console.log(resData);
+            if(resData.resultCode === "0") {
+
+                /* 등록 성공 시 다음 단계로 이동 */
+                Swal.fire({
+                    icon: 'info',
+                    title: '[ 해상전시회 신청 ]',
+                    html: '<span style="font-size: 1.2em;">해상전시회 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                    allowOutsideClick: false,
+                    confirmButtonColor: '#00a8ff',
+                    confirmButtonText: '확인'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        /* 등록 성공 시 다음 단계로 이동 */
+                        f_page_move('/apply/step2_9.do', exhibitorSeq);
+                    }
+                });
+            }else{
+                showMessage('', 'error', '[ 해상전시회 신청 ]', '해상전시회 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+            }
+
+        } else if (result.isDismissed) {
+            f_page_move('/apply/step2_9.do', exhibitorSeq);
+        }
+
+    })
+}
+/* //////////////////////////////// end:step_2_10 ////////////////////////////////// */
+
+/* //////////////////////////////// begin:step_2_9 ////////////////////////////////// */
+function step_2_9_check(exhibitorSeq){
+
+    Swal.fire({
+        icon: 'info',
+        title: '[ 전시품 신청 ]',
+        html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
+        allowOutsideClick: false,
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '지금 계속하기',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '나중에 하기',
+        reverseButtons: true
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            /******************** 전시품 신청 ********************/
             let productList_json_arr = [];
 
             let boatEntryYn = nvl($('input[type=radio][name=boatEntryYn]:checked').val(),'N');
             if(boatEntryYn === 'Y') {
-                /*showMessage('', 'error', '[ 전시품 정보 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
+                /*showMessage('', 'error', '[ 전시품 신청 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
                 return false;*/
 
                 // 제품분류(대)
@@ -2593,7 +2671,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_option_big_flag) {
-                    showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
+                    showMessage('', 'error', '[ 전시품 신청 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
                     return false;
                 }
 
@@ -2610,7 +2688,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_option_small_flag) {
-                    showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
+                    showMessage('', 'error', '[ 전시품 신청 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
                     return false;
                 }
 
@@ -2625,7 +2703,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_name_ko_flag) {
-                    showMessage('', 'error', '[ 전시품 정보 ]', '제품명을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 전시품 신청 ]', '제품명을 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2640,7 +2718,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_qty_flag) {
-                    showMessage('', 'error', '[ 전시품 정보 ]', '수량을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 전시품 신청 ]', '수량을 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2655,7 +2733,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_brand_flag) {
-                    showMessage('', 'error', '[ 전시품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 전시품 신청 ]', '제조사(브랜드)를 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2670,7 +2748,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_length_flag) {
-                    showMessage('', 'error', '[ 전시품 정보 ]', '길이(cm)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 전시품 신청 ]', '길이(cm)를 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2685,7 +2763,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_width_flag) {
-                    showMessage('', 'error', '[ 전시품 정보 ]', '너비(cm)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 전시품 신청 ]', '너비(cm)를 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2700,7 +2778,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_height_flag) {
-                    showMessage('', 'error', '[ 전시품 정보 ]', '높이(cm)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 전시품 신청 ]', '높이(cm)를 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2715,7 +2793,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_weight_flag) {
-                    showMessage('', 'error', '[ 전시품 정보 ]', '중량(kg)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 전시품 신청 ]', '중량(kg)를 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2730,7 +2808,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_material_flag) {
-                    showMessage('', 'error', '[ 전시품 정보 ]', '소재를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 전시품 신청 ]', '소재를 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2745,7 +2823,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_year_flag) {
-                    showMessage('', 'error', '[ 전시품 정보 ]', '연식을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 전시품 신청 ]', '연식을 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2819,8 +2897,8 @@ function step_2_9_check(exhibitorSeq){
                         if (result.dismiss === Swal.DismissReason.timer) {
                             Swal.fire({
                                 icon: 'info',
-                                title: '[ 전시품 정보 ]',
-                                html: '<span style="font-size: 1.2em;">전시품 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                                title: '[ 전시품 신청 ]',
+                                html: '<span style="font-size: 1.2em;">전시품 신청가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
                                 allowOutsideClick: false,
                                 confirmButtonColor: '#00a8ff',
                                 confirmButtonText: '확인'
@@ -2832,7 +2910,7 @@ function step_2_9_check(exhibitorSeq){
                         }
                     });
                 }else{
-                    showMessage('', 'error', '[ 전시품 정보 ]', '전시품 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+                    showMessage('', 'error', '[ 전시품 신청 ]', '전시품 신청 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
                 }
             }
 
@@ -2916,7 +2994,6 @@ function step_2_2_check(exhibitorSeq){
 
     })
 }
-
 /* //////////////////////////////// end:step_2_2 ////////////////////////////////// */
 
 /* //////////////////////////////// begin:step_2_3 ////////////////////////////////// */
@@ -2987,6 +3064,18 @@ function step_2_3_check(exhibitorSeq){
 
             let utilityPrcSum = parseInt(wonToInt($('#form_add_total').val()));
 
+            let boothPrcSum = parseInt($('#boothPrcSum').val()) || 0;
+            let developmentFund = 0;
+            const isMember = $('#memberCompanyYn').val() === 'Y';
+            if (isMember) {
+                developmentFund = Math.floor(boothPrcSum * 0.1);
+            }
+            let discountPrcSum = parseInt($('#discountPrcSum').val()) || 0;
+
+            const prcSum = ((boothPrcSum + developmentFund) - discountPrcSum) + utilityPrcSum;
+            const prcVat = Math.floor(prcSum * 0.1);
+            const prcTotal = prcSum + prcVat;
+
             let utility_json_obj = {
                 seq: exhibitorSeq,
                 utilityJuganCnt: utility_jugan_cnt,
@@ -3005,7 +3094,10 @@ function step_2_3_check(exhibitorSeq){
                 utilityPytexReFee: wonToInt(utility_pytex_re_fee),
                 utilityBarcodeCnt: utility_barcode_cnt,
                 utilityBarcodeFee: wonToInt(utility_barcode_fee),
-                utilityPrcSum: utilityPrcSum
+                utilityPrcSum: utilityPrcSum,
+                prcSum : prcSum,
+                prcVat : prcVat,
+                prcTotal : prcTotal
             }
 
             let resData = ajaxConnect('/apply/step/updateExhibitorNewUtility.do', 'post', utility_json_obj);
@@ -4150,6 +4242,9 @@ function f_mypage_comp(step, seq){
         case "2_1":
             my_step_2_1_check(seq);
             break;
+        case "2_10":
+            my_step_2_10_check(seq);
+            break;
         case "2_9":
             my_step_2_9_check(seq);
             break;
@@ -5012,13 +5107,13 @@ function my_step_01_check(exhibitorSeq){
 
 function my_step_2_9_check(exhibitorSeq){
 
-    /******************** 전시품 정보 ********************/
+    /******************** 전시품 신청 ********************/
     //전시품정보 Json Create
     let productList_json_arr = [];
 
     let boatEntryYn = nvl($('input[type=radio][name=boatEntryYn]:checked').val(),'N');
     if(boatEntryYn === 'Y'){
-        /*showMessage('', 'error', '[ 전시품 정보 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
+        /*showMessage('', 'error', '[ 전시품 신청 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
         return false;*/
 
         // 제품분류(대)
@@ -5034,7 +5129,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_option_big_flag){
-            showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ 전시품 신청 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
             return false;
         }
     
@@ -5051,7 +5146,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_option_small_flag){
-            showMessage('', 'error', '[ 전시품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ 전시품 신청 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
             return false;
         }
     
@@ -5066,7 +5161,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_name_ko_flag){
-            showMessage('', 'error', '[ 전시품 정보 ]', '제품명을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 전시품 신청 ]', '제품명을 입력해 주세요.', '');
             return false;
         }
     
@@ -5081,7 +5176,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_qty_flag){
-            showMessage('', 'error', '[ 전시품 정보 ]', '수량을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 전시품 신청 ]', '수량을 입력해 주세요.', '');
             return false;
         }
     
@@ -5096,7 +5191,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_brand_flag){
-            showMessage('', 'error', '[ 전시품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 전시품 신청 ]', '제조사(브랜드)를 입력해 주세요.', '');
             return false;
         }
     
@@ -5111,7 +5206,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_length_flag){
-            showMessage('', 'error', '[ 전시품 정보 ]', '길이(cm)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 전시품 신청 ]', '길이(cm)를 입력해 주세요.', '');
             return false;
         }
     
@@ -5126,7 +5221,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_width_flag){
-            showMessage('', 'error', '[ 전시품 정보 ]', '너비(cm)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 전시품 신청 ]', '너비(cm)를 입력해 주세요.', '');
             return false;
         }
     
@@ -5141,7 +5236,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_height_flag){
-            showMessage('', 'error', '[ 전시품 정보 ]', '높이(cm)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 전시품 신청 ]', '높이(cm)를 입력해 주세요.', '');
             return false;
         }
     
@@ -5156,7 +5251,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_weight_flag){
-            showMessage('', 'error', '[ 전시품 정보 ]', '중량(kg)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 전시품 신청 ]', '중량(kg)를 입력해 주세요.', '');
             return false;
         }
     
@@ -5171,7 +5266,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_material_flag){
-            showMessage('', 'error', '[ 전시품 정보 ]', '소재를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 전시품 신청 ]', '소재를 입력해 주세요.', '');
             return false;
         }
     
@@ -5186,7 +5281,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_year_flag){
-            showMessage('', 'error', '[ 전시품 정보 ]', '연식을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 전시품 신청 ]', '연식을 입력해 주세요.', '');
             return false;
         }
     
@@ -5259,8 +5354,8 @@ function my_step_2_9_check(exhibitorSeq){
                 if (result.dismiss === Swal.DismissReason.timer) {
                     Swal.fire({
                         icon: 'info',
-                        title: '[ 전시품 정보 ]',
-                        html: '<span style="font-size: 1.2em;">전시품 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                        title: '[ 전시품 신청 ]',
+                        html: '<span style="font-size: 1.2em;">전시품 신청가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
                         allowOutsideClick: false,
                         confirmButtonColor: '#00a8ff',
                         confirmButtonText: '확인'
@@ -5272,7 +5367,7 @@ function my_step_2_9_check(exhibitorSeq){
                 }
             });
         }else{
-            showMessage('', 'error', '[ 전시품 정보 ]', '전시품 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+            showMessage('', 'error', '[ 전시품 신청 ]', '전시품 신청 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
         }
     }
 }
@@ -5282,6 +5377,8 @@ function my_step_2_1_check(exhibitorSeq){
     /* 24.03.05 2024 보트쇼 종료로 인하여 바로 페이지 이동 */
     /*f_page_move('/mypage/step2_2.do', exhibitorSeq);*/
 
+    let utilityPrcSum = parseInt($('#utilityPrcSum').val()) || 0;
+    
     // --- 1. 부스 정보 수집 ---
     const registrationCnt = 1;
     const registrationFee = 100000;
@@ -5341,8 +5438,8 @@ function my_step_2_1_check(exhibitorSeq){
     }
 
     // --- 4. 최종 금액 계산 ---
-    // 공급가액 = (부스총액 + 발전기금) - 할인총액
-    const prcSum = (boothPrcSum + developmentFund) - discountPrcSum;
+    // 공급가액 = ((부스총액 + 발전기금) - 할인총액) + 유틸리티총액
+    const prcSum = ((boothPrcSum + developmentFund) - discountPrcSum) + utilityPrcSum;
     const prcVat = Math.floor(prcSum * 0.1);
     const prcTotal = prcSum + prcVat;
 
@@ -5366,7 +5463,6 @@ function my_step_2_1_check(exhibitorSeq){
         assemblyBoothFee: assemblyBoothFee,
         onlineBoothCnt: onlineBoothCnt,
         onlineBoothFee: onlineBoothFee,
-        // 각 할인 항목의 선택 여부(true/false)를 전송
         discountEarly1: $('#discountEarly1').is(':checked'),
         discountEarly2: $('#discountEarly2').is(':checked'),
         discountFirstUnder10: $('#discountFirstUnder10').is(':checked'),
@@ -5403,11 +5499,66 @@ function my_step_2_1_check(exhibitorSeq){
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/mypage/step2_9.do', exhibitorSeq);
+                f_page_move('/mypage/step2_10.do', exhibitorSeq);
             }
         });
     }else{
         showMessage('', 'error', '[ 전시부스 신청 ]', '전시부스 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+    }
+}
+
+function my_step_2_10_check(exhibitorSeq){
+
+    /* 24.03.05 2024 보트쇼 종료로 인하여 바로 페이지 이동 */
+    /*f_page_move('/mypage/step2_3.do', exhibitorSeq);*/
+
+    const participationChoice = $('input[name="maritimeExhibitionYn"]:checked').val();
+    const isSeaChecked = $('#maritimeDetailBox input[name="maritimeExhibitionSea"]').is(':checked');
+    const isLandChecked = $('#maritimeDetailBox input[name="maritimeExhibitionLand"]').is(':checked');
+
+    // 1. '참가'를 선택한 경우
+    if (participationChoice === 'Y') {
+        // 1-1. 해상 전시 또는 육상 전시 둘 다 선택하지 않은 경우
+        if (!isSeaChecked && !isLandChecked) {
+            Swal.fire({
+                icon: 'error',
+                title: '[ 해상전시회 신청 ]',
+                text: '해상전시회 참가를 선택했을 경우, 참가 항목(해상/육상)을 1개 이상 선택해주세요.',
+                confirmButtonColor: '#00a8ff',
+                confirmButtonText: '확인'
+            });
+            return; // 서버 전송 중단
+        }
+    }
+
+    let formData = {
+        seq: exhibitorSeq,
+        maritimeExhibitionYn: participationChoice,
+        maritimeExhibitionSea: isSeaChecked,
+        maritimeExhibitionLand: isLandChecked
+    };
+
+    let resData = ajaxConnect('/apply/step/updateExhibitorNewMaritime.do', 'post', formData);
+
+    //console.log(resData);
+    if(resData.resultCode === "0") {
+
+        /* 등록 성공 시 다음 단계로 이동 */
+        Swal.fire({
+            icon: 'info',
+            title: '[ 해상전시회 신청 ]',
+            html: '<span style="font-size: 1.2em;">해상전시회 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            allowOutsideClick: false,
+            confirmButtonColor: '#00a8ff',
+            confirmButtonText: '확인'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                /* 등록 성공 시 다음 단계로 이동 */
+                f_page_move('/mypage/step2_9.do', exhibitorSeq);
+            }
+        });
+    }else{
+        showMessage('', 'error', '[ 해상전시회 신청 ]', '해상전시회 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
     }
 }
 
@@ -5535,6 +5686,18 @@ function my_step_2_3_check(exhibitorSeq){
 
     let utilityPrcSum = parseInt(wonToInt($('#form_add_total').val()));
 
+    let boothPrcSum = parseInt($('#boothPrcSum').val()) || 0;
+    let developmentFund = 0;
+    const isMember = $('#memberCompanyYn').val() === 'Y';
+    if (isMember) {
+        developmentFund = Math.floor(boothPrcSum * 0.1);
+    }
+    let discountPrcSum = parseInt($('#discountPrcSum').val()) || 0;
+
+    const prcSum = ((boothPrcSum + developmentFund) - discountPrcSum) + utilityPrcSum;
+    const prcVat = Math.floor(prcSum * 0.1);
+    const prcTotal = prcSum + prcVat;
+
     let utility_json_obj = {
         seq: exhibitorSeq,
         utilityJuganCnt: utility_jugan_cnt,
@@ -5553,7 +5716,10 @@ function my_step_2_3_check(exhibitorSeq){
         utilityPytexReFee: wonToInt(utility_pytex_re_fee),
         utilityBarcodeCnt: utility_barcode_cnt,
         utilityBarcodeFee: wonToInt(utility_barcode_fee),
-        utilityPrcSum: utilityPrcSum
+        utilityPrcSum: utilityPrcSum,
+        prcSum: prcSum,
+        prcVat: prcVat,
+        prcTotal: prcTotal
     }
 
     let resData = ajaxConnect('/apply/step/updateExhibitorNewUtility.do', 'post', utility_json_obj);
@@ -6923,7 +7089,7 @@ function f_company_uploadFile_call(id, path) {
         f_company_uploadFile(id, 'exhibitor_apply_form', 'logoFile', 'exhibitor/company/' + path);
     }
 
-    /* 전시품 정보 - 제품사진 */
+    /* 전시품 신청 - 제품사진 */
     /*let productImageFileList = $('input[type=file][name=productImageFile]');
     for(let i=0; i<productImageFileList.length; i++){
         let productImageNum = productImageFileList[i].id;

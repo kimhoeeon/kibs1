@@ -74,7 +74,7 @@
                 </a>
             </li>--%>
             <li>
-                <a href="/file/2026 KIBS-KISS-KMTS 국문 브로슈어 합본.pdf" download="2026 KIBS-KISS-KMTS 국문 브로슈어 합본.pdf">
+                <a href="/file/2026 경기국제보트쇼 브로슈어 국문.pdf" download="2026 경기국제보트쇼 브로슈어 국문.pdf">
                     <div class="icon"><img src="/img/icon_floating25_bro.png"></div>
                     <div class="txt">
                         브로슈어<br>
@@ -131,7 +131,7 @@
 
                 <div class="video_box">
                     <div class="embed-container">
-                        <iframe src="https://www.youtube.com/embed/uMN97io8RFA?autoplay=1&mute=1&controls=0&loop=1&playlist=uMN97io8RFA" frameborder="0" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/CNKSitiuNN8?autoplay=1&mute=1&controls=0&loop=1&playlist=CNKSitiuNN8" frameborder="0" allowfullscreen></iframe>
                     </div>
                 </div>
 

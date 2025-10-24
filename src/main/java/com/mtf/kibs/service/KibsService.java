@@ -242,4 +242,6 @@ public interface KibsService {
     ResponseDTO processSaveProductNew(ExhibitorNewDTO exhibitorNewDTO);
 
     String getExhibitorNewRepEmail(ExhibitorNewDTO exhibitorNewDTO);
+
+    ResponseDTO processUpdateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO);
 }

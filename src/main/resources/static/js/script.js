@@ -717,7 +717,7 @@ $(document).ready(function () {
             $('.exhiInfoBox:last').after(newExhiInfoBox);
             updateExhiInfoNum(this);
         }else{
-            showMessage('', 'info', '[ 전시품 정보 ]', '전시정보는 최대 20개까지만 등록 가능합니다.', '');
+            showMessage('', 'info', '[ 전시품 신청 ]', '전시정보는 최대 20개까지만 등록 가능합니다.', '');
         }
     });
 
@@ -725,8 +725,8 @@ $(document).ready(function () {
     function deleteExhiInfoBox(el) {
         Swal.fire({
             icon: 'warning',
-            title: '[ 전시품 정보 ]',
-            html: '<span style="font-size: 1.2em;">해당 전시품 정보를 삭제하시겠습니까?</span>',
+            title: '[ 전시품 신청 ]',
+            html: '<span style="font-size: 1.2em;">해당 전시품 신청를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -742,7 +742,7 @@ $(document).ready(function () {
                     };
                     let resData = ajaxConnect('/mypage/step/deleteProductNew.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '전시품 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', '전시품 신청 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                     }
 
                     /*let fileList = $(el).parent().parent().find('.preValueList').find('.file_box ul .productImageFile_li').find('input[type=hidden][name=productImageUploadFile]');
@@ -827,7 +827,7 @@ $(document).ready(function () {
             // 업데이트 후 최대 5개까지 보이도록 제한
             updateExhiPrdBox();
         }else{
-            showMessage('', 'info', '[ 전시품 정보 ]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
+            showMessage('', 'info', '[ 전시품 신청 ]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
         }
 
     });

@@ -1125,8 +1125,6 @@ public class KibsMngController {
         return mv;
     }
 
-
-
     @RequestMapping(value = "/mng/exhibitorNew/application/booth/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
@@ -1212,6 +1210,45 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_getExhibitorNewInfo");
         ExhibitorNewDTO result = kibsMngService.getExhibitorNewInfo(exhibitorNewDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/maritime.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_maritime() {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_maritime");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/exhibitorNew/application/maritime");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/maritime/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_maritime_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_maritime_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<ExhibitorNewDTO> responseList = kibsMngService.processSelectExhibitorNewMaritimeList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/maritime/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNew_application_maritime_detail(String seq) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_maritime_detail");
+        ModelAndView mv = new ModelAndView();
+        if(seq != null){
+            ExhibitorNewDTO exhibitorInfo = kibsMngService.processSelectExhibitorNewMaritimeSingle(seq);
+            mv.addObject("info", exhibitorInfo);
+        }
+        mv.setViewName("/mng/exhibitorNew/application/maritime/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNew/application/maritime/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_maritime_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngController > mng_exhibitorNew_application_maritime_update");
+        ResponseDTO response = kibsMngService.processUpdateExhibitorNewMaritime(exhibitorNewDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/sign.do", method = RequestMethod.GET)
@@ -4334,7 +4371,7 @@ public class KibsMngController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 38, 55));  headerRow.createCell(38).setCellValue("기타 담당자 정보");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 56, 63));  headerRow.createCell(56).setCellValue("업체정보(소개)");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 64, 73));  headerRow.createCell(64).setCellValue("참가분야");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 74, 273)); headerRow.createCell(74).setCellValue("전시품 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 74, 273)); headerRow.createCell(74).setCellValue("전시품 신청");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 274, 277)); headerRow.createCell(274).setCellValue("기업 뱃지");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 278, 607)); headerRow.createCell(278).setCellValue("온라인 제품 정보");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 608, 637)); headerRow.createCell(608).setCellValue("신청내역");
@@ -7961,7 +7998,7 @@ public class KibsMngController {
         // SXSSFWorkbook: 대용량 데이터 처리 시 메모리 부족 방지를 위한 스트리밍 방식
         try (SXSSFWorkbook workbook = new SXSSFWorkbook()) {
 
-            SXSSFSheet sheet = workbook.createSheet("전시품 정보");
+            SXSSFSheet sheet = workbook.createSheet("전시품 신청");
 
             sheet.trackAllColumnsForAutoSizing();
 
@@ -8022,12 +8059,12 @@ public class KibsMngController {
             Cell companySubCell2 = subHeaderRow.createCell(1);
             companySubCell2.setCellValue("업체명");
 
-            // 1-2. 전시품 정보 헤더 (20개 반복)
+            // 1-2. 전시품 신청 헤더 (20개 반복)
             String[] productHeaders = {"제품분류(대분류)", "제품분류(소분류)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식"};
             for (int i = 0; i < 20; i++) {
                 int startCol = 2 + (i * productHeaders.length);
                 Cell productMainCell = mainHeaderRow.createCell(startCol);
-                productMainCell.setCellValue("전시품 정보 " + (i + 1));
+                productMainCell.setCellValue("전시품 신청 " + (i + 1));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, startCol, startCol + productHeaders.length - 1));
 
                 for (int j = 0; j < productHeaders.length; j++) {
@@ -8062,7 +8099,7 @@ public class KibsMngController {
                 row.createCell(0).setCellValue(companyNum++);
                 row.createCell(1).setCellValue(products.get(0).getCompanyNameKo());
 
-                // 전시품 정보 채우기 (최대 20개)
+                // 전시품 신청 채우기 (최대 20개)
                 for (int i = 0; i < products.size() && i < 20; i++) {
                     ProductDetailDTO product = products.get(i);
                     int startCol = 2 + (i * productHeaders.length);

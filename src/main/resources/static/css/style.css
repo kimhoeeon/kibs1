@@ -3215,6 +3215,8 @@ label:last-child {
     position: relative;
 }
 
+.form_s .check label:last-child{margin-right: 4px;}
+
 .form_s .check label input {
     position: absolute;
     left: 0;
@@ -5840,7 +5842,8 @@ position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-w
 
 /* kiss,kmts 페이지 추가 */
 .hd_nav .kiss_nav,
-.hd_nav .kmts_nav,.expo{text-align: center; display: inline-block;}
+.hd_nav .kmts_nav, .hd_nav .expo{text-align: center; display: inline-block;}
+.expo a span{color: #f47620 !important;}
 .kiss_nav a span{color: #00b7ed !important;}
 .kmts_nav a span{color: #2db5a8 !important;}
 .site_map_new{justify-content: left !important; gap: 40px;}
@@ -5880,3 +5883,23 @@ position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-w
 .summ_join.aqua .table_box td span{color: #2db5a8;}
 .summ_join.aqua .table_box table th{background: #2db5a8;}
 .summ_join.aqua .summ_wrap .desc{color: #2db5a8;}
+
+/* 해상전시회 신청 */
+.form_wrap.maritime .cmnt{padding-left: 13px;color:#111;text-indent: -13px;}
+.form_wrap.maritime .cmnt::before{display: none;}
+.form_wrap.maritime .maritime_cont{margin-top: 30px;padding: 30px; background: #f5f5f5;}
+.form_wrap.maritime .maritime_cont .tit {margin-bottom: 20px;}
+.form_wrap.maritime .maritime_cont .tit .big{font-weight: 700; font-size: 2rem;}
+.form_wrap.maritime .maritime_cont .tit span{color: #ed6c00;}
+.form_wrap.maritime .maritime_cont ul span{color: #00b7ed; font-weight: 700;}
+.form_wrap.maritime .maritime_cont ul li{position: relative;padding-left: 15px;margin-bottom: 3px;}
+.form_wrap.maritime .maritime_cont ul li::before{content: ''; width: 0;height: 0;top: 11px; left: 0; transform: translateY(-70%);display: block;position: absolute;border-bottom: 4px solid transparent;  border-top: 4px solid transparent;border-left: 7px solid #003d83;border-right: 7px solid transparent;}
+.form_wrap.maritime .maritime_cont .maritime_img{display: grid; grid-template-columns: repeat(3,1fr); width: 100%; gap: 10px; margin-top: 20px;}
+
+/* 해상전시회 페이지 */
+.expo .summ_box .infoBox .gubun {color: #ed6c00;}
+.expo .summ_box .hostLogo{ border-top: 2px solid #ed6c00; border-bottom: 2px solid #ed6c00;}
+.expo .maritime_img{display: grid; grid-template-columns: repeat(3,1fr); width: 100%; gap: 10px; margin-top: 20px;}
+.expo .video_wrap{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;margin-top: 2rem;}
+.expo .video_wrap #player{position:absolute;inset:0;width:100%;height:100%}
+.expo .maritime_poster{display: grid; grid-template-columns: repeat(3,1fr); width: 100%; gap: 10px; margin-top: 20px;}

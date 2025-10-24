@@ -109,7 +109,6 @@
             <div class="inner">
 
                 <div class="apply_nav">
-                    <!-- <div class="apply_nav_tit">기본정보</div> -->
                     <div class="apply_nav_list">
                         <ul class="list1">
                             <li><a>기본정보</a></li>
@@ -117,13 +116,12 @@
                                 <a>전시 신청 정보</a>
                                 <ul class="list2">
                                     <li><a>전시부스 신청</a></li>
-                                    <li><a>전시품 정보</a></li>
+                                    <li><a>해상전시회 신청</a></li>
+                                    <li><a>전시품 신청</a></li>
                                     <li><a>상호간판 신청</a></li>
                                     <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                     <li><a>출입증 신청</a></li>
                                     <li><a>경품제공 신청</a></li>
-                                    <%--<li><a href="/apply/step2_6.do">웹 배너 신청</a></li>--%>
-                                    <%--<li><a href="/apply/step2_7.do">온라인 전시관 신청</a></li>--%>
                                     <li><a>디렉토리 정보</a></li>
                                 </ul>
                             </li>
@@ -149,9 +147,9 @@
                                 <p>Step 2</p>전시 신청 정보
                             </div>
                             <div class="gauge">
-                                <progress class="gauge_bar" value="30" max="70"></progress>
+                                <progress class="gauge_bar" value="40" max="80"></progress>
                             </div>
-                            <div class="txt">진행중...<p>(총 <span>7</span>개 중 <span>3</span> 완료)</p>
+                            <div class="txt">진행중...<p>(총 <span>8</span>개 중 <span>4</span> 완료)</p>
                             </div>
                         </div>
                         <div class="apply_step_box step3">
@@ -179,6 +177,10 @@
                                 <li>신청된 전기는 귀사의 부스 분전반까지만 시공을 하고 부스 분전반에서 장비까지는 참가업체에서 직접 시공을 하셔야 합니다.</li>
                             </ul>
                         </div>
+
+                        <input type="hidden" id="boothPrcSum" value="${info.boothPrcSum}"/>
+                        <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}"/>
+                        <input type="hidden" id="discountPrcSum" value="${info.discountPrcSum}"/>
 
                         <!-- 유틸리티 신청정보 -->
                         <div class="form_wrap">

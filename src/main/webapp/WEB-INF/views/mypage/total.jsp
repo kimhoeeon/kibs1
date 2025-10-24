@@ -97,13 +97,12 @@
                                     <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_5.do','${info.seq}')">경품제공 신청</a></li>
-                                            <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_6.do','${info.seq}')">웹 배너 신청</a></li>--%>
-                                            <%--<li><a href="/mypage/step2_7.do">온라인 전시관 신청</a></li>--%>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_8.do','${info.seq}')">디렉토리 정보</a></li>
                                     </ul>
                                 </li>
@@ -192,6 +191,18 @@
                                                     <td><fmt:formatNumber value="${info.onlineBoothFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
+                                                </tr>
+                                            </c:if>
+                                            <c:if test="${info.memberCompanyYn eq 'Y'}">
+                                                <c:set var="boothRownum" value="${boothRownum + 1}"/>
+                                                <tr>
+                                                    <td>${boothRownum}</td>
+                                                    <td>한국해양레저산업협회 발전기금</td>
+                                                    <td>1</td>
+                                                    <td>참가비의 10%</td>
+                                                    <td><fmt:formatNumber value="${info.boothPrcSum * 0.1}"/></td>
+                                                    <td>-</td>
+                                                    <td>-</td>
                                                 </tr>
                                             </c:if>
                                             <tr class="txtBold">

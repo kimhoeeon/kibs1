@@ -436,110 +436,7 @@
 
     <select id="selectExhibitorNewSingle" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectExhibitorNewSingle */
-        SELECT seq
-             , lang
-             , id
-             , transfer_year
-             , salt
-             , password
-             , booth_type
-             , company_license_num
-             , company_name_ko
-             , company_name_en
-             , company_address
-             , company_address_detail
-             , factory_address
-             , factory_address_detail
-             , company_ceo
-             , company_tel
-             , company_homepage
-             , company_fax
-             , industry_part
-             , industry_part_etc
-             , pre_part_year
-             , member_company_yn
-             , name
-             , position
-             , depart
-             , tel
-             , phone
-             , email
-             , company_intro_video
-             , company_intro_ko
-             , company_intro_en
-             , company_purpose_ko
-             , company_purpose_en
-             , new_item_intro_ko
-             , new_item_intro_en
-             , promotion_plan
-             , field_participatory
-             , field_participatory_1
-             , field_participatory_2
-             , field_participatory_3
-             , export_meeting_yn
-             , part_want_yn
-             , company_online_view_yn
-             , company_badge
-             , discount_yn
-             , apply_complt
-             , cancel_yn
-             , refund_yn
-             , approval_status
-             , approval_status_cancel_reason
-             , participation_status
-             , boat_entry_yn
-             , discount_type
-             , registration_cnt
-             , registration_fee
-             , stand_alone_booth_cnt
-             , stand_alone_booth_fee
-             , assembly_booth_cnt
-             , assembly_booth_fee
-             , online_booth_cnt
-             , online_booth_fee
-             , booth_prc_sum
-             , discount_early_1
-             , discount_early_2
-             , discount_first
-             , discount_first_under_10
-             , discount_first_over_10
-             , discount_re
-             , discount_scale_1
-             , discount_scale_2
-             , discount_scale_3
-             , discount_scale_4
-             , discount_scale_5
-             , discount_scale_6
-             , discount_leisure
-             , discount_prc_sum
-             , company_sign_name_ko
-             , company_sign_name_en
-             , utility_jugan_cnt
-             , utility_jugan_fee
-             , utility_day_cnt
-             , utility_day_fee
-             , utility_compressed_air_cnt
-             , utility_compressed_air_fee
-             , utility_water_basic_cnt
-             , utility_water_basic_fee
-             , utility_internet_cnt
-             , utility_internet_fee
-             , utility_pytex_new_cnt
-             , utility_pytex_new_fee
-             , utility_pytex_re_cnt
-             , utility_pytex_re_fee
-             , utility_barcode_cnt
-             , utility_barcode_fee
-             , utility_prc_sum
-             , prc_sum
-             , prc_vat
-             , prc_total
-             , webbanner_content
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
+        SELECT *
         FROM exhibitor_new
         WHERE 1=1
         <if test='seq != null and seq != ""'>
@@ -809,13 +706,24 @@
         WHERE seq = #{seq}
     </update>
 
+    <update id="updateExhibitorNewMaritime" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.KibsMapper.updateExhibitorNewMaritime */
+        UPDATE exhibitor_new
+        SET maritime_exhibition_yn = #{maritimeExhibitionYn}
+          , maritime_exhibition_sea = #{maritimeExhibitionSea}
+          , maritime_exhibition_land = #{maritimeExhibitionLand}
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
     <update id="updateExhibitorNewCompanySign" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.KibsMapper.updateExhibitorNewCompanySign */
         UPDATE exhibitor_new
         SET company_sign_name_ko = <![CDATA[#{companySignNameKo}]]>
           , company_sign_name_en = <![CDATA[#{companySignNameEn}]]>
-          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
           , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}
     </update>
 
@@ -839,10 +747,10 @@
           , utility_barcode_cnt        = IFNULL(#{utilityBarcodeCnt}, 0)
           , utility_barcode_fee        = IFNULL(#{utilityBarcodeFee}, 0)
           , utility_prc_sum            = IFNULL(#{utilityPrcSum}, 0)
-          , prc_sum                    = ((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0))
-          , prc_vat                    = (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1)
-          , prc_total                  = (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) +
-                                          (((booth_prc_sum - discount_prc_sum) + IFNULL(#{utilityPrcSum}, 0)) * 0.1))
+          , prc_sum                    = #{prcSum}
+          , prc_vat                    = #{prcVat}
+          , prc_total                  = #{prcTotal}
+          , balance                    = #{prcTotal} - IFNULL(deposit, 0)
           , note                       = #{note}
           , final_regi_dttm            = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE seq = #{seq}

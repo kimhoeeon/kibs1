@@ -713,6 +713,11 @@ $(function(){
 async function createAndUploadPdfFromIframe(param, uploadPath, invoiceType) {
     const seq = param.seq;
     let companyNameKo = param.companyNameKo;
+    if (typeof companyNameKo !== 'string') {
+        // companyNameKo가 문자열이 아닐 경우(예: 숫자 117),
+        // String() 함수로 String 형으로 변환합니다.
+        companyNameKo = String(companyNameKo);
+    }
     companyNameKo = companyNameKo.replace(/[^a-zA-Z0-9ㄱ-힣]/g, '');
 
     let fileName = "";

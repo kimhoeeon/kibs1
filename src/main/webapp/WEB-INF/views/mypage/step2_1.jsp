@@ -88,7 +88,6 @@
             </div>
             <!-- //section -->
 
-
             <!-- section -->
             <div class="apply_s padding_tb" id="apply_s">
                 <div class="inner">
@@ -108,13 +107,12 @@
                                     <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
                                         <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_5.do','${info.seq}')">경품제공 신청</a></li>
-                                        <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_6.do','${info.seq}')">웹 배너 신청</a></li>--%>
-                                            <%--<li><a href="/mypage/step2_7.do">온라인 전시관 신청</a></li>--%>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_8.do','${info.seq}')">디렉토리 정보</a></li>
                                     </ul>
                                 </li>
@@ -144,6 +142,7 @@
                                 </ul>
                             </div>
 
+                            <input type="hidden" id="utilityPrcSum" value="${info.utilityPrcSum}"/>
                             <input type="hidden" id="prcTotal" value="${info.prcTotal}"/>
 
                             <!-- 등록비 -->
@@ -192,7 +191,7 @@
                                                     <div class="note">비고</div>
                                                 </li>
                                                 <li>
-                                                    <div class="cate">해양레저산업협회<br>발전기금</div>
+                                                    <div class="cate">한국해양레저산업협회<br>발전기금</div>
                                                     <div class="amount">
                                                         <p class="price">
                                                             <fmt:formatNumber value="${info.boothPrcSum * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
@@ -423,7 +422,7 @@
                                 </a>
                                 <a href="javascript:void(0);" onclick="f_mypage_comp('2_1','${info.seq}')" class="form_btn_next">
                                     <div class="big">다음</div>
-                                    <div class="small">전시품 정보</div>
+                                    <div class="small">해상전시회 신청</div>
                                 </a>
                             </div>
 

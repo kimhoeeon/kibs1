@@ -64,4 +64,8 @@ public class SearchDTO extends AbstractPagingRequestVo {
 
     /* 정보센터 - 팝업관리 - 팝업등록 */
     String useYn;
+
+    /* 참가신청서 관리 - 해상전시회 */
+    String maritimeExhibitionYn;
+    String maritimeExhibitionGbn;
 }

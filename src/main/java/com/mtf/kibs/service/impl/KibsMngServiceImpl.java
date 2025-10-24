@@ -4126,6 +4126,50 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<ExhibitorNewDTO> processSelectExhibitorNewMaritimeList(SearchDTO searchDTO) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewMaritimeList");
+        return kibsMngMapper.selectExhibitorNewMaritimeList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ExhibitorNewDTO processSelectExhibitorNewMaritimeSingle(String seq) {
+        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewMaritimeSingle");
+        return kibsMngMapper.selectExhibitorNewMaritimeSingle(seq);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewMaritime");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+
+        try {
+
+            /* exhibitor table update */
+            result = kibsMngMapper.updateExhibitorNewMaritime(exhibitorNewDTO);
+
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Update Fail]";
+            }
+
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateExhibitorNewMaritime ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<ExhibitorDTO> processSelectSignList(SearchDTO searchDTO) {
         System.out.println("KibsMngServiceImpl > processSelectSignList");
         return kibsMngMapper.selectSignList(searchDTO);

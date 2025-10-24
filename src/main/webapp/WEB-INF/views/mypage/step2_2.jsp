@@ -97,13 +97,12 @@
                                     <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 정보</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 신청</a></li>
                                         <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_5.do','${info.seq}')">경품제공 신청</a></li>
-                                        <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_6.do','${info.seq}')">웹 배너 신청</a></li>--%>
-                                            <%--<li><a href="/mypage/step2_7.do">온라인 전시관 신청</a></li>--%>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_8.do','${info.seq}')">디렉토리 정보</a></li>
                                     </ul>
                                 </li>
@@ -147,9 +146,9 @@
                             </div>
 
                             <div class="form_btn">
-                                <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')" class="form_btn_prev">
+                                <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')" class="form_btn_prev">
                                     <div class="big">이전</div>
-                                    <div class="small">전시부스 신청</div>
+                                    <div class="small">전시품 신청</div>
                                 </a>
                                 <a href="javascript:void(0);" onclick="f_mypage_comp('2_2','${info.seq}')" class="form_btn_next">
                                     <div class="big">다음</div>

@@ -475,4 +475,10 @@ public interface KibsMngService {
     List<InvoiceSendHistoryDTO> getInvoiceSendHistory(int invoiceSeq, String invoiceType);
 
     ExhibitorNewDTO getExhibitorInfoForLogin(String exhibitorSeq);
+
+    List<ExhibitorNewDTO> processSelectExhibitorNewMaritimeList(SearchDTO searchDTO);
+
+    ExhibitorNewDTO processSelectExhibitorNewMaritimeSingle(String seq);
+
+    ResponseDTO processUpdateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO);
 }

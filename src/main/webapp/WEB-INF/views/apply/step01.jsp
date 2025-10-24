@@ -129,7 +129,6 @@
                     <div class="inner">
 
                         <div class="apply_nav">
-                            <!-- <div class="apply_nav_tit">기본정보</div> -->
                             <div class="apply_nav_list">
                                 <ul class="list1">
                                     <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/apply/step01.do','${info.seq}')">기본정보</a></li>
@@ -137,13 +136,12 @@
                                         <a>전시 신청 정보</a>
                                         <ul class="list2">
                                             <li><a>전시부스 신청</a></li>
-                                            <li><a>전시품 정보</a></li>
+                                            <li><a>해상전시회 신청</a></li>
+                                            <li><a>전시품 신청</a></li>
                                             <li><a>상호간판 신청</a></li>
                                             <li><a>유틸리티 신청</a></li>
                                             <li><a>출입증 신청</a></li>
                                             <li><a>경품제공 신청</a></li>
-                                            <%--<li><a href="/apply/step2_6.do">웹 배너 신청</a></li>--%>
-                                            <%--<li><a href="/apply/step2_7.do">온라인 전시관 신청</a></li>--%>
                                             <li><a>디렉토리 정보</a></li>
                                         </ul>
                                     </li>
@@ -1072,15 +1070,15 @@
                                     <%--<script src="/js/product.js"></script>
                                     <div class="form_wrap">
                                         <div class="form_tit">
-                                            <div class="big">전시품 정보</div>
-                                            <div class="small">입력하신 전시품 정보는 온라인 전시관에 자동 노출됩니다.</div>
+                                            <div class="big">전시품 신청</div>
+                                            <div class="small">입력하신 전시품 신청는 온라인 전시관에 자동 노출됩니다.</div>
                                         </div>
 
                                         <c:if test="${empty productList}">
                                             <ul class="form_box exhiInfoBox">
                                                 <li class="form_in_tit">
                                                     <input type="hidden" name="productSeq" value="">
-                                                    전시품 정보 #<span class="exhiInfoNum">1</span>
+                                                    전시품 신청 #<span class="exhiInfoNum">1</span>
                                                     <span class="del_btn exhiInfoDel">삭제</span>
                                                 </li>
                                                 <li>
