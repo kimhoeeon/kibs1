@@ -2305,57 +2305,6 @@ if (document.documentElement) {
                                                             <!--end::Input group-->
 
                                                             <!--begin::Input group-->
-                                                            <div class="row mb-6">
-                                                                <!--begin::Label-->
-                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">제품명</label>
-                                                                <!--end::Label-->
-                                                                <!--begin::Col-->
-                                                                <div class="col-lg-10">
-                                                                    <!--begin::Row-->
-                                                                    <div class="row">
-                                                                        <!--begin::Col-->
-                                                                        <div class="col-lg-6">
-                                                                            <input type="text" name="productNameKo" class="form-control form-control-lg form-control-solid-bg" placeholder="국문" value="${product.productNameKo}" disabled/>
-                                                                        </div>
-                                                                        <!--end::Col-->
-                                                                        <!--begin::Col-->
-                                                                        <div class="col-lg-6">
-                                                                            <input type="text" name="productNameEn" class="form-control form-control-lg form-control-solid-bg" placeholder="영문" value="${product.productNameEn}" disabled/>
-                                                                        </div>
-                                                                        <!--end::Col-->
-                                                                    </div>
-                                                                    <!--end::Row-->
-                                                                </div>
-                                                                <!--end::Col-->
-                                                            </div>
-                                                            <!--end::Input group-->
-                                                            <!--begin::Input group-->
-                                                            <%--<div class="row mb-6">
-                                                                <!--begin::Label-->
-                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">제품분류</label>
-                                                                <!--end::Label-->
-                                                                <!--begin::Col-->
-                                                                <div class="col-lg-10">
-                                                                    <!--begin::Row-->
-                                                                    <div class="row">
-                                                                        <!--begin::Col-->
-                                                                        <div class="col-lg-6">
-                                                                            <select name="productOptionBig" class="form-select form-control-solid-bg"></select>
-                                                                        </div>
-                                                                        <!--end::Col-->
-                                                                        <!--begin::Col-->
-                                                                        <div class="col-lg-6">
-                                                                            <select name="productOptionSmall" class="form-select form-control-solid-bg"></select>
-                                                                        </div>
-                                                                        <!--end::Col-->
-                                                                    </div>
-                                                                    <!--end::Row-->
-                                                                </div>
-                                                                <!--end::Col-->
-                                                            </div>--%>
-                                                            <!--end::Input group-->
-
-                                                            <!--begin::Input group-->
                                                             <div class="row mb-6 preValueList">
                                                                 <!--begin::Label-->
                                                                 <label class="col-lg-2 col-form-label fw-semibold fs-6">제품분류<%--(기존값)--%></label>
@@ -2384,15 +2333,55 @@ if (document.documentElement) {
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6">
                                                                 <!--begin::Label-->
-                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제품 영상</label>
+                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6 required">제품명</label>
                                                                 <!--end::Label-->
                                                                 <!--begin::Col-->
                                                                 <div class="col-lg-10">
-                                                                    <input type="text" name="productLink" class="form-control form-control-lg form-control-solid-bg" value="${product.productLink}" placeholder="ex) https://www.youtube.com/watch?v=0X_Df4qvN-M" readonly/>
+                                                                    <!--begin::Row-->
+                                                                    <div class="row">
+                                                                        <!--begin::Col-->
+                                                                        <div class="col-lg-6">
+                                                                            <input type="text" name="productNameKo" class="form-control form-control-lg form-control-solid-bg" placeholder="국문" value="${product.productNameKo}" disabled/>
+                                                                        </div>
+                                                                        <!--end::Col-->
+                                                                        <!--begin::Col-->
+                                                                        <div class="col-lg-6">
+                                                                            <input type="text" name="productNameEn" class="form-control form-control-lg form-control-solid-bg" placeholder="영문" value="${product.productNameEn}" disabled/>
+                                                                        </div>
+                                                                        <!--end::Col-->
+                                                                    </div>
+                                                                    <!--end::Row-->
                                                                 </div>
                                                                 <!--end::Col-->
                                                             </div>
                                                             <!--end::Input group-->
+
+                                                            <!--begin::Input group-->
+                                                            <div class="row mb-6">
+                                                                <!--begin::Label-->
+                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">수량</label>
+                                                                <!--end::Label-->
+                                                                <!--begin::Col-->
+                                                                <div class="col-lg-10">
+                                                                    <input type="text" name="productQty" class="form-control form-control-lg form-control-solid-bg" value="${product.productQty}" placeholder="수량" readonly/>
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Input group-->
+
+                                                            <!--begin::Input group-->
+                                                            <div class="row mb-6">
+                                                                <!--begin::Label-->
+                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제조사(브랜드)</label>
+                                                                <!--end::Label-->
+                                                                <!--begin::Col-->
+                                                                <div class="col-lg-10">
+                                                                    <input type="text" name="productBrand" class="form-control form-control-lg form-control-solid-bg" value="${product.productBrand}" placeholder="제조사(브랜드)" readonly/>
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Input group-->
+
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6">
                                                                 <!--begin::Label-->

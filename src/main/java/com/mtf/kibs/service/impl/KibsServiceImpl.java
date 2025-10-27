@@ -507,16 +507,79 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processUpdateExhibitorNewBooth(ExhibitorNewDTO exhibitorNewDTO) {
+    public ResponseDTO processUpdateExhibitorNewBooth(ExhibitorNewDTO participantData) {
         System.out.println("KibsServiceImpl > processUpdateExhibitorNewBooth : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
 
         try {
+
+            // 1. DB에서 현재 업체의 전체 정보(특히 '특별 할인' 정보)를 조회합니다.
+            ExhibitorNewDTO currentData = kibsMapper.selectExhibitorNewInvoiceDetail(participantData.getSeq());
+            if (currentData == null) {
+                throw new Exception("참가업체 정보를 찾을 수 없습니다.");
+            }
+
+            // 2. 참가자가 보낸 새로운 '기본' 정보들을 가져옵니다.
+            int newBoothPrcSum = participantData.getBoothPrcSum() != null ? participantData.getBoothPrcSum() : 0;
+            int newBasicDiscountSum = participantData.getDiscountPrcSum() != null ? participantData.getDiscountPrcSum() : 0;
+
+            // 3. DB에 저장된 '유틸리티비'와 '선금' 정보를 가져옵니다.
+            int utilityPrcSum = currentData.getUtilityPrcSum() != null ? currentData.getUtilityPrcSum() : 0;
+            int depositAmount = currentData.getDeposit() != null ? Integer.parseInt(currentData.getDeposit()) : 0;
+
+            // 4. DB에 저장된 '특별 할인' 정보를 기준으로 특별 할인액을 재계산합니다.
+            int specialDiscountTotal = 0;
+            // 특별 할인 계산 기준 금액 = (새 부스비 + 유틸리티비) - 새 기본할인액
+            int baseAmountForSpecial = newBoothPrcSum + utilityPrcSum - newBasicDiscountSum;
+
+            if (currentData.isDiscountSpecial1Yn()) { // DB에 저장된 값
+                specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
+            }
+            if (currentData.isDiscountSpecial2Yn()) { // DB에 저장된 값
+                specialDiscountTotal += currentData.getDiscountSpecial2Amount();
+            }
+            if (currentData.isDiscountSpecial3Yn()) { // DB에 저장된 값
+                specialDiscountTotal += currentData.getDiscountSpecial3Amount();
+            }
+
+            // 5. '발전기금'을 재계산합니다. (참가자가 보낸 '협회할인' 체크 여부 기준)
+            int developmentFund = 0;
+            if ("Y".equals(participantData.getMemberCompanyYn()) || Boolean.TRUE.equals(participantData.getDiscountLeisure())) {
+                developmentFund = (int) Math.floor(newBoothPrcSum * 0.1);
+            }
+
+            // 6. 모든 금액을 최종적으로 재계산합니다.
+            int newTotalDiscountSum = newBasicDiscountSum + specialDiscountTotal;
+            int newPrcSum = (newBoothPrcSum + utilityPrcSum + developmentFund) - newTotalDiscountSum;
+            int newPrcVat = (int) Math.floor(newPrcSum * 0.1);
+            int newPrcTotal = newPrcSum + newPrcVat;
+            int newBalance = newPrcTotal - depositAmount;
+
+            // 7. 참가자가 보낸 DTO에, 서버에서 새로 계산한 최종 금액들을 덮어씁니다.
+            participantData.setDiscountPrcSum(newTotalDiscountSum);
+            participantData.setPrcSum(newPrcSum);
+            participantData.setPrcVat(newPrcVat);
+            participantData.setPrcTotal(newPrcTotal);
+            participantData.setBalance(String.valueOf(newBalance));
+
+            // 8. [핵심] DB에 저장된 '특별 할인' 정보를 참가자 DTO에 다시 덮어써서 보존합니다.
+            participantData.setDiscountSpecial1Yn(currentData.isDiscountSpecial1Yn());
+            participantData.setDiscountSpecial1Note(currentData.getDiscountSpecial1Note());
+            participantData.setDiscountSpecial2Yn(currentData.isDiscountSpecial2Yn());
+            participantData.setDiscountSpecial2Reason(currentData.getDiscountSpecial2Reason());
+            participantData.setDiscountSpecial2Amount(currentData.getDiscountSpecial2Amount());
+            participantData.setDiscountSpecial2Note(currentData.getDiscountSpecial2Note());
+            participantData.setDiscountSpecial3Yn(currentData.isDiscountSpecial3Yn());
+            participantData.setDiscountSpecial3Reason(currentData.getDiscountSpecial3Reason());
+            participantData.setDiscountSpecial3Amount(currentData.getDiscountSpecial3Amount());
+            participantData.setDiscountSpecial3Note(currentData.getDiscountSpecial3Note());
+
+            // 9. 최종본 DTO를 DB에 업데이트합니다.
             String note = "step2_1";
-            exhibitorNewDTO.setNote(note);
-            Integer step2_1_ex_result = kibsMapper.updateExhibitorNewBooth(exhibitorNewDTO);
+            participantData.setNote(note);
+            Integer step2_1_ex_result = kibsMapper.updateExhibitorNewBooth(participantData);
 
         } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;

@@ -2497,6 +2497,8 @@ if (document.documentElement) {
                                                 <!--end::Table-->
                                             </div>
                                             <!--begin::Table container-->
+                                            <input type="hidden" id="standAloneBoothCnt_hidden" value="${info.standAloneBoothCnt}" />
+                                            <input type="hidden" id="assemblyBoothCnt_hidden" value="${info.assemblyBoothCnt}" />
                                             <div class="table-responsive mt-5">
                                                 <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
                                                     <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
@@ -2510,66 +2512,66 @@ if (document.documentElement) {
                                                     </thead>
                                                     <tbody>
                                                         <tr class="text-center align-middle">
-                                                            <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountEarly1}">checked</c:if> disabled></td>
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountEarly1" data-discount="300000" <c:if test="${info.discountEarly1}">checked</c:if> disabled></td>
                                                             <td rowspan="2">조기신청 할인</td>
                                                             <td>(1차) 조기신청 할인 (~2025.11.14 금)</td>
                                                             <td>300,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
-                                                            <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountEarly2}">checked</c:if> disabled></td>
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountEarly2" data-discount="200000" <c:if test="${info.discountEarly2}">checked</c:if> disabled></td>
                                                             <td>(2차) 조기신청 할인 (~2025.12.12 금)</td>
                                                             <td>200,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
-                                                            <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale1}">checked</c:if> disabled></td>
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale1" data-discount="400000" <c:if test="${info.discountScale1}">checked</c:if> disabled></td>
                                                             <td rowspan="6">규모 할인</td>
                                                             <td>10부스 이상 참가업체</td>
                                                             <td>400,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
-                                                            <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale2}">checked</c:if> disabled></td>
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale2" data-discount="650000" <c:if test="${info.discountScale2}">checked</c:if> disabled></td>
                                                             <td>20부스 이상 참가업체</td>
                                                             <td>650,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
-                                                            <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale3}">checked</c:if> disabled></td>
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale3" data-discount="750000" <c:if test="${info.discountScale3}">checked</c:if> disabled></td>
                                                             <td>30부스 이상 참가업체</td>
                                                             <td>750,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
-                                                            <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale4}">checked</c:if> disabled></td>
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale4" data-discount="800000" <c:if test="${info.discountScale4}">checked</c:if> disabled></td>
                                                             <td>40부스 이상 참가업체</td>
                                                             <td>800,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
-                                                            <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale5}">checked</c:if> disabled></td>
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale5" data-discount="850000" <c:if test="${info.discountScale5}">checked</c:if> disabled></td>
                                                             <td>50부스 이상 참가업체</td>
                                                             <td>850,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
-                                                            <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountScale6}">checked</c:if> disabled></td>
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale6" data-discount="900000" <c:if test="${info.discountScale6}">checked</c:if> disabled></td>
                                                             <td>100부스 이상 참가업체</td>
                                                             <td>900,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
-                                                            <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountRe}">checked</c:if> disabled></td>
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountRe" data-discount="200000" <c:if test="${info.discountRe}">checked</c:if> disabled></td>
                                                             <td>재참가 할인</td>
                                                             <td>2015년 ~ 2025년 참가 업체</td>
                                                             <td>200,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
-                                                            <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountFirstUnder10}">checked</c:if> disabled></td>
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountFirstUnder10" data-discount="500000" <c:if test="${info.discountFirstUnder10}">checked</c:if> disabled></td>
                                                             <td rowspan="2">첫참가 할인</td>
                                                             <td>최초 참가업체 (10부스 미만 참가)</td>
                                                             <td>500,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
-                                                            <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountFirstOver10}">checked</c:if> disabled></td>
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountFirstOver10" data-discount="300000" <c:if test="${info.discountFirstOver10}">checked</c:if> disabled></td>
                                                             <td>최초 참가업체 (10부스 이상 참가)</td>
                                                             <td>300,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
-                                                            <td><input type="checkbox" class="form-check-input" <c:if test="${info.discountLeisure}">checked</c:if> disabled></td>
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountLeisure" data-discount="200000" <c:if test="${info.discountLeisure}">checked</c:if> disabled></td>
                                                             <td>협회 할인</td>
                                                             <td>한국해양레저산업협회 회원사</td>
                                                             <td>200,000 원</td>

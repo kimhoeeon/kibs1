@@ -706,6 +706,13 @@
         WHERE seq = #{seq}
     </update>
 
+    <select id="selectExhibitorNewInvoiceDetail" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.selectExhibitorNewInvoiceDetail */
+        SELECT *
+        FROM exhibitor_new
+        WHERE seq = #{value}
+    </select>
+
     <update id="updateExhibitorNewMaritime" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.KibsMapper.updateExhibitorNewMaritime */
         UPDATE exhibitor_new

@@ -61,36 +61,51 @@ $(function(){
 
     // 2. 특별 할인 항목들의 변경을 감지하여 '계산서'를 다시 계산하는 함수
     function recalculateFinalTotal() {
-        const boothSum = parseInt($('#baseBoothSum').val()) || 0;
+        const boothSumOnly = parseInt($('#baseBoothSum').val()) || 0;
         const utilitySum = parseInt($('#baseUtilitySum').val()) || 0;
-        const basicDiscountSum = parseInt($('#baseDiscountSum').val()) || 0;
 
-        // --- 발전기금 계산 로직 ---
-        let developmentFund = 0;
-        // 2. 협회 회원사('Y')이거나, 협회 할인 체크박스가 체크되어 있는지 확인
-        const isMember = $('body').data('member-yn') === 'Y'; // body 태그에 data-member-yn="Y/N" 추가 필요
-        const isLeisureDiscountChecked = $('#discountLeisure').is(':checked'); // 협회 할인 체크박스 ID
+        // 2. 기본 할인액 재계산 (JSP의 체크박스 상태와 부스 수량을 기반으로)
+        let recalculatedBasicDiscountSum = 0;
+        const standAloneQty = parseInt($('#standAloneBoothCnt_hidden').val()) || 0;
+        const assemblyQty = parseInt($('#assemblyBoothCnt_hidden').val()) || 0;
+        const physicalBooths = standAloneQty + assemblyQty;
 
-        if (isMember || isLeisureDiscountChecked) {
-            // 부스 총액(boothPrcSum)의 10%를 발전기금으로 계산
-            developmentFund = Math.floor(boothSum * 0.1);
-        }
+        // '.basic-discount' 클래스를 가진 체크된 모든 기본 할인 항목을 순회
+        $('input.basic-discount:checked').each(function() {
+            const discountPerBooth = parseInt($(this).data('discount')) || 0;
+            recalculatedBasicDiscountSum += (physicalBooths * discountPerBooth);
+        });
 
-        // 3. 특별 할인 총액을 계산합니다.
+        // 3. 특별 할인액 계산
         let specialDiscountTotal = 0;
-        const baseAmountForSpecial = boothSum + utilitySum - basicDiscountSum;
+        // 특별 할인 계산 기준 금액 = (부스금액합계 + 유틸리티 총액) - 재계산된 기본할인액
+        const baseAmountForSpecial = boothSumOnly + utilitySum - recalculatedBasicDiscountSum;
 
+        // 올해의 제품상(50%) 할인 계산
         if ($('#discountSpecial1Yn').is(':checked')) {
+            // 50% 할인은 유틸리티를 포함한 금액에서 기본 할인을 제외한 금액을 기준으로 계산
             specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
         }
+
+        // 기타 특별 할인(고정 금액) 계산
         $('.special-discount-amount').each(function() {
             if ($(this).closest('tr').find('.special-discount-checkbox').is(':checked')) {
                 specialDiscountTotal += parseInt($(this).val().replace(/,/g, '')) || 0;
             }
         });
 
-        // 4. 최종 금액들을 발전기금을 포함하여 재계산합니다.
-        const subtotal = (boothSum + utilitySum + developmentFund) - (basicDiscountSum + specialDiscountTotal);
+        // 4. 발전기금 계산
+        let developmentFund = 0;
+        const isMember = $('body').data('member-yn') === 'Y';
+        const isLeisureDiscountChecked = $('#discountLeisure').is(':checked'); // 협회할인 체크박스 ID 확인
+        if (isMember || isLeisureDiscountChecked) {
+            // 발전기금 = (부스 금액 합계)의 10% (등록비 제외 기준)
+            developmentFund = Math.floor(boothSumOnly * 0.1);
+        }
+
+        // 5. 최종 금액 계산
+        // 공급가액 = (부스금액합계(등록비포함) + 유틸리티 + 발전기금) - (재계산된 기본할인 + 특별할인)
+        const subtotal = (boothSumOnly + utilitySum + developmentFund) - (recalculatedBasicDiscountSum + specialDiscountTotal);
         const vat = Math.floor(subtotal * 0.1);
         const finalTotal = subtotal + vat;
 

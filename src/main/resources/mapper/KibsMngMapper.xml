@@ -1989,7 +1989,6 @@
             discount_special_3_reason = #{discountSpecial3Reason},
             discount_special_3_amount = #{discountSpecial3Amount},
             discount_special_3_note   = #{discountSpecial3Note},
-            discount_prc_sum          = #{discountPrcSum},
             prc_sum                   = #{prcSum},
             prc_vat                   = #{prcVat},
             prc_total                 = #{prcTotal},
@@ -6025,16 +6024,20 @@
     <select id="selectExcelPassDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.PassDetailDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExcelPassDetailList */
         SELECT e.company_name_ko                                    as companyNameKo,
+               e.company_name_en                                    as companyNameEn,
                e.name                                               as representativeName,
                e.phone                                              as representativePhone,
                e.approval_status                                    as approvalStatus,
                e.init_regi_dttm                                     as initRegiDttm,
                p.pass_name                                          as passName,
+               p.pass_first_name                                    as passFirstName,
+               p.pass_last_name                                     as passLastName,
+               p.pass_position_en                                   as passPositionEn,
                p.pass_position_ko                                   as passPositionKo,
                (SELECT COUNT(*) FROM pass_new WHERE ex_seq = e.seq) as passTotalCount
         FROM pass_new p
         JOIN exhibitor_new e
-            ON p.ex_seq = e.seq
+        ON p.ex_seq = e.seq
         WHERE e.transfer_year = #{transferYear}
         ORDER BY e.company_name_ko ASC, p.seq ASC
     </select>

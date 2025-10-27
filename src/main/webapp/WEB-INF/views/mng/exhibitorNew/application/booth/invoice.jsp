@@ -83,7 +83,7 @@
                 <div class="info">
                     <div class="secr">2026 경기국제보트쇼 사무국</div>
                     <div>경기도 고양시 일산서구 킨텍스로 217-60 킨텍스 제1전시장</div>
-                    <div>전화 : 031-995-8780/8777</div>
+                    <div>전화 : 031-995-8788/8777</div>
                     <div>팩스 : 031-995-8091</div>
                 </div>
                 <div class="issue">
@@ -230,15 +230,6 @@
                             </tr>
                         </c:if>
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="5" class="none"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="none"></td><th>참가비 합계</th>
-                            <td class="text-r total"><fmt:formatNumber value="${exhibitorNewInfo.boothPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
             <!-- table -->
@@ -328,7 +319,7 @@
                             <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 200000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountSpecial1Yn}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
                         <tr><td>${discountIdx-1}</td><td>특별 할인: 올해의 제품상</td><td colspan="2">공급가액의 50%</td>
-                            <c:set var="baseAmountForSpecial" value="${exhibitorNewInfo.boothPrcSum + exhibitorNewInfo.utilityPrcSum - exhibitorNewInfo.discountPrcSum}" />
+                            <c:set var="baseAmountForSpecial" value="${exhibitorNewInfo.boothPrcSum - exhibitorNewInfo.discountPrcSum}" />
                             <td class="text-r">- <fmt:formatNumber value="${baseAmountForSpecial * 0.5}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountSpecial2Yn}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
                         <tr><td>${discountIdx-1}</td><td>특별 할인: ${exhibitorNewInfo.discountSpecial2Reason}</td><td colspan="2">${exhibitorNewInfo.discountSpecial2Note}</td>
@@ -343,6 +334,8 @@
         </div>
         <!-- //box -->
 
+        <c:set var="boothTotalPrcSum" value="${exhibitorNewInfo.boothPrcSum - exhibitorNewInfo.discountPrcSum}"/>
+
         <div class="cont_box">
             <div class="table">
                 <table class="total_sum">
@@ -354,23 +347,28 @@
                     <tbody>
                         <tr>
                             <td class="none"></td>
+                            <th>참가비 합계</th>
+                            <td class="text-r sub_total"><fmt:formatNumber value="${exhibitorNewInfo.boothPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        </tr>
+                        <tr>
+                            <td class="none"></td>
                             <th>할인 총액</th>
                             <td class="text-r sub_total">- <fmt:formatNumber value="${exhibitorNewInfo.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         </tr>
                         <tr>
                             <td class="none"></td>
                             <th>공급가액 (Sub Total)</th>
-                            <td class="text-r sub_total"><fmt:formatNumber value="${exhibitorNewInfo.prcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                            <td class="text-r sub_total"><fmt:formatNumber value="${boothTotalPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         </tr>
                         <tr>
                             <td class="none"></td>
                             <th>부가세 (V.A.T)</th>
-                            <td class="text-r sub_total"><fmt:formatNumber value="${exhibitorNewInfo.prcVat}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                            <td class="text-r sub_total"><fmt:formatNumber value="${boothTotalPrcSum * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         </tr>
                         <tr>
                             <td class="none"></td>
                             <th>최종 합계 (Total)</th>
-                            <td class="text-r final_total"><fmt:formatNumber value="${exhibitorNewInfo.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                            <td class="text-r final_total"><fmt:formatNumber value="${boothTotalPrcSum + (boothTotalPrcSum * 0.1)}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         </tr>
                     </tbody>
                 </table>
@@ -401,7 +399,7 @@
                     <tr>
                         <td>참가비</td>
                         <%-- DB에 저장된 최종 금액 사용 --%>
-                        <td class="final_total"><fmt:formatNumber value="${exhibitorNewInfo.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        <td class="final_total"><fmt:formatNumber value="${boothTotalPrcSum + (boothTotalPrcSum * 0.1)}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         <td style="color: red; font-size: 15px; font-weight: 700;">인보이스 발행일로부터 7일 이내</td>
                     </tr>
                     </tbody>
@@ -445,7 +443,7 @@
         <!-- box -->
         <div class="cont_box">
             <div class="cmnt">
-                <div>문의처 : 킨텍스 경기국제보트쇼 사무국 (Tel : 031-995-8780/8777) (E-mail : kibs@kintex.com)</div>
+                <div>문의처 : 킨텍스 경기국제보트쇼 사무국 (Tel : 031-995-8788/8777) (E-mail : kibs@kintex.com)</div>
                 <div>귀사의 관심과 참여에 깊은 감사 드립니다.</div>
                 <div>동 전시회를 통해 조기 목표하신 성과를 거양하시도록 최선을 다하겠습니다.</div>
             </div>

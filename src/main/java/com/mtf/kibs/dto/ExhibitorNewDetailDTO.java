@@ -8,49 +8,58 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ExhibitorNewDetailDTO {
+
+    // [수정] 생성자 추가 (transferYear를 받는 경우)
+    public ExhibitorNewDetailDTO(String transferYear) {
+        this.transferYear = transferYear;
+    }
+
+    // [추가] 기본 생성자
+    public ExhibitorNewDetailDTO() {
+    }
+
     private String seq;
     private String lang;
     private String boothType;
-    private String deposit; //선금
-    private String balance; //잔액
-    private String taxYn; //세금계산서 발행여부
-    private String transferYear; //연도
-    
+    private Integer deposit; // [수정] String -> Integer
+    private Integer balance; // [수정] String -> Integer
+    private String taxYn;
+    private String transferYear;
+
     /* 참가업체정보 */
-    private String participationStatus; //참가상태
-    private String approvalStatus; //승인여부
-    private String boothNum; //부스번호
-    private String id; //아이디
-    private String initRegiDttm; //최초 등록 일시
-    private String finalRegiDttm; //최종 변경 일시
-    private String prcYn; //입금현황
-    private String bpNum; //BP번호
-    private String contactWriter; //컨택내역-작성자
-    private String contactDate; //컨택내역-날짜
-    private String contactContent; //컨택내역-내용
-    private String referenceWriter; //참고사항-작성자
-    private String referenceDate; //참고사항-날짜
-    private String referenceContent; //참고사항-내용
-    private String companyLicenseNum; //사업자등록번호
-    private String companyNameKo; //회사명(국문)
-    private String companyNameEn; //회사명(영문)
-    private String companyAddress; //회사주소
-    private String companyAddressDetail; //회사상세주소
-    private String factoryAddress; //공장주소
-    private String factoryAddressDetail; //공장상세주소
-    private String companyCeo; //대표자명
-    private String companyTel; //전화
-    private String companyHomepage; //홈페이지
-    private String companyFax; //fax
-    private String industryPart; //산업분류
-    private String industryPartEtc; //산업분류기타
-    private String employeeCnt; //임직원수
-    private String companyLicense; //사업자등록증
-    private String prePartYear; //기참가년도
-    private String memberCompanyYn; //회원사여부
+    private String participationStatus;
+    private String approvalStatus;
+    private String boothNum;
+    private String id;
+    private String initRegiDttm;
+    private String finalRegiDttm;
+    private String prcYn;
+    private String bpNum;
+    private String contactWriter;
+    private String contactDate;
+    private String contactContent;
+    private String referenceWriter;
+    private String referenceDate;
+    private String referenceContent;
+    private String companyLicenseNum;
+    private String companyNameKo;
+    private String companyNameEn;
+    private String companyAddress;
+    private String companyAddressDetail;
+    private String factoryAddress;
+    private String factoryAddressDetail;
+    private String companyCeo;
+    private String companyTel;
+    private String companyHomepage;
+    private String companyFax;
+    private String industryPart;
+    private String industryPartEtc;
+    private Integer employeeCnt; // [수정] String -> Integer
+    private String companyLicense;
+    private String prePartYear;
+    private String memberCompanyYn;
 
     /* 담당자정보 */
-    //private List<ChargePersonDTO> chargePersonList;
     private String name;
     private String position;
     private String depart;
@@ -58,158 +67,178 @@ public class ExhibitorNewDetailDTO {
     private String phone;
     private String email;
     private String emailMarketingYn;
-    private String chargePersonName; //담당자명
-    private String chargePersonPosition; //직위
-    private String chargePersonDepart; //부서
-    private String chargePersonTel; //전화번호
-    private String chargePersonPhone; //휴대전화
-    private String chargePersonEmail; //이메일
+    private String chargePersonName;
+    private String chargePersonPosition;
+    private String chargePersonDepart;
+    private String chargePersonTel;
+    private String chargePersonPhone;
+    private String chargePersonEmail;
 
     /* 업체정보 */
-    private String companyIntroVideo; //회사소개영상
-    private String companyIntroKo; //회사소개(국문)
-    private String companyIntroEn; //회사소개(영문)
-    private String companyPurposeKo; //참가목적(국문)
-    private String companyPurposeEn; //참가목적(영문)
-    private String newItemIntroKo; //신제품(국문)
-    private String newItemIntroEn; //신제품(영문)
-    private String promotionPlan; //행사이벤트진행계획
+    private String companyIntroVideo;
+    private String companyIntroKo;
+    private String companyIntroEn;
+    private String companyPurposeKo;
+    private String companyPurposeEn;
+    private String newItemIntroKo;
+    private String newItemIntroEn;
+    private String promotionPlan;
+    private String companyOnlineViewYn;
 
-    private String companyOnlineViewYn; //온라인전시회노출여부
+    /* 해상전시회 */
+    private String maritimeExhibitionYn;
+    private Boolean maritimeExhibitionSea;
+    private Boolean maritimeExhibitionLand;
 
     /* 참가분야 */
-    private String fieldPart; //참가분야
+    private String fieldPart; // [참고] field_part (GROUP_CONCAT 대상 아님)
+    private String fieldParticipatory; // [추가] 참가행사
+    private String fieldParticipatory1; // [추가] 참가분야1
+    private String fieldParticipatory2; // [추가] 참가분야2
+    private String fieldParticipatory3; // [추가] 참가분야3
 
-    /* 제품 */
-    //private List<OnlineDTO> onlineList;
-    private String productOptionBig; //제품분류(대)
-    private String productOptionSmall; //제품분류(소)
-    private String productNameKo; //제품명(국문)
-    private String productNameEn; //제품명(영문)
-    private String productQty; //수량
-    private String productBrand; //브랜드(제조사)
-    private String productLength; //길이
-    private String productWidth; //너비
-    private String productHeight; //높이
-    private String productWeight; //중량
-    private String productMaterial; //소재
-    private String productYear; //연식
-    private String productIntroKo; //제품설명(국문)
-    private String productIntroEn; //제품설명(영문)
-    private String productLink; //제품영상
+    /* 제품 (GROUP_CONCAT 결과) */
+    private String productOptionBig;
+    private String productOptionSmall;
+    private String productNameKo;
+    private String productNameEn;
+    private String productQty;
+    private String productBrand;
+    private String productLength;
+    private String productWidth;
+    private String productHeight;
+    private String productWeight;
+    private String productMaterial;
+    private String productYear;
+    private String productIntroKo;
+    private String productIntroEn;
+    private String productLink;
 
     /* 기업뱃지 */
-    private String companyBadge; //기업뱃지
+    private String companyBadge;
 
-    /* 제품 정보 */
-    private String onlineOptionBig; //제품분류(대)
-    private String onlineOptionSmall; //제품분류(소)
-    private String onlineNameKo; //제품명(국문)
-    private String onlineNameEn; //제품명(영문)
-    private String onlineIntroKo; //제품설명(국문)
-    private String onlineIntroEn; //제품설명(영문)
-    private String onlineLink; //제품영상
-    private String onlineLength; //길이
-    private String onlineWidth; //너비
-    private String onlineHeight; //높이
-    private String onlineWeight; //중량
-    private String onlineMaterial; //소재
-    private String onlineYear; //연식
+    /* 온라인 제품 정보 (GROUP_CONCAT 결과) */
+    private String onlineOptionBig;
+    private String onlineOptionSmall;
+    private String onlineNameKo;
+    private String onlineNameEn;
+    private String onlineIntroKo;
+    private String onlineIntroEn;
+    private String onlineLink;
+    private String onlineLength;
+    private String onlineWidth;
+    private String onlineHeight;
+    private String onlineWeight;
+    private String onlineMaterial;
+    private String onlineYear;
 
     /* 참가업체정보 */
-    private String exportMeetingYn; //수출상담회 참가희망여부
+    private String exportMeetingYn;
 
     /* 전시부스 신청 */
-    private Integer registrationCnt; //등록수량
-    private Integer standAloneBoothCnt; //독립부스 신청수량
-    private Integer assemblyBoothCnt; //조립부스 신청수량
-    private Integer onlineBoothCnt; //온라인부스 신청수량
-    private Boolean discountEarly1; //1차조기신청
-    private Boolean discountEarly2; //2차조기신청
-    private Boolean discountFirstUnder10; //첫참가할인(10부스미만)
-    private Boolean discountFirstOver10; //첫참가할인(10부스이상)
-    private Boolean discountFirst; //첫참가할인
-    private Boolean discountRe; //재참가할인
-    private Boolean discountScale1; //규모할인1(10부스이상)
-    private Boolean discountScale2; //규모할인2(20부스이상)
-    private Boolean discountScale3; //규모할인3(30부스이상)
-    private Boolean discountScale4; //규모할인4(40부스이상)
-    private Boolean discountScale5; //규모할인5(50부스이상)
-    private Boolean discountScale6; //규모할인6(100부스이상)
-    private Boolean discountLeisure; //한국해양레저산업협회할인
+    private Integer registrationCnt;
+    private Integer registrationFee; // [추가] 등록비 금액
+    private Integer standAloneBoothCnt;
+    private Integer standAloneBoothFee; // [추가] 독립부스 금액
+    private Integer assemblyBoothCnt;
+    private Integer assemblyBoothFee; // [추가] 조립부스 금액
+    private Integer onlineBoothCnt;
+    private Integer onlineBoothFee; // [추가] 온라인부스 금액
+    private Boolean discountEarly1;
+    private Boolean discountEarly2;
+    private Boolean discountFirstUnder10;
+    private Boolean discountFirstOver10;
+    private Boolean discountFirst;
+    private Boolean discountRe;
+    private Boolean discountScale1;
+    private Boolean discountScale2;
+    private Boolean discountScale3;
+    private Boolean discountScale4;
+    private Boolean discountScale5;
+    private Boolean discountScale6;
+    private Boolean discountLeisure;
+    private String discountYn; // [추가] 할인적용 여부
+    private String discountType; // [추가] 할인 타입 문자열
 
     /* 상호간판 */
-    private String companySignNameKo; //상호간판명(국문)
-    private String companySignNameEn; //상호간판명(영문)
+    private String companySignNameKo;
+    private String companySignNameEn;
 
     /* 유틸리티 신청 */
-    private Integer utilityJuganCnt; //주간단상 220v 수량
-    private Integer utilityDayCnt; //24시간용 220v 수량
-    private Integer utilityCompressedAirCnt; //압축공기 기본형 수량
-    private Integer utilityWaterBasicCnt; //급배수 기본형 수량
-    private Integer utilityTelephoneCnt; //전화(국내용) 수량
-    private Integer utilityInternetCnt; //인터넷 수량
-    private Integer utilityPytexNewCnt; //파이텍스 신품 수량
-    private Integer utilityPytexReCnt; //파이텍스 재사용품 수량
-    private Integer utilityBarcodeCnt; //바코드 리더기 수량
+    private Integer utilityJuganCnt;
+    private Integer utilityJuganFee; // [추가]
+    private Integer utilityDayCnt;
+    private Integer utilityDayFee; // [추가]
+    private Integer utilityCompressedAirCnt;
+    private Integer utilityCompressedAirFee; // [추가]
+    private Integer utilityWaterBasicCnt;
+    private Integer utilityWaterBasicFee; // [추가]
+    private Integer utilityTelephoneCnt;
+    private Integer utilityInternetCnt;
+    private Integer utilityInternetFee; // [추가]
+    private Integer utilityPytexNewCnt;
+    private Integer utilityPytexNewFee; // [추가]
+    private Integer utilityPytexReCnt;
+    private Integer utilityPytexReFee; // [추가]
+    private Integer utilityBarcodeCnt;
+    private Integer utilityBarcodeFee; // [추가]
 
-    /* 출입증 신청 */
-    //private List<PassDTO> passList;
-    private String passName; //출입증 성명(국문)
-    private String passLastName; //출입증 성(영문)
-    private String passFirstName; //출입증 이름(영문)
-    private String passPositionKo; //직책(국문)
-    private String passPositionEn; //직책(영문)
-    private String passNote; //출입증 비고
+    /* 출입증 신청 (GROUP_CONCAT 결과) */
+    private String passName;
+    private String passLastName;
+    private String passFirstName;
+    private String passPositionKo;
+    private String passPositionEn;
+    private String passNote;
 
-    /* 바이어 등록 정보 */
-    //private List<BuyerDTO> buyerList;
-    private String buyerCompanyName; //회사명
-    private String buyerCompanyCountry; //국가
-    private String buyerCompanyLocation; //소재지
-    private String buyerCompanyHomepage; //홈페이지
-    private String buyerCompanyDepart; //부서
-    private String buyerCompanyPosition; //직책
-    private String buyerCompanyEmail; //이메일
-    private String buyerCompanyTel; //전화번호
-    private String buyerCompanyPhone; //휴대전화
-    private String buyerCompanyFax; //팩스
-    private String buyerCompanyItem; //취급품목
-    private String buyerCompanyInviteReason; //초청사유
-    private String buyerCompanyProgressYn; //계약진행여부
-    private String buyerCompanyHope; //희망사항
+    /* 바이어 등록 정보 (GROUP_CONCAT 결과) */
+    private String buyerCompanyName;
+    private String buyerCompanyCountry;
+    private String buyerCompanyLocation;
+    private String buyerCompanyHomepage;
+    private String buyerCompanyDepart;
+    private String buyerCompanyPosition;
+    private String buyerCompanyEmail;
+    private String buyerCompanyTel;
+    private String buyerCompanyPhone;
+    private String buyerCompanyFax;
+    private String buyerCompanyItem;
+    private String buyerCompanyInviteReason;
+    private String buyerCompanyProgressYn;
+    private String buyerCompanyHope;
 
-    /* 경품제공 신청 */
-    //private List<GiftDTO> giftList;
-    private String giftGbn; //경품구분
-    private String giftCnt; //경품수량
-    private String giftClassify; //분류
-    private String giftName; //품목명
-    private String giftContent; //경품설명
-    private String giftPhoto; //경품사진
-    private String giftCompanyLogo; //회사로고
-    private String giftPrice; //소비자가
-    private String giftSponsorPrice; //협찬가
-    private String giftNote; //경품비고
+    /* 경품제공 신청 (GROUP_CONCAT 결과) */
+    private String giftGbn;
+    private String giftCnt;
+    private String giftClassify;
+    private String giftName;
+    private String giftContent;
+    private String giftPhoto;
+    private String giftCompanyLogo;
+    private String giftPrice;
+    private String giftSponsorPrice;
+    private String giftNote;
 
+    /* 금액 합계 */
     private Integer boothPrcSum;
     private Integer discountPrcSum;
     private Integer utilityPrcSum;
-
-    // 최종 계산 금액
     private Integer prcSum;
     private Integer prcVat;
     private Integer prcTotal;
 
+    /* 기타 */
+    private String note; // [추가]
+
     // 특별 할인
-    private boolean discountSpecial1Yn;
+    private Boolean discountSpecial1Yn; // [수정] boolean -> Boolean
     private String  discountSpecial1Note;
-    private boolean discountSpecial2Yn;
+    private Boolean discountSpecial2Yn; // [수정] boolean -> Boolean
     private String  discountSpecial2Reason;
-    private int     discountSpecial2Amount;
+    private Integer discountSpecial2Amount; // [수정] int -> Integer
     private String  discountSpecial2Note;
-    private boolean discountSpecial3Yn;
+    private Boolean discountSpecial3Yn; // [수정] boolean -> Boolean
     private String  discountSpecial3Reason;
-    private int     discountSpecial3Amount;
+    private Integer discountSpecial3Amount; // [수정] int -> Integer
     private String  discountSpecial3Note;
 }

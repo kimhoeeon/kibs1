@@ -47,7 +47,7 @@
     <div class="floating">
         <ul class="floating_r">
             <%--<li>
-                <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8780/8777');">
+                <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8788/8777');">
                     <div class="icon"><img src="/img/icon_floating25_reg.png"></div>
                     <div class="txt">
                         <span>Exhibitor</span><br>

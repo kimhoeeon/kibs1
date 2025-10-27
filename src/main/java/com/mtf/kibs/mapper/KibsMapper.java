@@ -321,4 +321,6 @@ public interface KibsMapper {
     String getExhibitorNewRepEmail(ExhibitorNewDTO exhibitorNewDTO);
 
     Integer updateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO);
+
+    ExhibitorNewDTO selectExhibitorNewInvoiceDetail(String seq);
 }

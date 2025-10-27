@@ -3523,23 +3523,34 @@ public class KibsMngServiceImpl implements KibsMngService {
         }
 
         // 2. 기본 금액들을 가져옵니다.
-        int boothPrcSum = currentData.getBoothPrcSum(); // 부스비 총액
-        int utilityPrcSum = currentData.getUtilityPrcSum(); // 유틸리티 총액
-        int basicDiscountSum = currentData.getDiscountPrcSum(); // 기본 할인 총액
+        int boothPrcSum = currentData.getBoothPrcSum() != null ? currentData.getBoothPrcSum() : 0;
+        int utilityPrcSum = currentData.getUtilityPrcSum() != null ? currentData.getUtilityPrcSum() : 0;
+        int physicalBooths = (currentData.getStandAloneBoothCnt() != null ? currentData.getStandAloneBoothCnt() : 0) +
+                (currentData.getAssemblyBoothCnt() != null ? currentData.getAssemblyBoothCnt() : 0);
 
-        int developmentFund = 0;
-        // 3. 해양레저산업협회 회원사('Y')일 경우, 발전기금을 계산합니다.
-        if ("Y".equals(currentData.getMemberCompanyYn()) || Boolean.TRUE.equals(currentData.getDiscountLeisure())) {
-            developmentFund = (int) Math.floor(boothPrcSum * 0.1);
-        }
+        // --- ▼▼▼ [핵심 수정] 기본 할인액을 DB값이 아닌, 원본 데이터 기준으로 재계산 ▼▼▼ ---
+        int recalculatedBasicDiscountSum = 0;
+        if (Boolean.TRUE.equals(currentData.getDiscountEarly1())) recalculatedBasicDiscountSum += physicalBooths * 300000;
+        if (Boolean.TRUE.equals(currentData.getDiscountEarly2())) recalculatedBasicDiscountSum += physicalBooths * 200000;
+        if (Boolean.TRUE.equals(currentData.getDiscountScale1())) recalculatedBasicDiscountSum += physicalBooths * 400000;
+        if (Boolean.TRUE.equals(currentData.getDiscountScale2())) recalculatedBasicDiscountSum += physicalBooths * 650000;
+        if (Boolean.TRUE.equals(currentData.getDiscountScale3())) recalculatedBasicDiscountSum += physicalBooths * 750000;
+        if (Boolean.TRUE.equals(currentData.getDiscountScale4())) recalculatedBasicDiscountSum += physicalBooths * 800000;
+        if (Boolean.TRUE.equals(currentData.getDiscountScale5())) recalculatedBasicDiscountSum += physicalBooths * 850000;
+        if (Boolean.TRUE.equals(currentData.getDiscountScale6())) recalculatedBasicDiscountSum += physicalBooths * 900000;
+        if (Boolean.TRUE.equals(currentData.getDiscountRe())) recalculatedBasicDiscountSum += physicalBooths * 200000;
+        if (Boolean.TRUE.equals(currentData.getDiscountFirstUnder10())) recalculatedBasicDiscountSum += physicalBooths * 500000;
+        if (Boolean.TRUE.equals(currentData.getDiscountFirstOver10())) recalculatedBasicDiscountSum += physicalBooths * 300000;
+        if (Boolean.TRUE.equals(currentData.getDiscountLeisure())) recalculatedBasicDiscountSum += physicalBooths * 200000;
+        // --- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ ---
 
-        // 4. '특별 할인 적용 전 공급가액'을 계산합니다.
-        int baseAmount = boothPrcSum + utilityPrcSum - basicDiscountSum;
+        // 3. '특별 할인 적용 전 공급가액'을 계산합니다.
+        int baseAmountForSpecial = boothPrcSum + utilityPrcSum - recalculatedBasicDiscountSum;
 
-        // 5. 화면에서 넘어온 데이터를 기반으로 '특별 할인액'을 계산합니다.
+        // 4. 화면에서 넘어온 데이터를 기반으로 '특별 할인액'을 계산합니다.
         int specialDiscountTotal = 0;
         if (specialDiscountData.isDiscountSpecial1Yn()) {
-            specialDiscountTotal += Math.floor(baseAmount * 0.5);
+            specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
         }
         if (specialDiscountData.isDiscountSpecial2Yn()) {
             specialDiscountTotal += specialDiscountData.getDiscountSpecial2Amount();
@@ -3548,23 +3559,27 @@ public class KibsMngServiceImpl implements KibsMngService {
             specialDiscountTotal += specialDiscountData.getDiscountSpecial3Amount();
         }
 
-        // 6. 모든 금액을 최종적으로 재계산합니다. (발전기금 포함)
-        int newTotalDiscountSum = basicDiscountSum + specialDiscountTotal;
+        // 5. 발전기금을 계산합니다.
+        int developmentFund = 0;
+        if ("Y".equals(currentData.getMemberCompanyYn()) || Boolean.TRUE.equals(currentData.getDiscountLeisure())) {
+            developmentFund = (int) Math.floor(boothPrcSum * 0.1);
+        }
+
+        // 6. 모든 금액을 최종적으로 재계산합니다.
+        int newTotalDiscountSum = recalculatedBasicDiscountSum + specialDiscountTotal;
         int newPrcSum = (boothPrcSum + utilityPrcSum + developmentFund) - newTotalDiscountSum;
         int newPrcVat = (int) Math.floor(newPrcSum * 0.1);
         int newPrcTotal = newPrcSum + newPrcVat;
 
-        int depositAmount = currentData.getDeposit() != null ? Integer.parseInt(currentData.getDeposit()) : 0;
-
-        // 6-2. 새로운 잔액을 계산합니다. (잔액 = 최종 합계 - 선금)
-        int newBalance = newPrcTotal - depositAmount;
-
-        // 7. DTO에 재계산된 금액들을 담습니다.
-        specialDiscountData.setDiscountPrcSum(newTotalDiscountSum);
+        // 7. DTO에 재계산된 값들을 담아 DB에 업데이트합니다.
+        specialDiscountData.setDiscountPrcSum(recalculatedBasicDiscountSum);
         specialDiscountData.setPrcSum(newPrcSum);
         specialDiscountData.setPrcVat(newPrcVat);
         specialDiscountData.setPrcTotal(newPrcTotal);
-        specialDiscountData.setBalance(String.valueOf(newBalance));
+
+        // 잔액(balance)도 함께 재계산
+        int depositAmount = currentData.getDeposit() != null ? Integer.parseInt(currentData.getDeposit()) : 0;
+        specialDiscountData.setBalance(String.valueOf(newPrcTotal - depositAmount));
 
         // 8. 확장된 UPDATE 쿼리를 호출하여 DB에 모든 정보를 한번에 저장합니다.
         return kibsMngMapper.updateExhibitorNewSpecialDiscount(specialDiscountData);

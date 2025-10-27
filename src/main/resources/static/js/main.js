@@ -1035,7 +1035,7 @@ function f_pw_init(){
                         Swal.fire({
                             icon: 'info',
                             title: '[ 회원 정보 ]',
-                            html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소로 메일 전송이 실패하였습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 031-995-8780/8777</span>',
+                            html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소로 메일 전송이 실패하였습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 031-995-8788/8777</span>',
                             allowOutsideClick: false,
                             confirmButtonColor: '#00a8ff',
                             confirmButtonText: '확인'
@@ -1046,7 +1046,7 @@ function f_pw_init(){
                     Swal.fire({
                         icon: 'info',
                         title: '[ 회원 정보 ]',
-                        html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소가 없습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 031-995-8780/8777</span>',
+                        html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소가 없습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 031-995-8788/8777</span>',
                         allowOutsideClick: false,
                         confirmButtonColor: '#00a8ff',
                         confirmButtonText: '확인'
@@ -2430,7 +2430,7 @@ function step_2_1_check(exhibitorSeq){
     const standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val()) || 0;
     const assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val()) || 0;
     const onlineBoothCnt = parseInt($('#onlineBoothCnt').val()) || 0;
-    const physicalBooths = standAloneBoothCnt + assemblyBoothCnt;
+    const physicalBooths = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
 
     const standAloneBoothFee = standAloneBoothCnt * boothPrices.standAlone;
     const assemblyBoothFee = assemblyBoothCnt * boothPrices.assembly;
@@ -2474,8 +2474,8 @@ function step_2_1_check(exhibitorSeq){
         discountType = discountType.substring(1);
     }
 
-    // --- 3. [신규] 발전기금 계산 ---
-    let developmentFund = 0;
+    // --- 3. 발전기금 계산 (참가자가 보는 화면 계산용) ---
+    /*let developmentFund = 0;
     const isMember = $('#memberCompanyYn').val() === 'Y';
     const isLeisureDiscountChecked = $('#discountLeisure').is(':checked');
     if (isMember || isLeisureDiscountChecked) {
@@ -2486,7 +2486,7 @@ function step_2_1_check(exhibitorSeq){
     // 공급가액 = ((부스총액 + 발전기금) - 할인총액) + 유틸리티총액
     const prcSum = ((boothPrcSum + developmentFund) - discountPrcSum) + utilityPrcSum;
     const prcVat = Math.floor(prcSum * 0.1);
-    const prcTotal = prcSum + prcVat;
+    const prcTotal = prcSum + prcVat;*/
 
     // --- 5. 유효성 검사 및 서버 전송 데이터 구성 ---
     const totalBooths = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
@@ -2508,7 +2508,6 @@ function step_2_1_check(exhibitorSeq){
         assemblyBoothFee: assemblyBoothFee,
         onlineBoothCnt: onlineBoothCnt,
         onlineBoothFee: onlineBoothFee,
-        // 각 할인 항목의 선택 여부(true/false)를 전송
         discountEarly1: $('#discountEarly1').is(':checked'),
         discountEarly2: $('#discountEarly2').is(':checked'),
         discountFirstUnder10: $('#discountFirstUnder10').is(':checked'),
@@ -2523,10 +2522,10 @@ function step_2_1_check(exhibitorSeq){
         discountLeisure: $('#discountLeisure').is(':checked'),
         discountYn: (discountType !== '') ? 'Y' : 'N',
         boothPrcSum: boothPrcSum,
-        discountPrcSum: discountPrcSum,
+        discountPrcSum: discountPrcSum/*,
         prcSum: prcSum,
         prcVat: prcVat,
-        prcTotal: prcTotal
+        prcTotal: prcTotal*/
     };
 
     let resData = ajaxConnect('/apply/step/updateExhibitorNewBooth.do', 'post', booth_json_obj);
@@ -5385,7 +5384,7 @@ function my_step_2_1_check(exhibitorSeq){
     const standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val()) || 0;
     const assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val()) || 0;
     const onlineBoothCnt = parseInt($('#onlineBoothCnt').val()) || 0;
-    const physicalBooths = standAloneBoothCnt + assemblyBoothCnt;
+    const physicalBooths = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
 
     const standAloneBoothFee = standAloneBoothCnt * boothPrices.standAlone;
     const assemblyBoothFee = assemblyBoothCnt * boothPrices.assembly;
@@ -5429,8 +5428,8 @@ function my_step_2_1_check(exhibitorSeq){
         discountType = discountType.substring(1);
     }
 
-    // --- 3. [신규] 발전기금 계산 ---
-    let developmentFund = 0;
+    // --- 3. 발전기금 계산 (참가자가 보는 화면 계산용) ---
+    /*let developmentFund = 0;
     const isMember = $('#memberCompanyYn').val() === 'Y';
     const isLeisureDiscountChecked = $('#discountLeisure').is(':checked');
     if (isMember || isLeisureDiscountChecked) {
@@ -5441,7 +5440,7 @@ function my_step_2_1_check(exhibitorSeq){
     // 공급가액 = ((부스총액 + 발전기금) - 할인총액) + 유틸리티총액
     const prcSum = ((boothPrcSum + developmentFund) - discountPrcSum) + utilityPrcSum;
     const prcVat = Math.floor(prcSum * 0.1);
-    const prcTotal = prcSum + prcVat;
+    const prcTotal = prcSum + prcVat;*/
 
     // --- 5. 유효성 검사 및 서버 전송 데이터 구성 ---
     const totalBooths = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
@@ -5477,16 +5476,13 @@ function my_step_2_1_check(exhibitorSeq){
         discountLeisure: $('#discountLeisure').is(':checked'),
         discountYn: (discountType !== '') ? 'Y' : 'N',
         boothPrcSum: boothPrcSum,
-        discountPrcSum: discountPrcSum,
+        discountPrcSum: discountPrcSum/*,
         prcSum: prcSum,
         prcVat: prcVat,
-        prcTotal: prcTotal
+        prcTotal: prcTotal*/
     };
 
     let resData = ajaxConnect('/apply/step/updateExhibitorNewBooth.do', 'post', booth_json_obj);
-
-    let returnPath = "";
-    //console.log(resData);
     if(resData.resultCode === "0") {
 
         Swal.fire({

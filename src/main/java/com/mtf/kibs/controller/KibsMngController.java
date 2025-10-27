@@ -1138,11 +1138,11 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
-            InvoiceBoothDTO invoiceInfo = kibsMngService.processSelectInvoiceBoothSingle(seq);
-            mv.addObject("invoiceInfo", invoiceInfo);
+            /*InvoiceBoothDTO invoiceInfo = kibsMngService.processSelectInvoiceBoothSingle(seq);
+            mv.addObject("invoiceInfo", invoiceInfo);*/
 
             ExhibitorNewDTO exhibitorNewDTO = new ExhibitorNewDTO();
-            exhibitorNewDTO.setSeq(invoiceInfo.getExhibitorSeq());
+            exhibitorNewDTO.setSeq(seq);
             ExhibitorNewDTO exhibitorNewInfo = kibsMngService.processSelectExhibitorNewSingle(exhibitorNewDTO);
             mv.addObject("exhibitorNewInfo", exhibitorNewInfo);
         }
@@ -4336,17 +4336,18 @@ public class KibsMngController {
         String fileName = req.getParameter("fileName");
         String transferYear = req.getParameter("transferYear");
 
-        // [수정] XSSFWorkbook 대신 SXSSFWorkbook 사용
+        // XSSFWorkbook 대신 SXSSFWorkbook 사용
         try (SXSSFWorkbook workbook = new SXSSFWorkbook()) {
 
-            // [최종 수정] 모든 컬럼명이 포함된 헤더 배열
+            // 모든 컬럼명이 포함된 헤더 배열
             final String[] colNames_ex = {
-                    /* 업체정보 (31) */ "No", "참가상태", "승인구분", "부스번호", "아이디", "등록일", "최종수정일", "참가비수납여부", "BP번호", "컨택내역-작성자", "컨택내역-날짜", "컨택내역-내용", "참고사항-작성자", "참고사항-날짜", "참고사항-내용", "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소", "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "임직원 수", "기참가연도", "회원사 여부",
-                    /* 대표담당자 (7) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "E-mail 마케팅정보 수신동의",
-                    /* 담당자 1~3 (18) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
-                    /* 업체소개 (8) */ "회사소개영상", "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)", "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
-                    /* 참가분야 (10) */ "보트&요트", "무동력보트", "워크보트", "해양부품&장비", "안전&마리나", "해양관광", "해양레저", "수중레저", "서핑", "카라반&캠핑",
-                    /* 전시품 1~20 (200) */ "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
+                    /* 업체정보 (30개) */ "No", "참가상태", "승인구분", "부스번호", "아이디", "등록일", "최종수정일", "참가비수납여부", "BP번호", "컨택내역-작성자", "컨택내역-날짜", "컨택내역-내용", "참고사항-작성자", "참고사항-날짜", "참고사항-내용", "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소", "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "기참가연도", "회원사 여부",
+                    /* 대표담당자 (6개) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
+                    /* 담당자 1~3 (18개) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
+                    /* 업체소개 (8개) */ "회사소개영상", "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)", "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
+                    /* 참가분야 (10개) */ "참가행사", "보트&요트", "무동력보트", "워크보트", "해양부품&장비", "안전&마리나", "해양관광", "해양레저", "수중레저", "서핑",
+                    /* 해상전시회 (2개) */ "참가여부", "참가구분",
+                    /* 전시품 1~20 (200개) */ "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 기업뱃지 (4) */ "보트쇼 3회 이상 참가", "올해의 제품상 수상", "보트쇼와 제작한 영상", "제품 등록 우수",
                     /* 온라인 제품 1~30 (330) */ "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 신청내역 (31) */ "수출상담회 참가희망여부", "등록비", "독립부스", "조립부스", "온라인부스", "총 부스 수", "1차 조기신청", "2차 조기신청", "첫 참가(10부스 미만)", "첫 참가(10부스 이상)", "재참가", "규모(10+)", "규모(20+)", "규모(30+)", "규모(40+)", "규모(50+)", "규모(100+)", "협회할인", "협회 발전기금", "특할1(제품상)", "특할1 비고", "특할2 사유", "특할2 금액", "특할2 비고", "특할3 사유", "특할3 금액", "특할3 비고", "소계(공급가액)", "부가세", "총계"
@@ -4366,17 +4367,18 @@ public class KibsMngController {
             int rowCnt = 0;
 
             Row headerRow = sheet.createRow(rowCnt++);
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 30));   headerRow.createCell(0).setCellValue("참가업체정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 31, 37));  headerRow.createCell(31).setCellValue("대표 담당자");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 38, 55));  headerRow.createCell(38).setCellValue("기타 담당자 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 56, 63));  headerRow.createCell(56).setCellValue("업체정보(소개)");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 64, 73));  headerRow.createCell(64).setCellValue("참가분야");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 74, 273)); headerRow.createCell(74).setCellValue("전시품 신청");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 29));   headerRow.createCell(0).setCellValue("참가업체정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 30, 35));  headerRow.createCell(30).setCellValue("대표 담당자");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 36, 53));  headerRow.createCell(36).setCellValue("기타 담당자 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 54, 61));  headerRow.createCell(54).setCellValue("업체정보(소개)");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 62, 71));  headerRow.createCell(62).setCellValue("참가분야");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 72, 73));  headerRow.createCell(72).setCellValue("해상전시회");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 74, 273)); headerRow.createCell(74).setCellValue("전시품 정보");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 274, 277)); headerRow.createCell(274).setCellValue("기업 뱃지");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 278, 607)); headerRow.createCell(278).setCellValue("온라인 제품 정보");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 608, 637)); headerRow.createCell(608).setCellValue("신청내역");
 
-            for(int i=0; i < 638; i++){
+            for(int i=0; i < colNames_ex.length; i++){
                 if(headerRow.getCell(i) == null) headerRow.createCell(i);
                 headerRow.getCell(i).setCellStyle(headerStyle);
             }
@@ -4404,12 +4406,13 @@ public class KibsMngController {
                 cellCnt = writeOtherContactsInfo(dataRow, cellCnt, info);
                 cellCnt = writeCompanyIntroInfo(dataRow, cellCnt, info);
                 cellCnt = writeParticipationFields(dataRow, cellCnt, info);
+                cellCnt = writeMaritimeExhibitionInfo(dataRow, cellCnt, info);
                 cellCnt = writeExhibitionItems(dataRow, cellCnt, info);
                 cellCnt = writeCompanyBadges(dataRow, cellCnt, info);
                 cellCnt = writeOnlineProducts(dataRow, cellCnt, info);
                 cellCnt = writeApplicationDetails(dataRow, cellCnt, info, df);
 
-                for(int i=0; i < cellCnt; i++){
+                for(int i=0; i < colNames_ex.length; i++){
                     Cell cell = dataRow.getCell(i);
                     if (cell == null) {
                         cell = dataRow.createCell(i);
@@ -4486,7 +4489,7 @@ public class KibsMngController {
                 row.createCell(0).setCellValue(u[0]); row.createCell(1).setCellValue(u[1]); row.createCell(2).setCellValue(u[2]); row.createCell(3).setCellValue(u[3]);
             }
 
-            // [최종 수정] 유틸리티 셀 병합 로직 수정
+            // 유틸리티 셀 병합 로직 수정
             sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow, utilityStartRow + 1, 0, 0)); // 파이텍스
             sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow + 2, utilityStartRow + 3, 0, 0)); // 전기
             sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow + 5, utilityStartRow + 6, 0, 0)); // 급배수 및 압축공기
@@ -4547,7 +4550,6 @@ public class KibsMngController {
         dataRow.createCell(cellCnt++).setCellValue(info.getCompanyFax());
         dataRow.createCell(cellCnt++).setCellValue(info.getIndustryPart());
         dataRow.createCell(cellCnt++).setCellValue(info.getIndustryPartEtc());
-        dataRow.createCell(cellCnt++).setCellValue(info.getEmployeeCnt() != null ? String.valueOf(info.getEmployeeCnt()) : "");
         dataRow.createCell(cellCnt++).setCellValue(info.getPrePartYear());
         dataRow.createCell(cellCnt++).setCellValue(info.getMemberCompanyYn());
         return cellCnt;
@@ -4560,7 +4562,6 @@ public class KibsMngController {
         dataRow.createCell(cellCnt++).setCellValue(info.getTel());
         dataRow.createCell(cellCnt++).setCellValue(info.getPhone());
         dataRow.createCell(cellCnt++).setCellValue(info.getEmail());
-        dataRow.createCell(cellCnt++).setCellValue("N".equals(info.getEmailMarketingYn()) ? "미동의" : "동의");
         return cellCnt;
     }
 
@@ -4594,18 +4595,61 @@ public class KibsMngController {
         return cellCnt;
     }
 
+    // 헬퍼 메소드 (참가 분야)
+    private String checkField(String fieldName, String f1, String f2, String f3) {
+        if (fieldName.equals(f1) || fieldName.equals(f2) || fieldName.equals(f3)) {
+            return "O";
+        }
+        return "";
+    }
+
     private int writeParticipationFields(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
-        String fieldPart = info.getFieldPart() != null ? info.getFieldPart().replaceAll(" ","") : "";
-        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("보트&요트") ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("무동력보트") ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("워크보트") ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("해양부품&장비") ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("안전&마리나") ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("해양관광") ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("해양레저") ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("수중레저") ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("서핑") ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(fieldPart.contains("카라반&캠핑") ? "O" : "");
+        String eventType = info.getFieldParticipatory();
+        String eventName = ""; // 기본값
+
+        if ("boatShow".equals(eventType)) {
+            eventName = "경기국제보트쇼";
+        } else if ("surfShow".equals(eventType)) {
+            eventName = "코리아서프쇼";
+        } else if ("travelShow".equals(eventType)) {
+            eventName = "해양관광전";
+        } else if (eventType != null) {
+            eventName = eventType; // 혹시 모를 다른 값은 그대로 출력
+        }
+
+        dataRow.createCell(cellCnt++).setCellValue(eventName); // 참가행사
+        String f1 = info.getFieldParticipatory1();
+        String f2 = info.getFieldParticipatory2();
+        String f3 = info.getFieldParticipatory3();
+        dataRow.createCell(cellCnt++).setCellValue(checkField("보트&요트", f1, f2, f3));
+        dataRow.createCell(cellCnt++).setCellValue(checkField("무동력보트", f1, f2, f3));
+        dataRow.createCell(cellCnt++).setCellValue(checkField("워크보트", f1, f2, f3));
+        dataRow.createCell(cellCnt++).setCellValue(checkField("해양부품&장비", f1, f2, f3));
+        dataRow.createCell(cellCnt++).setCellValue(checkField("안전&마리나", f1, f2, f3));
+        dataRow.createCell(cellCnt++).setCellValue(checkField("해양관광", f1, f2, f3));
+        dataRow.createCell(cellCnt++).setCellValue(checkField("해양레저", f1, f2, f3));
+        dataRow.createCell(cellCnt++).setCellValue(checkField("수중레저", f1, f2, f3));
+        dataRow.createCell(cellCnt++).setCellValue(checkField("서핑", f1, f2, f3));
+        return cellCnt;
+    }
+
+    private int writeMaritimeExhibitionInfo(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
+        // 1. 참가여부
+        dataRow.createCell(cellCnt++).setCellValue("Y".equals(info.getMaritimeExhibitionYn()) ? "참가" : "미참가");
+
+        // 2. 참가구분
+        boolean sea = Boolean.TRUE.equals(info.getMaritimeExhibitionSea());
+        boolean land = Boolean.TRUE.equals(info.getMaritimeExhibitionLand());
+        String participationType = "";
+        if (sea) {
+            participationType += "해상 전시 (시승체험)";
+        }
+        if (land) {
+            if (sea) participationType += "\n"; // 엑셀에서 줄바꿈은 \n
+            participationType += "육상 전시";
+        }
+        dataRow.createCell(cellCnt++).setCellValue(participationType);
+
         return cellCnt;
     }
 
@@ -4703,22 +4747,29 @@ public class KibsMngController {
         if ("Y".equals(info.getMemberCompanyYn()) && info.getBoothPrcSum() != null) {
             dataRow.createCell(cellCnt++).setCellValue(df.format(info.getBoothPrcSum() * 0.1) + " 원");
         } else {
-            dataRow.createCell(cellCnt++).setCellValue("0 원");
+            dataRow.createCell(cellCnt++).setCellValue("");
         }
 
-        dataRow.createCell(cellCnt++).setCellValue(info.isDiscountSpecial1Yn() ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial1Yn() ? "O" : "");
         dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial1Note());
         dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Reason());
-        dataRow.createCell(cellCnt++).setCellValue(info.isDiscountSpecial2Yn() ? df.format(info.getDiscountSpecial2Amount()) + " 원" : "");
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Yn() ? df.format(info.getDiscountSpecial2Amount()) + " 원" : "");
         dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Note());
         dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Reason());
-        dataRow.createCell(cellCnt++).setCellValue(info.isDiscountSpecial3Yn() ? df.format(info.getDiscountSpecial3Amount()) + " 원" : "");
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Yn() ? df.format(info.getDiscountSpecial3Amount()) + " 원" : "");
         dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Note());
 
         dataRow.createCell(cellCnt++).setCellValue(info.getPrcSum() != null ? df.format(info.getPrcSum()) + " 원" : "0 원");
         dataRow.createCell(cellCnt++).setCellValue(info.getPrcVat() != null ? df.format(info.getPrcVat()) + " 원" : "0 원");
         dataRow.createCell(cellCnt++).setCellValue(info.getPrcTotal() != null ? df.format(info.getPrcTotal()) + " 원" : "0 원");
         return cellCnt;
+    }
+
+    private String convertValue(String[] split, int index) {
+        if (split != null && index < split.length && split[index] != null) {
+            return split[index];
+        }
+        return "";
     }
 
     @RequestMapping(value = "/mng/exhibitor/transfer/download.do", method = RequestMethod.GET)
@@ -7655,15 +7706,15 @@ public class KibsMngController {
             Row mainHeaderRow = sheet.createRow(0);
             mainHeaderRow.createCell(0).setCellValue("기본정보");
             mainHeaderRow.createCell(5).setCellValue("출입증신청");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 4)); // A2~E2
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 7)); // F2~H2
-            for(int i=0; i<8; i++){
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 7)); // A1~H1
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 10)); // I1~K1
+            for(int i=0; i<11; i++){
                 if(mainHeaderRow.getCell(i) == null) mainHeaderRow.createCell(i);
                 mainHeaderRow.getCell(i).setCellStyle(mainHeaderStyle);
             }
 
             // --- 2행: 서브 헤더 생성 ---
-            String[] headers = {"번호", "회사명", "담당자명", "직책", "연락처", "인원", "등록일시", "신청여부"};
+            String[] headers = {"번호", "회사명(국문)", "회사명(영문)", "담당자명(국문)", "담당자명(영문)", "직책(국문)", "직책(영문)", "연락처", "인원", "신청여부", "등록일시"};
             Row subHeaderRow = sheet.createRow(1);
             for(int i=0; i<headers.length; i++) {
                 Cell cell = subHeaderRow.createCell(i);
@@ -7680,23 +7731,30 @@ public class KibsMngController {
                 for (int i = 0; i < passList.size(); i++) {
                     PassDetailDTO pass = passList.get(i);
                     Row row = sheet.createRow(rowNum++);
+                    int cellCnt = 0;
 
-                    row.createCell(0).setCellValue(i + 1);
-                    row.createCell(1).setCellValue(pass.getCompanyNameKo());
-                    row.createCell(2).setCellValue(pass.getPassName());
-                    row.createCell(3).setCellValue(pass.getPassPositionKo());
-                    row.createCell(4).setCellValue(pass.getRepresentativePhone());
-                    row.createCell(5).setCellValue(pass.getPassTotalCount());
-                    row.createCell(6).setCellValue(pass.getInitRegiDttm() != null ? pass.getInitRegiDttm().substring(0, 10) : "");
+                    row.createCell(cellCnt++).setCellValue(i + 1); // 0. 번호
+                    row.createCell(cellCnt++).setCellValue(pass.getCompanyNameKo()); // 1. 회사명(국문)
+                    row.createCell(cellCnt++).setCellValue(pass.getCompanyNameEn()); // 2. 회사명(영문)
+                    row.createCell(cellCnt++).setCellValue(pass.getPassName()); // 3. 담당자명(국문)
+                    row.createCell(cellCnt++).setCellValue(pass.getPassLastName() + " " + pass.getPassFirstName()); // 4. 담당자명(영문)
+                    row.createCell(cellCnt++).setCellValue(pass.getPassPositionKo()); // 5. 직책(국문)
+                    row.createCell(cellCnt++).setCellValue(pass.getPassPositionEn()); // 6. 직책(영문)
+                    row.createCell(cellCnt++).setCellValue(pass.getRepresentativePhone()); // 7. 연락처
+                    row.createCell(cellCnt++).setCellValue(pass.getPassTotalCount()); // 8. 인원
 
                     String passName = pass.getPassName();
                     boolean isApplied = (passName != null && !passName.trim().isEmpty());
-                    row.createCell(7).setCellValue(isApplied ? "신청" : "미신청");
+                    row.createCell(cellCnt++).setCellValue(isApplied ? "신청" : "미신청"); // 9. 신청여부
+
+                    row.createCell(cellCnt++).setCellValue(pass.getInitRegiDttm() != null ? pass.getInitRegiDttm().substring(0, 10) : ""); // 10. 등록일시
 
                     // 모든 셀에 스타일 적용
                     for (int j = 0; j < headers.length; j++) {
                         Cell cell = row.getCell(j);
-                        if (j == 1) { // 회사명만 왼쪽 정렬
+                        if (cell == null) cell = row.createCell(j); // [추가] 빈 셀 생성
+
+                        if (j == 1 || j == 2) { // 회사명(국문), 회사명(영문)만 왼쪽 정렬
                             cell.setCellStyle(bodyLeftStyle);
                         } else {
                             cell.setCellStyle(bodyCenterStyle);
@@ -7705,15 +7763,18 @@ public class KibsMngController {
                 }
             }
 
-            // --- 컬럼 너비 설정 ---
+            // --- 컬럼 너비 설정 (11개 컬럼 기준으로 수정) ---
             sheet.setColumnWidth(0, 1500);  // 번호
-            sheet.setColumnWidth(1, 8000);  // 회사명
-            sheet.setColumnWidth(2, 4000);  // 담당자명
-            sheet.setColumnWidth(3, 4000);  // 직책
-            sheet.setColumnWidth(4, 5000);  // 연락처
-            sheet.setColumnWidth(5, 2000);  // 인원
-            sheet.setColumnWidth(6, 4000);  // 등록일시
-            sheet.setColumnWidth(7, 4000);  // 신청여부
+            sheet.setColumnWidth(1, 8000);  // 회사명(국문)
+            sheet.setColumnWidth(2, 8000);  // 회사명(영문)
+            sheet.setColumnWidth(3, 4000);  // 담당자명(국문)
+            sheet.setColumnWidth(4, 5000);  // 담당자명(영문)
+            sheet.setColumnWidth(5, 4000);  // 직책(국문)
+            sheet.setColumnWidth(6, 4000);  // 직책(영문)
+            sheet.setColumnWidth(7, 5000);  // 연락처
+            sheet.setColumnWidth(8, 2000);  // 인원
+            sheet.setColumnWidth(9, 4000);  // 신청여부
+            sheet.setColumnWidth(10, 4000); // 등록일시
 
             // --- 엑셀 파일 다운로드 ---
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -8169,13 +8230,6 @@ public class KibsMngController {
             // 에러 페이지로 리다이렉트 하거나, 적절한 에러 응답을 보낼 수 있습니다.
             res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-    }
-
-    private String convertValue(String[] split, int index) {
-        if (split != null && index < split.length && split[index] != null) {
-            return split[index];
-        }
-        return "";
     }
 
     /*********************** excel upload ***********************/
