@@ -2374,7 +2374,7 @@ if (document.documentElement) {
                                     <!--begin::Basic info-->
                                     <div class="card mb-5 mb-xl-10">
                                         <div class="card-body p-9">
-                                                <%-- JavaScript에서 계산을 위해 기본값들을 hidden 필드로 저장 --%>
+                                            <%-- JavaScript에서 계산을 위해 기본값들을 hidden 필드로 저장 --%>
                                             <input type="hidden" id="baseBoothSum" value="${info.boothPrcSum}" />
                                             <input type="hidden" id="baseUtilitySum" value="${info.utilityPrcSum}" />
                                             <input type="hidden" id="baseDiscountSum" value="${info.discountPrcSum}" />
@@ -2385,52 +2385,26 @@ if (document.documentElement) {
                                                 <table class="table table-row-bordered table-row-gray-300 gy-4">
                                                     <tbody>
                                                     <tr>
-                                                        <th class="text-gray-700 fw-semibold fs-6" style="width: 70%;">부스 총액</th>
-                                                        <td class="text-end fw-bold fs-6">
-                                                            <fmt:formatNumber value="${info.boothPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
                                                         <th class="text-gray-700 fw-semibold fs-6">유틸리티 총액</th>
-                                                        <td class="text-end fw-bold fs-6">
-                                                            + <fmt:formatNumber value="${info.utilityPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>
-                                                        </td>
-                                                    </tr>
-                                                    <c:if test="${info.memberCompanyYn == 'Y' || info.discountLeisure}">
-                                                        <tr id="developmentFundRow"> <%-- JS에서 제어할 수 있도록 id 추가 --%>
-                                                            <th class="text-gray-700 fw-semibold fs-6">한국해양레저산업협회 발전기금</th>
-                                                            <td id="summary_development_fund" class="text-end fw-bold fs-6">
-                                                                + ￦ 0
-                                                            </td>
-                                                        </tr>
-                                                    </c:if>
-                                                    <tr>
-                                                        <th class="text-gray-700 fw-semibold fs-6">기본 할인</th>
-                                                        <td class="text-end fw-bold fs-6 text-danger">
-                                                            - <fmt:formatNumber value="${info.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th class="text-gray-700 fw-semibold fs-6">특별 할인</th>
-                                                        <td id="summary_special_discount" class="text-end fw-bold fs-6 text-danger">
-                                                            - ￦ 0
+                                                        <td id="summary_utility_total" class="text-end fw-bold fs-6">
+                                                            <fmt:formatNumber value="${info.utilityPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>
                                                         </td>
                                                     </tr>
                                                     <tr class="border-top border-gray-300 border-top-dashed">
                                                         <th class="text-gray-800 fw-bolder fs-5">합계 (공급가액)</th>
-                                                        <td id="summary_subtotal" class="text-end fw-bolder fs-5">
+                                                        <td id="summary_utility_subtotal" class="text-end fw-bolder fs-5">
                                                             ￦ 0
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <th class="text-gray-800 fw-bolder fs-5">부가세 (VAT)</th>
-                                                        <td id="summary_vat" class="text-end fw-bolder fs-5">
+                                                        <td id="summary_utility_vat" class="text-end fw-bolder fs-5">
                                                             ￦ 0
                                                         </td>
                                                     </tr>
                                                     <tr class="bg-light-primary">
                                                         <th class="text-primary fw-bolder fs-4">최종 합계 (총액)</th>
-                                                        <td id="summary_final_total" class="text-end text-primary fw-bolder fs-4">
+                                                        <td id="summary_utility_final_total" class="text-end text-primary fw-bolder fs-4">
                                                             ￦ 0
                                                         </td>
                                                     </tr>
@@ -2449,8 +2423,8 @@ if (document.documentElement) {
                                                 <a href="/mng/exhibitorNew/application/utility.do" class="btn btn-info btn-active-light-info cursor-pointer">목록</a>
                                             </div>
                                             <div>
-                                                <button type="button" onclick="f_application_utility_new_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger">변경내용취소</button>
-                                                <button type="button" id="saveSpecialDiscountBtn" class="btn btn-primary btn-active-light-primary ms-2 me-2">변경내용저장</button>
+                                                <%--<button type="button" onclick="f_application_utility_new_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger">변경내용취소</button>
+                                                <button type="button" id="saveSpecialDiscountBtn" class="btn btn-primary btn-active-light-primary ms-2 me-2">변경내용저장</button>--%>
                                                 <button type="button" class="btn btn-dark btn-active-light-dark" data-bs-toggle="modal" data-bs-target="#kt_modal_create_invoice">인보이스 생성</button>
                                             </div>
                                         </div>

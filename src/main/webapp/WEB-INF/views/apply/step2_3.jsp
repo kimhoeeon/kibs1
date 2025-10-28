@@ -178,10 +178,6 @@
                             </ul>
                         </div>
 
-                        <input type="hidden" id="boothPrcSum" value="${info.boothPrcSum}"/>
-                        <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}"/>
-                        <input type="hidden" id="discountPrcSum" value="${info.discountPrcSum}"/>
-
                         <!-- 유틸리티 신청정보 -->
                         <div class="form_wrap">
                             <div class="form_tit">

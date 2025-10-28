@@ -1,5 +1,5 @@
 $(function(){
-    // --- [신규] 페이지 로드 시 맨 아래로 스크롤하는 로직 ---
+    // --- 페이지 로드 시 맨 아래로 스크롤하는 로직 ---
     if (sessionStorage.getItem('scrollToBottom') === 'true') {
         // 애니메이션 효과와 함께 페이지 맨 아래로 부드럽게 스크롤
         $('html, body').animate({ scrollTop: $(document).height() }, "slow");
@@ -61,59 +61,64 @@ $(function(){
 
     // 2. 특별 할인 항목들의 변경을 감지하여 '계산서'를 다시 계산하는 함수
     function recalculateFinalTotal() {
-        const boothSumOnly = parseInt($('#baseBoothSum').val()) || 0;
+        // --- 1. 기본 금액 정보 가져오기 ---
+        const boothSum = parseInt($('#baseBoothSum').val()) || 0;
         const utilitySum = parseInt($('#baseUtilitySum').val()) || 0;
+        const basicDiscountSum = parseInt($('#baseDiscountSum').val()) || 0;
 
-        // 2. 기본 할인액 재계산 (JSP의 체크박스 상태와 부스 수량을 기반으로)
-        let recalculatedBasicDiscountSum = 0;
-        const standAloneQty = parseInt($('#standAloneBoothCnt_hidden').val()) || 0;
-        const assemblyQty = parseInt($('#assemblyBoothCnt_hidden').val()) || 0;
-        const physicalBooths = standAloneQty + assemblyQty;
+        // --- 2. 전시부스 계산서 계산 ---
 
-        // '.basic-discount' 클래스를 가진 체크된 모든 기본 할인 항목을 순회
-        $('input.basic-discount:checked').each(function() {
-            const discountPerBooth = parseInt($(this).data('discount')) || 0;
-            recalculatedBasicDiscountSum += (physicalBooths * discountPerBooth);
-        });
+        // 2-1. 발전기금 계산
+        let developmentFund = 0;
+        const isMember = $('body').data('member-yn') === 'Y';
+        const isLeisureDiscountChecked = $('#discountLeisure').is(':checked'); // JSP 1단계에서 ID 추가 필요
 
-        // 3. 특별 할인액 계산
-        let specialDiscountTotal = 0;
-        // 특별 할인 계산 기준 금액 = (부스금액합계 + 유틸리티 총액) - 재계산된 기본할인액
-        const baseAmountForSpecial = boothSumOnly + utilitySum - recalculatedBasicDiscountSum;
-
-        // 올해의 제품상(50%) 할인 계산
-        if ($('#discountSpecial1Yn').is(':checked')) {
-            // 50% 할인은 유틸리티를 포함한 금액에서 기본 할인을 제외한 금액을 기준으로 계산
-            specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
+        if (isMember || isLeisureDiscountChecked) {
+            // 수정: 발전기금 = (부스 총액 - 기본 할인액) * 0.1
+            let baseAmountForFund = boothSum - basicDiscountSum;
+            // 음수 방지
+            if (baseAmountForFund < 0) {
+                baseAmountForFund = 0;
+            }
+            developmentFund = Math.floor(baseAmountForFund * 0.1);
         }
 
-        // 기타 특별 할인(고정 금액) 계산
+        // 2-2. 특별 할인 계산
+        let specialDiscountTotal = 0;
+        // 특별 할인 기준액에서 유틸리티 금액 제외
+        const baseAmountForSpecial = boothSum + utilitySum - basicDiscountSum;
+
+        if ($('#discountSpecial1Yn').is(':checked')) {
+            specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5); // 50% 할인
+        }
         $('.special-discount-amount').each(function() {
             if ($(this).closest('tr').find('.special-discount-checkbox').is(':checked')) {
                 specialDiscountTotal += parseInt($(this).val().replace(/,/g, '')) || 0;
             }
         });
 
-        // 4. 발전기금 계산
-        let developmentFund = 0;
-        const isMember = $('body').data('member-yn') === 'Y';
-        const isLeisureDiscountChecked = $('#discountLeisure').is(':checked'); // 협회할인 체크박스 ID 확인
-        if (isMember || isLeisureDiscountChecked) {
-            // 발전기금 = (부스 금액 합계)의 10% (등록비 제외 기준)
-            developmentFund = Math.floor(boothSumOnly * 0.1);
-        }
+        // 2-3. 전시부스 최종 금액 계산
+        const boothSubtotal = (boothSum + developmentFund) - (basicDiscountSum + specialDiscountTotal);
+        const boothVat = Math.floor(boothSubtotal * 0.1);
+        const boothFinalTotal = boothSubtotal + boothVat;
 
-        // 5. 최종 금액 계산
-        // 공급가액 = (부스금액합계(등록비포함) + 유틸리티 + 발전기금) - (재계산된 기본할인 + 특별할인)
-        const subtotal = (boothSumOnly + utilitySum + developmentFund) - (recalculatedBasicDiscountSum + specialDiscountTotal);
-        const vat = Math.floor(subtotal * 0.1);
-        const finalTotal = subtotal + vat;
-
-        $('#summary_development_fund').text('￦ ' + developmentFund.toLocaleString());
+        // 2-4. 전시부스 계산서 UI 업데이트
+        $('#summary_development_fund').text('+ ￦ ' + developmentFund.toLocaleString());
         $('#summary_special_discount').text('- ￦ ' + specialDiscountTotal.toLocaleString());
-        $('#summary_subtotal').text('￦ ' + subtotal.toLocaleString());
-        $('#summary_vat').text('￦ ' + vat.toLocaleString());
-        $('#summary_final_total').text('￦ ' + finalTotal.toLocaleString());
+        $('#summary_booth_subtotal').text('￦ ' + boothSubtotal.toLocaleString());
+        $('#summary_booth_vat').text('￦ ' + boothVat.toLocaleString());
+        $('#summary_booth_final_total').text('￦ ' + boothFinalTotal.toLocaleString());
+
+        // --- 3. 유틸리티 계산서 계산 ---
+        const utilitySubtotal = utilitySum;
+        const utilityVat = Math.floor(utilitySubtotal * 0.1);
+        const utilityFinalTotal = utilitySubtotal + utilityVat;
+
+        // 3-1. 유틸리티 계산서 UI 업데이트
+        $('#summary_utility_total').text('￦ ' + utilitySum.toLocaleString());
+        $('#summary_utility_subtotal').text('￦ ' + utilitySubtotal.toLocaleString());
+        $('#summary_utility_vat').text('￦ ' + utilityVat.toLocaleString());
+        $('#summary_utility_final_total').text('￦ ' + utilityFinalTotal.toLocaleString());
     }
 
     // 3. 특별 할인 관련 UI가 변경될 때마다 실시간으로 총액을 다시 계산

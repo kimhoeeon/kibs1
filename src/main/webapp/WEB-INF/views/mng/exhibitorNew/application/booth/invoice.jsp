@@ -236,7 +236,9 @@
         </div>
         <!-- //box -->
 
+        <c:set var="developmentFund" value="0"/>
         <c:if test="${exhibitorNewInfo.memberCompanyYn == 'Y'}">
+            <c:set var="developmentFund" value="${(exhibitorNewInfo.boothPrcSum - exhibitorNewInfo.discountPrcSum) * 0.1}"/>
             <div class="cont_box">
                 <div class="title">4. 한국해양레저산업협회 발전기금</div>
                 <div class="table">
@@ -256,7 +258,7 @@
                             <td>1</td>
                             <td>한국해양레저산업협회 발전기금 (참가비 합계의 10%)</td>
                             <td class="text-r">
-                                <fmt:formatNumber value="${exhibitorNewInfo.boothPrcSum * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                <fmt:formatNumber value="${(exhibitorNewInfo.boothPrcSum - exhibitorNewInfo.discountPrcSum) * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
                             </td>
                         </tr>
                         </tbody>
@@ -319,7 +321,7 @@
                             <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 200000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountSpecial1Yn}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
                         <tr><td>${discountIdx-1}</td><td>특별 할인: 올해의 제품상</td><td colspan="2">공급가액의 50%</td>
-                            <c:set var="baseAmountForSpecial" value="${exhibitorNewInfo.boothPrcSum - exhibitorNewInfo.discountPrcSum}" />
+                            <c:set var="baseAmountForSpecial" value="${exhibitorNewInfo.boothPrcSum + exhibitorNewInfo.utilityPrcSum - exhibitorNewInfo.discountPrcSum}" />
                             <td class="text-r">- <fmt:formatNumber value="${baseAmountForSpecial * 0.5}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountSpecial2Yn}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
                         <tr><td>${discountIdx-1}</td><td>특별 할인: ${exhibitorNewInfo.discountSpecial2Reason}</td><td colspan="2">${exhibitorNewInfo.discountSpecial2Note}</td>
@@ -334,7 +336,7 @@
         </div>
         <!-- //box -->
 
-        <c:set var="boothTotalPrcSum" value="${exhibitorNewInfo.boothPrcSum - exhibitorNewInfo.discountPrcSum}"/>
+        <c:set var="boothTotalPrcSum" value="${(exhibitorNewInfo.boothPrcSum + developmentFund) - (exhibitorNewInfo.discountPrcSum + ((baseAmountForSpecial * 0.5) + exhibitorNewInfo.discountSpecial2Amount + exhibitorNewInfo.discountSpecial3Amount))}"/>
 
         <div class="cont_box">
             <div class="table">
@@ -353,7 +355,7 @@
                         <tr>
                             <td class="none"></td>
                             <th>할인 총액</th>
-                            <td class="text-r sub_total">- <fmt:formatNumber value="${exhibitorNewInfo.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                            <td class="text-r sub_total">- <fmt:formatNumber value="${exhibitorNewInfo.discountPrcSum + ((baseAmountForSpecial * 0.5) + exhibitorNewInfo.discountSpecial2Amount + exhibitorNewInfo.discountSpecial3Amount)}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         </tr>
                         <tr>
                             <td class="none"></td>

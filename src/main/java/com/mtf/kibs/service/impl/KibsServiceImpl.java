@@ -547,7 +547,7 @@ public class KibsServiceImpl implements KibsService {
             // 5. '발전기금'을 재계산합니다. (참가자가 보낸 '협회할인' 체크 여부 기준)
             int developmentFund = 0;
             if ("Y".equals(participantData.getMemberCompanyYn()) || Boolean.TRUE.equals(participantData.getDiscountLeisure())) {
-                developmentFund = (int) Math.floor(newBoothPrcSum * 0.1);
+                developmentFund = (int) Math.floor((newBoothPrcSum - newBasicDiscountSum) * 0.1);
             }
 
             // 6. 모든 금액을 최종적으로 재계산합니다.
@@ -558,7 +558,7 @@ public class KibsServiceImpl implements KibsService {
             int newBalance = newPrcTotal - depositAmount;
 
             // 7. 참가자가 보낸 DTO에, 서버에서 새로 계산한 최종 금액들을 덮어씁니다.
-            participantData.setDiscountPrcSum(newTotalDiscountSum);
+            participantData.setDiscountPrcSum(newBasicDiscountSum);
             participantData.setPrcSum(newPrcSum);
             participantData.setPrcVat(newPrcVat);
             participantData.setPrcTotal(newPrcTotal);
@@ -642,16 +642,64 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public ResponseDTO processUpdateExhibitorNewUtility(ExhibitorNewDTO exhibitorNewDTO) {
+    public ResponseDTO processUpdateExhibitorNewUtility(ExhibitorNewDTO utilityData) {
         System.out.println("KibsServiceImpl > processUpdateExhibitorNewUtility : ======");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
 
         try {
+
+            // 1. DB에서 현재 업체의 전체 정보(부스비, 할인, 특별할인 등)를 조회합니다.
+            ExhibitorNewDTO currentData = kibsMapper.selectExhibitorNewInvoiceDetail(utilityData.getSeq());
+            if (currentData == null) {
+                throw new Exception("참가업체 정보를 찾을 수 없습니다.");
+            }
+
+            // 2. 참가자가 보낸 새로운 '유틸리티 총액'을 가져옵니다.
+            int newUtilityPrcSum = utilityData.getUtilityPrcSum() != null ? utilityData.getUtilityPrcSum() : 0;
+
+            // 3. DB에 저장된 '부스비'와 '기본 할인액' 정보를 가져옵니다.
+            int boothPrcSum = currentData.getBoothPrcSum() != null ? currentData.getBoothPrcSum() : 0;
+            int basicDiscountSum = currentData.getDiscountPrcSum() != null ? currentData.getDiscountPrcSum() : 0;
+            int depositAmount = currentData.getDeposit() != null ? Integer.parseInt(currentData.getDeposit()) : 0;
+
+            // 4. DB에 저장된 '특별 할인' 정보를 기준으로 특별 할인액을 재계산합니다.
+            int specialDiscountTotal = 0;
+            int baseAmountForSpecial = boothPrcSum + newUtilityPrcSum - basicDiscountSum; // 특별할인 기준액 = (부스비 + 유틸리티비) - 기본할인액
+
+            if (currentData.isDiscountSpecial1Yn()) { // DB 값
+                specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
+            }
+            if (currentData.isDiscountSpecial2Yn()) { // DB 값
+                specialDiscountTotal += currentData.getDiscountSpecial2Amount();
+            }
+            if (currentData.isDiscountSpecial3Yn()) { // DB 값
+                specialDiscountTotal += currentData.getDiscountSpecial3Amount();
+            }
+
+            // 5. '발전기금'을 재계산합니다. (DB의 협회 정보 기준)
+            int developmentFund = 0;
+            if ("Y".equals(currentData.getMemberCompanyYn()) || Boolean.TRUE.equals(currentData.getDiscountLeisure())) {
+                developmentFund = (int) Math.floor((boothPrcSum - basicDiscountSum) * 0.1);
+            }
+
+            // 6. 모든 금액을 최종적으로 재계산합니다.
+            int newTotalDiscountSum = basicDiscountSum + specialDiscountTotal;
+            int newPrcSum = (boothPrcSum + newUtilityPrcSum + developmentFund) - newTotalDiscountSum;
+            int newPrcVat = (int) Math.floor(newPrcSum * 0.1);
+            int newPrcTotal = newPrcSum + newPrcVat;
+            int newBalance = newPrcTotal - depositAmount;
+
+            // 7. 참가자가 보낸 DTO(utilityData)에, 서버에서 새로 계산한 최종 금액들을 덮어씁니다.
+            utilityData.setPrcSum(newPrcSum);
+            utilityData.setPrcVat(newPrcVat);
+            utilityData.setPrcTotal(newPrcTotal);
+            utilityData.setBalance(String.valueOf(newBalance));
+
             String note = "step2_3";
-            exhibitorNewDTO.setNote(note);
-            Integer step2_3_ex_result = kibsMapper.updateExhibitorNewUtility(exhibitorNewDTO);
+            utilityData.setNote(note);
+            Integer step2_3_ex_result = kibsMapper.updateExhibitorNewUtility(utilityData);
 
         } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;

@@ -194,7 +194,7 @@
                                                     <div class="cate">한국해양레저산업협회<br>발전기금</div>
                                                     <div class="amount">
                                                         <p class="price">
-                                                            <fmt:formatNumber value="${info.boothPrcSum * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                                            <fmt:formatNumber value="${(info.boothPrcSum - info.discountPrcSum) * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
                                                         </p>
                                                     </div>
                                                     <div class="note">
@@ -392,6 +392,17 @@
                                                 <div class="cate">협회 할인</div>
                                                 <div class="note">200,000 원</div>
                                                 <div class="discount">한국해양레저산업협회 회원사</div>
+
+                                                <%--<c:if test="${info.discountSpecial1Yn}">
+                                                    <div class="select">
+                                                        <label class="discount-item">
+                                                            <input type="checkbox" id="discountSpecial1" name="discount" data-discount="${(info.boothPrcSum - info.utilityPrcSum) * 0.5}" checked>
+                                                        </label>
+                                                    </div>
+                                                    <div class="cate">올해의 제품상 할인</div>
+                                                    <div class="note"><fmt:formatNumber value="${(info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum) * 0.5}" type="currency" maxFractionDigits="0" currencySymbol=""/> 원</div>
+                                                    <div class="discount">참가비 내역 합계(공급가)의 10%</div>
+                                                </c:if>--%>
                                             </li>
                                         </ul>
                                         <div style="margin-top: 10px;">※ 중복할인 가능</div>

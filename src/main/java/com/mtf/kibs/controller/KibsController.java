@@ -2156,6 +2156,9 @@ public class KibsController {
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exhibitorNewDTO);
             mv.addObject("giftList", giftList);
+            exhibitorNewDTO.setTransferYear(transferYear);
+            ExhibitorNewDTO exhibitorInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
+            mv.addObject("exhibitorInfo", exhibitorInfo);
         }else{
             session.invalidate(); //세션 초기화
         }

@@ -1138,11 +1138,11 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
-            /*InvoiceBoothDTO invoiceInfo = kibsMngService.processSelectInvoiceBoothSingle(seq);
-            mv.addObject("invoiceInfo", invoiceInfo);*/
+            InvoiceBoothDTO invoiceInfo = kibsMngService.processSelectInvoiceBoothSingle(seq);
+            mv.addObject("invoiceInfo", invoiceInfo);
 
             ExhibitorNewDTO exhibitorNewDTO = new ExhibitorNewDTO();
-            exhibitorNewDTO.setSeq(seq);
+            exhibitorNewDTO.setSeq(invoiceInfo.getExhibitorSeq());
             ExhibitorNewDTO exhibitorNewInfo = kibsMngService.processSelectExhibitorNewSingle(exhibitorNewDTO);
             mv.addObject("exhibitorNewInfo", exhibitorNewInfo);
         }
@@ -8318,7 +8318,7 @@ public class KibsMngController {
     }
 
     /**
-     * [신규] 생성된 PDF 파일 경로를 DB에 업데이트하는 API
+     * 생성된 PDF 파일 경로를 DB에 업데이트하는 API
      * - JavaScript의 createAndUploadPdfFromIframe 함수 성공 후 호출될 것으로 예상
      */
     @PostMapping("/mng/exhibitorNew/application/invoice/updateFilePath.do")
@@ -8342,7 +8342,7 @@ public class KibsMngController {
     }
 
     /**
-     * [신규] 선택된 인보이스들을 삭제하는 API
+     * 선택된 인보이스들을 삭제하는 API
      */
     @PostMapping("/mng/exhibitorNew/application/invoice/booth/delete.do")
     @ResponseBody
@@ -8400,7 +8400,7 @@ public class KibsMngController {
     }
 
     /**
-     * [신규] 전시부스 인보이스 생성 API
+     * 전시부스 인보이스 생성 API
      * - Service를 호출하여 인보이스 데이터를 생성하고, 생성된 인보이스의 PK(invoiceSeq)를 반환합니다.
      */
     @PostMapping("/mng/exhibitorNew/application/booth/invoice/insert.do")
@@ -8440,7 +8440,7 @@ public class KibsMngController {
     }
 
     /**
-     * [신규] 선택된 인보이스들을 이메일로 발송하는 API
+     * 선택된 인보이스들을 이메일로 발송하는 API
      */
     @PostMapping("/mng/exhibitorNew/application/invoice/send.do")
     @ResponseBody

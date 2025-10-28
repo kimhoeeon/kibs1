@@ -3528,7 +3528,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         int physicalBooths = (currentData.getStandAloneBoothCnt() != null ? currentData.getStandAloneBoothCnt() : 0) +
                 (currentData.getAssemblyBoothCnt() != null ? currentData.getAssemblyBoothCnt() : 0);
 
-        // --- ▼▼▼ [핵심 수정] 기본 할인액을 DB값이 아닌, 원본 데이터 기준으로 재계산 ▼▼▼ ---
+        // --- ▼▼▼ 기본 할인액을 DB값이 아닌, 원본 데이터 기준으로 재계산 ▼▼▼ ---
         int recalculatedBasicDiscountSum = 0;
         if (Boolean.TRUE.equals(currentData.getDiscountEarly1())) recalculatedBasicDiscountSum += physicalBooths * 300000;
         if (Boolean.TRUE.equals(currentData.getDiscountEarly2())) recalculatedBasicDiscountSum += physicalBooths * 200000;
@@ -3562,7 +3562,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         // 5. 발전기금을 계산합니다.
         int developmentFund = 0;
         if ("Y".equals(currentData.getMemberCompanyYn()) || Boolean.TRUE.equals(currentData.getDiscountLeisure())) {
-            developmentFund = (int) Math.floor(boothPrcSum * 0.1);
+            developmentFund = (int) Math.floor((boothPrcSum - recalculatedBasicDiscountSum) * 0.1);
         }
 
         // 6. 모든 금액을 최종적으로 재계산합니다.

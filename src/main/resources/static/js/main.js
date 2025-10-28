@@ -2430,7 +2430,7 @@ function step_2_1_check(exhibitorSeq){
     const standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val()) || 0;
     const assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val()) || 0;
     const onlineBoothCnt = parseInt($('#onlineBoothCnt').val()) || 0;
-    const physicalBooths = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
+    const physicalBooths = standAloneBoothCnt + assemblyBoothCnt ;
 
     const standAloneBoothFee = standAloneBoothCnt * boothPrices.standAlone;
     const assemblyBoothFee = assemblyBoothCnt * boothPrices.assembly;
@@ -2529,8 +2529,6 @@ function step_2_1_check(exhibitorSeq){
     };
 
     let resData = ajaxConnect('/apply/step/updateExhibitorNewBooth.do', 'post', booth_json_obj);
-
-    //console.log(resData);
     if(resData.resultCode === "0") {
 
         Swal.fire({
@@ -3013,90 +3011,51 @@ function step_2_3_check(exhibitorSeq){
 
         if (result.isConfirmed) {
 
-            // 유틸리티 신청정보 - 주간단상 - 수량
-            let utility_jugan_cnt = parseInt($('#utility_jugan_cnt').val());
+            // --- 1. 유틸리티 신청정보 수집 ---
+            let utility_jugan_cnt = parseInt($('#utility_jugan_cnt').val()) || 0;
+            let utility_jugan_fee = parseInt(wonToInt($('#utility_jugan_fee').val())) || 0;
+            let utility_day_cnt = parseInt($('#utility_day_cnt').val()) || 0;
+            let utility_day_fee = parseInt(wonToInt($('#utility_day_fee').val())) || 0;
+            let utility_compressed_air_cnt = parseInt($('#utility_compressed_air_cnt').val()) || 0;
+            let utility_compressed_air_fee = parseInt(wonToInt($('#utility_compressed_air_fee').val())) || 0;
+            let utility_water_basic_cnt = parseInt($('#utility_water_basic_cnt').val()) || 0;
+            let utility_water_basic_fee = parseInt(wonToInt($('#utility_water_basic_fee').val())) || 0;
+            let utility_internet_cnt = parseInt($('#utility_internet_cnt').val()) || 0;
+            let utility_internet_fee = parseInt(wonToInt($('#utility_internet_fee').val())) || 0;
+            let utility_pytex_new_cnt = parseInt($('#utility_pytex_new_cnt').val()) || 0;
+            let utility_pytex_new_fee = parseInt(wonToInt($('#utility_pytex_new_fee').val())) || 0;
+            let utility_pytex_re_cnt = parseInt($('#utility_pytex_re_cnt').val()) || 0;
+            let utility_pytex_re_fee = parseInt(wonToInt($('#utility_pytex_re_fee').val())) || 0;
+            let utility_barcode_cnt = parseInt($('#utility_barcode_cnt').val()) || 0;
+            let utility_barcode_fee = parseInt(wonToInt($('#utility_barcode_fee').val())) || 0;
 
-            // 유틸리티 신청정보 - 주간단상 - 금액
-            let utility_jugan_fee = $('#utility_jugan_fee').val();
-
-            // 유틸리티 신청정보 - 24시간용 - 수량
-            let utility_day_cnt = parseInt($('#utility_day_cnt').val());
-
-            // 유틸리티 신청정보 - 24시간용 - 금액
-            let utility_day_fee = $('#utility_day_fee').val();
-
-            // 유틸리티 신청정보 - 압축공기 - 수량
-            let utility_compressed_air_cnt = parseInt($('#utility_compressed_air_cnt').val());
-
-            // 유틸리티 신청정보 - 압축공기 - 금액
-            let utility_compressed_air_fee = $('#utility_compressed_air_fee').val();
-
-            // 유틸리티 신청정보 - 급배수 - 수량
-            let utility_water_basic_cnt = parseInt($('#utility_water_basic_cnt').val());
-
-            // 유틸리티 신청정보 - 급배수 - 금액
-            let utility_water_basic_fee = $('#utility_water_basic_fee').val();
-
-            // 유틸리티 신청정보 - 인터넷 - 수량
-            let utility_internet_cnt = parseInt($('#utility_internet_cnt').val());
-
-            // 유틸리티 신청정보 - 인터넷 - 금액
-            let utility_internet_fee = $('#utility_internet_fee').val();
-
-            // 유틸리티 신청정보 - 파이텍스 (신품) - 수량
-            let utility_pytex_new_cnt = parseInt($('#utility_pytex_new_cnt').val());
-
-            // 유틸리티 신청정보 - 파이텍스 (신품) - 금액
-            let utility_pytex_new_fee = $('#utility_pytex_new_fee').val();
-
-            // 유틸리티 신청정보 - 파이텍스 (재사용품) - 수량
-            let utility_pytex_re_cnt = parseInt($('#utility_pytex_re_cnt').val());
-
-            // 유틸리티 신청정보 - 파이텍스 (재사용품) - 금액
-            let utility_pytex_re_fee = $('#utility_pytex_re_fee').val();
-
-            // 유틸리티 신청정보 - 참관객/바이어 바코드 리더기 - 수량
-            let utility_barcode_cnt = parseInt($('#utility_barcode_cnt').val());
-
-            // 유틸리티 신청정보 - 참관객/바이어 바코드 리더기 - 금액
-            let utility_barcode_fee = $('#utility_barcode_fee').val();
-
-            let utilityPrcSum = parseInt(wonToInt($('#form_add_total').val()));
-
-            let boothPrcSum = parseInt($('#boothPrcSum').val()) || 0;
-            let developmentFund = 0;
-            const isMember = $('#memberCompanyYn').val() === 'Y';
-            if (isMember) {
-                developmentFund = Math.floor(boothPrcSum * 0.1);
-            }
-            let discountPrcSum = parseInt($('#discountPrcSum').val()) || 0;
-
-            const prcSum = ((boothPrcSum + developmentFund) - discountPrcSum) + utilityPrcSum;
-            const prcVat = Math.floor(prcSum * 0.1);
-            const prcTotal = prcSum + prcVat;
+            // 유틸리티 총액을 화면이 아닌, 각 항목의 합계로 직접 계산
+            const utilityPrcSum = utility_jugan_fee + utility_day_fee + utility_compressed_air_fee +
+                utility_water_basic_fee + utility_internet_fee + utility_pytex_new_fee +
+                utility_pytex_re_fee + utility_barcode_fee;
 
             let utility_json_obj = {
                 seq: exhibitorSeq,
                 utilityJuganCnt: utility_jugan_cnt,
-                utilityJuganFee: wonToInt(utility_jugan_fee),
+                utilityJuganFee: utility_jugan_fee,
                 utilityDayCnt: utility_day_cnt,
-                utilityDayFee: wonToInt(utility_day_fee),
+                utilityDayFee: utility_day_fee,
                 utilityCompressedAirCnt: utility_compressed_air_cnt,
-                utilityCompressedAirFee: wonToInt(utility_compressed_air_fee),
+                utilityCompressedAirFee: utility_compressed_air_fee,
                 utilityWaterBasicCnt: utility_water_basic_cnt,
-                utilityWaterBasicFee: wonToInt(utility_water_basic_fee),
+                utilityWaterBasicFee: utility_water_basic_fee,
                 utilityInternetCnt: utility_internet_cnt,
-                utilityInternetFee: wonToInt(utility_internet_fee),
+                utilityInternetFee: utility_internet_fee,
                 utilityPytexNewCnt: utility_pytex_new_cnt,
-                utilityPytexNewFee: wonToInt(utility_pytex_new_fee),
+                utilityPytexNewFee: utility_pytex_new_fee,
                 utilityPytexReCnt: utility_pytex_re_cnt,
-                utilityPytexReFee: wonToInt(utility_pytex_re_fee),
+                utilityPytexReFee: utility_pytex_re_fee,
                 utilityBarcodeCnt: utility_barcode_cnt,
-                utilityBarcodeFee: wonToInt(utility_barcode_fee),
-                utilityPrcSum: utilityPrcSum,
-                prcSum : prcSum,
-                prcVat : prcVat,
-                prcTotal : prcTotal
+                utilityBarcodeFee: utility_barcode_fee,
+                utilityPrcSum: utilityPrcSum/*,
+                prcSum: prcSum,
+                prcVat: prcVat,
+                prcTotal: prcTotal*/
             }
 
             let resData = ajaxConnect('/apply/step/updateExhibitorNewUtility.do', 'post', utility_json_obj);
@@ -5384,7 +5343,7 @@ function my_step_2_1_check(exhibitorSeq){
     const standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val()) || 0;
     const assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val()) || 0;
     const onlineBoothCnt = parseInt($('#onlineBoothCnt').val()) || 0;
-    const physicalBooths = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
+    const physicalBooths = standAloneBoothCnt + assemblyBoothCnt;
 
     const standAloneBoothFee = standAloneBoothCnt * boothPrices.standAlone;
     const assemblyBoothFee = assemblyBoothCnt * boothPrices.assembly;
@@ -5632,90 +5591,51 @@ function my_step_2_3_check(exhibitorSeq){
     /* 24.03.05 2024 보트쇼 종료로 인하여 바로 페이지 이동 */
     /*f_page_move('/mypage/step2_4.do', exhibitorSeq);*/
 
-    // 유틸리티 신청정보 - 주간단상 - 수량
-    let utility_jugan_cnt = parseInt($('#utility_jugan_cnt').val());
+    // --- 1. 유틸리티 신청정보 수집 ---
+    let utility_jugan_cnt = parseInt($('#utility_jugan_cnt').val()) || 0;
+    let utility_jugan_fee = parseInt(wonToInt($('#utility_jugan_fee').val())) || 0;
+    let utility_day_cnt = parseInt($('#utility_day_cnt').val()) || 0;
+    let utility_day_fee = parseInt(wonToInt($('#utility_day_fee').val())) || 0;
+    let utility_compressed_air_cnt = parseInt($('#utility_compressed_air_cnt').val()) || 0;
+    let utility_compressed_air_fee = parseInt(wonToInt($('#utility_compressed_air_fee').val())) || 0;
+    let utility_water_basic_cnt = parseInt($('#utility_water_basic_cnt').val()) || 0;
+    let utility_water_basic_fee = parseInt(wonToInt($('#utility_water_basic_fee').val())) || 0;
+    let utility_internet_cnt = parseInt($('#utility_internet_cnt').val()) || 0;
+    let utility_internet_fee = parseInt(wonToInt($('#utility_internet_fee').val())) || 0;
+    let utility_pytex_new_cnt = parseInt($('#utility_pytex_new_cnt').val()) || 0;
+    let utility_pytex_new_fee = parseInt(wonToInt($('#utility_pytex_new_fee').val())) || 0;
+    let utility_pytex_re_cnt = parseInt($('#utility_pytex_re_cnt').val()) || 0;
+    let utility_pytex_re_fee = parseInt(wonToInt($('#utility_pytex_re_fee').val())) || 0;
+    let utility_barcode_cnt = parseInt($('#utility_barcode_cnt').val()) || 0;
+    let utility_barcode_fee = parseInt(wonToInt($('#utility_barcode_fee').val())) || 0;
 
-    // 유틸리티 신청정보 - 주간단상 - 금액
-    let utility_jugan_fee = $('#utility_jugan_fee').val();
-
-    // 유틸리티 신청정보 - 24시간용 - 수량
-    let utility_day_cnt = parseInt($('#utility_day_cnt').val());
-
-    // 유틸리티 신청정보 - 24시간용 - 금액
-    let utility_day_fee = $('#utility_day_fee').val();
-
-    // 유틸리티 신청정보 - 압축공기 - 수량
-    let utility_compressed_air_cnt = parseInt($('#utility_compressed_air_cnt').val());
-
-    // 유틸리티 신청정보 - 압축공기 - 금액
-    let utility_compressed_air_fee = $('#utility_compressed_air_fee').val();
-
-    // 유틸리티 신청정보 - 급배수 - 수량
-    let utility_water_basic_cnt = parseInt($('#utility_water_basic_cnt').val());
-
-    // 유틸리티 신청정보 - 급배수 - 금액
-    let utility_water_basic_fee = $('#utility_water_basic_fee').val();
-
-    // 유틸리티 신청정보 - 인터넷 - 수량
-    let utility_internet_cnt = parseInt($('#utility_internet_cnt').val());
-
-    // 유틸리티 신청정보 - 인터넷 - 금액
-    let utility_internet_fee = $('#utility_internet_fee').val();
-
-    // 유틸리티 신청정보 - 파이텍스 (신품) - 수량
-    let utility_pytex_new_cnt = parseInt($('#utility_pytex_new_cnt').val());
-
-    // 유틸리티 신청정보 - 파이텍스 (신품) - 금액
-    let utility_pytex_new_fee = $('#utility_pytex_new_fee').val();
-
-    // 유틸리티 신청정보 - 파이텍스 (재사용품) - 수량
-    let utility_pytex_re_cnt = parseInt($('#utility_pytex_re_cnt').val());
-
-    // 유틸리티 신청정보 - 파이텍스 (재사용품) - 금액
-    let utility_pytex_re_fee = $('#utility_pytex_re_fee').val();
-
-    // 유틸리티 신청정보 - 참관객/바이어 바코드 리더기 - 수량
-    let utility_barcode_cnt = parseInt($('#utility_barcode_cnt').val());
-
-    // 유틸리티 신청정보 - 참관객/바이어 바코드 리더기 - 금액
-    let utility_barcode_fee = $('#utility_barcode_fee').val();
-
-    let utilityPrcSum = parseInt(wonToInt($('#form_add_total').val()));
-
-    let boothPrcSum = parseInt($('#boothPrcSum').val()) || 0;
-    let developmentFund = 0;
-    const isMember = $('#memberCompanyYn').val() === 'Y';
-    if (isMember) {
-        developmentFund = Math.floor(boothPrcSum * 0.1);
-    }
-    let discountPrcSum = parseInt($('#discountPrcSum').val()) || 0;
-
-    const prcSum = ((boothPrcSum + developmentFund) - discountPrcSum) + utilityPrcSum;
-    const prcVat = Math.floor(prcSum * 0.1);
-    const prcTotal = prcSum + prcVat;
+    // 유틸리티 총액을 화면이 아닌, 각 항목의 합계로 직접 계산
+    const utilityPrcSum = utility_jugan_fee + utility_day_fee + utility_compressed_air_fee +
+        utility_water_basic_fee + utility_internet_fee + utility_pytex_new_fee +
+        utility_pytex_re_fee + utility_barcode_fee;
 
     let utility_json_obj = {
         seq: exhibitorSeq,
         utilityJuganCnt: utility_jugan_cnt,
-        utilityJuganFee: wonToInt(utility_jugan_fee),
+        utilityJuganFee: utility_jugan_fee,
         utilityDayCnt: utility_day_cnt,
-        utilityDayFee: wonToInt(utility_day_fee),
+        utilityDayFee: utility_day_fee,
         utilityCompressedAirCnt: utility_compressed_air_cnt,
-        utilityCompressedAirFee: wonToInt(utility_compressed_air_fee),
+        utilityCompressedAirFee: utility_compressed_air_fee,
         utilityWaterBasicCnt: utility_water_basic_cnt,
-        utilityWaterBasicFee: wonToInt(utility_water_basic_fee),
+        utilityWaterBasicFee: utility_water_basic_fee,
         utilityInternetCnt: utility_internet_cnt,
-        utilityInternetFee: wonToInt(utility_internet_fee),
+        utilityInternetFee: utility_internet_fee,
         utilityPytexNewCnt: utility_pytex_new_cnt,
-        utilityPytexNewFee: wonToInt(utility_pytex_new_fee),
+        utilityPytexNewFee: utility_pytex_new_fee,
         utilityPytexReCnt: utility_pytex_re_cnt,
-        utilityPytexReFee: wonToInt(utility_pytex_re_fee),
+        utilityPytexReFee: utility_pytex_re_fee,
         utilityBarcodeCnt: utility_barcode_cnt,
-        utilityBarcodeFee: wonToInt(utility_barcode_fee),
-        utilityPrcSum: utilityPrcSum,
+        utilityBarcodeFee: utility_barcode_fee,
+        utilityPrcSum: utilityPrcSum/*,
         prcSum: prcSum,
         prcVat: prcVat,
-        prcTotal: prcTotal
+        prcTotal: prcTotal*/
     }
 
     let resData = ajaxConnect('/apply/step/updateExhibitorNewUtility.do', 'post', utility_json_obj);

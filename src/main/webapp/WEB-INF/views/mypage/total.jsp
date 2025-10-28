@@ -200,7 +200,7 @@
                                                     <td>한국해양레저산업협회 발전기금</td>
                                                     <td>1</td>
                                                     <td>참가비의 10%</td>
-                                                    <td><fmt:formatNumber value="${info.boothPrcSum * 0.1}"/></td>
+                                                    <td><fmt:formatNumber value="${(info.boothPrcSum - info.discountPrcSum) * 0.1}"/></td>
                                                     <td>-</td>
                                                     <td>-</td>
                                                 </tr>

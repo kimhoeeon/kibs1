@@ -959,6 +959,11 @@
              , IFNULL(prc_sum, 0) as prc_sum
              , IFNULL(prc_vat, 0) as prc_vat
              , IFNULL(prc_total, 0) as prc_total
+             , discount_special_1_yn
+             , discount_special_2_yn
+             , discount_special_2_amount
+             , discount_special_3_yn
+             , discount_special_3_amount
         FROM exhibitor_new
         WHERE 1=1
         <if test='id != null and id != ""'>
