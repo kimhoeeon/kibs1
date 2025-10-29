@@ -143,7 +143,18 @@
                             </div>
 
                             <input type="hidden" id="utilityPrcSum" value="${info.utilityPrcSum}"/>
-                            <input type="hidden" id="prcTotal" value="${info.prcTotal}"/>
+                            <input type="hidden" id="discountSpecial1Yn" value="${info.discountSpecial1Yn}">
+                            <input type="hidden" id="discountSpecial2Yn" value="${info.discountSpecial2Yn}">
+                            <input type="hidden" id="discountSpecial2Amount" value="${info.discountSpecial2Amount}">
+                            <input type="hidden" id="discountSpecial3Yn" value="${info.discountSpecial3Yn}">
+                            <input type="hidden" id="discountSpecial3Amount" value="${info.discountSpecial3Amount}">
+                            <input type="hidden" id="deposit" value="${info.deposit}"/>
+                            <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}">
+                            <input type="hidden" id="boothPrcSum" name="boothPrcSum" value="">
+                            <input type="hidden" id="discountPrcSum" name="discountPrcSum" value="">
+                            <input type="hidden" id="prcSum" name="prcSum" value="">
+                            <input type="hidden" id="prcVat" name="prcVat" value="">
+                            <input type="hidden" id="prcTotal" name="prcTotal" value="">
 
                             <!-- 등록비 -->
                             <div class="form_wrap">
@@ -194,7 +205,7 @@
                                                     <div class="cate">한국해양레저산업협회<br>발전기금</div>
                                                     <div class="amount">
                                                         <p class="price">
-                                                            <fmt:formatNumber value="${(info.boothPrcSum - info.discountPrcSum) * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                                            <span id="developmentFund"></span>
                                                         </p>
                                                     </div>
                                                     <div class="note">
@@ -288,8 +299,8 @@
                                             <li class="form_ptag_hd">
                                                 <div class="select">선택</div>
                                                 <div class="cate">구분</div>
-                                                <div class="note">내용</div>
-                                                <div class="discount">할인금액(부스당)</div>
+                                                <div class="note">할인금액(부스당)</div>
+                                                <div class="discount">내용</div>
                                             </li>
                                             <li class="form_span">
                                                 <div class="select">
@@ -393,16 +404,38 @@
                                                 <div class="note">200,000 원</div>
                                                 <div class="discount">한국해양레저산업협회 회원사</div>
 
-                                                <%--<c:if test="${info.discountSpecial1Yn}">
+                                                <c:if test="${info.discountSpecial1Yn}">
                                                     <div class="select">
                                                         <label class="discount-item">
-                                                            <input type="checkbox" id="discountSpecial1" name="discount" data-discount="${(info.boothPrcSum - info.utilityPrcSum) * 0.5}" checked>
+                                                            <input type="checkbox" id="discountSpecial1" name="discount" data-discount="" checked>
                                                         </label>
                                                     </div>
                                                     <div class="cate">올해의 제품상 할인</div>
-                                                    <div class="note"><fmt:formatNumber value="${(info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum) * 0.5}" type="currency" maxFractionDigits="0" currencySymbol=""/> 원</div>
-                                                    <div class="discount">참가비 내역 합계(공급가)의 10%</div>
-                                                </c:if>--%>
+                                                    <div class="note" id="discountSpecial1Note"><fmt:formatNumber value="${(info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum) * 0.5}" type="currency" maxFractionDigits="0" currencySymbol=""/> 원</div>
+                                                    <div class="discount">50%</div>
+                                                </c:if>
+
+                                                <c:if test="${info.discountSpecial2Yn}">
+                                                    <div class="select">
+                                                        <label class="discount-item">
+                                                            <input type="checkbox" id="discountSpecial2" name="discount" data-discount="${info.discountSpecial2Amount}" checked>
+                                                        </label>
+                                                    </div>
+                                                    <div class="cate">특별 할인 : ${info.discountSpecial2Reason}</div>
+                                                    <div class="note"><fmt:formatNumber value="${info.discountSpecial2Amount}" type="currency" maxFractionDigits="0" currencySymbol=""/> 원</div>
+                                                    <div class="discount">${info.discountSpecial2Note}</div>
+                                                </c:if>
+
+                                                <c:if test="${info.discountSpecial3Yn}">
+                                                    <div class="select">
+                                                        <label class="discount-item">
+                                                            <input type="checkbox" id="discountSpecial3" name="discount" data-discount="${info.discountSpecial3Amount}" checked>
+                                                        </label>
+                                                    </div>
+                                                    <div class="cate">특별 할인 : ${info.discountSpecial3Reason}</div>
+                                                    <div class="note"><fmt:formatNumber value="${info.discountSpecial3Amount}" type="currency" maxFractionDigits="0" currencySymbol=""/> 원</div>
+                                                    <div class="discount">${info.discountSpecial3Note}</div>
+                                                </c:if>
                                             </li>
                                         </ul>
                                         <div style="margin-top: 10px;">※ 중복할인 가능</div>
@@ -411,14 +444,7 @@
                                         <div class="cate2">총액(VAT 미포함)</div>
                                         <div class="amount2">
                                             <p class="price">
-                                                <c:choose>
-                                                    <c:when test="${info.memberCompanyYn == 'Y'}">
-                                                        <input type="text" id="totalAmount" value="<fmt:formatNumber value="${(info.boothPrcSum + (info.boothPrcSum * 0.1)) - info.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <input type="text" id="totalAmount" value="<fmt:formatNumber value="${info.boothPrcSum - info.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                <input type="text" id="boothPrcSumDisplay" value="" disabled>
                                             </p>
                                         </div>
                                     </div>
@@ -448,33 +474,37 @@
 
         <script type="text/javascript">
             $(function(){
-
-                // --- 모든 할인 체크박스의 '임의 체크/해제 시도'를 원천 차단하는 로직 ---
-                // mousedown 시점에 체크박스의 현재 상태를 저장
-                $(document).on('mousedown', 'input[name="discount"]', function() {
+                // (기존 할인 체크박스 차단 로직은 그대로 둡니다)
+                $(document).on('mousedown', 'input[name=\"discount\"]', function() {
                     $(this).data('waschecked', this.checked);
                 });
-
-                // click 시점에 상태 변경이 있었는지 확인
-                $(document).on('click', 'input[name="discount"]', function(e) {
-                    // 클릭 전과 후의 상태가 달라졌다면 (체크 시도 또는 해제 시도)
+                $(document).on('click', 'input[name=\"discount\"]', function(e) {
                     if ($(this).data('waschecked') !== this.checked) {
-                        // 1. 상태 변경 동작을 막습니다.
                         e.preventDefault();
-                        // 2. 통합 경고창을 띄웁니다.
                         alert('참가신청 및 부스 신청 정보에 따라 자동 반영되므로, 임의 체크 불가합니다.');
                     }
                 });
 
                 // --- 모든 자동 계산을 시작하는 핵심 트리거 ---
-                // 부스 수량 변경 시 실시간으로 총액을 다시 계산합니다.
-                $('#standAloneBoothCnt, #assemblyBoothCnt, #onlineBoothCnt').on('input change', calculateTotal);
+                // 부스 수량 변경 시 main.js의 calculateTotal 호출 ('booth' 타입 전달)
+                $('#standAloneBoothCnt, #assemblyBoothCnt, #onlineBoothCnt').on('input change', function() {
+                    if (typeof calculateTotal === 'function') {
+                        calculateTotal('booth'); // ★★★ 페이지 타입 전달 ★★★
+                    } else {
+                        console.error("main.js의 calculateTotal 함수를 찾을 수 없습니다.");
+                    }
+                });
 
-                // 페이지 로드 시 초기 계산 및 할인 상태 설정
-                handleDiscountEarly1();
-                handleDiscountEarly2();
-                calculateTotal();
+                // 페이지 로드 시 초기 계산 ('booth' 타입 전달)
+                if (typeof calculateTotal === 'function') {
+                    calculateTotal('booth'); // ★★★ 페이지 타입 전달 ★★★
+                } else {
+                    console.error("main.js의 calculateTotal 함수를 찾을 수 없습니다.");
+                }
 
+                // 조기 신청 할인 기간 처리 (main.js 함수 호출)
+                if (typeof handleDiscountEarly1 === 'function') handleDiscountEarly1();
+                if (typeof handleDiscountEarly2 === 'function') handleDiscountEarly2();
             });
         </script>
     </c:if>

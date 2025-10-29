@@ -509,7 +509,7 @@ function minCnt(el, cnt){
         if(val !== 0){
             alert('독립부스는 2부스부터 신청 가능합니다.');
             $(el).val(0);
-            calculateTotal();
+            calculateTotal('booth');
         }
     }
 }
@@ -522,7 +522,7 @@ function checkBooth(){
         alert('조립부스 또는 독립부스 신청 시, 온라인 부스는 무료 지원됩니다.');
         $('#onlineBoothCnt').val(0);
         $('#onlineBoothCnt option').eq(0).prop('selected',true);
-        calculateTotal();
+        calculateTotal('booth');
     }
 }
 
@@ -618,7 +618,7 @@ function handleDiscountEarly1() {
                 $(this).prop('checked', false);
                 alert('1차 조기신청 할인은 한 번 해제하시면 다시 선택할 수 없습니다.');
             }
-            calculateTotal();
+            calculateTotal('booth');
         });
     } else { // 1차 할인 기간 종료
         if (discount1Checkbox.prop('checked')) {
@@ -661,7 +661,7 @@ function handleDiscountEarly2() {
                 $(this).prop('checked', false);
                 alert('2차 조기신청 할인은 한 번 해제하시면 다시 선택할 수 없습니다.');
             }
-            calculateTotal();
+            calculateTotal('booth');
         });
     } else { // 2차 할인 기간이 아니면
         if (discount2Checkbox.prop('checked')) {
@@ -693,90 +693,186 @@ function updateReParticipantDiscountState() {
 }
 
 /**
- * 참가 신청 관련 총액을 다시 계산하는 최종 수정 함수입니다.
- * 부스비, 할인액 등을 종합하여 최종 금액을 산출하고 화면에 표시합니다.
+ * 참가 신청 관련 총액을 다시 계산하는 함수 (백엔드 API 호출 방식으로 수정됨)
+ * 부스비, 할인액 등을 종합하여 최종 금액을 산출하고,
+ * 호출된 페이지 타입('booth' 또는 'utility')에 따라 다른 ID에 값을 표시합니다.
  */
-function calculateTotal() {
-    // 1. 부스별 신청 수량 가져오기
-    let standAloneQty = parseInt($('#standAloneBoothCnt').val()) || 0;
-    let assemblyQty = parseInt($('#assemblyBoothCnt').val()) || 0;
-    let onlineQty = parseInt($('#onlineBoothCnt').val()) || 0;
+async function calculateTotal(pageType) { // async 키워드 추가, pageType 파라미터 추가
 
-    // 2. 부스 종류별 금액 계산
-    let standAloneFee = standAloneQty * boothPrices.standAlone;
-    let assemblyFee = assemblyQty * boothPrices.assembly;
-    let onlineFee = onlineQty * boothPrices.online;
+    // 1. 계산에 필요한 모든 입력값을 DOM에서 수집
+    const inputData = {
+        // 부스 정보 (hidden input 또는 화면 input에서 가져오기)
+        registrationCnt: 1,
+        standAloneBoothCnt: parseInt($('#standAloneBoothCnt').val()) || parseInt($('#hiddenStandAloneCnt').val()) || 0,
+        assemblyBoothCnt: parseInt($('#assemblyBoothCnt').val()) || parseInt($('#hiddenAssemblyCnt').val()) || 0,
+        onlineBoothCnt: parseInt($('#onlineBoothCnt').val()) || parseInt($('#hiddenOnlineCnt').val()) || 0,
 
-    // 부스 관련 금액 총합 (등록비 포함)
-    let boothPrcSum = registrationFee + standAloneFee + assemblyFee + onlineFee;
+        // 유틸리티 정보 (hidden input 또는 화면 input에서 계산)
+        utilityPrcSum: (pageType === 'utility') ? calculateCurrentUtilitySum() : (parseInt($('#utilityPrcSum').val()) || 0),
 
-    $('#standAloneBoothFee').val('￦ ' + standAloneFee.toLocaleString());
-    $('#assemblyBoothFee').val('￦ ' + assemblyFee.toLocaleString());
-    $('#onlineBoothFee').val('￦ ' + onlineFee.toLocaleString());
+        // 기본 할인 정보 (hidden input 또는 화면 체크박스에서 가져오기)
+        discountEarly1: $('#discountEarly1').is(':checked') || $('#discountEarly1Checked').val() === 'true',
+        discountEarly2: $('#discountEarly2').is(':checked') || $('#discountEarly2Checked').val() === 'true',
+        discountFirstUnder10: $('#discountFirstUnder10').is(':checked') || $('#discountFirstUnder10Checked').val() === 'true',
+        discountFirstOver10: $('#discountFirstOver10').is(':checked') || $('#discountFirstOver10Checked').val() === 'true',
+        discountRe: $('#discountRe').is(':checked') || $('#discountReChecked').val() === 'true',
+        discountScale1: $('#discountScale1').is(':checked') || $('#discountScale1Checked').val() === 'true',
+        discountScale2: $('#discountScale2').is(':checked') || $('#discountScale2Checked').val() === 'true',
+        discountScale3: $('#discountScale3').is(':checked') || $('#discountScale3Checked').val() === 'true',
+        discountScale4: $('#discountScale4').is(':checked') || $('#discountScale4Checked').val() === 'true',
+        discountScale5: $('#discountScale5').is(':checked') || $('#discountScale5Checked').val() === 'true',
+        discountScale6: $('#discountScale6').is(':checked') || $('#discountScale6Checked').val() === 'true',
+        discountLeisure: $('#discountLeisure').is(':checked') || $('#discountLeisureChecked').val() === 'true',
 
-    // 오프라인 부스 총 수량 계산
-    let physicalBooths = standAloneQty + assemblyQty;
+        // 특별 할인 정보 (hidden input 등에서 가져오기)
+        discountSpecial1Yn: $('#discountSpecial1Yn').val() === 'true',
+        discountSpecial2Yn: $('#discountSpecial2Yn').val() === 'true',
+        discountSpecial2Amount: parseInt($('#discountSpecial2Amount').val()) || 0,
+        discountSpecial3Yn: $('#discountSpecial3Yn').val() === 'true',
+        discountSpecial3Amount: parseInt($('#discountSpecial3Amount').val()) || 0,
 
-    // 부스 수량에 따라 규모 할인을 자동으로 업데이트합니다.
-    updateScaleDiscountState(physicalBooths);
+        // 발전 기금용 정보
+        memberCompanyYn: $("#memberCompanyYn").val(), // JSP hidden input 값
 
-    const firstUnder10 = $('#discountFirstUnder10');
+        // 선금
+        deposit: parseInt(uncomma($('#depositText').text())) || parseInt($('#deposit').val()) || 0 // JSP span 또는 hidden input 값
+    };
 
-    // 이 참가자가 '첫 참가'일 경우에만 아래 로직을 실행
-    if (firstUnder10.data('db-val') === 'first') {
-        const firstOver10 = $('#discountFirstOver10');
+    // --- 부스 페이지 관련 UI 업데이트 (부스 페이지에서만 실행) ---
+    if (pageType === 'booth') {
+        let standAloneQty = parseInt($('#standAloneBoothCnt').val()) || 0;
+        let assemblyQty = parseInt($('#assemblyBoothCnt').val()) || 0;
+        let onlineQty = parseInt($('#onlineBoothCnt').val()) || 0;
+        let standAloneFee = standAloneQty * boothPrices.standAlone; // boothPrices 상수는 main.js 상단에 있어야 함
+        let assemblyFee = assemblyQty * boothPrices.assembly;     // boothPrices 상수는 main.js 상단에 있어야 함
+        let onlineFee = onlineQty * boothPrices.online;         // boothPrices 상수는 main.js 상단에 있어야 함
 
-        if (physicalBooths > 0 && physicalBooths < 10) {
-            // 1~9 부스일 경우: '10부스 미만' 할인 선택
-            firstUnder10.prop('checked', true);
-            firstOver10.prop('checked', false);
-        } else if (physicalBooths >= 10) {
-            // 10부스 이상일 경우: '10부스 이상' 할인 선택
-            firstUnder10.prop('checked', false);
-            firstOver10.prop('checked', true);
-        } else {
-            // 부스가 0개일 경우 모두 해제
-            firstUnder10.prop('checked', false);
-            firstOver10.prop('checked', false);
+        $('#standAloneBoothFee').val(numberToWon(standAloneFee));
+        $('#assemblyBoothFee').val(numberToWon(assemblyFee));
+        $('#onlineBoothFee').val(numberToWon(onlineFee));
+
+        // 오프라인 부스 총 수량 계산
+        let physicalBooths = standAloneQty + assemblyQty;
+        // 부스 수량에 따라 규모 할인 자동 업데이트 (main.js 함수)
+        updateScaleDiscountState(physicalBooths);
+        // 첫 참가 할인 자동 업데이트 (main.js 함수 - firstUnder10 요소에 data-db-val 확인 필요)
+        const firstUnder10 = $('#discountFirstUnder10');
+        if (firstUnder10.data('db-val') === 'first') {
+            const firstOver10 = $('#discountFirstOver10');
+            if (physicalBooths > 0 && physicalBooths < 10) {
+                firstUnder10.prop('checked', true); firstOver10.prop('checked', false);
+            } else if (physicalBooths >= 10) {
+                firstUnder10.prop('checked', false); firstOver10.prop('checked', true);
+            } else {
+                firstUnder10.prop('checked', false); firstOver10.prop('checked', false);
+            }
+            // inputData 업데이트
+            inputData.discountFirstUnder10 = firstUnder10.is(':checked');
+            inputData.discountFirstOver10 = firstOver10.is(':checked');
         }
+        // 재참가 할인 상태 업데이트 (main.js 함수) 및 inputData 반영
+        updateReParticipantDiscountState();
+        inputData.discountRe = $('#discountRe').is(':checked');
+        // 규모 할인 상태 inputData 반영
+        inputData.discountScale1 = $('#discountScale1').is(':checked');
+        inputData.discountScale2 = $('#discountScale2').is(':checked');
+        inputData.discountScale3 = $('#discountScale3').is(':checked');
+        inputData.discountScale4 = $('#discountScale4').is(':checked');
+        inputData.discountScale5 = $('#discountScale5').is(':checked');
+        inputData.discountScale6 = $('#discountScale6').is(':checked');
     }
+    // --- ▲▲▲ 부스 페이지 UI 업데이트 종료 ▲▲▲ ---
 
-    // 첫 참가 할인 상태가 변경되었으므로, 재참가 할인 상태를 업데이트합니다.
-    updateReParticipantDiscountState();
+    // 2. 백엔드 미리보기 API 호출 (비동기)
+    try {
+        // 사용자용 API 엔드포인트 호출
+        const response = await fetch('/calculate-preview.do', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(inputData)
+        });
 
-    // 3. 총 할인액 계산
-    let totalDiscount = 0;
-
-    // 체크된 모든 할인 항목을 순회하며 할인액을 더함
-    $('input[name="discount"]').each(function() {
-        if ($(this).prop('checked')) { // 체크된 상태인지 직접 확인
-            let discountPerBooth = parseInt($(this).data('discount')) || 0;
-            totalDiscount += (physicalBooths * discountPerBooth);
+        if (!response.ok) {
+            throw new Error('계산 서버 오류: ' + response.statusText);
         }
-    });
 
-    // --- 발전기금 계산 로직 ---
-    let developmentFund = 0;
-    // 3. 협회 회원사(DB값)이거나 협회 할인 체크박스가 체크되어 있는지 확인
-    const isMember = $('#memberCompanyYn').val() === 'Y'; // hidden input으로 memberCompanyYn 값 필요
-    const isLeisureDiscountChecked = $('#discountLeisure').is(':checked');
+        // CalculationResultDTO 객체 받기
+        const result = await response.json();
 
-    if (isMember || isLeisureDiscountChecked) {
-        // 발전기금 = (등록비 + 모든 부스비)의 10%
-        developmentFund = Math.floor(boothPrcSum * 0.1);
+        // 3. 계산된 결과를 페이지 타입에 맞게 UI에 반영
+        if (pageType === 'booth') {
+            // --- 부스 페이지 UI 업데이트 ---
+            $('#boothPrcSum').text($.number(result.boothPrcSum));
+            $('#discountPrcSum').text($.number(result.basicDiscountSum));
+            $('#specialDiscountTotal_display').text($.number(result.specialDiscountTotal)); // ※ JSP span 필요
+            $('#developmentFund').text(numberToWon(result.developmentFund)); // ※ JSP span 필요
+
+            // --- 올해의 제품상 할인 ---
+            let discountSpecialFee = (result.boothPrcSum + result.utilityPrcSum - result.basicDiscountSum) * 0.5;
+            $('#discountSpecial1').data('discount', discountSpecialFee);
+            $('#discountSpecial1Note').text(discountSpecialFee.toLocaleString() + '원');
+
+            // --- 부스 페이지 UI 업데이트 ---
+            $('#boothPrcSumDisplay').val(numberToWon(result.boothSubtotal)); // 유틸리티 소계 ※ JSP span 필요
+
+            // ★ 부스 총액 (VAT 포함) 표시 ★
+            $('#boothTotalAmount').val(numberToWon(result.boothTotal)); // ※ JSP span 필요
+
+            // --- 참고용 최종 총계 표시 ---
+            $('#prcSum').text($.number(result.prcSum));
+            $('#prcVat').text($.number(result.prcVat));
+            $('#prcTotal').text($.number(result.prcTotal));
+            $('#balance').text($.number(result.balance));
+
+        } else if (pageType === 'utility') {
+            // --- 유틸리티 페이지 UI 업데이트 ---
+            $('#utilityPrcSumDisplay').val(numberToWon(result.utilityPrcSum)); // 유틸리티 소계 ※ JSP span 필요
+
+            // ★ 유틸리티 총액 (VAT 포함) 표시 ★
+            $('#utilityTotalAmount').val(numberToWon(result.utilityTotal)); // ※ JSP span 필요
+
+            // --- 참고용 최종 총계 표시 ---
+            $('#prcSum').text($.number(result.prcSum));
+            $('#prcVat').text($.number(result.prcVat));
+            $('#prcTotal').text($.number(result.prcTotal));
+            $('#balance').text($.number(result.balance));
+        }
+
+        // 4. 서버 전송용 hidden input 값 업데이트 (공통)
+        // (저장 시에는 항상 최종 총계 기준 값을 보냅니다)
+        $("input[name='boothPrcSum']").val(result.boothPrcSum);
+        $("input[name='discountPrcSum']").val(result.basicDiscountSum);
+        // 유틸리티 페이지가 아니어도 utilitySubtotal 값을 hidden에 넣어줘야 할 수 있음 (저장 로직 확인 필요)
+        $("input[name='utilityPrcSum']").val(result.utilitySubtotal);
+        $("input[name='prcSum']").val(result.prcSum);
+        $("input[name='prcVat']").val(result.prcVat);
+        $("input[name='prcTotal']").val(result.prcTotal);
+        // $("input[name='developmentFund']").val(result.developmentFund); // DB 컬럼이 있다면
+
+    } catch (error) {
+        console.error("금액 계산 중 오류 발생:", error);
+        alert("금액을 계산하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        // 에러 시 금액 표시 초기화 (선택 사항)
+        $('#boothTotalAmount, #utilityTotalAmount, #prcSum, #prcVat, #prcTotal, #balance').text('-');
     }
-
-    // 4. 최종 금액 계산
-    // 최종 금액 = (부스비 총액 + 발전기금) - 총 할인액
-    let finalAmount = (boothPrcSum + developmentFund) - totalDiscount;
-
-    // 화면에 최종 금액 표시 (0원 미만 방지)
-    $('#totalAmount').val('￦ ' + Math.max(0, finalAmount).toLocaleString());
 }
 
 /***************************************************************************************
  * 할인 조건 Function End
  * *************************************************************************************/
+
+/**
+ * 콤마 제거 유틸리티 함수 (main.js에도 있어야 함)
+ */
+function uncomma(str) {
+    if (typeof str === 'number') {
+        return str;
+    }
+    str = String(str);
+    return parseInt(str.replace(/￦\s|,/g, ''), 10) || 0;
+}
 
 function autoSum(index){
     let boothCost = $('.booth_cost');
@@ -903,8 +999,9 @@ function wonToNumber(won){
     return Number.parseInt(won.toString().replaceAll("￦ ","").replaceAll(",",""), 10);
 }
 
-function numberToWon(number){
-    return "￦ " + number.toLocaleString();
+function numberToWon(number) {
+    if (isNaN(number)) return "￦ 0";
+    return "￦ " + Number(number).toLocaleString();
 }
 
 function execDaumPostcode(address, addressDetail) {

@@ -204,11 +204,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td><td>등록비</td><td>${exhibitorNewInfo.registrationCnt}</td><td>100,000원</td>
-                            <td class="text-r"><fmt:formatNumber value="${exhibitorNewInfo.registrationFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
-                        </tr>
-                        <c:set var="boothIdx" value="2"/>
+                        <c:set var="boothIdx" value="1"/>
                         <c:if test="${exhibitorNewInfo.standAloneBoothCnt > 0}">
                             <tr>
                                 <td>${boothIdx}</td><td>독립부스(9㎡ = 3m×3m)</td><td>${exhibitorNewInfo.standAloneBoothCnt}부스</td><td>1,800,000원</td>
@@ -236,9 +232,22 @@
         </div>
         <!-- //box -->
 
-        <c:set var="developmentFund" value="0"/>
+        <%-- ▼▼▼ 발전기금 계산 로직 추가 ▼▼▼ --%>
+        <c:set var="developmentFundToShow" value="0" /> <%-- 표시할 발전기금 변수 초기화 --%>
+        <%-- 참가업체 정보(${exhibitorNewInfo})에서 회원사 여부 또는 협회 할인 여부 확인 --%>
+        <c:if test="${exhibitorNewInfo.memberCompanyYn eq 'Y' or exhibitorNewInfo.discountLeisure}">
+            <%-- 발전기금 기준액 = 부스비 총액(${invoiceInfo.boothPrcSum}) - 총 할인액(${invoiceInfo.discountPrcSum}) --%>
+            <c:set var="baseAmountForFund" value="${invoiceInfo.boothPrcSum - invoiceInfo.discountPrcSum}" />
+            <c:if test="${baseAmountForFund < 0}">
+                <c:set var="baseAmountForFund" value="0" /> <%-- 음수 방지 --%>
+            </c:if>
+            <%-- 발전기금 계산 (기준액의 10%, 소수점 버림) --%>
+            <c:set var="developmentFundToShow" value="${baseAmountForFund * 0.1}" />
+            <fmt:formatNumber value="${developmentFundToShow}" pattern="#0" var="developmentFundToShow"/> <%-- 정수로 변환 --%>
+        </c:if>
+        <%-- ▲▲▲ 발전기금 계산 로직 종료 ▲▲▲ --%>
+
         <c:if test="${exhibitorNewInfo.memberCompanyYn == 'Y'}">
-            <c:set var="developmentFund" value="${(exhibitorNewInfo.boothPrcSum - exhibitorNewInfo.discountPrcSum) * 0.1}"/>
             <div class="cont_box">
                 <div class="title">4. 한국해양레저산업협회 발전기금</div>
                 <div class="table">
@@ -258,7 +267,7 @@
                             <td>1</td>
                             <td>한국해양레저산업협회 발전기금 (참가비 합계의 10%)</td>
                             <td class="text-r">
-                                <fmt:formatNumber value="${(exhibitorNewInfo.boothPrcSum - exhibitorNewInfo.discountPrcSum) * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
+                                <fmt:formatNumber value="${developmentFundToShow}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원
                             </td>
                         </tr>
                         </tbody>
@@ -321,8 +330,7 @@
                             <td class="text-r">- <fmt:formatNumber value="${physicalBoothCnt * 200000}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountSpecial1Yn}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
                         <tr><td>${discountIdx-1}</td><td>특별 할인: 올해의 제품상</td><td colspan="2">공급가액의 50%</td>
-                            <c:set var="baseAmountForSpecial" value="${exhibitorNewInfo.boothPrcSum + exhibitorNewInfo.utilityPrcSum - exhibitorNewInfo.discountPrcSum}" />
-                            <td class="text-r">- <fmt:formatNumber value="${baseAmountForSpecial * 0.5}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
+                            <td class="text-r">- <fmt:formatNumber value="${(exhibitorNewInfo.boothPrcSum + exhibitorNewInfo.utilityPrcSum - exhibitorNewInfo.discountPrcSum) * 0.5}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
                     <c:if test="${exhibitorNewInfo.discountSpecial2Yn}"><c:set var="discountIdx" value="${discountIdx + 1}"/>
                         <tr><td>${discountIdx-1}</td><td>특별 할인: ${exhibitorNewInfo.discountSpecial2Reason}</td><td colspan="2">${exhibitorNewInfo.discountSpecial2Note}</td>
                             <td class="text-r">- <fmt:formatNumber value="${exhibitorNewInfo.discountSpecial2Amount}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td></tr></c:if>
@@ -336,41 +344,39 @@
         </div>
         <!-- //box -->
 
-        <c:set var="boothTotalPrcSum" value="${(exhibitorNewInfo.boothPrcSum + developmentFund) - (exhibitorNewInfo.discountPrcSum + ((baseAmountForSpecial * 0.5) + exhibitorNewInfo.discountSpecial2Amount + exhibitorNewInfo.discountSpecial3Amount))}"/>
-
         <div class="cont_box">
             <div class="table">
                 <table class="total_sum">
                     <colgroup>
                         <col>
-                        <col width="150">
+                        <col width="300">
                         <col width="150">
                     </colgroup>
                     <tbody>
                         <tr>
                             <td class="none"></td>
-                            <th>참가비 합계</th>
-                            <td class="text-r sub_total"><fmt:formatNumber value="${exhibitorNewInfo.boothPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                            <th>참가비 합계(등록비 및 할인 포함)</th>
+                            <td class="text-r sub_total"><fmt:formatNumber value="${invoiceInfo.boothPrcSum - invoiceInfo.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         </tr>
                         <tr>
                             <td class="none"></td>
-                            <th>할인 총액</th>
-                            <td class="text-r sub_total">- <fmt:formatNumber value="${exhibitorNewInfo.discountPrcSum + ((baseAmountForSpecial * 0.5) + exhibitorNewInfo.discountSpecial2Amount + exhibitorNewInfo.discountSpecial3Amount)}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                            <th>발전 기금</th>
+                            <td class="text-r sub_total"><fmt:formatNumber value="${developmentFundToShow}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         </tr>
                         <tr>
                             <td class="none"></td>
                             <th>공급가액 (Sub Total)</th>
-                            <td class="text-r sub_total"><fmt:formatNumber value="${boothTotalPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                            <td class="text-r sub_total"><fmt:formatNumber value="${invoiceInfo.boothPrcSum + developmentFundToShow - invoiceInfo.discountPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         </tr>
                         <tr>
                             <td class="none"></td>
                             <th>부가세 (V.A.T)</th>
-                            <td class="text-r sub_total"><fmt:formatNumber value="${boothTotalPrcSum * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                            <td class="text-r sub_total"><fmt:formatNumber value="${(invoiceInfo.boothPrcSum + developmentFundToShow - invoiceInfo.discountPrcSum) * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         </tr>
                         <tr>
                             <td class="none"></td>
                             <th>최종 합계 (Total)</th>
-                            <td class="text-r final_total"><fmt:formatNumber value="${boothTotalPrcSum + (boothTotalPrcSum * 0.1)}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                            <td class="text-r final_total"><fmt:formatNumber value="${(invoiceInfo.boothPrcSum + developmentFundToShow - invoiceInfo.discountPrcSum) + ((invoiceInfo.boothPrcSum + developmentFundToShow - invoiceInfo.discountPrcSum) * 0.1)}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         </tr>
                     </tbody>
                 </table>
@@ -401,7 +407,7 @@
                     <tr>
                         <td>참가비</td>
                         <%-- DB에 저장된 최종 금액 사용 --%>
-                        <td class="final_total"><fmt:formatNumber value="${boothTotalPrcSum + (boothTotalPrcSum * 0.1)}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                        <td class="final_total"><fmt:formatNumber value="${(invoiceInfo.boothPrcSum + developmentFundToShow - invoiceInfo.discountPrcSum) + ((invoiceInfo.boothPrcSum + developmentFundToShow - invoiceInfo.discountPrcSum) * 0.1)}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                         <td style="color: red; font-size: 15px; font-weight: 700;">인보이스 발행일로부터 7일 이내</td>
                     </tr>
                     </tbody>

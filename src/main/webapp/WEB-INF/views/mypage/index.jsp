@@ -133,9 +133,20 @@
                                         <div class="txt_box">
                                             <div class="gubun">부스 참가비</div>
                                             <div class="txt">
+                                                <c:set var="specialDicountTotal" value="0"/>
                                                 <c:choose>
                                                     <c:when test="${info.memberCompanyYn eq 'Y'}">
-                                                        <fmt:formatNumber value="${info.boothPrcSum + ((info.boothPrcSum - info.discountPrcSum) * 0.1)}" pattern="#,###"/> 원
+                                                        <c:set var="baseSpecialAmount" value="${info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum}"/>
+                                                        <c:if test="${info.discountSpecial1Yn}">
+                                                            <c:set var="specialDicountTotal" value="${baseSpecialAmount * 0.5}"/>
+                                                        </c:if>
+                                                        <c:if test="${info.discountSpecial2Yn}">
+                                                            <c:set var="specialDicountTotal" value="${specialDicountTotal + info.discountSpecial2Amount}"/>
+                                                        </c:if>
+                                                        <c:if test="${info.discountSpecial3Yn}">
+                                                            <c:set var="specialDicountTotal" value="${specialDicountTotal + info.discountSpecial3Amount}"/>
+                                                        </c:if>
+                                                        <fmt:formatNumber value="${info.boothPrcSum + ((info.boothPrcSum - info.discountPrcSum + specialDicountTotal) * 0.1)}" pattern="#,###"/> 원
                                                     </c:when>
                                                     <c:otherwise>
                                                         <fmt:formatNumber value="${info.boothPrcSum}" pattern="#,###"/> 원

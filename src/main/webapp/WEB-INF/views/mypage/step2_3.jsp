@@ -126,6 +126,49 @@
                                 </ul>
                             </div>
 
+                            <%-- 1. 부스 정보 --%>
+                            <input type="hidden" id="registrationCnt" value="${info.registrationCnt}"/> <%-- 등록비 포함 여부 (보통 1) --%>
+                            <input type="hidden" id="hiddenStandAloneCnt" value="${info.standAloneBoothCnt}"/> <%-- 독립부스 수 --%>
+                            <input type="hidden" id="hiddenAssemblyCnt" value="${info.assemblyBoothCnt}"/> <%-- 조립부스 수 --%>
+                            <input type="hidden" id="hiddenOnlineCnt" value="${info.onlineBoothCnt}"/> <%-- 온라인부스 수 --%>
+
+                            <%-- 2. 기본 할인 적용 여부 --%>
+                            <input type="hidden" id="discountEarly1Checked" value="${info.discountEarly1}"/>
+                            <input type="hidden" id="discountEarly2Checked" value="${info.discountEarly2}"/>
+                            <input type="hidden" id="discountFirstUnder10Checked" value="${info.discountFirstUnder10}"/>
+                            <input type="hidden" id="discountFirstOver10Checked" value="${info.discountFirstOver10}"/>
+                            <input type="hidden" id="discountReChecked" value="${info.discountRe}"/>
+                            <input type="hidden" id="discountScale1Checked" value="${info.discountScale1}"/>
+                            <input type="hidden" id="discountScale2Checked" value="${info.discountScale2}"/>
+                            <input type="hidden" id="discountScale3Checked" value="${info.discountScale3}"/>
+                            <input type="hidden" id="discountScale4Checked" value="${info.discountScale4}"/>
+                            <input type="hidden" id="discountScale5Checked" value="${info.discountScale5}"/>
+                            <input type="hidden" id="discountScale6Checked" value="${info.discountScale6}"/>
+                            <input type="hidden" id="discountLeisureChecked" value="${info.discountLeisure}"/> <%-- 협회 할인 여부 --%>
+
+                            <%-- 3. 특별 할인 정보 --%>
+                            <input type="hidden" id="discountSpecial1Yn" value="${info.discountSpecial1Yn}"/>
+                            <input type="hidden" id="discountSpecial2Yn" value="${info.discountSpecial2Yn}"/>
+                            <input type="hidden" id="discountSpecial2Amount" value="${info.discountSpecial2Amount}"/>
+                            <input type="hidden" id="discountSpecial3Yn" value="${info.discountSpecial3Yn}"/>
+                            <input type="hidden" id="discountSpecial3Amount" value="${info.discountSpecial3Amount}"/>
+
+                            <%-- 4. 발전기금 계산용 --%>
+                            <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}"/>
+
+                            <%-- 5. 선납금 --%>
+                            <input type="hidden" id="deposit" value="${info.deposit}"/>
+
+                            <%-- 6. 참가업체 고유번호 --%>
+                            <input type="hidden" name="seq" value="${info.seq}"/>
+
+                            <input type="hidden" name="utilityPrcSum" value=""/>
+                            <input type="hidden" name="prcSum" value=""/>
+                            <input type="hidden" name="prcVat" value=""/>
+                            <input type="hidden" name="prcTotal" value=""/>
+                            <input type="hidden" name="boothPrcSum" value="${info.boothPrcSum}"/>
+                            <input type="hidden" name="discountPrcSum" value="${info.discountPrcSum}"/>
+
                             <!-- 유틸리티 신청정보 -->
                             <div class="form_wrap">
                                 <div class="form_tit">
@@ -267,7 +310,7 @@
                                         <div class="cate2">총액(VAT 미포함)</div>
                                         <div class="amount2">
                                             <p class="price">
-                                                <input type="text" id="form_add_total" class="num_sum" value="<fmt:formatNumber value="${info.utilityPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                <input type="text" id="utilityPrcSumDisplay" class="num_sum" value="" disabled>
                                             </p>
                                         </div>
                                     </div>
@@ -296,6 +339,77 @@
 
         <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
+        <script type="text/javascript">
+            // ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+            // ※ 기존 유틸리티 계산 관련 함수/로직은 여기서 완전히 삭제합니다. ※
+            // ※ (main.js의 calculateTotal 함수를 사용합니다)           ※
+            // ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+
+            /**
+             * 화면의 유틸리티 항목별 금액 합계를 계산하여 반환하는 헬퍼 함수
+             * (이 함수는 main.js의 calculateTotal 내부에서 호출됩니다)
+             */
+            function calculateCurrentUtilitySum() {
+                let utilityPrcSum = 0;
+                utilityPrcSum += parseInt(uncomma($('#utility_jugan_fee').val())) || 0;
+                utilityPrcSum += parseInt(uncomma($('#utility_day_fee').val())) || 0;
+                utilityPrcSum += parseInt(uncomma($('#utility_compressed_air_fee').val())) || 0;
+                utilityPrcSum += parseInt(uncomma($('#utility_water_basic_fee').val())) || 0;
+                utilityPrcSum += parseInt(uncomma($('#utility_internet_fee').val())) || 0;
+                utilityPrcSum += parseInt(uncomma($('#utility_pytex_new_fee').val())) || 0;
+                utilityPrcSum += parseInt(uncomma($('#utility_pytex_re_fee').val())) || 0;
+                utilityPrcSum += parseInt(uncomma($('#utility_barcode_fee').val())) || 0;
+
+                // 화면의 유틸리티 소계 표시 업데이트
+                //$('#utilityPrcSumDisplay').val(numberToWon(utilityPrcSum)); // ※ JSP span 필요
+
+                return utilityPrcSum;
+            }
+
+            $(function(){
+                // --- 유틸리티 항목별 금액 자동 계산 로직 (기존 로직 활용) ---
+                function autoUtilitySum(elementId, pricePerUnit) {
+                    const qty = parseInt($('#' + elementId + '_cnt').val()) || 0;
+                    const totalFee = qty * pricePerUnit;
+                    $('#' + elementId + '_fee').val(numberToWon(totalFee));
+
+                    // ★★★ 항목 변경 시 main.js의 calculateTotal 호출 ('utility' 타입 전달) ★★★
+                    if (typeof calculateTotal === 'function') {
+                        calculateTotal('utility');
+                    } else {
+                        console.error("main.js의 calculateTotal 함수를 찾을 수 없습니다.");
+                    }
+                }
+
+                // 각 유틸리티 항목 수량 변경 시 autoUtilitySum 호출
+                // ※※※ 단가 확인 필수 ※※※ (CommConstants 값과 일치해야 함)
+                const UTILITY_JUGAN_PRICE = 80000;
+                const UTILITY_DAY_PRICE = 100000;
+                const UTILITY_COMPRESSED_AIR_PRICE = 200000;
+                const UTILITY_WATER_BASIC_PRICE = 200000;
+                const UTILITY_INTERNET_PRICE = 200000;
+                const UTILITY_PYTEX_NEW_PRICE = 80000;
+                const UTILITY_PYTEX_RE_PRICE = 50000;
+                const UTILITY_BARCODE_PRICE = 200000;
+
+                $('#utility_jugan_cnt').on('input change', function() { autoUtilitySum('utility_jugan', UTILITY_JUGAN_PRICE); });
+                $('#utility_day_cnt').on('input change', function() { autoUtilitySum('utility_day', UTILITY_DAY_PRICE); });
+                $('#utility_compressed_air_cnt').on('input change', function() { autoUtilitySum('utility_compressed_air', UTILITY_COMPRESSED_AIR_PRICE); });
+                $('#utility_water_basic_cnt').on('input change', function() { autoUtilitySum('utility_water_basic', UTILITY_WATER_BASIC_PRICE); });
+                $('#utility_internet_cnt').on('input change', function() { autoUtilitySum('utility_internet', UTILITY_INTERNET_PRICE); });
+                $('#utility_pytex_new_cnt').on('input change', function() { autoUtilitySum('utility_pytex_new', UTILITY_PYTEX_NEW_PRICE); });
+                $('#utility_pytex_re_cnt').on('input change', function() { autoUtilitySum('utility_pytex_re', UTILITY_PYTEX_RE_PRICE); });
+                $('#utility_barcode_cnt').on('input change', function() { autoUtilitySum('utility_barcode', UTILITY_BARCODE_PRICE); });
+                // --- ▲▲▲ ---
+
+                // 페이지 로드 시 초기 계산 ('utility' 타입 전달)
+                if (typeof calculateTotal === 'function') {
+                    calculateTotal('utility'); // ★★★ 페이지 타입 전달 ★★★
+                } else {
+                    console.error("main.js의 calculateTotal 함수를 찾을 수 없습니다.");
+                }
+            });
+        </script>
     </c:if>
 
 </body>

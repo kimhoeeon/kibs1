@@ -188,13 +188,11 @@
                                         KIBS Secretariat offers you an efficient, friendly and professional service in
                                         the most modern and efficient environment.</p>
                                 </div>
-                                <%--<div class="contBox">
-                                    <img src="/img/footer/kotra_logo.png">
-                                    <p class="tit">KOTRA</p>
-                                    <p class="txt">Agency established to contribute to the development of the national
-                                        economy by performing work such as trade promotion, investment between domestic
-                                        and foreign companies and support of industrial technology cooperation etc.</p>
-                                </div>--%>
+                                <div class="contBox">
+                                    <img src="/img/summ_logo04.png?ver=20251029">
+                                    <p class="tit">Wave Park</p>
+                                    <p class="txt"></p>
+                                </div>
                                 <%--<div class="contBox">
                                     <img src="/img/summ_logo04_eng.png">
                                     <p class="tit">Korea Water & Environmental-Industry Corporation</p>

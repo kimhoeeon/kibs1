@@ -2,6 +2,7 @@ package com.mtf.kibs.controller;
 
 import com.mtf.kibs.constants.CommConstants;
 import com.mtf.kibs.dto.*;
+import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.CommService;
 import com.mtf.kibs.service.KibsMngService;
 import org.apache.poi.ss.usermodel.*;
@@ -15,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,6 +47,9 @@ import java.util.*;
  */
 @Controller
 public class KibsMngController {
+
+    @Autowired
+    private CalculationService calculationService; // 1. 공통 계산 서비스 주입
 
     // 필드 주입이 아닌 생성자 주입형태로 사용합니다. '생성자 주입 형태'로 사용합니다.
     private final KibsMngService kibsMngService;
@@ -8455,5 +8460,18 @@ public class KibsMngController {
             errorMap.put("resultMsg", "발송 중 오류가 발생했습니다: " + e.getMessage());
             return errorMap;
         }
+    }
+
+    /**
+     * [AJAX 용] 실시간 금액 계산 미리보기 (관리자용)
+     * @param input (JS에서 보낸 모든 입력값)
+     * @return CalculationResultDTO (JSON)
+     */
+    @PostMapping("/mng/calculate-preview.do")
+    @ResponseBody
+    public CalculationResultDTO getMngCalculationPreview(@RequestBody CalculationInputDTO input) {
+        // JS에서 보낸 입력값(input)을 기반으로 즉시 계산하여 결과만 반환
+        // (DB 저장은 없음)
+        return calculationService.calculateTotals(input);
     }
 }

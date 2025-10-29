@@ -5,6 +5,7 @@ import com.mtf.kibs.constants.CommConstants;
 import com.mtf.kibs.dto.*;
 import com.mtf.kibs.mapper.CommMapper;
 import com.mtf.kibs.mapper.KibsMngMapper;
+import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.KibsMngService;
 import com.mtf.kibs.util.StringUtil;
 import lombok.Setter;
@@ -41,6 +42,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -50,6 +52,9 @@ import java.util.*;
  */
 @Service
 public class KibsMngServiceImpl implements KibsMngService {
+
+    @Autowired
+    private CalculationService calculationService; // 1. 공통 계산 서비스 주입
 
     @Setter(onMethod_ = {@Autowired})
     private KibsMngMapper kibsMngMapper;
@@ -3513,76 +3518,68 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public int processUpdateExhibitorNewSpecialDiscount(ExhibitorNewDTO specialDiscountData) {
+    public int processUpdateExhibitorNewSpecialDiscount(ExhibitorNewDTO exhibitorNewDTO) {
         System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewSpecialDiscount");
         // 1. 먼저 DB에서 현재 업체의 전체 정보를 조회합니다.
-        ExhibitorNewDTO currentData = kibsMngMapper.selectExhibitorNewInvoiceDetail(specialDiscountData.getSeq());
+        ExhibitorNewDTO currentData = kibsMngMapper.selectExhibitorNewInvoiceDetail(exhibitorNewDTO.getSeq());
         if (currentData == null) {
             // 데이터가 없으면 오류 처리
             return 0;
         }
 
-        // 2. 기본 금액들을 가져옵니다.
-        int boothPrcSum = currentData.getBoothPrcSum() != null ? currentData.getBoothPrcSum() : 0;
-        int utilityPrcSum = currentData.getUtilityPrcSum() != null ? currentData.getUtilityPrcSum() : 0;
-        int physicalBooths = (currentData.getStandAloneBoothCnt() != null ? currentData.getStandAloneBoothCnt() : 0) +
-                (currentData.getAssemblyBoothCnt() != null ? currentData.getAssemblyBoothCnt() : 0);
+        // 2. CalculationInputDTO 조립 (DB 조회 정보 + 관리자 입력)
+        CalculationInputDTO input = new CalculationInputDTO();
 
-        // --- ▼▼▼ 기본 할인액을 DB값이 아닌, 원본 데이터 기준으로 재계산 ▼▼▼ ---
-        int recalculatedBasicDiscountSum = 0;
-        if (Boolean.TRUE.equals(currentData.getDiscountEarly1())) recalculatedBasicDiscountSum += physicalBooths * 300000;
-        if (Boolean.TRUE.equals(currentData.getDiscountEarly2())) recalculatedBasicDiscountSum += physicalBooths * 200000;
-        if (Boolean.TRUE.equals(currentData.getDiscountScale1())) recalculatedBasicDiscountSum += physicalBooths * 400000;
-        if (Boolean.TRUE.equals(currentData.getDiscountScale2())) recalculatedBasicDiscountSum += physicalBooths * 650000;
-        if (Boolean.TRUE.equals(currentData.getDiscountScale3())) recalculatedBasicDiscountSum += physicalBooths * 750000;
-        if (Boolean.TRUE.equals(currentData.getDiscountScale4())) recalculatedBasicDiscountSum += physicalBooths * 800000;
-        if (Boolean.TRUE.equals(currentData.getDiscountScale5())) recalculatedBasicDiscountSum += physicalBooths * 850000;
-        if (Boolean.TRUE.equals(currentData.getDiscountScale6())) recalculatedBasicDiscountSum += physicalBooths * 900000;
-        if (Boolean.TRUE.equals(currentData.getDiscountRe())) recalculatedBasicDiscountSum += physicalBooths * 200000;
-        if (Boolean.TRUE.equals(currentData.getDiscountFirstUnder10())) recalculatedBasicDiscountSum += physicalBooths * 500000;
-        if (Boolean.TRUE.equals(currentData.getDiscountFirstOver10())) recalculatedBasicDiscountSum += physicalBooths * 300000;
-        if (Boolean.TRUE.equals(currentData.getDiscountLeisure())) recalculatedBasicDiscountSum += physicalBooths * 200000;
-        // --- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ ---
+        // [부스 정보] - DB 조회 (currentData)
+        input.setRegistrationCnt(currentData.getRegistrationCnt());
+        input.setStandAloneBoothCnt(currentData.getStandAloneBoothCnt());
+        input.setAssemblyBoothCnt(currentData.getAssemblyBoothCnt());
+        input.setOnlineBoothCnt(currentData.getOnlineBoothCnt());
 
-        // 3. '특별 할인 적용 전 공급가액'을 계산합니다.
-        int baseAmountForSpecial = boothPrcSum + utilityPrcSum - recalculatedBasicDiscountSum;
+        // [기본 할인 정보] - DB 조회 (currentData)
+        // (주의: 만약 관리자가 기본 할인도 수정한다면 exhibitorNewDTO에서 값을 가져와야 함)
+        input.setDiscountEarly1(currentData.getDiscountEarly1());
+        input.setDiscountEarly2(currentData.getDiscountEarly2());
+        input.setDiscountFirstUnder10(currentData.getDiscountFirstUnder10());
+        input.setDiscountFirstOver10(currentData.getDiscountFirstOver10());
+        input.setDiscountRe(currentData.getDiscountRe());
+        input.setDiscountScale1(currentData.getDiscountScale1());
+        input.setDiscountScale2(currentData.getDiscountScale2());
+        input.setDiscountScale3(currentData.getDiscountScale3());
+        input.setDiscountScale4(currentData.getDiscountScale4());
+        input.setDiscountScale5(currentData.getDiscountScale5());
+        input.setDiscountScale6(currentData.getDiscountScale6());
+        input.setDiscountLeisure(currentData.getDiscountLeisure());
 
-        // 4. 화면에서 넘어온 데이터를 기반으로 '특별 할인액'을 계산합니다.
-        int specialDiscountTotal = 0;
-        if (specialDiscountData.isDiscountSpecial1Yn()) {
-            specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
-        }
-        if (specialDiscountData.isDiscountSpecial2Yn()) {
-            specialDiscountTotal += specialDiscountData.getDiscountSpecial2Amount();
-        }
-        if (specialDiscountData.isDiscountSpecial3Yn()) {
-            specialDiscountTotal += specialDiscountData.getDiscountSpecial3Amount();
-        }
+        // [특별 할인 정보] - 관리자 입력 (exhibitorNewDTO)
+        input.setDiscountSpecial1Yn(exhibitorNewDTO.isDiscountSpecial1Yn());
+        input.setDiscountSpecial2Yn(exhibitorNewDTO.isDiscountSpecial2Yn());
+        input.setDiscountSpecial2Amount(exhibitorNewDTO.getDiscountSpecial2Amount());
+        input.setDiscountSpecial3Yn(exhibitorNewDTO.isDiscountSpecial3Yn());
+        input.setDiscountSpecial3Amount(exhibitorNewDTO.getDiscountSpecial3Amount());
 
-        // 5. 발전기금을 계산합니다.
-        int developmentFund = 0;
-        if ("Y".equals(currentData.getMemberCompanyYn()) || Boolean.TRUE.equals(currentData.getDiscountLeisure())) {
-            developmentFund = (int) Math.floor((boothPrcSum - recalculatedBasicDiscountSum) * 0.1);
-        }
+        // [기타 정보]
+        input.setUtilityPrcSum(currentData.getUtilityPrcSum()); // DB 값
+        input.setMemberCompanyYn(currentData.getMemberCompanyYn()); // DB 값
+        input.setDeposit(Integer.parseInt(currentData.getDeposit())); // DB 값
 
-        // 6. 모든 금액을 최종적으로 재계산합니다.
-        int newTotalDiscountSum = recalculatedBasicDiscountSum + specialDiscountTotal;
-        int newPrcSum = (boothPrcSum + utilityPrcSum + developmentFund) - newTotalDiscountSum;
-        int newPrcVat = (int) Math.floor(newPrcSum * 0.1);
-        int newPrcTotal = newPrcSum + newPrcVat;
+        // 3. *** 공통 서비스 호출 ***
+        CalculationResultDTO result = calculationService.calculateTotals(input);
 
-        // 7. DTO에 재계산된 값들을 담아 DB에 업데이트합니다.
-        specialDiscountData.setDiscountPrcSum(recalculatedBasicDiscountSum);
-        specialDiscountData.setPrcSum(newPrcSum);
-        specialDiscountData.setPrcVat(newPrcVat);
-        specialDiscountData.setPrcTotal(newPrcTotal);
+        // 4. DTO에 계산 결과 반영
+        // (특별 할인 정보는 이미 exhibitorNewDTO에 있음. 최종 금액만 덮어쓰기)
+        // exhibitorNewDTO.setDevelopmentFund(result.getDevelopmentFund()); // DB 컬럼이 있다면 저장
+        exhibitorNewDTO.setPrcSum(result.getPrcSum());
+        exhibitorNewDTO.setPrcVat(result.getPrcVat());
+        exhibitorNewDTO.setPrcTotal(result.getPrcTotal());
+        exhibitorNewDTO.setBalance(String.valueOf(result.getBalance()));
 
         // 잔액(balance)도 함께 재계산
         int depositAmount = currentData.getDeposit() != null ? Integer.parseInt(currentData.getDeposit()) : 0;
-        specialDiscountData.setBalance(String.valueOf(newPrcTotal - depositAmount));
+        exhibitorNewDTO.setBalance(String.valueOf(result.getPrcTotal() - depositAmount));
 
         // 8. 확장된 UPDATE 쿼리를 호출하여 DB에 모든 정보를 한번에 저장합니다.
-        return kibsMngMapper.updateExhibitorNewSpecialDiscount(specialDiscountData);
+        return kibsMngMapper.updateExhibitorNewSpecialDiscount(exhibitorNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -3794,51 +3791,105 @@ public class KibsMngServiceImpl implements KibsMngService {
         return responseDTO;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class}) // 기존 어노테이션 유지
     @Override
     public InvoiceBoothDTO createAndInsertInvoiceBooth(String exhibitorSeq) throws Exception {
         // 1. 인보이스를 생성할 참가업체의 최신 정보를 불러옵니다.
+        // ※ 주의: 참가업체 상세 정보를 가져오는 메서드가 KibsMngMapper에 있어야 합니다.
+        // ※ (예: selectExhibitorNewForInvoice) 없다면 KibsMapper.getExhibitorNewDetail 사용
+        // ※ 기존 코드의 selectExhibitorNewInvoiceDetail 메서드가 금액 관련 모든 필드를 반환하는지 확인 필요
         ExhibitorNewDTO currentExhibitorInfo = kibsMngMapper.selectExhibitorNewInvoiceDetail(exhibitorSeq);
         if (currentExhibitorInfo == null) {
             throw new Exception("참가업체 정보가 존재하지 않습니다.");
         }
 
-        // 2. [추가] DB에서 해당 참가업체의 기존 인보이스 발급 횟수를 조회합니다.
+        // 2. *** CalculationInputDTO 조립 (현재 DB 정보 기준) ***
+        CalculationInputDTO input = new CalculationInputDTO();
+        input.setRegistrationCnt(currentExhibitorInfo.getRegistrationCnt());
+        input.setStandAloneBoothCnt(currentExhibitorInfo.getStandAloneBoothCnt());
+        input.setAssemblyBoothCnt(currentExhibitorInfo.getAssemblyBoothCnt());
+        input.setOnlineBoothCnt(currentExhibitorInfo.getOnlineBoothCnt());
+        input.setUtilityPrcSum(currentExhibitorInfo.getUtilityPrcSum()); // 현재 유틸리티 금액
+        input.setDiscountEarly1(currentExhibitorInfo.getDiscountEarly1());
+        input.setDiscountEarly2(currentExhibitorInfo.getDiscountEarly2());
+        input.setDiscountFirstUnder10(currentExhibitorInfo.getDiscountFirstUnder10());
+        input.setDiscountFirstOver10(currentExhibitorInfo.getDiscountFirstOver10());
+        input.setDiscountRe(currentExhibitorInfo.getDiscountRe());
+        input.setDiscountScale1(currentExhibitorInfo.getDiscountScale1());
+        input.setDiscountScale2(currentExhibitorInfo.getDiscountScale2());
+        input.setDiscountScale3(currentExhibitorInfo.getDiscountScale3());
+        input.setDiscountScale4(currentExhibitorInfo.getDiscountScale4());
+        input.setDiscountScale5(currentExhibitorInfo.getDiscountScale5());
+        input.setDiscountScale6(currentExhibitorInfo.getDiscountScale6());
+        input.setDiscountLeisure(currentExhibitorInfo.getDiscountLeisure());
+        input.setDiscountSpecial1Yn(currentExhibitorInfo.isDiscountSpecial1Yn());
+        input.setDiscountSpecial2Yn(currentExhibitorInfo.isDiscountSpecial2Yn());
+        input.setDiscountSpecial2Amount(currentExhibitorInfo.getDiscountSpecial2Amount());
+        input.setDiscountSpecial3Yn(currentExhibitorInfo.isDiscountSpecial3Yn());
+        input.setDiscountSpecial3Amount(currentExhibitorInfo.getDiscountSpecial3Amount());
+        input.setMemberCompanyYn(currentExhibitorInfo.getMemberCompanyYn());
+        input.setDeposit(Integer.parseInt(currentExhibitorInfo.getDeposit()));
+
+        // 3. *** 공통 계산 서비스 호출 ***
+        CalculationResultDTO calcResult = calculationService.calculateTotals(input);
+
+        // 4. [기존 로직] DB에서 해당 참가업체의 기존 인보이스 발급 횟수를 조회합니다.
         int invoiceCount = kibsMngMapper.countInvoiceBoothByExhibitorSeq(exhibitorSeq);
 
-        // 3. [추가] 새로운 인보이스 코드를 생성합니다. (발급 횟수 + 1)
+        // 5. [기존 로직] 새로운 인보이스 코드를 생성합니다. (발급 횟수 + 1)
         int nextInvoiceNumber = invoiceCount + 1;
-        String invoiceCodeCount = exhibitorSeq.substring(exhibitorSeq.length() - 4);
+        // exhibitorSeq가 "EN0000058" 형태라고 가정하고 뒤 4자리 사용
+        String invoiceCodeCount = exhibitorSeq.length() >= 4 ? exhibitorSeq.substring(exhibitorSeq.length() - 4) : exhibitorSeq;
         String invoiceCode = String.format("KIBS-B%s-%d", invoiceCodeCount, nextInvoiceNumber);
 
-        // 4. 새로운 InvoiceBoothDTO 객체를 생성하고, '금액 스냅샷'을 복사합니다.
+        // 6. 새로운 InvoiceBoothDTO 객체를 생성하고 값을 채웁니다.
         InvoiceBoothDTO newInvoice = new InvoiceBoothDTO();
-        newInvoice.setExhibitorSeq(exhibitorSeq);
-        newInvoice.setRecipientEmail(currentExhibitorInfo.getEmail());
-        newInvoice.setTitle(currentExhibitorInfo.getCompanyNameKo() + " - 전시부스");
+        newInvoice.setExhibitorSeq(exhibitorSeq); // 참가업체 Seq
+        newInvoice.setRecipientEmail(currentExhibitorInfo.getEmail()); // 수신 이메일 (업체 대표 이메일)
+        newInvoice.setTitle(currentExhibitorInfo.getCompanyNameKo() + " - 전시부스"); // 인보이스 제목
+        newInvoice.setInvoiceCode(invoiceCode); // 생성된 인보이스 코드
+        // newInvoice.setIssueDate(LocalDate.now()); // issueDate 컬럼 없음
 
-        newInvoice.setInvoiceCode(invoiceCode);
+        // --- ★★★ CalculationService 계산 결과 DTO -> 인보이스 DTO 값 복사 (DDL 기준) ★★★ ---
+        newInvoice.setBoothPrcSum(calcResult.getBoothPrcSum()); // 계산된 부스 총액
+        // DDL: discount_prc_sum = 총 할인액 (기본+특별)
+        newInvoice.setDiscountPrcSum(calcResult.getBasicDiscountSum() + calcResult.getSpecialDiscountTotal()); // 계산된 총 할인액
+        newInvoice.setPrcSum(calcResult.getPrcSum());         // 계산된 공급가액(소계)
+        newInvoice.setPrcVat(calcResult.getPrcVat());         // 계산된 부가세
+        newInvoice.setPrcTotal(calcResult.getPrcTotal());     // 계산된 최종 합계(총액)
+        // --- ▲▲▲ ---
 
-        // 생성 시점의 금액 정보를 그대로 복사 (스냅샷 생성)
-        newInvoice.setBoothPrcSum(currentExhibitorInfo.getBoothPrcSum());
-        newInvoice.setDiscountPrcSum(currentExhibitorInfo.getDiscountPrcSum());
-        newInvoice.setPrcSum(currentExhibitorInfo.getPrcSum());
-        newInvoice.setPrcVat(currentExhibitorInfo.getPrcVat());
-        newInvoice.setPrcTotal(currentExhibitorInfo.getPrcTotal());
+        // --- 기타 정보 설정 (기존 코드 또는 필요에 따라 수정) ---
+        newInvoice.setEndDttm(String.valueOf(LocalDate.now().plusDays(14))); // 납부 기한 (end_dttm 컬럼)
+        newInvoice.setSendStatus("미발송"); // 초기 상태
+        newInvoice.setDelYn("N");
+        // newInvoice.setRegId("admin"); // regId 컬럼 없음
+        newInvoice.setFinalRegiPic("admin"); // 최종 수정자 (예시)
 
-        // 5. Mapper를 호출하여 DB에 인보이스를 INSERT 합니다.
-        kibsMngMapper.insertInvoiceBooth(newInvoice);
+        // 7. Mapper를 호출하여 DB에 인보이스를 INSERT 합니다.
+        // ※※※ kibsMngMapper.insertInvoiceBooth 메서드는 useGeneratedKeys="true" keyProperty="invoiceSeq" 설정이 필요합니다. ※※※
+        int insertResult = kibsMngMapper.insertInvoiceBooth(newInvoice);
 
-        // 2. newInvoice 객체에 채워진 invoiceSeq 값을 가져옵니다.
-        int generatedSeq = newInvoice.getInvoiceSeq();
-
-        // 3. 만약 seq가 0이거나 유효하지 않으면 예외를 발생시킵니다.
-        if (generatedSeq <= 0) {
-            throw new Exception("인보이스 생성 후 PK(seq)를 가져오지 못했습니다.");
+        // 8. INSERT 성공 여부 및 생성된 PK 확인
+        if (insertResult <= 0) {
+            throw new Exception("인보이스 생성(INSERT)에 실패했습니다.");
         }
 
-        // 4. 생성된 seq를 이용해 DB에서 방금 저장된 인보이스 데이터를 다시 조회하여 반환합니다.
-        return kibsMngMapper.selectInvoiceBoothBySeq(generatedSeq);
+        int generatedSeq = newInvoice.getInvoiceSeq(); // MyBatis가 자동으로 채워준 PK 값
+
+        // 9. 만약 seq가 0이거나 유효하지 않으면 예외를 발생시킵니다.
+        if (generatedSeq <= 0) {
+            throw new Exception("인보이스 생성 후 PK(invoiceSeq)를 가져오지 못했습니다.");
+        }
+
+        // 10. 생성된 seq를 이용해 DB에서 방금 저장된 인보이스 데이터를 다시 조회하여 반환합니다.
+        // ※※※ kibsMngMapper.selectInvoiceBoothBySeq 메서드가 필요합니다. (selectInvoiceBoothSingle 과 유사) ※※※
+        InvoiceBoothDTO createdInvoice = kibsMngMapper.selectInvoiceBoothBySeq(generatedSeq); // 메서드 이름 확인 필요
+        if (createdInvoice == null) {
+            throw new Exception("생성된 인보이스를 다시 조회하는 데 실패했습니다.");
+        }
+
+        return createdInvoice; // 최종적으로 생성 및 조회된 인보이스 객체 반환
     }
 
     @Override

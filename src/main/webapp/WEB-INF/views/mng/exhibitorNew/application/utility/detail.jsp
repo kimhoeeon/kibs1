@@ -2281,7 +2281,33 @@ if (document.documentElement) {
                                     </div>
                                     <!--end::Basic info-->
 
-                                    <input type="hidden" id="baseTotalAmount" value="${info.boothPrcSum - info.discountPrcSum}" />
+                                        <%-- 계산 API 호출 시 필요한 기본 정보 --%>
+                                    <input type="hidden" id="registrationCnt" value="${info.registrationCnt}"/> <%-- 등록비 포함 여부 (보통 1) --%>
+                                    <input type="hidden" id="baseBoothStandAloneCnt" value="${info.standAloneBoothCnt}"/> <%-- 독립부스 수 --%>
+                                    <input type="hidden" id="baseBoothAssemblyCnt" value="${info.assemblyBoothCnt}"/> <%-- 조립부스 수 --%>
+                                    <input type="hidden" id="baseBoothOnlineCnt" value="${info.onlineBoothCnt}"/> <%-- 온라인부스 수 --%>
+                                    <input type="hidden" id="baseUtilitySum" value="${info.utilityPrcSum}"/>  <%-- 유틸리티 총액 (기존에 이미 있음) --%>
+                                    <input type="hidden" id="deposit" value="${info.deposit}"/> <%-- 선납금 --%>
+
+                                        <%-- 기본 할인 적용 여부 (DB 값 그대로 전달) --%>
+                                    <input type="hidden" id="discountEarly1Checked" value="${info.discountEarly1}"/>
+                                    <input type="hidden" id="discountEarly2Checked" value="${info.discountEarly2}"/>
+                                    <input type="hidden" id="discountFirstUnder10Checked" value="${info.discountFirstUnder10}"/>
+                                    <input type="hidden" id="discountFirstOver10Checked" value="${info.discountFirstOver10}"/>
+                                    <input type="hidden" id="discountReChecked" value="${info.discountRe}"/>
+                                    <input type="hidden" id="discountScale1Checked" value="${info.discountScale1}"/>
+                                    <input type="hidden" id="discountScale2Checked" value="${info.discountScale2}"/>
+                                    <input type="hidden" id="discountScale3Checked" value="${info.discountScale3}"/>
+                                    <input type="hidden" id="discountScale4Checked" value="${info.discountScale4}"/>
+                                    <input type="hidden" id="discountScale5Checked" value="${info.discountScale5}"/>
+                                    <input type="hidden" id="discountScale6Checked" value="${info.discountScale6}"/>
+                                    <input type="hidden" id="discountLeisureChecked" value="${info.discountLeisure}"/>
+                                    <input type="hidden" id="discountLeisureChecked" value="${info.discountLeisure}"/>
+                                    <input type="hidden" id="prcSumData" name="prcSum" value=""/>
+                                    <input type="hidden" id="prcVatData" name="prcVat" value=""/>
+                                    <input type="hidden" id="prcTotalData" name="prcTotal" value=""/>
+                                    <input type="hidden" id="balanceData" name="balance" value=""/>
+                                    <input type="hidden" id="discountPrcSumData" name="discountPrcSum" value="${info.discountPrcSum}"/>
 
                                     <!--begin::Basic info-->
                                     <div class="card mb-5 mb-xl-10">
@@ -2386,27 +2412,19 @@ if (document.documentElement) {
                                                     <tbody>
                                                     <tr>
                                                         <th class="text-gray-700 fw-semibold fs-6">유틸리티 총액</th>
-                                                        <td id="summary_utility_total" class="text-end fw-bold fs-6">
-                                                            <fmt:formatNumber value="${info.utilityPrcSum}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>
-                                                        </td>
+                                                        <td id="summary_utility_total" class="text-end fw-bold fs-6"></td>
                                                     </tr>
                                                     <tr class="border-top border-gray-300 border-top-dashed">
                                                         <th class="text-gray-800 fw-bolder fs-5">합계 (공급가액)</th>
-                                                        <td id="summary_utility_subtotal" class="text-end fw-bolder fs-5">
-                                                            ￦ 0
-                                                        </td>
+                                                        <td id="summary_utility_subtotal" class="text-end fw-bolder fs-5"></td>
                                                     </tr>
                                                     <tr>
                                                         <th class="text-gray-800 fw-bolder fs-5">부가세 (VAT)</th>
-                                                        <td id="summary_utility_vat" class="text-end fw-bolder fs-5">
-                                                            ￦ 0
-                                                        </td>
+                                                        <td id="summary_utility_vat" class="text-end fw-bolder fs-5"></td>
                                                     </tr>
                                                     <tr class="bg-light-primary">
                                                         <th class="text-primary fw-bolder fs-4">최종 합계 (총액)</th>
-                                                        <td id="summary_utility_final_total" class="text-end text-primary fw-bolder fs-4">
-                                                            ￦ 0
-                                                        </td>
+                                                        <td id="summary_utility_final_total" class="text-end text-primary fw-bolder fs-4"></td>
                                                     </tr>
                                                     </tbody>
                                                 </table>

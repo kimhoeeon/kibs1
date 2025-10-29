@@ -23,6 +23,24 @@ $(function(){
     /******************************************************
      * 특별 할인 관련 로직
      ******************************************************/
+    /**
+     * 콤마 제거 유틸리티 함수 (main.js 또는 여기에 있어야 함)
+     */
+    function uncomma(str) {
+        if (typeof str === 'number') {
+            return str;
+        }
+        str = String(str);
+        return parseInt(str.replace(/￦\s|,/g, ''), 10) || 0;
+    }
+
+    /**
+     * 숫자를 원화 포맷으로 변경하는 함수 (main.js 또는 여기에 있어야 함)
+     */
+    function numberToWon(number){
+        if (isNaN(number)) return "￦ 0"; // 숫자가 아니면 0원 반환
+        return "￦ " + Number(number).toLocaleString();
+    }
 
     // 1. '특별 할인 변경내용저장' 버튼 클릭 이벤트
     $('#saveSpecialDiscountBtn').on('click', function() {
@@ -60,69 +78,105 @@ $(function(){
     });
 
     // 2. 특별 할인 항목들의 변경을 감지하여 '계산서'를 다시 계산하는 함수
-    function recalculateFinalTotal() {
-        // --- 1. 기본 금액 정보 가져오기 ---
-        const boothSum = parseInt($('#baseBoothSum').val()) || 0;
-        const utilitySum = parseInt($('#baseUtilitySum').val()) || 0;
-        const basicDiscountSum = parseInt($('#baseDiscountSum').val()) || 0;
+    async function recalculateFinalTotal() {
+        // 1. 계산에 필요한 모든 입력값을 DOM에서 수집
+        const inputData = {
+            // 부스 정보 (hidden input 등에서 가져오기)
+            registrationCnt: 1, // 예시 ID (JSP에 <input type="hidden" id="registrationCnt" value="${info.registrationCnt}"> 필요)
+            standAloneBoothCnt: parseInt($('#baseBoothStandAloneCnt').val()) || 0, // 예시 ID
+            assemblyBoothCnt: parseInt($('#baseBoothAssemblyCnt').val()) || 0, // 예시 ID
+            onlineBoothCnt: parseInt($('#baseBoothOnlineCnt').val()) || 0, // 예시 ID
 
-        // --- 2. 전시부스 계산서 계산 ---
+            // 유틸리티 정보
+            utilityPrcSum: parseInt($('#baseUtilitySum').val()) || 0,
 
-        // 2-1. 발전기금 계산
-        let developmentFund = 0;
-        const isMember = $('body').data('member-yn') === 'Y';
-        const isLeisureDiscountChecked = $('#discountLeisure').is(':checked'); // JSP 1단계에서 ID 추가 필요
+            // 기본 할인 정보 (hidden input 등에서 가져오기)
+            discountEarly1: $('#discountEarly1').is(':checked'), // 예시 ID (JSP에 <input type="checkbox" id="discountEarly1" ${info.discountEarly1 ? 'checked' : ''} style="display:none;"> 필요)
+            discountEarly2: $('#discountEarly2').is(':checked'), // 예시 ID
+            discountFirstUnder10: $('#discountFirstUnder10').is(':checked'), // 예시 ID
+            discountFirstOver10: $('#discountFirstOver10').is(':checked'), // 예시 ID
+            discountRe: $('#discountRe').is(':checked'), // 예시 ID
+            discountScale1: $('#discountScale1').is(':checked'), // 예시 ID
+            discountScale2: $('#discountScale2').is(':checked'), // 예시 ID
+            discountScale3: $('#discountScale3').is(':checked'), // 예시 ID
+            discountScale4: $('#discountScale4').is(':checked'), // 예시 ID
+            discountScale5: $('#discountScale5').is(':checked'), // 예시 ID
+            discountScale6: $('#discountScale6').is(':checked'), // 예시 ID
+            discountLeisure: $('#discountLeisure').is(':checked'), // 예시 ID (실제 체크박스 ID)
 
-        if (isMember || isLeisureDiscountChecked) {
-            // 수정: 발전기금 = (부스 총액 - 기본 할인액) * 0.1
-            let baseAmountForFund = boothSum - basicDiscountSum;
-            // 음수 방지
-            if (baseAmountForFund < 0) {
-                baseAmountForFund = 0;
-            }
-            developmentFund = Math.floor(baseAmountForFund * 0.1);
-        }
+            // 특별 할인 정보 (화면에서 직접 가져오기)
+            discountSpecial1Yn: $('#discountSpecial1Yn').is(':checked'), // 실제 체크박스 ID
+            discountSpecial2Yn: $('#discountSpecial2Yn').is(':checked'), // 실제 체크박스 ID
+            discountSpecial2Amount: uncomma($('#discountSpecial2Amount').val()), // 실제 input ID
+            discountSpecial3Yn: $('#discountSpecial3Yn').is(':checked'), // 실제 체크박스 ID
+            discountSpecial3Amount: uncomma($('#discountSpecial3Amount').val()), // 실제 input ID
 
-        // 2-2. 특별 할인 계산
-        let specialDiscountTotal = 0;
-        // 특별 할인 기준액에서 유틸리티 금액 제외
-        const baseAmountForSpecial = boothSum + utilitySum - basicDiscountSum;
+            // 발전 기금용 정보
+            memberCompanyYn: $('body').data('member-yn'), // JSP body 태그에 data-member-yn="${info.memberCompanyYn}" 필요
 
-        if ($('#discountSpecial1Yn').is(':checked')) {
-            specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5); // 50% 할인
-        }
-        $('.special-discount-amount').each(function() {
-            if ($(this).closest('tr').find('.special-discount-checkbox').is(':checked')) {
-                specialDiscountTotal += parseInt($(this).val().replace(/,/g, '')) || 0;
-            }
-        });
+            // 선금
+            deposit: uncomma($('#deposit').val()) || 0 // 예시 ID (JSP에 <input type="hidden" id="deposit" value="${info.deposit}"> 필요)
+        };
 
-        // 2-3. 전시부스 최종 금액 계산
-        const boothSubtotal = (boothSum + developmentFund) - (basicDiscountSum + specialDiscountTotal);
-        const boothVat = Math.floor(boothSubtotal * 0.1);
-        const boothFinalTotal = boothSubtotal + boothVat;
+        // 2. 백엔드 미리보기 API 호출 (비동기 - fetch 사용)
+        fetch('/mng/calculate-preview.do', { // 관리자용 API
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(inputData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('계산 서버 오류');
+                }
+                return response.json(); // CalculationResultDTO 객체
+            })
+            .then(result => {
+                // 3. 계산된 결과를 UI에 반영 (*** 분리된 섹션에 맞게 수정 ***)
 
-        // 2-4. 전시부스 계산서 UI 업데이트
-        $('#summary_development_fund').text('+ ￦ ' + developmentFund.toLocaleString());
-        $('#summary_special_discount').text('- ￦ ' + specialDiscountTotal.toLocaleString());
-        $('#summary_booth_subtotal').text('￦ ' + boothSubtotal.toLocaleString());
-        $('#summary_booth_vat').text('￦ ' + boothVat.toLocaleString());
-        $('#summary_booth_final_total').text('￦ ' + boothFinalTotal.toLocaleString());
+                // --- 3-1. 전시부스 계산서 UI 업데이트 ---
+                $('#summary_booth_total').text(numberToWon(result.boothPrcSum)); // 부스 총액
+                $('#summary_development_fund').text('+ ' + numberToWon(result.developmentFund).replace('￦ ','')); // 발전기금
+                $('#summary_basic_discount').text('- ' + numberToWon(result.basicDiscountSum).replace('￦ ','')); // 기본 할인
+                $('#summary_special_discount').text('- ' + numberToWon(result.specialDiscountTotal).replace('￦ ','')); // 특별 할인
+                $('#summary_booth_subtotal').text(numberToWon(result.boothSubtotal)); // 부스 소계
+                $('#summary_booth_vat').text(numberToWon(result.boothVat));          // 부스 부가세 (오차 보정됨)
+                $('#summary_booth_final_total').text(numberToWon(result.boothTotal)); // 부스 합계
 
-        // --- 3. 유틸리티 계산서 계산 ---
-        const utilitySubtotal = utilitySum;
-        const utilityVat = Math.floor(utilitySubtotal * 0.1);
-        const utilityFinalTotal = utilitySubtotal + utilityVat;
+                // --- 3-2. 유틸리티 계산서 UI 업데이트 ---
+                $('#summary_utility_total').text(numberToWon(result.utilityPrcSum)); // 유틸리티 총액
+                $('#summary_utility_subtotal').text(numberToWon(result.utilityPrcSum)); // 유틸리티 소계
+                $('#summary_utility_vat').text(numberToWon(result.utilityVat));          // 유틸리티 부가세
+                $('#summary_utility_final_total').text(numberToWon(result.utilityTotal)); // 유틸리티 합계
 
-        // 3-1. 유틸리티 계산서 UI 업데이트
-        $('#summary_utility_total').text('￦ ' + utilitySum.toLocaleString());
-        $('#summary_utility_subtotal').text('￦ ' + utilitySubtotal.toLocaleString());
-        $('#summary_utility_vat').text('￦ ' + utilityVat.toLocaleString());
-        $('#summary_utility_final_total').text('￦ ' + utilityFinalTotal.toLocaleString());
+                // --- 3-3. 최종 합계 및 잔액 UI 업데이트 ---
+                /*$('#summary_total_subtotal').text('￦ ' + result.prcSum.toLocaleString()); // ※JSP에 <span id="summary_total_subtotal"></span> 필요
+                $('#summary_total_vat').text('￦ ' + result.prcVat.toLocaleString());      // ※JSP에 <span id="summary_total_vat"></span> 필요
+                $('#summary_total_final').text('￦ ' + result.prcTotal.toLocaleString()); // ※JSP에 <span id="summary_total_final"></span> 필요
+                $('#summary_balance').text('￦ ' + result.balance.toLocaleString()); // ※JSP에 <span id="summary_balance"></span> 필요*/
+
+                // --- 4. 서버 전송용 hidden input 값 업데이트 (최종 총계 값 사용) ---
+                $("#prcSumData").val(result.prcSum);
+                $("#prcVatData").val(result.prcVat);
+                $("#prcTotalData").val(result.prcTotal);
+                $("#balanceData").val(result.balance);
+                $("#discountPrcSumData").val(result.basicDiscountSum);
+                // (JSP에 <input type="hidden" id="developmentFundData" name="developmentFund">가 있다면)
+                // $("#developmentFundData").val(result.developmentFund);
+
+            })
+            .catch(error => {
+                console.error("금액 계산 중 오류 발생:", error);
+                alert("금액을 계산하는 중 오류가 발생했습니다.");
+            });
+
     }
 
     // 3. 특별 할인 관련 UI가 변경될 때마다 실시간으로 총액을 다시 계산
-    $('#kt_discount_special_info').on('change input', '.special-discount-checkbox, .special-discount-amount', recalculateFinalTotal);
+    $(document).on('change', '#discountSpecial1Yn, #discountSpecial2Yn, #discountSpecial3Yn, #discountSpecial2Amount, #discountSpecial3Amount', function() {
+        recalculateFinalTotal();
+    });
 
     // 4. 페이지 로드 시 특별 할인 및 계산서 초기화
     recalculateFinalTotal();
@@ -886,4 +940,15 @@ function f_application_booth_new_modify_init_set(seq){
 
 function f_application_utility_new_modify_init_set(id){
     window.location.href = '/mng/exhibitorNew/application/utility/detail.do?seq=' + id;
+}
+
+/**
+ * 콤마 제거 유틸리티 함수 (main.js에도 있어야 함)
+ */
+function uncomma(str) {
+    if (typeof str === 'number') {
+        return str;
+    }
+    str = String(str);
+    return parseInt(str.replace(/,/g, ''), 10) || 0;
 }

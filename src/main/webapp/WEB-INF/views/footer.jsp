@@ -26,8 +26,7 @@
                         <div class="gubun">주관</div>
                         <div class="img">
                             <img src="/img/footer/orgarniz01.png" alt="킨텍스">
-                            <%--<img src="/img/footer/kotra_logo.png" alt="KOTRA">--%>
-                            <%--<img src="/img/footer/orgarniz02.png" alt="수자원환경산업진흥">--%>
+                            <img src="/img/footer/orgarniz02.png?ver=20251029" alt="웨이브파크">
                             <img src="/img/footer/orgarniz03.png" alt="한국마리나협회">
                             <img src="/img/footer/orgarniz04.png" alt="한국해양레저산업협회">
                         </div>
@@ -156,7 +155,6 @@
     </div>
 </div>
 
-<!-- 공통 적용 스크립트 , 모든 페이지에 노출되도록 설치. 단 전환페이지 설정값보다 항상 하단에 위치해야함 -->
 <!-- 공통 적용 스크립트 , 모든 페이지에 노출되도록 설치. 단 전환페이지 설정값보다 항상 하단에 위치해야함 -->
 <script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
 <script type="text/javascript">

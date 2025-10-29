@@ -7,17 +7,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mtf.kibs.constants.CommConstants;
 import com.mtf.kibs.dto.*;
+import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.CommService;
 import com.mtf.kibs.service.KibsService;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -41,7 +40,9 @@ import java.util.*;
 @Controller
 public class KibsController {
 
-    // 필드 주입이 아닌 생성자 주입형태로 사용합니다. '생성자 주입 형태'로 사용합니다.
+    @Autowired
+    private CalculationService calculationService; // 1. 공통 계산 서비스 주입
+
     private final KibsService kibsService;
 
     private final CommService commService;
@@ -2341,6 +2342,19 @@ public class KibsController {
 
         mv.setViewName("/mypage/total");
         return mv;
+    }
+
+    /**
+     * [AJAX 용] 실시간 금액 계산 미리보기 (사용자용)
+     * @param input (JS에서 보낸 모든 입력값)
+     * @return CalculationResultDTO (JSON)
+     */
+    @PostMapping("/calculate-preview.do")
+    @ResponseBody
+    public CalculationResultDTO getPublicCalculationPreview(@RequestBody CalculationInputDTO input) {
+        // JS에서 보낸 입력값(input)을 기반으로 즉시 계산하여 결과만 반환
+        // (DB 저장은 없음)
+        return calculationService.calculateTotals(input);
     }
 
     //***************************************************************************

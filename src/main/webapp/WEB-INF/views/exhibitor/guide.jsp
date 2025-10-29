@@ -249,8 +249,8 @@
                         <thead>
                         <tr>
                             <th>구분</th>
-                            <th>내용</th>
-                            <th colspan="2">할인금액(부스당)</th>
+                            <th>할인금액(부스당)</th>
+                            <th colspan="2">내용</th>
                         </tr>
                         </thead>
                         <tbody>
