@@ -127,7 +127,7 @@
                             </div>
 
                             <%-- 1. 부스 정보 --%>
-                            <input type="hidden" id="registrationCnt" value="${info.registrationCnt}"/> <%-- 등록비 포함 여부 (보통 1) --%>
+                            <input type="hidden" id="registrationCnt" value="1"/> <%-- 등록비 포함 여부 (보통 1) --%>
                             <input type="hidden" id="hiddenStandAloneCnt" value="${info.standAloneBoothCnt}"/> <%-- 독립부스 수 --%>
                             <input type="hidden" id="hiddenAssemblyCnt" value="${info.assemblyBoothCnt}"/> <%-- 조립부스 수 --%>
                             <input type="hidden" id="hiddenOnlineCnt" value="${info.onlineBoothCnt}"/> <%-- 온라인부스 수 --%>

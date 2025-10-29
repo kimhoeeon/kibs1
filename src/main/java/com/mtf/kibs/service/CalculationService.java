@@ -13,9 +13,23 @@ public class CalculationService {
 
     // (참고) 실제로는 이 단가들을 CommConstants 또는 DB에서 관리해야 합니다.
     private static final int REGISTRATION_FEE = 100000;
-    private static final int STAND_ALONE_BOOTH_FEE = 2000000;
+    private static final int STAND_ALONE_BOOTH_FEE = 1800000;
     private static final int ASSEMBLY_BOOTH_FEE = 2100000;
     private static final int ONLINE_BOOTH_FEE = 1000000; // 온라인 부스비 (필요시 수정)
+
+    // --- 기본 할인액 (CommConstants 또는 DB 값 사용 권장) ---
+    private static final int DISCOUNT_EARLY_1_AMOUNT = 300000;
+    private static final int DISCOUNT_EARLY_2_AMOUNT = 200000;
+    private static final int DISCOUNT_SCALE_1_AMOUNT = 400000;
+    private static final int DISCOUNT_SCALE_2_AMOUNT = 650000;
+    private static final int DISCOUNT_SCALE_3_AMOUNT = 750000;
+    private static final int DISCOUNT_SCALE_4_AMOUNT = 800000;
+    private static final int DISCOUNT_SCALE_5_AMOUNT = 850000;
+    private static final int DISCOUNT_SCALE_6_AMOUNT = 900000;
+    private static final int DISCOUNT_RE_AMOUNT = 200000;
+    private static final int DISCOUNT_FIRST_UNDER_10_AMOUNT = 500000;
+    private static final int DISCOUNT_FIRST_OVER_10_AMOUNT = 300000;
+    private static final int DISCOUNT_LEISURE_AMOUNT = 200000;
 
     /**
      * 모든 금액을 계산하는 중앙 메서드
@@ -36,18 +50,41 @@ public class CalculationService {
         int basicDiscountSum = 0;
         int physicalBooths = input.getStandAloneBoothCnt() + input.getAssemblyBoothCnt();
 
-        if (input.isDiscountEarly1()) basicDiscountSum += physicalBooths * 300000;
-        if (input.isDiscountEarly2()) basicDiscountSum += physicalBooths * 200000;
-        if (input.isDiscountFirstUnder10()) basicDiscountSum += physicalBooths * 500000;
-        if (input.isDiscountFirstOver10()) basicDiscountSum += physicalBooths * 300000;
-        if (input.isDiscountRe()) basicDiscountSum += physicalBooths * 200000;
-        if (input.isDiscountScale1()) basicDiscountSum += physicalBooths * 400000;
-        if (input.isDiscountScale2()) basicDiscountSum += physicalBooths * 650000;
-        if (input.isDiscountScale3()) basicDiscountSum += physicalBooths * 750000;
-        if (input.isDiscountScale4()) basicDiscountSum += physicalBooths * 800000;
-        if (input.isDiscountScale5()) basicDiscountSum += physicalBooths * 850000;
-        if (input.isDiscountScale6()) basicDiscountSum += physicalBooths * 900000;
-        if (input.isDiscountLeisure()) basicDiscountSum += physicalBooths * 200000;
+        // --- 조기 신청 할인 (중복 가능) ---
+        if (input.isDiscountEarly1()) basicDiscountSum += physicalBooths * DISCOUNT_EARLY_1_AMOUNT;
+        if (input.isDiscountEarly2()) basicDiscountSum += physicalBooths * DISCOUNT_EARLY_2_AMOUNT;
+
+        // --- 첫 참가 / 재참가 할인 (택 1) ---
+        int participationDiscount = 0;
+        if (input.isDiscountFirstUnder10() && physicalBooths < 10) {
+            participationDiscount = physicalBooths * DISCOUNT_FIRST_UNDER_10_AMOUNT;
+        } else if (input.isDiscountFirstOver10() && physicalBooths >= 10) {
+            participationDiscount = physicalBooths * DISCOUNT_FIRST_OVER_10_AMOUNT;
+        } else if (input.isDiscountRe()) { // 첫 참가가 아닐 때만 재참가 적용
+            participationDiscount = physicalBooths * DISCOUNT_RE_AMOUNT;
+        }
+        basicDiscountSum += participationDiscount; // 첫 참가 또는 재참가 중 하나만 더함
+
+        // --- 규모 할인 (택 1, 위와 중복 가능) ---
+        int scaleDiscount = 0;
+        // 가장 큰 구간부터 확인하여 하나만 적용
+        if (physicalBooths >= 100 && input.isDiscountScale6()) {
+            scaleDiscount = physicalBooths * DISCOUNT_SCALE_6_AMOUNT;
+        } else if (physicalBooths >= 50 && input.isDiscountScale5()) {
+            scaleDiscount = physicalBooths * DISCOUNT_SCALE_5_AMOUNT;
+        } else if (physicalBooths >= 40 && input.isDiscountScale4()) {
+            scaleDiscount = physicalBooths * DISCOUNT_SCALE_4_AMOUNT;
+        } else if (physicalBooths >= 30 && input.isDiscountScale3()) {
+            scaleDiscount = physicalBooths * DISCOUNT_SCALE_3_AMOUNT;
+        } else if (physicalBooths >= 20 && input.isDiscountScale2()) {
+            scaleDiscount = physicalBooths * DISCOUNT_SCALE_2_AMOUNT;
+        } else if (physicalBooths >= 10 && input.isDiscountScale1()) {
+            scaleDiscount = physicalBooths * DISCOUNT_SCALE_1_AMOUNT;
+        }
+        basicDiscountSum += scaleDiscount; // 규모 할인 더함 (첫/재참가와 중복됨)
+
+        // --- 협회 할인 (중복 가능) ---
+        if (input.isDiscountLeisure()) basicDiscountSum += physicalBooths * DISCOUNT_LEISURE_AMOUNT;
         result.setBasicDiscountSum(basicDiscountSum);
 
         // --- 3. 특별 할인 총액 계산 ---
@@ -94,15 +131,6 @@ public class CalculationService {
         int boothVat = (int) Math.floor(boothSubtotal * 0.1);
         int boothTotal = boothSubtotal + boothVat;
 
-        // 디버깅용 로그 출력 (실제 운영 시 제거)
-        /*System.out.println("Booth Prc Sum: " + boothPrcSum);
-        System.out.println("Development Fund: " + developmentFund);
-        System.out.println("Basic Discount Sum: " + basicDiscountSum);
-        System.out.println("Special Discount Total: " + specialDiscountTotal);
-        System.out.println("Booth Subtotal: " + boothSubtotal);
-        System.out.println("Booth VAT: " + boothVat);
-        System.out.println("Booth Total: " + boothTotal);*/
-
         result.setBoothSubtotal(boothSubtotal);
         result.setBoothVat(boothVat);
         result.setBoothTotal(boothTotal);
@@ -128,6 +156,26 @@ public class CalculationService {
         result.setPrcVat(prcVat);
         result.setPrcTotal(prcTotal);
         result.setBalance(balance);
+
+        // 디버깅용 로그 출력 (실제 운영 시 제거 권장)
+        /*System.out.println("--- Calculation Result ---");
+        System.out.println("Booth Prc Sum: " + boothPrcSum);
+        System.out.println("Utility Prc Sum Input: " + input.getUtilityPrcSum());
+        System.out.println("Basic Discount Sum: " + basicDiscountSum);
+        System.out.println("Special Discount Total: " + specialDiscountTotal);
+        System.out.println("Development Fund: " + developmentFund);
+        System.out.println("Booth Subtotal: " + boothSubtotal);
+        System.out.println("Booth VAT (Corrected): " + boothVat);
+        System.out.println("Booth Total (Corrected): " + boothTotal);
+        System.out.println("Utility Subtotal: " + utilSubtotal);
+        System.out.println("Utility VAT: " + utilVat);
+        System.out.println("Utility Total: " + utilTotal);
+        System.out.println("Final PrcSum: " + prcSum);
+        System.out.println("Final PrcVat: " + prcVat);
+        System.out.println("Final PrcTotal: " + prcTotal);
+        System.out.println("Deposit: " + input.getDeposit());
+        System.out.println("Final Balance: " + balance);
+        System.out.println("--------------------------");*/
 
         return result;
     }
