@@ -2388,24 +2388,7 @@ if (document.documentElement) {
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th>SEQ</th>
                                                     <th class="text-center min-w-150px">회사명</th>
-                                                    <th>companyNameEn</th>
                                                     <th class="text-center min-w-100px">인보이스</th>
-                                                    <th>utilityJuganCnt</th>
-                                                    <th>utilityJuganFee</th>
-                                                    <th>utilityDayCnt</th>
-                                                    <th>utilityDayFee</th>
-                                                    <th>utilityCompressedAirCnt</th>
-                                                    <th>utilityCompressedAirFee</th>
-                                                    <th>utilityWaterBasicCnt</th>
-                                                    <th>utilityWaterBasicFee</th>
-                                                    <th>utilityInternetCnt</th>
-                                                    <th>utilityInternetFee</th>
-                                                    <th>utilityPytexNewCnt</th>
-                                                    <th>utilityPytexNewFee</th>
-                                                    <th>utilityPytexReCnt</th>
-                                                    <th>utilityPytexReFee</th>
-                                                    <th>utilityBarcodeCnt</th>
-                                                    <th>utilityBarcodeFee</th>
                                                     <th class="text-center min-w-150px">구분</th>
                                                     <th class="text-center min-w-125px">총액(VAT미포함)</th>
                                                     <th class="text-center min-w-150px">등록일시</th>
@@ -2415,23 +2398,6 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>

@@ -294,6 +294,28 @@ function replaceText(value){
     return value;
 }
 
+function ajaxConnectSimple(url, method, jsonStr){
+    let result = '';
+    $.ajax({
+        url: url,
+        method: method,
+        async: false,
+        data: JSON.stringify(jsonStr),
+        contentType: 'application/json; charset=utf-8' //server charset 확인 필요
+    })
+        .done(function (data) {
+            result = data;
+        })
+        .fail(function (xhr, status, errorThrown) {
+            /*$('body').html("오류가 발생했습니다.")
+                .append("<br>오류명: " + errorThrown)
+                .append("<br>상태: " + status);*/
+
+            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+        })
+    return result;
+}
+
 // 엑셀업로드
 function showMessage(selector, icon, title, msg, confirmButtonColor) {
     if (typeof icon == "undefined" || title == null) icon = 'info';

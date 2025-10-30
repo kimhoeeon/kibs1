@@ -1548,46 +1548,29 @@ let KTAppExhibitorNewApplicationUtility = function () {
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 4,
+                    'targets': 3,
                     'render': function (data, type, row) { return renderInvoiceYnCell(data, type, row); }
                 },
                 {
-                    'targets': 21,
+                    'targets': 4,
                     'render': function (data, type, row) { return renderUtilityGbnCell(data, type, row); }
                 },
                 {
-                    'targets': 22,
+                    'targets': 5,
                     'render': function (data, type, row) { return renderUtilityPrcSumCell(data, type, row); }
                 },
                 {
-                    'targets': 25,
+                    'targets': 8,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,3,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] }
+                { visible: false, targets: [1] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
                 { data: 'seq'}, //seq
                 { data: 'companyNameKo' }, //회사명(국문)
-                { data: 'companyNameEn' }, //회사명(영문)
                 { data: 'invoiceYn' }, //인보이스존재여부
-                { data: 'utilityJuganCnt' },
-                { data: 'utilityJuganFee' },
-                { data: 'utilityDayCnt' },
-                { data: 'utilityDayFee' },
-                { data: 'utilityCompressedAirCnt' },
-                { data: 'utilityCompressedAirFee' },
-                { data: 'utilityWaterBasicCnt' },
-                { data: 'utilityWaterBasicFee' },
-                { data: 'utilityInternetCnt' },
-                { data: 'utilityInternetFee' },
-                { data: 'utilityPytexNewCnt' },
-                { data: 'utilityPytexNewFee' },
-                { data: 'utilityPytexReCnt' },
-                { data: 'utilityPytexReFee' },
-                { data: 'utilityBarcodeCnt' },
-                { data: 'utilityBarcodeFee' },
                 { data: 'utilityGbn' }, //구분
                 { data: 'utilityPrcSum' }, //총액
                 { data: 'initRegiDttm' }, //등록일시
