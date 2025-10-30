@@ -2336,7 +2336,9 @@ if (document.documentElement) {
                                                 <th class="text-center min-w-50px">번호</th>
                                                 <th>SEQ</th>
                                                 <th class="text-center min-w-150px">회사명</th>
-                                                <th>회사명(영문)</th>
+                                                <th class="text-center min-w-100px">담당자명</th>
+                                                <th class="text-center min-w-100px">직책</th>
+                                                <th class="text-center min-w-100px">연락처</th>
                                                 <th class="text-center min-w-150px">상호간판명(국문)</th>
                                                 <th class="text-center min-w-150px">상호간판명(영문)</th>
                                                 <th class="text-center min-w-150px">등록일시</th>
@@ -2346,6 +2348,8 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                             <tr>
+                                                <td></td>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>

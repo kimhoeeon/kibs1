@@ -154,7 +154,7 @@
                             <input type="hidden" id="discountPrcSum" name="discountPrcSum" value="">
                             <input type="hidden" id="prcSum" name="prcSum" value="">
                             <input type="hidden" id="prcVat" name="prcVat" value="">
-                            <input type="hidden" id="prcTotal" name="prcTotal" value="">
+                            <input type="hidden" id="prcTotal" name="prcTotal" value="${info.prcTotal}">
 
                             <!-- 등록비 -->
                             <div class="form_wrap">
@@ -439,6 +439,31 @@
                                             </li>
                                         </ul>
                                         <div style="margin-top: 10px;">※ 중복할인 가능</div>
+
+                                        <!-- 한국해양레저산업협회 발전기금 -->
+                                        <div style="margin-top: 70px; margin-bottom: 30px;">
+                                            <div class="form_tit">
+                                                <div class="big">한국해양레저산업협회 발전기금</div>
+                                            </div>
+                                            <div class="form_booth form_ptag">
+                                                <div class="form_ptag_box">
+                                                    <ul class="form_ptag_list">
+                                                        <li class="form_ptag_hd">
+                                                            <div class="cost">대상</div>
+                                                            <div class="cate">할인금액(부스당)</div>
+                                                            <div class="cate">내용</div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="cost">협회 회원사</div>
+                                                            <div class="cate">참가비(정상참가비 - 할인적용)의 10%</div>
+                                                            <div class="cate">참가신청 완료 후 확인(마이페이지 및 인보이스 참조)</div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- //한국해양레저산업협회 발전기금-->
+
                                     </div>
                                     <div class="form_ptag_sum">
                                         <div class="cate2">총액(VAT 미포함)</div>
@@ -495,16 +520,25 @@
                     }
                 });
 
-                // 페이지 로드 시 초기 계산 ('booth' 타입 전달)
-                if (typeof calculateTotal === 'function') {
-                    calculateTotal('booth'); // ★★★ 페이지 타입 전달 ★★★
-                } else {
-                    console.error("main.js의 calculateTotal 함수를 찾을 수 없습니다.");
+                // --- ★★★ 수정: 페이지 로드 시 실행 순서 변경 ---
+                async function initializePage() {
+                    // 1. (선택) 만약 calculateTotal이 먼저 실행되어야 한다면 여기서 await
+                    // await calculateTotal('booth');
+
+                    // 2. 할인 기간 체크 함수 실행 (수정된 함수는 #prcTotal.text()를 읽음)
+                    if (typeof handleDiscountEarly1 === 'function') handleDiscountEarly1();
+                    if (typeof handleDiscountEarly2 === 'function') handleDiscountEarly2();
+
+                    // 3. ★★★ 할인 자동 체크가 적용된 후, 최종 금액 계산 ★★★
+                    if (typeof calculateTotal === 'function') {
+                        await calculateTotal('booth'); // ★★★ 페이지 타입 전달 ★★★
+                    } else {
+                        console.error("main.js의 calculateTotal 함수를 찾을 수 없습니다.");
+                    }
                 }
 
-                // 조기 신청 할인 기간 처리 (main.js 함수 호출)
-                if (typeof handleDiscountEarly1 === 'function') handleDiscountEarly1();
-                if (typeof handleDiscountEarly2 === 'function') handleDiscountEarly2();
+                // 페이지 로드 시 초기화 함수 실행
+                initializePage();
             });
         </script>
     </c:if>

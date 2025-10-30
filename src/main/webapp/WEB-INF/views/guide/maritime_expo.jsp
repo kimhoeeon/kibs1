@@ -110,7 +110,7 @@
                                 <div class="icon"><img src="/img/maritime_icon02.png"></div>
                                 <div class="txt">
                                     <div class="gubun">일자</div>
-                                    <div class="cont">2026년 5월</div>
+                                    <div class="cont">2026년 6월</div>
                                 </div>
                             </li>
                             <li>

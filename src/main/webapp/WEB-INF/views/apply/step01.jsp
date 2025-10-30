@@ -1071,7 +1071,7 @@
                                     <div class="form_wrap">
                                         <div class="form_tit">
                                             <div class="big">전시품 신청</div>
-                                            <div class="small">입력하신 전시품 신청는 온라인 전시관에 자동 노출됩니다.</div>
+                                            <div class="small">입력하신 전시품 신청은 온라인 전시관에 자동 노출됩니다.</div>
                                         </div>
 
                                         <c:if test="${empty productList}">

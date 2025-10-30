@@ -1126,3 +1126,42 @@ function f_invoice_booth_download(){
     document.body.appendChild(form);
     form.submit();
 }
+
+function f_exhibitor_application_booth_new_excel_export(){
+    Swal.fire({
+        icon: 'info',
+        title: '[ 전체 전시부스 정보 상세 다운로드 ]',
+        html: '전체 전시부스 정보 상세를 다운로드하시겠습니까 ?',
+        allowOutsideClick: false,
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '다운로드',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            /* 로딩페이지 */
+            loadingBarShow();
+
+            let form = document.createElement('form');
+            form.setAttribute('action','/mng/exhibitor/booth/download.do');
+            form.setAttribute('method','get');
+
+            let obj = document.createElement('input');
+            obj.setAttribute('type', 'hidden');
+            obj.setAttribute('name', 'fileName');
+            obj.setAttribute('value', '전시부스_정보_' + getCurrentDate() + '.xlsx');
+
+            let obj2 = document.createElement('input');
+            obj2.setAttribute('type', 'hidden');
+            obj2.setAttribute('name', 'transferYear');
+            obj2.setAttribute('value', transferYear);
+
+            form.appendChild(obj);
+            form.appendChild(obj2);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}

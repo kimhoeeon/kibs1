@@ -26,7 +26,6 @@
                         <div class="gubun">주관</div>
                         <div class="img">
                             <img src="/img/footer/orgarniz01.png" alt="킨텍스">
-                            <img src="/img/footer/orgarniz02.png?ver=20251029" alt="웨이브파크">
                             <img src="/img/footer/orgarniz03.png" alt="한국마리나협회">
                             <img src="/img/footer/orgarniz04.png" alt="한국해양레저산업협회">
                         </div>

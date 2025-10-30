@@ -595,11 +595,12 @@ function updateScaleDiscountState(physicalBooths) {
 function handleDiscountEarly1() {
     const discount1Checkbox = $('#discountEarly1');
     const discount1Item = $('#discountItem1');
-    const isPrcTotal = $('#prcTotal').val() === "110000"; // 최초 신청 여부
+    const currentPrcTotal = $('#prcTotal').val(); // uncomma 함수로 "￦ 110,000" -> 110000 변환
+    const isInitialState = uncomma(currentPrcTotal) === 110000; // 최초 신청 상태(등록비)인지 숫자값으로 비교
 
     if (now <= discount1Deadline) { // 1차 할인 기간 내
         // DB에 저장된 값이 없는 최초 신청 시 자동으로 체크
-        if (isPrcTotal) {
+        if (isInitialState) {
             discount1Checkbox.prop('checked', true);
         }
         discount1Item.removeClass('disabled');
@@ -607,7 +608,7 @@ function handleDiscountEarly1() {
 
         // 사용자가 직접 할인을 해제하고 다시 선택하지 못하게 하는 로직
         let userUnchecked = false;
-        discount1Checkbox.off('change.discountControl').on('change.discountControl', function() {
+        discount1Checkbox.off('change.discountControl').on('change.discountControl', async function() {
             if (!$(this).prop('checked')) {
                 if(confirm('1차 조기신청 할인은 자동으로 적용되며,\n한 번 해제하시면 다시 선택할 수 없습니다. 해제하시겠습니까?')){
                     userUnchecked = true;
@@ -618,7 +619,10 @@ function handleDiscountEarly1() {
                 $(this).prop('checked', false);
                 alert('1차 조기신청 할인은 한 번 해제하시면 다시 선택할 수 없습니다.');
             }
-            calculateTotal('booth');
+            // ★ 수정: main.js의 calculateTotal 함수 호출 (API 방식)
+            if (typeof calculateTotal === 'function') {
+                await calculateTotal('booth'); // API 호출이므로 await
+            }
         });
     } else { // 1차 할인 기간 종료
         if (discount1Checkbox.prop('checked')) {
@@ -639,18 +643,19 @@ function handleDiscountEarly1() {
 function handleDiscountEarly2() {
     const discount2Checkbox = $('#discountEarly2');
     const discount2Item = $('#discountItem2');
-    const isPrcTotal = $('#prcTotal').val() === "110000"; // 최초 신청 여부
+    const currentPrcTotal = $('#prcTotal').val(); // uncomma 함수로 "￦ 110,000" -> 110000 변환
+    const isInitialState = uncomma(currentPrcTotal) === 110000; // 최초 신청 상태(등록비)인지 숫자값으로 비교
 
     if (now >= discount2StartDate && now <= discount2Deadline) { // 2차 할인 기간 내
         // 1차 할인 기간을 놓친 최초 신청자에게 자동 체크
-        if(isPrcTotal) {
+        if(isInitialState) {
             discount2Checkbox.prop('checked', true);
         }
         discount2Item.removeClass('disabled');
         discount2Checkbox.prop('disabled', false);
 
         let userUnchecked = false;
-        discount2Checkbox.off('change.discountControl').on('change.discountControl', function() {
+        discount2Checkbox.off('change.discountControl').on('change.discountControl', async function() {
             if (!$(this).prop('checked')) {
                 if(confirm('2차 조기신청 할인은 자동으로 적용되며,\n한 번 해제하시면 다시 선택할 수 없습니다. 해제하시겠습니까?')){
                     userUnchecked = true;
@@ -661,7 +666,10 @@ function handleDiscountEarly2() {
                 $(this).prop('checked', false);
                 alert('2차 조기신청 할인은 한 번 해제하시면 다시 선택할 수 없습니다.');
             }
-            calculateTotal('booth');
+            // ★ 수정: main.js의 calculateTotal 함수 호출 (API 방식)
+            if (typeof calculateTotal === 'function') {
+                await calculateTotal('booth'); // API 호출이므로 await
+            }
         });
     } else { // 2차 할인 기간이 아니면
         if (discount2Checkbox.prop('checked')) {
@@ -871,7 +879,8 @@ function uncomma(str) {
         return str;
     }
     str = String(str);
-    return parseInt(str.replace(/￦\s|,/g, ''), 10) || 0;
+    // "￦ " 기호와 "," 콤마를 모두 제거
+    return parseInt(str.replace(/￦\s*|,/g, ''), 10) || 0;
 }
 
 function autoSum(index){
@@ -4263,18 +4272,23 @@ function step_03_check(exhibitorSeq){
                 let exhibitor_new_jsonObj = {
                     seq: exhibitorSeq
                 }
-                let email = ajaxConnectSimple('/getExhibitorNewRepEmail.do','post', exhibitor_new_jsonObj);
+                let emailArr = ajaxConnectSimple('/getExhibitorNewEmailList.do','post', exhibitor_new_jsonObj);
+                let mailResultFlag = false;
+                for(let j=0; j<emailArr.length; j++){
+                    let email = emailArr[j];
+                    let jsonObj = {
+                        subject: '[2026 경기국제보트쇼] 참가업체 접수 완료', //제목
+                        body: "", //본문
+                        template: "6", //템플릿 번호
+                        receiver: [{email: email}]
+                    }
+                    ajaxConnect('/mail/send.do', 'post', jsonObj);
 
-                let jsonObj = {
-                    subject: '[2026 경기국제보트쇼] 참가업체 접수 완료', //제목
-                    body: "", //본문
-                    template: "6", //템플릿 번호
-                    receiver: [{email: email}]
+                    if(j === (emailArr.length-1)){
+                        mailResultFlag = true;
+                    }
                 }
-                //console.log(JSON.stringify(jsonObj));
-                let resData = ajaxConnect('/mail/send.do', 'post', jsonObj);
-                //console.log(i , resData);
-                if (resData.resultCode === "0") {
+                if (mailResultFlag) {
                     /* 등록 성공 시 다음 단계로 이동 */
                     home('ko');
                 }
@@ -5979,18 +5993,23 @@ function my_step_03_check(exhibitorSeq){
                 let exhibitor_new_jsonObj = {
                     seq: exhibitorSeq
                 }
-                let email = ajaxConnectSimple('/getExhibitorNewRepEmail.do','post', exhibitor_new_jsonObj);
+                let emailArr = ajaxConnectSimple('/getExhibitorNewEmailList.do','post', exhibitor_new_jsonObj);
+                let mailResultFlag = false;
+                for(let j=0; j<emailArr.length; j++){
+                    let email = emailArr[j];
+                    let jsonObj = {
+                        subject: '[2026 경기국제보트쇼] 참가업체 접수 완료', //제목
+                        body: "", //본문
+                        template: "6", //템플릿 번호
+                        receiver: [{email: email}]
+                    }
+                    ajaxConnect('/mail/send.do', 'post', jsonObj);
 
-                let jsonObj = {
-                    subject: '[2026 경기국제보트쇼] 참가업체 접수 완료', //제목
-                    body: "", //본문
-                    template: "6", //템플릿 번호
-                    receiver: [{email: email}]
+                    if(j === (emailArr.length-1)){
+                        mailResultFlag = true;
+                    }
                 }
-                //console.log(JSON.stringify(jsonObj));
-                let resData = ajaxConnect('/mail/send.do', 'post', jsonObj);
-                //console.log(i , resData);
-                if (resData.resultCode === "0") {
+                if (mailResultFlag) {
                     /* 등록 성공 시 다음 단계로 이동 */
                     home('ko');
                 }

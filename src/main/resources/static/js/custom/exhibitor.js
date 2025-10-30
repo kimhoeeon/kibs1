@@ -67,7 +67,7 @@ $(function(){
                     myModal.show();
                 }
             }else{
-                showMessage('', 'error', '[ 참가 상태 변경 ]', '상태를 변경할 업체를 하나 이상 선택해 주세요.', '');
+                showMessage('', 'error', '[ 참가 상태 변경 ]', '상태를 변경할 업체를<br>하나 이상 선택해 주세요.', '');
                 return false;
             }
 
@@ -120,7 +120,7 @@ $(function(){
                     myModal.show();
                 }
             }else{
-                showMessage('', 'error', '[ 입금 상태 변경 ]', '상태를 변경할 업체를 하나 이상 선택해 주세요.', '');
+                showMessage('', 'error', '[ 입금 상태 변경 ]', '상태를 변경할 업체를<br>하나 이상 선택해 주세요.', '');
                 return false;
             }
 
@@ -1476,8 +1476,8 @@ function f_exhibitor_excel_export(){
 
 function f_approval_status_btn_yn(){
 
-    let idArr = $('input[type=hidden][name=checkVal]').val();
-    if (nvl(idArr,'') !== ''){
+    let seqArr = $('input[type=hidden][name=checkVal]').val();
+    if (nvl(seqArr,'') !== ''){
 
         let md_approval_stat_val = $('#md_approval_stat').val();
         if(nvl(md_approval_stat_val,'') !== ''){
@@ -1512,11 +1512,31 @@ function f_approval_status_btn_yn(){
                 cancelButtonText: '취소'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let idSplit = idArr.split(',');
+                    let seqSplit = seqArr.split(',');
                     let jsonArr = [];
-                    for(let i=0; i<idSplit.length; i++){
+                    for(let i=0; i<seqSplit.length; i++){
+                        let seq = seqSplit[i];
+
+                        if(md_approval_stat_val === '참가승인'){
+
+                            let jsonStr = {seq: seq};
+                            let emailArr = ajaxConnectSimple('/getExhibitorNewEmailList.do', 'post', jsonStr);
+
+                            for(let j=0; j<emailArr.length; j++){
+                                let email = emailArr[j];
+                                let jsonObj = {
+                                    subject: '[ 2026 경기국제보트쇼 ] 참가기업 승인 안내', //제목
+                                    body: "", //본문
+                                    template: "171", //템플릿 번호
+                                    receiver: [{ email: email }]
+                                }
+                                ajaxConnect('/mail/send.do', 'post', jsonObj);
+                            }
+
+                        }
+
                         let jsonObj = {
-                            seq: idSplit[i],
+                            seq: seq,
                             applyComplt: applyComplt,
                             approvalStatus: md_approval_stat_val,
                             approvalStatusCancelReason: approval_cancel_reason_input,

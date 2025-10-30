@@ -1335,25 +1335,27 @@ let KTAppExhibitorNewApplicationSign = function () {
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 4,
+                    'targets': 6,
                     'render': function (data, type, row) { return renderCompanySignNameKoCell(data, type, row); }
                 },
                 {
-                    'targets': 5,
+                    'targets': 7,
                     'render': function (data, type, row) { return renderCompanySignNameEnCell(data, type, row); }
                 },
                 {
-                    'targets': 8,
+                    'targets': 10,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,3] }
+                { visible: false, targets: [1] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
                 { data: 'seq'}, //seq
                 { data: 'companyNameKo' }, //회사명(국문)
-                { data: 'companyNameEn' }, //회사명(영문)
+                { data: 'name'},
+                { data: 'position'},
+                { data: 'phone'},
                 { data: 'companySignNameKo' }, //상호간판명(국문)
                 { data: 'companySignNameEn' }, //상호간판명(영문)
                 { data: 'initRegiDttm' }, //등록일시
@@ -1879,55 +1881,42 @@ let KTAppExhibitorNewApplicationPass = function () {
                     'className': 'text-center'
                 },
                 {
-                    'targets': 3,
+                    'targets': 2,
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 5,
+                    'targets': 3,
                     'render': function (data, type, row) { return renderPassNameCell(data, type, row); }
                 },
                 {
-                    'targets': 6,
-                    'render': function (data, type, row) { return renderPassNameEnCell(data, type, row); }
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderPassPositionCell(data, type, row); }
                 },
                 {
-                    'targets': 8,
-                    'render': function (data, type, row) { return renderPassPositionKoCell(data, type, row); }
-                },
-                {
-                    'targets': 9,
-                    'render': function (data, type, row) { return renderPassPositionEnCell(data, type, row); }
-                },
-                {
-                    'targets': 10,
+                    'targets': 5,
                     'render': function (data, type, row) { return renderPassNoteCell(data, type, row); }
                 },
                 {
-                    'targets': 11,
+                    'targets': 6,
                     'render': function (data, type, row) { return renderInitRegiDttmCell(data, type, row); }
                 },
                 {
-                    'targets': 12,
+                    'targets': 7,
                     'render': function (data, type, row) { return renderFinalRegiDttmCell(data, type, row); }
                 },
                 {
-                    'targets': 13,
+                    'targets': 8,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,2,4,7] }
+                { visible: false, targets: [1] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
                 { data: 'seq' }, //업체seq
-                { data: 'id' }, //id
-                { data: 'companyNameko' }, //회사명(국문)
-                { data: 'companyNameEn' }, //회사명(영문)
+                { data: 'companyName' }, //회사명
                 { data: 'passName' }, //성명(국문)
-                { data: 'passFirstName' }, //이름(영문)
-                { data: 'passLastName' }, //성(영문)
-                { data: 'passPositionKo' }, //직책(국문)
-                { data: 'passPositionEn' }, //직책(영문)
+                { data: 'passPosition' }, //직책(국문)
                 { data: 'passNote' }, //비고
                 { data: 'initRegiDttm' }, //등록일시
                 { data: 'finalRegiDttm' }, //수정일시
@@ -1960,40 +1949,37 @@ let KTAppExhibitorNewApplicationPass = function () {
         return passNote;
     }
 
-    function renderPassPositionEnCell(data, type, row){
-        let passPositionEn = row.passPositionEn;
-        if(nvl(passPositionEn,'') === ''){
-            passPositionEn = '-';
-        }
-        return passPositionEn;
-    }
-
-    function renderPassPositionKoCell(data, type, row){
+    function renderPassPositionCell(data, type, row){
+        let renderHTML = '';
         let passPositionKo = row.passPositionKo;
         if(nvl(passPositionKo,"") === ""){
-            passPositionKo = '-';
+            renderHTML = '-';
+        }else{
+            renderHTML = passPositionKo;
+
+            let passPositionEn = row.passPositionEn;
+            if(nvl(passPositionEn,'') !== ''){
+                renderHTML += '<br>' + passPositionEn;
+            }
         }
-        return passPositionKo;
+
+        return renderHTML;
     }
 
     function renderPassNameCell(data, type, row){
+        let renderHTML = '';
         let passName = row.passName;
         if(nvl(passName,"") === ""){
             passName = '-';
         }
-        return passName;
-    }
+        renderHTML = passName;
 
-    function renderPassNameEnCell(data, type, row){
         let passFirstName = row.passFirstName;
         let passLastName = row.passLastName;
-        let renderHTML = '';
-        if(nvl(passFirstName,"") === "" || nvl(passLastName,"") === ""){
-            renderHTML = '-';
-        }else{
-            renderHTML = passFirstName + ' ' + passLastName;
+        if(nvl(passFirstName,"") !== "" && nvl(passLastName,"") !== ""){
+            renderHTML += '<br>';
+            renderHTML += passFirstName + ' ' + passLastName;
         }
-
         return renderHTML;
     }
 

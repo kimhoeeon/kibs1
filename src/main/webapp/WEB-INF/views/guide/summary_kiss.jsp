@@ -135,7 +135,10 @@
                             </li>
                             <li>
                                 <div class="gubun">주관</div>
-                                <div class="cont"><img src="/img/summ_logo03.png"></div>
+                                <div class="cont">
+                                    <img src="/img/summ_logo03.png">
+                                    <img src="/img/summ_logo04.png">
+                                </div>
                             </li>
                         </ul>
                         <div class="eventField">

@@ -2369,40 +2369,30 @@ if (document.documentElement) {
                                         <!--begin::Table-->
                                         <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_exhibitor_application_pass_new_table">
                                             <thead>
-                                            <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                                                <th class="text-center min-w-50px">번호</th>
-                                                <th>seq</th>
-                                                <th>id</th>
-                                                <th class="text-center min-w-150px">회사명</th>
-                                                <th>companyNameEn</th>
-                                                <th class="text-center min-w-100px">성명(국문)</th>
-                                                <th class="text-center min-w-100px">성명(영문)</th>
-                                                <th>passLastName</th>
-                                                <th class="text-center min-w-100px">직책(국문)</th>
-                                                <th class="text-center min-w-100px">직책(영문)</th>
-                                                <th class="text-center min-w-100px">비고</th>
-                                                <th class="text-center min-w-150px">등록일시</th>
-                                                <th class="text-center min-w-150px">수정일시</th>
-                                                <th class="text-center min-w-100px">기능</th>
-                                            </tr>
+                                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                                    <th class="text-center min-w-50px">번호</th>
+                                                    <th>seq</th>
+                                                    <th class="text-center min-w-150px">회사명</th>
+                                                    <th class="text-center min-w-100px">성명</th>
+                                                    <th class="text-center min-w-100px">직책</th>
+                                                    <th class="text-center min-w-100px">비고</th>
+                                                    <th class="text-center min-w-150px">등록일시</th>
+                                                    <th class="text-center min-w-150px">수정일시</th>
+                                                    <th class="text-center min-w-100px">기능</th>
+                                                </tr>
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                         <!--end::Table-->

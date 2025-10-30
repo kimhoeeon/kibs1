@@ -2250,26 +2250,14 @@ if (document.documentElement) {
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                                     <!--begin::Export dropdown-->
-                                    <button type="button" onclick="f_excel_export('kt_exhibitor_application_booth_new_table', '전시부스_신청')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                    <button type="button" onclick="f_exhibitor_application_booth_new_excel_export()" class="btn btn-success btn-active-light-success" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
-                                        </i>Export as Excel</button>
-                                    <!--end::Export dropdown-->
-
-                                    <!--begin::Export dropdown-->
-                                    <%--<button type="button" onclick="f_exhibitor_application_booth_new_excel_export()" class="btn btn-dark btn-active-light-dark" data-kt-menu-placement="bottom-end">
-                                        <i class="ki-duotone ki-exit-down fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>전시업체 상세 데이터 추출</button>--%>
+                                        </i>전시부스 상세 데이터 추출</button>
                                     <!--end::Export dropdown-->
                                 </div>
                                 <!--end::Actions-->
-
-                                <!--begin::Hide default export buttons-->
-                                <div id="kt_datatable_excel_hidden_buttons" class="d-none"></div>
-                                <!--end::Hide default export buttons-->
                             </div>
                             <!--end::Toolbar container-->
                         </div>

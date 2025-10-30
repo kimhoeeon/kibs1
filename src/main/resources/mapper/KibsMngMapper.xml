@@ -3351,6 +3351,22 @@
         WHERE id = #{id}
     </select>
 
+    <select id="getExhibitorNewEmailList" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.kibsMngMapper.getExhibitorNewEmailList */
+        SELECT distinct r.email
+        FROM ( SELECT en.email AS email
+               FROM exhibitor_new en
+               WHERE en.seq = #{seq}
+                 AND en.email IS NOT NULL
+               UNION ALL
+               SELECT cn.charge_person_email AS email
+               FROM charge_new cn
+               WHERE cn.charge_person_email IS NOT NULL
+                 AND cn.ex_seq = #{seq}
+             ) r
+        WHERE r.email != ''
+    </select>
+
     <select id="selectChargeNewList" parameterType="com.mtf.kibs.dto.ChargeNewDTO" resultType="com.mtf.kibs.dto.ChargeNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectChargeNewList */
         SELECT seq
@@ -4028,12 +4044,17 @@
         SELECT seq
              , company_name_ko
              , company_name_en
+             , name
+             , position
+             , phone
              , company_sign_name_ko
              , company_sign_name_en
              , init_regi_dttm
              , final_regi_dttm
         FROM exhibitor_new
         WHERE 1=1
+          AND (NULLIF(company_sign_name_ko, '') IS NOT NULL
+          OR NULLIF(company_sign_name_en, '') IS NOT NULL)
         <if test='transferYear != null and transferYear != ""'>
             AND transfer_year = #{transferYear}
         </if>
@@ -4054,9 +4075,7 @@
         <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
             AND cancel_yn = #{cancelYn}
         </if>
-        ORDER BY NULLIF(company_sign_name_ko, '') IS NOT NULL DESC
-               , NULLIF(company_sign_name_en, '') IS NOT NULL DESC
-               , init_regi_dttm DESC
+        ORDER BY init_regi_dttm DESC
     </select>
 
     <select id="selectSignSingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorDTO">
@@ -4461,6 +4480,7 @@
         LEFT JOIN pass_new p
         ON e.seq = p.ex_seq
         WHERE 1=1
+          AND p.seq IS NOT NULL
         <if test='transferYear != null and transferYear != ""'>
             AND e.transfer_year = #{transferYear}
         </if>
@@ -4484,9 +4504,7 @@
         <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
             AND e.cancel_yn = #{cancelYn}
         </if>
-        ORDER BY NULLIF(p.pass_name, '') IS NOT NULL DESC
-        , e.company_name_ko DESC
-        , p.init_regi_dttm DESC
+        ORDER BY p.init_regi_dttm DESC
     </select>
 
     <select id="selectPassDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.MngPassDTO">
@@ -6020,6 +6038,46 @@
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
         WHERE id = #{id}
     </update>
+
+    <select id="selectExcelBoothDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.BoothDetailDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExcelBoothDetailList */
+        SELECT en.seq
+             , en.company_name_ko
+             , en.company_name_en
+             , IF(( SELECT COUNT(*) FROM invoice_booth ib WHERE ib.exhibitor_seq = en.seq AND ib.del_yn = 'N') <![CDATA[>]]> 0, 'Y', 'N') AS invoiceYn
+             , en.booth_type
+             , en.registration_cnt
+             , en.registration_fee
+             , en.stand_alone_booth_cnt
+             , en.stand_alone_booth_fee
+             , en.assembly_booth_cnt
+             , en.assembly_booth_fee
+             , en.online_booth_cnt
+             , en.online_booth_fee
+             , en.discount_early_1
+             , en.discount_early_2
+             , en.discount_first_under_10
+             , en.discount_first_over_10
+             , en.discount_first
+             , en.discount_re
+             , en.discount_scale_1
+             , en.discount_scale_2
+             , en.discount_scale_3
+             , en.discount_scale_4
+             , en.discount_scale_5
+             , en.discount_scale_6
+             , en.discount_leisure
+             , en.booth_prc_sum
+             , en.discount_prc_sum
+             , en.prc_sum
+             , en.prc_vat
+             , en.prc_total
+             , en.init_regi_dttm
+             , en.final_regi_dttm
+        FROM exhibitor_new en
+        WHERE en.transfer_year = #{transferYear}
+        ORDER BY en.init_regi_dttm
+    </select>
 
     <select id="selectExcelPassDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.PassDetailDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExcelPassDetailList */

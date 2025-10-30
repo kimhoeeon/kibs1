@@ -182,7 +182,7 @@
                             <div class="form_wrap">
                                 <div class="form_tit">
                                     <div class="big">요트/보트 출품 정보</div>
-                                    <div class="small">신청하실 경우 전시품 신청는 1개 이상 필수 등록입니다.</div>
+                                    <div class="small">신청하실 경우 전시품 신청은 1개 이상 필수 등록입니다.</div>
                                 </div>
                                 <ul class="form_box">
                                     <li>
@@ -208,7 +208,13 @@
                             <div class="form_wrap productInfoWrap" style="display: none;">
                                 <div class="form_tit">
                                     <div class="big">전시품 신청</div>
-                                    <div class="small">입력하신 전시품 신청는 온라인 전시관에 자동 노출됩니다.</div>
+                                    <div class="small">
+                                        입력하신 전시품 신청은 온라인 전시관에 자동 노출됩니다.<br><br>
+                                        2026 경기국제보트쇼 장치 및 철거일정을 고려하여 전시품 선정 부탁드립니다.<br><br>
+                                        ○ 장치 및 전시품 반입 : 2026.3.4(수) ~ 3.5(목), 2일간<br>
+                                        ○ 행사기간 : 2026.3.6(금) ~ 8(일), 3일간<br>
+                                        ○ 철거 및 전시품 반출 : 2026.3.8(일), 당일철거
+                                    </div>
                                 </div>
 
                                 <c:if test="${empty productList}">

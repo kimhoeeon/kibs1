@@ -189,18 +189,6 @@
                                         the most modern and efficient environment.</p>
                                 </div>
                                 <div class="contBox">
-                                    <img src="/img/summ_logo04.png?ver=20251029">
-                                    <p class="tit">Wave Park</p>
-                                    <p class="txt"></p>
-                                </div>
-                                <%--<div class="contBox">
-                                    <img src="/img/summ_logo04_eng.png">
-                                    <p class="tit">Korea Water & Environmental-Industry Corporation</p>
-                                    <p class="txt">guarantees high qualified exhibition service at ARA Marina where
-                                        attracts around 3,000 visitors during the show.
-                                    </p>
-                                </div>--%>
-                                <div class="contBox">
                                     <img src="/img/summ_logo05_eng.png">
                                     <p class="tit">Marina and Marine Industries Association of Korea</p>
                                     <p class="txt">works hard to develop Korean marina and marine industry via providing

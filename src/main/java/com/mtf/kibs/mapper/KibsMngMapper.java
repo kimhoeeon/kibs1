@@ -640,4 +640,8 @@ public interface KibsMngMapper {
     ExhibitorNewDTO selectExhibitorNewMaritimeSingle(String seq);
 
     Integer updateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO);
+
+    List<String> getExhibitorNewEmailList(ExhibitorNewDTO exhibitorNewDTO);
+
+    List<BoothDetailDTO> selectExcelBoothDetailList(String transferYear);
 }

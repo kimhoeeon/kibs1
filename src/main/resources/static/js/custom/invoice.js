@@ -31,7 +31,8 @@ $(function(){
             return str;
         }
         str = String(str);
-        return parseInt(str.replace(/￦\s|,/g, ''), 10) || 0;
+        // "￦ " 기호와 "," 콤마를 모두 제거
+        return parseInt(str.replace(/￦\s*|,/g, ''), 10) || 0;
     }
 
     /**
@@ -940,15 +941,4 @@ function f_application_booth_new_modify_init_set(seq){
 
 function f_application_utility_new_modify_init_set(id){
     window.location.href = '/mng/exhibitorNew/application/utility/detail.do?seq=' + id;
-}
-
-/**
- * 콤마 제거 유틸리티 함수 (main.js에도 있어야 함)
- */
-function uncomma(str) {
-    if (typeof str === 'number') {
-        return str;
-    }
-    str = String(str);
-    return parseInt(str.replace(/,/g, ''), 10) || 0;
 }

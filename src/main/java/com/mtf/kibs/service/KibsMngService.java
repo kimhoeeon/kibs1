@@ -481,4 +481,8 @@ public interface KibsMngService {
     ExhibitorNewDTO processSelectExhibitorNewMaritimeSingle(String seq);
 
     ResponseDTO processUpdateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO);
+
+    List<String> getExhibitorNewEmailList(ExhibitorNewDTO exhibitorNewDTO);
+
+    List<BoothDetailDTO> processSelectExcelBoothDetailList(String transferYear);
 }
