@@ -130,7 +130,7 @@
                             <div class="tit">참가비 납부</div>
                         </div>
                         <div class="txt2">
-                            <div class="small">인보이스 수령 후 14일 이내</div>
+                            <div class="small">인보이스 발행일로부터 7일 이내</div>
                             <div class="big">참가비 전액 납부</div>
                         </div>
                         <%--<div class="txt3">입금계좌 사무국 문의</div>--%>
