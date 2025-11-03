@@ -485,4 +485,6 @@ public interface KibsMngService {
     List<String> getExhibitorNewEmailList(ExhibitorNewDTO exhibitorNewDTO);
 
     List<BoothDetailDTO> processSelectExcelBoothDetailList(String transferYear);
+
+    int updateCompanyBadge(ExhibitorNewDTO dto);
 }

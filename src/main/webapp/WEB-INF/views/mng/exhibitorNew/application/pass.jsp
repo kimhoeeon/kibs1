@@ -2277,7 +2277,7 @@ if (document.documentElement) {
                                         <!--begin::Card title-->
                                         <div class="card-title w-100">
                                                 <%--begin::검색구분--%>
-                                            <div class="w-100 mw-150px">
+                                            <div class="w-100 mw-200px">
                                                 <!--begin::Select2-->
                                                 <select id="search_box" class="form-select form-select-solid" data-control="select2"
                                                         data-hide-search="true" data-placeholder="- 검색조건 -">
@@ -2375,7 +2375,8 @@ if (document.documentElement) {
                                                     <th class="text-center min-w-150px">회사명</th>
                                                     <th class="text-center min-w-100px">성명</th>
                                                     <th class="text-center min-w-100px">직책</th>
-                                                    <th class="text-center min-w-100px">비고</th>
+                                                    <th class="text-center min-w-100px">연락처</th>
+                                                    <th class="text-center min-w-100px">인원</th>
                                                     <th class="text-center min-w-150px">등록일시</th>
                                                     <th class="text-center min-w-150px">수정일시</th>
                                                     <th class="text-center min-w-100px">기능</th>
@@ -2383,6 +2384,7 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -2532,7 +2534,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251103"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

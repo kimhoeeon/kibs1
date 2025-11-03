@@ -1568,6 +1568,40 @@ public class KibsMngController {
         return mv;
     }
 
+    /**
+     * [AJAX 용] 관리자 - 기업 뱃지 정보 업데이트
+     * @param payload (seq, companyBadge)
+     * @return ResponseDTO
+     */
+    @PostMapping("/mng/exhibitorNew/updateCompanyBadge.do")
+    @ResponseBody
+    public ResponseDTO updateCompanyBadge(@RequestBody Map<String, String> payload) {
+        System.out.println("KibsMngController > updateCompanyBadge");
+        ResponseDTO res = new ResponseDTO();
+        try {
+            String seq = payload.get("seq");
+            String companyBadge = payload.get("companyBadge");
+
+            ExhibitorNewDTO dto = new ExhibitorNewDTO();
+            dto.setSeq(seq);
+            dto.setCompanyBadge(companyBadge); // DTO에 companyBadge 필드 필요
+
+            int result = kibsMngService.updateCompanyBadge(dto); // 서비스 호출
+
+            if (result > 0) {
+                res.setResultCode("0");
+                res.setResultMessage("저장되었습니다.");
+            } else {
+                res.setResultCode("1");
+                res.setResultMessage("저장 실패 (업데이트된 행 없음)");
+            }
+        } catch (Exception e) {
+            res.setResultCode("99");
+            res.setResultMessage(e.getMessage());
+        }
+        return res;
+    }
+
     @RequestMapping(value = "/mng/exhibitorNew/application/online/updateViewYn.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_online_updateViewYn(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {

@@ -576,12 +576,14 @@ $(function(){
             const fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
 
             // 4. 인보이스 타입에 따라 메일 제목, gbn, 결과 업데이트 URL 분기
-            let subject = '', gbn = '', updateUrl = '';
+            let subject = '', gbn = '', updateUrl = '', template = '';
             if (invoiceType === 'booth') {
+                template = '161';
                 subject = `[KIBS 2026] ` + companyNameKo + ` 전시부스 인보이스 발송`;
                 gbn = 'BOOTH';
                 updateUrl = '/mng/exhibitorNew/application/booth/invoice/mail/result/update.do';
             } else if (invoiceType === 'utility') {
+                template = '164';
                 subject = `[KIBS 2026] ` + companyNameKo + ` 유틸리티 인보이스 발송`;
                 gbn = 'UTILITY';
                 updateUrl = '/mng/exhibitorNew/application/utility/invoice/mail/result/update.do';
@@ -591,7 +593,7 @@ $(function(){
             const mailJson = {
                 subject: subject,
                 body: '', //템플릿 사용시 빈값
-                template: "161",
+                template: template,
                 // 수신자 이메일을 팝업에서 입력한 값으로 사용
                 receiver: [{ email: recipientEmail }],
                 gbn: gbn,

@@ -2389,6 +2389,10 @@ if (document.documentElement) {
                                                     <th>SEQ</th>
                                                     <th class="text-center min-w-150px">회사명</th>
                                                     <th class="text-center min-w-100px">인보이스</th>
+                                                    <th class="text-center min-w-100px">담당자명</th>
+                                                    <th class="text-center min-w-100px">직책</th>
+                                                    <th class="text-center min-w-100px">연락처</th>
+                                                    <th class="text-center min-w-100px">부스유형</th>
                                                     <th class="text-center min-w-150px">구분</th>
                                                     <th class="text-center min-w-125px">총액(VAT미포함)</th>
                                                     <th class="text-center min-w-150px">등록일시</th>
@@ -2398,6 +2402,10 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -2547,7 +2555,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251103"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

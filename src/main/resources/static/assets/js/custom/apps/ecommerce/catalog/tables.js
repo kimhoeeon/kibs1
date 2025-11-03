@@ -1091,10 +1091,7 @@ let KTAppExhibitorApplicationBooth = function () {
             let boothType_arr = row.boothType.split(',');
             for (let i = 0; i < boothType_arr.length; i++) {
                 let booth = boothType_arr[i];
-                if (booth === '등록비') {
-                    renderHTML += booth + ' (' + row.registrationCnt + ')';
-                    renderHTML += '<br>';
-                } else if (booth === '독립부스') {
+                if (booth === '독립부스') {
                     renderHTML += booth + ' (' + row.standAloneBoothCnt + ')';
                     renderHTML += '<br>';
                 } else if (booth === '조립부스') {
@@ -1336,14 +1333,18 @@ let KTAppExhibitorNewApplicationSign = function () {
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderCompanySignNameKoCell(data, type, row); }
+                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
+                    'render': function (data, type, row) { return renderCompanySignNameKoCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
                     'render': function (data, type, row) { return renderCompanySignNameEnCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -1356,6 +1357,7 @@ let KTAppExhibitorNewApplicationSign = function () {
                 { data: 'name'},
                 { data: 'position'},
                 { data: 'phone'},
+                { data: 'boothType'},
                 { data: 'companySignNameKo' }, //상호간판명(국문)
                 { data: 'companySignNameEn' }, //상호간판명(영문)
                 { data: 'initRegiDttm' }, //등록일시
@@ -1373,6 +1375,26 @@ let KTAppExhibitorNewApplicationSign = function () {
 
     function renderCompanySignNameKoCell(data, type, row){
         return nvl(row.companySignNameKo,'-');
+    }
+
+    function renderBoothTypeCell(data, type, row){
+        let renderHTML = '';
+        if(row.boothType != null) {
+            let boothType_arr = row.boothType.split(',');
+            for (let i = 0; i < boothType_arr.length; i++) {
+                let booth = boothType_arr[i];
+                if (booth === '독립부스') {
+                    renderHTML += booth + ' (' + row.standAloneBoothCnt + ')';
+                    renderHTML += '<br>';
+                } else if (booth === '조립부스') {
+                    renderHTML += booth + ' (' + row.assemblyBoothCnt + ')';
+                    renderHTML += '<br>';
+                } else if (booth === '온라인부스') {
+                    renderHTML += booth + ' (' + row.onlineBoothCnt + ')';
+                }
+            }
+        }
+        return renderHTML;
     }
 
     function renderCompanySignNameEnCell(data, type, row){
@@ -1552,15 +1574,19 @@ let KTAppExhibitorNewApplicationUtility = function () {
                     'render': function (data, type, row) { return renderInvoiceYnCell(data, type, row); }
                 },
                 {
-                    'targets': 4,
-                    'render': function (data, type, row) { return renderUtilityGbnCell(data, type, row); }
-                },
-                {
-                    'targets': 5,
-                    'render': function (data, type, row) { return renderUtilityPrcSumCell(data, type, row); }
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
                 },
                 {
                     'targets': 8,
+                    'render': function (data, type, row) { return renderUtilityGbnCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'render': function (data, type, row) { return renderUtilityPrcSumCell(data, type, row); }
+                },
+                {
+                    'targets': 12,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -1571,6 +1597,10 @@ let KTAppExhibitorNewApplicationUtility = function () {
                 { data: 'seq'}, //seq
                 { data: 'companyNameKo' }, //회사명(국문)
                 { data: 'invoiceYn' }, //인보이스존재여부
+                { data: 'name' }, //담당자명
+                { data: 'position' }, //직책
+                { data: 'phone' }, //연락처
+                { data: 'boothType' }, //부스유형
                 { data: 'utilityGbn' }, //구분
                 { data: 'utilityPrcSum' }, //총액
                 { data: 'initRegiDttm' }, //등록일시
@@ -1597,6 +1627,26 @@ let KTAppExhibitorNewApplicationUtility = function () {
         let renderHTML = 'X';
         if(invoiceYn === 'Y'){
             renderHTML = 'O';
+        }
+        return renderHTML;
+    }
+
+    function renderBoothTypeCell(data, type, row){
+        let renderHTML = '';
+        if(row.boothType != null) {
+            let boothType_arr = row.boothType.split(',');
+            for (let i = 0; i < boothType_arr.length; i++) {
+                let booth = boothType_arr[i];
+                if (booth === '독립부스') {
+                    renderHTML += booth + ' (' + row.standAloneBoothCnt + ')';
+                    renderHTML += '<br>';
+                } else if (booth === '조립부스') {
+                    renderHTML += booth + ' (' + row.assemblyBoothCnt + ')';
+                    renderHTML += '<br>';
+                } else if (booth === '온라인부스') {
+                    renderHTML += booth + ' (' + row.onlineBoothCnt + ')';
+                }
+            }
         }
         return renderHTML;
     }
@@ -1868,27 +1918,15 @@ let KTAppExhibitorNewApplicationPass = function () {
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 3,
-                    'render': function (data, type, row) { return renderPassNameCell(data, type, row); }
-                },
-                {
-                    'targets': 4,
-                    'render': function (data, type, row) { return renderPassPositionCell(data, type, row); }
-                },
-                {
-                    'targets': 5,
-                    'render': function (data, type, row) { return renderPassNoteCell(data, type, row); }
-                },
-                {
-                    'targets': 6,
+                    'targets': 7,
                     'render': function (data, type, row) { return renderInitRegiDttmCell(data, type, row); }
                 },
                 {
-                    'targets': 7,
+                    'targets': 8,
                     'render': function (data, type, row) { return renderFinalRegiDttmCell(data, type, row); }
                 },
                 {
-                    'targets': 8,
+                    'targets': 9,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -1898,9 +1936,10 @@ let KTAppExhibitorNewApplicationPass = function () {
                 { data: 'rownum' }, //순번
                 { data: 'seq' }, //업체seq
                 { data: 'companyName' }, //회사명
-                { data: 'passName' }, //성명(국문)
-                { data: 'passPosition' }, //직책(국문)
-                { data: 'passNote' }, //비고
+                { data: 'name' }, //성명
+                { data: 'position' }, //직책
+                { data: 'phone' }, //연락처
+                { data: 'passCnt' }, //인원
                 { data: 'initRegiDttm' }, //등록일시
                 { data: 'finalRegiDttm' }, //수정일시
                 { data: 'actions' }
@@ -1922,48 +1961,6 @@ let KTAppExhibitorNewApplicationPass = function () {
             initRegiDttm = '-';
         }
         return initRegiDttm;
-    }
-
-    function renderPassNoteCell(data, type, row){
-        let passNote = row.passNote;
-        if(nvl(passNote,"") === ""){
-            passNote = '-';
-        }
-        return passNote;
-    }
-
-    function renderPassPositionCell(data, type, row){
-        let renderHTML = '';
-        let passPositionKo = row.passPositionKo;
-        if(nvl(passPositionKo,"") === ""){
-            renderHTML = '-';
-        }else{
-            renderHTML = passPositionKo;
-
-            let passPositionEn = row.passPositionEn;
-            if(nvl(passPositionEn,'') !== ''){
-                renderHTML += '<br>' + passPositionEn;
-            }
-        }
-
-        return renderHTML;
-    }
-
-    function renderPassNameCell(data, type, row){
-        let renderHTML = '';
-        let passName = row.passName;
-        if(nvl(passName,"") === ""){
-            passName = '-';
-        }
-        renderHTML = passName;
-
-        let passFirstName = row.passFirstName;
-        let passLastName = row.passLastName;
-        if(nvl(passFirstName,"") !== "" && nvl(passLastName,"") !== ""){
-            renderHTML += '<br>';
-            renderHTML += passFirstName + ' ' + passLastName;
-        }
-        return renderHTML;
     }
 
     function renderCompanyNameCell(data, type, row){
@@ -3082,20 +3079,22 @@ let KTAppExhibitorNewApplicationOnline = function () {
     }
 
     function renderFieldPartCell(data, type, row){
-        let fieldPart_full = row.fieldPart;
+        let fieldParticipatory = row.fieldParticipatory;
         let renderHTML = '';
-        if(nvl(fieldPart_full,"") !== ""){
-            if(fieldPart_full.includes('^')){
-                let fieldPart = fieldPart_full.toString().split('^');
-                for(let i=0; i<fieldPart.length; i++){
-                    renderHTML += fieldPart[i];
-                    if((i+1) !== fieldPart.length){
-                        renderHTML += '<br>';
-                    }
-                }
-            }else{
-                renderHTML = fieldPart_full;
+        if(nvl(fieldParticipatory,"") !== ""){
+            switch (fieldParticipatory) {
+                case 'boatShow':
+                    renderHTML = '경기국제보트쇼';
+                    break;
+                case 'surfShow':
+                    renderHTML = '코리아서프쇼';
+                    break;
+                case 'travelShow':
+                    renderHTML = '해양관광전';
+                    break;
             }
+        }else{
+            renderHTML = '-';
         }
         return renderHTML;
     }

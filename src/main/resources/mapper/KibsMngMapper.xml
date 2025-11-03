@@ -4047,6 +4047,10 @@
              , name
              , position
              , phone
+             , booth_type
+             , stand_alone_booth_cnt
+             , assembly_booth_cnt
+             , online_booth_cnt
              , company_sign_name_ko
              , company_sign_name_en
              , init_regi_dttm
@@ -4199,6 +4203,14 @@
         SELECT en.seq
              , en.company_name_ko
              , en.company_name_en
+             , en.booth_type
+             , en.name
+             , en.position
+             , en.phone
+             , en.registration_cnt
+             , en.stand_alone_booth_cnt
+             , en.assembly_booth_cnt
+             , en.online_booth_cnt
              , IFNULL(en.utility_jugan_cnt,0) as utility_jugan_cnt
              , IFNULL(en.utility_jugan_fee,0) as utility_jugan_fee
              , IFNULL(en.utility_day_cnt,0) as utility_day_cnt
@@ -4221,6 +4233,8 @@
              , IF(( SELECT COUNT(*) FROM invoice_booth ib WHERE ib.exhibitor_seq = en.seq AND ib.del_yn = 'N') <![CDATA[>]]> 0, 'Y', 'N') AS invoiceYn
         FROM exhibitor_new en
         WHERE 1=1
+        AND (en.utility_jugan_cnt + en.utility_day_cnt + en.utility_compressed_air_cnt + en.utility_water_basic_cnt +
+        en.utility_internet_cnt + en.utility_pytex_new_cnt + en.utility_pytex_re_cnt + en.utility_barcode_cnt) <![CDATA[>]]> 0
         <if test='transferYear != null and transferYear != ""'>
           AND en.transfer_year = #{transferYear}
         </if>
@@ -4267,8 +4281,7 @@
                 AND en.utility_barcode_cnt <![CDATA[>]]> 0
             </if>
         </if>
-        ORDER BY (en.utility_jugan_cnt + en.utility_day_cnt + en.utility_compressed_air_cnt + en.utility_water_basic_cnt + en.utility_internet_cnt + en.utility_pytex_new_cnt + en.utility_pytex_re_cnt + en.utility_barcode_cnt) DESC
-               , en.init_regi_dttm DESC
+        ORDER BY en.init_regi_dttm DESC
     </select>
 
     <select id="selectUtilitySingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.ExhibitorDTO">
@@ -4465,22 +4478,26 @@
     <select id="selectExhibitorNewPassList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.MngPassDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewPassList */
         SELECT e.seq
-             , p.seq AS id
              , e.company_name_ko
              , e.company_name_en
-             , p.pass_name
-             , p.pass_first_name
-             , p.pass_last_name
-             , p.pass_position_ko
-             , p.pass_position_en
-             , p.pass_note
-             , p.init_regi_dttm
-             , p.final_regi_dttm
+             , e.name
+             , e.position
+             , e.phone
+             , p_counts.totalPassCnt AS passCnt
+             , e.init_regi_dttm
+             , e.final_regi_dttm
         FROM exhibitor_new e
-        LEFT JOIN pass_new p
-        ON e.seq = p.ex_seq
-        WHERE 1=1
-          AND p.seq IS NOT NULL
+        INNER JOIN ( SELECT ex_seq
+                            , COUNT(*) AS totalPassCnt
+                     FROM pass_new
+                     GROUP BY ex_seq
+                     ) p_counts
+            ON e.seq = p_counts.ex_seq
+        WHERE 1 = 1
+        AND EXISTS ( SELECT 1
+                     FROM pass_new p
+                     WHERE p.ex_seq = e.seq
+                     )
         <if test='transferYear != null and transferYear != ""'>
             AND e.transfer_year = #{transferYear}
         </if>
@@ -4492,7 +4509,11 @@
                 AND e.company_name_en LIKE CONCAT('%',#{searchText},'%')
             </if>
             <if test='condition eq "passName"'>
-                AND p.pass_name LIKE CONCAT('%',#{searchText},'%')
+                AND EXISTS ( SELECT 1
+                             FROM pass_new pn
+                             WHERE pn.ex_seq = e.seq
+                               AND pn.pass_name LIKE CONCAT('%',#{searchText},'%')
+                             )
             </if>
         </if>
         <if test='lang != null and lang != ""'>
@@ -4504,7 +4525,7 @@
         <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
             AND e.cancel_yn = #{cancelYn}
         </if>
-        ORDER BY p.init_regi_dttm DESC
+        ORDER BY (SELECT MAX(p_inner.init_regi_dttm) FROM pass_new p_inner WHERE p_inner.ex_seq = e.seq) DESC
     </select>
 
     <select id="selectPassDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.MngPassDTO">
@@ -4934,7 +4955,7 @@
              , e.company_name_ko
              , e.company_name_en
              , e.company_online_view_yn
-             , e.field_part
+             , e.field_participatory
              , e.init_regi_dttm
              , e.final_regi_dttm
              , (SELECT GROUP_CONCAT(DISTINCT COALESCE(o1.online_option_small,'') SEPARATOR '^')
@@ -4989,6 +5010,14 @@
         GROUP BY e.seq, e.boat_entry_yn, e.company_name_ko, e.company_name_en, e.name, e.position, e.phone, e.init_regi_dttm
         ORDER BY e.init_regi_dttm DESC
     </select>
+
+    <update id="updateCompanyBadge" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateCompanyBadge */
+        UPDATE exhibitor_new
+        SET company_badge = #{companyBadge}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
 
     <update id="updateViewYn" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.updateViewYn */

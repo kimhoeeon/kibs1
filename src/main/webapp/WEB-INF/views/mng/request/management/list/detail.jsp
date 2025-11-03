@@ -2604,7 +2604,7 @@ if (document.documentElement) {
                                                         <!--end::Label-->
                                                         <!--begin::Col-->
                                                         <div class="col-lg-10">
-                                                            <textarea id="replyContent" name="content" class="form-control form-control-solid-bg resize-none h-100px" placeholder="댓글 내용 작성"></textarea>
+                                                            <textarea id="replyContent" name="content" class="form-control form-control-solid-bg min-h-100px" style="resize: vertical;" placeholder="댓글 내용 작성"></textarea>
                                                         </div>
                                                         <!--end::Col-->
                                                     </div>
@@ -2787,7 +2787,7 @@ if (document.documentElement) {
         <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
         <!--end::Vendors Javascript-->
         <!--begin::Custom Javascript(used for this page only)-->
-        <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js"></script>
+        <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251103"></script>
         <script src="/assets/js/widgets.bundle.js"></script>
         <script src="/assets/js/custom/widgets.js"></script>
         <script src="/assets/js/custom/apps/chat/chat.js"></script>

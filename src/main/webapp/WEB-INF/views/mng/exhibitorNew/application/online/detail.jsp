@@ -2247,9 +2247,9 @@ if (document.documentElement) {
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-full">
-
                                 <!--begin::Form-->
                                 <form id="onlineForm" name="onlineForm" method="post" onsubmit="return false;">
+                                    <input type="hidden" id="seq" name="seq" value="${info.seq}"/>
                                     <!--begin::Basic info-->
                                     <div class="card mb-5 mb-xl-10">
                                         <!--begin::Card header-->
@@ -2308,32 +2308,32 @@ if (document.documentElement) {
                                                     </div>
                                                     <!--end::Input group-->
                                                     <!--begin::Input group-->
-                                                    <div class="row mb-6">
+                                                    <div class="row mb-6" id="companyBadgeForm">
                                                         <!--begin::Label-->
                                                         <label class="col-lg-2 col-form-label fw-semibold fs-6">기업 뱃지</label>
                                                         <!--end::Label-->
                                                         <!--begin::Col-->
                                                         <div class="col-lg-10">
                                                             <div class="form-check form-check-custom form-check-lg mb-2">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="companyBadge1" name="companyBadge" value="보트쇼 3회 이상 참가" <c:if test="${fn:contains(info.companyBadge, '보트쇼 3회 이상 참가')}">checked</c:if> disabled/>
+                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="companyBadge1" name="companyBadge" value="보트쇼 3회 이상 참가" <c:if test="${fn:contains(info.companyBadge, '보트쇼 3회 이상 참가')}">checked</c:if>/>
                                                                 <label class="form-check-label" for="companyBadge1">
                                                                     보트쇼 3회 이상 참가
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-custom form-check-lg mb-2">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="companyBadge2" name="companyBadge" value="올해의 제품상 수상" <c:if test="${fn:contains(info.companyBadge, '올해의 제품상 수상')}">checked</c:if> disabled/>
+                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="companyBadge2" name="companyBadge" value="올해의 제품상 수상" <c:if test="${fn:contains(info.companyBadge, '올해의 제품상 수상')}">checked</c:if>/>
                                                                 <label class="form-check-label" for="companyBadge2">
                                                                     올해의 제품상 수상
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-custom form-check-lg mb-2">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="companyBadge3" name="companyBadge" value="보트쇼와 제작한 영상" <c:if test="${fn:contains(info.companyBadge, '보트쇼와 제작한 영상')}">checked</c:if> disabled/>
+                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="companyBadge3" name="companyBadge" value="보트쇼와 제작한 영상" <c:if test="${fn:contains(info.companyBadge, '보트쇼와 제작한 영상')}">checked</c:if>/>
                                                                 <label class="form-check-label" for="companyBadge3">
                                                                     보트쇼와 제작한 영상
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-custom form-check-lg mb-2">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="companyBadge4" name="companyBadge" value="제품 등록 우수" <c:if test="${fn:contains(info.companyBadge, '제품 등록 우수')}">checked</c:if> disabled/>
+                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="companyBadge4" name="companyBadge" value="제품 등록 우수" <c:if test="${fn:contains(info.companyBadge, '제품 등록 우수')}">checked</c:if>/>
                                                                 <label class="form-check-label" for="companyBadge4">
                                                                     제품 등록 우수
                                                                 </label>
@@ -2701,7 +2701,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251103"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

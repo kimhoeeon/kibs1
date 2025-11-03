@@ -13,6 +13,44 @@ $(function(){
         let viewYn = $(this).attr('data-view');
         f_online_view_yn(seq , viewYn);
     });
+
+    // --- 기업 뱃지 Checkbox 변경 이벤트 ---
+    $('input[name="companyBadge"]').on('change', function() {
+
+        let seq = $('#seq').val();
+
+        // 체크된 뱃지 항목들의 'value'를 배열로 만듦
+        let badges = $('input[name="companyBadge"]:checked').map(function() {
+            return $(this).val();
+        }).get(); // 배열로 변환
+
+        // 배열을 콤마(,)로 구분된 문자열로 변환
+        let badgeString = badges.join(',');
+
+        // AJAX로 서버에 전송
+        $.ajax({
+            url: '/mng/exhibitorNew/updateCompanyBadge.do', // Controller에 만들 API URL
+            method: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                seq: seq,
+                companyBadge: badgeString // 콤마로 구분된 문자열 전송
+            }),
+            success: function(response) {
+                /*if (response.resultCode === "0") {
+                    showMessage('', 'info', '저장 완료', '기업 뱃지 정보가 저장되었습니다.', '');
+                } else {
+                    showMessage('', 'error', '저장 실패', '뱃지 정보 저장 중 오류가 발생했습니다.', '');
+                }*/
+            },
+            error: function() {
+                showMessage('', 'error', '통신 오류', '서버 통신 중 오류가 발생했습니다.', '');
+            }
+        });
+
+        // (디버깅용)
+        // console.log("Hidden 뱃지 값:", badgeString);
+    });
 });
 
 function f_application_online_new_search_condition_init(){

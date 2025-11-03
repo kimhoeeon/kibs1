@@ -31,10 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -2824,6 +2821,13 @@ public class KibsMngServiceImpl implements KibsMngService {
     public List<ExhibitorNewDTO> processSelectMngOnlineNewList(SearchDTO searchDTO) {
         System.out.println("KibsMngServiceImpl > processSelectMngOnlineNewList");
         return kibsMngMapper.selectMngOnlineNewList(searchDTO);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int updateCompanyBadge(ExhibitorNewDTO exhibitorNewDTO) {
+        System.out.println("KibsMngServiceImpl > updateCompanyBadge");
+        return kibsMngMapper.updateCompanyBadge(exhibitorNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -5684,7 +5688,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         //List<ProductDTO> productList = productMapper.selectProductList();
 
         // *** 1. 수정 필요: 실제 템플릿 파일 경로와 이름으로 변경 ***
-        ClassPathResource resource = new ClassPathResource("/static/file/보트쇼_통계_엑셀.xlsx");
+        ClassPathResource resource = new ClassPathResource("/file/보트쇼_통계_엑셀.xlsx");
 
         try (InputStream inputStream = resource.getInputStream();
              XSSFWorkbook templateWorkbook = new XSSFWorkbook(inputStream);
@@ -5972,22 +5976,24 @@ public class KibsMngServiceImpl implements KibsMngService {
             String username = "meetingfan";              //필수입력
             String key = "L7QNsEQIyrAzNHO";           //필수입력
 
-            //인보이스 발송에만 해당되는 프로세스
             String note1 = "";
-            if(mailRequestDTO.getGbn() != null){
-                if("BOOTH".equals(mailRequestDTO.getGbn()) || "UTILITY".equals(mailRequestDTO.getGbn())) {
-                    InvoiceSendHistoryDTO historyDto = new InvoiceSendHistoryDTO();
-                    historyDto.setInvoiceSeq(mailRequestDTO.getInvoiceSeq());
-                    historyDto.setInvoiceType(mailRequestDTO.getInvoiceType());
-                    historyDto.setRecipientEmail(mailRequestDTO.getRecipientEmail()); // 실제 발송될 이메일 주소
-                    historyDto.setSendStatus("발송중"); // 초기 상태
+            //인보이스 발송에만 해당되는 프로세스
+            boolean isInvoiceMail = (mailRequestDTO.getGbn() != null &&
+                    ("BOOTH".equals(mailRequestDTO.getGbn()) || "UTILITY".equals(mailRequestDTO.getGbn())));
 
-                    // 2. 이력을 먼저 DB에 INSERT 하고, 생성된 history_seq를 받아옴
-                    kibsMngMapper.insertInvoiceSendHistory(historyDto);
-                    int historySeq = historyDto.getHistorySeq();
-                    note1 = URLEncoder.encode("https://kibs.com/mng/exhibitorNew/application/invoice/mail/open/update.do?hseq=" + historySeq, "UTF-8");
-                }
+            if(isInvoiceMail) {
+                InvoiceSendHistoryDTO historyDto = new InvoiceSendHistoryDTO();
+                historyDto.setInvoiceSeq(mailRequestDTO.getInvoiceSeq());
+                historyDto.setInvoiceType(mailRequestDTO.getInvoiceType());
+                historyDto.setRecipientEmail(mailRequestDTO.getRecipientEmail()); // 실제 발송될 이메일 주소
+                historyDto.setSendStatus("발송중"); // 초기 상태
+
+                // 2. 이력을 먼저 DB에 INSERT 하고, 생성된 history_seq를 받아옴
+                kibsMngMapper.insertInvoiceSendHistory(historyDto);
+                int historySeq = historyDto.getHistorySeq();
+                note1 = URLEncoder.encode("https://kibs.com/mng/exhibitorNew/application/invoice/mail/open/update.do?hseq=" + historySeq, "UTF-8");
             }
+
             //수신자 정보 추가 - 필수 입력(주소록 미사용시), 치환문자 미사용시 치환문자 데이터를 입력하지 않고 사용할수 있습니다.
             //치환문자 미사용시 {\"email\":\"aaaa@naver.com\"} 이메일만 입력 해주시기 바랍니다.
             JSONArray jsonArray = new JSONArray();
@@ -5999,7 +6005,10 @@ public class KibsMngServiceImpl implements KibsMngService {
                 if(receiverInfo.getNote1() != null) {
                     jsonObject.addProperty("note1", receiverInfo.getNote1());
                 }else{
-                    jsonObject.addProperty("note1", note1);
+                    // note1이 null인 경우 (즉, 일반 발송)이고, 인보이스 발송인 경우에만 추적 URL 삽입
+                    if(isInvoiceMail) {
+                        jsonObject.addProperty("note1", note1);
+                    }
                 }
                 jsonArray.add(jsonObject);
             }
@@ -6024,7 +6033,7 @@ public class KibsMngServiceImpl implements KibsMngService {
 
             //int open = 1;	// open 결과를 받으려면 아래 주석을 해제 해주시기 바랍니다.
             //int click = 1;	// click 결과를 받으려면 아래 주석을 해제 해주시기 바랍니다.
-            //int check_period = 3;	// 트래킹 기간을 지정하며 3 / 7 / 10 / 15 일을 기준으로 지정하여 발송해 주시기 바랍니다. (단, 지정을 하지 않을 경우 결과를 받을 수 없습니다.)
+            //int check_period = 7;	// 트래킹 기간을 지정하며 3 / 7 / 10 / 15 일을 기준으로 지정하여 발송해 주시기 바랍니다. (단, 지정을 하지 않을 경우 결과를 받을 수 없습니다.)
 
             // 예약발송 정보 추가
             //String mail_type = "NORMAL"; // NORMAL - 즉시발송 / ONETIME - 1회예약 / WEEKLY - 매주정기예약 / MONTHLY - 매월정기예약
@@ -6049,37 +6058,58 @@ public class KibsMngServiceImpl implements KibsMngService {
             // 첨부파일의 이름은 순차적(https://directsend.co.kr/test.png - image.png, https://directsend.co.kr/test1.png - image2.png) 와 같이 적용이 되며, file_name을 지정하지 않은 경우 마지막의 파일의 이름으로 메일에 보여집니다.
             //String file_name = "image.png|image2.png";
 
-            StringBuilder fileUrlSb = new StringBuilder();
             String file_url = null;
             String file_name = null;
-            String imageBaseUrl = "https://kibs.com/static/img/mail/";
-            if(mailRequestDTO.getGbn() != null){
-                if("BOOTH".equals(mailRequestDTO.getGbn()) || "UTILITY".equals(mailRequestDTO.getGbn())){
-                    imageBaseUrl = "https://kibs.com/" + mailRequestDTO.getFolderPath();
+
+            // 1. 파일 URL과 파일명을 담을 리스트 생성
+            List<String> fileUrlList = new ArrayList<>();
+            List<String> fileNameList = new ArrayList<>();
+
+            String imageBaseUrl = "https://kibs.com/img/mailling/";
+            if (isInvoiceMail && mailRequestDTO.getFolderPath() != null) {
+                // 인보이스 메일이면 PDF 파일 경로 사용
+                imageBaseUrl = "https://kibs.com/" + mailRequestDTO.getFolderPath();
+            }
+
+            if (mailRequestDTO.getFileUrl() != null && !mailRequestDTO.getFileUrl().isEmpty()) {
+                for (MailRequestDTO.FileUrl fileInfo : mailRequestDTO.getFileUrl()) {
+                    String dynamicFileNameEncoded = fileInfo.getName(); // JS에서 encodeURI된 파일명
+                    if (dynamicFileNameEncoded != null && !dynamicFileNameEncoded.isEmpty()) {
+                        fileUrlList.add(imageBaseUrl + dynamicFileNameEncoded);
+                        fileNameList.add(dynamicFileNameEncoded);
+                    }
                 }
             }
-            if(mailRequestDTO.getFileUrl() != null){
-                if(mailRequestDTO.getFileUrl().size() > 0){
-                    for(int i=0; i<mailRequestDTO.getFileUrl().size(); i++){
-                        fileUrlSb.append(imageBaseUrl);
-                        fileUrlSb.append(mailRequestDTO.getFileUrl().get(i).getName());
-                        if((i+1) != mailRequestDTO.getFileUrl().size()){
-                            fileUrlSb.append("|");
-                        }
-                    }
-                }
-                file_url = fileUrlSb.toString();
 
-                StringBuilder fileNameSb = new StringBuilder();
-                if(mailRequestDTO.getFileUrl().size() > 0){
-                    for(int i=0; i<mailRequestDTO.getFileUrl().size(); i++){
-                        fileNameSb.append(mailRequestDTO.getFileUrl().get(i).getName());
-                        if((i+1) != mailRequestDTO.getFileUrl().size()){
-                            fileNameSb.append("|");
-                        }
-                    }
+            // 3. 인보이스 메일일 경우, 정적 통장사본 파일 추가
+            if (isInvoiceMail) {
+                try {
+                    String staticFileNameUnencoded = "2025 경기국제보트쇼 통장사본.pdf";
+                    String staticBaseUrl = "https://kibs.com/file/invoice/";
+
+                    // JS encodeURI와 동일하게 Java에서 인코딩 (공백->%20, 특수문자 유지)
+                    String staticFileNameEncoded = URLEncoder.encode(staticFileNameUnencoded, "UTF-8")
+                            .replaceAll("\\+", "%20")
+                            .replaceAll("\\%21", "!")
+                            .replaceAll("\\%27", "'")
+                            .replaceAll("\\%28", "(")
+                            .replaceAll("\\%29", ")")
+                            .replaceAll("\\%7E", "~");
+
+                    fileUrlList.add(staticBaseUrl + staticFileNameEncoded);
+                    fileNameList.add(staticFileNameEncoded); // JS에서 보낸 것과 동일하게 encoded된 값 추가
+
+                } catch (UnsupportedEncodingException e) {
+                    // UTF-8은 항상 지원되어야 하므로 이 예외는 거의 발생하지 않음.
+                    System.out.println("Static bank account file name encoding failed");
+                    // 통장사본 첨부만 실패하고 메일은 계속 발송되도록 함 (오류 방지)
                 }
-                file_name = fileNameSb.toString();
+            }
+
+            // 4. (기존 로직) 최종 file_url, file_name 문자열 생성
+            if (!fileUrlList.isEmpty()) {
+                file_url = String.join("|", fileUrlList);
+                file_name = String.join("|", fileNameList); // file_name도 encoded된 상태로 | 연결
             }
 
             /* 여기까지 수정해주시기 바랍니다. */
@@ -6118,11 +6148,17 @@ public class KibsMngServiceImpl implements KibsMngService {
                     //+ ", \"return_url_yn\": " + true        //return_url 사용시 필수 입력
                     //+ ", \"return_url\":\"" + return_url + "\" "		    //return_url 사용시 필수 입력
 
-                    // 발송 결과 측정 항목을 사용할 경우 주석 해제
-                    //+ ", \"open\":\"" + open + "\" "
-                    //+ ", \"click\":\"" + click + "\" "
-                    //+ ", \"check_period\":\"" + check_period + "\" "
-                    //+ ", \"option_return_url\":\"" + option_return_url + "\" "
+                    // --- ▼▼▼ 수정 4: API 추적 기능 파라미터 추가 ▼▼▼ ---
+                    /*if(isInvoiceMail) { // 인보이스 메일일 때만 추적 옵션 추가
+                        urlParameters += ", \"open\":\"" + open + "\" ";
+                        //+ ", \"click\":\"" + click + "\" "
+                        urlParameters += ", \"check_period\":\"" + check_period + "\" ";
+
+                        if (option_return_url > 0) { // Webhook URL ID가 설정된 경우에만 추가
+                            urlParameters += ", \"option_return_url\":\"" + option_return_url + "\" ";
+                        }
+                    }*/
+                    // --- ▲▲▲ ---
 
                     // 첨부 파일이 있는 경우 주석 해제
                     if(file_url != null && !file_url.isEmpty()) {

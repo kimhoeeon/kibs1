@@ -644,4 +644,6 @@ public interface KibsMngMapper {
     List<String> getExhibitorNewEmailList(ExhibitorNewDTO exhibitorNewDTO);
 
     List<BoothDetailDTO> selectExcelBoothDetailList(String transferYear);
+
+    int updateCompanyBadge(ExhibitorNewDTO exhibitorNewDTO);
 }

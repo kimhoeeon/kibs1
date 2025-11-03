@@ -2339,6 +2339,7 @@ if (document.documentElement) {
                                                 <th class="text-center min-w-100px">담당자명</th>
                                                 <th class="text-center min-w-100px">직책</th>
                                                 <th class="text-center min-w-100px">연락처</th>
+                                                <th class="text-center min-w-100px">독립/조립</th>
                                                 <th class="text-center min-w-150px">상호간판명(국문)</th>
                                                 <th class="text-center min-w-150px">상호간판명(영문)</th>
                                                 <th class="text-center min-w-150px">등록일시</th>
@@ -2348,6 +2349,7 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                             <tr>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -2431,7 +2433,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251103"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>
