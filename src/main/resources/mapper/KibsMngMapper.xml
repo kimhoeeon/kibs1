@@ -3825,9 +3825,8 @@
         UPDATE invoice_send_history
         SET send_status = #{sendStatus},
             send_result = #{sendResult},
-            send_result_msg = #{sendResultMsg},
-            send_dttm = NOW()
-        WHERE invoice_seq = #{invoiceSeq}
+            send_result_msg = #{sendResultMsg}
+        WHERE history_seq = #{historySeq}
     </update>
 
     <update id="updateInvoiceHistoryStatusToOpen" parameterType="int">

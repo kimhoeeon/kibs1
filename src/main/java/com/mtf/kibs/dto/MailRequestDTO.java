@@ -21,6 +21,7 @@ public class MailRequestDTO {
     private String gbn;
     private String folderPath;
 
+    private int historySeq;
     private int invoiceSeq;
     private String invoiceType;
     private String recipientEmail;

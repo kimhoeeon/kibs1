@@ -578,12 +578,12 @@ $(function(){
             // 4. 인보이스 타입에 따라 메일 제목, gbn, 결과 업데이트 URL 분기
             let subject = '', gbn = '', updateUrl = '', template = '';
             if (invoiceType === 'booth') {
-                template = '161';
+                template = '172';
                 subject = `[KIBS 2026] ` + companyNameKo + ` 전시부스 인보이스 발송`;
                 gbn = 'BOOTH';
                 updateUrl = '/mng/exhibitorNew/application/booth/invoice/mail/result/update.do';
             } else if (invoiceType === 'utility') {
-                template = '164';
+                template = '176';
                 subject = `[KIBS 2026] ` + companyNameKo + ` 유틸리티 인보이스 발송`;
                 gbn = 'UTILITY';
                 updateUrl = '/mng/exhibitorNew/application/utility/invoice/mail/result/update.do';
@@ -610,6 +610,7 @@ $(function(){
             const sendResult = (mailResult.resultCode === "0") ? '발송성공' : '발송실패';
 
             const updateData = {
+                historySeq: mailResult.customValue,
                 invoiceSeq: invoiceSeq,
                 invoiceType: invoiceType,
                 recipientEmail: recipientEmail,

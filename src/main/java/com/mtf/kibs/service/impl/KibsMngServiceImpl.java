@@ -4129,6 +4129,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         try {
 
             InvoiceSendHistoryDTO historyDto = new InvoiceSendHistoryDTO();
+            historyDto.setHistorySeq(invoiceBoothDTO.getHistorySeq());
             historyDto.setInvoiceSeq(invoiceBoothDTO.getInvoiceSeq());
             historyDto.setInvoiceType(invoiceBoothDTO.getInvoiceType());
             historyDto.setRecipientEmail(invoiceBoothDTO.getRecipientEmail());
@@ -4139,7 +4140,7 @@ public class KibsMngServiceImpl implements KibsMngService {
 
             if(result == 0){
                 resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Delete Fail]";
+                resultMessage = "[Data Update Fail]";
             }
 
         }catch (Exception e){
@@ -4165,6 +4166,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         try {
 
             InvoiceSendHistoryDTO historyDto = new InvoiceSendHistoryDTO();
+            historyDto.setHistorySeq(invoiceUtilityDTO.getHistorySeq());
             historyDto.setInvoiceSeq(invoiceUtilityDTO.getInvoiceSeq());
             historyDto.setInvoiceType(invoiceUtilityDTO.getInvoiceType());
             historyDto.setRecipientEmail(invoiceUtilityDTO.getRecipientEmail());
@@ -5980,7 +5982,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             //인보이스 발송에만 해당되는 프로세스
             boolean isInvoiceMail = (mailRequestDTO.getGbn() != null &&
                     ("BOOTH".equals(mailRequestDTO.getGbn()) || "UTILITY".equals(mailRequestDTO.getGbn())));
-
+            int historySeq = 0;
             if(isInvoiceMail) {
                 InvoiceSendHistoryDTO historyDto = new InvoiceSendHistoryDTO();
                 historyDto.setInvoiceSeq(mailRequestDTO.getInvoiceSeq());
@@ -5990,7 +5992,7 @@ public class KibsMngServiceImpl implements KibsMngService {
 
                 // 2. 이력을 먼저 DB에 INSERT 하고, 생성된 history_seq를 받아옴
                 kibsMngMapper.insertInvoiceSendHistory(historyDto);
-                int historySeq = historyDto.getHistorySeq();
+                historySeq = historyDto.getHistorySeq();
                 note1 = URLEncoder.encode("https://kibs.com/mng/exhibitorNew/application/invoice/mail/open/update.do?hseq=" + historySeq, "UTF-8");
             }
 
@@ -6084,7 +6086,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             // 3. 인보이스 메일일 경우, 정적 통장사본 파일 추가
             if (isInvoiceMail) {
                 try {
-                    String staticFileNameUnencoded = "2025 경기국제보트쇼 통장사본.pdf";
+                    String staticFileNameUnencoded = "2026 경기국제보트쇼 통장사본.pdf";
                     String staticBaseUrl = "https://kibs.com/file/invoice/";
 
                     // JS encodeURI와 동일하게 Java에서 인코딩 (공백->%20, 특수문자 유지)
@@ -6206,6 +6208,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                 if("0".equals(mailResponseCode)){
                     responseDto.setResultCode(CommConstants.RESULT_CODE_SUCCESS);
                     responseDto.setResultMessage(CommConstants.RESULT_MSG_SUCCESS);
+                    responseDto.setCustomValue(String.valueOf(historySeq));
                 }else{
                     responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
                     responseDto.setResultMessage("[" + mailResponseCode + "]" + responseObj.get("msg"));

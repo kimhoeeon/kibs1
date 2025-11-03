@@ -8,6 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class InvoiceUtilityDTO {
+    private int historySeq;
     private int invoiceSeq;
     private String invoiceType;
     private String exhibitorSeq;
