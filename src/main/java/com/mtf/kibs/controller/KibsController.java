@@ -2479,6 +2479,17 @@ public class KibsController {
     public ModelAndView eng_guide_summary() {
         System.out.println("KibsController > eng_guide_summary");
         ModelAndView mv = new ModelAndView();
+
+        // 브로슈어
+        String currentYear = "2026"; // 현재 대상 연도
+        BrochureDTO brochureData = kibsService.getBrochureInfo(currentYear);
+
+        if (brochureData == null) {
+            brochureData = new BrochureDTO();
+        }
+
+        mv.addObject("brochureData", brochureData);
+
         mv.setViewName("/eng/guide/summary");
         return mv;
     }

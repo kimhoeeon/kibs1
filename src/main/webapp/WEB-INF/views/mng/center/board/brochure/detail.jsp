@@ -2284,7 +2284,7 @@ if (document.documentElement) {
                                                             <div class="form-text text-primary mt-2">
                                                                 * 현재 파일:
                                                                 <a href="${brochureInfo.mainKoPath}" download="${brochureInfo.mainKoTitle}">
-                                                                        ${brochureInfo.mainKoTitle}
+                                                                    ${brochureInfo.mainKoTitle}
                                                                 </a>
                                                                 <span class="text-muted ms-3">(원본: ${brochureInfo.mainKoOriginalName})</span>
                                                                 <input type="hidden" name="mainKoFile_existing" value="${brochureInfo.mainKoPath}" />
@@ -2304,7 +2304,7 @@ if (document.documentElement) {
                                                             <div class="form-text text-primary mt-2">
                                                                 * 현재 파일:
                                                                 <a href="${brochureInfo.mainEnPath}" download="${brochureInfo.mainEnTitle}">
-                                                                        ${brochureInfo.mainEnTitle}
+                                                                    ${brochureInfo.mainEnTitle}
                                                                 </a>
                                                                 <span class="text-muted ms-3">(원본: ${brochureInfo.mainEnOriginalName})</span>
                                                                 <input type="hidden" name="mainEnFile_existing" value="${brochureInfo.mainEnPath}" />
@@ -2324,7 +2324,7 @@ if (document.documentElement) {
                                                             <div class="form-text text-primary mt-2">
                                                                 * 현재 파일:
                                                                 <a href="${brochureInfo.kissPath}" download="${brochureInfo.kissTitle}">
-                                                                        ${brochureInfo.kissTitle}
+                                                                    ${brochureInfo.kissTitle}
                                                                 </a>
                                                                 <span class="text-muted ms-3">(원본: ${brochureInfo.kissOriginalName})</span>
                                                                 <input type="hidden" name="kissFile_existing" value="${brochureInfo.kissPath}" />
@@ -2344,7 +2344,7 @@ if (document.documentElement) {
                                                             <div class="form-text text-primary mt-2">
                                                                 * 현재 파일:
                                                                 <a href="${brochureInfo.kmtsPath}" download="${brochureInfo.kmtsTitle}">
-                                                                        ${brochureInfo.kmtsTitle}
+                                                                    ${brochureInfo.kmtsTitle}
                                                                 </a>
                                                                 <span class="text-muted ms-3">(원본: ${brochureInfo.kmtsOriginalName})</span>
                                                                 <input type="hidden" name="kmtsFile_existing" value="${brochureInfo.kmtsPath}" />
