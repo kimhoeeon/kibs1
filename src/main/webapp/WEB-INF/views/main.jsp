@@ -74,7 +74,7 @@
                 </a>
             </li>--%>
             <li>
-                <a href="/file/2026 경기국제보트쇼 브로슈어 국문.pdf" download="2026 경기국제보트쇼 브로슈어 국문.pdf">
+                <a href="${brochureData.mainKoPath}" download="${brochureData.mainKoTitle}">
                     <div class="icon"><img src="/img/icon_floating25_bro.png"></div>
                     <div class="txt">
                         브로슈어<br>

@@ -862,16 +862,6 @@ if (document.documentElement) {
                                                                             <!--end:Menu link-->
                                                                         </div>
                                                                         <!--end:Menu item-->
-                                                                        <%--<!--begin:Menu item-->
-                                                                        <div class="menu-item p-0 m-0">
-                                                                            <!--begin:Menu link-->
-                                                                            <a href="/mng/center/board/brochure.do"
-                                                                               class="menu-link">
-                                                                                <span class="menu-title">E-브로슈어</span>
-                                                                            </a>
-                                                                            <!--end:Menu link-->
-                                                                        </div>
-                                                                        <!--end:Menu item-->--%>
                                                                         <!--begin:Menu item-->
                                                                         <div class="menu-item p-0 m-0">
                                                                             <!--begin:Menu link-->
@@ -908,6 +898,16 @@ if (document.documentElement) {
                                                                             <a href="/mng/center/board/contest.do"
                                                                                class="menu-link">
                                                                                 <span class="menu-title">공모전</span>
+                                                                            </a>
+                                                                            <!--end:Menu link-->
+                                                                        </div>
+                                                                        <!--end:Menu item-->
+                                                                        <!--begin:Menu item-->
+                                                                        <div class="menu-item p-0 m-0">
+                                                                            <!--begin:Menu link-->
+                                                                            <a href="/mng/center/board/brochure.do"
+                                                                               class="menu-link">
+                                                                                <span class="menu-title">브로슈어</span>
                                                                             </a>
                                                                             <!--end:Menu link-->
                                                                         </div>
@@ -1927,18 +1927,6 @@ if (document.documentElement) {
                                                 <!--end:Menu link-->
                                             </div>
                                             <!--end:Menu item-->
-                                            <%--<!--begin:Menu item-->
-                                            <div class="menu-item">
-                                                <!--begin:Menu link-->
-                                                <a class="menu-link" href="/mng/center/board/brochure.do">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                    <span class="menu-title">E-브로슈어</span>
-                                                </a>
-                                                <!--end:Menu link-->
-                                            </div>
-                                            <!--end:Menu item-->--%>
                                             <!--begin:Menu item-->
                                             <div class="menu-item">
                                                 <!--begin:Menu link-->
@@ -1983,6 +1971,18 @@ if (document.documentElement) {
                                                         <span class="bullet bullet-dot"></span>
                                                     </span>
                                                     <span class="menu-title">공모전</span>
+                                                </a>
+                                                <!--end:Menu link-->
+                                            </div>
+                                            <!--end:Menu item-->
+                                            <!--begin:Menu item-->
+                                            <div class="menu-item">
+                                                <!--begin:Menu link-->
+                                                <a class="menu-link" href="/mng/center/board/brochure.do">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                                    <span class="menu-title">브로슈어</span>
                                                 </a>
                                                 <!--end:Menu link-->
                                             </div>
@@ -2387,39 +2387,37 @@ if (document.documentElement) {
                                             <!--begin::Table-->
                                             <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_request_list_table">
                                                 <thead>
-                                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                                                    <th class="w-10px pe-2">
-                                                        <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                                            <input class="form-check-input" type="checkbox" data-kt-check="true"
-                                                                   data-kt-check-target="#mng_request_list_table .form-check-input" value="1"/>
-                                                        </div>
-                                                    </th>
-                                                    <th class="text-center w-75px">번호</th>
-                                                    <th>seq</th>
-                                                    <th class="text-center min-w-75px">일반/긴급</th>
-                                                    <th class="text-center min-w-75px">구분</th>
-                                                    <th class="text-center min-w-100px">진행단계</th>
-                                                    <th class="text-center min-w-150px">글제목 (댓글)</th>
-                                                    <th class="text-center min-w-150px w-175px">처리예정일시</th>
-                                                    <th class="text-center min-w-100px">작성자</th>
-                                                    <th class="text-center min-w-150px w-175px">등록일시</th>
-                                                    <th class="text-center w-125px">기능</th>
-                                                </tr>
+                                                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                                        <th class="w-10px pe-2">
+                                                            <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                                                <input class="form-check-input" type="checkbox" data-kt-check="true"
+                                                                       data-kt-check-target="#mng_request_list_table .form-check-input" value="1"/>
+                                                            </div>
+                                                        </th>
+                                                        <th class="text-center w-75px">번호</th>
+                                                        <th>seq</th>
+                                                        <th class="text-center min-w-75px">일반/긴급</th>
+                                                        <th class="text-center min-w-75px">구분</th>
+                                                        <th class="text-center min-w-100px">진행단계</th>
+                                                        <th class="text-center min-w-150px">글제목 (댓글)</th>
+                                                        <th class="text-center min-w-150px w-175px">처리예정일시</th>
+                                                        <th class="text-center min-w-150px w-175px">등록일시</th>
+                                                        <th class="text-center w-125px">기능</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody class="fw-semibold text-gray-600">
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                             <!--end::Table-->
@@ -2650,7 +2648,7 @@ if (document.documentElement) {
         <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
         <!--end::Vendors Javascript-->
         <!--begin::Custom Javascript(used for this page only)-->
-        <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251103"></script>
+        <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251104"></script>
         <script src="/assets/js/widgets.bundle.js"></script>
         <script src="/assets/js/custom/widgets.js"></script>
         <script src="/assets/js/custom/apps/chat/chat.js"></script>

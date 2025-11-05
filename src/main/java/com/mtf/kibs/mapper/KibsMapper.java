@@ -323,4 +323,6 @@ public interface KibsMapper {
     Integer updateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO);
 
     ExhibitorNewDTO selectExhibitorNewInvoiceDetail(String seq);
+
+    BrochureDTO selectBrochureInfo(String year);
 }

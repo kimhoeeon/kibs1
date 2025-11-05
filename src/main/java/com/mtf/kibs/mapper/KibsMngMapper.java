@@ -77,16 +77,6 @@ public interface KibsMngMapper {
 
     Integer insertColumn(ColumnDTO columnDTO);
 
-    List<BrochureDTO> selectBrochureList(SearchDTO searchDTO);
-
-    BrochureDTO selectBrochureSingle(BrochureDTO brochureDTO);
-
-    Integer deleteBrochure(BrochureDTO brochureDTO);
-
-    Integer updateBrochure(BrochureDTO brochureDTO);
-
-    Integer insertBrochure(BrochureDTO brochureDTO);
-
     List<DataroomDTO> selectDataroomList(SearchDTO searchDTO);
 
     DataroomDTO selectDataroomSingle(DataroomDTO dataroomDTO);
@@ -646,4 +636,10 @@ public interface KibsMngMapper {
     List<BoothDetailDTO> selectExcelBoothDetailList(String transferYear);
 
     int updateCompanyBadge(ExhibitorNewDTO exhibitorNewDTO);
+
+    BrochureDTO selectBrochureInfo(String year);
+
+    void updateBrochureInfo(BrochureDTO dto);
+
+    void insertBrochureInfo(BrochureDTO dto);
 }

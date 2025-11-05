@@ -139,6 +139,23 @@
         )
     </insert>
 
+    <select id="selectBrochureInfo" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.BrochureDTO">
+        /* com.mtf.kibs.mapper.kibsMapper.selectBrochureInfo */
+        SELECT
+            transfer_year           AS transferYear,
+            main_ko_title           AS mainKoTitle,
+            main_ko_path            AS mainKoPath,
+            main_en_title           AS mainEnTitle,
+            main_en_path            AS mainEnPath,
+            kiss_title              AS kissTitle,
+            kiss_path               AS kissPath,
+            kmts_title              AS kmtsTitle,
+            kmts_path               AS kmtsPath
+        FROM brochure
+        WHERE
+            transfer_year = #{year}
+    </select>
+
     <insert id="insertExhibitorNew" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.KibsMapper.insertExhibitorNew */
         INSERT INTO exhibitor_new

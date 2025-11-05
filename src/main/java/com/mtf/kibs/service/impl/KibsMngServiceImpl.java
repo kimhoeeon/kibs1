@@ -1277,153 +1277,24 @@ public class KibsMngServiceImpl implements KibsMngService {
         return responseDTO;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public List<BrochureDTO> processSelectBrochureList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectBrochureList");
-        return kibsMngMapper.selectBrochureList(searchDTO);
+    public BrochureDTO getBrochureInfo(String year) {
+        return kibsMngMapper.selectBrochureInfo(year);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public BrochureDTO processSelectBrochureSingle(BrochureDTO brochureDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectBrochureSingle");
-        return kibsMngMapper.selectBrochureSingle(brochureDTO);
-    }
+    @Transactional
+    public void saveOrUpdateBrochureInfo(BrochureDTO dto) {
+        // 1. 먼저 해당 연도의 데이터가 있는지 확인
+        BrochureDTO existing = kibsMngMapper.selectBrochureInfo(dto.getTransferYear());
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processDeleteBrochure(BrochureDTO brochureDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteBrochure");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(brochureDTO.getId() != null){
-                result = kibsMngMapper.deleteBrochure(brochureDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Id : " + brochureDTO.getId();
-                }
-                //System.out.println(result);
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Id Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processDeleteBrochure ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
+        if (existing != null) {
+            // 2. 데이터가 있으면 UPDATE
+            kibsMngMapper.updateBrochureInfo(dto);
+        } else {
+            // 3. 데이터가 없으면 INSERT
+            kibsMngMapper.insertBrochureInfo(dto);
         }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processUpdateBrochure(BrochureDTO brochureDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateBrochure");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-            if(!StringUtil.isEmpty(brochureDTO.getId())){
-                if(StringUtil.isEmpty(brochureDTO.getNoticeGbn()) || "off".equals(brochureDTO.getNoticeGbn())){
-                    brochureDTO.setNoticeGbn("0");
-                }else{
-                    brochureDTO.setNoticeGbn("1");
-                }
-                if(StringUtil.isEmpty(brochureDTO.getGbn1()) || "off".equals(brochureDTO.getGbn1())){
-                    brochureDTO.setGbn1("0");
-                }else{
-                    brochureDTO.setGbn1("1");
-                }
-                if(StringUtil.isEmpty(brochureDTO.getGbn2()) || "off".equals(brochureDTO.getGbn2())){
-                    brochureDTO.setGbn2("0");
-                }else{
-                    brochureDTO.setGbn2("1");
-                }
-                if(StringUtil.isEmpty(brochureDTO.getGbn3()) || "off".equals(brochureDTO.getGbn3())){
-                    brochureDTO.setGbn3("0");
-                }else{
-                    brochureDTO.setGbn3("1");
-                }
-
-                result = kibsMngMapper.updateBrochure(brochureDTO);
-                if(result == 0){
-                    resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Update Fail] Id : " + brochureDTO.getId();
-                }
-                //System.out.println(result);
-            }else{
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Id Not Found Error]";
-            }
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processUpdateBrochure ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
-    @Override
-    public ResponseDTO processInsertBrochure(BrochureDTO brochureDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertBrochure");
-        ResponseDTO responseDTO = new ResponseDTO();
-        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
-        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
-        try {
-
-            if(StringUtil.isEmpty(brochureDTO.getNoticeGbn()) || "off".equals(brochureDTO.getNoticeGbn())){
-                brochureDTO.setNoticeGbn("0");
-            }else{
-                brochureDTO.setNoticeGbn("1");
-            }
-            if(StringUtil.isEmpty(brochureDTO.getGbn1()) || "off".equals(brochureDTO.getGbn1())){
-                brochureDTO.setGbn1("0");
-            }else{
-                brochureDTO.setGbn1("1");
-            }
-            if(StringUtil.isEmpty(brochureDTO.getGbn2()) || "off".equals(brochureDTO.getGbn2())){
-                brochureDTO.setGbn2("0");
-            }else{
-                brochureDTO.setGbn2("1");
-            }
-            if(StringUtil.isEmpty(brochureDTO.getGbn3()) || "off".equals(brochureDTO.getGbn3())){
-                brochureDTO.setGbn3("0");
-            }else{
-                brochureDTO.setGbn3("1");
-            }
-
-            String getId = kibsMngMapper.getBrochureId();
-            brochureDTO.setId(getId);
-            result = kibsMngMapper.insertBrochure(brochureDTO);
-
-            responseDTO.setCustomValue(getId);
-            if(result == 0){
-                resultCode = CommConstants.RESULT_CODE_FAIL;
-                resultMessage = "[Data Insert Fail]";
-            }
-            //System.out.println(result);
-        }catch (Exception e){
-            resultCode = CommConstants.RESULT_CODE_FAIL;
-            resultMessage = "[processInsertBrochure ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
-            e.printStackTrace();
-        }
-
-        responseDTO.setResultCode(resultCode);
-        responseDTO.setResultMessage(resultMessage);
-        return responseDTO;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})

@@ -866,16 +866,6 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/center/board/brochure.do"
-                                                                           class="menu-link active">
-                                                                            <span class="menu-title">E-브로슈어</span>
-                                                                        </a>
-                                                                        <!--end:Menu link-->
-                                                                    </div>
-                                                                    <!--end:Menu item-->
-                                                                    <!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
-                                                                        <!--begin:Menu link-->
                                                                         <a href="/mng/center/board/dataroom.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">갤러리</span>
@@ -883,16 +873,6 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
-                                                                    <%--<!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
-                                                                        <!--begin:Menu link-->
-                                                                        <a href="/mng/center/board/gallery.do"
-                                                                           class="menu-link">
-                                                                            <span class="menu-title">Photo Gallery</span>
-                                                                        </a>
-                                                                        <!--end:Menu link-->
-                                                                    </div>
-                                                                    <!--end:Menu item-->--%>
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
@@ -909,6 +889,16 @@ if (document.documentElement) {
                                                                         <a href="/mng/center/board/contest.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">공모전</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/center/board/brochure.do"
+                                                                           class="menu-link active">
+                                                                            <span class="menu-title">브로슈어</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1930,18 +1920,6 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/center/board/brochure.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                                <span class="menu-title">E-브로슈어</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/center/board/dataroom.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
@@ -1983,6 +1961,18 @@ if (document.documentElement) {
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">공모전</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link active" href="/mng/center/board/brochure.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">브로슈어</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2208,7 +2198,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        E-브로슈어</h1>
+                                        브로슈어</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -2239,7 +2229,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">E-브로슈어</li>
+                                        <li class="breadcrumb-item text-muted">브로슈어</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -2263,192 +2253,122 @@ if (document.documentElement) {
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-full">
-                                <!--begin::Basic info-->
-                                <div class="card mb-5 mb-xl-10">
-                                    <!--begin::form-->
-                                    <form id="brochureForm" method="post" onsubmit="return false;">
-                                        <%--ID 값--%>
-                                        <input type="hidden" name="id" value="${info.id}">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0">
-                                            <!--begin::Card title-->
-                                            <div class="card-title m-0">
-                                                <h3 class="fw-bold m-0">상세 정보</h3>
-                                            </div>
-                                            <!--end::Card title-->
-                                        </div>
-                                        <!--end::Card header-->
-                                        <!--begin::Card body-->
-                                        <div class="card-body border-top p-9">
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제목</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-10">
-                                                    <input type="text" id="title" name="title" class="form-control form-control-lg form-control-solid-bg" placeholder="제목" value="${info.title}"/>
+                                <form id="brochure_form" class="form d-flex flex-column flex-lg-row"
+                                      method="post" enctype="multipart/form-data"
+                                      action="/mng/center/brochure/update.do"> <%-- 저장 로직은 이 URL로 가정 --%>
+
+                                    <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+                                        <div class="card card-flush py-4">
+                                            <div class="card-header">
+                                                <div class="card-title">
+                                                    <h2>브로슈어 파일 관리</h2>
                                                 </div>
-                                                <!--end::Col-->
                                             </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">작성자</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-10">
-                                                    <input type="text" id="writer" name="writer" class="form-control form-control-lg form-control-solid-bg" placeholder="작성자" value="${info.writer eq null ? '관리자' : info.writer}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">작성일</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-10">
-                                                    <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${info.writeDate}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">사이트 분류</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8 d-flex flex-wrap">
-                                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                        <input class="form-check-input form-control-solid-bg"
-                                                               type="checkbox" id="gbn1" name="gbn1"
-                                                               <c:if test="${info.gbn1 eq '1'}">checked</c:if>/>
-                                                        <label class="form-check-label text-hover-primary" for="gbn1">
-                                                            홈페이지
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                        <input class="form-check-input form-control-solid-bg"
-                                                               type="checkbox" id="gbn2" name="gbn2"
-                                                               <c:if test="${info.gbn2 eq '1'}">checked</c:if>/>
-                                                        <label class="form-check-label text-hover-primary" for="gbn2">
-                                                            무역관
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                        <input class="form-check-input form-control-solid-bg"
-                                                               type="checkbox" id="gbn3" name="gbn3"
-                                                               <c:if test="${info.gbn3 eq '1'}">checked</c:if>/>
-                                                        <label class="form-check-label text-hover-primary" for="gbn3">
-                                                            체류
-                                                        </label>
+                                            <div class="card-body pt-0">
+
+                                                <div class="mb-10 fv-row">
+                                                    <div class="form-text fs-6">
+                                                        * 표시할 파일명을 입력하지 않을 경우 첨부한 파일명으로 자동입력되며, 표시할 파일명은 수정 가능합니다.<br>
+                                                        * 파일은 <span class="text-danger fw-bold">PDF</span> 형식만 첨부 가능합니다.
                                                     </div>
                                                 </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">추가 설정</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8 d-flex flex-wrap">
-                                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                        <input class="form-check-input form-control-solid-bg"
-                                                               type="checkbox" id="noticeGbn" name="noticeGbn"
-                                                               <c:if test="${info.noticeGbn eq '1'}">checked</c:if>/>
-                                                        <label class="form-check-label text-hover-primary"
-                                                               for="noticeGbn">
-                                                            공지사항 고정
-                                                        </label>
+
+                                                <div class="row mb-10">
+                                                    <label class="col-lg-2 col-form-label fw-bold fs-6">메인 국문 브로슈어</label>
+                                                    <div class="col-lg-10">
+                                                        <input type="text" name="mainKoTitle" class="form-control mb-3 brochure-title" placeholder="표시할 파일명 입력 (예: 2026 경기국제보트쇼 브로슈어)" value="${brochureInfo.mainKoTitle}" data-file-input-id="mainKoFile" />
+                                                        <input type="file" name="mainKoFile" id="mainKoFile" class="form-control brochure-file-input" accept=".pdf" />
+                                                        <c:if test="${not empty brochureInfo.mainKoPath}">
+                                                            <c:set var="pathParts" value="${fn:split(brochureInfo.mainKoPath, '/')}" />
+                                                            <c:set var="originalFileName" value="${pathParts[fn:length(pathParts) - 1]}" />
+                                                            <div class="form-text text-primary mt-2">
+                                                                * 현재 파일:
+                                                                <a href="${brochureInfo.mainKoPath}" download="${brochureInfo.mainKoTitle}">
+                                                                        ${brochureInfo.mainKoTitle}
+                                                                </a>
+                                                                <span class="text-muted ms-3">(원본: ${brochureInfo.mainKoOriginalName})</span>
+                                                                <input type="hidden" name="mainKoFile_existing" value="${brochureInfo.mainKoPath}" />
+                                                                <input type="hidden" name="mainKoOriginalName_existing" value="${brochureInfo.mainKoOriginalName}" />
+                                                            </div>
+                                                        </c:if>
                                                     </div>
                                                 </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6 h-550px">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-10">
-                                                    <div id="quill_editor_content" class="h-500px">${info.content}</div>
-                                                    <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true" />">
+                                                <div class="row mb-10">
+                                                    <label class="col-lg-2 col-form-label fw-bold fs-6">메인 영문 브로슈어</label>
+                                                    <div class="col-lg-10">
+                                                        <input type="text" name="mainEnTitle" class="form-control mb-3 brochure-title" placeholder="표시할 파일명 입력 (예: 2026 KIBS Brochure)" value="${brochureInfo.mainEnTitle}" data-file-input-id="mainEnFile" />
+                                                        <input type="file" name="mainEnFile" id="mainEnFile" class="form-control brochure-file-input" accept=".pdf" />
+                                                        <c:if test="${not empty brochureInfo.mainEnPath}">
+                                                            <c:set var="pathParts" value="${fn:split(brochureInfo.mainEnPath, '/')}" />
+                                                            <c:set var="originalFileName" value="${pathParts[fn:length(pathParts) - 1]}" />
+                                                            <div class="form-text text-primary mt-2">
+                                                                * 현재 파일:
+                                                                <a href="${brochureInfo.mainEnPath}" download="${brochureInfo.mainEnTitle}">
+                                                                        ${brochureInfo.mainEnTitle}
+                                                                </a>
+                                                                <span class="text-muted ms-3">(원본: ${brochureInfo.mainEnOriginalName})</span>
+                                                                <input type="hidden" name="mainEnFile_existing" value="${brochureInfo.mainEnPath}" />
+                                                                <input type="hidden" name="mainEnOriginalName_existing" value="${brochureInfo.mainEnOriginalName}" />
+                                                            </div>
+                                                        </c:if>
+                                                    </div>
                                                 </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">첨부파일</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-10">
-                                                    <!--begin::Excel import-->
-                                                    <a href="" class="btn btn-primary btn-active-light-primary ms-auto" data-bs-toggle="modal" data-bs-target="#kt_modal_file_upload">
-                                                        <i class="ki-duotone ki-exit-up fs-2">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                        </i>첨부파일 업로드</a>
-                                                    <!--end::Excel import-->
+                                                <div class="row mb-10">
+                                                    <label class="col-lg-2 col-form-label fw-bold fs-6">KISS 브로슈어</label>
+                                                    <div class="col-lg-10">
+                                                        <input type="text" name="kissTitle" class="form-control mb-3 brochure-title" placeholder="표시할 파일명 입력 (예: 2026 코리아서프쇼 브로슈어)" value="${brochureInfo.kissTitle}" data-file-input-id="kissFile" />
+                                                        <input type="file" name="kissFile" id="kissFile" class="form-control brochure-file-input" accept=".pdf" />
+                                                        <c:if test="${not empty brochureInfo.kissPath}">
+                                                            <c:set var="pathParts" value="${fn:split(brochureInfo.kissPath, '/')}" />
+                                                            <c:set var="originalFileName" value="${pathParts[fn:length(pathParts) - 1]}" />
+                                                            <div class="form-text text-primary mt-2">
+                                                                * 현재 파일:
+                                                                <a href="${brochureInfo.kissPath}" download="${brochureInfo.kissTitle}">
+                                                                        ${brochureInfo.kissTitle}
+                                                                </a>
+                                                                <span class="text-muted ms-3">(원본: ${brochureInfo.kissOriginalName})</span>
+                                                                <input type="hidden" name="kissFile_existing" value="${brochureInfo.kissPath}" />
+                                                                <input type="hidden" name="kissOriginalName_existing" value="${brochureInfo.kissOriginalName}" />
+                                                            </div>
+                                                        </c:if>
+                                                    </div>
                                                 </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">첨부파일 목록</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-10">
-                                                    <ul id="uploadFileList">
-                                                        <c:forEach var="file" items="${fileList}">
-                                                            <li class="mb-4">
-                                                                <%--<a href="/file/download.do?path=center/board/${file.folderPath}&fileName=${file.fullFileName}">${file.fileName}</a>--%>
-                                                                <a href="javascript:void(0);" onclick="f_file_download('center/board/${file.folderPath}', '${file.fullFileName}')">${file.fileName}</a>
-                                                                <input type="hidden" name="uploadFile" id="${file.id}" value="${file.fullFilePath}">
-                                                                <button type="button" class="ml10" onclick="f_file_remove(this, '${file.id}')">
-                                                                    <i class="ki-duotone ki-abstract-11">
-                                                                        <i class="path1"></i>
-                                                                        <i class="path2"></i>
-                                                                    </i>
-                                                                </button>
-                                                            </li>
-                                                        </c:forEach>
-                                                    </ul>
+                                                <div class="row mb-10">
+                                                    <label class="col-lg-2 col-form-label fw-bold fs-6">KMTS 브로슈어</label>
+                                                    <div class="col-lg-10">
+                                                        <input type="text" name="kmtsTitle" class="form-control mb-3 brochure-title" placeholder="표시할 파일명 입력 (예: 2026 해양관광전 브로슈어)" value="${brochureInfo.kmtsTitle}" data-file-input-id="kmtsFile" />
+                                                        <input type="file" name="kmtsFile" id="kmtsFile" class="form-control brochure-file-input" accept=".pdf" />
+                                                        <c:if test="${not empty brochureInfo.kmtsPath}">
+                                                            <c:set var="pathParts" value="${fn:split(brochureInfo.kmtsPath, '/')}" />
+                                                            <c:set var="originalFileName" value="${pathParts[fn:length(pathParts) - 1]}" />
+                                                            <div class="form-text text-primary mt-2">
+                                                                * 현재 파일:
+                                                                <a href="${brochureInfo.kmtsPath}" download="${brochureInfo.kmtsTitle}">
+                                                                        ${brochureInfo.kmtsTitle}
+                                                                </a>
+                                                                <span class="text-muted ms-3">(원본: ${brochureInfo.kmtsOriginalName})</span>
+                                                                <input type="hidden" name="kmtsFile_existing" value="${brochureInfo.kmtsPath}" />
+                                                                <input type="hidden" name="kmtsOriginalName_existing" value="${brochureInfo.kmtsOriginalName}" />
+                                                            </div>
+                                                        </c:if>
+                                                    </div>
                                                 </div>
-                                                <!--end::Col-->
                                             </div>
-                                            <!--end::Input group-->
-                                        </div>
-                                        <!--end::Card body-->
-                                    </form>
-                                    <!--end::form-->
-                                </div>
-                                <!--end::Basic info-->
-                                <!--begin::Basic info-->
-                                <div class="card mb-5 mb-xl-10">
-                                    <!--begin::Actions-->
-                                    <div class="card-footer d-flex justify-content-between py-6 px-9">
-                                        <div>
-                                            <a href="/mng/center/board/brochure.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
-                                        </div>
-                                        <div>
-                                            <button type="button" onclick="f_board_brochure_modify_init_set('${info.id}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
-                                            <button type="button" onclick="f_board_brochure_save('${info.id}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
+                                            <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                                <button type="reset" class="btn btn-light btn-active-light-primary me-2">초기화</button>
+                                                <button type="submit" id="brochure_submit_btn" class="btn btn-primary" data-kt-indicator="off">
+                                                    <span class="indicator-label">
+                                                        저장
+                                                    </span>
+                                                    <span class="indicator-progress">
+                                                        처리 중...
+                                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                    </span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <!--end::Actions-->
-                                </div>
-                                <!--end::Basic info-->
+                                </form>
                             </div>
                             <!--end::Content container-->
                         </div>
@@ -2494,89 +2414,6 @@ if (document.documentElement) {
     </div>
     <!--end::App-->
 
-    <!--begin::Modal - 수정이력-->
-    <div class="modal fade" id="kt_modal_file_upload" tabindex="-1" aria-hidden="true">
-        <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-1000px">
-            <!--begin::Modal content-->
-            <div class="modal-content">
-                <!--begin::Modal header-->
-                <div class="modal-header" style="background-color: #1e1e2d;">
-                    <!--begin::Modal title-->
-                    <h2 style="color: #FFFFFF;">첨부파일 업로드</h2>
-                    <!--end::Modal title-->
-                    <!--begin::Close-->
-                    <div class="btn btn-sm btn-icon btn-active-color-primary" onclick="modalClose('attachFile')" data-bs-dismiss="modal">
-                        <i class="ki-duotone ki-cross fs-1">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>
-                    </div>
-                    <!--end::Close-->
-                </div>
-                <!--end::Modal header-->
-                <!--begin::Modal body-->
-                <div class="modal-body py-lg-10 px-lg-10">
-                    <!--begin::form-->
-                    <form id="modal_file_upload_form" method="post" onsubmit="return false;">
-                        <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <!--begin::Label-->
-                            <label class="col-lg-2 col-form-label required fw-semibold fs-6">File</label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
-                            <div class="col-lg-10">
-                                <!--begin::Row-->
-                                <div class="row">
-                                    <!--begin::Col-->
-                                    <div class="col-lg-8 d-inline-block">
-                                        <input type="text" name="attachFile" class="form-control form-control-lg form-control-solid-bg upload_name" placeholder="파일명.확장자" disabled/>
-                                    </div>
-                                    <!--end::Col-->
-                                    <!--begin::Col-->
-                                    <div class="col-lg-3 d-inline-block ms-3">
-                                        <input type="file" id="attachFileInput" name="file" class="d-none upload_hidden">
-                                        <label class="btn btn-primary" for="attachFileInput">파일선택</label>
-                                    </div>
-                                    <!--end::Col-->
-                                </div>
-                                <!--end::Row-->
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Input group-->
-                    </form>
-                    <!--end::form-->
-                    <!--begin::Menu separator-->
-                    <div class="separator my-6"></div>
-                    <!--end::Menu separator-->
-                    <!--begin::Col-->
-                    <div class="col-lg-12 d-flex justify-content-center">
-                        <!--begin::Col-->
-                        <div>
-                            <!--begin::Cancel-->
-                            <a onclick="modalClose('attachFile')" class="btn btn-danger" data-bs-dismiss="modal">취소</a>
-                            <!--end::Cancel-->
-                        </div>
-                        <!--end::Col-->
-                        <!--begin::Col-->
-                        <div class="ms-10">
-                            <!--begin::File upload-->
-                            <a onclick="f_attach_file_upload('${info.id}','modal_file_upload_form','center/board/brochure')" class="btn btn-primary">업로드</a>
-                            <!--end::File upload-->
-                        </div>
-                        <!--end::Col-->
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <!--end::Modal body-->
-            </div>
-            <!--end::Modal content-->
-        </div>
-        <!--end::Modal dialog-->
-    </div>
-    <!--end::Modal - 수정이력-->
-
     <!--begin::Custom Javascript-->
 
     <script>var hostUrl = "/assets/";</script>
@@ -2589,7 +2426,6 @@ if (document.documentElement) {
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251103"></script>
-    <script src="/assets/js/custom/apps/ecommerce/catalog/quill-editor.js"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

@@ -78,16 +78,6 @@ public interface KibsMngService {
 
     ResponseDTO processInsertColumn(ColumnDTO columnDTO);
 
-    List<BrochureDTO> processSelectBrochureList(SearchDTO searchDTO);
-
-    BrochureDTO processSelectBrochureSingle(BrochureDTO brochureDTO);
-
-    ResponseDTO processDeleteBrochure(BrochureDTO brochureDTO);
-
-    ResponseDTO processUpdateBrochure(BrochureDTO brochureDTO);
-
-    ResponseDTO processInsertBrochure(BrochureDTO brochureDTO);
-
     List<DataroomDTO> processSelectDataroomList(SearchDTO searchDTO);
 
     DataroomDTO processSelectDataroomSingle(DataroomDTO dataroomDTO);
@@ -487,4 +477,8 @@ public interface KibsMngService {
     List<BoothDetailDTO> processSelectExcelBoothDetailList(String transferYear);
 
     int updateCompanyBadge(ExhibitorNewDTO dto);
+
+    BrochureDTO getBrochureInfo(String currentYear);
+
+    void saveOrUpdateBrochureInfo(BrochureDTO formData);
 }

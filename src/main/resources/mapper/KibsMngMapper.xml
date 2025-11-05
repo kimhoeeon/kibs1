@@ -1149,110 +1149,55 @@
             )
     </insert>
 
-    <select id="selectBrochureList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.BrochureDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.selectBrochureList */
-        <include refid="Reference.pagingPrefix"/>
-        SELECT id
-        , notice_gbn
-        , gbn1
-        , gbn2
-        , gbn3
-        , title
-        , writer
-        , write_date
-        , final_regi_dttm
-        , view_cnt
+    <select id="selectBrochureInfo" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.BrochureDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectBrochureInfo */
+        SELECT transfer_year,
+               main_ko_title,
+               main_ko_path,
+               main_ko_original_name,
+               main_en_title,
+               main_en_path,
+               main_en_original_name,
+               kiss_title,
+               kiss_path,
+               kiss_original_name,
+               kmts_title,
+               kmts_path,
+               kmts_original_name
         FROM brochure
-        WHERE 1=1
-        <if test='searchText != null and searchText != ""'>
-            AND title LIKE CONCAT('%',#{searchText},'%')
-        </if>
-        ORDER BY init_regi_dttm asc
-        <include refid="Reference.pagingSuffix"/>
+        WHERE transfer_year = #{year}
     </select>
 
-    <select id="selectBrochureSingle" parameterType="com.mtf.kibs.dto.BrochureDTO" resultType="com.mtf.kibs.dto.BrochureDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.selectBrochureSingle */
-        SELECT id
-             , notice_gbn
-             , gbn1
-             , gbn2
-             , gbn3
-             , title
-             , content
-             , writer
-             , write_date
-             , view_cnt
-             , file_id_list
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
-        FROM brochure
-        WHERE id = #{id}
-    </select>
-
-    <delete id="deleteBrochure" parameterType="com.mtf.kibs.dto.BrochureDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.deleteBrochure */
-        DELETE FROM brochure
-        WHERE id = #{id}
-    </delete>
-
-    <update id="updateBrochure" parameterType="com.mtf.kibs.dto.BrochureDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.updateBrochure */
+    <update id="updateBrochureInfo" parameterType="com.mtf.kibs.dto.BrochureDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateBrochureInfo */
         UPDATE brochure
-        SET notice_gbn = #{noticeGbn}
-        , gbn1 = #{gbn1}
-        , gbn2 = #{gbn2}
-        , gbn3 = #{gbn3}
-        , title = <![CDATA[#{title}]]>
-        , content = <![CDATA[#{content}]]>
-        , writer = #{writer}
-        , write_date = #{writeDate}
-        <if test='fileIdList != ""'>
-            , file_id_list = <![CDATA[#{fileIdList}]]>
-        </if>
-        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        WHERE id = #{id}
+        SET main_ko_title         = #{mainKoTitle},
+            main_ko_path          = #{mainKoPath},
+            main_ko_original_name = #{mainKoOriginalName},
+            main_en_title         = #{mainEnTitle},
+            main_en_path          = #{mainEnPath},
+            main_en_original_name = #{mainEnOriginalName},
+            kiss_title            = #{kissTitle},
+            kiss_path             = #{kissPath},
+            kiss_original_name    = #{kissOriginalName},
+            kmts_title            = #{kmtsTitle},
+            kmts_path             = #{kmtsPath},
+            kmts_original_name    = #{kmtsOriginalName}
+        WHERE transfer_year = #{transferYear}
     </update>
 
-    <insert id="insertBrochure" parameterType="com.mtf.kibs.dto.BrochureDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.insertBrochure */
-        INSERT INTO brochure
-        ( id
-        , notice_gbn
-        , gbn1
-        , gbn2
-        , gbn3
-        , title
-        , content
-        , writer
-        , write_date
-        , file_id_list
-        , note
-        , init_regi_pic
-        , init_regi_dttm
-        , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{id}
-            , #{noticeGbn}
-            , #{gbn1}
-            , #{gbn2}
-            , #{gbn3}
-            , <![CDATA[#{title}]]>
-            , <![CDATA[#{content}]]>
-            , #{writer}
-            , #{writeDate}
-            , <![CDATA[#{fileIdList}]]>
-            , #{note}
-            , 'BROCHURE'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'BROCHURE'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+    <insert id="insertBrochureInfo" parameterType="com.mtf.kibs.dto.BrochureDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.insertBrochureInfo */
+        INSERT INTO brochure (transfer_year,
+                              main_ko_title, main_ko_path, main_ko_original_name,
+                              main_en_title, main_en_path, main_en_original_name,
+                              kiss_title, kiss_path, kiss_original_name,
+                              kmts_title, kmts_path, kmts_original_name)
+        VALUES (#{transferYear},
+                #{mainKoTitle}, #{mainKoPath}, #{mainKoOriginalName},
+                #{mainEnTitle}, #{mainEnPath}, #{mainEnOriginalName},
+                #{kissTitle}, #{kissPath}, #{kissOriginalName},
+                #{kmtsTitle}, #{kmtsPath}, #{kmtsOriginalName})
     </insert>
 
     <select id="selectContestList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ContestDTO">

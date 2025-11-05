@@ -5954,11 +5954,7 @@ let DTRequestManagementList = function () {
                     'render': function (data, type, row) { return renderCompleteExpectDateCell(data, type, row); }
                 },
                 {
-                    'targets': 8,
-                    'render': function (data, type, row) { return renderWriterCell(data, type, row); }
-                },
-                {
-                    'targets': 10,
+                    'targets': 9,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -5973,7 +5969,6 @@ let DTRequestManagementList = function () {
                 { data: 'progressStep'},
                 { data: 'title'},
                 { data: 'completeExpectDate'},
-                { data: 'writer'},
                 { data: 'initRegiDttm' },
                 { data: 'actions' }
             ]
@@ -6065,20 +6060,6 @@ let DTRequestManagementList = function () {
             }
             renderHTML += '</a>';
             renderHTML += '</span>';
-        }
-
-        return renderHTML;
-    }
-
-    function renderWriterCell(data, type, row) {
-        let writer = row.writer;
-        let renderHTML = '-';
-        if(nvl(writer,'') !== ''){
-            if(writer === 'meetingfan'){
-                renderHTML = '개발사';
-            }else{
-                renderHTML = '관리자';
-            }
         }
 
         return renderHTML;

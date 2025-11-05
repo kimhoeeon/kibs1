@@ -159,7 +159,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <a class="downBtn btnSt01" href="/file/2026 해양관광전(KMTS 2026) 국문 브로슈어.pdf" download="2026 해양관광전(KMTS 2026) 국문 브로슈어.pdf">2026 해양관광전 브로슈어 다운로드</a>
+                        <a class="downBtn btnSt01" href="${brochureData.kmtsPath}" download="${brochureData.kmtsTitle}">2026 해양관광전 브로슈어 다운로드</a>
                     </div>
                 </div>
 

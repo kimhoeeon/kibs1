@@ -162,7 +162,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <a class="downBtn btnSt01" href="/file/2026 코리아서프쇼(KISS 2026) 국문 브로슈어.pdf" download="2026 코리아서프쇼(KISS 2026) 국문 브로슈어.pdf">2026 코리아 서프쇼 브로슈어 다운로드</a>
+                        <a class="downBtn btnSt01" href="${brochureData.kissPath}" download="${brochureData.kissTitle}">2026 코리아 서프쇼 브로슈어 다운로드</a>
                     </div>
                 </div>
 

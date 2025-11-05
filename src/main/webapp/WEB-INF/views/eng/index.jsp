@@ -65,7 +65,7 @@
                 </a>
             </li>--%>
             <li>
-                <a href="/file/2026 경기국제보트쇼 브로슈어 영문.pdf" download="2026 KIBS Brochure.pdf">
+                <a href="${brochureData.mainEnPath}" download="${brochureData.mainEnTitle}">
                     <div class="icon"><img src="/img/icon_floating25_bro.png"></div>
                     <div class="txt">
                         Brochure<br>

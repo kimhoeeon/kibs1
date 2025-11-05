@@ -1,296 +1,150 @@
-/***
- * mng/center/brochure.js
- * 정보센터>게시판관리
- * */
+$(function () {
+    const $form = $('#brochure_form');
+    const $submitBtn = $('#brochure_submit_btn');
 
-$(function(){
-
-});
-
-function f_board_brochure_search(){
-
-    /* 로딩페이지 */
-    loadingBarShow();
-
-    /* DataTable Data Clear */
-    let dataTbl = $('#kt_center_board_brochure_table').DataTable();
-    dataTbl.clear();
-    dataTbl.draw(false);
-
-    /* 목록 데이터 조회 */
-    let jsonObj;
-    let searchText = $('#search_text').val();
-    if(nullToEmpty(searchText) === ""){
-        jsonObj = {};
-    }else{
-        jsonObj = {
-            "searchText": searchText
-        }
-    }
-
-    let resData = ajaxConnect('/mng/center/board/brochure/selectList.do', 'post', jsonObj);
-
-    dataTbl.rows.add(resData).draw();
-
-    /* 조회 카운트 입력 */
-    document.getElementById('search_cnt').innerText = resData.length;
-
-    /* DataTable Column tooltip Set */
-    let jb = $('#kt_center_board_brochure_table tbody td');
-    let cnt = 0;
-    jb.each(function(index, item){
-        let itemText = $(item).text();
-        let itemText_trim = itemText.replaceAll(' ','');
-        if(itemText_trim !== '' && !itemText.match('Actions')){
-            $(item).attr('data-bs-toggle', 'tooltip');
-            $(item).attr('data-bs-trigger', 'hover');
-            $(item).attr('data-bs-custom-class', 'tooltip-inverse');
-            $(item).attr('data-bs-placement', 'top');
-            $(item).attr('title',itemText);
-        }
-        cnt++;
-    })
-    jb.tooltip();
-}
-
-function f_brochure_detail_modal_set(rowId){
-    /* 목록 상세 조회 */
-    let jsonObj = {
-        "id": rowId
-    };
-
-    let resData = ajaxConnect('/mng/center/board/brochure/selectSingle.do', 'post', jsonObj);
-
-    /* 상세보기 Modal form Set */
-    //console.log(resData);
-
-    document.querySelector('#md_title').value = resData.title;
-    document.querySelector('#md_writer').value = resData.writer;
-    document.querySelector('#md_write_date').value = resData.writeDate;
-
-    if(resData.gbn1==="1"){
-        document.querySelector('#md_gbn1').checked = true;
-    }else{
-        document.querySelector('#md_gbn1').checked = false;
-    }
-
-    if(resData.gbn2==="1"){
-        document.querySelector('#md_gbn2').checked = true;
-    }else{
-        document.querySelector('#md_gbn2').checked = false;
-    }
-
-    if(resData.gbn3==="1"){
-        document.querySelector('#md_gbn3').checked = true;
-    }else{
-        document.querySelector('#md_gbn3').checked = false;
-    }
-
-    if(resData.noticeGbn==="1"){
-        document.querySelector('#md_notice_gbn').checked = true;
-    }else{
-        document.querySelector('#md_notice_gbn').checked = false;
-    }
-
-    document.querySelector('#md_content').innerHTML = resData.content;
-    document.querySelector('#md_view_cnt').value = resData.viewCnt;
-
-    /* 파일 목록 상세 조회 */
-    let jsonObj2 = {
-        "userId": rowId
-    };
-
-    let file_list_el = document.getElementById('file_list');
-    while (file_list_el.hasChildNodes()) {
-        file_list_el.removeChild(file_list_el.firstChild);
-    }
-
-    let fileData = ajaxConnect('/file/upload/selectList.do', 'post', jsonObj2);
-    if(nullToEmpty(fileData) !== ''){
-        for(let i=0; i<fileData.length; i++){
-            let file_list_el = document.getElementById('file_list');
-            let input_el = document.createElement('input');
-            input_el.type = 'text';
-            input_el.classList.add('form-control');
-            input_el.classList.add('form-control-lg');
-            input_el.classList.add('form-control-solid-bg');
-            input_el.classList.add('mb-2');
-            input_el.value = fileData[i].fileName;
-            input_el.readOnly = true;
-
-            file_list_el.append(input_el);
-        }
-    }
-}
-
-function f_board_brochure_remove(rowId){
-    //console.log('삭제버튼');
-    if(nullToEmpty(rowId) !== ""){
-        let jsonObj = {
-            "id": rowId
-        }
+    /**
+     * 공통으로 사용할 Swal (SweetAlert) 유효성 검사 알림 함수
+     * @param {string} message - 사용자에게 보여줄 메시지
+     */
+    const showValidationError = (message) => {
         Swal.fire({
-            title: '선택한 E-브로슈어를 삭제하시겠습니까?',
             icon: 'warning',
-            allowOutsideClick: false,
+            title: '입력 오류',
+            text: message,
+            confirmButtonColor: '#00a8ff',
+            confirmButtonText: '확인'
+        });
+    };
+
+    /**
+     * [수정] 파일 첨부 시 파일명(확장자 포함) 자동 입력 및 PDF 확장자 검사
+     */
+    $('.brochure-file-input').on('change', function() {
+        const fileInput = this;
+        const $fileInput = $(this);
+        // 'this.id' (예: "mainKoFile")를 사용하여 연결된 텍스트 입력을 찾습니다.
+        const $titleInput = $('input[data-file-input-id="' + this.id + '"]');
+
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const fileName = file.name; // 예: "brochure.pdf"
+
+            // 1. PDF 확장자 검사
+            if (!fileName.toLowerCase().endsWith('.pdf')) {
+                showValidationError('PDF 파일만 첨부할 수 있습니다.\n\n파일: ' + fileName);
+                $fileInput.val(''); // 잘못된 파일 첨부 초기화
+
+                // 만약 텍스트 필드가 이전에 자동 입력되었다면, 비워줍니다.
+                if ($titleInput.data('auto-filled') === true) {
+                    $titleInput.val('');
+                    $titleInput.data('auto-filled', false);
+                }
+                return;
+            }
+
+            // 2. 파일명 자동 입력
+            // 텍스트 박스가 비어있을 경우에만 자동 입력
+            if ($titleInput.val().trim() === '') {
+                // --- ▼▼▼ [핵심 수정] ▼▼▼ ---
+                // 확장자를 포함한 전체 파일명을 입력합니다.
+                $titleInput.val(fileName);
+                // --- ▲▲▲▲▲▲▲▲▲▲▲▲▲ ---
+                $titleInput.data('auto-filled', true); // 자동 입력되었음을 표시
+            }
+        } else {
+            // 파일 선택이 취소된 경우, 자동 입력된 텍스트를 지웁니다.
+            if ($titleInput.data('auto-filled') === true) {
+                $titleInput.val('');
+                $titleInput.data('auto-filled', false);
+            }
+        }
+    });
+
+    /**
+     * [신규] 사용자가 텍스트를 직접 수정하면, 자동 입력 상태를 해제합니다.
+     */
+    $('.brochure-title').on('input', function() {
+        $(this).data('auto-filled', false);
+    });
+
+    /**
+     * 1. '저장' 버튼 클릭 시 유효성 검사
+     */
+    $form.on('submit', function (e) {
+
+        // [참고] PDF 확장자 검사는 'change' 이벤트에서 이미 처리되었으므로
+        // submit 시점에서는 파일명(title)과 파일 존재 여부(required)만 검사합니다.
+
+        // --- 1. 필수 값 가져오기 ---
+        const mainKoTitle = $('input[name="mainKoTitle"]').val();
+        const mainEnTitle = $('input[name="mainEnTitle"]').val();
+
+        const mainKoFile = $('input[name="mainKoFile"]')[0].files;
+        const mainEnFile = $('input[name="mainEnFile"]')[0].files;
+
+        const mainKoFileExisting = $('input[name="mainKoFile_existing"]').val();
+        const mainEnFileExisting = $('input[name="mainEnFile_existing"]').val();
+
+        // --- 2. 유효성 검사 (required 항목) ---
+
+        // 2-1. 메인 국문 브로슈어 (제목)
+        if (!mainKoTitle || mainKoTitle.trim() === '') {
+            e.preventDefault();
+            showValidationError('메인 국문 브로슈어의 파일명을 입력해주세요.');
+            $('input[name="mainKoTitle"]').focus();
+            return;
+        }
+
+        // 2-2. 메인 국문 브로슈어 (파일)
+        if (mainKoFile.length === 0 && (!mainKoFileExisting || mainKoFileExisting === '')) {
+            e.preventDefault();
+            showValidationError('메인 국문 브로슈어 파일을 첨부해주세요.');
+            $('input[name="mainKoFile"]').focus();
+            return;
+        }
+
+        // 2-3. 메인 영문 브로슈어 (제목)
+        if (!mainEnTitle || mainEnTitle.trim() === '') {
+            e.preventDefault();
+            showValidationError('메인 영문 브로슈어의 파일명을 입력해주세요.');
+            $('input[name="mainEnTitle"]').focus();
+            return;
+        }
+
+        // 2-4. 메인 영문 브로슈어 (파일)
+        if (mainEnFile.length === 0 && (!mainEnFileExisting || mainEnFileExisting === '')) {
+            e.preventDefault();
+            showValidationError('메인 영문 브로슈어 파일을 첨부해주세요.');
+            $('input[name="mainEnFile"]').focus();
+            return;
+        }
+
+        // 모든 유효성 검사 통과 시
+        $submitBtn.attr('data-kt-indicator', 'on').prop('disabled', true);
+    });
+
+    /**
+     * 2. '초기화' 버튼 클릭 시 확인창
+     */
+    $form.find('button[type="reset"]').on('click', function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'warning',
+            title: '초기화 확인',
+            text: '작성 중인 내용을 모두 초기화하시겠습니까?',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
-            cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
+            confirmButtonColor: '#00a8ff',
+            cancelButtonColor: '#f1416c',
+            confirmButtonText: '네, 초기화합니다.',
+            cancelButtonText: '아니요'
         }).then((result) => {
             if (result.isConfirmed) {
-
-                let resData = ajaxConnect('/mng/center/board/brochure/delete.do', 'post', jsonObj);
-
-                if (resData.resultCode === "0") {
-                    showMessage('', 'info', 'E-브로슈어 삭제', 'E-브로슈어가 삭제되었습니다.', '');
-                    f_board_brochure_search(); // 삭제 성공 후 재조회 수행
-                } else {
-                    showMessage('', 'error', '에러 발생', 'E-브로슈어 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
-                }
+                $form[0].reset();
+                // 자동 입력 상태도 모두 초기화
+                $('.brochure-title').data('auto-filled', false);
             }
         });
-    }
-}
+    });
 
-function f_board_brochure_modify_init_set(id){
-    window.location.href = '/mng/center/board/brochure/detail.do?seq=' + id;
-}
-
-function f_board_brochure_save(id){
-    //console.log(id + '변경내용저장 클릭');
-    Swal.fire({
-        title: '입력된 정보를 저장하시겠습니까?',
-        icon: 'info',
-        allowOutsideClick: false,
-        showCancelButton: true,
-        confirmButtonColor: '#00a8ff',
-        confirmButtonText: '변경내용저장',
-        cancelButtonColor: '#A1A5B7',
-        cancelButtonText: '취소'
-    }).then(async (result) => {
-        if (result.isConfirmed) {
-
-            /* form valid check */
-            let validCheck = f_board_brochure_valid();
-
-            if(validCheck){
-                /* File upload */
-                let fileIdList = '';
-                let uploadFileList = document.getElementById('uploadFileList').children;
-                let uploadFileListLen = uploadFileList.length;
-                for(let i=0; i<uploadFileListLen; i++){
-                    let fileId = uploadFileList[i].children[1].id;
-                    //console.log(fileId);
-                    fileIdList += fileId;
-                    if((i+1) !== uploadFileListLen){
-                        fileIdList += ',';
-                    }
-                }
-
-                if(fileIdList !== ''){
-                    let boardNoticeForm = document.getElementById('brochureForm');
-                    let hidden_el = document.createElement('input');
-                    hidden_el.type = 'hidden';
-                    hidden_el.name = 'fileIdList';
-                    hidden_el.value = fileIdList;
-                    boardNoticeForm.append(hidden_el);
-                }
-
-                let serialData = JSON.parse(JSON.stringify($('#brochureForm').serializeArray()));
-                let data = objectifyForm(serialData);
-                //console.log(JSON.stringify(data));
-
-                /* Modify */
-                if(nvl(id, "") !== ""){
-                    $.ajax({
-                        url: '/mng/center/board/brochure/modifySave.do',
-                        method: 'POST',
-                        async: false,
-                        data: JSON.stringify(data),
-                        dataType: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        success: function (data) {
-                            if (data.resultCode === "0") {
-                                Swal.fire({
-                                    title: 'E-브로슈어 정보 변경',
-                                    text: 'E-브로슈어 정보가 변경되었습니다.',
-                                    icon: 'info',
-                                    allowOutsideClick: false,
-                                    confirmButtonColor: '#00a8ff',
-                                    confirmButtonText: '확인'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        f_board_brochure_modify_init_set(id); // 재조회
-                                    }
-                                });
-                            } else {
-                                showMessage('', 'error', '에러 발생', 'E-브로슈어 정보 변경을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
-                            }
-                        },
-                        error: function (xhr, status) {
-                            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
-                        }
-                    })//ajax
-                }else { /* Insert */
-                    $.ajax({
-                        url: '/mng/center/board/brochure/insertSave.do',
-                        method: 'POST',
-                        async: false,
-                        data: JSON.stringify(data),
-                        dataType: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        success: function (data) {
-                            if (data.resultCode === "0") {
-                                Swal.fire({
-                                    title: 'E-브로슈어 정보 등록',
-                                    text: 'E-브로슈어 정보가 등록되었습니다.',
-                                    icon: 'info',
-                                    allowOutsideClick: false,
-                                    confirmButtonColor: '#00a8ff',
-                                    confirmButtonText: '확인'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = '/mng/center/board/brochure.do'; // 목록으로 이동
-                                    }
-                                });
-                            } else {
-                                showMessage('', 'error', '에러 발생', 'E-브로슈어 정보 등록을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
-                            }
-                        },
-                        error: function (xhr, status) {
-                            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
-                        }
-                    })//ajax
-                }// id check
-
-            }//validCheck
-
-        }//result.isConfirmed
-    })//swal
-
-}//fn
-
-function f_board_brochure_valid(){
-    let title = document.querySelector('#title').value;
-    let writer = document.querySelector('#writer').value;
-    let writeDate = document.querySelector('#writeDate').value;
-    let content = document.querySelector('#quill_content').value;
-
-    if(nvl(title,"") === ""){ showMessage('#title', 'error', '[ 글 등록 정보 ]', '제목을 입력해 주세요.', ''); return false; }
-    if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[ 글 등록 정보 ]', '작성자를 입력해 주세요.', ''); return false; }
-    if(nvl(writeDate,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', '작성일을 입력해 주세요.', ''); return false; }
-    if(nvl(content,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', '내용을 입력해 주세요.', ''); return false; }
-
-    return true;
-}
-
-function objectifyForm(formArray) {
-    //serialize data function
-    let returnArray = {};
-    for (let i = 0; i < formArray.length; i++){
-        returnArray[formArray[i]['name']] = formArray[i]['value'];
-    }
-    return returnArray;
-}
+});

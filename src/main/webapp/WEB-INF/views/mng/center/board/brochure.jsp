@@ -875,16 +875,6 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/center/board/brochure.do"
-                                                                           class="menu-link active">
-                                                                            <span class="menu-title">E-브로슈어</span>
-                                                                        </a>
-                                                                        <!--end:Menu link-->
-                                                                    </div>
-                                                                    <!--end:Menu item-->
-                                                                    <!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
-                                                                        <!--begin:Menu link-->
                                                                         <a href="/mng/center/board/dataroom.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">갤러리</span>
@@ -892,16 +882,6 @@ if (document.documentElement) {
                                                                         <!--end:Menu link-->
                                                                     </div>
                                                                     <!--end:Menu item-->
-                                                                    <%--<!--begin:Menu item-->
-                                                                    <div class="menu-item p-0 m-0">
-                                                                        <!--begin:Menu link-->
-                                                                        <a href="/mng/center/board/gallery.do"
-                                                                           class="menu-link">
-                                                                            <span class="menu-title">Photo Gallery</span>
-                                                                        </a>
-                                                                        <!--end:Menu link-->
-                                                                    </div>
-                                                                    <!--end:Menu item-->--%>
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
@@ -918,6 +898,16 @@ if (document.documentElement) {
                                                                         <a href="/mng/center/board/contest.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">공모전</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/center/board/brochure.do"
+                                                                           class="menu-link active">
+                                                                            <span class="menu-title">브로슈어</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1939,18 +1929,6 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/center/board/brochure.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                                <span class="menu-title">E-브로슈어</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/center/board/dataroom.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
@@ -1960,18 +1938,6 @@ if (document.documentElement) {
                                             <!--end:Menu link-->
                                         </div>
                                         <!--end:Menu item-->
-                                        <%--<!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/center/board/gallery.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                                <span class="menu-title">Photo Gallery</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->--%>
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
@@ -1992,6 +1958,18 @@ if (document.documentElement) {
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">공모전</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link active" href="/mng/center/board/brochure.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">브로슈어</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>

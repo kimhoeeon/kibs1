@@ -135,6 +135,16 @@ public class KibsController {
         List<PopupDTO> popupList = kibsService.processSelectPopupList(popupDTO);
         mv.addObject("popupList", popupList);
 
+        // 브로슈어
+        String currentYear = "2026"; // 현재 대상 연도
+        BrochureDTO brochureData = kibsService.getBrochureInfo(currentYear);
+
+        if (brochureData == null) {
+            brochureData = new BrochureDTO();
+        }
+
+        mv.addObject("brochureData", brochureData);
+
         // 방문자 수 카운트
         kibsService.processStatisticsAccessor();
 
@@ -249,6 +259,17 @@ public class KibsController {
     public ModelAndView guide_summary() {
         System.out.println("KibsController > guide_summary");
         ModelAndView mv = new ModelAndView();
+
+        // 브로슈어
+        String currentYear = "2026"; // 현재 대상 연도
+        BrochureDTO brochureData = kibsService.getBrochureInfo(currentYear);
+
+        if (brochureData == null) {
+            brochureData = new BrochureDTO();
+        }
+
+        mv.addObject("brochureData", brochureData);
+
         mv.setViewName("/guide/summary");
         return mv;
     }
@@ -265,6 +286,17 @@ public class KibsController {
     public ModelAndView guide_summary_kiss() {
         System.out.println("KibsController > guide_summary_kiss");
         ModelAndView mv = new ModelAndView();
+
+        // 브로슈어
+        String currentYear = "2026"; // 현재 대상 연도
+        BrochureDTO brochureData = kibsService.getBrochureInfo(currentYear);
+
+        if (brochureData == null) {
+            brochureData = new BrochureDTO();
+        }
+
+        mv.addObject("brochureData", brochureData);
+
         mv.setViewName("/guide/summary_kiss");
         return mv;
     }
@@ -273,6 +305,17 @@ public class KibsController {
     public ModelAndView guide_summary_kmts() {
         System.out.println("KibsController > guide_summary_kmts");
         ModelAndView mv = new ModelAndView();
+
+        // 브로슈어
+        String currentYear = "2026"; // 현재 대상 연도
+        BrochureDTO brochureData = kibsService.getBrochureInfo(currentYear);
+
+        if (brochureData == null) {
+            brochureData = new BrochureDTO();
+        }
+
+        mv.addObject("brochureData", brochureData);
+
         mv.setViewName("/guide/summary_kmts");
         return mv;
     }
@@ -2405,6 +2448,16 @@ public class KibsController {
             }
             mv.addObject("mainKibstvList", mainKibstvKeyList);
         }
+
+        // 브로슈어
+        String currentYear = "2026"; // 현재 대상 연도
+        BrochureDTO brochureData = kibsService.getBrochureInfo(currentYear);
+
+        if (brochureData == null) {
+            brochureData = new BrochureDTO();
+        }
+
+        mv.addObject("brochureData", brochureData);
 
         mv.setViewName("/eng/index");
         return mv;

@@ -244,4 +244,6 @@ public interface KibsService {
     String getExhibitorNewRepEmail(ExhibitorNewDTO exhibitorNewDTO);
 
     ResponseDTO processUpdateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO);
+
+    BrochureDTO getBrochureInfo(String currentYear);
 }

@@ -5,6 +5,7 @@ import com.mtf.kibs.dto.*;
 import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.CommService;
 import com.mtf.kibs.service.KibsMngService;
+import com.mtf.kibs.util.FileUploadUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFCell;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -2593,91 +2596,107 @@ public class KibsMngController {
     }
 
     @RequestMapping(value = "/mng/center/board/brochure.do", method = RequestMethod.GET)
-    public ModelAndView mng_center_board_brochure() {
+    public String mng_center_board_brochure() {
         System.out.println("KibsMngController > mng_center_board_brochure");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/center/board/brochure");
-        return mv;
+        return "redirect:/mng/center/board/brochure/detail.do";
     }
 
-    @RequestMapping(value = "/mng/center/board/brochure/selectList.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<List<BrochureDTO>> mng_center_board_brochure_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_center_board_brochure_selectList");
-        //System.out.println(searchDTO.toString());
+    /**
+     * [신규] 브로슈어 관리 페이지 로드
+     */
+    @GetMapping("/mng/center/board/brochure/detail.do")
+    public String brochureManagementPage(Model model) {
+        String currentYear = "2026"; // 예시 연도 (세션 등에서 가져오도록 수정 가능)
 
-        List<BrochureDTO> responseList = kibsMngService.processSelectBrochureList(searchDTO);
+        // DB에서 현재 연도의 브로슈어 정보를 조회
+        BrochureDTO brochureInfo = kibsMngService.getBrochureInfo(currentYear);
 
-        return new ResponseEntity<>(responseList, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/center/board/brochure/selectSingle.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<BrochureDTO> mng_center_board_brochure_selectSingle(@RequestBody BrochureDTO brochureDTO) {
-        System.out.println("KibsMngController > mng_center_board_brochure_selectSingle");
-        //System.out.println(newsletterDTO.toString());
-
-        BrochureDTO response = kibsMngService.processSelectBrochureSingle(brochureDTO);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/center/board/brochure/delete.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_center_board_brochure_delete(@RequestBody BrochureDTO brochureDTO) {
-        System.out.println("KibsMngController > mng_center_board_brochure_delete");
-
-        ResponseDTO responseDTO = kibsMngService.processDeleteBrochure(brochureDTO);
-
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/mng/center/board/brochure/modifySave.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_center_board_brochure_modifySave(@RequestBody BrochureDTO brochureDTO) {
-        System.out.println("KibsMngController > mng_center_board_brochure_modifySave");
-        //System.out.println(noticeDTO.toString());
-
-        ResponseDTO responseDTO = kibsMngService.processUpdateBrochure(brochureDTO);
-
-        String fileIdList = brochureDTO.getFileIdList();
-        if(fileIdList != null && !"".equals(fileIdList)){
-            String[] fileIdSplit = fileIdList.split(",");
-            for(int i=0; i<fileIdSplit.length; i++){
-                if(!"".equals(fileIdSplit[i])){
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(fileIdSplit[i]);
-                    fileDTO.setUserId(brochureDTO.getId());
-                    ResponseDTO fileResponse = kibsMngService.processUpdateFileUserId(fileDTO);
-                }
-            }
+        if (brochureInfo == null) {
+            brochureInfo = new BrochureDTO(); // 정보가 없으면 빈 객체 생성
         }
 
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        model.addAttribute("brochureInfo", brochureInfo);
+        return "/mng/center/board/brochure/detail"; // JSP 파일 경로
     }
 
-    @RequestMapping(value = "/mng/center/board/brochure/insertSave.do", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<ResponseDTO> mng_center_board_brochure_insertSave(@RequestBody BrochureDTO brochureDTO) {
-        System.out.println("KibsMngController > mng_center_board_brochure_insertSave");
-        //System.out.println(noticeDTO.toString());
+    /**
+     * [수정] 브로슈어 정보 저장 (경로 수정 및 FileUploadUtil 적용)
+     */
+    @PostMapping("/mng/center/brochure/update.do")
+    public String updateBrochure(
+            @ModelAttribute BrochureDTO formData,
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request) {
 
-        ResponseDTO responseDTO = kibsMngService.processInsertBrochure(brochureDTO);
+        final String PHYSICAL_PATH_BASE = "/usr/local/tomcat/webapps";
+        final String WEB_PATH_BASE = "/upload/center/board/brochure/";
+        final String PHYSICAL_SAVE_PATH = PHYSICAL_PATH_BASE + WEB_PATH_BASE;
 
-        String fileIdList = brochureDTO.getFileIdList();
-        if(fileIdList != null && !"".equals(fileIdList)){
-            String[] fileIdSplit = fileIdList.split(",");
-            for(int i=0; i<fileIdSplit.length; i++){
-                if(!"".equals(fileIdSplit[i])){
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(fileIdSplit[i]);
-                    fileDTO.setUserId(responseDTO.getCustomValue());
-                    ResponseDTO fileResponse = kibsMngService.processUpdateFileUserId(fileDTO);
-                }
+        try {
+            // 1. 메인 국문 파일 처리
+            String mainKoPath = formData.getMainKoFile_existing();
+            String mainKoOrigName = formData.getMainKoOriginalName_existing(); // [추가]
+            if (formData.getMainKoFile() != null && !formData.getMainKoFile().isEmpty()) {
+                FileUploadUtil.deleteFile(PHYSICAL_PATH_BASE + mainKoPath);
+                String newFileName = FileUploadUtil.saveFile(formData.getMainKoFile(), PHYSICAL_SAVE_PATH);
+                mainKoPath = WEB_PATH_BASE + newFileName;
+                mainKoOrigName = formData.getMainKoFile().getOriginalFilename(); // [추가] 원본 파일명 저장
             }
+            formData.setMainKoPath(mainKoPath);
+            formData.setMainKoOriginalName(mainKoOrigName); // [추가]
+
+
+            // 2. 메인 영문 파일 처리
+            String mainEnPath = formData.getMainEnFile_existing();
+            String mainEnOrigName = formData.getMainEnOriginalName_existing(); // [추가]
+            if (formData.getMainEnFile() != null && !formData.getMainEnFile().isEmpty()) {
+                FileUploadUtil.deleteFile(PHYSICAL_PATH_BASE + mainEnPath);
+                String newFileName = FileUploadUtil.saveFile(formData.getMainEnFile(), PHYSICAL_SAVE_PATH);
+                mainEnPath = WEB_PATH_BASE + newFileName;
+                mainEnOrigName = formData.getMainEnFile().getOriginalFilename(); // [추가]
+            }
+            formData.setMainEnPath(mainEnPath);
+            formData.setMainEnOriginalName(mainEnOrigName); // [추가]
+
+
+            // 3. KISS 파일 처리
+            String kissPath = formData.getKissFile_existing();
+            String kissOrigName = formData.getKissOriginalName_existing(); // [추가]
+            if (formData.getKissFile() != null && !formData.getKissFile().isEmpty()) {
+                FileUploadUtil.deleteFile(PHYSICAL_PATH_BASE + kissPath);
+                String newFileName = FileUploadUtil.saveFile(formData.getKissFile(), PHYSICAL_SAVE_PATH);
+                kissPath = WEB_PATH_BASE + newFileName;
+                kissOrigName = formData.getKissFile().getOriginalFilename(); // [추가]
+            }
+            formData.setKissPath(kissPath);
+            formData.setKissOriginalName(kissOrigName); // [추가]
+
+
+            // 4. KMTS 파일 처리
+            String kmtsPath = formData.getKmtsFile_existing();
+            String kmtsOrigName = formData.getKmtsOriginalName_existing(); // [추가]
+            if (formData.getKmtsFile() != null && !formData.getKmtsFile().isEmpty()) {
+                FileUploadUtil.deleteFile(PHYSICAL_PATH_BASE + kmtsPath);
+                String newFileName = FileUploadUtil.saveFile(formData.getKmtsFile(), PHYSICAL_SAVE_PATH);
+                kmtsPath = WEB_PATH_BASE + newFileName;
+                kmtsOrigName = formData.getKmtsFile().getOriginalFilename(); // [추가]
+            }
+            formData.setKmtsPath(kmtsPath);
+            formData.setKmtsOriginalName(kmtsOrigName); // [추가]
+
+
+            // 5. DB에 최종 정보 업데이트
+            formData.setTransferYear("2026");
+            kibsMngService.saveOrUpdateBrochureInfo(formData);
+
+            redirectAttributes.addFlashAttribute("message", "브로슈어 정보가 성공적으로 저장되었습니다.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "저장 중 오류가 발생했습니다: " + e.getMessage());
         }
 
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        return "redirect:/mng/center/board/brochure/detail.do";
     }
 
     @RequestMapping(value = "/mng/center/board/contest.do", method = RequestMethod.GET)
@@ -3240,33 +3259,6 @@ public class KibsMngController {
             }
         }
         mv.setViewName("/mng/center/board/column/detail");
-        return mv;
-    }
-
-    @RequestMapping(value = "/mng/center/board/brochure/detail.do", method = RequestMethod.GET)
-    public ModelAndView mng_center_board_brochure_detail(String seq) {
-        System.out.println("KibsMngController > mng_center_board_brochure_detail");
-        ModelAndView mv = new ModelAndView();
-        //seq == notice table id
-        if(seq != null && !"".equals(seq)){
-            BrochureDTO requestDto = new BrochureDTO();
-            requestDto.setId(seq);
-            BrochureDTO resInfo = kibsMngService.processSelectBrochureSingle(requestDto);
-            mv.addObject("info",resInfo);
-
-            if(resInfo.getFileIdList() != null && !"".equals(resInfo.getFileIdList())){
-                String[] fileIdList = resInfo.getFileIdList().split(",");
-                List<FileDTO> fileList = new ArrayList<>();
-                for (String id : fileIdList) {
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(id);
-                    FileDTO fileInfo = kibsMngService.processSelectFileInfo(fileDTO);
-                    fileList.add(fileInfo);
-                }
-                mv.addObject("fileList", fileList);
-            }
-        }
-        mv.setViewName("/mng/center/board/brochure/detail");
         return mv;
     }
 

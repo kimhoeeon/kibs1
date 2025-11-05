@@ -585,6 +585,11 @@ public class KibsServiceImpl implements KibsService {
         return responseDTO;
     }
 
+    @Override
+    public BrochureDTO getBrochureInfo(String year) {
+        return kibsMapper.selectBrochureInfo(year);
+    }
+
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO) {

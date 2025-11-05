@@ -196,7 +196,7 @@
                             </li>
                         </ul>
                     </div>
-                    <a class="downBtn btnSt01" href="/file/2026 경기국제보트쇼 브로슈어 국문.pdf" download="2026 경기국제보트쇼 브로슈어 국문.pdf">2026 브로슈어 다운로드</a>
+                    <a class="downBtn btnSt01" href="${brochureData.mainKoPath}" download="${brochureData.mainKoTitle}">2026 브로슈어 다운로드</a>
                 </div>
             </div>
 
