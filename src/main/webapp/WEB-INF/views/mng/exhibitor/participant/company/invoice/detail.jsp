@@ -2781,14 +2781,6 @@ if (document.documentElement) {
                                                                 <td id="summary_booth_total" class="text-end fw-bold fs-6"></td>
                                                             </tr>
 
-                                                            <%-- 발전기금 표시 행 (조건부) --%>
-                                                            <c:if test="${info.memberCompanyYn == 'Y' || info.discountLeisure}">
-                                                                <tr id="developmentFundRow">
-                                                                    <th class="text-gray-700 fw-semibold fs-6">한국해양레저산업협회 발전기금</th>
-                                                                    <td id="summary_development_fund" class="text-end fw-bold fs-6 text-success"></td>
-                                                                </tr>
-                                                            </c:if>
-
                                                             <tr>
                                                                 <th class="text-gray-700 fw-semibold fs-6">기본 할인</th>
                                                                 <td id="summary_basic_discount" class="text-end fw-bold fs-6 text-danger"></td>
@@ -2797,6 +2789,15 @@ if (document.documentElement) {
                                                                 <th class="text-gray-700 fw-semibold fs-6">특별 할인</th>
                                                                 <td id="summary_special_discount" class="text-end fw-bold fs-6 text-danger"></td>
                                                             </tr>
+
+                                                            <%-- 발전기금 표시 행 (조건부) --%>
+                                                            <c:if test="${info.memberCompanyYn == 'Y' || info.discountLeisure}">
+                                                                <tr id="developmentFundRow">
+                                                                    <th class="text-gray-700 fw-semibold fs-6">한국해양레저산업협회 발전기금</th>
+                                                                    <td id="summary_development_fund" class="text-end fw-bold fs-6 text-success"></td>
+                                                                </tr>
+                                                            </c:if>
+
                                                             <tr class="border-top border-gray-300 border-top-dashed">
                                                                 <th class="text-gray-800 fw-bolder fs-5">합계 (공급가액)</th>
                                                                 <td id="summary_booth_subtotal" class="text-end fw-bolder fs-5"></td>

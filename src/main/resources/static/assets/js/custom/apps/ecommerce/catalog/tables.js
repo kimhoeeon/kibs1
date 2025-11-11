@@ -877,34 +877,104 @@ let KTAppExhibitorNewApplicationBooth = function () {
     }
 
     function renderBoothPrcCell(data, type, row){
-        return parseInt(row.boothPrcSum).toLocaleString();
+        const boothPriceSum = Number(row.boothPrcSum);
+        const registrationFee = Number(row.registrationFee);
+        const newPrice = boothPriceSum - registrationFee;
+        return newPrice.toLocaleString();
     }
 
     function renderDiscountTypeCell(data, type, row){
         let renderHTML = '';
+
+        // 1. 기본 할인 (discountType)
         if(row.discountType != null && row.discountType !== ""){
             let discountType_arr = row.discountType.split(',');
             for(let i=0; i<discountType_arr.length; i++){
                 renderHTML += discountType_arr[i];
                 renderHTML += '<br>';
             }
-            if(renderHTML.substring(renderHTML.length-4) === '<br>'){
-                renderHTML = renderHTML.substring(0,renderHTML.length-4);
-            }
-        }else{
-            renderHTML += '-';
         }
+
+        // 2. [신규] 특별 할인
+        if (row.discountSpecial1Yn) {
+            renderHTML += '특할1(제품상)<br>';
+        }
+        if (row.discountSpecial2Yn && row.discountSpecial2Reason) {
+            renderHTML += row.discountSpecial2Reason + '<br>';
+        }
+        if (row.discountSpecial3Yn && row.discountSpecial3Reason) {
+            renderHTML += row.discountSpecial3Reason + '<br>';
+        }
+
+        // 3. 최종 HTML 반환
+        if(renderHTML === ''){
+            renderHTML = '-';
+        } else if (renderHTML.endsWith('<br>')) {
+            renderHTML = renderHTML.substring(0, renderHTML.length - 4);
+        }
+
         return renderHTML;
     }
 
     function renderDiscountPrcCell(data, type, row){
-        let discountPrc = row.discountPrcSum;
-        return parseInt(discountPrc).toLocaleString();
+        // 1. 기본 할인액
+        const basicDiscount = parseInt(row.discountPrcSum || 0);
+
+        // 2. 특별 할인 기준액 계산 (유틸리티는 0으로 가정)
+        const boothPrcSum = parseInt(row.boothPrcSum || 0);
+        const baseAmountForSpecial = boothPrcSum - basicDiscount;
+
+        // 3. 특별 할인액 계산
+        let specialDiscountTotal = 0;
+        if (row.discountSpecial1Yn) {
+            specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
+        }
+        if (row.discountSpecial2Yn) {
+            specialDiscountTotal += (parseInt(row.discountSpecial2Amount || 0));
+        }
+        if (row.discountSpecial3Yn) {
+            specialDiscountTotal += (parseInt(row.discountSpecial3Amount || 0));
+        }
+
+        // 4. 최종 총 할인액
+        const totalDiscount = basicDiscount + specialDiscountTotal;
+
+        return totalDiscount.toLocaleString();
     }
 
     function renderBoothPrcSumCell(data, type, row){
-        let boothPrcSum = row.boothPrcSum - row.discountPrcSum;
-        return parseInt(boothPrcSum).toLocaleString();
+
+        // --- 1. 총 할인액 계산 (renderDiscountPrcCell 로직 동일) ---
+        const basicDiscount = parseInt(row.discountPrcSum || 0);
+        const boothPrcSum = parseInt(row.boothPrcSum || 0);
+        const baseAmountForSpecial = boothPrcSum - basicDiscount;
+
+        let specialDiscountTotal = 0;
+        if (row.discountSpecial1Yn) {
+            specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
+        }
+        if (row.discountSpecial2Yn) {
+            specialDiscountTotal += (parseInt(row.discountSpecial2Amount || 0));
+        }
+        if (row.discountSpecial3Yn) {
+            specialDiscountTotal += (parseInt(row.discountSpecial3Amount || 0));
+        }
+        const totalDiscount = basicDiscount + specialDiscountTotal;
+
+        // --- 2. 발전기금 계산 (엑셀 로직 동일) ---
+        let developmentFund = 0;
+        // (협회 회원이거나 협회 할인을 받은 경우)
+        if ((row.memberCompanyYn === 'Y' || row.discountLeisure) && boothPrcSum > 0) {
+            // (부스 총액 - 총 할인액) * 10%
+            let developmentBase = boothPrcSum - totalDiscount;
+            developmentFund = Math.floor(developmentBase * 0.1);
+        }
+
+        // --- 3. 최종 총액(VAT미포함) 재계산 ---
+        // (부스총액 + 발전기금) - 총 할인액
+        const recalculatedPrcSum = (boothPrcSum + developmentFund) - totalDiscount;
+
+        return recalculatedPrcSum.toLocaleString();
     }
 
     function renderActionsCell(data, type, row){

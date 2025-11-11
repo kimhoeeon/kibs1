@@ -9,20 +9,20 @@ import lombok.ToString;
 @ToString
 public class ExhibitorNewDetailDTO {
 
-    // [수정] 생성자 추가 (transferYear를 받는 경우)
+    // 생성자 추가 (transferYear를 받는 경우)
     public ExhibitorNewDetailDTO(String transferYear) {
         this.transferYear = transferYear;
     }
 
-    // [추가] 기본 생성자
+    //  기본 생성자
     public ExhibitorNewDetailDTO() {
     }
 
     private String seq;
     private String lang;
     private String boothType;
-    private Integer deposit; // [수정] String -> Integer
-    private Integer balance; // [수정] String -> Integer
+    private Integer deposit; // String -> Integer
+    private Integer balance; // String -> Integer
     private String taxYn;
     private String transferYear;
 
@@ -54,7 +54,7 @@ public class ExhibitorNewDetailDTO {
     private String companyFax;
     private String industryPart;
     private String industryPartEtc;
-    private Integer employeeCnt; // [수정] String -> Integer
+    private Integer employeeCnt; // String -> Integer
     private String companyLicense;
     private String prePartYear;
     private String memberCompanyYn;
@@ -92,10 +92,10 @@ public class ExhibitorNewDetailDTO {
 
     /* 참가분야 */
     private String fieldPart; // [참고] field_part (GROUP_CONCAT 대상 아님)
-    private String fieldParticipatory; // [추가] 참가행사
-    private String fieldParticipatory1; // [추가] 참가분야1
-    private String fieldParticipatory2; // [추가] 참가분야2
-    private String fieldParticipatory3; // [추가] 참가분야3
+    private String fieldParticipatory; //  참가행사
+    private String fieldParticipatory1; //  참가분야1
+    private String fieldParticipatory2; //  참가분야2
+    private String fieldParticipatory3; //  참가분야3
 
     /* 제품 (GROUP_CONCAT 결과) */
     private String productOptionBig;
@@ -137,13 +137,13 @@ public class ExhibitorNewDetailDTO {
 
     /* 전시부스 신청 */
     private Integer registrationCnt;
-    private Integer registrationFee; // [추가] 등록비 금액
+    private Integer registrationFee; //  등록비 금액
     private Integer standAloneBoothCnt;
-    private Integer standAloneBoothFee; // [추가] 독립부스 금액
+    private Integer standAloneBoothFee; //  독립부스 금액
     private Integer assemblyBoothCnt;
-    private Integer assemblyBoothFee; // [추가] 조립부스 금액
+    private Integer assemblyBoothFee; //  조립부스 금액
     private Integer onlineBoothCnt;
-    private Integer onlineBoothFee; // [추가] 온라인부스 금액
+    private Integer onlineBoothFee; //  온라인부스 금액
     private Boolean discountEarly1;
     private Boolean discountEarly2;
     private Boolean discountFirstUnder10;
@@ -157,8 +157,8 @@ public class ExhibitorNewDetailDTO {
     private Boolean discountScale5;
     private Boolean discountScale6;
     private Boolean discountLeisure;
-    private String discountYn; // [추가] 할인적용 여부
-    private String discountType; // [추가] 할인 타입 문자열
+    private String discountYn; //  할인적용 여부
+    private String discountType; //  할인 타입 문자열
 
     /* 상호간판 */
     private String companySignNameKo;
@@ -166,22 +166,22 @@ public class ExhibitorNewDetailDTO {
 
     /* 유틸리티 신청 */
     private Integer utilityJuganCnt;
-    private Integer utilityJuganFee; // [추가]
+    private Integer utilityJuganFee; // 
     private Integer utilityDayCnt;
-    private Integer utilityDayFee; // [추가]
+    private Integer utilityDayFee; // 
     private Integer utilityCompressedAirCnt;
-    private Integer utilityCompressedAirFee; // [추가]
+    private Integer utilityCompressedAirFee; // 
     private Integer utilityWaterBasicCnt;
-    private Integer utilityWaterBasicFee; // [추가]
+    private Integer utilityWaterBasicFee; // 
     private Integer utilityTelephoneCnt;
     private Integer utilityInternetCnt;
-    private Integer utilityInternetFee; // [추가]
+    private Integer utilityInternetFee; // 
     private Integer utilityPytexNewCnt;
-    private Integer utilityPytexNewFee; // [추가]
+    private Integer utilityPytexNewFee; // 
     private Integer utilityPytexReCnt;
-    private Integer utilityPytexReFee; // [추가]
+    private Integer utilityPytexReFee; // 
     private Integer utilityBarcodeCnt;
-    private Integer utilityBarcodeFee; // [추가]
+    private Integer utilityBarcodeFee; // 
 
     /* 출입증 신청 (GROUP_CONCAT 결과) */
     private String passName;
@@ -228,17 +228,29 @@ public class ExhibitorNewDetailDTO {
     private Integer prcTotal;
 
     /* 기타 */
-    private String note; // [추가]
+    private String note; // 
 
     // 특별 할인
-    private Boolean discountSpecial1Yn; // [수정] boolean -> Boolean
+    private Boolean discountSpecial1Yn; // boolean -> Boolean
     private String  discountSpecial1Note;
-    private Boolean discountSpecial2Yn; // [수정] boolean -> Boolean
+    private Boolean discountSpecial2Yn; // boolean -> Boolean
     private String  discountSpecial2Reason;
-    private Integer discountSpecial2Amount; // [수정] int -> Integer
+    private Integer discountSpecial2Amount; // int -> Integer
     private String  discountSpecial2Note;
-    private Boolean discountSpecial3Yn; // [수정] boolean -> Boolean
+    private Boolean discountSpecial3Yn; // boolean -> Boolean
     private String  discountSpecial3Reason;
-    private Integer discountSpecial3Amount; // [수정] int -> Integer
+    private Integer discountSpecial3Amount; // int -> Integer
     private String  discountSpecial3Note;
+
+    private String depositAmounts;
+    private String depositContents;
+    private String depositStatuses;
+    private String depositDates;
+    private String depositScheduledDates;
+    private String depositTaxStatuses;
+    private String depositDepositorNames;
+    private String depositConfirmerNames;
+    private String depositComments;
+    private String depositInitRegiDttms;
+    private String depositFinalRegiDttms;
 }

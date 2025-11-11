@@ -3568,6 +3568,9 @@ public class KibsMngServiceImpl implements KibsMngService {
             // 잔액 재계산 로직 호출
             recalculateAndUpdatePayments(exhibitorSeq);
 
+            // 5. exhibitor_new 테이블에 prc_yn 상태 업데이트
+            kibsMngMapper.updateExhibitorPrcYnFromLatestDeposit(exhibitorSeq);
+
             resultMap.put("resultCode", "0");
             resultMap.put("resultMsg", "삭제되었습니다.");
         } else {

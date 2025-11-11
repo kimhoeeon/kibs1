@@ -17,7 +17,7 @@ $(function () {
     };
 
     /**
-     * [수정] 파일 첨부 시 파일명(확장자 포함) 자동 입력 및 PDF 확장자 검사
+     * 1. 파일 첨부 시: 파일명(확장자 포함) 자동 입력 및 PDF 확장자 검사
      */
     $('.brochure-file-input').on('change', function() {
         const fileInput = this;
@@ -29,12 +29,11 @@ $(function () {
             const file = fileInput.files[0];
             const fileName = file.name; // 예: "brochure.pdf"
 
-            // 1. PDF 확장자 검사
+            // 1-1. PDF 확장자 검사
             if (!fileName.toLowerCase().endsWith('.pdf')) {
                 showValidationError('PDF 파일만 첨부할 수 있습니다.\n\n파일: ' + fileName);
                 $fileInput.val(''); // 잘못된 파일 첨부 초기화
 
-                // 만약 텍스트 필드가 이전에 자동 입력되었다면, 비워줍니다.
                 if ($titleInput.data('auto-filled') === true) {
                     $titleInput.val('');
                     $titleInput.data('auto-filled', false);
@@ -42,17 +41,13 @@ $(function () {
                 return;
             }
 
-            // 2. 파일명 자동 입력
-            // 텍스트 박스가 비어있을 경우에만 자동 입력
+            // 1-2. 파일명 자동 입력 (텍스트 박스가 비어있을 경우)
             if ($titleInput.val().trim() === '') {
-                // --- ▼▼▼ [핵심 수정] ▼▼▼ ---
-                // 확장자를 포함한 전체 파일명을 입력합니다.
-                $titleInput.val(fileName);
-                // --- ▲▲▲▲▲▲▲▲▲▲▲▲▲ ---
+                $titleInput.val(fileName); // 확장자 포함 전체 파일명
                 $titleInput.data('auto-filled', true); // 자동 입력되었음을 표시
             }
         } else {
-            // 파일 선택이 취소된 경우, 자동 입력된 텍스트를 지웁니다.
+            // 1-3. 파일 선택이 취소된 경우
             if ($titleInput.data('auto-filled') === true) {
                 $titleInput.val('');
                 $titleInput.data('auto-filled', false);
@@ -61,21 +56,56 @@ $(function () {
     });
 
     /**
-     * [신규] 사용자가 텍스트를 직접 수정하면, 자동 입력 상태를 해제합니다.
+     * 2. 수기 입력 시: .pdf 확장자 자동 추가 (on blur)
+     */
+    $('.brochure-title').on('blur', function() {
+        const $input = $(this);
+        let currentValue = $input.val().trim();
+
+        // 1. 값이 없으면 아무것도 안 함
+        if (currentValue.length === 0) {
+            return;
+        }
+
+        // 2. 마지막 '.'의 위치를 찾음
+        const lastDotIndex = currentValue.lastIndexOf('.');
+
+        // 3. '.'이 존재하고, 그 뒤의 확장자가 'pdf'가 아닌 경우
+        if (lastDotIndex > -1) { // '.'이 하나라도 있다면
+            const extension = currentValue.substring(lastDotIndex + 1);
+
+            if (extension.toLowerCase() !== 'pdf') {
+                // 확장자가 'pdf'가 아니면(예: .jpg, .backup, 또는 그냥 .)
+                // 마지막 '.'부터 끝까지 모두 제거
+                currentValue = currentValue.substring(0, lastDotIndex);
+            }
+        }
+
+        // 4. 정리된 값의 끝이 .pdf가 아니면 붙여줌
+        // (값이 비어있지 않으면서, .pdf로 끝나지 않는 경우)
+        currentValue = currentValue.trim(); // (예: 'test.' 입력 시 'test'만 남음)
+        if (currentValue.length > 0 && !currentValue.toLowerCase().endsWith('.pdf')) {
+            currentValue = currentValue + '.pdf';
+        }
+
+        $input.val(currentValue); // 최종 정리된 값으로 업데이트
+        $input.data('auto-filled', false); // 사용자가 수정한 것으로 간주
+    });
+
+    /**
+     * 3. 수기 입력 시: 자동 입력 상태 해제 (on input)
      */
     $('.brochure-title').on('input', function() {
+        // 사용자가 한 글자라도 직접 입력하면, 자동 입력 상태를 해제
         $(this).data('auto-filled', false);
     });
 
     /**
-     * 1. '저장' 버튼 클릭 시 유효성 검사
+     * 4. '저장' 버튼 클릭 시 유효성 검사
      */
     $form.on('submit', function (e) {
 
-        // [참고] PDF 확장자 검사는 'change' 이벤트에서 이미 처리되었으므로
-        // submit 시점에서는 파일명(title)과 파일 존재 여부(required)만 검사합니다.
-
-        // --- 1. 필수 값 가져오기 ---
+        // --- 필수 값 가져오기 ---
         const mainKoTitle = $('input[name="mainKoTitle"]').val();
         const mainEnTitle = $('input[name="mainEnTitle"]').val();
 
@@ -85,7 +115,7 @@ $(function () {
         const mainKoFileExisting = $('input[name="mainKoFile_existing"]').val();
         const mainEnFileExisting = $('input[name="mainEnFile_existing"]').val();
 
-        // --- 2. 유효성 검사 (required 항목) ---
+        // --- 유효성 검사 (required 항목) ---
 
         // 2-1. 메인 국문 브로슈어 (제목)
         if (!mainKoTitle || mainKoTitle.trim() === '') {
@@ -119,12 +149,12 @@ $(function () {
             return;
         }
 
-        // 모든 유효성 검사 통과 시
+        // 모든 유효성 검사 통과 시 스피너 활성화
         $submitBtn.attr('data-kt-indicator', 'on').prop('disabled', true);
     });
 
     /**
-     * 2. '초기화' 버튼 클릭 시 확인창
+     * 5. '초기화' 버튼 클릭 시 확인창
      */
     $form.find('button[type="reset"]').on('click', function (e) {
         e.preventDefault();

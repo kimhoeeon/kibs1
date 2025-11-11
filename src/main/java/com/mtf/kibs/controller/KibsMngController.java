@@ -2602,7 +2602,7 @@ public class KibsMngController {
     }
 
     /**
-     * [신규] 브로슈어 관리 페이지 로드
+     * 브로슈어 관리 페이지 로드
      */
     @GetMapping("/mng/center/board/brochure/detail.do")
     public String brochureManagementPage(Model model) {
@@ -2620,7 +2620,7 @@ public class KibsMngController {
     }
 
     /**
-     * [수정] 브로슈어 정보 저장 (경로 수정 및 FileUploadUtil 적용)
+     * 브로슈어 정보 저장 (경로 수정 및 FileUploadUtil 적용)
      */
     @PostMapping("/mng/center/brochure/update.do")
     public String updateBrochure(
@@ -4380,7 +4380,8 @@ public class KibsMngController {
 
             // 모든 컬럼명이 포함된 헤더 배열
             final String[] colNames_ex = {
-                    /* 업체정보 (30개) */ "No", "참가상태", "승인구분", "부스번호", "아이디", "등록일", "최종수정일", "참가비수납여부", "BP번호", "컨택내역-작성자", "컨택내역-날짜", "컨택내역-내용", "참고사항-작성자", "참고사항-날짜", "참고사항-내용", "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소", "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "기참가연도", "회원사 여부",
+                    /* 업체정보 (29개) */ "No", "참가상태", "승인구분", "부스번호", "아이디", "등록일", "최종수정일", "BP번호", "컨택내역-작성자", "컨택내역-날짜", "컨택내역-내용", "참고사항-작성자", "참고사항-날짜", "참고사항-내용", "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소", "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "기참가연도", "회원사 여부",
+                    /* 입금 현황 (11개) */ "금액", "내용", "수납여부", "입금일", "입금예정일", "세금계산서", "입금자", "확인자", "코멘트", "등록일시", "수정일시",
                     /* 대표담당자 (6개) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
                     /* 담당자 1~3 (18개) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
                     /* 업체소개 (8개) */ "회사소개영상", "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)", "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
@@ -4389,7 +4390,7 @@ public class KibsMngController {
                     /* 전시품 1~20 (200개) */ "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
                     /* 기업뱃지 (4) */ "보트쇼 3회 이상 참가", "올해의 제품상 수상", "보트쇼와 제작한 영상", "제품 등록 우수",
                     /* 온라인 제품 1~30 (330) */ "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
-                    /* 신청내역 (31) */ "수출상담회 참가희망여부", "등록비", "독립부스", "조립부스", "온라인부스", "총 부스 수", "1차 조기신청", "2차 조기신청", "첫 참가(10부스 미만)", "첫 참가(10부스 이상)", "재참가", "규모(10+)", "규모(20+)", "규모(30+)", "규모(40+)", "규모(50+)", "규모(100+)", "협회할인", "협회 발전기금", "특할1(제품상)", "특할1 비고", "특할2 사유", "특할2 금액", "특할2 비고", "특할3 사유", "특할3 금액", "특할3 비고", "소계(공급가액)", "부가세", "총계"
+                    /* 신청내역 (33개) */ "수출상담회 참가희망여부", "등록비", "독립부스", "조립부스", "온라인부스", "총 부스 수", "부스가격", "1차 조기신청", "2차 조기신청", "첫 참가(10부스 미만)", "첫 참가(10부스 이상)", "재참가", "규모(10+)", "규모(20+)", "규모(30+)", "규모(40+)", "규모(50+)", "규모(100+)", "협회할인", "협회 발전기금", "특할1(제품상)", "특할2 금액", "특할3 금액", "특할1 비고", "특할2 사유", "특할2 비고", "특할3 사유", "특할3 비고", "할인가격", "참가비 합계", "소계(공급가액)", "부가세", "총계"
             };
 
             final int[] colWidths_ex = new int[colNames_ex.length];
@@ -4401,21 +4402,27 @@ public class KibsMngController {
             CellStyle headerStyle = workbook.createCellStyle(); headerStyle.setAlignment(HorizontalAlignment.CENTER); headerStyle.setVerticalAlignment(VerticalAlignment.CENTER); headerStyle.setBorderRight(BorderStyle.THIN); headerStyle.setBorderLeft(BorderStyle.THIN); headerStyle.setBorderTop(BorderStyle.THIN); headerStyle.setBorderBottom(BorderStyle.THIN); headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index); headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND); headerStyle.setFont(fontHeader); headerStyle.setWrapText(true);
             CellStyle bodyStyle = workbook.createCellStyle(); bodyStyle.setAlignment(HorizontalAlignment.CENTER); bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER); bodyStyle.setBorderRight(BorderStyle.THIN); bodyStyle.setBorderLeft(BorderStyle.THIN); bodyStyle.setBorderTop(BorderStyle.THIN); bodyStyle.setBorderBottom(BorderStyle.THIN); bodyStyle.setFont(font9); bodyStyle.setWrapText(true);
 
+            // 입금 현황용 왼쪽 정렬 스타일
+            CellStyle bodyLeftStyle = workbook.createCellStyle();
+            bodyLeftStyle.cloneStyleFrom(bodyStyle);
+            bodyLeftStyle.setAlignment(HorizontalAlignment.LEFT);
+
             SXSSFSheet sheet = workbook.createSheet("참가업체");
             sheet.trackAllColumnsForAutoSizing();
             int rowCnt = 0;
 
             Row headerRow = sheet.createRow(rowCnt++);
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 29));   headerRow.createCell(0).setCellValue("참가업체정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 30, 35));  headerRow.createCell(30).setCellValue("대표 담당자");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 36, 53));  headerRow.createCell(36).setCellValue("기타 담당자 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 54, 61));  headerRow.createCell(54).setCellValue("업체정보(소개)");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 62, 71));  headerRow.createCell(62).setCellValue("참가분야");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 72, 73));  headerRow.createCell(72).setCellValue("해상전시회");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 74, 273)); headerRow.createCell(74).setCellValue("전시품 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 274, 277)); headerRow.createCell(274).setCellValue("기업 뱃지");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 278, 607)); headerRow.createCell(278).setCellValue("온라인 제품 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 608, 637)); headerRow.createCell(608).setCellValue("신청내역");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 28));   headerRow.createCell(0).setCellValue("참가업체정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 29, 39));  headerRow.createCell(29).setCellValue("입금 현황");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 40, 45));  headerRow.createCell(40).setCellValue("대표 담당자");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 46, 63));  headerRow.createCell(46).setCellValue("기타 담당자 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 64, 71));  headerRow.createCell(64).setCellValue("업체정보(소개)");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 72, 81));  headerRow.createCell(72).setCellValue("참가분야");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 82, 83));  headerRow.createCell(82).setCellValue("해상전시회");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 84, 283)); headerRow.createCell(84).setCellValue("전시품 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 284, 287)); headerRow.createCell(284).setCellValue("기업 뱃지");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 288, 617)); headerRow.createCell(288).setCellValue("온라인 제품 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 618, 650)); headerRow.createCell(618).setCellValue("신청내역");
 
             for(int i=0; i < colNames_ex.length; i++){
                 if(headerRow.getCell(i) == null) headerRow.createCell(i);
@@ -4441,6 +4448,7 @@ public class KibsMngController {
                 int cellCnt = 0;
 
                 cellCnt = writeCompanyInfo(dataRow, cellCnt, info, listNum--);
+                cellCnt = writeDepositHistory(dataRow, cellCnt, info, df);
                 cellCnt = writeRepresentativeInfo(dataRow, cellCnt, info);
                 cellCnt = writeOtherContactsInfo(dataRow, cellCnt, info);
                 cellCnt = writeCompanyIntroInfo(dataRow, cellCnt, info);
@@ -4456,7 +4464,12 @@ public class KibsMngController {
                     if (cell == null) {
                         cell = dataRow.createCell(i);
                     }
-                    cell.setCellStyle(bodyStyle);
+
+                    if (i >= 29 && i <= 39) {
+                        cell.setCellStyle(bodyLeftStyle);
+                    } else {
+                        cell.setCellStyle(bodyStyle);
+                    }
                 }
             }
 
@@ -4476,7 +4489,6 @@ public class KibsMngController {
             CellStyle titleStyle = workbook.createCellStyle(); titleStyle.setFont(titleFont);
             CellStyle mainHeaderStyle = workbook.createCellStyle(); mainHeaderStyle.setAlignment(HorizontalAlignment.CENTER); mainHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER); mainHeaderStyle.setBorderTop(BorderStyle.THIN); mainHeaderStyle.setBorderBottom(BorderStyle.THIN); mainHeaderStyle.setBorderLeft(BorderStyle.THIN); mainHeaderStyle.setBorderRight(BorderStyle.THIN); mainHeaderStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.index); mainHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND); mainHeaderStyle.setFont(headerFont);
             CellStyle subHeaderStyle = workbook.createCellStyle(); subHeaderStyle.setAlignment(HorizontalAlignment.CENTER); subHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER); subHeaderStyle.setBorderTop(BorderStyle.THIN); subHeaderStyle.setBorderBottom(BorderStyle.THIN); subHeaderStyle.setBorderLeft(BorderStyle.THIN); subHeaderStyle.setBorderRight(BorderStyle.THIN); subHeaderStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index); subHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND); subHeaderStyle.setFont(headerFont);
-            CellStyle bodyLeftStyle = workbook.createCellStyle(); bodyLeftStyle.setAlignment(HorizontalAlignment.LEFT); bodyLeftStyle.setVerticalAlignment(VerticalAlignment.CENTER); bodyLeftStyle.setBorderTop(BorderStyle.THIN); bodyLeftStyle.setBorderBottom(BorderStyle.THIN); bodyLeftStyle.setBorderLeft(BorderStyle.THIN); bodyLeftStyle.setBorderRight(BorderStyle.THIN); bodyLeftStyle.setFont(bodyFont); bodyLeftStyle.setWrapText(true);
             CellStyle bodyCenterStyle = workbook.createCellStyle(); bodyCenterStyle.cloneStyleFrom(bodyLeftStyle); bodyCenterStyle.setAlignment(HorizontalAlignment.CENTER);
             CellStyle bodyRightStyle = workbook.createCellStyle(); bodyRightStyle.cloneStyleFrom(bodyLeftStyle); bodyRightStyle.setAlignment(HorizontalAlignment.RIGHT);
             CellStyle noteStyle = workbook.createCellStyle(); noteStyle.cloneStyleFrom(bodyLeftStyle); noteStyle.setFont(noteFont);
@@ -4566,9 +4578,6 @@ public class KibsMngController {
         dataRow.createCell(cellCnt++).setCellValue(info.getId());
         dataRow.createCell(cellCnt++).setCellValue(info.getInitRegiDttm());
         dataRow.createCell(cellCnt++).setCellValue(info.getFinalRegiDttm());
-        String prcYn = info.getPrcYn(); String prcYn_val = "";
-        if (prcYn != null) { switch (prcYn) { case "0": prcYn_val = "미납"; break; case "1": prcYn_val = "참가비 납부"; break; case "2": prcYn_val = "50% 납부"; break; case "3": prcYn_val = "전액 납부"; break; case "4": prcYn_val = "완납(부대시설비)"; break; } }
-        dataRow.createCell(cellCnt++).setCellValue(prcYn_val);
         dataRow.createCell(cellCnt++).setCellValue(info.getBpNum());
         dataRow.createCell(cellCnt++).setCellValue(info.getContactWriter());
         dataRow.createCell(cellCnt++).setCellValue(info.getContactDate());
@@ -4591,6 +4600,43 @@ public class KibsMngController {
         dataRow.createCell(cellCnt++).setCellValue(info.getIndustryPartEtc());
         dataRow.createCell(cellCnt++).setCellValue(info.getPrePartYear());
         dataRow.createCell(cellCnt++).setCellValue(info.getMemberCompanyYn());
+        return cellCnt;
+    }
+
+    private int writeDepositHistory(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info, DecimalFormat df) {
+        // 1. 금액 (숫자 포맷팅 적용)
+        String[] amounts = info.getDepositAmounts() != null ? info.getDepositAmounts().split("\n") : new String[0];
+        StringBuilder formattedAmounts = new StringBuilder();
+        for (String amount : amounts) {
+            try {
+                formattedAmounts.append(df.format(Long.parseLong(amount))).append(" 원\n");
+            } catch (Exception e) {
+                formattedAmounts.append(amount).append("\n");
+            }
+        }
+        dataRow.createCell(cellCnt++).setCellValue(formattedAmounts.toString().trim());
+
+        // 2. 내용
+        dataRow.createCell(cellCnt++).setCellValue(info.getDepositContents());
+        // 3. 수납여부
+        dataRow.createCell(cellCnt++).setCellValue(info.getDepositStatuses());
+        // 4. 입금일
+        dataRow.createCell(cellCnt++).setCellValue(info.getDepositDates());
+        // 5. 입금예정일
+        dataRow.createCell(cellCnt++).setCellValue(info.getDepositScheduledDates());
+        // 6. 세금계산서
+        dataRow.createCell(cellCnt++).setCellValue(info.getDepositTaxStatuses());
+        // 7. 입금자
+        dataRow.createCell(cellCnt++).setCellValue(info.getDepositDepositorNames());
+        // 8. 확인자
+        dataRow.createCell(cellCnt++).setCellValue(info.getDepositConfirmerNames());
+        // 9. 코멘트
+        dataRow.createCell(cellCnt++).setCellValue(info.getDepositComments());
+        // 10. 등록일시
+        dataRow.createCell(cellCnt++).setCellValue(info.getDepositInitRegiDttms());
+        // 11. 수정일시
+        dataRow.createCell(cellCnt++).setCellValue(info.getDepositFinalRegiDttms());
+
         return cellCnt;
     }
 
@@ -4634,8 +4680,8 @@ public class KibsMngController {
         return cellCnt;
     }
 
-    // 헬퍼 메소드 (참가 분야)
     private String checkField(String fieldName, String f1, String f2, String f3) {
+        if (fieldName == null) return "";
         if (fieldName.equals(f1) || fieldName.equals(f2) || fieldName.equals(f3)) {
             return "O";
         }
@@ -4644,31 +4690,27 @@ public class KibsMngController {
 
     private int writeParticipationFields(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
         String eventType = info.getFieldParticipatory();
-        String eventName = ""; // 기본값
+        String eventName = "";
+        if ("boatShow".equals(eventType)) eventName = "경기국제보트쇼";
+        else if ("surfShow".equals(eventType)) eventName = "코리아서프쇼";
+        else if ("travelShow".equals(eventType)) eventName = "해양관광전";
+        else if (eventType != null) eventName = eventType;
 
-        if ("boatShow".equals(eventType)) {
-            eventName = "경기국제보트쇼";
-        } else if ("surfShow".equals(eventType)) {
-            eventName = "코리아서프쇼";
-        } else if ("travelShow".equals(eventType)) {
-            eventName = "해양관광전";
-        } else if (eventType != null) {
-            eventName = eventType; // 혹시 모를 다른 값은 그대로 출력
-        }
+        dataRow.createCell(cellCnt++).setCellValue(eventName); // 1. 참가행사
 
-        dataRow.createCell(cellCnt++).setCellValue(eventName); // 참가행사
         String f1 = info.getFieldParticipatory1();
         String f2 = info.getFieldParticipatory2();
         String f3 = info.getFieldParticipatory3();
-        dataRow.createCell(cellCnt++).setCellValue(checkField("보트&요트", f1, f2, f3));
-        dataRow.createCell(cellCnt++).setCellValue(checkField("무동력보트", f1, f2, f3));
-        dataRow.createCell(cellCnt++).setCellValue(checkField("워크보트", f1, f2, f3));
-        dataRow.createCell(cellCnt++).setCellValue(checkField("해양부품&장비", f1, f2, f3));
-        dataRow.createCell(cellCnt++).setCellValue(checkField("안전&마리나", f1, f2, f3));
-        dataRow.createCell(cellCnt++).setCellValue(checkField("해양관광", f1, f2, f3));
-        dataRow.createCell(cellCnt++).setCellValue(checkField("해양레저", f1, f2, f3));
-        dataRow.createCell(cellCnt++).setCellValue(checkField("수중레저", f1, f2, f3));
-        dataRow.createCell(cellCnt++).setCellValue(checkField("서핑", f1, f2, f3));
+
+        dataRow.createCell(cellCnt++).setCellValue(checkField("보트&요트", f1, f2, f3)); // 2
+        dataRow.createCell(cellCnt++).setCellValue(checkField("무동력보트", f1, f2, f3)); // 3
+        dataRow.createCell(cellCnt++).setCellValue(checkField("워크보트", f1, f2, f3)); // 4
+        dataRow.createCell(cellCnt++).setCellValue(checkField("해양부품&장비", f1, f2, f3)); // 5
+        dataRow.createCell(cellCnt++).setCellValue(checkField("안전&마리나", f1, f2, f3)); // 6
+        dataRow.createCell(cellCnt++).setCellValue(checkField("해양관광", f1, f2, f3)); // 7
+        dataRow.createCell(cellCnt++).setCellValue(checkField("해양레저", f1, f2, f3)); // 8
+        dataRow.createCell(cellCnt++).setCellValue(checkField("수중레저", f1, f2, f3)); // 9
+        dataRow.createCell(cellCnt++).setCellValue(checkField("서핑", f1, f2, f3)); // 10
         return cellCnt;
     }
 
@@ -4689,6 +4731,101 @@ public class KibsMngController {
         }
         dataRow.createCell(cellCnt++).setCellValue(participationType);
 
+        return cellCnt;
+    }
+
+    private int writeApplicationDetails(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info, DecimalFormat df) {
+        // --- 1. [수정] 모든 금액 재계산을 위한 변수 선언 ---
+        long registrationFee = info.getRegistrationFee() != null ? info.getRegistrationFee() : 0;
+        long boothPrcSum = (info.getBoothPrcSum() != null) ? info.getBoothPrcSum() : 0;
+        long basicDiscount = (info.getDiscountPrcSum() != null) ? info.getDiscountPrcSum() : 0;
+        long utilityPrcSum = (info.getUtilityPrcSum() != null) ? info.getUtilityPrcSum() : 0;
+
+        // 부스신청총액 (등록비 제외)
+        long boothPriceOnly = boothPrcSum - registrationFee;
+
+        long baseAmountForSpecial = (boothPrcSum + utilityPrcSum) - basicDiscount;
+
+        // 특별 할인액 계산
+        long specialDiscount1Amount = 0;
+        if (Boolean.TRUE.equals(info.getDiscountSpecial1Yn())) {
+            specialDiscount1Amount = (long)Math.floor(baseAmountForSpecial * 0.5);
+        }
+        long specialDiscount2Amount = (Boolean.TRUE.equals(info.getDiscountSpecial2Yn()) && info.getDiscountSpecial2Amount() != null) ? info.getDiscountSpecial2Amount() : 0;
+        long specialDiscount3Amount = (Boolean.TRUE.equals(info.getDiscountSpecial3Yn()) && info.getDiscountSpecial3Amount() != null) ? info.getDiscountSpecial3Amount() : 0;
+
+        // 할인가격 (총 할인액)
+        long totalSpecialDiscount = specialDiscount1Amount + specialDiscount2Amount + specialDiscount3Amount;
+        long totalDiscount = basicDiscount + totalSpecialDiscount;
+
+        // 발전기금 계산
+        long developmentFund = 0;
+        if (("Y".equals(info.getMemberCompanyYn()) || Boolean.TRUE.equals(info.getDiscountLeisure()))) {
+            long developmentBase = boothPrcSum - basicDiscount;
+            developmentFund = (long)(developmentBase * 0.1);
+        }
+
+        // --- ▼▼▼ [핵심 수정] 요청하신 새 공식 적용 ▼▼▼ ---
+
+        // [신규] 참가비 합계 = 등록비 + 부스신청총액 + 발전기금 + 유틸리티신청총액
+        long participationFeeTotal = registrationFee + boothPriceOnly + developmentFund + utilityPrcSum;
+
+        // 소계(공급가액) = 참가비 합계 - 총 할인액
+        long recalculatedPrcSum = participationFeeTotal - totalDiscount;
+
+        // --- ▲▲▲ [핵심 수정] 완료 ▲▲▲ ---
+
+        long recalculatedPrcVat = (long) Math.floor(recalculatedPrcSum * 0.1);
+        long recalculatedPrcTotal = recalculatedPrcSum + recalculatedPrcVat;
+
+
+        // --- 2. 셀 데이터 생성 (헤더 순서대로) ---
+
+        dataRow.createCell(cellCnt++).setCellValue("Y".equals(info.getExportMeetingYn()) ? "참가" : "참가 안 함");
+        dataRow.createCell(cellCnt++).setCellValue(df.format(registrationFee) + " 원"); // 등록비
+        int standAlone = info.getStandAloneBoothCnt() != null ? info.getStandAloneBoothCnt() : 0;
+        int assembly = info.getAssemblyBoothCnt() != null ? info.getAssemblyBoothCnt() : 0;
+        int online = info.getOnlineBoothCnt() != null ? info.getOnlineBoothCnt() : 0;
+        dataRow.createCell(cellCnt++).setCellValue(standAlone);
+        dataRow.createCell(cellCnt++).setCellValue(assembly);
+        dataRow.createCell(cellCnt++).setCellValue(online);
+        dataRow.createCell(cellCnt++).setCellValue(standAlone + assembly + online); // 총 부스 수
+        dataRow.createCell(cellCnt++).setCellValue(df.format(boothPriceOnly) + " 원"); // 부스가격
+
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountEarly1()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountEarly2()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountFirstUnder10()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountFirstOver10()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountRe()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale1()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale2()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale3()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale4()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale5()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale6()) ? "O" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountLeisure()) ? "O" : ""); // 협회할인
+        dataRow.createCell(cellCnt++).setCellValue(developmentFund > 0 ? df.format(developmentFund) + " 원" : ""); // 협회 발전기금
+
+        // 특별 할인
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountSpecial1Yn()) ? df.format(specialDiscount1Amount) + " 원" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountSpecial2Yn()) ? df.format(specialDiscount2Amount) + " 원" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountSpecial3Yn()) ? df.format(specialDiscount3Amount) + " 원" : "");
+
+        // 비고 및 사유
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial1Note());
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Reason());
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Note());
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Reason());
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Note()); // 특할3 비고
+
+        // [신규] 2개 항목 (새 공식 적용)
+        dataRow.createCell(cellCnt++).setCellValue(df.format(totalDiscount) + " 원"); // 할인가격
+        dataRow.createCell(cellCnt++).setCellValue(df.format(participationFeeTotal) + " 원"); // 참가비 합계
+
+        // 최종 금액 (재계산된 값 사용)
+        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcSum) + " 원"); // 소계(공급가액)
+        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcVat) + " 원"); // 부가세
+        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcTotal) + " 원"); // 총계
         return cellCnt;
     }
 
@@ -4756,51 +4893,6 @@ public class KibsMngController {
             String[] onlineYearSplit = info.getOnlineYear() != null ? info.getOnlineYear().split("\\^", -1) : new String[0];
             dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineYearSplit, i));
         }
-        return cellCnt;
-    }
-
-    private int writeApplicationDetails(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info, DecimalFormat df) {
-        dataRow.createCell(cellCnt++).setCellValue("Y".equals(info.getExportMeetingYn()) ? "참가" : "참가 안 함");
-        dataRow.createCell(cellCnt++).setCellValue("100000 원");
-        int standAlone = info.getStandAloneBoothCnt() != null ? info.getStandAloneBoothCnt() : 0;
-        int assembly = info.getAssemblyBoothCnt() != null ? info.getAssemblyBoothCnt() : 0;
-        int online = info.getOnlineBoothCnt() != null ? info.getOnlineBoothCnt() : 0;
-        dataRow.createCell(cellCnt++).setCellValue(standAlone);
-        dataRow.createCell(cellCnt++).setCellValue(assembly);
-        dataRow.createCell(cellCnt++).setCellValue(online);
-        dataRow.createCell(cellCnt++).setCellValue(standAlone + assembly + online); // 총 부스 수
-
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountEarly1()) ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountEarly2()) ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountFirstUnder10()) ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountFirstOver10()) ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountRe()) ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale1()) ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale2()) ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale3()) ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale4()) ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale5()) ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale6()) ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountLeisure()) ? "O" : "");
-
-        if ("Y".equals(info.getMemberCompanyYn()) && info.getBoothPrcSum() != null) {
-            dataRow.createCell(cellCnt++).setCellValue(df.format(info.getBoothPrcSum() * 0.1) + " 원");
-        } else {
-            dataRow.createCell(cellCnt++).setCellValue("");
-        }
-
-        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial1Yn() ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial1Note());
-        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Reason());
-        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Yn() ? df.format(info.getDiscountSpecial2Amount()) + " 원" : "");
-        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Note());
-        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Reason());
-        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Yn() ? df.format(info.getDiscountSpecial3Amount()) + " 원" : "");
-        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Note());
-
-        dataRow.createCell(cellCnt++).setCellValue(info.getPrcSum() != null ? df.format(info.getPrcSum()) + " 원" : "0 원");
-        dataRow.createCell(cellCnt++).setCellValue(info.getPrcVat() != null ? df.format(info.getPrcVat()) + " 원" : "0 원");
-        dataRow.createCell(cellCnt++).setCellValue(info.getPrcTotal() != null ? df.format(info.getPrcTotal()) + " 원" : "0 원");
         return cellCnt;
     }
 
@@ -7732,30 +7824,38 @@ public class KibsMngController {
 
             // 본문 스타일 (왼쪽 정렬)
             CellStyle bodyLeftStyle = workbook.createCellStyle();
-            bodyLeftStyle.setFont(bodyFont);
+            bodyLeftStyle.cloneStyleFrom(bodyCenterStyle);
             bodyLeftStyle.setAlignment(HorizontalAlignment.LEFT);
-            bodyLeftStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            bodyLeftStyle.setBorderTop(BorderStyle.THIN);
-            bodyLeftStyle.setBorderBottom(BorderStyle.THIN);
-            bodyLeftStyle.setBorderLeft(BorderStyle.THIN);
-            bodyLeftStyle.setBorderRight(BorderStyle.THIN);
-            bodyLeftStyle.setWrapText(true);
+
+            // 본문 스타일 (오른쪽 정렬 - 금액)
+            CellStyle bodyRightStyle = workbook.createCellStyle();
+            bodyRightStyle.cloneStyleFrom(bodyCenterStyle);
+            bodyRightStyle.setAlignment(HorizontalAlignment.RIGHT);
+
+
+            // --- 2행: 서브 헤더 생성 ---
+            // "발전기금", "최종합계(VAT포함)" 추가 (총 25개)
+            String[] headers = {"번호", "회사명(국문)", "회사명(영문)", "인보이스", "부스구분", "부스수량", "부스가격", "1차 조기신청", "2차 조기신청", "첫 참가(10부스 미만)", "첫 참가(10부스 이상)", "재참가", "규모(10+)", "규모(20+)", "규모(30+)", "규모(40+)", "규모(50+)", "규모(100+)", "협회할인", "할인가격", "발전기금", "총액(VAT미포함)", "최종합계(VAT포함)", "등록일시", "수정일시"};
 
             // --- 1행: 메인 헤더 생성 ---
             Row mainHeaderRow = sheet.createRow(0);
             mainHeaderRow.createCell(0).setCellValue("기본정보");
             mainHeaderRow.createCell(7).setCellValue("할인구분");
-            mainHeaderRow.createCell(19).setCellValue("기본정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 6));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 18));
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 22));
-            for(int i=0; i<22; i++){
+            mainHeaderRow.createCell(20).setCellValue("금액정보");
+            mainHeaderRow.createCell(23).setCellValue("일시");
+
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 6)); // A1~G1 (기본정보 7개)
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 19)); // H1~T1 (할인구분 13개)
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 20, 22)); // U1~W1 (금액정보 3개)
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 23, 24)); // X1~Y1 (일시 2개)
+
+            // headers.length (25)를 기준으로 스타일 적용
+            for(int i=0; i < headers.length; i++){
                 if(mainHeaderRow.getCell(i) == null) mainHeaderRow.createCell(i);
                 mainHeaderRow.getCell(i).setCellStyle(mainHeaderStyle);
             }
 
-            // --- 2행: 서브 헤더 생성 ---
-            String[] headers = {"번호", "회사명(국문)", "회사명(영문)", "인보이스", "부스구분", "부스수량", "부스가격", "1차 조기신청", "2차 조기신청", "첫 참가(10부스 미만)", "첫 참가(10부스 이상)", "재참가", "규모(10+)", "규모(20+)", "규모(30+)", "규모(40+)", "규모(50+)", "규모(100+)", "협회할인", "할인가격", "총액(VAT미포함)", "등록일시", "수정일시"};
+            // --- 2행: 서브 헤더 생성 (수정 없음) ---
             Row subHeaderRow = sheet.createRow(1);
             for(int i=0; i<headers.length; i++) {
                 Cell cell = subHeaderRow.createCell(i);
@@ -7774,62 +7874,130 @@ public class KibsMngController {
                     Row row = sheet.createRow(rowNum++);
                     int cellCnt = 0;
 
+                    // --- 1. 금액 재계산을 위한 변수 준비 ---
+                    long basicDiscount = (booth.getDiscountPrcSum() != null) ? booth.getDiscountPrcSum() : 0;
+                    long boothPrcSum = (booth.getBoothPrcSum() != null) ? booth.getBoothPrcSum() : 0;
+                    // [참고] 이 엑셀은 '전시부스 신청' 현황이므로 유틸리티(utilityPrcSum)는 0으로 고정합니다.
+                    long utilityPrcSum = 0;
+
+                    // --- 2. 특별 할인액 재계산 ---
+                    long specialDiscountTotal = 0;
+                    // 특별 할인 기준액 = (부스총액 - 기본할인액)
+                    long baseAmountForSpecial = boothPrcSum - basicDiscount; // 유틸리티(0) 제외
+
+                    if (Boolean.TRUE.equals(booth.getDiscountSpecial1Yn())) {
+                        specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
+                    }
+                    if (Boolean.TRUE.equals(booth.getDiscountSpecial2Yn()) && booth.getDiscountSpecial2Amount() != null) {
+                        specialDiscountTotal += booth.getDiscountSpecial2Amount();
+                    }
+                    if (Boolean.TRUE.equals(booth.getDiscountSpecial3Yn()) && booth.getDiscountSpecial3Amount() != null) {
+                        specialDiscountTotal += booth.getDiscountSpecial3Amount();
+                    }
+
+                    // --- 3. 최종 총 할인액 계산 ---
+                    long totalDiscount = basicDiscount + specialDiscountTotal;
+
+                    // --- 4. 발전기금 계산 (부스 총액 - 총 할인액) * 10% ---
+                    long developmentFund = 0;
+                    if (("Y".equals(booth.getMemberCompanyYn()) || Boolean.TRUE.equals(booth.getDiscountLeisure()))) {
+                        long developmentBase = boothPrcSum - totalDiscount;
+                        developmentFund = (long)(developmentBase * 0.1);
+                    }
+
+                    // --- 5. 총액(VAT미포함) 및 최종합계(VAT포함) 재계산 ---
+                    // 총액(VAT미포함) = (부스총액 + 발전기금) - (기본할인 + 특별할인)
+                    long recalculatedPrcSum = (boothPrcSum + developmentFund) - totalDiscount;
+                    // 부가세
+                    long recalculatedPrcVat = (long) Math.floor(recalculatedPrcSum * 0.1);
+                    // 최종합계(VAT포함)
+                    long recalculatedPrcTotal = recalculatedPrcSum + recalculatedPrcVat;
+
+                    // --- 6. 데이터 셀 생성 ---
                     row.createCell(cellCnt++).setCellValue(i + 1); // 0. 번호
-                    row.createCell(cellCnt++).setCellValue(booth.getCompanyNameKo()); // 회사명(국문)
-                    row.createCell(cellCnt++).setCellValue(booth.getCompanyNameEn()); // 회사명(영문)
-                    row.createCell(cellCnt++).setCellValue(booth.getInvoiceYn().equals("Y") ? "O" : ""); // 인보이스
-                    row.createCell(cellCnt++).setCellValue(booth.getBoothType()); // 부스구분
-                    row.createCell(cellCnt++).setCellValue(booth.getRegistrationCnt() + booth.getStandAloneBoothCnt() + booth.getAssemblyBoothCnt() + booth.getOnlineBoothCnt()); // 부스수량
-                    row.createCell(cellCnt++).setCellValue(String.format("%,d", booth.getBoothPrcSum())); // 부스가격
-                    row.createCell(cellCnt++).setCellValue(booth.getDiscountEarly1() ? "O" : ""); // 1차 조기신청
-                    row.createCell(cellCnt++).setCellValue(booth.getDiscountEarly2() ? "O" : ""); // 2차 조기신청
-                    row.createCell(cellCnt++).setCellValue(booth.getDiscountFirstUnder10() ? "O" : ""); // 첫 참가(10-)
-                    row.createCell(cellCnt++).setCellValue(booth.getDiscountFirstOver10() ? "O" : ""); // 첫 참가(10+)
-                    row.createCell(cellCnt++).setCellValue(booth.getDiscountRe() ? "O" : ""); // 재 참가
-                    row.createCell(cellCnt++).setCellValue(booth.getDiscountScale1() ? "O" : ""); // 규모(10+)
-                    row.createCell(cellCnt++).setCellValue(booth.getDiscountScale2() ? "O" : ""); // 규모(20+)
-                    row.createCell(cellCnt++).setCellValue(booth.getDiscountScale3() ? "O" : ""); // 규모(30+)
-                    row.createCell(cellCnt++).setCellValue(booth.getDiscountScale4() ? "O" : ""); // 규모(40+)
-                    row.createCell(cellCnt++).setCellValue(booth.getDiscountScale5() ? "O" : ""); // 규모(50+)
-                    row.createCell(cellCnt++).setCellValue(booth.getDiscountScale6() ? "O" : ""); // 규모(100+)
-                    row.createCell(cellCnt++).setCellValue(booth.getDiscountLeisure() ? "O" : ""); // 협회할인
-                    row.createCell(cellCnt++).setCellValue(String.format("%,d", booth.getDiscountPrcSum())); // 할인가격
-                    row.createCell(cellCnt++).setCellValue(String.format("%,d", booth.getPrcSum())); // 총액(VAT미포함)
-                    row.createCell(cellCnt++).setCellValue(booth.getInitRegiDttm()); // 등록일시
-                    row.createCell(cellCnt++).setCellValue(booth.getFinalRegiDttm()); // 수정일시
+                    row.createCell(cellCnt++).setCellValue(booth.getCompanyNameKo()); // 1. 회사명(국문)
+                    row.createCell(cellCnt++).setCellValue(booth.getCompanyNameEn()); // 2. 회사명(영문)
+                    row.createCell(cellCnt++).setCellValue(booth.getInvoiceYn().equals("Y") ? "O" : ""); // 3. 인보이스
+                    row.createCell(cellCnt++).setCellValue(booth.getBoothType()); // 4. 부스구분
+                    row.createCell(cellCnt++).setCellValue(booth.getStandAloneBoothCnt() + booth.getAssemblyBoothCnt() + booth.getOnlineBoothCnt()); // 5. 부스수량
+                    row.createCell(cellCnt++).setCellValue(String.format("%,d", booth.getBoothPrcSum())); // 6. 부스가격
+
+                    // (할인 항목 7 ~ 18)
+                    row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountEarly1()) ? "O" : "");
+                    row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountEarly2()) ? "O" : "");
+                    row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountFirstUnder10()) ? "O" : "");
+                    row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountFirstOver10()) ? "O" : "");
+                    row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountRe()) ? "O" : "");
+                    row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountScale1()) ? "O" : "");
+                    row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountScale2()) ? "O" : "");
+                    row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountScale3()) ? "O" : "");
+                    row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountScale4()) ? "O" : "");
+                    row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountScale5()) ? "O" : "");
+                    row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountScale6()) ? "O" : "");
+                    row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountLeisure()) ? "O" : "");
+
+                    // 19. 할인가격 (기본 할인 + 특별 할인)
+                    row.createCell(cellCnt++).setCellValue(String.format("%,d", totalDiscount));
+
+                    // 20. 발전기금
+                    row.createCell(cellCnt++).setCellValue(String.format("%,d", developmentFund));
+
+                    // 21. 총액(VAT미포함) [수정]
+                    row.createCell(cellCnt++).setCellValue(String.format("%,d", recalculatedPrcSum));
+
+                    // 22. 최종합계(VAT포함) [수정]
+                    row.createCell(cellCnt++).setCellValue(String.format("%,d", recalculatedPrcTotal));
+
+                    row.createCell(cellCnt++).setCellValue(booth.getInitRegiDttm()); // 23. 등록일시
+                    row.createCell(cellCnt++).setCellValue(booth.getFinalRegiDttm()); // 24. 수정일시
 
                     // 모든 셀에 스타일 적용
                     for (int j = 0; j < headers.length; j++) {
                         Cell cell = row.getCell(j);
-                        cell.setCellStyle(bodyCenterStyle);
+                        if (cell == null) cell = row.createCell(j);
+
+                        // 1, 2(회사명)는 왼쪽 정렬
+                        if (j == 1 || j == 2) {
+                            cell.setCellStyle(bodyLeftStyle);
+                        }
+                        // 6(부스가격), 19(할인가격), 20(발전기금), 21(총액), 22(최종합계)는 오른쪽 정렬
+                        else if (j == 6 || j == 19 || j == 20 || j == 21 || j == 22) {
+                            cell.setCellStyle(bodyRightStyle);
+                        }
+                        // 나머지는 가운데 정렬
+                        else {
+                            cell.setCellStyle(bodyCenterStyle);
+                        }
                     }
                 }
             }
 
-            // --- 컬럼 너비 설정 (11개 컬럼 기준으로 수정) ---
+            // --- 컬럼 너비 설정 (25개 컬럼 기준으로 수정) ---
             sheet.setColumnWidth(0, 1500);  // 번호
             sheet.setColumnWidth(1, 8000);  // 회사명(국문)
             sheet.setColumnWidth(2, 8000);  // 회사명(영문)
-            sheet.setColumnWidth(3, 4000);  // 인보이스
+            sheet.setColumnWidth(3, 2000);  // 인보이스
             sheet.setColumnWidth(4, 6000);  // 부스구분
-            sheet.setColumnWidth(5, 4000);  // 부스수량
-            sheet.setColumnWidth(6, 4000);  // 부스가격
-            sheet.setColumnWidth(7, 5000);  // 1차조기신청
-            sheet.setColumnWidth(8, 5000);  // 2차조기신청
+            sheet.setColumnWidth(5, 2000);  // 부스수량
+            sheet.setColumnWidth(6, 5000);  // 부스가격
+            sheet.setColumnWidth(7, 3000);  // 1차
+            sheet.setColumnWidth(8, 3000);  // 2차
             sheet.setColumnWidth(9, 4000);  // 첫참가(10-)
             sheet.setColumnWidth(10, 4000); // 첫참가(10+)
-            sheet.setColumnWidth(11, 4000); // 재참가
-            sheet.setColumnWidth(12, 4000); // 규모(10+)
-            sheet.setColumnWidth(13, 4000); // 규모(20+)
-            sheet.setColumnWidth(14, 4000); // 규모(30+)
-            sheet.setColumnWidth(15, 4000); // 규모(40+)
-            sheet.setColumnWidth(16, 4000); // 규모(50+)
-            sheet.setColumnWidth(17, 4000); // 규모(100+)
-            sheet.setColumnWidth(18, 4000); // 협회할인
-            sheet.setColumnWidth(19, 4000); // 할인가격
-            sheet.setColumnWidth(20, 4000); // 총액
-            sheet.setColumnWidth(21, 4000); // 등록일시
-            sheet.setColumnWidth(22, 4000); // 수정일시
+            sheet.setColumnWidth(11, 3000); // 재참가
+            sheet.setColumnWidth(12, 3000); // 규모(10+)
+            sheet.setColumnWidth(13, 3000); // 규모(20+)
+            sheet.setColumnWidth(14, 3000); // 규모(30+)
+            sheet.setColumnWidth(15, 3000); // 규모(40+)
+            sheet.setColumnWidth(16, 3000); // 규모(50+)
+            sheet.setColumnWidth(17, 3000); // 규모(100+)
+            sheet.setColumnWidth(18, 3000); // 협회할인
+            sheet.setColumnWidth(19, 5000); // 할인가격
+            sheet.setColumnWidth(20, 5000); // 발전기금
+            sheet.setColumnWidth(21, 5000); // 총액(VAT미포함)
+            sheet.setColumnWidth(22, 5000); // 최종합계(VAT포함)
+            sheet.setColumnWidth(23, 5000); // 등록일시
+            sheet.setColumnWidth(24, 5000); // 수정일시
 
             // --- 엑셀 파일 다운로드 ---
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");

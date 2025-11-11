@@ -1949,6 +1949,27 @@
         WHERE deposit_seq = #{value}
     </select>
 
+    <update id="updateExhibitorPrcYnFromLatestDeposit" parameterType="java.lang.String">
+        /* com.mtf.kibs.mapper.kibsMngMapper.getExhibitorSeqByDepositSeq */
+        UPDATE
+            exhibitor_new
+        SET prc_yn = (SELECT COALESCE(
+                                     (SELECT CASE dh.payment_status
+                                                 WHEN '미납' THEN '0'
+                                                 WHEN '참가비 납부' THEN '1'
+                                                 WHEN '50% 납부' THEN '2'
+                                                 WHEN '전액 납부' THEN '3'
+                                                 WHEN '완납(부대시설비)' THEN '4'
+                                                 ELSE '0'
+                                                 END
+                                      FROM deposit_history dh
+                                      WHERE dh.exhibitor_seq = #{exSeq}
+                                      ORDER BY dh.init_regi_dttm DESC
+                                      LIMIT 1),
+                                     '0'))
+        WHERE seq = #{exSeq}
+    </update>
+
     <select id="sumDepositAmountByExhibitor" parameterType="java.lang.String" resultType="java.lang.Integer">
         /* com.mtf.kibs.mapper.kibsMngMapper.sumDepositAmountByExhibitor */
         SELECT IFNULL(SUM(amount), 0)
@@ -3449,6 +3470,17 @@
              , en.discount_leisure
              , en.booth_prc_sum
              , en.discount_prc_sum
+             , en.member_company_yn
+             , en.discount_special_1_yn
+             , en.discount_special_1_note
+             , en.discount_special_2_yn
+             , en.discount_special_2_reason
+             , en.discount_special_2_amount
+             , en.discount_special_2_note
+             , en.discount_special_3_yn
+             , en.discount_special_3_reason
+             , en.discount_special_3_amount
+             , en.discount_special_3_note
              , en.init_regi_dttm
              , en.final_regi_dttm
              , IF(( SELECT COUNT(*) FROM invoice_booth ib WHERE ib.exhibitor_seq = en.seq AND ib.del_yn = 'N') <![CDATA[>]]> 0, 'Y', 'N') AS invoiceYn
@@ -5540,7 +5572,19 @@
             GROUP_CONCAT(DISTINCT g.gift_company_logo ORDER BY g.seq SEPARATOR '^') as giftCompanyLogo,
             GROUP_CONCAT(DISTINCT g.gift_price ORDER BY g.seq SEPARATOR '^') as giftPrice,
             GROUP_CONCAT(DISTINCT g.gift_sponsor_price ORDER BY g.seq SEPARATOR '^') as giftSponsorPrice,
-            GROUP_CONCAT(DISTINCT g.gift_note ORDER BY g.seq SEPARATOR '^') as giftNote
+            GROUP_CONCAT(DISTINCT g.gift_note ORDER BY g.seq SEPARATOR '^') as giftNote,
+
+            GROUP_CONCAT(DISTINCT dh.amount ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositAmounts,
+            GROUP_CONCAT(DISTINCT dh.content_type ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositContents,
+            GROUP_CONCAT(DISTINCT dh.payment_status ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositStatuses,
+            GROUP_CONCAT(DISTINCT DATE_FORMAT(dh.deposit_date, '%Y-%m-%d') ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositDates,
+            GROUP_CONCAT(DISTINCT DATE_FORMAT(dh.scheduled_date, '%Y-%m-%d') ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositScheduledDates,
+            GROUP_CONCAT(DISTINCT dh.tax_invoice_status ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositTaxStatuses,
+            GROUP_CONCAT(DISTINCT dh.depositor_name ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositDepositorNames,
+            GROUP_CONCAT(DISTINCT dh.confirmer_name ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositConfirmerNames,
+            GROUP_CONCAT(DISTINCT dh.comment ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositComments,
+            GROUP_CONCAT(DISTINCT DATE_FORMAT(dh.init_regi_dttm, '%Y-%m-%d %H:%i') ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositInitRegiDttms,
+            GROUP_CONCAT(DISTINCT DATE_FORMAT(dh.final_regi_dttm, '%Y-%m-%d %H:%i') ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositFinalRegiDttms
         FROM
             exhibitor_new e
                 LEFT JOIN charge_new c ON e.seq = c.ex_seq
@@ -5549,12 +5593,12 @@
                 LEFT JOIN pass_new ps ON e.seq = ps.ex_seq
                 LEFT JOIN buyer_new b ON e.seq = b.ex_seq
                 LEFT JOIN gift_new g ON e.seq = g.ex_seq
+                LEFT JOIN deposit_history dh ON e.seq = dh.exhibitor_seq
         WHERE
             e.transfer_year = #{transferYear}
         GROUP BY
-            e.seq
-        ORDER BY
-            e.init_regi_dttm asc, e.company_name_ko asc
+            e.seq, e.init_regi_dttm
+        ORDER BY e.init_regi_dttm DESC
     </select>
 
     <select id="selectExhibitorDetailList" parameterType="com.mtf.kibs.dto.ExhibitorDetailDTO" resultType="com.mtf.kibs.dto.ExhibitorDetailDTO">
@@ -6042,6 +6086,17 @@
              , en.discount_leisure
              , en.booth_prc_sum
              , en.discount_prc_sum
+             , en.member_company_yn
+             , en.discount_special_1_yn
+             , en.discount_special_1_note
+             , en.discount_special_2_yn
+             , en.discount_special_2_reason
+             , en.discount_special_2_amount
+             , en.discount_special_2_note
+             , en.discount_special_3_yn
+             , en.discount_special_3_reason
+             , en.discount_special_3_amount
+             , en.discount_special_3_note
              , en.prc_sum
              , en.prc_vat
              , en.prc_total
@@ -6049,7 +6104,7 @@
              , en.final_regi_dttm
         FROM exhibitor_new en
         WHERE en.transfer_year = #{transferYear}
-        ORDER BY en.init_regi_dttm
+        ORDER BY en.init_regi_dttm DESC
     </select>
 
     <select id="selectExcelPassDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.PassDetailDTO">

@@ -38,6 +38,17 @@ public class BoothDetailDTO {
     private Boolean discountLeisure;
     private Integer boothPrcSum; //부스신청총액
     private Integer discountPrcSum; //할인총액
+    private String memberCompanyYn; //협회할인여부
+    private Boolean discountSpecial1Yn;
+    private String  discountSpecial1Note;
+    private Boolean discountSpecial2Yn;
+    private String  discountSpecial2Reason;
+    private Integer discountSpecial2Amount;
+    private String  discountSpecial2Note;
+    private Boolean discountSpecial3Yn;
+    private String  discountSpecial3Reason;
+    private Integer discountSpecial3Amount;
+    private String  discountSpecial3Note;
     private Integer prcSum; //소개
     private Integer prcVat; //부가세
     private Integer prcTotal; //총계

@@ -642,4 +642,6 @@ public interface KibsMngMapper {
     void updateBrochureInfo(BrochureDTO dto);
 
     void insertBrochureInfo(BrochureDTO dto);
+
+    void updateExhibitorPrcYnFromLatestDeposit(String exhibitorSeq);
 }
