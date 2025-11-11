@@ -37,5 +37,5 @@ out/
 .vscode/
 
 ### my ignore ###
-application.properties
+/src/main/resources/application.properties
 /src/main/resources/static/file/
