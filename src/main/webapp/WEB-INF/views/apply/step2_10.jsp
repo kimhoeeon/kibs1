@@ -252,10 +252,7 @@
             // 라디오 버튼의 선택 상태가 변경될 때마다 toggleDetailBox 함수를 실행합니다.
             maritimeRadio.on('change', toggleDetailBox);
 
-            // --- ▼▼▼ [핵심] 페이지 로드 시 초기 상태 설정 ▼▼▼ ---
-            // 페이지가 처음 로드될 때, JSP가 ${info} 값에 따라 설정한
-            // 라디오 버튼의 초기 상태를 읽어 toggleDetailBox 함수를 즉시 실행합니다.
-            // 이를 통해 '참가 항목' 박스의 초기 표시 여부가 결정됩니다.
+            // --- 페이지 로드 시 초기 상태 설정 ▼▼▼ ---
             toggleDetailBox();
         })
     </script>

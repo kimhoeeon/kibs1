@@ -7832,7 +7832,6 @@ public class KibsMngController {
             bodyRightStyle.cloneStyleFrom(bodyCenterStyle);
             bodyRightStyle.setAlignment(HorizontalAlignment.RIGHT);
 
-
             // --- 2행: 서브 헤더 생성 ---
             // "발전기금", "최종합계(VAT포함)" 추가 (총 25개)
             String[] headers = {"번호", "회사명(국문)", "회사명(영문)", "인보이스", "부스구분", "부스수량", "부스가격", "1차 조기신청", "2차 조기신청", "첫 참가(10부스 미만)", "첫 참가(10부스 이상)", "재참가", "규모(10+)", "규모(20+)", "규모(30+)", "규모(40+)", "규모(50+)", "규모(100+)", "협회할인", "할인가격", "발전기금", "총액(VAT미포함)", "최종합계(VAT포함)", "등록일시", "수정일시"};
@@ -7875,15 +7874,18 @@ public class KibsMngController {
                     int cellCnt = 0;
 
                     // --- 1. 금액 재계산을 위한 변수 준비 ---
+                    long registrationFee = booth.getRegistrationFee() != null ? booth.getRegistrationFee() : 0;
                     long basicDiscount = (booth.getDiscountPrcSum() != null) ? booth.getDiscountPrcSum() : 0;
                     long boothPrcSum = (booth.getBoothPrcSum() != null) ? booth.getBoothPrcSum() : 0;
-                    // [참고] 이 엑셀은 '전시부스 신청' 현황이므로 유틸리티(utilityPrcSum)는 0으로 고정합니다.
                     long utilityPrcSum = 0;
+
+                    // 부스신청총액 (등록비 제외)
+                    long boothPriceOnly = boothPrcSum - registrationFee;
 
                     // --- 2. 특별 할인액 재계산 ---
                     long specialDiscountTotal = 0;
                     // 특별 할인 기준액 = (부스총액 - 기본할인액)
-                    long baseAmountForSpecial = boothPrcSum - basicDiscount; // 유틸리티(0) 제외
+                    long baseAmountForSpecial = (boothPrcSum + utilityPrcSum) - basicDiscount; // 유틸리티(0) 제외
 
                     if (Boolean.TRUE.equals(booth.getDiscountSpecial1Yn())) {
                         specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
@@ -7920,7 +7922,7 @@ public class KibsMngController {
                     row.createCell(cellCnt++).setCellValue(booth.getInvoiceYn().equals("Y") ? "O" : ""); // 3. 인보이스
                     row.createCell(cellCnt++).setCellValue(booth.getBoothType()); // 4. 부스구분
                     row.createCell(cellCnt++).setCellValue(booth.getStandAloneBoothCnt() + booth.getAssemblyBoothCnt() + booth.getOnlineBoothCnt()); // 5. 부스수량
-                    row.createCell(cellCnt++).setCellValue(String.format("%,d", booth.getBoothPrcSum())); // 6. 부스가격
+                    row.createCell(cellCnt++).setCellValue(String.format("%,d", boothPriceOnly)); // 6. 부스가격
 
                     // (할인 항목 7 ~ 18)
                     row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountEarly1()) ? "O" : "");

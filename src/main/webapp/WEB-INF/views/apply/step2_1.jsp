@@ -485,6 +485,79 @@
 
     <script type="text/javascript">
         $(function(){
+
+            // --- 1. 날짜 및 마감일 정의 (KST: UTC+9) ---
+            const today = new Date(); // 사용자의 현재 시간
+            const deadline1 = new Date('2025-11-14T23:59:59+09:00'); // 1차 마감: 11월 14일 23:59:59
+            const deadline2 = new Date('2025-12-12T23:59:59+09:00'); // 2차 마감: 12월 12일 23:59:59
+
+            // --- 2. 체크박스 및 라벨 요소 ---
+            const $check1 = $('#discountEarly1');
+            const $label1 = $check1.closest('label.discount-item');
+            const $check2 = $('#discountEarly2');
+            const $label2 = $check2.closest('label.discount-item');
+
+            // --- 3. [수정] DB에서 로드된 초기 상태 (1차, 2차 모두 확인) ---
+            const isEarly1_DB = $check1.is(':checked');
+            const isEarly2_DB = $check2.is(':checked'); // 2차 신청자 확인용
+
+            // --- 4. 조기신청 마감일 로직 (규칙 1, 2, 3 적용) ---
+
+            // [경우 A] 1차 마감일(14일) 이전
+            if (today <= deadline1) {
+                // 1차 활성화, 2차 비활성화 (1차 기간이므로)
+                $check1.prop('disabled', false);
+                $label1.removeClass('disabled');
+                $check2.prop('disabled', true).prop('checked', false);
+                $label2.addClass('disabled');
+
+                // 1차 기간인데 1차가 체크 안되어있으면 (신규) 자동 체크
+                if (!isEarly1_DB) {
+                    $check1.prop('checked', true);
+                }
+            }
+            // [경우 B] 1차 마감(14일) 이후 ~ 2차 마감(12월 12일) 이전
+            else if (today > deadline1 && today <= deadline2) {
+
+                // 1차는 무조건 비활성화
+                $check1.prop('disabled', true);
+                $label1.addClass('disabled');
+
+                if (isEarly1_DB) {
+                    // [규칙 2, 3] 1차에 이미 신청했던 사람
+                    // 1차는 (checked, disabled) 상태 유지
+                    // 2차는 (unchecked, disabled) (중복 선택 불가)
+                    $check2.prop('disabled', true).prop('checked', false);
+                    $label2.addClass('disabled');
+
+                } else {
+                    // [규칙 1] 14일 이후 최초 신청자 (1차를 놓친 사람)
+                    // 1차는 (unchecked, disabled)
+                    $check1.prop('checked', false);
+
+                    // 2차는 (checked, enabled) - 2차 할인을 자동 적용
+                    // (단, 2차가 이미 체크된 상태가 아니라면)
+                    if (!isEarly2_DB) {
+                        $check2.prop('checked', true);
+                    }
+                    $check2.prop('disabled', false);
+                    $label2.removeClass('disabled');
+                }
+            }
+            // [경우 C] 2차 마감일(12월 12일) 이후
+            else {
+                // 모든 조기신청 마감 (기존 신청자는 체크된 채로 비활성화)
+                $check1.prop('disabled', true);
+                $label1.addClass('disabled');
+                $check2.prop('disabled', true);
+                $label2.addClass('disabled');
+
+                // [수정] 1차 신청자도 아니고, 2차 신청자도 아니었던 경우에만 2차 체크 해제
+                if (!isEarly1_DB && !isEarly2_DB) {
+                    $check2.prop('checked', false);
+                }
+            }
+
             // (기존 할인 체크박스 차단 로직은 그대로 둡니다)
             $(document).on('mousedown', 'input[name=\"discount\"]', function() {
                 $(this).data('waschecked', this.checked);
@@ -506,32 +579,12 @@
                 }
             });
 
-            // 페이지 로드 시 초기 계산 ('booth' 타입 전달)
+            // 페이지 로드 시 최종 계산 (모든 할인 상태가 결정된 후)
             if (typeof calculateTotal === 'function') {
-                calculateTotal('booth'); // ★★★ 페이지 타입 전달 ★★★
+                calculateTotal('booth');
             } else {
                 console.error("main.js의 calculateTotal 함수를 찾을 수 없습니다.");
             }
-
-            // --- ★★★ 수정: 페이지 로드 시 실행 순서 변경 ---
-            async function initializePage() {
-                // 1. (선택) 만약 calculateTotal이 먼저 실행되어야 한다면 여기서 await
-                // await calculateTotal('booth');
-
-                // 2. 할인 기간 체크 함수 실행 (수정된 함수는 #prcTotal.text()를 읽음)
-                if (typeof handleDiscountEarly1 === 'function') handleDiscountEarly1();
-                if (typeof handleDiscountEarly2 === 'function') handleDiscountEarly2();
-
-                // 3. ★★★ 할인 자동 체크가 적용된 후, 최종 금액 계산 ★★★
-                if (typeof calculateTotal === 'function') {
-                    await calculateTotal('booth'); // ★★★ 페이지 타입 전달 ★★★
-                } else {
-                    console.error("main.js의 calculateTotal 함수를 찾을 수 없습니다.");
-                }
-            }
-
-            // 페이지 로드 시 초기화 함수 실행
-            initializePage();
         });
     </script>
 
