@@ -2972,6 +2972,8 @@ if (document.documentElement) {
                     <input type="hidden" id="sendInvoiceSeq" />
                     <input type="hidden" id="sendInvoiceType" />
                     <input type="hidden" id="sendInvoiceFilePath" />
+                    <input type="hidden" id="sendInvoiceCode" />
+                    <input type="hidden" id="sendInvoiceIssueDate" />
 
                     <div class="mb-5">
                         <div class="fs-6 text-gray-600">아래 이메일 주소로 인보이스를 발송합니다.</div>
@@ -3033,7 +3035,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251103"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251117"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

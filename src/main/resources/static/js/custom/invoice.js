@@ -514,12 +514,17 @@ $(function(){
         }
 
         // 1. 발송에 필요한 정보 수집
+        const $row = checkedInvoice.closest('tr'); // 정보가 있는 행(tr)
+
+        // 1. 발송에 필요한 정보 수집
         const invoiceSeq = checkedInvoice.val();
         const invoiceType = checkedInvoice.data('type');
         const filePath = checkedInvoice.closest('.invoice-item').find('input[name="filePath"]').val();
-        const invoiceCode = checkedInvoice.closest('tr').find('.td_invoiceCode').text().trim(); // 화면에 표시된 인보이스 코드
         const defaultEmail = $('#defaultEmail').val();
         const invoiceTypeTxt = invoiceType === 'booth' ? '전시부스' : '유틸리티';
+
+        const invoiceCode = $row.find('.td_invoiceCode').text().trim();
+        const issueDate = $row.find('td').eq(4).find('span').text().trim();
 
         if (!filePath) {
             alert('인보이스 파일이 없습니다. 먼저 인보이스를 생성해주세요.');
@@ -532,6 +537,8 @@ $(function(){
         $('#sendInvoiceFilePath').val(filePath);
         $('#sendInvoiceCodeDisplay').text(`인보이스 정보 : ${invoiceCode} [ ${invoiceTypeTxt} ]`);
         $('#sendInvoiceEmailInput').val(defaultEmail);
+        $('#sendInvoiceCode').val(invoiceCode);
+        $('#sendInvoiceIssueDate').val(issueDate);
 
         // 3. 팝업 열기
         const sendModal = new bootstrap.Modal(document.getElementById('kt_modal_send_invoice'));
@@ -545,6 +552,9 @@ $(function(){
         const invoiceType = $('#sendInvoiceType').val();
         const filePath = $('#sendInvoiceFilePath').val();
         const recipientEmail = $('#sendInvoiceEmailInput').val();
+
+        const invoiceCode = $('#sendInvoiceCode').val();
+        const issueDate = $('#sendInvoiceIssueDate').val();
 
         // 이메일 유효성 검사 (간단)
         if (!recipientEmail || !recipientEmail.includes('@')) {
@@ -579,12 +589,12 @@ $(function(){
             let subject = '', gbn = '', updateUrl = '', template = '';
             if (invoiceType === 'booth') {
                 template = '172';
-                subject = `[KIBS 2026] ` + companyNameKo + ` 전시부스 인보이스 발송`;
+                subject = `[KIBS 2026] ` + companyNameKo + ` 전시부스 인보이스 발송` + ` (` + invoiceCode + `)`;
                 gbn = 'BOOTH';
                 updateUrl = '/mng/exhibitorNew/application/booth/invoice/mail/result/update.do';
             } else if (invoiceType === 'utility') {
                 template = '176';
-                subject = `[KIBS 2026] ` + companyNameKo + ` 유틸리티 인보이스 발송`;
+                subject = `[KIBS 2026] ` + companyNameKo + ` 유틸리티 인보이스 발송` + ` (` + invoiceCode + `)`;
                 gbn = 'UTILITY';
                 updateUrl = '/mng/exhibitorNew/application/utility/invoice/mail/result/update.do';
             }
@@ -595,7 +605,13 @@ $(function(){
                 body: '', //템플릿 사용시 빈값
                 template: template,
                 // 수신자 이메일을 팝업에서 입력한 값으로 사용
-                receiver: [{ email: recipientEmail }],
+                receiver: [{
+                    email: recipientEmail,
+                    //note1: "https://kibs.com" + folderPath_r, // note1: 인보이스 링크
+                    note2: companyNameKo,                     // note2: 회사명
+                    note3: invoiceCode,                       // note3: 인보이스 코드
+                    note4: issueDate                          // note4: 발행일자
+                }],
                 gbn: gbn,
                 folderPath: encodeURI(folderPath_s),
                 fileUrl: [{ name: encodeURI(fileName) }],

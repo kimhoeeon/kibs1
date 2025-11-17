@@ -34,6 +34,10 @@ public class MailRequestDTO {
         private String email;
         private String phone;
         private String note1;
+        private String note2;
+        private String note3;
+        private String note4;
+        private String note5;
     }
 
     @Getter

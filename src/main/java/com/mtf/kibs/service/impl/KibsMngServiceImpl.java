@@ -5884,6 +5884,9 @@ public class KibsMngServiceImpl implements KibsMngService {
                     // note1이 null인 경우 (즉, 일반 발송)이고, 인보이스 발송인 경우에만 추적 URL 삽입
                     if(isInvoiceMail) {
                         jsonObject.addProperty("note1", note1);
+                        jsonObject.addProperty("note2", receiverInfo.getNote2());
+                        jsonObject.addProperty("note3", receiverInfo.getNote3());
+                        jsonObject.addProperty("note4", receiverInfo.getNote4());
                     }
                 }
                 jsonArray.add(jsonObject);

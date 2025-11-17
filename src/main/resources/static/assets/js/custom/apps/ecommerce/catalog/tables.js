@@ -11,7 +11,8 @@ let KTAppExhibitorMng = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
+            'pageLength': 25,
             'select': false,
             'ordering': true,
             'order': [[1, 'desc']],
@@ -162,9 +163,17 @@ let KTAppExhibitorMng = function () {
         renderHTML += '<span class="fw-bold">';
             renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + row.seq + '\'' + ')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_detail_info">';
                 if(nvl(companyNameEn,'') !== ''){
-                    renderHTML += companyNameKo + '<br>' + companyNameEn;
+                    if(companyNameKo === '오션테크'){
+                        renderHTML += companyNameKo + '(덕영엔지니어링)' + '<br>' + companyNameEn;
+                    }else{
+                        renderHTML += companyNameKo + '<br>' + companyNameEn;
+                    }
                 }else{
-                    renderHTML += companyNameKo;
+                    if(companyNameKo === '오션테크') {
+                        renderHTML += companyNameKo + '(덕영엔지니어링)';
+                    }else{
+                        renderHTML += companyNameKo;
+                    }
                 }
             renderHTML += '</a>';
         renderHTML += '</span>';
