@@ -12,6 +12,8 @@ public class InvoiceSendHistoryDTO {
     private int invoiceSeq;
     private String invoiceType;
     private String recipientEmail;
+    private String dsReserveId;
+    private String openDttm;
     private String sendStatus;
     private String sendResult;
     private String sendResultMsg;

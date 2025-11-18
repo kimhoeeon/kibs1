@@ -444,11 +444,7 @@ public interface KibsMngService {
 
     boolean updateInvoiceBoothFilePath(InvoiceBoothDTO invoiceDto);
 
-    boolean sendInvoiceBooth(InvoiceBoothDTO invoiceDto);
-
     boolean deleteInvoiceBooth(int invoiceSeq);
-
-    Map<String, Object> sendInvoices(List<Integer> invoiceSeqList, String adminId) throws Exception;
 
     InvoiceUtilityDTO createAndInsertInvoiceUtility(String exhibitorSeq) throws Exception;
 
@@ -481,4 +477,6 @@ public interface KibsMngService {
     BrochureDTO getBrochureInfo(String currentYear);
 
     void saveOrUpdateBrochureInfo(BrochureDTO formData);
+
+    void updateInvoiceHistoryStatusByMailId(String reserveId, String status);
 }

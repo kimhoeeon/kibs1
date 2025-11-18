@@ -1352,6 +1352,36 @@ public class KibsMngController {
         kibsMngService.updateInvoiceHistoryStatusToOpen(historySeq);
     }
 
+    @GetMapping("/webhook/directsend/open")
+    @ResponseBody
+    public ResponseEntity<String> handleDirectSendOpenWebhook(
+            @RequestParam("type") String type,
+            @RequestParam("mail_id") String mailId,
+            @RequestParam("email") String email,
+            @RequestParam(value = "mail_reserve_id", required = false) String reserveId
+    ) {
+        System.out.println("DirectSend Webhook(OPEN) 수신: type=" + type + ", mail_id=" + mailId);
+
+        try {
+            // 1. "open" 타입이고, mail_id가 있는지 확인
+            if ("open".equalsIgnoreCase(type) && mailId != null && !mailId.isEmpty() && !"null".equals(mailId)) {
+
+                // 2. 서비스 로직 호출 (mail_id로 이력 업데이트)
+                // (processMailSend에서 ds_reserve_id 컬럼에 저장한 mail_id를 찾아 상태를 '열람'으로 변경)
+                kibsMngService.updateInvoiceHistoryStatusByMailId(mailId, "열람");
+
+                // 3. DirectSend 서버에 "정상 수신" 응답
+                return new ResponseEntity<>("OK", HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>("Bad Request: Invalid parameters (type is not 'open' or mail_id is missing)", HttpStatus.BAD_REQUEST);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @RequestMapping(value = "/mng/exhibitorNew/application/pass.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_pass() {
         System.out.println("KibsMngController > mng_exhibitorNew_application_pass");
@@ -8849,24 +8879,6 @@ public class KibsMngController {
             resultMap.put("resultMsg", "유틸리티 인보이스 생성 중 오류 발생: " + e.getMessage());
         }
         return resultMap;
-    }
-
-    /**
-     * 선택된 인보이스들을 이메일로 발송하는 API
-     */
-    @PostMapping("/mng/exhibitorNew/application/invoice/send.do")
-    @ResponseBody
-    public Map<String, Object> sendInvoices(@RequestBody List<Integer> invoiceSeqList) {
-        // String adminId = (String) session.getAttribute("adminId");
-        String adminId = "admin"; // 임시 관리자 ID
-        try {
-            return kibsMngService.sendInvoices(invoiceSeqList, adminId);
-        } catch (Exception e) {
-            Map<String, Object> errorMap = new HashMap<>();
-            errorMap.put("resultCode", "-1");
-            errorMap.put("resultMsg", "발송 중 오류가 발생했습니다: " + e.getMessage());
-            return errorMap;
-        }
     }
 
     /**

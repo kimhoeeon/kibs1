@@ -3743,17 +3743,6 @@
         WHERE invoice_seq = #{invoiceSeq}
     </update>
 
-    <update id="updateInvoiceBoothSendStatus" parameterType="com.mtf.kibs.dto.InvoiceBoothDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceBoothSendStatus */
-        UPDATE invoice_booth
-        SET send_status = #{sendStatus},
-            send_result = #{sendResult},
-            send_result_msg = #{sendResultMsg},
-            send_dttm = NOW(),
-            final_regi_dttm = NOW()
-        WHERE invoice_seq = #{invoiceSeq}
-    </update>
-
     <select id="selectInvoiceUtilitySingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.InvoiceUtilityDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceUtilitySingle */
         SELECT *
@@ -3814,15 +3803,29 @@
           AND send_status = '미열람' -- 중복 업데이트 방지
     </update>
 
-    <update id="updateInvoiceUtilitySendStatus" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">
-        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceUtilitySendStatus */
-        UPDATE invoice_utility
-        SET send_status = #{sendStatus},
-            send_result = #{sendResult},
-            send_result_msg = #{sendResultMsg},
-            send_dttm = NOW(),
-            final_regi_dttm = NOW()
-        WHERE invoice_seq = #{invoiceSeq}
+    <update id="updateHistoryWithReserveId">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateHistoryWithReserveId */
+        UPDATE invoice_send_history
+        SET ds_reserve_id = #{reserveId}
+        WHERE history_seq = #{historySeq}
+    </update>
+
+    <select id="selectInvoiceHistoryStatusByMailId" parameterType="java.lang.String" resultType="java.lang.String">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceHistoryStatusByMailId */
+        SELECT send_status
+        FROM invoice_send_history
+        WHERE ds_reserve_id = #{mailId}
+        LIMIT 1
+    </select>
+
+    <update id="updateInvoiceHistoryStatusByMailId">
+        /* com.mtf.kibs.mapper.kibsMngMapper.updateInvoiceHistoryStatusByMailId */
+        UPDATE invoice_send_history
+        SET send_status = #{status}
+        <if test="status == '열람'">
+            , open_dttm = NOW()
+        </if>
+        WHERE ds_reserve_id = #{mailId}
     </update>
 
     <update id="updateInvoiceUtilityFilePath" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO">

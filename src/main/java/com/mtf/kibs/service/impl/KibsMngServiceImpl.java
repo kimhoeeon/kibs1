@@ -3846,21 +3846,6 @@ public class KibsMngServiceImpl implements KibsMngService {
     }
 
     @Override
-    public boolean sendInvoiceBooth(InvoiceBoothDTO invoiceDto) {
-        // 여기에 이메일 발송 로직을 구현한 뒤, 결과에 따라 DB 상태를 업데이트합니다.
-        // ...
-        // emailSendService.send( ... );
-        // ...
-        // 발송 성공 시:
-        // invoiceDto.setSendStatus("발송완료");
-        // invoiceDto.setSendResult("성공");
-        // return kibsMngMapper.updateInvoiceBoothSendStatus(invoiceDto) > 0;
-
-        // 임시로 true 반환
-        return true;
-    }
-
-    @Override
     public boolean deleteInvoiceBooth(int invoiceSeq) {
         return kibsMngMapper.deleteInvoiceBooth(invoiceSeq) > 0;
     }
@@ -5852,7 +5837,6 @@ public class KibsMngServiceImpl implements KibsMngService {
             String username = "meetingfan";              //필수입력
             String key = "L7QNsEQIyrAzNHO";           //필수입력
 
-            String note1 = "";
             //인보이스 발송에만 해당되는 프로세스
             boolean isInvoiceMail = (mailRequestDTO.getGbn() != null &&
                     ("BOOTH".equals(mailRequestDTO.getGbn()) || "UTILITY".equals(mailRequestDTO.getGbn())));
@@ -5867,7 +5851,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                 // 2. 이력을 먼저 DB에 INSERT 하고, 생성된 history_seq를 받아옴
                 kibsMngMapper.insertInvoiceSendHistory(historyDto);
                 historySeq = historyDto.getHistorySeq();
-                note1 = URLEncoder.encode("https://kibs.com/mng/exhibitorNew/application/invoice/mail/open/update.do?hseq=" + historySeq, "UTF-8");
+                //note1 = URLEncoder.encode("https://kibs.com/mng/exhibitorNew/application/invoice/mail/open/update.do?hseq=" + historySeq, "UTF-8");
             }
 
             //수신자 정보 추가 - 필수 입력(주소록 미사용시), 치환문자 미사용시 치환문자 데이터를 입력하지 않고 사용할수 있습니다.
@@ -5878,17 +5862,20 @@ public class KibsMngServiceImpl implements KibsMngService {
                 MailRequestDTO.Receiver receiverInfo = mailRequestDTO.getReceiver().get(i);
 //                jsonObject.addProperty("name", receiverInfo.getName());
                 jsonObject.addProperty("email", receiverInfo.getEmail());
+
                 if(receiverInfo.getNote1() != null) {
-                    jsonObject.addProperty("note1", receiverInfo.getNote1());
-                }else{
-                    // note1이 null인 경우 (즉, 일반 발송)이고, 인보이스 발송인 경우에만 추적 URL 삽입
-                    if(isInvoiceMail) {
-                        jsonObject.addProperty("note1", note1);
-                        jsonObject.addProperty("note2", receiverInfo.getNote2());
-                        jsonObject.addProperty("note3", receiverInfo.getNote3());
-                        jsonObject.addProperty("note4", receiverInfo.getNote4());
-                    }
+                    jsonObject.addProperty("note1", receiverInfo.getNote1()); // 예: 인보이스 링크
                 }
+                if(receiverInfo.getNote2() != null) {
+                    jsonObject.addProperty("note2", receiverInfo.getNote2()); // 예: 회사명
+                }
+                if(receiverInfo.getNote3() != null) {
+                    jsonObject.addProperty("note3", receiverInfo.getNote3()); // 예: 인보이스 코드
+                }
+                if(receiverInfo.getNote4() != null) {
+                    jsonObject.addProperty("note4", receiverInfo.getNote4()); // 예: 발행일자
+                }
+
                 jsonArray.add(jsonObject);
             }
             String receiver = "{\"email\":\"" + mailRequestDTO.getReceiver().get(0).getEmail() + "\"}";
@@ -5901,18 +5888,18 @@ public class KibsMngServiceImpl implements KibsMngService {
             //String address_books = "0,1,2";      //발송 할 주소록 번호 , 로 구분함 (ex. 0, 1, 2)
 
             //수신자 정보가 중복이고 내용이 다를 경우 아래 주석을 해제하시고 발송해주시기 바랍니다.
-            //String duplicate_yn = "1";
+            String duplicate_yn = "1";
 
             //실제 발송성공실패 여부를 받기 원하실 경우 아래 주석을 해제하신 후, 사이트에 등록한 URL 번호를 입력해주시기 바랍니다.
-            //int return_url = 0;
+            int return_url = 6;
 
             //open, click 등의 결과를 받기 원하실 경우 아래 주석을 해제하신 후, 사이트에 등록한 URL 번호를 입력해주시기 바랍니다.
             //등록된 도메인이 http://domain 와 같을 경우, http://domain?type=[click | open | reject]&mail_id=[MailID]&email=[Email]&sendtime=[SendTime]&mail_reserve_id=[MailReserveID] 과 같은 형식으로 request를 보내드립니다.
-            //int option_return_url = 0;
+            int option_return_url = 3;
 
-            //int open = 1;	// open 결과를 받으려면 아래 주석을 해제 해주시기 바랍니다.
+            int open = 1;	// open 결과를 받으려면 아래 주석을 해제 해주시기 바랍니다.
             //int click = 1;	// click 결과를 받으려면 아래 주석을 해제 해주시기 바랍니다.
-            //int check_period = 7;	// 트래킹 기간을 지정하며 3 / 7 / 10 / 15 일을 기준으로 지정하여 발송해 주시기 바랍니다. (단, 지정을 하지 않을 경우 결과를 받을 수 없습니다.)
+            int check_period = 7;	// 트래킹 기간을 지정하며 3 / 7 / 10 / 15 일을 기준으로 지정하여 발송해 주시기 바랍니다. (단, 지정을 하지 않을 경우 결과를 받을 수 없습니다.)
 
             // 예약발송 정보 추가
             //String mail_type = "NORMAL"; // NORMAL - 즉시발송 / ONETIME - 1회예약 / WEEKLY - 매주정기예약 / MONTHLY - 매월정기예약
@@ -6004,7 +5991,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                         urlParameters += ", \"template\":\"" + mailRequestDTO.getTemplate() + "\" ";		//템플릿 사용할 경우 주석 해제  //발송 할 템플릿 번호
                     }
                     //+ ", \"address_books\":\"" + address_books + "\" "	//주소록 사용할 경우 주석 해제
-                    //+ ", \"duplicate_yn\":\"" + duplicate_yn + "\" "      //중복 발송을 허용할 경우 주석 해제
+                    urlParameters += ", \"duplicate_yn\":\"" + duplicate_yn + "\" ";      //중복 발송을 허용할 경우 주석 해제
 
                     // 예약 관련 파라미터 주석 해제
                     //+ ", \"mail_type\":\"" + mail_type + "\" "
@@ -6023,21 +6010,21 @@ public class KibsMngServiceImpl implements KibsMngService {
                     // 메일내용, 풋터(수신옵션) 정렬 사용할 경우 주석 해제
                     //+ ", \"footer_sort\":\"" + footer_sort + "\" "
 
-                    // 메일 발송결과를 받고 싶은 URL     return_url이 있는 경우 주석해제 바랍니다.
-                    //+ ", \"return_url_yn\": " + true        //return_url 사용시 필수 입력
-                    //+ ", \"return_url\":\"" + return_url + "\" "		    //return_url 사용시 필수 입력
-
                     // --- ▼▼▼ 수정 4: API 추적 기능 파라미터 추가 ▼▼▼ ---
-                    /*if(isInvoiceMail) { // 인보이스 메일일 때만 추적 옵션 추가
+                    if(isInvoiceMail) { // 인보이스 메일일 때만 추적 옵션 추가
+                        // 메일 발송결과를 받고 싶은 URL     return_url이 있는 경우 주석해제 바랍니다.
+                        if (return_url > 0) {
+                            urlParameters += ", \"return_url_yn\": " + true;        //return_url 사용시 필수 입력
+                            urlParameters += ", \"return_url\":\"" + return_url + "\" ";            //return_url 사용시 필수 입력
+                        }
+
                         urlParameters += ", \"open\":\"" + open + "\" ";
-                        //+ ", \"click\":\"" + click + "\" "
                         urlParameters += ", \"check_period\":\"" + check_period + "\" ";
 
                         if (option_return_url > 0) { // Webhook URL ID가 설정된 경우에만 추가
                             urlParameters += ", \"option_return_url\":\"" + option_return_url + "\" ";
                         }
-                    }*/
-                    // --- ▲▲▲ ---
+                    }
 
                     // 첨부 파일이 있는 경우 주석 해제
                     if(file_url != null && !file_url.isEmpty()) {
@@ -6086,6 +6073,16 @@ public class KibsMngServiceImpl implements KibsMngService {
                     responseDto.setResultCode(CommConstants.RESULT_CODE_SUCCESS);
                     responseDto.setResultMessage(CommConstants.RESULT_MSG_SUCCESS);
                     responseDto.setCustomValue(String.valueOf(historySeq));
+
+                    // --- 발송 ID(reserve_id) 저장 ---
+                    if (isInvoiceMail && responseObj.get("mail_id") != null) {
+                        // (mail_reserve_id -> mail_id 로 변경)
+                        String mailId = String.valueOf(responseObj.get("mail_id"));
+
+                        // (ds_reserve_id 컬럼에 mail_id를 저장)
+                        kibsMngMapper.updateHistoryWithReserveId(historySeq, mailId);
+                    }
+
                 }else{
                     responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
                     responseDto.setResultMessage("[" + mailResponseCode + "]" + responseObj.get("msg"));
@@ -6094,7 +6091,6 @@ public class KibsMngServiceImpl implements KibsMngService {
                 responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
                 responseDto.setResultMessage(CommConstants.RESULT_MSG_FAIL);
             }
-
 
             /*
              * response의 실패
@@ -6146,6 +6142,19 @@ public class KibsMngServiceImpl implements KibsMngService {
         return responseDto;
     }
 
+    // Webhook이 ds_reserve_id로 이력 상태를 업데이트
+    @Override
+    @Transactional
+    public void updateInvoiceHistoryStatusByMailId(String reserveId, String status) {
+        // [신규] ds_reserve_id로 현재 상태 조회
+        String currentStatus = kibsMngMapper.selectInvoiceHistoryStatusByMailId(reserveId);
+
+        // '미열람' 상태일 때만 '열람'으로 업데이트
+        if ("미열람".equals(currentStatus) || "발송중".equals(currentStatus) || "발송성공".equals(currentStatus)) {
+            kibsMngMapper.updateInvoiceHistoryStatusByMailId(reserveId, status);
+        }
+    }
+
     public ResponseDTO memberExcelUp(MultipartFile excelFile) {
         ResponseDTO rrVO = new ResponseDTO();
         try {
@@ -6176,79 +6185,6 @@ public class KibsMngServiceImpl implements KibsMngService {
             System.out.println(e.getMessage());
         }
         return rrVO;
-    }
-
-    @Override
-    public Map<String, Object> sendInvoices(List<Integer> invoiceSeqList, String adminId) throws Exception {
-        Map<String, Object> resultMap = new HashMap<>();
-        int successCount = 0;
-
-        if (invoiceSeqList == null || invoiceSeqList.isEmpty()) {
-            throw new Exception("발송할 인보이스가 선택되지 않았습니다.");
-        }
-
-        // 대표 이메일, 업체명 등은 첫번째 인보이스 기준으로 한 번만 조회 (효율성)
-        InvoiceBoothDTO firstInvoice = kibsMngMapper.selectInvoiceBoothBySeq(invoiceSeqList.get(0));
-        ExhibitorNewDTO exhibitorInfo = kibsMngMapper.selectExhibitorNewInvoiceDetail(firstInvoice.getExhibitorSeq());
-        String companyNameKo = exhibitorInfo.getCompanyNameKo();
-        String email = exhibitorInfo.getEmail();
-
-        // 선택된 인보이스들을 순회하며 발송 처리
-        for (int invoiceSeq : invoiceSeqList) {
-            InvoiceBoothDTO currentInvoice = kibsMngMapper.selectInvoiceBoothBySeq(invoiceSeq);
-            if (currentInvoice == null || currentInvoice.getFilePath() == null) {
-                continue; // 인보이스 정보나 파일 경로가 없으면 건너뜀
-            }
-
-            // 메일 발송을 위한 JSON 객체 생성 (기존 로직 활용)
-            String filePath = currentInvoice.getFilePath();
-            String folderPath = filePath.substring(0, filePath.lastIndexOf('/') + 1);
-            String fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
-
-            Map<String, Object> mailJson = new HashMap<>();
-            mailJson.put("subject", "[KIBS 2026] " + companyNameKo + " 참가비용 인보이스 발송");
-            mailJson.put("template", "161"); // 템플릿 번호
-
-            List<Map<String, String>> receivers = new ArrayList<>();
-            Map<String, String> receiverInfo = new HashMap<>();
-            receiverInfo.put("email", email);
-            receiverInfo.put("note1", "https://kibs.com/mng/exhibitorNew/application/invoice/mail/open/update.do?gbn=IB&seq=" + invoiceSeq);
-            receivers.add(receiverInfo);
-            mailJson.put("receiver", receivers);
-
-            mailJson.put("folderPath", folderPath);
-
-            List<Map<String, String>> fileUrls = new ArrayList<>();
-            Map<String, String> fileInfo = new HashMap<>();
-            fileInfo.put("name", fileName);
-            fileUrls.add(fileInfo);
-            mailJson.put("fileUrl", fileUrls);
-
-            // [가정] 메일 발송 서비스 호출 (기존 ajaxConnect('/mail/send.do', ...) 부분에 해당)
-            // MailSendResultDTO mailResult = mailSendService.send(mailJson);
-            MailSendResultDTO mailResult = new MailSendResultDTO("0", "발송성공"); // 임시 결과
-
-            // 발송 결과 업데이트
-            InvoiceBoothDTO sendResultDto = new InvoiceBoothDTO();
-            sendResultDto.setInvoiceSeq(invoiceSeq);
-            if ("0".equals(mailResult.getResultCode())) {
-                sendResultDto.setSendStatus("미열람");
-                sendResultDto.setSendResult("발송성공");
-                successCount++;
-            } else {
-                sendResultDto.setSendStatus("미발송");
-                sendResultDto.setSendResult("발송실패");
-            }
-            sendResultDto.setSendResultMsg(mailResult.getResultMessage());
-
-            // DB에 발송 결과 업데이트
-            kibsMngMapper.updateInvoiceBoothSendStatus(sendResultDto);
-        }
-
-        resultMap.put("resultCode", "0");
-        resultMap.put("resultMsg", String.format("총 %d개 중 %d개의 인보이스 발송 요청이 완료되었습니다.", invoiceSeqList.size(), successCount));
-
-        return resultMap;
     }
 
 }
