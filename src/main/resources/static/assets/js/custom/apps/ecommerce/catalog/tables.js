@@ -904,7 +904,7 @@ let KTAppExhibitorNewApplicationBooth = function () {
             }
         }
 
-        // 2. [신규] 특별 할인
+        // 2. 특별 할인
         if (row.discountSpecial1Yn) {
             renderHTML += '특할1(제품상)<br>';
         }

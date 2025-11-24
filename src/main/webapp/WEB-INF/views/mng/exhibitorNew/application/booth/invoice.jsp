@@ -75,7 +75,7 @@
             <div class="box">
                 <div class="event">
                     <div class="logo"><img src="/img/invoce_logo_kibs.png"></div>
-                    <div class="date">2026.3.6(FRI) ~ 2025.3.8.(SUN), KINTEX</div>
+                    <div class="date">2026.3.6(FRI) ~ 2026.3.8.(SUN), KINTEX</div>
                 </div>
                 <div class="doc">견적서</div>
             </div>

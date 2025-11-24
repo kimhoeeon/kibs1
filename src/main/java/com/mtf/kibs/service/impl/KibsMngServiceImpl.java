@@ -6074,9 +6074,8 @@ public class KibsMngServiceImpl implements KibsMngService {
                     responseDto.setResultMessage(CommConstants.RESULT_MSG_SUCCESS);
                     responseDto.setCustomValue(String.valueOf(historySeq));
 
-                    // --- 발송 ID(reserve_id) 저장 ---
+                    // --- 발송 ID(mail_id) 저장 ---
                     if (isInvoiceMail && responseObj.get("mail_id") != null) {
-                        // (mail_reserve_id -> mail_id 로 변경)
                         String mailId = String.valueOf(responseObj.get("mail_id"));
 
                         // (ds_reserve_id 컬럼에 mail_id를 저장)
@@ -6085,7 +6084,11 @@ public class KibsMngServiceImpl implements KibsMngService {
 
                 }else{
                     responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
-                    responseDto.setResultMessage("[" + mailResponseCode + "]" + responseObj.get("msg"));
+                    if(responseObj.get("msg_detail") != null){
+                        responseDto.setResultMessage("[" + mailResponseCode + "]" + responseObj.get("msg") + " - " + responseObj.get("msg_detail"));
+                    }else{
+                        responseDto.setResultMessage("[" + mailResponseCode + "]" + responseObj.get("msg"));
+                    }
                 }
             }else{
                 responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
@@ -6146,7 +6149,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     @Transactional
     public void updateInvoiceHistoryStatusByMailId(String reserveId, String status) {
-        // [신규] ds_reserve_id로 현재 상태 조회
+        // ds_reserve_id로 현재 상태 조회
         String currentStatus = kibsMngMapper.selectInvoiceHistoryStatusByMailId(reserveId);
 
         // '미열람' 상태일 때만 '열람'으로 업데이트

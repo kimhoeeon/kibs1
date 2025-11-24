@@ -7899,7 +7899,7 @@ public class KibsMngController {
             // 데이터 조회
             List<BoothDetailDTO> boothList = kibsMngService.processSelectExcelBoothDetailList(transferYear);
             int rowNum = 2; // 데이터는 3행부터 시작
-            DecimalFormat df = new DecimalFormat("#,##0"); // [신규] 쉼표 포맷
+            DecimalFormat df = new DecimalFormat("#,##0"); // 쉼표 포맷
 
             if (boothList != null && !boothList.isEmpty()) {
                 for (int i = 0; i < boothList.size(); i++) {
@@ -7976,7 +7976,7 @@ public class KibsMngController {
                     row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountScale6()) ? "O" : "");
                     row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountLeisure()) ? "O" : "");
 
-                    // 20. [신규] 특별할인
+                    // 20. 특별할인
                     boolean isSpecial = Boolean.TRUE.equals(booth.getDiscountSpecial1Yn()) || Boolean.TRUE.equals(booth.getDiscountSpecial2Yn()) || Boolean.TRUE.equals(booth.getDiscountSpecial3Yn());
                     row.createCell(cellCnt++).setCellValue(isSpecial ? "O" : "");
 
@@ -7986,13 +7986,13 @@ public class KibsMngController {
                     // 20. 발전기금
                     row.createCell(cellCnt++).setCellValue(String.format("%,d", developmentFund));
 
-                    // 23. [신규] 참가비 합계
+                    // 23. 참가비 합계
                     row.createCell(cellCnt++).setCellValue(df.format(participationFeeTotal) + " 원");
 
                     // 21. 총액(VAT미포함) [수정]
                     row.createCell(cellCnt++).setCellValue(String.format("%,d", recalculatedPrcSum));
 
-                    // 25. [신규] 부가세
+                    // 25. 부가세
                     row.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcVat) + " 원");
 
                     // 22. 최종합계(VAT포함) [수정]
@@ -8010,7 +8010,7 @@ public class KibsMngController {
                         if (j == 1 || j == 2) {
                             cell.setCellStyle(bodyLeftStyle);
                         }
-                        // [수정] 금액 컬럼 인덱스 변경
+                        // 금액 컬럼 인덱스 변경
                         // 4(참가비), 7(부스가격), 21(할인가격), 22(발전기금), 23(참가비 합계), 24(총액), 25(부가세), 26(최종합계)
                         else if (j == 4 || j == 7 || (j >= 21 && j <= 26)) {
                             cell.setCellStyle(bodyRightStyle);
@@ -8028,7 +8028,7 @@ public class KibsMngController {
             sheet.setColumnWidth(1, 8000);  // 회사명(국문)
             sheet.setColumnWidth(2, 8000);  // 회사명(영문)
             sheet.setColumnWidth(3, 2000);  // 인보이스
-            sheet.setColumnWidth(4, 5000);  // [신규] 참가비
+            sheet.setColumnWidth(4, 5000);  // 참가비
             sheet.setColumnWidth(5, 6000);  // 부스구분
             sheet.setColumnWidth(6, 2000);  // 부스수량
             sheet.setColumnWidth(7, 5000);  // 부스가격
@@ -8044,12 +8044,12 @@ public class KibsMngController {
             sheet.setColumnWidth(17, 3000); // 규모(50+)
             sheet.setColumnWidth(18, 3000); // 규모(100+)
             sheet.setColumnWidth(19, 3000); // 협회할인
-            sheet.setColumnWidth(20, 3000); // [신규] 특별할인
+            sheet.setColumnWidth(20, 3000); // 특별할인
             sheet.setColumnWidth(21, 5000); // 할인가격
             sheet.setColumnWidth(22, 5000); // 발전기금
-            sheet.setColumnWidth(23, 5000); // [신규] 참가비 합계
+            sheet.setColumnWidth(23, 5000); // 참가비 합계
             sheet.setColumnWidth(24, 5000); // 총액(VAT미포함)
-            sheet.setColumnWidth(25, 5000); // [신규] 부가세
+            sheet.setColumnWidth(25, 5000); // 부가세
             sheet.setColumnWidth(26, 5000); // 최종합계(VAT포함)
             sheet.setColumnWidth(27, 5000); // 등록일시
             sheet.setColumnWidth(28, 5000); // 수정일시

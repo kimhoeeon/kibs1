@@ -644,9 +644,9 @@ public interface KibsMngMapper {
     // (processMailSend가 사용)
     int updateHistoryWithReserveId(@Param("historySeq") int historySeq, @Param("reserveId") String reserveId);
 
-    // [신규] mail_id로 상태 조회 (Webhook용)
+    // mail_id로 상태 조회 (Webhook용)
     String selectInvoiceHistoryStatusByMailId(String mailId);
 
-    // [신규] mail_id로 상태 업데이트 (Webhook용)
+    // mail_id로 상태 업데이트 (Webhook용)
     int updateInvoiceHistoryStatusByMailId(@Param("mailId") String mailId, @Param("status") String status);
 }

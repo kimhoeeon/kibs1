@@ -511,7 +511,7 @@
                 const $check2 = $('#discountEarly2');
                 const $label2 = $check2.closest('label.discount-item');
 
-                // --- 3. [수정] DB에서 로드된 초기 상태 (1차, 2차 모두 확인) ---
+                // --- 3. DB에서 로드된 초기 상태 (1차, 2차 모두 확인) ---
                 const isEarly1_DB = $check1.is(':checked');
                 const isEarly2_DB = $check2.is(':checked'); // 2차 신청자 확인용
 
@@ -566,7 +566,7 @@
                     $check2.prop('disabled', true);
                     $label2.addClass('disabled');
 
-                    // [수정] 1차 신청자도 아니고, 2차 신청자도 아니었던 경우에만 2차 체크 해제
+                    // 1차 신청자도 아니고, 2차 신청자도 아니었던 경우에만 2차 체크 해제
                     if (!isEarly1_DB && !isEarly2_DB) {
                         $check2.prop('checked', false);
                     }
