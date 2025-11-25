@@ -1263,6 +1263,12 @@
     <script>
         (function($) {
             $(document).ready(function () {
+
+                let companyHomepage = '${info.companyHomepage}';
+                if(nvl(companyHomepage,'') === ''){
+                    $('input[name=noPage]').prop('checked',true).trigger('change');
+                }
+
                 const $module = $('#eventParticipationModule');
                 const $field1 = $module.find('#field1');
                 const $field2 = $module.find('#field2');

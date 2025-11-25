@@ -1981,6 +1981,24 @@
             <script>
                 (function($) {
                     $(document).ready(function () {
+
+                        // [수정] 페이지 이탈 방지 이벤트 리스너
+                        window.addEventListener('beforeunload', function (e) {
+
+                            // 1. 저장이 진행 중이지 않고 (!isSubmitProceeding)
+                            // 2. 현재 URL에 '/mng/' (관리자 경로)가 포함되지 않고
+                            // 3. [신규] iframe 내부가 아닌 경우에만 (최상위 창일 때만) 경고창 표시
+                            if (!isSubmitProceeding && !window.location.href.includes('/mng/') && window.self === window.top) {
+                                e.preventDefault();
+                                e.returnValue = '';
+                            }
+                        });
+
+                        let companyHomepage = '${info.companyHomepage}';
+                        if(nvl(companyHomepage,'') === ''){
+                            $('input[name=noPage]').prop('checked',true).trigger('change');
+                        }
+
                         const $module = $('#eventParticipationModule');
                         const $field1 = $module.find('#field1');
                         const $field2 = $module.find('#field2');

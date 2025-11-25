@@ -1,5 +1,7 @@
 var transferYear = '2026';
-
+// [신규] main.js 최상단에 전역 변수 선언
+let deletedFileIds = [];
+let isSubmitProceeding = false;
 $(function() {
 
     if (!window.location.href.includes('localhost')) {
@@ -1342,7 +1344,7 @@ function checkUrl(strUrl) {
     return expUrl.test(strUrl);
 }
 
-function step_01_check(exhibitorSeq){
+async function step_01_check(exhibitorSeq){
 
     // 전시회 참가규정
     let agree1 = $('input[type=radio][name=agree1]:checked').val();
@@ -2044,53 +2046,51 @@ function step_01_check(exhibitorSeq){
             }
 
             /* 파일 업로드 */
-            f_company_uploadFile_call(exhibitorSeq, exhibitorSeq);
-
-            let timerInterval;
+            // [수정] 로딩바 표시 (업로드 시작 전)
             Swal.fire({
-                title: "정보 저장 중",
-                html: "입력하신 정보를 저장 중입니다.<br><b></b> milliseconds.<br>현재 화면을 유지해 주세요.<br>첨부된 파일의 용량/크기/갯수에 따라 시간이 조금 더 소요될 수 있습니다.",
+                title: "정보 및 파일 저장 중",
+                html: "파일을 업로드하고 있습니다.<br>잠시만 기다려 주세요.",
                 allowOutsideClick: false,
-                timer: 5000,
-                timerProgressBar: true,
                 didOpen: () => {
                     Swal.showLoading();
-                    const timer = Swal.getPopup().querySelector("b");
-                    timerInterval = setInterval(() => {
-                        timer.textContent = `${Swal.getTimerLeft()}`;
-                    }, 1000);
-                },
-                willClose: () => {
-                    clearInterval(timerInterval);
-                }
-            }).then((result) => {
-                /* Read more about handling dismissals below */
-                if (result.dismiss === Swal.DismissReason.timer) {
-                    Swal.fire({
-                        icon: 'info',
-                        title: '[ 참가업체 정보 ]',
-                        html: '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
-                        allowOutsideClick: false,
-                        confirmButtonColor: '#00a8ff',
-                        confirmButtonText: '확인'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-
-                            /* 온라인 제품 사진 번호 재부여 */
-                            let onlineFile_json_obj = {
-                                seq: exhibitorSeq,
-                                onlineList: onlineList_json_arr
-                            }
-                            let online_res = ajaxConnect('/mypage/step/updateOnlineNewFileNote.do', 'post', onlineFile_json_obj);
-
-                            if(online_res.resultCode === "0"){
-                                f_page_move('/apply/step2_1.do', exhibitorSeq);
-                            }
-                        }
-                    })
                 }
             });
 
+            try {
+                // 3-1. [신규] 사용자가 X 눌렀던 파일들 실제 삭제 (await)
+                await processDeletedFiles();
+
+                // [핵심 수정] 파일 업로드가 끝날 때까지 기다림 (await)
+                await f_company_uploadFile_call(exhibitorSeq, exhibitorSeq);
+
+                // [수정] 업로드 완료 후 성공 메시지 표시
+                Swal.fire({
+                    icon: 'info',
+                    title: '[ 참가업체 정보 ]',
+                    html: '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                    allowOutsideClick: false,
+                    confirmButtonColor: '#00a8ff',
+                    confirmButtonText: '확인'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        /* 온라인 제품 사진 번호 재부여 */
+                        let onlineFile_json_obj = {
+                            seq: exhibitorSeq,
+                            onlineList: onlineList_json_arr
+                        }
+                        let online_res = ajaxConnect('/mypage/step/updateOnlineNewFileNote.do', 'post', onlineFile_json_obj);
+
+                        if(online_res.resultCode === "0"){
+                            isSubmitProceeding = true;
+
+                            f_page_move('/apply/step2_1.do', exhibitorSeq);
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("File processing error:", err);
+                Swal.fire("오류", "파일 처리 중 오류가 발생했습니다.", "error");
+            }
         }else{
             window.location.href = '/apply/step2_1.do';
         }
@@ -4444,7 +4444,7 @@ function f_personal_info_save(exhibitorSeq){
 
 }
 
-function my_step_01_check(exhibitorSeq){
+async function my_step_01_check(exhibitorSeq){
 
     /******************** 참가업체 정보 ********************/
     //ID
@@ -5108,62 +5108,62 @@ function my_step_01_check(exhibitorSeq){
             }
 
             /* 파일 업로드 */
-            f_company_uploadFile_call(exhibitorSeq, exhibitorSeq);
-
-            let timerInterval;
+            // [수정] 로딩바 표시 (업로드 시작 전)
             Swal.fire({
-                title: "정보 저장 중",
-                html: "입력하신 정보를 저장 중입니다.<br><b></b> milliseconds.<br>현재 화면을 유지해 주세요.",
+                title: "정보 및 파일 저장 중",
+                html: "파일을 업로드하고 있습니다.<br>잠시만 기다려 주세요.",
                 allowOutsideClick: false,
-                timer: 5000,
-                timerProgressBar: true,
                 didOpen: () => {
                     Swal.showLoading();
-                    const timer = Swal.getPopup().querySelector("b");
-                    timerInterval = setInterval(() => {
-                        timer.textContent = `${Swal.getTimerLeft()}`;
-                    }, 100);
-                },
-                willClose: () => {
-                    clearInterval(timerInterval);
-                }
-            }).then((result) => {
-                /* Read more about handling dismissals below */
-                if (result.dismiss === Swal.DismissReason.timer) {
-
-                    let swal_html = '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.';
-                    if(!link.includes('/mng/')){
-                        swal_html = '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>';
-                    }
-
-                    Swal.fire({
-                        icon: 'info',
-                        title: '[ 참가업체 정보 ]',
-                        html: swal_html,
-                        allowOutsideClick: false,
-                        confirmButtonColor: '#00a8ff',
-                        confirmButtonText: '확인'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-
-                            /* 온라인 제품 사진 번호 재부여 */
-                            let onlineFile_json_obj = {
-                                seq: exhibitorSeq,
-                                onlineList: onlineList_json_arr
-                            }
-                            let online_res = ajaxConnect('/mypage/step/updateOnlineNewFileNote.do', 'post', onlineFile_json_obj);
-
-                            if(online_res.resultCode === "0"){
-                                if(!link.includes('/mng/')) {
-                                    f_page_move('/mypage/step2_1.do', exhibitorSeq);
-                                }else{
-                                    window.location.reload();
-                                }
-                            }
-                        }
-                    });
                 }
             });
+
+            try{
+                // 3-1. [신규] 사용자가 X 눌렀던 파일들 실제 삭제 (await)
+                await processDeletedFiles();
+
+                // [핵심 수정] 파일 업로드가 끝날 때까지 기다림 (await)
+                await f_company_uploadFile_call(exhibitorSeq, exhibitorSeq);
+
+                let swal_html = '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.';
+                if(!link.includes('/mng/')){
+                    swal_html = '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>';
+                }
+
+                Swal.fire({
+                    icon: 'info',
+                    title: '[ 참가업체 정보 ]',
+                    html: swal_html,
+                    allowOutsideClick: false,
+                    confirmButtonColor: '#00a8ff',
+                    confirmButtonText: '확인'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        /* 온라인 제품 사진 번호 재부여 */
+                        let onlineFile_json_obj = {
+                            seq: exhibitorSeq,
+                            onlineList: onlineList_json_arr
+                        }
+                        let online_res = ajaxConnect('/mypage/step/updateOnlineNewFileNote.do', 'post', onlineFile_json_obj);
+
+                        if(online_res.resultCode === "0"){
+
+                            isSubmitProceeding = true;
+
+                            if(!link.includes('/mng/')) {
+                                f_page_move('/mypage/step2_1.do', exhibitorSeq);
+                            }else{
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("File processing error:", err);
+                Swal.fire("오류", "파일 처리 중 오류가 발생했습니다.", "error");
+            }
+
         }else{
             /*returnPath = "/apply/step2_1.do";
             return returnPath;*/
@@ -7088,7 +7088,9 @@ function getByte(str){
     return resultSize;
 }
 
-function f_company_uploadFile_call(id, path) {
+async function f_company_uploadFile_call(id, path) {
+
+    const uploadPromises = []; // [추가] 프로미스 배열
 
     /* 사업자 등록증 */
     let companyLicenseFile = $('#companyLicense').val();
@@ -7103,9 +7105,9 @@ function f_company_uploadFile_call(id, path) {
         let fileDot = fileName.lastIndexOf('.');
         let fileType = fileName.substring(fileDot+1, fileName.length).toLocaleLowerCase();
         if(fileType === 'pdf'){
-            f_company_file_upload_pdf(id, 'exhibitor_apply_form', 'companyLicenseFile', 'exhibitor/company/' + path);
+            uploadPromises.push(f_company_file_upload_pdf(id, 'exhibitor_apply_form', 'companyLicenseFile', 'exhibitor/company/' + path));
         }else{
-            f_company_uploadFile(id, 'exhibitor_apply_form', 'companyLicenseFile', 'exhibitor/company/' + path);
+            uploadPromises.push(f_company_uploadFile(id, 'exhibitor_apply_form', 'companyLicenseFile', 'exhibitor/company/' + path));
         }
     }
 
@@ -7118,7 +7120,7 @@ function f_company_uploadFile_call(id, path) {
             f_file_n_update({ id: fileId });
         }
 
-        f_company_uploadFile(id, 'exhibitor_apply_form', 'logoFile', 'exhibitor/company/' + path);
+        uploadPromises.push(f_company_uploadFile(id, 'exhibitor_apply_form', 'logoFile', 'exhibitor/company/' + path));
     }
 
     /* 전시품 신청 - 제품사진 */
@@ -7160,8 +7162,17 @@ function f_company_uploadFile_call(id, path) {
                 }
             }
 
-            f_company_uploadFile(id, 'exhibitor_apply_form', 'onlineImageFile' + onlineImageNum, 'exhibitor/company/' + path);
+            uploadPromises.push(f_company_uploadFile(id, 'exhibitor_apply_form', 'onlineImageFile' + onlineImageNum, 'exhibitor/company/' + path));
         }
+    }
+
+    // [추가] 모든 업로드가 끝날 때까지 기다림
+    try {
+        await Promise.all(uploadPromises);
+        console.log("All files uploaded successfully");
+    } catch (err) {
+        console.error("File upload error:", err);
+        throw err; // [중요] 에러를 상위 함수(step_01_check)로 던져서 중단시켜야 함
     }
 }
 
@@ -7208,58 +7219,40 @@ function f_web_file_upload_call(id, path) {
 
 function f_company_uploadFile(userId, formId, elementId, path) {
     /* 파일 업로드 */
-    let file = document.querySelector('#' + elementId);
-    const formData = new FormData();
+    return new Promise((resolve, reject) => { // [추가] Promise로 감싸기
+        let file = document.querySelector('#' + elementId);
+        const formData = new FormData();
 
-    const reFile = file.files[0];
+        if (!file || !file.files || file.files.length === 0) {
+            resolve(); // 파일이 없으면 바로 성공 처리
+            return;
+        }
 
-    if (!reFile) {
-        return;
-    }
+        const reFile = file.files[0];
 
-    new Compressor(reFile, {
-        strict: true, //압축된 이미지의 크기가 원래 이미지보다 클 때 압축된 이미지 대신 원본 이미지를 출력
-        quality: 0.4, //출력 이미지의 품질. 0~1
-        convertSize: 4000000, //PNG 파일 사이즈가 4MB 이상일 경우 JPEG로 변경
-        maxWidth: 1000,
-        maxHeight: 700,
-        success(result) {
-            // The third parameter is required for server
-            formData.append('uploadFile', result, result.name);
+        new Compressor(reFile, {
+            strict: true,
+            quality: 0.4,
+            convertSize: 4000000,
+            maxWidth: 1000,
+            maxHeight: 700,
+            success(result) {
+                formData.append('uploadFile', result, result.name);
 
-            // Send the compressed image file to server with XMLHttpRequest.
-            return new Promise((resolve) => {
                 fetch('/file/upload.do?gbn=' + path, {
                     method: 'post',
                     body: formData
                 })
-                    .then(function (response) {
-                        return response.json();
-                    })
+                    .then(response => response.json())
                     .then(res => {
-                        if (typeof res.uploadPath !== undefined) {
-
+                        if (res.uploadPath) { // res.uploadPath 체크 방식 수정
                             let uploadFileResponse = res.uploadPath + '\\' + res.fileName;
                             if (nvl(uploadFileResponse, "") !== '') {
                                 let fullFilePath = uploadFileResponse.replaceAll('\\', '/');
-                                // ./tomcat/webapps/upload/center/board/notice/b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
-
                                 let fullPath = fullFilePath.substring(0, fullFilePath.lastIndexOf('/') + 1);
-                                // ./tomcat/webapps/upload/center/board/notice/
-
                                 let pureFileNameSplit = fullFilePath.split('/');
                                 let fullFileName = pureFileNameSplit[pureFileNameSplit.length - 1];
-                                // b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
-
-                                /*let uuid = fullFileName.substring(0, fullFileName.indexOf('_'));
-                                // b3eb661d-34de-4fd0-bc74-17db9fffc1bd
-
-                                let fileName = fullFileName.substring(fullFileName.indexOf('_') + 1);
-                                // KIBS_TV_목록_excel_20230817151752.xlsx*/
-
                                 let folderPath = pureFileNameSplit[pureFileNameSplit.length - 2];
-                                // notice
-
                                 let note = elementId.replace('File', '');
 
                                 let jsonObj = {
@@ -7268,23 +7261,36 @@ function f_company_uploadFile(userId, formId, elementId, path) {
                                     fullPath: fullPath,
                                     folderPath: folderPath,
                                     fullFileName: fullFileName,
-                                    /*uuid: uuid,*/
                                     fileName: fullFileName,
                                     fileYn: 'Y',
                                     note: note
                                 };
+
+                                // DB 저장 (비동기 처리를 위해 ajaxConnect 대신 fetch 또는 ajax 사용 권장하나, 기존 로직 유지)
+                                // ajaxConnect는 async: false이므로 여기서 멈춥니다.
                                 let resData = ajaxConnect('/file/upload/save.do', 'post', jsonObj);
                                 if (resData.resultCode === "0") {
-                                    resolve(res.uploadPath + '\\' + res.fileName);
+                                    resolve(res.uploadPath + '\\' + res.fileName); // [추가] 성공 시 resolve
+                                } else {
+                                    reject(new Error('File DB Save Error')); // [추가] 실패 시 reject
                                 }
+                            } else {
+                                resolve(); // 경로가 비어있으면 통과
                             }
+                        } else {
+                            reject(new Error('Upload Path Missing'));
                         }
                     })
-            });
-        },
-        error(err) {
-            console.log(err.message);
-        },
+                    .catch(err => {
+                        console.log(err);
+                        reject(err); // [추가] fetch 에러 시 reject
+                    });
+            },
+            error(err) {
+                console.log(err.message);
+                reject(err); // [추가] 압축 에러 시 reject
+            },
+        });
     });
 }
 
@@ -7385,14 +7391,46 @@ function f_file_remove(el, fileId){
         }
     }
 
-    let jsonObj = {
+    // 2. [신규] 삭제할 파일 ID를 배열에 저장 (서버 삭제는 나중에)
+    if (fileId && fileId !== 'undefined' && fileId !== '') {
+        deletedFileIds.push(fileId);
+    }
+
+    $(el).parent().remove();
+
+    /*let jsonObj = {
         id: fileId
     }
 
     let resData = ajaxConnect('/file/upload/update.do', 'post', jsonObj);
     if(resData.resultCode === "0"){
         $(el).parent().remove();
-    }
+    }*/
+}
+
+// [신규] 저장 시점에 일괄 삭제를 처리할 함수
+async function processDeletedFiles() {
+    if (deletedFileIds.length === 0) return;
+
+    // 병렬로 삭제 요청 처리
+    const deletePromises = deletedFileIds.map(fileId => {
+        return new Promise((resolve) => {
+            $.ajax({
+                url: '/file/upload/update.do', // 삭제(사용안함) 처리 API
+                method: 'post',
+                data: JSON.stringify({ id: fileId }),
+                contentType: 'application/json; charset=utf-8',
+                success: function() { resolve(); },
+                error: function(xhr) {
+                    console.error("File delete failed:", fileId, xhr);
+                    resolve(); // 에러가 나더라도 프로세스는 계속 진행
+                }
+            });
+        });
+    });
+
+    await Promise.all(deletePromises);
+    deletedFileIds = []; // 목록 초기화
 }
 
 function f_file_n_update(json){

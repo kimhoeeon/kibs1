@@ -1227,58 +1227,40 @@ async function f_company_file_upload(userId, formId, elementId, path) {
 
 function f_company_uploadFile(userId, formId, elementId, path) {
     /* 파일 업로드 */
-    let file = document.querySelector('#' + elementId);
-    const formData = new FormData();
+    return new Promise((resolve, reject) => { // [추가] Promise로 감싸기
+        let file = document.querySelector('#' + elementId);
+        const formData = new FormData();
 
-    const reFile = file.files[0];
+        if (!file || !file.files || file.files.length === 0) {
+            resolve(); // 파일이 없으면 바로 성공 처리
+            return;
+        }
 
-    if (!reFile) {
-        return;
-    }
+        const reFile = file.files[0];
 
-    new Compressor(reFile, {
-        strict: true, //압축된 이미지의 크기가 원래 이미지보다 클 때 압축된 이미지 대신 원본 이미지를 출력
-        quality: 0.4, //출력 이미지의 품질. 0~1
-        convertSize: 4000000, //PNG 파일 사이즈가 4MB 이상일 경우 JPEG로 변경
-        maxWidth: 1000,
-        maxHeight: 700,
-        success(result) {
-            // The third parameter is required for server
-            formData.append('uploadFile', result, result.name);
+        new Compressor(reFile, {
+            strict: true,
+            quality: 0.4,
+            convertSize: 4000000,
+            maxWidth: 1000,
+            maxHeight: 700,
+            success(result) {
+                formData.append('uploadFile', result, result.name);
 
-            // Send the compressed image file to server with XMLHttpRequest.
-            return new Promise((resolve) => {
                 fetch('/file/upload.do?gbn=' + path, {
                     method: 'post',
                     body: formData
                 })
-                    .then(function (response) {
-                        return response.json();
-                    })
+                    .then(response => response.json())
                     .then(res => {
-                        if (typeof res.uploadPath !== undefined) {
-
+                        if (res.uploadPath) { // res.uploadPath 체크 방식 수정
                             let uploadFileResponse = res.uploadPath + '\\' + res.fileName;
                             if (nvl(uploadFileResponse, "") !== '') {
                                 let fullFilePath = uploadFileResponse.replaceAll('\\', '/');
-                                // ./tomcat/webapps/upload/center/board/notice/b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
-
                                 let fullPath = fullFilePath.substring(0, fullFilePath.lastIndexOf('/') + 1);
-                                // ./tomcat/webapps/upload/center/board/notice/
-
                                 let pureFileNameSplit = fullFilePath.split('/');
                                 let fullFileName = pureFileNameSplit[pureFileNameSplit.length - 1];
-                                // b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
-
-                                /*let uuid = fullFileName.substring(0, fullFileName.indexOf('_'));
-                                // b3eb661d-34de-4fd0-bc74-17db9fffc1bd
-
-                                let fileName = fullFileName.substring(fullFileName.indexOf('_') + 1);
-                                // KIBS_TV_목록_excel_20230817151752.xlsx*/
-
                                 let folderPath = pureFileNameSplit[pureFileNameSplit.length - 2];
-                                // notice
-
                                 let note = elementId.replace('File', '');
 
                                 let jsonObj = {
@@ -1287,23 +1269,36 @@ function f_company_uploadFile(userId, formId, elementId, path) {
                                     fullPath: fullPath,
                                     folderPath: folderPath,
                                     fullFileName: fullFileName,
-                                    /*uuid: uuid,*/
                                     fileName: fullFileName,
                                     fileYn: 'Y',
                                     note: note
                                 };
+
+                                // DB 저장 (비동기 처리를 위해 ajaxConnect 대신 fetch 또는 ajax 사용 권장하나, 기존 로직 유지)
+                                // ajaxConnect는 async: false이므로 여기서 멈춥니다.
                                 let resData = ajaxConnect('/file/upload/save.do', 'post', jsonObj);
                                 if (resData.resultCode === "0") {
-                                    resolve(res.uploadPath + '\\' + res.fileName);
+                                    resolve(res.uploadPath + '\\' + res.fileName); // [추가] 성공 시 resolve
+                                } else {
+                                    reject(new Error('File DB Save Error')); // [추가] 실패 시 reject
                                 }
+                            } else {
+                                resolve(); // 경로가 비어있으면 통과
                             }
+                        } else {
+                            reject(new Error('Upload Path Missing'));
                         }
                     })
-            });
-        },
-        error(err) {
-            console.log(err.message);
-        },
+                    .catch(err => {
+                        console.log(err);
+                        reject(err); // [추가] fetch 에러 시 reject
+                    });
+            },
+            error(err) {
+                console.log(err.message);
+                reject(err); // [추가] 압축 에러 시 reject
+            },
+        });
     });
 }
 
