@@ -57,40 +57,96 @@ var KTQuillEditor = function () {
             theme: 'snow' // or 'bubble'
         });
 
+        // 텍스트 변경 이벤트
         quill.on('text-change', function() {
             document.getElementById('quill_content').value = quill.root.innerHTML;
         });
 
+        // 1. 툴바 이미지 버튼 핸들러
         quill.getModule('toolbar').addHandler('image', function () {
             selectLocalImage(quill);
+        });
+
+        // 2. 붙여넣기(Paste) 이벤트 핸들러 추가 (여기가 핵심입니다)
+        quill.root.addEventListener('paste', function(e) {
+            var clipboardData = e.clipboardData || window.clipboardData;
+            if (clipboardData && clipboardData.items) {
+                var items = clipboardData.items;
+                for (var i = 0; i < items.length; i++) {
+                    // 붙여넣은 항목이 이미지인 경우
+                    if (items[i].type.indexOf('image') !== -1) {
+                        e.preventDefault(); // 기본 Base64 변환 동작 중단
+                        var file = items[i].getAsFile();
+                        serverUpload(file, quill); // 서버 업로드 함수 호출
+                        return;
+                    }
+                }
+            }
+        });
+
+        // (선택사항) 드래그 앤 드롭으로 이미지 넣을 때도 업로드 처리하려면 아래 주석 해제
+        quill.root.addEventListener('drop', function(e) {
+            if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+                // 첫 번째 파일만 처리 (필요시 반복문 처리 가능)
+                if (e.dataTransfer.files[0].type.indexOf('image') !== -1) {
+                    e.preventDefault();
+                    serverUpload(e.dataTransfer.files[0], quill);
+                }
+            }
         });
     }
 
     function selectLocalImage(quill) {
         const fileInput = document.createElement('input');
         fileInput.setAttribute('type', 'file');
+        fileInput.setAttribute('accept', 'image/*'); // 이미지 파일만 허용
 
         fileInput.click();
 
-        fileInput.addEventListener("change", function () {  // change 이벤트로 input 값이 바뀌면 실행
-            let formData = new FormData();
+        fileInput.addEventListener("change", function () {
             const file = fileInput.files[0];
-            formData.append('uploadFile', file);
-
-            fetch('/file/upload.do?gbn=quill', {
-                method: 'POST',
-                body: formData
-            })
-                .then(res => res.json())
-                .then(res => {
-                    const range = quill.getSelection(); // 사용자가 선택한 에디터 범위
-                    // uploadPath에 역슬래시(\) 때문에 경로가 제대로 인식되지 않는 것을 슬래시(/)로 변환
-                    res.uploadPath = res.uploadPath.replace(/\\/g, '/');
-
-                    quill.insertEmbed(range.index, 'image', "/board/uploadFileGet?fileName=" + res.uploadPath + "/" + res.fileName);
-                });
-
+            if(file) {
+                serverUpload(file, quill); // 공통 업로드 함수 호출
+            }
         });
+    }
+
+    // [공통] 서버 업로드 및 에디터 삽입 함수
+    function serverUpload(file, quill) {
+        let formData = new FormData();
+        formData.append('uploadFile', file);
+
+        // 기존에 사용하시던 컨트롤러 URL 그대로 사용
+        fetch('/file/upload.do?gbn=quill', {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(res => {
+                // 커서 위치 파악 (없으면 맨 뒤)
+                let range = quill.getSelection();
+                let index = range ? range.index : quill.getLength();
+
+                // 윈도우 경로 역슬래시 치환
+                if(res.uploadPath) {
+                    res.uploadPath = res.uploadPath.replace(/\\/g, '/');
+                }
+
+                // 기존 로직과 동일한 이미지 경로 생성
+                // detail.jsp 참고 시 /file/download.do 또는 /board/uploadFileGet 등 확인 필요
+                // quill-editor.js 원본 로직 유지:
+                let imgUrl = "/board/uploadFileGet?fileName=" + res.uploadPath + "/" + res.fileName;
+
+                // 에디터에 이미지 태그 삽입
+                quill.insertEmbed(index, 'image', imgUrl);
+
+                // 이미지 삽입 후 커서를 이미지 뒤로 이동
+                quill.setSelection(index + 1);
+            })
+            .catch(err => {
+                console.error("Image Upload Failed", err);
+                alert("이미지 업로드에 실패했습니다.");
+            });
     }
 
     // Public methods

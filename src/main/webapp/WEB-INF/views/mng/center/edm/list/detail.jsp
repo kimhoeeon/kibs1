@@ -2650,7 +2650,7 @@ if (document.documentElement) {
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251117"></script>
-    <script src="/assets/js/custom/apps/ecommerce/catalog/quill-editor.js"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/quill-editor.js?ver=202511"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>
