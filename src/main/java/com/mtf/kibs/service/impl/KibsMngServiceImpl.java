@@ -1460,11 +1460,6 @@ public class KibsMngServiceImpl implements KibsMngService {
         Integer result = 0;
         try {
             if(!StringUtil.isEmpty(dataroomDTO.getId())){
-                if(StringUtil.isEmpty(dataroomDTO.getSiteGbn()) || "off".equals(dataroomDTO.getSiteGbn())){
-                    dataroomDTO.setSiteGbn("0");
-                }else{
-                    dataroomDTO.setSiteGbn("1");
-                }
 
                 result = kibsMngMapper.updateDataroom(dataroomDTO);
                 if(result == 0){
@@ -1496,12 +1491,6 @@ public class KibsMngServiceImpl implements KibsMngService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
-
-            if(StringUtil.isEmpty(dataroomDTO.getSiteGbn()) || "off".equals(dataroomDTO.getSiteGbn())){
-                dataroomDTO.setSiteGbn("0");
-            }else{
-                dataroomDTO.setSiteGbn("1");
-            }
 
             String getId = kibsMngMapper.getDataroomId();
             dataroomDTO.setId(getId);

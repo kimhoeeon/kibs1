@@ -3297,21 +3297,16 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_center_board_dataroom_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
-        if(seq != null && !"".equals(seq)){
+        if(seq != null && !seq.isEmpty()){
             DataroomDTO requestDto = new DataroomDTO();
             requestDto.setId(seq);
             DataroomDTO resInfo = kibsMngService.processSelectDataroomSingle(requestDto);
             mv.addObject("info",resInfo);
 
-            if(resInfo.getFileIdList() != null && !resInfo.getFileIdList().isEmpty()){
-                String[] fileIdList = resInfo.getFileIdList().split(",");
-                List<FileDTO> fileList = new ArrayList<>();
-                for (String id : fileIdList) {
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(id);
-                    FileDTO fileInfo = kibsMngService.processSelectFileInfo(fileDTO);
-                    fileList.add(fileInfo);
-                }
+            if(resInfo != null) {
+                FileDTO fileDTO = new FileDTO();
+                fileDTO.setUserId(resInfo.getId());
+                List<FileDTO> fileList = kibsMngService.processSelectFileList(fileDTO);
                 mv.addObject("fileList", fileList);
             }
         }
@@ -3865,7 +3860,7 @@ public class KibsMngController {
 
             response.put("uploadPath", uploadPath.getPath());
             response.put("fileName", file);
-            //response.put("fileNameOrigin", oriFile);
+            response.put("oriFileName", oriFile);
 
             System.out.println("[file name] " + file + " / " + "[ori file name] " + oriFile);
             System.out.println("[full file path] : " + uploadPath.getPath() + File.separator + file);
@@ -3886,6 +3881,40 @@ public class KibsMngController {
         FileResponseDTO responseDTO = kibsMngService.processUpdateFileUseN(fileDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    /**
+     * [신규] 이미지 보기 (우클릭 저장 시 원본 파일명 적용)
+     * @param path : 파일의 물리적 경로 (또는 웹 경로)
+     * @param fileName : 사용자가 저장할 때 보일 원본 파일명
+     */
+    @GetMapping("/file/imageView.do")
+    public void file_imageView(HttpServletRequest request, HttpServletResponse response,
+                               @RequestParam("path") String path,
+                               @RequestParam("fileName") String fileName) throws IOException {
+
+        // 1. 실제 물리 경로 구성
+        String physicalPath = "/usr/local/tomcat/webapps" + path; // path가 /upload/... 로 시작한다고 가정
+        File file = new File(physicalPath);
+
+        if (!file.exists()) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        // 2. MIME 타입 설정
+        String mimeType = Files.probeContentType(file.toPath());
+        response.setContentType(mimeType != null ? mimeType : "image/jpeg");
+
+        // 3. [핵심] 저장 시 파일명 설정 (UTF-8 인코딩)
+        String encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-Disposition", "inline; filename=\"" + encodedFileName + "\";");
+
+        // 4. 전송
+        try (FileInputStream in = new FileInputStream(file);
+             OutputStream out = response.getOutputStream()) {
+            FileCopyUtils.copy(in, out);
+        }
     }
 
     public static String appendSuffixName(String path, String orgFileName, int seq) {

@@ -2383,7 +2383,7 @@ if (document.documentElement) {
                                                             <li class="mb-4">
                                                                 <c:set var="imgPath" value="${fn:replace(file.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}"/>
                                                                 <img src="${imgPath}" class="w-250px mr10" style="border: 1px solid #009ef7;">
-                                                                <a href="javascript:void(0);" onclick="f_file_download('center/board/${file.folderPath}', '${file.fullFileName}')">${file.fileName}</a>
+                                                                <a href="javascript:void(0);" onclick="f_file_download('center/board/${file.folderPath}', '${file.fileName}')">${file.fileName}</a>
                                                                 <input type="hidden" name="uploadFile" id="${file.id}" value="${file.fullFilePath}">
                                                                 <button type="button" class="ml10" onclick="f_file_remove(this, '${file.id}')">
                                                                     <i class="ki-duotone ki-abstract-11">

@@ -2338,12 +2338,16 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
+                                                    <jsp:useBean id="now" class="java.util.Date" />
+                                                    <fmt:formatDate value="${now}" pattern="yyyy" var="sysYear" />
+                                                    <c:set var="targetYear" value="${empty info.mngYear ? sysYear : info.mngYear}" />
                                                     <!--begin::Select2-->
-                                                    <select id="mngYear" name="mngYear" class="form-select form-select-solid" data-control="select2" aria-label="- 관리년도 -" data-placeholder="- 관리년도 -">
+                                                    <select id="mngYear" name="mngYear" class="form-select form-select-solid" data-control="select2" aria-label="- 관리년도 -" data-placeholder="- 관리년도 -" data-hide-search="true">
                                                         <option></option>
                                                         <option disabled>- 관리년도 -</option>
-                                                        <c:forEach var="year" begin="2008" end="2025">
-                                                            <option value="${year}" <c:if test="${info.mngYear eq year}">selected</c:if>>${year}</option>
+                                                        <c:forEach var="i" begin="0" end="${2026 - 2008}">
+                                                            <c:set var="year" value="${2026 - i}" />
+                                                            <option value="${year}" <c:if test="${targetYear eq year}">selected</c:if>>${year}</option>
                                                         </c:forEach>
                                                     </select>
                                                     <!--end::Select2-->
@@ -2365,19 +2369,6 @@ if (document.documentElement) {
                                                             홈페이지에 보이기
                                                         </label>
                                                     </div>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6 h-250px">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">내용</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-10">
-                                                    <div id="quill_editor_content" class="h-200px">${info.content}</div>
-                                                    <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true" />">
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -2407,12 +2398,34 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <ul id="uploadFileList">
-                                                        <c:forEach var="file" items="${fileList}">
+                                                    <ul id="uploadFileList" class="numbered-list">
+                                                        <c:forEach var="file" items="${fileList}" varStatus="status"> <%-- varStatus 추가 --%>
                                                             <li class="mb-4">
-                                                                <%--<a href="/file/download.do?path=center/board/${file.folderPath}&fileName=${file.fullFileName}">${file.fileName}</a>--%>
-                                                                <a href="javascript:void(0);" onclick="f_file_download('center/board/${file.folderPath}', '${file.fullFileName}')">${file.fileName}</a>
+                                                                <%-- 1번 파일은 '메인 / 1.', 나머지는 번호만 표시 --%>
+                                                                <span class="file-order fw-bold text-primary me-2">
+                                                                    <c:choose>
+                                                                        <c:when test="${status.count eq 1}">메인 / 1.</c:when>
+                                                                        <c:otherwise>${status.count}.</c:otherwise>
+                                                                    </c:choose>
+                                                                </span>
+
+                                                                <%-- 2. 이미지 미리보기 추가 --%>
+                                                                <c:set var="lowerFileName" value="${fn:toLowerCase(file.fullFileName)}" />
+                                                                <c:if test="${fn:contains(lowerFileName, '.jpg') or fn:contains(lowerFileName, '.jpeg') or fn:contains(lowerFileName, '.png') or fn:contains(lowerFileName, '.gif')}">
+
+                                                                    <%-- 서버 물리 경로를 웹 접근 가능 경로로 치환 (mngMain.js와 동일 로직) --%>
+                                                                    <c:set var="imgSrc" value="${fn:replace(file.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+
+                                                                    <img src="${imgSrc}" class="w-250px mr10" style="border: 1px solid #009ef7; margin-right: 10px; max-height: 150px; object-fit: contain;" />
+                                                                </c:if>
+
+                                                                <%-- 기존 다운로드 링크 --%>
+                                                                <a href="javascript:void(0);" onclick="f_file_download('center/board/${file.folderPath}', '${file.fileName}')">${file.fileName}</a>
+
+                                                                <%-- 기존 hidden input --%>
                                                                 <input type="hidden" name="uploadFile" id="${file.id}" value="${file.fullFilePath}">
+
+                                                                <%-- 기존 삭제 버튼 --%>
                                                                 <button type="button" class="ml10" onclick="f_file_remove(this, '${file.id}')">
                                                                     <i class="ki-duotone ki-abstract-11">
                                                                         <i class="path1"></i>
@@ -2435,7 +2448,7 @@ if (document.documentElement) {
                                 <!--begin::Basic info-->
                                 <div class="card mb-5 mb-xl-10">
                                     <!--begin::Actions-->
-                                    <div class="card-footer d-flex justify-content-between py-6 px-9">ㅌ
+                                    <div class="card-footer d-flex justify-content-between py-6 px-9">
                                         <div>
                                             <a href="/mng/center/board/dataroom.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
                                         </div>
@@ -2596,7 +2609,6 @@ if (document.documentElement) {
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251117"></script>
-    <script src="/assets/js/custom/apps/ecommerce/catalog/quill-editor.js"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

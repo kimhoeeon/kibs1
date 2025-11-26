@@ -30,4 +30,5 @@ public class DataroomDTO extends AbstractPagingRequestVo {
     String finalRegiDttm; //최종 변경 일시
 
     List<String> fullFilePathList;
+    List<FileDTO> fileList;
 }

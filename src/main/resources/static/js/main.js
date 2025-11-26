@@ -2046,7 +2046,7 @@ async function step_01_check(exhibitorSeq){
             }
 
             /* 파일 업로드 */
-            // [수정] 로딩바 표시 (업로드 시작 전)
+            // 로딩바 표시 (업로드 시작 전)
             Swal.fire({
                 title: "정보 및 파일 저장 중",
                 html: "파일을 업로드하고 있습니다.<br>잠시만 기다려 주세요.",
@@ -2063,7 +2063,7 @@ async function step_01_check(exhibitorSeq){
                 // [핵심 수정] 파일 업로드가 끝날 때까지 기다림 (await)
                 await f_company_uploadFile_call(exhibitorSeq, exhibitorSeq);
 
-                // [수정] 업로드 완료 후 성공 메시지 표시
+                // 업로드 완료 후 성공 메시지 표시
                 Swal.fire({
                     icon: 'info',
                     title: '[ 참가업체 정보 ]',
@@ -5108,7 +5108,7 @@ async function my_step_01_check(exhibitorSeq){
             }
 
             /* 파일 업로드 */
-            // [수정] 로딩바 표시 (업로드 시작 전)
+            // 로딩바 표시 (업로드 시작 전)
             Swal.fire({
                 title: "정보 및 파일 저장 중",
                 html: "파일을 업로드하고 있습니다.<br>잠시만 기다려 주세요.",

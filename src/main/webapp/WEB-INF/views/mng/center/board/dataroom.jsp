@@ -2547,17 +2547,6 @@ if (document.documentElement) {
                             <!--end::Input group-->
 
                             <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">내용</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <div id="md_content" class="form-control form-control-solid-bg resize-none h-250px overflow-y-auto" readonly></div>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
                             <div id="file_list">
                                 <!--begin::Label-->
                                 <label class="form-label">첨부파일</label>

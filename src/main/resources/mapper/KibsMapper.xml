@@ -2328,7 +2328,7 @@
         FROM file
         WHERE user_id = #{value}
         AND file_yn = 'Y'
-        ORDER BY LENGTH(note) ASC, note ASC
+        ORDER BY init_regi_dttm
     </select>
 
     <select id="selectOnlineInfo" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.OnlineDTO">
@@ -3312,7 +3312,7 @@
                     AND d.title_en LIKE CONCAT('%',#{searchText},'%')
                 </if>
             </if>
-        ORDER BY d.mng_year DESC, d.title ASC, d.init_regi_dttm DESC
+        ORDER BY d.mng_year DESC, d.write_date DESC, d.title DESC
         <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
             LIMIT #{pageNum} , #{rows}
         </if>

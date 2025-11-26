@@ -1342,7 +1342,6 @@
           , mng_year = #{mngYear}
           , title = <![CDATA[#{title}]]>
           , title_en = <![CDATA[#{titleEn}]]>
-          , content = <![CDATA[#{content}]]>
           , writer = #{writer}
           , write_date = #{writeDate}
         <if test='fileIdList != ""'>
@@ -1360,7 +1359,6 @@
         , mng_year
         , title
         , title_en
-        , content
         , writer
         , write_date
         , file_id_list
@@ -1374,7 +1372,6 @@
                , #{mngYear}
                , <![CDATA[#{title}]]>
                , <![CDATA[#{titleEn}]]>
-               , <![CDATA[#{content}]]>
                , #{writer}
                , #{writeDate}
                , <![CDATA[#{fileIdList}]]>
@@ -1647,7 +1644,7 @@
         FROM file
         WHERE user_id = #{userId}
         AND file_yn = 'Y'
-        ORDER BY note ASC
+        ORDER BY init_regi_dttm
     </select>
 
     <select id="selectFileInfo" parameterType="com.mtf.kibs.dto.FileDTO" resultType="com.mtf.kibs.dto.FileDTO">

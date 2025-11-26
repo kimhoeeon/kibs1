@@ -521,11 +521,17 @@ function f_mng_uploadFile(formId, path) {
             })
             .then(res => {
                 if( typeof res.uploadPath !== undefined){
-                    resolve(res.uploadPath + '\\' + res.fileName);
-                    //2024METS참가기업모집공고및신청서_20240701104636.hwp
+                    // 경로 문자열 대신 객체 반환 (전체경로 + 원본파일명)
+                    resolve({
+                        fullPath: res.uploadPath + '\\' + res.fileName,
+                        oriFileName: res.oriFileName
+                    });
                 }
             })
-
+            .catch(err => {
+                console.error(err);
+                reject(err);
+            });
     });
 }
 
@@ -634,8 +640,11 @@ function f_company_uploadFile(elementId, path) {
 async function f_attach_file_upload(userId, formId, path) {
     let file = $('#attachFileInput').val();
     if(nvl(file,'') !== '') {
-        let uploadFileResponse = '';
-        uploadFileResponse = await f_mng_uploadFile(formId, path);
+        let uploadResult = await f_mng_uploadFile(formId, path);
+
+        let uploadFileResponse = uploadResult ? uploadResult.fullPath : '';
+        let oriFileName = uploadResult ? uploadResult.oriFileName : ''; // [신규] 원본 파일명
+
         if (nvl(uploadFileResponse, "") !== '') {
             Swal.fire({
                 title: '파일 업로드',
@@ -647,23 +656,10 @@ async function f_attach_file_upload(userId, formId, path) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     let fullFilePath = uploadFileResponse.replaceAll('\\', '/');
-                    // ./tomcat/webapps/upload/center/board/notice/b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
-
                     let fullPath = fullFilePath.substring(0, fullFilePath.lastIndexOf('/') + 1);
-                    // ./tomcat/webapps/upload/center/board/notice/
-
                     let pureFileNameSplit = fullFilePath.split('/');
                     let fullFileName = pureFileNameSplit[pureFileNameSplit.length - 1];
-                    // b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
-
-                    /*let uuid = fullFileName.substring(0, fullFileName.indexOf('_'));
-                    // b3eb661d-34de-4fd0-bc74-17db9fffc1bd
-
-                    let fileName = fullFileName.substring(fullFileName.indexOf('_') + 1);
-                    // KIBS_TV_목록_excel_20230817151752.xlsx*/
-
                     let folderPath = pureFileNameSplit[pureFileNameSplit.length - 2];
-                    // notice
 
                     let jsonObj = {
                         userId: userId,
@@ -671,8 +667,7 @@ async function f_attach_file_upload(userId, formId, path) {
                         fullPath: fullPath,
                         folderPath: folderPath,
                         fullFileName: fullFileName,
-                        /*uuid: uuid,*/
-                        fileName: fullFileName,
+                        fileName: oriFileName,
                         fileYn: 'Y'
                     };
                     let resData = ajaxConnect('/file/upload/save.do', 'post', jsonObj);
@@ -682,6 +677,25 @@ async function f_attach_file_upload(userId, formId, path) {
                         let a_el = document.createElement('a');
 
                         li_el.style.marginBottom = '5px';
+
+                        // --- 클래스 체크 후 번호 추가 ---
+                        // 'numbered-list' 클래스가 있는 경우에만 순번 생성
+                        if (ul_el.classList.contains('numbered-list')) {
+                            let currentCnt = ul_el.children.length + 1;
+                            let orderText = currentCnt + '.';
+
+                            // 1번째 파일이면 '메인 / ' 추가
+                            if (currentCnt === 1) {
+                                orderText = '메인 / 1.';
+                            }
+
+                            let span_el = document.createElement('span');
+                            span_el.className = 'file-order fw-bold text-primary me-2';
+                            span_el.innerText = orderText;
+
+                            li_el.append(span_el);
+                        }
+                        // --- 완료 ---
 
                         if(fullFileName.toLowerCase().includes('.jpg')
                             || fullFileName.toLowerCase().includes('.jpeg')
@@ -698,9 +712,9 @@ async function f_attach_file_upload(userId, formId, path) {
                         /*a_el.href = '/file/download.do?path=' + path + '&fileName=' + fullFileName;*/
                         a_el.href = 'javascript:void(0);';
                         a_el.onclick = function () {
-                            f_file_download(path, fullFileName);
+                            f_file_download(path, oriFileName);
                         };
-                        a_el.text = fullFileName;
+                        a_el.text = oriFileName;
 
                         li_el.append(a_el);
 
@@ -782,6 +796,9 @@ function f_file_remove(el, fileId){
         }
     }
 
+    // [신규] 삭제 전 부모 UL 요소 찾기 (삭제 후에는 찾을 수 없으므로 미리 저장)
+    let $parentUl = $(el).closest('ul');
+
     let jsonObj = {
         id: fileId
     }
@@ -789,7 +806,33 @@ function f_file_remove(el, fileId){
     let resData = ajaxConnect('/file/upload/update.do', 'post', jsonObj);
     if(resData.resultCode === "0"){
         $(el).parent('li').remove();
+
+        // --- 클래스 체크 후 재정렬 ---
+        // 'numbered-list' 클래스가 있는 경우에만 재정렬 함수 호출
+        if ($parentUl.hasClass('numbered-list')) {
+            reorderFiles($parentUl);
+        }
+        // --- 완료 ---
     }
+}
+
+/**
+ * [신규] 파일 목록 순서 번호 재정렬 함수
+ * 특정 UL 내부의 순번만 다시 매깁니다.
+ */
+function reorderFiles($targetUl) {
+    $targetUl.find('li').each(function(index) {
+        let orderNum = index + 1;
+        let orderText = orderNum + '.';
+
+        // 1번째 파일이면 '메인 / ' 추가
+        if (orderNum === 1) {
+            orderText = '메인 / 1.';
+        }
+
+        // .file-order 클래스를 가진 span을 찾아 텍스트 업데이트
+        $(this).find('.file-order').text(orderText);
+    });
 }
 
 function execDaumPostcode(address, addressDetail) {

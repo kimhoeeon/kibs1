@@ -1982,7 +1982,7 @@
                 (function($) {
                     $(document).ready(function () {
 
-                        // [수정] 페이지 이탈 방지 이벤트 리스너
+                        // 페이지 이탈 방지 이벤트 리스너
                         window.addEventListener('beforeunload', function (e) {
 
                             // 1. 저장이 진행 중이지 않고 (!isSubmitProceeding)

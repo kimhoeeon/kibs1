@@ -1078,12 +1078,16 @@ public class KibsController {
         List<DataroomDTO> responseList = kibsService.processSelectGalleryList(searchDTO);
 
         for(DataroomDTO response : responseList){
+
             List<String> fullFilePathList = new ArrayList<>();
             List<FileDTO> fileList = kibsService.processSelectFileList(response.getId());
+            response.setFileList(fileList);
+
             for(FileDTO file : fileList){
                 fullFilePathList.add(file.getFullFilePath());
             }
             response.setFullFilePathList(fullFilePathList);
+
         }
 
         return new ResponseEntity<>(responseList, HttpStatus.OK);

@@ -4715,6 +4715,10 @@ let KTAppCenterBoardDataroom = function () {
                     }
                 },
                 {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderTitleCell(data, type, row); }
+                },
+                {
                     'targets': 5,
                     'render': function (data, type, row) { return renderTitleEnCell(data, type, row); }
                 },
@@ -4738,6 +4742,17 @@ let KTAppCenterBoardDataroom = function () {
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderTitleCell(data, type, row){
+        let title = row.title;
+        let renderHTML = '';
+        renderHTML += '<span class="fw-bold">';
+            renderHTML += '<a onclick="f_board_dataroom_modify_init_set(' + '\'' + row.id + '\'' + ')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer">';
+                renderHTML += title;
+            renderHTML += '</a>';
+        renderHTML += '</span>';
+        return renderHTML;
     }
 
     function renderTitleEnCell(data, type, row){
@@ -6234,7 +6249,7 @@ KTUtil.onDOMContentLoaded(function () {
     KTAppCenterBoardPress.init(); // /mng/center/board/press.do
     KTAppCenterBoardFaq.init(); // /mng/center/board/faq.do
     KTAppCenterBoardColumn.init(); // /mng/center/board/column.do
-    KTAppCenterBoardBrochure.init(); // /mng/center/board/brochure.do
+    //KTAppCenterBoardBrochure.init(); // /mng/center/board/brochure.do
     KTAppCenterBoardDataroom.init(); // /mng/center/board/dataroom.do
     /*KTAppCenterBoardGallery.init();*/ // /mng/center/board/gallery.do
     KTAppCenterBoardKibstv.init(); // /mng/center/board/kibstv.do

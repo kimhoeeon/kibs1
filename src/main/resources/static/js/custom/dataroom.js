@@ -56,50 +56,41 @@ function f_dataroom_detail_modal_set(rowId){
 
     let resData = ajaxConnect('/mng/center/board/dataroom/selectSingle.do', 'post', jsonObj);
 
-    /* 상세보기 Modal form Set */
-    //console.log(resData);
+    /* 상세보기 Modal form Set (jQuery로 통일) */
+    $('#md_title').val(resData.title);
+    $('#md_title_en').val(resData.titleEn);
+    $('#md_writer').val(resData.writer);
+    $('#md_write_date').val(resData.writeDate);
+    $('#md_mng_year').val(resData.mngYear).prop('selected', true);
 
-    document.querySelector('#md_title').value = resData.title;
-    document.querySelector('#md_title_en').value = resData.titleEn;
-    document.querySelector('#md_writer').value = resData.writer;
-    document.querySelector('#md_write_date').value = resData.writeDate;
-
-    $('#md_mng_year').val(resData.mngYear).prop('selected',true);
-
-    if (resData.siteGbn === "1") {
-        document.querySelector('#md_site_gbn').checked = true;
-    }else{
-        document.querySelector('#md_site_gbn').checked = false;
-    }
-
-    document.querySelector('#md_content').innerHTML = resData.content;
+    $('#md_site_gbn').prop('checked', (resData.siteGbn === "1"));
 
     /* 파일 목록 상세 조회 */
-    let jsonObj2 = {
+    let fileJsonObj = {
         userId: rowId
     };
 
-    let file_list_el = document.getElementById('file_list');
-    // 첫 번째 요소를 제외한 모든 요소 삭제
-    while (file_list_el.children.length > 1) {
-        file_list_el.removeChild(file_list_el.lastChild);
-    }
+    let $fileListEl = $('#file_list');
 
-    let fileData = ajaxConnect('/file/upload/selectList.do', 'post', jsonObj2);
+    // 기존 파일 목록 초기화 (첫 번째 요소는 남기고 나머지 삭제 - 기존 로직 유지)
+    // 만약 첫 번째 요소도 지워야 한다면 $fileListEl.empty(); 로 변경하세요.
+    $fileListEl.children().not(':first').remove();
+
+    let fileData = ajaxConnect('/file/upload/selectList.do', 'post', fileJsonObj);
+
     if(nullToEmpty(fileData) !== ''){
-        for(let i=0; i<fileData.length; i++){
-            let file_list_el = document.getElementById('file_list');
-            let input_el = document.createElement('input');
-            input_el.type = 'text';
-            input_el.classList.add('form-control');
-            input_el.classList.add('form-control-lg');
-            input_el.classList.add('form-control-solid-bg');
-            input_el.classList.add('mb-2');
-            input_el.value = fileData[i].fileName;
-            input_el.readOnly = true;
+        // for loop 대신 forEach 사용으로 가독성 향상
+        fileData.forEach(function(file) {
+            // jQuery로 요소 생성 및 속성 부여
+            let $input = $('<input>', {
+                type: 'text',
+                class: 'form-control form-control-lg form-control-solid-bg mb-2',
+                value: file.fileName,
+                readonly: true
+            });
 
-            file_list_el.append(input_el);
-        }
+            $fileListEl.append($input);
+        });
     }
 }
 
@@ -155,100 +146,73 @@ function f_board_dataroom_save(id){
         if (result.isConfirmed) {
 
             /* form valid check */
-            let validCheck = f_board_dataroom_valid();
+            if(!f_board_dataroom_valid()) return; // 유효성 검사
 
-            if(validCheck){
-                /* File upload */
-                let fileIdList = '';
-                let uploadFileList = document.getElementById('uploadFileList').children;
-                let uploadFileListLen = uploadFileList.length;
-                for(let i=0; i<uploadFileListLen; i++){
-                    let fileId = uploadFileList[i].children[1].id;
-                    //console.log(fileId);
-                    fileIdList += fileId;
-                    if((i+1) !== uploadFileListLen){
-                        fileIdList += ',';
+            /* File upload ID 수집 (jQuery 활용으로 안정성 확보) */
+            let fileIdArr = [];
+            $('#uploadFileList li').each(function() {
+                // children[1] 같은 인덱스 접근보다 명시적인 선택자 사용 권장
+                let fileId = $(this).find('input[name="uploadFile"]').attr('id');
+                if(fileId) fileIdArr.push(fileId);
+            });
+
+            let boardNoticeForm = $('#dataroomForm');
+            // 기존 hidden input이 있다면 제거 후 새로 생성 (중복 방지)
+            boardNoticeForm.find('input[name="fileIdList"]').remove();
+
+            if(fileIdArr.length > 0){
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'fileIdList',
+                    value: fileIdArr.join(',')
+                }).appendTo(boardNoticeForm);
+            }
+
+            let serialData = boardNoticeForm.serializeArray(); // jQuery serializeArray 사용
+            let data = objectifyForm(serialData);
+            if(data.siteGbn === 'on'){
+                data.siteGbn = '1';
+            }else{
+                data.siteGbn = '0';
+            }
+
+            /* Modify */
+            let isModify = nvl(id, "") !== "";
+            let url = isModify ? '/mng/center/board/dataroom/modifySave.do' : '/mng/center/board/dataroom/insertSave.do';
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(data),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            icon: 'info',
+                            title: '[ 갤러리 ]',
+                            html: '<span style="font-size: 1.2em;">저장되었습니다.</span>',
+                            allowOutsideClick: false,
+                            confirmButtonColor: '#00a8ff',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                if (isModify) {
+                                    f_board_dataroom_modify_init_set(id); // 수정: 재조회
+                                } else {
+                                    window.location.href = '/mng/center/board/dataroom.do'; // 등록: 목록 이동
+                                }
+                            }
+                        });
+                    } else {
+                        showMessage('', 'error', '에러 발생', '갤러리 정보 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
                     }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                 }
-
-                if(fileIdList !== ''){
-                    let boardNoticeForm = document.getElementById('dataroomForm');
-                    let hidden_el = document.createElement('input');
-                    hidden_el.type = 'hidden';
-                    hidden_el.name = 'fileIdList';
-                    hidden_el.value = fileIdList;
-                    boardNoticeForm.append(hidden_el);
-                }
-
-                let serialData = JSON.parse(JSON.stringify($('#dataroomForm').serializeArray()));
-                let data = objectifyForm(serialData);
-                data.siteGbn = nvl(data.siteGbn, 0);
-                //console.log(JSON.stringify(data));
-
-                /* Modify */
-                if(nvl(id, "") !== ""){
-                    $.ajax({
-                        url: '/mng/center/board/dataroom/modifySave.do',
-                        method: 'POST',
-                        async: false,
-                        data: JSON.stringify(data),
-                        dataType: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        success: function (data) {
-                            if (data.resultCode === "0") {
-                                Swal.fire({
-                                    icon: 'info',
-                                    title: '[ 갤러리 ]',
-                                    html: '<span style="font-size: 1.2em;">저장되었습니다.</span>',
-                                    allowOutsideClick: false,
-                                    confirmButtonColor: '#00a8ff',
-                                    confirmButtonText: '확인'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        f_board_dataroom_modify_init_set(id); // 재조회
-                                    }
-                                });
-                            } else {
-                                showMessage('', 'error', '에러 발생', '갤러리 정보 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
-                            }
-                        },
-                        error: function (xhr, status) {
-                            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
-                        }
-                    })//ajax
-                }else { /* Insert */
-                    $.ajax({
-                        url: '/mng/center/board/dataroom/insertSave.do',
-                        method: 'POST',
-                        async: false,
-                        data: JSON.stringify(data),
-                        dataType: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        success: function (data) {
-                            if (data.resultCode === "0") {
-                                Swal.fire({
-                                    icon: 'info',
-                                    title: '[ 갤러리 ]',
-                                    html: '<span style="font-size: 1.2em;">저장되었습니다.</span>',
-                                    allowOutsideClick: false,
-                                    confirmButtonColor: '#00a8ff',
-                                    confirmButtonText: '확인'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = '/mng/center/board/dataroom.do'; // 목록으로 이동
-                                    }
-                                });
-                            } else {
-                                showMessage('', 'error', '에러 발생', '갤러리 정보 등록을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
-                            }
-                        },
-                        error: function (xhr, status) {
-                            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
-                        }
-                    })//ajax
-                }// id check
-
-            }//validCheck
+            })//ajax
 
         }//result.isConfirmed
     })//swal
@@ -256,10 +220,10 @@ function f_board_dataroom_save(id){
 }//fn
 
 function f_board_dataroom_valid(){
-    let title = document.querySelector('#title').value;
-    let writer = document.querySelector('#writer').value;
-    let writeDate = document.querySelector('#writeDate').value;
-    let mngYear = document.querySelector('#mngYear').value;
+    let title = $('#title').val();
+    let writer = $('#writer').val();
+    let writeDate = $('#writeDate').val();
+    let mngYear = $('#mngYear').val();
 
     if(nvl(title,"") === ""){ showMessage('#title', 'error', '[ 갤러리 ]', '제목을 입력해 주세요.', ''); return false; }
     if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[ 갤러리 ]', '작성자를 입력해 주세요.', ''); return false; }
