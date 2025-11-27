@@ -846,9 +846,9 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/center/board/faq.do"
-                                                                           class="menu-link active">
-                                                                            <span class="menu-title">FAQ</span>
+                                                                        <a href="/mng/center/board/column.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">칼럼</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -856,9 +856,9 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/center/board/column.do"
-                                                                           class="menu-link">
-                                                                            <span class="menu-title">칼럼</span>
+                                                                        <a href="/mng/center/board/faq.do"
+                                                                           class="menu-link active">
+                                                                            <span class="menu-title">FAQ</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1906,22 +1906,10 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/center/board/faq.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
-                                                <span class="menu-title">FAQ</span>
-                                            </a>
-                                            <!--end:Menu link-->
-                                        </div>
-                                        <!--end:Menu item-->
-                                        <!--begin:Menu item-->
-                                        <div class="menu-item">
-                                            <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/center/board/column.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">칼럼</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -1930,10 +1918,22 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
+                                            <a class="menu-link active" href="/mng/center/board/faq.do">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">FAQ</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
                                             <a class="menu-link" href="/mng/center/board/dataroom.do">
-                                            <span class="menu-bullet">
-                                                <span class="bullet bullet-dot"></span>
-                                            </span>
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
                                                 <span class="menu-title">갤러리</span>
                                             </a>
                                             <!--end:Menu link-->
@@ -2393,13 +2393,13 @@ if (document.documentElement) {
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="row mb-6 h-550px">
+                                            <div class="row mb-6<%-- h-550px--%>">
                                                 <!--begin::Label-->
                                                 <label class="col-lg-2 col-form-label fw-semibold fs-6">내용</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <div id="quill_editor_content" class="h-500px">${info.content}</div>
+                                                    <div id="quill_editor_content" style="height: 500px; min-height: 500px; resize: vertical; overflow-y: auto;"<%--class="h-500px"--%>>${info.content}</div>
                                                     <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true" />">
                                                 </div>
                                                 <!--end::Col-->

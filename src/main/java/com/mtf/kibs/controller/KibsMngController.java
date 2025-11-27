@@ -3088,21 +3088,16 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_center_board_notice_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
-        if(seq != null && !"".equals(seq)){
+        if(seq != null && !seq.isEmpty()){
             NoticeDTO requestDto = new NoticeDTO();
             requestDto.setId(seq);
             NoticeDTO noticeInfo = kibsMngService.processSelectNoticeSingle(requestDto);
             mv.addObject("info", noticeInfo);
 
-            if(noticeInfo.getFileIdList() != null && !"".equals(noticeInfo.getFileIdList())){
-                String[] fileIdList = noticeInfo.getFileIdList().split(",");
-                List<FileDTO> fileList = new ArrayList<>();
-                for(int i=0; i<fileIdList.length; i++){
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(fileIdList[i]);
-                    FileDTO fileInfo = kibsMngService.processSelectFileInfo(fileDTO);
-                    fileList.add(fileInfo);
-                }
+            if(noticeInfo != null) {
+                FileDTO fileDTO = new FileDTO();
+                fileDTO.setUserId(noticeInfo.getId());
+                List<FileDTO> fileList = kibsMngService.processSelectFileList(fileDTO);
                 mv.addObject("fileList", fileList);
             }
         }
@@ -3136,22 +3131,17 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_center_board_newsletter_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
-        if(seq != null && !"".equals(seq)){
+        if(seq != null && !seq.isEmpty()){
             NewsletterDTO requestDto = new NewsletterDTO();
             requestDto.setId(seq);
             requestDto.setLang(lang);
             NewsletterDTO resInfo = kibsMngService.processSelectNewsletterSingle(requestDto);
             mv.addObject("info",resInfo);
 
-            if(resInfo.getFileIdList() != null && !"".equals(resInfo.getFileIdList())){
-                String[] fileIdList = resInfo.getFileIdList().split(",");
-                List<FileDTO> fileList = new ArrayList<>();
-                for(int i=0; i<fileIdList.length; i++){
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(fileIdList[i]);
-                    FileDTO fileInfo = kibsMngService.processSelectFileInfo(fileDTO);
-                    fileList.add(fileInfo);
-                }
+            if(resInfo != null) {
+                FileDTO fileDTO = new FileDTO();
+                fileDTO.setUserId(resInfo.getId());
+                List<FileDTO> fileList = kibsMngService.processSelectFileList(fileDTO);
                 mv.addObject("fileList", fileList);
             }
         }
@@ -3172,7 +3162,7 @@ public class KibsMngController {
         ResponseDTO responseDTO = kibsMngService.processUpdateNewsletter(newsletterDTO);
 
         String fileIdList = newsletterDTO.getFileIdList();
-        if(fileIdList != null && !"".equals(fileIdList)){
+        if(fileIdList != null && !fileIdList.isEmpty()){
             String[] fileIdSplit = fileIdList.split(",");
             for(int i=0; i<fileIdSplit.length; i++){
                 if(!"".equals(fileIdSplit[i])){
@@ -3196,7 +3186,7 @@ public class KibsMngController {
         ResponseDTO responseDTO = kibsMngService.processInsertNewsletter(newsletterDTO);
 
         String fileIdList = newsletterDTO.getFileIdList();
-        if(fileIdList != null && !"".equals(fileIdList)){
+        if(fileIdList != null && !fileIdList.isEmpty()){
             String[] fileIdSplit = fileIdList.split(",");
             for(int i=0; i<fileIdSplit.length; i++){
                 if(!"".equals(fileIdSplit[i])){
@@ -3216,21 +3206,16 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_center_board_press_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
-        if(seq != null && !"".equals(seq)){
+        if(seq != null && !seq.isEmpty()){
             PressDTO requestDto = new PressDTO();
             requestDto.setId(seq);
             PressDTO resInfo = kibsMngService.processSelectPressSingle(requestDto);
             mv.addObject("info",resInfo);
 
-            if(resInfo.getFileIdList() != null && !"".equals(resInfo.getFileIdList())){
-                String[] fileIdList = resInfo.getFileIdList().split(",");
-                List<FileDTO> fileList = new ArrayList<>();
-                for (String id : fileIdList) {
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(id);
-                    FileDTO fileInfo = kibsMngService.processSelectFileInfo(fileDTO);
-                    fileList.add(fileInfo);
-                }
+            if(resInfo != null) {
+                FileDTO fileDTO = new FileDTO();
+                fileDTO.setUserId(resInfo.getId());
+                List<FileDTO> fileList = kibsMngService.processSelectFileList(fileDTO);
                 mv.addObject("fileList", fileList);
             }
         }
@@ -3243,21 +3228,16 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_center_board_faq_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
-        if(seq != null && !"".equals(seq)){
+        if(seq != null && !seq.isEmpty()){
             FaqDTO requestDto = new FaqDTO();
             requestDto.setId(seq);
             FaqDTO resInfo = kibsMngService.processSelectFaqSingle(requestDto);
             mv.addObject("info",resInfo);
 
-            if(resInfo.getFileIdList() != null && !"".equals(resInfo.getFileIdList())){
-                String[] fileIdList = resInfo.getFileIdList().split(",");
-                List<FileDTO> fileList = new ArrayList<>();
-                for (String id : fileIdList) {
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(id);
-                    FileDTO fileInfo = kibsMngService.processSelectFileInfo(fileDTO);
-                    fileList.add(fileInfo);
-                }
+            if(resInfo != null) {
+                FileDTO fileDTO = new FileDTO();
+                fileDTO.setUserId(resInfo.getId());
+                List<FileDTO> fileList = kibsMngService.processSelectFileList(fileDTO);
                 mv.addObject("fileList", fileList);
             }
         }
@@ -3270,21 +3250,16 @@ public class KibsMngController {
         System.out.println("KibsMngController > mng_center_board_column_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
-        if(seq != null && !"".equals(seq)){
+        if(seq != null && !seq.isEmpty()){
             ColumnDTO requestDto = new ColumnDTO();
             requestDto.setId(seq);
             ColumnDTO resInfo = kibsMngService.processSelectColumnSingle(requestDto);
             mv.addObject("info",resInfo);
 
-            if(resInfo.getFileIdList() != null && !"".equals(resInfo.getFileIdList())){
-                String[] fileIdList = resInfo.getFileIdList().split(",");
-                List<FileDTO> fileList = new ArrayList<>();
-                for (String id : fileIdList) {
-                    FileDTO fileDTO = new FileDTO();
-                    fileDTO.setId(id);
-                    FileDTO fileInfo = kibsMngService.processSelectFileInfo(fileDTO);
-                    fileList.add(fileInfo);
-                }
+            if(resInfo != null) {
+                FileDTO fileDTO = new FileDTO();
+                fileDTO.setUserId(resInfo.getId());
+                List<FileDTO> fileList = kibsMngService.processSelectFileList(fileDTO);
                 mv.addObject("fileList", fileList);
             }
         }

@@ -3906,7 +3906,7 @@ let KTAppCenterBoardNotice = function () {
                     'render': function (data, type, row) { return renderTempSaveCell(data, type, row); }
                 },
                 {
-                    'targets': [4,5,6,7],
+                    'targets': 4,
                     'render': function (data) {
                         if (data === '1') {
                             return 'V'
@@ -3916,7 +3916,7 @@ let KTAppCenterBoardNotice = function () {
                     }
                 },
                 {
-                    'targets': 8,
+                    'targets': 5,
                     'render': function (data) {
                         if (nvl(data,'') === '') {
                             return '-'
@@ -3926,7 +3926,7 @@ let KTAppCenterBoardNotice = function () {
                     }
                 },
                 {
-                    'targets': 13,
+                    'targets': 10,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -3938,9 +3938,6 @@ let KTAppCenterBoardNotice = function () {
                 { data: 'lang'},
                 { data: 'tempSave'},
                 { data: 'noticeGbn' },
-                { data: 'gbn1' },
-                { data: 'gbn2' },
-                { data: 'gbn3' },
                 { data: 'title' },
                 { data: 'writer' },
                 { data: 'writeDate' },

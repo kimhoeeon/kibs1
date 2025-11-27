@@ -846,9 +846,9 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/center/board/faq.do"
+                                                                        <a href="/mng/center/board/column.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">FAQ</span>
+                                                                            <span class="menu-title">칼럼</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -856,9 +856,9 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/center/board/column.do"
+                                                                        <a href="/mng/center/board/faq.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">칼럼</span>
+                                                                            <span class="menu-title">FAQ</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1896,11 +1896,11 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/center/board/faq.do">
+                                            <a class="menu-link" href="/mng/center/board/column.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                                <span class="menu-title">FAQ</span>
+                                                <span class="menu-title">칼럼</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1908,11 +1908,11 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/center/board/column.do">
+                                            <a class="menu-link" href="/mng/center/board/faq.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                                <span class="menu-title">칼럼</span>
+                                                <span class="menu-title">FAQ</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>

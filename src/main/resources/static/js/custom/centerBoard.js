@@ -78,24 +78,6 @@ function f_notice_detail_modal_set(rowId){
     document.querySelector('#md_writer').value = resData.writer;
     document.querySelector('#md_write_date').value = resData.writeDate;
 
-    if(resData.gbn1==="1"){
-        document.querySelector('#md_gbn1').checked = true;
-    }else{
-        document.querySelector('#md_gbn1').checked = false;
-    }
-
-    if(resData.gbn2==="1"){
-        document.querySelector('#md_gbn2').checked = true;
-    }else{
-        document.querySelector('#md_gbn2').checked = false;
-    }
-
-    if(resData.gbn3==="1"){
-        document.querySelector('#md_gbn3').checked = true;
-    }else{
-        document.querySelector('#md_gbn3').checked = false;
-    }
-
     if(resData.noticeGbn==="1"){
         document.querySelector('#md_notice_gbn').checked = true;
     }else{

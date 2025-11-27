@@ -846,9 +846,9 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/center/board/faq.do"
+                                                                        <a href="/mng/center/board/column.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">FAQ</span>
+                                                                            <span class="menu-title">칼럼</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -856,9 +856,9 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/center/board/column.do"
+                                                                        <a href="/mng/center/board/faq.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">칼럼</span>
+                                                                            <span class="menu-title">FAQ</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1907,11 +1907,11 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/center/board/faq.do">
+                                            <a class="menu-link" href="/mng/center/board/column.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                                <span class="menu-title">FAQ</span>
+                                                <span class="menu-title">칼럼</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -1919,11 +1919,11 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/center/board/column.do">
+                                            <a class="menu-link" href="/mng/center/board/faq.do">
                                             <span class="menu-bullet">
                                                 <span class="bullet bullet-dot"></span>
                                             </span>
-                                                <span class="menu-title">칼럼</span>
+                                                <span class="menu-title">FAQ</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2364,41 +2364,6 @@ if (document.documentElement) {
                                                     <fmt:formatDate var="fmNow" value="${now}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                                     <c:set var="sysdate" value="${info.writeDate eq null or info.writeDate eq '' ? fmNow : info.writeDate}"/>
                                                     <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${sysdate}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">사이트 분류</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8 d-flex flex-wrap">
-                                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                        <input class="form-check-input form-control-solid-bg"
-                                                               type="checkbox" id="gbn1" name="gbn1"
-                                                               <c:if test="${info.gbn1 eq '1'}">checked</c:if>/>
-                                                        <label class="form-check-label text-hover-primary" for="gbn1">
-                                                            홈페이지
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                        <input class="form-check-input form-control-solid-bg"
-                                                               type="checkbox" id="gbn2" name="gbn2"
-                                                               <c:if test="${info.gbn2 eq '1'}">checked</c:if>/>
-                                                        <label class="form-check-label text-hover-primary" for="gbn2">
-                                                            무역관
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                        <input class="form-check-input form-control-solid-bg"
-                                                               type="checkbox" id="gbn3" name="gbn3"
-                                                               <c:if test="${info.gbn3 eq '1'}">checked</c:if>/>
-                                                        <label class="form-check-label text-hover-primary" for="gbn3">
-                                                            체류
-                                                        </label>
-                                                    </div>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
