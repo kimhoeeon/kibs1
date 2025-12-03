@@ -235,6 +235,15 @@
                                         </li>
                                         <li>
                                             <div class="item req">
+                                                <p>신제품 여부</p>
+                                            </div>
+                                            <div class="input check">
+                                                <label><input type="radio" name="productIsNew_1" value="Y">해당</label>
+                                                <label><input type="radio" name="productIsNew_1" value="N" checked>미해당</label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item req">
                                                 <p>제품명</p>
                                             </div>
                                             <div class="input">
@@ -329,6 +338,19 @@
                                                             $('#productOptionSmall_${status.index + 1}').val('${product.productOptionSmall}').prop('selected', true);
                                                         })
                                                     </script>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="item req">
+                                                    <p>신제품 여부</p>
+                                                </div>
+                                                <div class="input check">
+                                                    <label>
+                                                        <input type="radio" name="productIsNew_${status.index + 1}" value="Y" <c:if test="${product.productIsNew eq 'Y'}">checked</c:if>>해당
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" name="productIsNew_${status.index + 1}" value="N" <c:if test="${product.productIsNew ne 'Y'}">checked</c:if>>미해당
+                                                    </label>
                                                 </div>
                                             </li>
                                             <li>

@@ -672,13 +672,15 @@ $(document).ready(function () {
             newExhiInfoBox.find('textarea').val('');
             newExhiInfoBox.find('input[type="text"]').val('');
 
-            // 복제된 .onlineInfoBox 는 제품 사진 하나만 남기기
-            /*let exhiPrdBoxList = newExhiInfoBox.find('.exhiPrdBox');
-            for (let i = 0; i <= exhiPrdBoxList.length; i++) {
-                if (i !== 0) {
-                    exhiPrdBoxList.eq(i).remove();
-                }
-            }*/
+            // --- 라디오 버튼 name 속성 변경 및 초기화 ---
+            let newRadioName = 'productIsNew_' + exhiInfoCount;
+
+            // 1. 기존 name(productIsNew_1 등)을 찾아서 새로운 name(productIsNew_2)으로 변경
+            newExhiInfoBox.find('input[type=radio][name^="productIsNew_"]').attr('name', newRadioName);
+
+            // 2. 값 초기화 (기본값 '미해당(N)' 선택)
+            newExhiInfoBox.find('input[type=radio][name="' + newRadioName + '"][value="N"]').prop('checked', true);
+            // --- 추가 완료 ---
 
             // 복제된 .onlineInfoBox 는 제품 기존 값 목록 제거
             newExhiInfoBox.find('.preValueList').remove();
@@ -1091,7 +1093,7 @@ $(document).ready(function () {
                 deleteVisitPartner(this);
             });
             $('.visitPartnerBox:last').after(newVisitPartner);
-            updateExhiInfoNum();
+            updateVisitPartnerNum();
         }else{
             alert('동반자는 최대 3명까지 등록 가능합니다.\nUp to 3 people can register');
         }
@@ -1124,13 +1126,13 @@ $(document).ready(function () {
 
                 $(el).closest('.visitPartnerBox').remove();
                 visitPartnerCount--;
-                updateExhiInfoNum();
+                updateVisitPartnerNum();
             }//isConfirmed
         }); //swal
     }
 
     // 각 .visitPartnerBox의 .visitPartnerNum 번호 업데이트
-    function updateExhiInfoNum() {
+    function updateVisitPartnerNum() {
         $('.visitPartnerBox').each(function (index) {
             $(this).find('.visitPartnerNum').text(index + 1);
         });

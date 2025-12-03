@@ -313,6 +313,7 @@
         , ex_seq
         , product_option_big
         , product_option_small
+        , product_is_new
         , product_name_ko
         , product_name_en
         , product_qty
@@ -332,6 +333,7 @@
                , #{exSeq}
                , #{productOptionBig}
                , #{productOptionSmall}
+               , #{productIsNew}
                , <![CDATA[#{productNameKo}]]>
                , #{productNameEn}
                , #{productQty}
@@ -533,6 +535,7 @@
         UPDATE product_new
         SET product_option_big = #{productOptionBig}
           , product_option_small = #{productOptionSmall}
+          , product_is_new = #{productIsNew}
           , product_name_ko = <![CDATA[#{productNameKo}]]>
           , product_name_en = <![CDATA[#{productNameEn}]]>
           , product_qty = #{productQty}
@@ -613,6 +616,7 @@
              , ex_seq
              , product_option_big
              , product_option_small
+             , product_is_new
              , product_name_ko
              , product_name_en
              , product_qty
@@ -630,6 +634,7 @@
              , final_regi_dttm
         FROM product_new
         WHERE ex_seq = #{exSeq}
+        ORDER BY seq
     </select>
 
     <select id="selectOnlineNewList" parameterType="com.mtf.kibs.dto.OnlineNewDTO" resultType="com.mtf.kibs.dto.OnlineNewDTO">
@@ -2262,6 +2267,7 @@
              , ex_seq
              , product_option_big
              , product_option_small
+             , product_is_new
              , product_name_ko
              , product_name_en
              , product_qty
@@ -2359,6 +2365,7 @@
              , ex_seq
              , product_option_big
              , product_option_small
+             , product_is_new
              , product_name_ko
              , product_name_en
              , product_qty

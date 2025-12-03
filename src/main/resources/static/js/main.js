@@ -2931,7 +2931,8 @@ function step_2_9_check(exhibitorSeq){
                 }
 
                 //전시품정보 Json Create
-                let productCnt = Number.parseInt($('.exhiInfoNum:last').text());
+                let productNames = $('input[name=productNameKo]');
+                let productCnt = productNames.length;
                 if (productCnt > 0) {
                     for (let i = 0; i < productCnt; i++) {
                         let productOptionBig = '';
@@ -2944,11 +2945,13 @@ function step_2_9_check(exhibitorSeq){
                             productOptionBig = $('input[type=text][name=preProductOptionBig]').eq(i).val();
                             productOptionSmall = $('input[type=text][name=preProductOptionSmall]').eq(i).val();
                         }
+                        let isNewVal = $('input[name="productIsNew_' + (i + 1) + '"]:checked').val();
                         let productList_json_obj = {
                             seq: $('input[type=hidden][name=productSeq]').eq(i).val(),
                             exSeq: exhibitorSeq,
                             productOptionBig: productOptionBig,
                             productOptionSmall: productOptionSmall,
+                            productIsNew: nvl(isNewVal, 'N'),
                             productNameKo: product_name_ko_el.eq(i).val(),
                             productQty: product_qty_el.eq(i).val(),
                             productBrand: product_brand_el.eq(i).val(),
@@ -5353,8 +5356,9 @@ function my_step_2_9_check(exhibitorSeq){
             showMessage('', 'error', '[ 전시품 신청 ]', '연식을 입력해 주세요.', '');
             return false;
         }
-    
-        let productCnt = Number.parseInt($('.exhiInfoNum:last').text());
+
+        let productNames = $('input[name=productNameKo]');
+        let productCnt = productNames.length;
         if(productCnt > 0){
             for(let i=0; i<productCnt; i++){
                 let productOptionBig = '';
@@ -5367,11 +5371,13 @@ function my_step_2_9_check(exhibitorSeq){
                     productOptionBig = $('input[type=text][name=preProductOptionBig]').eq(i).val();
                     productOptionSmall = $('input[type=text][name=preProductOptionSmall]').eq(i).val();
                 }
+                let isNewVal = $('input[name="productIsNew_' + (i + 1) + '"]:checked').val();
                 let productList_json_obj = {
                     seq: $('input[type=hidden][name=productSeq]').eq(i).val(),
                     exSeq: exhibitorSeq,
                     productOptionBig: productOptionBig,
                     productOptionSmall: productOptionSmall,
+                    productIsNew: nvl(isNewVal, 'N'),
                     productNameKo: product_name_ko_el.eq(i).val(),
                     productQty: product_qty_el.eq(i).val(),
                     productBrand: product_brand_el.eq(i).val(),
@@ -5424,13 +5430,13 @@ function my_step_2_9_check(exhibitorSeq){
                     Swal.fire({
                         icon: 'info',
                         title: '[ 전시품 신청 ]',
-                        html: '<span style="font-size: 1.2em;">전시품 신청가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                        html: '<span style="font-size: 1.2em;">전시품 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
                         allowOutsideClick: false,
                         confirmButtonColor: '#00a8ff',
                         confirmButtonText: '확인'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            f_page_move('/apply/step2_2.do', exhibitorSeq);
+                            f_page_move('/mypage/step2_2.do', exhibitorSeq);
                         }
                     })
                 }

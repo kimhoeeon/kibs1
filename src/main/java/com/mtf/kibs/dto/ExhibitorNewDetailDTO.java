@@ -100,6 +100,7 @@ public class ExhibitorNewDetailDTO {
     /* 제품 (GROUP_CONCAT 결과) */
     private String productOptionBig;
     private String productOptionSmall;
+    private String productIsNew;
     private String productNameKo;
     private String productNameEn;
     private String productQty;

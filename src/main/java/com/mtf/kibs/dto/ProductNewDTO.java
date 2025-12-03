@@ -12,6 +12,7 @@ public class ProductNewDTO {
     String exSeq; //Exhibitor SEQ
     String productOptionBig; //제품분류(대)
     String productOptionSmall; //제품분류(소)
+    String productIsNew; //신제품여부
     String productNameKo; //제품명(국문)
     String productNameEn; //제품명(영문)
     int productQty; //수량

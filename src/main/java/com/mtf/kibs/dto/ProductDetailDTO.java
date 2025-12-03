@@ -15,6 +15,7 @@ public class ProductDetailDTO {
     // product_new 테이블 정보
     private String productOptionBig;
     private String productOptionSmall;
+    private String productIsNew;
     private String productNameKo;
     private Integer productQty;
     private String productBrand;

@@ -4412,41 +4412,97 @@ public class KibsMngController {
         // XSSFWorkbook 대신 SXSSFWorkbook 사용
         try (SXSSFWorkbook workbook = new SXSSFWorkbook()) {
 
-            // --- 2행 헤더 배열 ---
-            final String[] colNames_ex = {
-                    /* 업체정보 (29개) */ "No", "참가상태", "승인구분", "부스번호", "아이디", "등록일", "최종수정일", "BP번호", "컨택내역-작성자", "컨택내역-날짜", "컨택내역-내용", "참고사항-작성자", "참고사항-날짜", "참고사항-내용", "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소", "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "기참가연도", "회원사 여부",
-                    /* 입금 현황 (11개) */ "금액", "내용", "수납여부", "입금일", "입금예정일", "세금계산서", "입금자", "확인자", "코멘트", "등록일시", "수정일시",
-                    /* 대표담당자 (6개) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
-                    /* 담당자 1~3 (18개) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
-                    /* 업체소개 (8개) */ "회사소개영상", "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)", "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
-                    /* 참가분야 (10개) */ "참가행사", "보트&요트", "무동력보트", "워크보트", "해양부품&장비", "안전&마리나", "해양관광", "해양레저", "수중레저", "서핑",
-                    /* 해상전시회 (2개) */ "참가여부", "참가구분",
-                    /* 전시품 1~20 (200개) */ "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
-                    /* 기업뱃지 (4) */ "보트쇼 3회 이상 참가", "올해의 제품상 수상", "보트쇼와 제작한 영상", "제품 등록 우수",
-                    /* 온라인 제품 1~30 (330) */ "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식", "제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식",
-                    /* 신청내역 (35개) */ "수출상담회 참가희망여부", "등록비", "독립부스", "조립부스", "온라인부스", "총 부스 수", "부스가격", "참가비 합계\n(등록비+부스가격)", "1차 조기신청", "2차 조기신청", "첫 참가(10부스 미만)", "첫 참가(10부스 이상)", "재참가", "규모(10+)", "규모(20+)", "규모(30+)", "규모(40+)", "규모(50+)", "규모(100+)", "협회할인", "특할1(제품상)", "특할1 비고", "특할2 금액", "특할2 사유", "특할2 비고", "특할3 금액", "특할3 사유", "특할3 비고", "할인가격", "협회 발전기금", "유틸리티 신청내역", "유틸리티 총액", "소계(공급가액)", "부가세", "총계"
+            // --- 1. 헤더 배열 구성 (총 672개 컬럼) ---
+            List<String> headerList = new ArrayList<>();
+
+            // 1-1. 고정 헤더 (업체정보 ~ 해상전시회) : 83개
+            // [수정] "참가비수납여부" 제거 (업체정보 29개)
+            String[] fixedHeaders1 = {
+                    /* 업체정보 (29) */ "No", "참가상태", "승인구분", "부스번호", "아이디", "등록일", "최종수정일", "BP번호", "컨택내역-작성자", "컨택내역-날짜", "컨택내역-내용", "참고사항-작성자", "참고사항-날짜", "참고사항-내용", "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소", "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "기참가연도", "회원사 여부",
+                    /* 입금 현황 (11) */ "금액", "내용", "수납여부", "입금일", "입금예정일", "세금계산서", "입금자", "확인자", "코멘트", "등록일시", "수정일시",
+                    /* 대표담당자 (6) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
+                    /* 담당자 1~3 (18) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
+                    /* 업체소개 (8) */ "회사소개영상", "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)", "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
+                    /* 참가분야 (10) */ "참가행사", "보트&요트", "무동력보트", "워크보트", "해양부품&장비", "안전&마리나", "해양관광", "해양레저", "수중레저", "서핑",
+                    /* 해상전시회 (2) */ "참가여부", "참가구분"
             };
+            Collections.addAll(headerList, fixedHeaders1);
 
-            final int[] colWidths_ex = new int[colNames_ex.length];
-            Arrays.fill(colWidths_ex, 5000);
-            colWidths_ex[0] = 3000;
+            // 1-2. 전시품 정보 (20개 * 11컬럼 = 220개)
+            String[] productCols = {"제품분류(품목)", "신제품 여부", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식"};
+            for (int i = 0; i < 20; i++) {
+                Collections.addAll(headerList, productCols);
+            }
 
+            // 1-3. 기업 뱃지 ~ 온라인 제품 (4 + 330 = 334개)
+            String[] fixedHeaders2 = {
+                    /* 기업뱃지 (4) */ "보트쇼 3회 이상 참가", "올해의 제품상 수상", "보트쇼와 제작한 영상", "제품 등록 우수"
+            };
+            Collections.addAll(headerList, fixedHeaders2);
+
+            /* 온라인 제품 1~30 (330) */
+            String[] onlineCols = {"제품분류(품목)", "제품명", "제품설명(국문)", "제품설명(영문)", "제품영상", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식"};
+            for (int i = 0; i < 30; i++) {
+                Collections.addAll(headerList, onlineCols);
+            }
+
+            // 1-4. 신청내역 (35개)
+            String[] appHeaders = {
+                    "수출상담회 참가희망여부", "등록비", "독립부스", "조립부스", "온라인부스", "총 부스 수", "부스가격",
+                    "참가비 합계\n(등록비+부스가격)",
+                    "1차 조기신청", "2차 조기신청", "첫 참가(10부스 미만)", "첫 참가(10부스 이상)", "재참가",
+                    "규모(10+)", "규모(20+)", "규모(30+)", "규모(40+)", "규모(50+)", "규모(100+)",
+                    "협회할인",
+                    "특할1(제품상)", "특할1 비고", "특할2 금액", "특할2 사유", "특할2 비고", "특할3 금액", "특할3 사유", "특할3 비고",
+                    "할인가격", "협회 발전기금",
+                    "유틸리티 신청내역", "유틸리티 총액",
+                    "소계(공급가액)", "부가세", "총계"
+            };
+            Collections.addAll(headerList, appHeaders);
+
+            // 리스트를 배열로 변환
+            final String[] colNames_ex = headerList.toArray(new String[0]);
+
+            // 스타일 정의
             Font fontHeader = workbook.createFont(); fontHeader.setFontName("맑은 고딕"); fontHeader.setFontHeightInPoints((short) 9); fontHeader.setBold(true);
             Font font9 = workbook.createFont(); font9.setFontName("맑은 고딕"); font9.setFontHeightInPoints((short) 9);
-            CellStyle headerStyle = workbook.createCellStyle(); headerStyle.setAlignment(HorizontalAlignment.CENTER); headerStyle.setVerticalAlignment(VerticalAlignment.CENTER); headerStyle.setBorderRight(BorderStyle.THIN); headerStyle.setBorderLeft(BorderStyle.THIN); headerStyle.setBorderTop(BorderStyle.THIN); headerStyle.setBorderBottom(BorderStyle.THIN); headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index); headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND); headerStyle.setFont(fontHeader); headerStyle.setWrapText(true);
-            headerStyle.setWrapText(true);
-            CellStyle bodyStyle = workbook.createCellStyle(); bodyStyle.setAlignment(HorizontalAlignment.CENTER); bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER); bodyStyle.setBorderRight(BorderStyle.THIN); bodyStyle.setBorderLeft(BorderStyle.THIN); bodyStyle.setBorderTop(BorderStyle.THIN); bodyStyle.setBorderBottom(BorderStyle.THIN); bodyStyle.setFont(font9); bodyStyle.setWrapText(true);
 
-            // 입금 현황용 왼쪽 정렬 스타일
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setAlignment(HorizontalAlignment.CENTER); headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setBorderRight(BorderStyle.THIN); headerStyle.setBorderLeft(BorderStyle.THIN); headerStyle.setBorderTop(BorderStyle.THIN); headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index); headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setFont(fontHeader); headerStyle.setWrapText(true);
+
+            CellStyle bodyStyle = workbook.createCellStyle();
+            bodyStyle.setAlignment(HorizontalAlignment.CENTER); bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            bodyStyle.setBorderRight(BorderStyle.THIN); bodyStyle.setBorderLeft(BorderStyle.THIN); bodyStyle.setBorderTop(BorderStyle.THIN); bodyStyle.setBorderBottom(BorderStyle.THIN);
+            bodyStyle.setFont(font9); bodyStyle.setWrapText(true);
+
             CellStyle bodyLeftStyle = workbook.createCellStyle();
-            bodyLeftStyle.cloneStyleFrom(bodyStyle);
-            bodyLeftStyle.setAlignment(HorizontalAlignment.LEFT);
+            bodyLeftStyle.cloneStyleFrom(bodyStyle); bodyLeftStyle.setAlignment(HorizontalAlignment.LEFT);
+
+            CellStyle bodyRightStyle = workbook.createCellStyle();
+            bodyRightStyle.cloneStyleFrom(bodyStyle); bodyRightStyle.setAlignment(HorizontalAlignment.RIGHT);
 
             SXSSFSheet sheet = workbook.createSheet("참가업체");
             sheet.trackAllColumnsForAutoSizing();
             int rowCnt = 0;
 
+            // --- 1행 헤더 생성 및 병합 ---
             Row headerRow = sheet.createRow(rowCnt++);
+
+            // 병합 인덱스 재계산
+            // 0 ~ 28: 업체정보 (29)
+            // 29 ~ 39: 입금 현황 (11)
+            // 40 ~ 45: 대표 담당자 (6)
+            // 46 ~ 63: 기타 담당자 (18)
+            // 64 ~ 71: 업체정보(소개) (8)
+            // 72 ~ 81: 참가분야 (10)
+            // 82 ~ 83: 해상전시회 (2)
+            // 84 ~ 303: 전시품 정보 (220)
+            // 304 ~ 307: 기업 뱃지 (4)
+            // 308 ~ 637: 온라인 제품 정보 (330)
+            // 638 ~ 672: 신청내역 (35)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 28));   headerRow.createCell(0).setCellValue("참가업체정보");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 29, 39));  headerRow.createCell(29).setCellValue("입금 현황");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 40, 45));  headerRow.createCell(40).setCellValue("대표 담당자");
@@ -4454,24 +4510,28 @@ public class KibsMngController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 64, 71));  headerRow.createCell(64).setCellValue("업체정보(소개)");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 72, 81));  headerRow.createCell(72).setCellValue("참가분야");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 82, 83));  headerRow.createCell(82).setCellValue("해상전시회");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 84, 283)); headerRow.createCell(84).setCellValue("전시품 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 284, 287)); headerRow.createCell(284).setCellValue("기업 뱃지");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 288, 617)); headerRow.createCell(288).setCellValue("온라인 제품 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 618, 652)); headerRow.createCell(618).setCellValue("신청내역");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 84, 303)); headerRow.createCell(84).setCellValue("전시품 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 304, 307)); headerRow.createCell(304).setCellValue("기업 뱃지");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 308, 637)); headerRow.createCell(308).setCellValue("온라인 제품 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 638, 672)); headerRow.createCell(638).setCellValue("신청내역");
 
             for(int i=0; i < colNames_ex.length; i++){
                 if(headerRow.getCell(i) == null) headerRow.createCell(i);
                 headerRow.getCell(i).setCellStyle(headerStyle);
             }
 
+            // --- 2행 헤더 생성 ---
             Row subHeaderRow = sheet.createRow(rowCnt++);
             subHeaderRow.setHeightInPoints(35);
             for (int i = 0; i < colNames_ex.length; i++) {
                 Cell cell = subHeaderRow.createCell(i);
                 cell.setCellStyle(headerStyle);
                 cell.setCellValue(colNames_ex[i]);
-                sheet.setColumnWidth(i, colWidths_ex[i]);
+                sheet.setColumnWidth(i, 5000);
             }
+            sheet.setColumnWidth(0, 3000); // No 컬럼
+            // [수정] 유틸리티 신청내역 너비 설정 (638 + 30 = 668번 인덱스)
+            sheet.setColumnWidth(668, 8000);
 
             ExhibitorNewDetailDTO exhibitorDetailDTO = new ExhibitorNewDetailDTO();
             exhibitorDetailDTO.setTransferYear(transferYear);
@@ -4526,7 +4586,7 @@ public class KibsMngController {
             CellStyle mainHeaderStyle = workbook.createCellStyle(); mainHeaderStyle.setAlignment(HorizontalAlignment.CENTER); mainHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER); mainHeaderStyle.setBorderTop(BorderStyle.THIN); mainHeaderStyle.setBorderBottom(BorderStyle.THIN); mainHeaderStyle.setBorderLeft(BorderStyle.THIN); mainHeaderStyle.setBorderRight(BorderStyle.THIN); mainHeaderStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.index); mainHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND); mainHeaderStyle.setFont(headerFont);
             CellStyle subHeaderStyle = workbook.createCellStyle(); subHeaderStyle.setAlignment(HorizontalAlignment.CENTER); subHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER); subHeaderStyle.setBorderTop(BorderStyle.THIN); subHeaderStyle.setBorderBottom(BorderStyle.THIN); subHeaderStyle.setBorderLeft(BorderStyle.THIN); subHeaderStyle.setBorderRight(BorderStyle.THIN); subHeaderStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index); subHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND); subHeaderStyle.setFont(headerFont);
             CellStyle bodyCenterStyle = workbook.createCellStyle(); bodyCenterStyle.cloneStyleFrom(bodyLeftStyle); bodyCenterStyle.setAlignment(HorizontalAlignment.CENTER);
-            CellStyle bodyRightStyle = workbook.createCellStyle(); bodyRightStyle.cloneStyleFrom(bodyLeftStyle); bodyRightStyle.setAlignment(HorizontalAlignment.RIGHT);
+            bodyRightStyle = workbook.createCellStyle(); bodyRightStyle.cloneStyleFrom(bodyLeftStyle); bodyRightStyle.setAlignment(HorizontalAlignment.RIGHT);
             CellStyle noteStyle = workbook.createCellStyle(); noteStyle.cloneStyleFrom(bodyLeftStyle); noteStyle.setFont(noteFont);
 
             // --- ■ 부스 (VAT 별도) ---
@@ -4887,27 +4947,49 @@ public class KibsMngController {
     private int writeExhibitionItems(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
         for(int i=0; i<20; i++){
             String[] productOptionBigSplit = info.getProductOptionBig() != null ? info.getProductOptionBig().split("\\^", -1) : new String[0];
-            String[] productOptionSmallSplit = info.getProductOptionSmall() != null ? info.getProductOptionSmall().split("\\^", -1) : new String[0];
             String productOptionBig = convertValue(productOptionBigSplit, i);
-            dataRow.createCell(cellCnt++).setCellValue((productOptionBig != null && !productOptionBig.isEmpty()) ? productOptionBig + " / " + convertValue(productOptionSmallSplit, i) : "");
-            String[] productNameKoSplit = info.getProductNameKo() != null ? info.getProductNameKo().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(productNameKoSplit, i));
-            String[] productQtySplit = info.getProductQty() != null ? info.getProductQty().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(productQtySplit, i));
-            String[] productBrandSplit = info.getProductBrand() != null ? info.getProductBrand().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(productBrandSplit, i));
-            String[] productLengthSplit = info.getProductLength() != null ? info.getProductLength().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(productLengthSplit, i));
-            String[] productWidthSplit = info.getProductWidth() != null ? info.getProductWidth().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(productWidthSplit, i));
-            String[] productHeightSplit = info.getProductHeight() != null ? info.getProductHeight().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(productHeightSplit, i));
-            String[] productWeightSplit = info.getProductWeight() != null ? info.getProductWeight().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(productWeightSplit, i));
-            String[] productMaterialSplit = info.getProductMaterial() != null ? info.getProductMaterial().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(productMaterialSplit, i));
-            String[] productYearSplit = info.getProductYear() != null ? info.getProductYear().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(productYearSplit, i));
+            // 제품분류 값이 있을 때만 데이터를 입력합니다.
+            if (productOptionBig != null && !productOptionBig.trim().isEmpty()) {
+                String[] productOptionSmallSplit = info.getProductOptionSmall() != null ? info.getProductOptionSmall().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue((productOptionBig != null && !productOptionBig.isEmpty()) ? productOptionBig + " / " + convertValue(productOptionSmallSplit, i) : "");
+
+                String[] productIsNewSplit = info.getProductIsNew() != null ? info.getProductIsNew().split("\\^", -1) : new String[0];
+                String isNew = convertValue(productIsNewSplit, i);
+                dataRow.createCell(cellCnt++).setCellValue("Y".equals(isNew) ? "O" : "X");
+
+                String[] productNameKoSplit = info.getProductNameKo() != null ? info.getProductNameKo().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(productNameKoSplit, i));
+
+                String[] productQtySplit = info.getProductQty() != null ? info.getProductQty().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(productQtySplit, i));
+
+                String[] productBrandSplit = info.getProductBrand() != null ? info.getProductBrand().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(productBrandSplit, i));
+
+                String[] productLengthSplit = info.getProductLength() != null ? info.getProductLength().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(productLengthSplit, i));
+
+                String[] productWidthSplit = info.getProductWidth() != null ? info.getProductWidth().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(productWidthSplit, i));
+
+                String[] productHeightSplit = info.getProductHeight() != null ? info.getProductHeight().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(productHeightSplit, i));
+
+                String[] productWeightSplit = info.getProductWeight() != null ? info.getProductWeight().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(productWeightSplit, i));
+
+                String[] productMaterialSplit = info.getProductMaterial() != null ? info.getProductMaterial().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(productMaterialSplit, i));
+
+                String[] productYearSplit = info.getProductYear() != null ? info.getProductYear().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(productYearSplit, i));
+
+            }else{
+                // 데이터가 없으면 11개 컬럼을 모두 빈칸으로 채움
+                for (int j = 0; j < 11; j++) {
+                    dataRow.createCell(cellCnt++).setCellValue("");
+                }
+            }
         }
         return cellCnt;
     }
@@ -4924,29 +5006,48 @@ public class KibsMngController {
     private int writeOnlineProducts(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
         for(int i=0; i<30; i++) {
             String[] onlineOptionBigSplit = info.getOnlineOptionBig() != null ? info.getOnlineOptionBig().split("\\^", -1) : new String[0];
-            String[] onlineOptionSmallSplit = info.getOnlineOptionSmall() != null ? info.getOnlineOptionSmall().split("\\^", -1) : new String[0];
             String onlineOptionBig = convertValue(onlineOptionBigSplit, i);
-            dataRow.createCell(cellCnt++).setCellValue((onlineOptionBig != null && !onlineOptionBig.isEmpty()) ? onlineOptionBig + " / " + convertValue(onlineOptionSmallSplit, i) : "");
-            String[] onlineNameKoSplit = info.getOnlineNameKo() != null ? info.getOnlineNameKo().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineNameKoSplit, i));
-            String[] onlineIntroKoSplit = info.getOnlineIntroKo() != null ? info.getOnlineIntroKo().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineIntroKoSplit, i));
-            String[] onlineIntroEnSplit = info.getOnlineIntroEn() != null ? info.getOnlineIntroEn().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineIntroEnSplit, i));
-            String[] onlineLinkSplit = info.getOnlineLink() != null ? info.getOnlineLink().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineLinkSplit, i));
-            String[] onlineLengthSplit = info.getOnlineLength() != null ? info.getOnlineLength().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineLengthSplit, i));
-            String[] onlineWidthSplit = info.getOnlineWidth() != null ? info.getOnlineWidth().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineWidthSplit, i));
-            String[] onlineHeightSplit = info.getOnlineHeight() != null ? info.getOnlineHeight().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineHeightSplit, i));
-            String[] onlineWeightSplit = info.getOnlineWeight() != null ? info.getOnlineWeight().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineWeightSplit, i));
-            String[] onlineMaterialSplit = info.getOnlineMaterial() != null ? info.getOnlineMaterial().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineMaterialSplit, i));
-            String[] onlineYearSplit = info.getOnlineYear() != null ? info.getOnlineYear().split("\\^", -1) : new String[0];
-            dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineYearSplit, i));
+            // 제품분류 값이 있을 때만 데이터를 입력합니다.
+            if (onlineOptionBig != null && !onlineOptionBig.trim().isEmpty()) {
+                String[] onlineOptionSmallSplit = info.getOnlineOptionSmall() != null ? info.getOnlineOptionSmall().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue((onlineOptionBig != null && !onlineOptionBig.isEmpty()) ? onlineOptionBig + " / " + convertValue(onlineOptionSmallSplit, i) : "");
+
+                String[] onlineNameKoSplit = info.getOnlineNameKo() != null ? info.getOnlineNameKo().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineNameKoSplit, i));
+
+                String[] onlineIntroKoSplit = info.getOnlineIntroKo() != null ? info.getOnlineIntroKo().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineIntroKoSplit, i));
+
+                String[] onlineIntroEnSplit = info.getOnlineIntroEn() != null ? info.getOnlineIntroEn().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineIntroEnSplit, i));
+
+                String[] onlineLinkSplit = info.getOnlineLink() != null ? info.getOnlineLink().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineLinkSplit, i));
+
+                String[] onlineLengthSplit = info.getOnlineLength() != null ? info.getOnlineLength().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineLengthSplit, i));
+
+                String[] onlineWidthSplit = info.getOnlineWidth() != null ? info.getOnlineWidth().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineWidthSplit, i));
+
+                String[] onlineHeightSplit = info.getOnlineHeight() != null ? info.getOnlineHeight().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineHeightSplit, i));
+
+                String[] onlineWeightSplit = info.getOnlineWeight() != null ? info.getOnlineWeight().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineWeightSplit, i));
+
+                String[] onlineMaterialSplit = info.getOnlineMaterial() != null ? info.getOnlineMaterial().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineMaterialSplit, i));
+
+                String[] onlineYearSplit = info.getOnlineYear() != null ? info.getOnlineYear().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineYearSplit, i));
+
+            }else{
+                // 데이터가 없으면 11개 컬럼을 모두 빈칸으로 채움
+                for (int j = 0; j < 11; j++) {
+                    dataRow.createCell(cellCnt++).setCellValue("");
+                }
+            }
         }
         return cellCnt;
     }
@@ -7988,7 +8089,23 @@ public class KibsMngController {
                     row.createCell(cellCnt++).setCellValue(booth.getInvoiceYn().equals("Y") ? "O" : ""); // 3. 인보이스
 
                     row.createCell(cellCnt++).setCellValue(df.format(registrationFee) + " 원"); // 4. 참가비
-                    row.createCell(cellCnt++).setCellValue(booth.getBoothType()); // 5. 부스구분
+
+                    String originalBoothType = booth.getBoothType();
+                    String displayBoothType = "";
+                    if (originalBoothType != null) {
+                        // 1. "등록비"와 공백을 제거합니다.
+                        displayBoothType = originalBoothType.replace("등록비", "").replace(" ", "");
+
+                        // 2. 맨 앞이나 맨 뒤에 남은 콤마(,)를 제거합니다.
+                        if (displayBoothType.startsWith(",")) {
+                            displayBoothType = displayBoothType.substring(1);
+                        }
+                        if (displayBoothType.endsWith(",")) {
+                            displayBoothType = displayBoothType.substring(0, displayBoothType.length() - 1);
+                        }
+                    }
+
+                    row.createCell(cellCnt++).setCellValue(displayBoothType); // 5. 부스구분
                     row.createCell(cellCnt++).setCellValue(booth.getStandAloneBoothCnt() + booth.getAssemblyBoothCnt() + booth.getOnlineBoothCnt()); // 6. 부스수량
                     row.createCell(cellCnt++).setCellValue(df.format(boothPriceOnly) + " 원"); // 7. 부스가격
 
@@ -8590,8 +8707,8 @@ public class KibsMngController {
             Cell companySubCell2 = subHeaderRow.createCell(1);
             companySubCell2.setCellValue("업체명");
 
-            // 1-2. 전시품 신청 헤더 (20개 반복)
-            String[] productHeaders = {"제품분류(대분류)", "제품분류(소분류)", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식"};
+            // 1-2. 전시품 신청 헤더 (21개 반복)
+            String[] productHeaders = {"제품분류(대분류)", "제품분류(소분류)", "신제품 여부", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식"};
             for (int i = 0; i < 20; i++) {
                 int startCol = 2 + (i * productHeaders.length);
                 Cell productMainCell = mainHeaderRow.createCell(startCol);
@@ -8630,7 +8747,7 @@ public class KibsMngController {
                 row.createCell(0).setCellValue(companyNum++);
                 row.createCell(1).setCellValue(products.get(0).getCompanyNameKo());
 
-                // 전시품 신청 채우기 (최대 20개)
+                // 전시품 신청 채우기 (최대 21개)
                 for (int i = 0; i < products.size() && i < 20; i++) {
                     ProductDetailDTO product = products.get(i);
                     int startCol = 2 + (i * productHeaders.length);
@@ -8639,15 +8756,17 @@ public class KibsMngController {
                     if (product.getProductOptionBig() != null) {
                         row.createCell(startCol).setCellValue(product.getProductOptionBig());
                         row.createCell(startCol + 1).setCellValue(product.getProductOptionSmall());
-                        row.createCell(startCol + 2).setCellValue(product.getProductNameKo());
-                        row.createCell(startCol + 3).setCellValue(product.getProductQty() != null ? String.valueOf(product.getProductQty()) : "");
-                        row.createCell(startCol + 4).setCellValue(product.getProductBrand());
-                        row.createCell(startCol + 5).setCellValue(product.getProductLength() != null ? String.valueOf(product.getProductLength()) : "");
-                        row.createCell(startCol + 6).setCellValue(product.getProductWidth() != null ? String.valueOf(product.getProductWidth()) : "");
-                        row.createCell(startCol + 7).setCellValue(product.getProductHeight() != null ? String.valueOf(product.getProductHeight()) : "");
-                        row.createCell(startCol + 8).setCellValue(product.getProductWeight() != null ? String.valueOf(product.getProductWeight()) : "");
-                        row.createCell(startCol + 9).setCellValue(product.getProductMaterial());
-                        row.createCell(startCol + 10).setCellValue(product.getProductYear() != null ? String.valueOf(product.getProductYear()) : "");
+                        String isNew = "Y".equals(product.getProductIsNew()) ? "O" : "X";
+                        row.createCell(startCol + 2).setCellValue(isNew);
+                        row.createCell(startCol + 3).setCellValue(product.getProductNameKo());
+                        row.createCell(startCol + 4).setCellValue(product.getProductQty() != null ? String.valueOf(product.getProductQty()) : "");
+                        row.createCell(startCol + 5).setCellValue(product.getProductBrand());
+                        row.createCell(startCol + 6).setCellValue(product.getProductLength() != null ? String.valueOf(product.getProductLength()) : "");
+                        row.createCell(startCol + 7).setCellValue(product.getProductWidth() != null ? String.valueOf(product.getProductWidth()) : "");
+                        row.createCell(startCol + 8).setCellValue(product.getProductHeight() != null ? String.valueOf(product.getProductHeight()) : "");
+                        row.createCell(startCol + 9).setCellValue(product.getProductWeight() != null ? String.valueOf(product.getProductWeight()) : "");
+                        row.createCell(startCol + 10).setCellValue(product.getProductMaterial());
+                        row.createCell(startCol + 11).setCellValue(product.getProductYear() != null ? String.valueOf(product.getProductYear()) : "");
                     }
                 }
 
@@ -8664,7 +8783,12 @@ public class KibsMngController {
             for (int i = 0; i < 20; i++) {
                 int startCol = 2 + (i * productHeaders.length);
                 for (int j = 0; j < productHeaders.length; j++) {
-                    sheet.setColumnWidth(startCol + j, 4000);
+                    // 신제품 여부 컬럼 너비 조정 (약간 좁게)
+                    if (j == 2) {
+                        sheet.setColumnWidth(startCol + j, 3000);
+                    } else {
+                        sheet.setColumnWidth(startCol + j, 4000);
+                    }
                 }
             }
 

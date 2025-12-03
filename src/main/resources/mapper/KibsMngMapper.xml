@@ -2385,6 +2385,7 @@
              , ex_seq
              , product_option_big
              , product_option_small
+             , product_is_new
              , product_name_ko
              , product_name_en
              , product_qty
@@ -5504,100 +5505,99 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewDetailList */
         SELECT
             e.*,
-            GROUP_CONCAT(DISTINCT c.charge_person_name ORDER BY c.seq SEPARATOR '^') as chargePersonName,
-            GROUP_CONCAT(DISTINCT c.charge_person_position ORDER BY c.seq SEPARATOR '^') as chargePersonPosition,
-            GROUP_CONCAT(DISTINCT c.charge_person_depart ORDER BY c.seq SEPARATOR '^') as chargePersonDepart,
-            GROUP_CONCAT(DISTINCT c.charge_person_tel ORDER BY c.seq SEPARATOR '^') as chargePersonTel,
-            GROUP_CONCAT(DISTINCT c.charge_person_phone ORDER BY c.seq SEPARATOR '^') as chargePersonPhone,
-            GROUP_CONCAT(DISTINCT c.charge_person_email ORDER BY c.seq SEPARATOR '^') as chargePersonEmail,
+            /* --- 담당자 정보 (서브쿼리) --- */
+            (SELECT GROUP_CONCAT(charge_person_name ORDER BY seq SEPARATOR '^') FROM charge_new WHERE ex_seq = e.seq) as chargePersonName,
+            (SELECT GROUP_CONCAT(charge_person_position ORDER BY seq SEPARATOR '^') FROM charge_new WHERE ex_seq = e.seq) as chargePersonPosition,
+            (SELECT GROUP_CONCAT(charge_person_depart ORDER BY seq SEPARATOR '^') FROM charge_new WHERE ex_seq = e.seq) as chargePersonDepart,
+            (SELECT GROUP_CONCAT(charge_person_tel ORDER BY seq SEPARATOR '^') FROM charge_new WHERE ex_seq = e.seq) as chargePersonTel,
+            (SELECT GROUP_CONCAT(charge_person_phone ORDER BY seq SEPARATOR '^') FROM charge_new WHERE ex_seq = e.seq) as chargePersonPhone,
+            (SELECT GROUP_CONCAT(charge_person_email ORDER BY seq SEPARATOR '^') FROM charge_new WHERE ex_seq = e.seq) as chargePersonEmail,
 
-            GROUP_CONCAT(DISTINCT p.product_option_big ORDER BY p.seq SEPARATOR '^') as productOptionBig,
-            GROUP_CONCAT(DISTINCT p.product_option_small ORDER BY p.seq SEPARATOR '^') as productOptionSmall,
-            GROUP_CONCAT(DISTINCT p.product_name_ko ORDER BY p.seq SEPARATOR '^') as productNameKo,
-            GROUP_CONCAT(DISTINCT p.product_name_en ORDER BY p.seq SEPARATOR '^') as productNameEn,
-            GROUP_CONCAT(DISTINCT p.product_qty ORDER BY p.seq SEPARATOR '^') as productQty,
-            GROUP_CONCAT(DISTINCT p.product_brand ORDER BY p.seq SEPARATOR '^') as productBrand,
-            GROUP_CONCAT(DISTINCT p.product_length ORDER BY p.seq SEPARATOR '^') as productLength,
-            GROUP_CONCAT(DISTINCT p.product_width ORDER BY p.seq SEPARATOR '^') as productWidth,
-            GROUP_CONCAT(DISTINCT p.product_height ORDER BY p.seq SEPARATOR '^') as productHeight,
-            GROUP_CONCAT(DISTINCT p.product_weight ORDER BY p.seq SEPARATOR '^') as productWeight,
-            GROUP_CONCAT(DISTINCT p.product_material ORDER BY p.seq SEPARATOR '^') as productMaterial,
-            GROUP_CONCAT(DISTINCT p.product_year ORDER BY p.seq SEPARATOR '^') as productYear,
-            GROUP_CONCAT(DISTINCT p.product_intro_ko ORDER BY p.seq SEPARATOR '^') as productIntroKo,
-            GROUP_CONCAT(DISTINCT p.product_intro_en ORDER BY p.seq SEPARATOR '^') as productIntroEn,
-            GROUP_CONCAT(DISTINCT p.product_link ORDER BY p.seq SEPARATOR '^') as productLink,
+            /* --- 전시품 정보 (서브쿼리) --- */
+            (SELECT GROUP_CONCAT(product_option_big ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productOptionBig,
+            (SELECT GROUP_CONCAT(product_option_small ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productOptionSmall,
+            (SELECT GROUP_CONCAT(product_is_new ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productIsNew, /* 신제품 여부 추가 */
+            (SELECT GROUP_CONCAT(product_name_ko ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productNameKo,
+            (SELECT GROUP_CONCAT(product_name_en ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productNameEn,
+            (SELECT GROUP_CONCAT(product_qty ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productQty,
+            (SELECT GROUP_CONCAT(product_brand ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productBrand,
+            (SELECT GROUP_CONCAT(product_length ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productLength,
+            (SELECT GROUP_CONCAT(product_width ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productWidth,
+            (SELECT GROUP_CONCAT(product_height ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productHeight,
+            (SELECT GROUP_CONCAT(product_weight ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productWeight,
+            (SELECT GROUP_CONCAT(product_material ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productMaterial,
+            (SELECT GROUP_CONCAT(product_year ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productYear,
+            (SELECT GROUP_CONCAT(product_intro_ko ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productIntroKo,
+            (SELECT GROUP_CONCAT(product_intro_en ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productIntroEn,
+            (SELECT GROUP_CONCAT(product_link ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productLink,
 
-            GROUP_CONCAT(DISTINCT o.online_option_big ORDER BY o.seq SEPARATOR '^') as onlineOptionBig,
-            GROUP_CONCAT(DISTINCT o.online_option_small ORDER BY o.seq SEPARATOR '^') as onlineOptionSmall,
-            GROUP_CONCAT(DISTINCT o.online_name_ko ORDER BY o.seq SEPARATOR '^') as onlineNameKo,
-            GROUP_CONCAT(DISTINCT o.online_name_en ORDER BY o.seq SEPARATOR '^') as onlineNameEn,
-            GROUP_CONCAT(DISTINCT o.online_intro_ko ORDER BY o.seq SEPARATOR '^') as onlineIntroKo,
-            GROUP_CONCAT(DISTINCT o.online_intro_en ORDER BY o.seq SEPARATOR '^') as onlineIntroEn,
-            GROUP_CONCAT(DISTINCT o.online_link ORDER BY o.seq SEPARATOR '^') as onlineLink,
-            GROUP_CONCAT(DISTINCT o.online_length ORDER BY o.seq SEPARATOR '^') as onlineLength,
-            GROUP_CONCAT(DISTINCT o.online_width ORDER BY o.seq SEPARATOR '^') as onlineWidth,
-            GROUP_CONCAT(DISTINCT o.online_height ORDER BY o.seq SEPARATOR '^') as onlineHeight,
-            GROUP_CONCAT(DISTINCT o.online_weight ORDER BY o.seq SEPARATOR '^') as onlineWeight,
-            GROUP_CONCAT(DISTINCT o.online_material ORDER BY o.seq SEPARATOR '^') as onlineMaterial,
-            GROUP_CONCAT(DISTINCT o.online_year ORDER BY o.seq SEPARATOR '^') as onlineYear,
+            /* --- 온라인 전시관 (서브쿼리) --- */
+            (SELECT GROUP_CONCAT(online_option_big ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineOptionBig,
+            (SELECT GROUP_CONCAT(online_option_small ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineOptionSmall,
+            (SELECT GROUP_CONCAT(online_name_ko ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineNameKo,
+            (SELECT GROUP_CONCAT(online_name_en ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineNameEn,
+            (SELECT GROUP_CONCAT(online_intro_ko ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineIntroKo,
+            (SELECT GROUP_CONCAT(online_intro_en ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineIntroEn,
+            (SELECT GROUP_CONCAT(online_link ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineLink,
+            (SELECT GROUP_CONCAT(online_length ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineLength,
+            (SELECT GROUP_CONCAT(online_width ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineWidth,
+            (SELECT GROUP_CONCAT(online_height ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineHeight,
+            (SELECT GROUP_CONCAT(online_weight ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineWeight,
+            (SELECT GROUP_CONCAT(online_material ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineMaterial,
+            (SELECT GROUP_CONCAT(online_year ORDER BY seq SEPARATOR '^') FROM online_new WHERE ex_seq = e.seq) as onlineYear,
 
-            GROUP_CONCAT(DISTINCT ps.pass_name ORDER BY ps.seq SEPARATOR '^') as passName,
-            GROUP_CONCAT(DISTINCT ps.pass_last_name ORDER BY ps.seq SEPARATOR '^') as passLastName,
-            GROUP_CONCAT(DISTINCT ps.pass_first_name ORDER BY ps.seq SEPARATOR '^') as passFirstName,
-            GROUP_CONCAT(DISTINCT ps.pass_position_ko ORDER BY ps.seq SEPARATOR '^') as passPositionKo,
-            GROUP_CONCAT(DISTINCT ps.pass_position_en ORDER BY ps.seq SEPARATOR '^') as passPositionEn,
-            GROUP_CONCAT(DISTINCT ps.pass_note ORDER BY ps.seq SEPARATOR '^') as passNote,
+            /* --- 출입증 (서브쿼리) --- */
+            (SELECT GROUP_CONCAT(pass_name ORDER BY seq SEPARATOR '^') FROM pass_new WHERE ex_seq = e.seq) as passName,
+            (SELECT GROUP_CONCAT(pass_last_name ORDER BY seq SEPARATOR '^') FROM pass_new WHERE ex_seq = e.seq) as passLastName,
+            (SELECT GROUP_CONCAT(pass_first_name ORDER BY seq SEPARATOR '^') FROM pass_new WHERE ex_seq = e.seq) as passFirstName,
+            (SELECT GROUP_CONCAT(pass_position_ko ORDER BY seq SEPARATOR '^') FROM pass_new WHERE ex_seq = e.seq) as passPositionKo,
+            (SELECT GROUP_CONCAT(pass_position_en ORDER BY seq SEPARATOR '^') FROM pass_new WHERE ex_seq = e.seq) as passPositionEn,
+            (SELECT GROUP_CONCAT(pass_note ORDER BY seq SEPARATOR '^') FROM pass_new WHERE ex_seq = e.seq) as passNote,
 
-            GROUP_CONCAT(DISTINCT b.buyer_company_name ORDER BY b.seq SEPARATOR '^') as buyerCompanyName,
-            GROUP_CONCAT(DISTINCT b.buyer_company_country ORDER BY b.seq SEPARATOR '^') as buyerCompanyCountry,
-            GROUP_CONCAT(DISTINCT b.buyer_company_location ORDER BY b.seq SEPARATOR '^') as buyerCompanyLocation,
-            GROUP_CONCAT(DISTINCT b.buyer_company_homepage ORDER BY b.seq SEPARATOR '^') as buyerCompanyHomepage,
-            GROUP_CONCAT(DISTINCT b.buyer_company_depart ORDER BY b.seq SEPARATOR '^') as buyerCompanyDepart,
-            GROUP_CONCAT(DISTINCT b.buyer_company_position ORDER BY b.seq SEPARATOR '^') as buyerCompanyPosition,
-            GROUP_CONCAT(DISTINCT b.buyer_company_email ORDER BY b.seq SEPARATOR '^') as buyerCompanyEmail,
-            GROUP_CONCAT(DISTINCT b.buyer_company_tel ORDER BY b.seq SEPARATOR '^') as buyerCompanyTel,
-            GROUP_CONCAT(DISTINCT b.buyer_company_phone ORDER BY b.seq SEPARATOR '^') as buyerCompanyPhone,
-            GROUP_CONCAT(DISTINCT b.buyer_company_fax ORDER BY b.seq SEPARATOR '^') as buyerCompanyFax,
-            GROUP_CONCAT(DISTINCT b.buyer_company_item ORDER BY b.seq SEPARATOR '^') as buyerCompanyItem,
-            GROUP_CONCAT(DISTINCT b.buyer_company_invite_reason ORDER BY b.seq SEPARATOR '^') as buyerCompanyInviteReason,
-            GROUP_CONCAT(DISTINCT b.buyer_company_progress_yn ORDER BY b.seq SEPARATOR '^') as buyerCompanyProgressYn,
-            GROUP_CONCAT(DISTINCT b.buyer_company_hope ORDER BY b.seq SEPARATOR '^') as buyerCompanyHope,
+            /* --- 바이어 (서브쿼리) --- */
+            (SELECT GROUP_CONCAT(buyer_company_name ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyName,
+            (SELECT GROUP_CONCAT(buyer_company_country ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyCountry,
+            (SELECT GROUP_CONCAT(buyer_company_location ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyLocation,
+            (SELECT GROUP_CONCAT(buyer_company_homepage ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyHomepage,
+            (SELECT GROUP_CONCAT(buyer_company_depart ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyDepart,
+            (SELECT GROUP_CONCAT(buyer_company_position ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyPosition,
+            (SELECT GROUP_CONCAT(buyer_company_email ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyEmail,
+            (SELECT GROUP_CONCAT(buyer_company_tel ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyTel,
+            (SELECT GROUP_CONCAT(buyer_company_phone ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyPhone,
+            (SELECT GROUP_CONCAT(buyer_company_fax ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyFax,
+            (SELECT GROUP_CONCAT(buyer_company_item ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyItem,
+            (SELECT GROUP_CONCAT(buyer_company_invite_reason ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyInviteReason,
+            (SELECT GROUP_CONCAT(buyer_company_progress_yn ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyProgressYn,
+            (SELECT GROUP_CONCAT(buyer_company_hope ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyHope,
 
-            GROUP_CONCAT(DISTINCT g.gift_gbn ORDER BY g.seq SEPARATOR '^') as giftGbn,
-            GROUP_CONCAT(DISTINCT g.gift_cnt ORDER BY g.seq SEPARATOR '^') as giftCnt,
-            GROUP_CONCAT(DISTINCT g.gift_classify ORDER BY g.seq SEPARATOR '^') as giftClassify,
-            GROUP_CONCAT(DISTINCT g.gift_name ORDER BY g.seq SEPARATOR '^') as giftName,
-            GROUP_CONCAT(DISTINCT g.gift_content ORDER BY g.seq SEPARATOR '^') as giftContent,
-            GROUP_CONCAT(DISTINCT g.gift_photo ORDER BY g.seq SEPARATOR '^') as giftPhoto,
-            GROUP_CONCAT(DISTINCT g.gift_company_logo ORDER BY g.seq SEPARATOR '^') as giftCompanyLogo,
-            GROUP_CONCAT(DISTINCT g.gift_price ORDER BY g.seq SEPARATOR '^') as giftPrice,
-            GROUP_CONCAT(DISTINCT g.gift_sponsor_price ORDER BY g.seq SEPARATOR '^') as giftSponsorPrice,
-            GROUP_CONCAT(DISTINCT g.gift_note ORDER BY g.seq SEPARATOR '^') as giftNote,
+            /* --- 경품 (서브쿼리) --- */
+            (SELECT GROUP_CONCAT(gift_gbn ORDER BY seq SEPARATOR '^') FROM gift_new WHERE ex_seq = e.seq) as giftGbn,
+            (SELECT GROUP_CONCAT(gift_cnt ORDER BY seq SEPARATOR '^') FROM gift_new WHERE ex_seq = e.seq) as giftCnt,
+            (SELECT GROUP_CONCAT(gift_classify ORDER BY seq SEPARATOR '^') FROM gift_new WHERE ex_seq = e.seq) as giftClassify,
+            (SELECT GROUP_CONCAT(gift_name ORDER BY seq SEPARATOR '^') FROM gift_new WHERE ex_seq = e.seq) as giftName,
+            (SELECT GROUP_CONCAT(gift_content ORDER BY seq SEPARATOR '^') FROM gift_new WHERE ex_seq = e.seq) as giftContent,
+            (SELECT GROUP_CONCAT(gift_photo ORDER BY seq SEPARATOR '^') FROM gift_new WHERE ex_seq = e.seq) as giftPhoto,
+            (SELECT GROUP_CONCAT(gift_company_logo ORDER BY seq SEPARATOR '^') FROM gift_new WHERE ex_seq = e.seq) as giftCompanyLogo,
+            (SELECT GROUP_CONCAT(gift_price ORDER BY seq SEPARATOR '^') FROM gift_new WHERE ex_seq = e.seq) as giftPrice,
+            (SELECT GROUP_CONCAT(gift_sponsor_price ORDER BY seq SEPARATOR '^') FROM gift_new WHERE ex_seq = e.seq) as giftSponsorPrice,
+            (SELECT GROUP_CONCAT(gift_note ORDER BY seq SEPARATOR '^') FROM gift_new WHERE ex_seq = e.seq) as giftNote,
 
-            GROUP_CONCAT(DISTINCT dh.amount ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositAmounts,
-            GROUP_CONCAT(DISTINCT dh.content_type ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositContents,
-            GROUP_CONCAT(DISTINCT dh.payment_status ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositStatuses,
-            GROUP_CONCAT(DISTINCT DATE_FORMAT(dh.deposit_date, '%Y-%m-%d') ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositDates,
-            GROUP_CONCAT(DISTINCT DATE_FORMAT(dh.scheduled_date, '%Y-%m-%d') ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositScheduledDates,
-            GROUP_CONCAT(DISTINCT dh.tax_invoice_status ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositTaxStatuses,
-            GROUP_CONCAT(DISTINCT dh.depositor_name ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositDepositorNames,
-            GROUP_CONCAT(DISTINCT dh.confirmer_name ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositConfirmerNames,
-            GROUP_CONCAT(DISTINCT dh.comment ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositComments,
-            GROUP_CONCAT(DISTINCT DATE_FORMAT(dh.init_regi_dttm, '%Y-%m-%d %H:%i') ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositInitRegiDttms,
-            GROUP_CONCAT(DISTINCT DATE_FORMAT(dh.final_regi_dttm, '%Y-%m-%d %H:%i') ORDER BY dh.init_regi_dttm SEPARATOR '\n') as depositFinalRegiDttms
-        FROM
-            exhibitor_new e
-                LEFT JOIN charge_new c ON e.seq = c.ex_seq
-                LEFT JOIN product_new p ON e.seq = p.ex_seq
-                LEFT JOIN online_new o ON e.seq = o.ex_seq
-                LEFT JOIN pass_new ps ON e.seq = ps.ex_seq
-                LEFT JOIN buyer_new b ON e.seq = b.ex_seq
-                LEFT JOIN gift_new g ON e.seq = g.ex_seq
-                LEFT JOIN deposit_history dh ON e.seq = dh.exhibitor_seq
-        WHERE
-            e.transfer_year = #{transferYear}
-        GROUP BY
-            e.seq, e.init_regi_dttm
+            /* --- 입금 내역 (서브쿼리) --- */
+            (SELECT GROUP_CONCAT(amount ORDER BY init_regi_dttm SEPARATOR '\n') FROM deposit_history WHERE exhibitor_seq = e.seq) as depositAmounts,
+            (SELECT GROUP_CONCAT(content_type ORDER BY init_regi_dttm SEPARATOR '\n') FROM deposit_history WHERE exhibitor_seq = e.seq) as depositContents,
+            (SELECT GROUP_CONCAT(payment_status ORDER BY init_regi_dttm SEPARATOR '\n') FROM deposit_history WHERE exhibitor_seq = e.seq) as depositStatuses,
+            (SELECT GROUP_CONCAT(DATE_FORMAT(deposit_date, '%Y-%m-%d') ORDER BY init_regi_dttm SEPARATOR '\n') FROM deposit_history WHERE exhibitor_seq = e.seq) as depositDates,
+            (SELECT GROUP_CONCAT(DATE_FORMAT(scheduled_date, '%Y-%m-%d') ORDER BY init_regi_dttm SEPARATOR '\n') FROM deposit_history WHERE exhibitor_seq = e.seq) as depositScheduledDates,
+            (SELECT GROUP_CONCAT(tax_invoice_status ORDER BY init_regi_dttm SEPARATOR '\n') FROM deposit_history WHERE exhibitor_seq = e.seq) as depositTaxStatuses,
+            (SELECT GROUP_CONCAT(depositor_name ORDER BY init_regi_dttm SEPARATOR '\n') FROM deposit_history WHERE exhibitor_seq = e.seq) as depositDepositorNames,
+            (SELECT GROUP_CONCAT(confirmer_name ORDER BY init_regi_dttm SEPARATOR '\n') FROM deposit_history WHERE exhibitor_seq = e.seq) as depositConfirmerNames,
+            (SELECT GROUP_CONCAT(comment ORDER BY init_regi_dttm SEPARATOR '\n') FROM deposit_history WHERE exhibitor_seq = e.seq) as depositComments,
+            (SELECT GROUP_CONCAT(DATE_FORMAT(init_regi_dttm, '%Y-%m-%d %H:%i') ORDER BY init_regi_dttm SEPARATOR '\n') FROM deposit_history WHERE exhibitor_seq = e.seq) as depositInitRegiDttms,
+            (SELECT GROUP_CONCAT(DATE_FORMAT(final_regi_dttm, '%Y-%m-%d %H:%i') ORDER BY init_regi_dttm SEPARATOR '\n') FROM deposit_history WHERE exhibitor_seq = e.seq) as depositFinalRegiDttms
+
+        FROM exhibitor_new e
+        WHERE e.transfer_year = #{transferYear}
+        GROUP BY e.seq, e.init_regi_dttm
         ORDER BY e.init_regi_dttm DESC
     </select>
 
@@ -6174,6 +6174,7 @@
             e.company_name_ko as companyNameKo,
             p.product_option_big,
             p.product_option_small,
+            p.product_is_new,
             p.product_name_ko,
             p.product_qty,
             p.product_brand,

@@ -2307,7 +2307,7 @@ if (document.documentElement) {
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6 preValueList">
                                                                 <!--begin::Label-->
-                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제품분류<%--(기존값)--%></label>
+                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">제품 분류(품목)</label>
                                                                 <!--end::Label-->
                                                                 <!--begin::Col-->
                                                                 <div class="col-lg-10">
@@ -2327,6 +2327,24 @@ if (document.documentElement) {
                                                                     <!--end::Row-->
                                                                 </div>
                                                                 <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Input group-->
+
+                                                            <!--begin::Input group-->
+                                                            <div class="row mb-6">
+                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">신제품 여부</label>
+                                                                <div class="col-lg-10">
+                                                                    <div class="d-flex align-items-center mt-3">
+                                                                        <label class="form-check form-check-custom form-check-solid me-10">
+                                                                            <input class="form-check-input" type="radio" name="productIsNew_${status.index + 1}" value="Y" <c:if test="${product.productIsNew eq 'Y'}">checked</c:if> />
+                                                                            <span class="form-check-label fw-semibold text-gray-800">해당</span>
+                                                                        </label>
+                                                                        <label class="form-check form-check-custom form-check-solid">
+                                                                            <input class="form-check-input" type="radio" name="productIsNew_${status.index + 1}" value="N" <c:if test="${product.productIsNew ne 'Y'}">checked</c:if> />
+                                                                            <span class="form-check-label fw-semibold text-gray-800">미해당</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <!--end::Input group-->
 
@@ -2394,6 +2412,7 @@ if (document.documentElement) {
                                                                 <!--end::Col-->
                                                             </div>
                                                             <!--end::Input group-->
+
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6">
                                                                 <!--begin::Label-->
@@ -2406,6 +2425,7 @@ if (document.documentElement) {
                                                                 <!--end::Col-->
                                                             </div>
                                                             <!--end::Input group-->
+
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6">
                                                                 <!--begin::Label-->
@@ -2418,6 +2438,7 @@ if (document.documentElement) {
                                                                 <!--end::Col-->
                                                             </div>
                                                             <!--end::Input group-->
+
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6">
                                                                 <!--begin::Label-->
@@ -2430,6 +2451,7 @@ if (document.documentElement) {
                                                                 <!--end::Col-->
                                                             </div>
                                                             <!--end::Input group-->
+
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6">
                                                                 <!--begin::Label-->
@@ -2442,6 +2464,7 @@ if (document.documentElement) {
                                                                 <!--end::Col-->
                                                             </div>
                                                             <!--end::Input group-->
+
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6">
                                                                 <!--begin::Label-->
@@ -2454,6 +2477,7 @@ if (document.documentElement) {
                                                                 <!--end::Col-->
                                                             </div>
                                                             <!--end::Input group-->
+
                                                         </div>
                                                         <!--end::info box-->
                                                     </c:forEach>
