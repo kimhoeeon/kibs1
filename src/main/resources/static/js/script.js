@@ -667,20 +667,14 @@ $(document).ready(function () {
             exhiInfoCount++;
 
             let newExhiInfoBox = $('.exhiInfoBox:first').clone(true);
+
             newExhiInfoBox.find('input[type="hidden"]').val('');
-            newExhiInfoBox.find('.exhiInfoNum').text(exhiInfoCount);
             newExhiInfoBox.find('textarea').val('');
             newExhiInfoBox.find('input[type="text"]').val('');
 
-            // --- 라디오 버튼 name 속성 변경 및 초기화 ---
-            let newRadioName = 'productIsNew_' + exhiInfoCount;
-
-            // 1. 기존 name(productIsNew_1 등)을 찾아서 새로운 name(productIsNew_2)으로 변경
-            newExhiInfoBox.find('input[type=radio][name^="productIsNew_"]').attr('name', newRadioName);
-
-            // 2. 값 초기화 (기본값 '미해당(N)' 선택)
-            newExhiInfoBox.find('input[type=radio][name="' + newRadioName + '"][value="N"]').prop('checked', true);
-            // --- 추가 완료 ---
+            // [중요] 라디오 버튼 초기화 (값 'N' 체크)
+            // name은 reorderExhiList에서 일괄 처리되므로 여기서는 값만 초기화하면 됨
+            newExhiInfoBox.find('input[type=radio][value="N"]').prop('checked', true);
 
             // 복제된 .onlineInfoBox 는 제품 기존 값 목록 제거
             newExhiInfoBox.find('.preValueList').remove();
@@ -717,6 +711,11 @@ $(document).ready(function () {
                 deleteExhiInfoBox(this);
             });
             $('.exhiInfoBox:last').after(newExhiInfoBox);
+
+            // --- ▼▼▼ [핵심] 전체 재정렬 실행 ▼▼▼ ---
+            reorderExhiList();
+            // --- ▲▲▲ -------------------- ---
+
             updateExhiInfoNum(this);
         }else{
             showMessage('', 'info', '[ 전시품 신청 ]', '전시정보는 최대 20개까지만 등록 가능합니다.', '');
@@ -728,7 +727,7 @@ $(document).ready(function () {
         Swal.fire({
             icon: 'warning',
             title: '[ 전시품 신청 ]',
-            html: '<span style="font-size: 1.2em;">해당 전시품 신청를 삭제하시겠습니까?</span>',
+            html: '<span style="font-size: 1.2em;">해당 전시품 신청 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -766,15 +765,20 @@ $(document).ready(function () {
 
                 $(el).closest('.exhiInfoBox').remove();
                 exhiInfoCount--;
-                updateExhiInfoNum();
+
+                // --- ▼▼▼ [핵심] 전체 재정렬 실행 ▼▼▼ ---
+                reorderExhiList();
+                // --- ▲▲▲ -------------------- ---
+
+                updateExhiInfoNum(el);
             }//isConfirmed
         }); //swal
     }
 
     // 각 .exhiInfoBox의 .exhiInfoNum 번호 업데이트
-    function updateExhiInfoNum() {
+    function updateExhiInfoNum(el) {
         $('.exhiInfoBox').each(function (index) {
-            $(this).find('.exhiInfoNum').text(index + 1);
+            $(el).find('.exhiInfoNum').text(index + 1);
         });
     }
 
@@ -860,6 +864,30 @@ $(document).ready(function () {
             exhiPrdBoxes.not(':first').find('.exhiPrdAdd').hide();
             exhiPrdBoxes.not(':first').find('.exhiPrdDel').show();
         });
+    }
+
+    // [신규] 전시품 목록 순번 재정렬 함수 (ID, Name, No 텍스트 모두 갱신)
+    function reorderExhiList() {
+        $('.exhiInfoBox').each(function(index) {
+            let newNum = index + 1; // 1부터 시작
+
+            // 1. 보여지는 번호 텍스트 갱신 (#1, #2...)
+            $(this).find('.exhiInfoNum').text(newNum);
+
+            // 2. Select Box ID 갱신 (productOptionBig_1 -> productOptionBig_2 ...)
+            // (연동 스크립트가 ID를 참조하므로 중요)
+            $(this).find('select[name="productOptionBig"]').attr('id', 'productOptionBig_' + newNum);
+            $(this).find('select[name="productOptionSmall"]').attr('id', 'productOptionSmall_' + newNum);
+
+            // 3. [핵심] 신제품 여부 라디오 버튼 Name 갱신 (productIsNew_1 -> productIsNew_2 ...)
+            // 그룹이 꼬이지 않도록 기존 name을 찾아서 일괄 변경
+            $(this).find('input[type=radio][name^="productIsNew_"]').attr('name', 'productIsNew_' + newNum);
+        });
+
+        // 전역 카운트 변수도 현재 개수로 동기화
+        if (typeof exhiInfoCount !== 'undefined') {
+            exhiInfoCount = $('.exhiInfoBox').length;
+        }
     }
 
     ///////////////// 온라인 전시관 참가 추가 /////////////////
