@@ -672,6 +672,19 @@ $(document).ready(function () {
             newExhiInfoBox.find('textarea').val('');
             newExhiInfoBox.find('input[type="text"]').val('');
 
+            // (1) 대분류: 첫 번째 옵션('선택')으로 초기화
+            newExhiInfoBox.find('select[name="productOptionBig"]').prop('selectedIndex', 0);
+
+            // (2) 소분류: 첫 번째 옵션('선택')으로 초기화 하고 비활성화
+            let $smallSelect = newExhiInfoBox.find('select[name="productOptionSmall"]');
+            $smallSelect.empty(); // 기존 옵션 비우기 (대분류 변경 전이므로 비워두는 것이 깔끔함)
+            $smallSelect.append('<option value="" selected>선택</option>'); // 기본 옵션 추가
+            $smallSelect.prop('disabled', true); // 비활성화
+
+            // 3. [핵심 수정] 라디오 버튼 충돌 방지 처리
+            // 화면에 붙이기 전에 name을 임시 이름(temp_new)으로 변경하여 기존 항목(productIsNew_1)과 그룹이 섞이지 않게 함
+            newExhiInfoBox.find('input[type=radio][name^="productIsNew_"]').attr('name', 'productIsNew_temp');
+
             // [중요] 라디오 버튼 초기화 (값 'N' 체크)
             // name은 reorderExhiList에서 일괄 처리되므로 여기서는 값만 초기화하면 됨
             newExhiInfoBox.find('input[type=radio][value="N"]').prop('checked', true);
@@ -716,7 +729,7 @@ $(document).ready(function () {
             reorderExhiList();
             // --- ▲▲▲ -------------------- ---
 
-            updateExhiInfoNum(this);
+            //updateExhiInfoNum(this);
         }else{
             showMessage('', 'info', '[ 전시품 신청 ]', '전시정보는 최대 20개까지만 등록 가능합니다.', '');
         }
@@ -770,7 +783,7 @@ $(document).ready(function () {
                 reorderExhiList();
                 // --- ▲▲▲ -------------------- ---
 
-                updateExhiInfoNum(el);
+                //updateExhiInfoNum(el);
             }//isConfirmed
         }); //swal
     }
@@ -870,21 +883,32 @@ $(document).ready(function () {
     function reorderExhiList() {
         $('.exhiInfoBox').each(function(index) {
             let newNum = index + 1; // 1부터 시작
+            let $box = $(this);
 
-            // 1. 보여지는 번호 텍스트 갱신 (#1, #2...)
-            $(this).find('.exhiInfoNum').text(newNum);
+            // 1. 보여지는 번호 텍스트 갱신
+            $box.find('.exhiInfoNum').text(newNum);
 
-            // 2. Select Box ID 갱신 (productOptionBig_1 -> productOptionBig_2 ...)
-            // (연동 스크립트가 ID를 참조하므로 중요)
-            $(this).find('select[name="productOptionBig"]').attr('id', 'productOptionBig_' + newNum);
-            $(this).find('select[name="productOptionSmall"]').attr('id', 'productOptionSmall_' + newNum);
+            // 2. Select Box ID 갱신
+            $box.find('select[name="productOptionBig"]').attr('id', 'productOptionBig_' + newNum);
+            $box.find('select[name="productOptionSmall"]').attr('id', 'productOptionSmall_' + newNum);
 
-            // 3. [핵심] 신제품 여부 라디오 버튼 Name 갱신 (productIsNew_1 -> productIsNew_2 ...)
-            // 그룹이 꼬이지 않도록 기존 name을 찾아서 일괄 변경
-            $(this).find('input[type=radio][name^="productIsNew_"]').attr('name', 'productIsNew_' + newNum);
+            // 3. [핵심 수정] 라디오 버튼 처리 (체크 상태 유지)
+            // (1) 현재 체크된 값(Y/N)을 미리 저장합니다.
+            let currentVal = $box.find('input[type=radio][name^="productIsNew_"]:checked').val();
+
+            // (2) 새로운 name 생성
+            let newName = 'productIsNew_' + newNum;
+
+            // (3) name 속성 변경
+            $box.find('input[type=radio][name^="productIsNew_"]').attr('name', newName);
+
+            // (4) 아까 저장해둔 값으로 다시 체크 (값이 있을 경우에만)
+            if (currentVal) {
+                $box.find('input[type=radio][name="' + newName + '"][value="' + currentVal + '"]').prop('checked', true);
+            }
         });
 
-        // 전역 카운트 변수도 현재 개수로 동기화
+        // 전역 카운트 변수 동기화
         if (typeof exhiInfoCount !== 'undefined') {
             exhiInfoCount = $('.exhiInfoBox').length;
         }
