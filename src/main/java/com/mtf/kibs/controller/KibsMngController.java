@@ -3742,7 +3742,8 @@ public class KibsMngController {
             // 파일 저장 (write to disk)
             File uploadFile = new File(fileFullPath);
             image.transferTo(uploadFile);
-            return saveFilename;
+            // [수정] 웹에서 접근 가능한 '웹 경로'를 포함하여 반환
+            return "/upload/editor/" + saveFilename;
 
         } catch (IOException e) {
             // 예외 처리는 따로 해주는 게 좋습니다.
@@ -3938,41 +3939,6 @@ public class KibsMngController {
         } else {
             return orgFileName;
         }
-    }
-
-    @ResponseBody
-    @GetMapping(value = "/board/uploadFileGet")
-    public ResponseEntity<byte[]> board_uploadFileGet(@RequestParam("fileName") String fileName) {
-        System.out.println("KibsMngController > board_uploadFileGet");
-        //System.out.println("fileName : " + fileName);
-
-        //String replaceFileName = fileName.replace("/",File.separator);
-
-        File file = new File(fileName);
-
-        ResponseEntity<byte[]> result = null;
-
-        try {
-
-            HttpHeaders header = new HttpHeaders();
-
-        /*
-        Files.probeContentType() 해당 파일의 Content 타입을 인식(image, text/plain ...)
-        없으면 null 반환
-
-        file.toPath() -> file 객체를 Path객체로 변환
-
-        */
-            //System.out.println("Files.content-type : " + Files.probeContentType(file.toPath()));
-            header.add("Content-type", Files.probeContentType(file.toPath()));
-
-            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result;
     }
 
     @RequestMapping(value = "/file/upload/save.do", method = RequestMethod.POST)

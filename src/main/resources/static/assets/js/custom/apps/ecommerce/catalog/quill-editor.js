@@ -132,10 +132,8 @@ var KTQuillEditor = function () {
                     res.uploadPath = res.uploadPath.replace(/\\/g, '/');
                 }
 
-                // 기존 로직과 동일한 이미지 경로 생성
-                // detail.jsp 참고 시 /file/download.do 또는 /board/uploadFileGet 등 확인 필요
-                // quill-editor.js 원본 로직 유지:
-                let imgUrl = "/board/uploadFileGet?fileName=" + res.uploadPath + "/" + res.fileName;
+                // 서버가 준 웹 경로를 그대로 사용하여 직접 접근
+                let imgUrl = res.uploadPath + "/" + res.fileName;
 
                 // 에디터에 이미지 태그 삽입
                 quill.insertEmbed(index, 'image', imgUrl);
