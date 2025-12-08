@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    죄송합니다.<br>
+    [500] 죄송합니다.<br>
     서버에 오류가 발생했습니다.
 
     <script src="/js/jquery-3.6.0.min.js"></script>

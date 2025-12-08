@@ -2414,7 +2414,7 @@ if (document.documentElement) {
                                                                 <c:if test="${fn:contains(lowerFileName, '.jpg') or fn:contains(lowerFileName, '.jpeg') or fn:contains(lowerFileName, '.png') or fn:contains(lowerFileName, '.gif')}">
 
                                                                     <%-- 서버 물리 경로를 웹 접근 가능 경로로 치환 (mngMain.js와 동일 로직) --%>
-                                                                    <c:set var="imgSrc" value="${fn:replace(file.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                    <c:set var="imgSrc" value="${fn:replace(file.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
 
                                                                     <img src="${imgSrc}" class="w-250px mr10" style="border: 1px solid #009ef7; margin-right: 10px; max-height: 150px; object-fit: contain;" />
                                                                 </c:if>

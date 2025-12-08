@@ -2470,7 +2470,7 @@ if (document.documentElement) {
                                                                 <c:set var="idx" value="${status.index + 1}"/>
                                                                 <c:if test="${fn:contains(giftPhotoImageFile.note, 'giftPhoto'.concat(idx.toString()))}">
                                                                 <li class="giftPhotoImageFile_li" style="margin-bottom: 5px;">
-                                                                    <c:set var="giftPhotoImageSrc" value="${fn:replace(giftPhotoImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                    <c:set var="giftPhotoImageSrc" value="${fn:replace(giftPhotoImageFile.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                     <img src="${giftPhotoImageSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
                                                                     <%--<a href="/file/download.do?path=exhibitor/company/${giftPhotoImageFile.folderPath}&fileName=${giftPhotoImageFile.fullFileName}">${giftPhotoImageFile.fileName}</a>--%>
                                                                     <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${giftPhotoImageFile.folderPath}', '${giftPhotoImageFile.fullFileName}')">${giftPhotoImageFile.fileName}</a>
@@ -2526,7 +2526,7 @@ if (document.documentElement) {
                                                                     <c:set var="idx" value="${status.index + 1}"/>
                                                                     <c:if test="${fn:contains(giftCompanyLogoImageFile.note, 'giftCompanyLogo'.concat(idx.toString()))}">
                                                                         <li class="giftCompanyLogoImageFile_li" style="margin-bottom: 5px;">
-                                                                            <c:set var="giftCompanyLogoImageSrc" value="${fn:replace(giftCompanyLogoImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                            <c:set var="giftCompanyLogoImageSrc" value="${fn:replace(giftCompanyLogoImageFile.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                             <img src="${giftCompanyLogoImageSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
                                                                             <%--<a href="/file/download.do?path=exhibitor/company/${giftCompanyLogoImageFile.folderPath}&fileName=${giftCompanyLogoImageFile.fullFileName}">${giftCompanyLogoImageFile.fileName}</a>--%>
                                                                             <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${giftCompanyLogoImageFile.folderPath}', '${giftCompanyLogoImageFile.fullFileName}')">${giftCompanyLogoImageFile.fileName}</a>

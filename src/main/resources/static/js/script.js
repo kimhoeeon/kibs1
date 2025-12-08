@@ -258,7 +258,7 @@ $(document).ready(function () {
 
         let str = '';
         $.each(slideImgList , function(i) {
-            let slideImgPath = slideImgList[i].value.toString().replace('/usr/local/tomcat/webapps', '/../../../..');
+            let slideImgPath = slideImgList[i].value.toString().replace('/usr/local/tomcat/webapps', '');
             str += '<li class="swiper-slide thumb75 thumbBox">';
                 str += '<img class="thumbImg" src="' + slideImgPath + '">';
             str += '</li>';

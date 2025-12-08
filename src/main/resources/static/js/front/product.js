@@ -116,13 +116,13 @@ function searchPosts(pageNum) {
             let companyNameEn = results[i].companyNameEn;
             let productFullFilePath = results[i].productFullFilePath;
             if(nvl(productFullFilePath,"") !== ""){
-                productFullFilePath = productFullFilePath.toString().replace('/usr/local/tomcat/webapps', '/../../../..');
+                productFullFilePath = productFullFilePath.toString().replace('/usr/local/tomcat/webapps', '');
             }else{
                 productFullFilePath = '';
             }
             let logoFullFilePath = results[i].logoFullFilePath;
             if(nvl(logoFullFilePath,"") !== ""){
-                logoFullFilePath = logoFullFilePath.toString().replace('/usr/local/tomcat/webapps', '/../../../..');
+                logoFullFilePath = logoFullFilePath.toString().replace('/usr/local/tomcat/webapps', '');
             }else{
                 logoFullFilePath = '';
             }

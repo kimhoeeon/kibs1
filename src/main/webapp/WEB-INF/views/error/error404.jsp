@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    잘못된 접근입니다.<br>
+    [404] 잘못된 접근입니다.<br>
     메인페이지로 이동해 주세요.
 
     <script src="/js/jquery-3.6.0.min.js"></script>

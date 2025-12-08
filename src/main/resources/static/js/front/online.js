@@ -116,13 +116,13 @@ function searchPosts(pageNum) {
             }
             let logoFilePath = results[i].logoFilePath;
             if(nvl(logoFilePath,"") !== ""){
-                logoFilePath = logoFilePath.toString().replace('/usr/local/tomcat/webapps', '/../../../..');
+                logoFilePath = logoFilePath.toString().replace('/usr/local/tomcat/webapps', '');
             }else{
                 logoFilePath = '';
             }
             let promotionImageFilePath = results[i].promotionImageFilePath;
             if(nvl(promotionImageFilePath,"") !== ""){
-                promotionImageFilePath = promotionImageFilePath.toString().replace('/usr/local/tomcat/webapps', '/../../../..');
+                promotionImageFilePath = promotionImageFilePath.toString().replace('/usr/local/tomcat/webapps', '');
             }else{
                 promotionImageFilePath = '';
             }

@@ -3833,7 +3833,15 @@ public class KibsMngController {
                 }
             }
 
-            response.put("uploadPath", uploadPath.getPath());
+            // [보안 조치] 물리적 경로가 아닌 '웹 접근 경로'를 반환하도록 수정
+            String webPath = "";
+            if("mail".equals(gbn)){
+                webPath = "/img/" + gbn; // 예: /img/mail
+            } else {
+                webPath = "/upload/" + gbn; // 예: /upload/notice
+            }
+
+            response.put("uploadPath", webPath); // 물리 경로 숨김
             response.put("fileName", file);
             response.put("oriFileName", oriFile);
 
@@ -4002,6 +4010,15 @@ public class KibsMngController {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Required parameters are missing.");
             return;
         }
+
+        // [보안 조치 1] 경로 순회(Directory Traversal) 문자열 제거 및 방어
+        // 상위 디렉토리로 이동하는 '..' 문자가 포함되어 있으면 차단 또는 제거
+        if (path.contains("..") || fileName.contains("..")) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid path sequence.");
+            return;
+        }
+
+        // [보안 조치 2] 경로 구분자 정규화 (필요시)
         path = path.replaceAll("\\\\", "/");
 
         // 2. 파일 저장소 경로 결정 (기존 로직 유지)
@@ -4009,6 +4026,8 @@ public class KibsMngController {
         if ("mail".equals(path)) {
             fileRepoPath = "/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/img/" + path;
         } else {
+            // [수정] path 앞에 슬래시가 누적되지 않도록 처리
+            if(path.startsWith("/")) path = path.substring(1);
             fileRepoPath = "/usr/local/tomcat/webapps/upload/" + path;
         }
 

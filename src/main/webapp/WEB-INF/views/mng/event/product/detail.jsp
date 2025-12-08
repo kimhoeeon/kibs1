@@ -2458,7 +2458,7 @@ if (document.documentElement) {
                                                         <div class="col-lg-10">
                                                             <ul>
                                                                 <li class="productPhotoFile_li">
-                                                                    <c:set var="productPhotoFileSrc" value="${fn:replace(productPhotoFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                    <c:set var="productPhotoFileSrc" value="${fn:replace(productPhotoFile.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                     <c:if test="${not fn:contains(productPhotoFileSrc, '.ai') and not fn:contains(productPhotoFileSrc, '.pdf')}">
                                                                         <img src="${productPhotoFileSrc}" class="w-100px mr10" style="border: 1px solid #009ef7"/>
                                                                     </c:if>

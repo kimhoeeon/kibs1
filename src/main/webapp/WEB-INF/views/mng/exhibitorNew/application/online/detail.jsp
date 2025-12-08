@@ -2407,7 +2407,7 @@ if (document.documentElement) {
                                                                             <c:set var="idx" value="${status.index + 1}"/>
                                                                             <c:if test="${fn:contains(onlineImageFile.note, 'onlineImage'.concat(idx.toString()).concat('_'))}">
                                                                                 <li class="onlineImageFile_li">
-                                                                                    <c:set var="onlineImageFileSrc" value="${fn:replace(onlineImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                                    <c:set var="onlineImageFileSrc" value="${fn:replace(onlineImageFile.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                                     <img src="${onlineImageFileSrc}" class="w-100px mr10" style="border: 1px solid #009ef7"/>
                                                                                     <%--<a href="/file/download.do?path=exhibitor/company/${onlineImageFile.folderPath}&fileName=${onlineImageFile.fullFileName}">${onlineImageFile.fileName}</a>--%>
                                                                                     <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${onlineImageFile.folderPath}', '${onlineImageFile.fullFileName}')">${onlineImageFile.fileName}</a>

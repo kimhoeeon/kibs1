@@ -2461,7 +2461,7 @@ if (document.documentElement) {
                                                         <ul id="uploadFileList">
                                                             <c:forEach var="file" items="${fileList}">
                                                                 <li class="mb-4">
-                                                                    <c:set var="thumbnailFileSrc" value="${fn:replace(file.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                    <c:set var="thumbnailFileSrc" value="${fn:replace(file.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                     <%--<a href="/file/download.do?path=${file.folderPath}&fileName=${file.fullFileName}">--%>
                                                                     <a href="javascript:void(0);" onclick="f_file_download('${file.folderPath}', '${file.fullFileName}')">
                                                                         <c:if test="${fn:containsIgnoreCase(thumbnailFileSrc, '.jpg') or fn:containsIgnoreCase(thumbnailFileSrc, '.png')}">

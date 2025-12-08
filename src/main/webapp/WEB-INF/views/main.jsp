@@ -223,7 +223,7 @@
                                         <div class="thumb41 thumbBox">
                                             <c:choose>
                                                 <c:when test="${mainOnline.promotionImageFilePath ne null and mainOnline.promotionImageFilePath ne '' and not fn:contains(mainOnline.promotionImageFilePath, '.ai')}">
-                                                    <c:set var="promotionImageFilePathSrc" value="${fn:replace(mainOnline.promotionImageFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                    <c:set var="promotionImageFilePathSrc" value="${fn:replace(mainOnline.promotionImageFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                     <img src="${promotionImageFilePathSrc}" class="thumbImg">
                                                 </c:when>
                                                 <c:otherwise>
@@ -232,7 +232,7 @@
                                                         int min = 1;
                                                         int max = 6;
                                                         java.util.Random random = new java.util.Random();
-                                                        int value = random.nextInt(max + min) + min;
+                                                        int value = random.nextInt(max) + min;
                                                     %>
                                                     <img src="/img/thumb_exh_img_0<%=value%>.jpg" class="thumbImg">
                                                 </c:otherwise>
@@ -242,7 +242,7 @@
                                             <p>
                                                 <c:choose>
                                                     <c:when test="${mainOnline.logoFilePath ne null and mainOnline.logoFilePath ne '' and not fn:contains(mainOnline.logoFilePath, '.ai')}">
-                                                        <c:set var="companyLicenseFileSrc" value="${fn:replace(mainOnline.logoFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                        <c:set var="companyLicenseFileSrc" value="${fn:replace(mainOnline.logoFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                         <img src="${companyLicenseFileSrc}">
                                                     </c:when>
                                                     <c:otherwise>

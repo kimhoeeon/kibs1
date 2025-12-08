@@ -130,7 +130,7 @@
                                         <c:if test="${fileInfo.note eq 'promotionImage1'}">
                                             <c:choose>
                                                 <c:when test="${fileInfo.fullFilePath ne null and fileInfo.fullFilePath ne '' and not fn:contains(fileInfo.fullFilePath, '.ai')}">
-                                                    <c:set var="promotionImageFilePathSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                    <c:set var="promotionImageFilePathSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                     <img src="${promotionImageFilePathSrc}" class="thumbImg">
                                                 </c:when>
                                                 <c:otherwise>
@@ -139,7 +139,7 @@
                                                         int min = 1;
                                                         int max = 6;
                                                         java.util.Random random = new java.util.Random();
-                                                        int value = random.nextInt(max + min) + min;
+                                                        int value = random.nextInt(max) + min;
                                                     %>
                                                     <img src="/img/thumb_exh_img_0<%=value%>.jpg" class="thumbImg">
                                                 </c:otherwise>
@@ -152,7 +152,7 @@
                                         <c:if test="${fn:contains(fileInfo.note, 'productImage1_1')}">
                                             <c:choose>
                                                 <c:when test="${fileInfo.fullFilePath ne null and fileInfo.fullFilePath ne '' and not fn:contains(fileInfo.fullFilePath, '.ai')}">
-                                                    <c:set var="productImageFilePathSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                    <c:set var="productImageFilePathSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                     <img src="${productImageFilePathSrc}" class="thumbImg">
                                                 </c:when>
                                                 <c:otherwise>
@@ -161,7 +161,7 @@
                                                         int min = 1;
                                                         int max = 6;
                                                         java.util.Random random = new java.util.Random();
-                                                        int value = random.nextInt(max + min) + min;
+                                                        int value = random.nextInt(max) + min;
                                                     %>
                                                     <img src="/img/thumb_exh_img_0<%=value%>.jpg" class="thumbImg">
                                                 </c:otherwise>
@@ -177,7 +177,7 @@
                                     <c:if test="${fileInfo.note eq 'logo'}">
                                         <c:choose>
                                             <c:when test="${fileInfo.fullFilePath ne null and fileInfo.fullFilePath ne '' and not fn:contains(fileInfo.fullFilePath, '.ai')}">
-                                                <c:set var="logoFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                <c:set var="logoFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                 <img src="${logoFileSrc}">
                                             </c:when>
                                             <c:otherwise>
@@ -274,7 +274,7 @@
                                                 <div class="thumb75 thumbBox">
                                                     <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
                                                         <c:if test="${fileInfo.note eq 'productImage'.concat(status.index+1).concat('_1')}">
-                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                             <img src="${productImageFileSrc}" class="thumbImg">
                                                         </c:if>
                                                     </c:forEach>
@@ -300,7 +300,7 @@
                                                 <div class="thumb75 thumbBox">
                                                     <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
                                                         <c:if test="${fileInfo.note eq 'productImage'.concat(status.index+1).concat('_1')}">
-                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                             <img src="${productImageFileSrc}" class="thumbImg">
                                                         </c:if>
                                                     </c:forEach>
@@ -324,7 +324,7 @@
                                                 <div class="thumb75 thumbBox">
                                                     <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
                                                         <c:if test="${fileInfo.note eq 'onlineImage'.concat(status.index+1).concat('_1')}">
-                                                            <c:set var="onlineImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <c:set var="onlineImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                             <img src="${onlineImageFileSrc}" class="thumbImg">
                                                         </c:if>
                                                     </c:forEach>

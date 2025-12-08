@@ -485,9 +485,17 @@ function getCurrentDate() {
 }
 
 function f_file_download(path, fileName){
+    // 1. 다운로드 전용 숨김 iframe 생성 (없으면 생성)
+    if ($('#download_iframe').length === 0) {
+        $('body').append('<iframe id="download_iframe" name="download_iframe" style="display:none;"></iframe>');
+    }
+
     let form = document.createElement('form');
     form.setAttribute('method', 'POST'); //POST 메서드 적용
     form.setAttribute('action', '/file/download.do');
+
+    // [핵심] 폼 전송 대상을 현재 창이 아닌 iframe으로 지정하여 페이지 이탈 감지 회피
+    form.setAttribute('target', 'download_iframe');
 
     let hiddenField_path = document.createElement('input');
     hiddenField_path.setAttribute('type', 'hidden'); //값 입력
@@ -503,6 +511,11 @@ function f_file_download(path, fileName){
 
     document.body.appendChild(form);
     form.submit();
+
+    // 전송 후 폼 제거 (깔끔한 DOM 유지를 위해)
+    setTimeout(function(){
+        document.body.removeChild(form);
+    }, 100);
 }
 
 function minCnt(el, cnt){
@@ -3664,7 +3677,7 @@ function f_gift_modal_set(jsonObj){
                 if (fileFlag) {
                     let giftFullFilePath = file_resData[i].fullFilePath;
                     if (nvl(giftFullFilePath, "") !== "") {
-                        giftFullFilePath = giftFullFilePath.toString().replace('/usr/local/tomcat/webapps', '/../../../..');
+                        giftFullFilePath = giftFullFilePath.toString().replace('/usr/local/tomcat/webapps', '');
                     }
 
                     let giftFolderPath = file_resData[i].folderPath;
@@ -3888,7 +3901,7 @@ function f_exhibitor_info_call(){
             if(nvl(file_resData,'') !== '') {
                 let licenseFullFilePath = file_resData.fullFilePath;
                 if (nvl(licenseFullFilePath, "") !== "") {
-                    licenseFullFilePath = licenseFullFilePath.toString().replace('/usr/local/tomcat/webapps', '/../../../..');
+                    licenseFullFilePath = licenseFullFilePath.toString().replace('/usr/local/tomcat/webapps', '');
                 }
 
                 let licenseFolderPath = file_resData.folderPath;

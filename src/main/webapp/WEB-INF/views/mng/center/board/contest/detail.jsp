@@ -2381,7 +2381,7 @@ if (document.documentElement) {
                                                     <ul id="uploadFileList">
                                                         <c:forEach var="file" items="${fileList}">
                                                             <li class="mb-4">
-                                                                <c:set var="imgPath" value="${fn:replace(file.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}"/>
+                                                                <c:set var="imgPath" value="${fn:replace(file.fullFilePath, '/usr/local/tomcat/webapps', '')}"/>
                                                                 <img src="${imgPath}" class="w-250px mr10" style="border: 1px solid #009ef7;">
                                                                 <a href="javascript:void(0);" onclick="f_file_download('center/board/${file.folderPath}', '${file.fileName}')">${file.fileName}</a>
                                                                 <input type="hidden" name="uploadFile" id="${file.id}" value="${file.fullFilePath}">

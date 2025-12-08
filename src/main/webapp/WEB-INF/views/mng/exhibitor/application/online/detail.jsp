@@ -2417,7 +2417,7 @@ if (document.documentElement) {
                                                                             <c:set var="idx" value="${status.index + 1}"/>
                                                                             <c:if test="${fn:contains(productImageFile.note, 'productImage'.concat(idx.toString()).concat('_'))}">
                                                                             <li class="productImageFile_li">
-                                                                                <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                                <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                                 <img src="${productImageFileSrc}" class="w-100px mr10" style="border: 1px solid #009ef7"/>
                                                                                 <%--<a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>--%>
                                                                                 <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${productImageFile.folderPath}', '${productImageFile.fullFileName}')">${productImageFile.fileName}</a>

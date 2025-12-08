@@ -665,7 +665,7 @@
                                                     <div class="input file_box">
                                                         <ul>
                                                             <li class="companyLicenseFile_li" style="align-items: center;">
-                                                                <c:set var="companyLicenseFileSrc" value="${fn:replace(companyLicenseFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                <c:set var="companyLicenseFileSrc" value="${fn:replace(companyLicenseFile.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                 <c:if test="${not fn:contains(companyLicenseFileSrc, '.ai') and not fn:contains(companyLicenseFileSrc, '.pdf')}">
                                                                     <img src="${companyLicenseFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
                                                                 </c:if>
@@ -697,7 +697,7 @@
                                                     <div class="input file_box">
                                                         <ul>
                                                             <li class="logoFile_li" style="align-items: center;">
-                                                                <c:set var="logoFileSrc" value="${fn:replace(logoFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                <c:set var="logoFileSrc" value="${fn:replace(logoFile.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                 <c:if test="${not fn:contains(logoFileSrc, '.ai') and not fn:contains(logoFileSrc, '.pdf')}">
                                                                     <img src="${logoFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
                                                                 </c:if>
@@ -1345,7 +1345,7 @@
                                                                                 <span style="color: #FF0083">
                                                                                     <c:out value="${fn:substring(productImageFile.note, fn:indexOf(productImageFile.note, '_')+1, fn:length(productImageFile.note))}"/> : </span>
                                                                                 </c:if>
-                                                                                <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                                <c:set var="productImageFileSrc" value="${fn:replace(productImageFile.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                                 <img src="${productImageFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin: 0 10px;"/>
                                                                                     &lt;%&ndash;<a href="/file/download.do?path=exhibitor/company/${productImageFile.folderPath}&fileName=${productImageFile.fullFileName}">${productImageFile.fileName}</a>&ndash;%&gt;
                                                                                 <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${productImageFile.folderPath}', '${productImageFile.fullFileName}')">${productImageFile.fileName}</a>
@@ -1585,7 +1585,7 @@
                                                                                 <span style="color: #FF0083">
                                                                                     <c:out value="${fn:substring(onlineImageFile.note, fn:indexOf(onlineImageFile.note, '_')+1, fn:length(onlineImageFile.note))}"/> : </span>
                                                                                 </c:if>
-                                                                                <c:set var="onlineImageFileSrc" value="${fn:replace(onlineImageFile.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                                <c:set var="onlineImageFileSrc" value="${fn:replace(onlineImageFile.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                                 <img src="${onlineImageFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin: 0 10px;"/>
                                                                                 <%--<a href="/file/download.do?path=exhibitor/company/${onlineImageFile.folderPath}&fileName=${onlineImageFile.fullFileName}">${onlineImageFile.fileName}</a>--%>
                                                                                 <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${onlineImageFile.folderPath}', '${onlineImageFile.fullFileName}')">${onlineImageFile.fileName}</a>

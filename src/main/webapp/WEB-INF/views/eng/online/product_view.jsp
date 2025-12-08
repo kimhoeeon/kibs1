@@ -138,7 +138,7 @@
                                                 <c:if test="${fn:contains(fileInfo.note, 'productImage'.concat(productInfo.note).concat('_'))}">
                                                     <div class="swiper-slide">
                                                         <div class="thumb75 thumbBox">
-                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                             <img src="${productImageFileSrc}" class="thumbImg">
                                                         </div>
                                                     </div>
@@ -148,7 +148,7 @@
                                                 <c:if test="${fn:contains(fileInfo.note, 'onlineImage'.concat(onlineInfo.note).concat('_'))}">
                                                     <div class="swiper-slide">
                                                         <div class="thumb75 thumbBox">
-                                                            <c:set var="onlineImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <c:set var="onlineImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                             <img src="${onlineImageFileSrc}" class="thumbImg">
                                                         </div>
                                                     </div>
@@ -158,7 +158,7 @@
                                                 <c:if test="${fn:contains(fileInfo.note, 'productImage'.concat(onlineInfo.note).concat('_'))}">
                                                     <div class="swiper-slide">
                                                         <div class="thumb75 thumbBox">
-                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                             <img src="${productImageFileSrc}" class="thumbImg">
                                                         </div>
                                                     </div>
@@ -182,7 +182,7 @@
                                                 <c:if test="${fn:contains(fileInfo.note, 'productImage'.concat(productInfo.note).concat('_'))}">
                                                     <div class="swiper-slide">
                                                         <div class="thumb11 thumbBox">
-                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                             <img src="${productImageFileSrc}" class="thumbImg">
                                                         </div>
                                                     </div>
@@ -192,7 +192,7 @@
                                                 <c:if test="${fn:contains(fileInfo.note, 'onlineImage'.concat(onlineInfo.note).concat('_'))}">
                                                     <div class="swiper-slide">
                                                         <div class="thumb11 thumbBox">
-                                                            <c:set var="onlineImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <c:set var="onlineImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                             <img src="${onlineImageFileSrc}" class="thumbImg">
                                                         </div>
                                                     </div>
@@ -202,7 +202,7 @@
                                                 <c:if test="${fn:contains(fileInfo.note, 'productImage'.concat(onlineInfo.note).concat('_'))}">
                                                     <div class="swiper-slide">
                                                         <div class="thumb11 thumbBox">
-                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                            <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                             <img src="${productImageFileSrc}" class="thumbImg">
                                                         </div>
                                                     </div>
@@ -410,7 +410,7 @@
                                     <c:if test="${fileInfo.note eq 'logo'}">
                                         <c:choose>
                                             <c:when test="${fileInfo.fullFilePath ne null and fileInfo.fullFilePath ne '' and not fn:contains(fileInfo.fullFilePath, '.ai')}">
-                                                <c:set var="logoFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                <c:set var="logoFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                 <img src="${logoFileSrc}">
                                             </c:when>
                                             <c:otherwise>
@@ -462,7 +462,7 @@
                                                             <div class="thumb75 thumbBox">
                                                                 <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
                                                                     <c:if test="${fileInfo.note eq 'productImage'.concat(status.index+1).concat('_1')}">
-                                                                        <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                        <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                         <img src="${productImageFileSrc}" class="thumbImg">
                                                                     </c:if>
                                                                 </c:forEach>
@@ -486,7 +486,7 @@
                                                             <div class="thumb75 thumbBox">
                                                                 <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
                                                                     <c:if test="${fileInfo.note eq 'onlineImage'.concat(status.index+1).concat('_1')}">
-                                                                        <c:set var="onlineImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                        <c:set var="onlineImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                         <img src="${onlineImageFileSrc}" class="thumbImg">
                                                                     </c:if>
                                                                 </c:forEach>
@@ -522,7 +522,7 @@
                                                             <div class="thumb75 thumbBox">
                                                                 <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
                                                                     <c:if test="${fileInfo.note eq 'onlineImage'.concat(status.index+1).concat('_1')}">
-                                                                        <c:set var="onlineImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                        <c:set var="onlineImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                         <img src="${onlineImageFileSrc}" class="thumbImg">
                                                                     </c:if>
                                                                 </c:forEach>
@@ -558,7 +558,7 @@
                                                             <div class="thumb75 thumbBox">
                                                                 <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1">
                                                                     <c:if test="${fileInfo.note eq 'productImage'.concat(status.index+1).concat('_1')}">
-                                                                        <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                        <c:set var="productImageFileSrc" value="${fn:replace(fileInfo.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                         <img src="${productImageFileSrc}" class="thumbImg">
                                                                     </c:if>
                                                                 </c:forEach>
@@ -599,7 +599,7 @@
                                                                 <c:forEach var="relatedItemFileInfo" items="${relatedItemFileList}" begin="0" end="${relatedItemFileList.size()}" step="1">
                                                                     <c:forEach var="relatedItemFileInfoSub" items="${relatedItemFileInfo}" begin="0" end="${relatedItemFileInfo.size()}" step="1">
                                                                         <c:if test="${relatedItem.id eq relatedItemFileInfoSub.userId and (relatedItemFileInfoSub.note eq 'productImage'.concat(relatedItem.note).concat('_1') or relatedItemFileInfoSub.note eq 'onlineImage'.concat(relatedItem.note).concat('_1'))}">
-                                                                            <c:set var="relatedItemFileSrc" value="${fn:replace(relatedItemFileInfoSub.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                            <c:set var="relatedItemFileSrc" value="${fn:replace(relatedItemFileInfoSub.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                             <img src="${relatedItemFileSrc}" class="thumbImg">
                                                                         </c:if>
                                                                     </c:forEach>
@@ -634,7 +634,7 @@
                                                                 <c:forEach var="relatedItemFileInfo" items="${relatedItemFileList}" begin="0" end="${relatedItemFileList.size()}" step="1">
                                                                     <c:forEach var="relatedItemFileInfoSub" items="${relatedItemFileInfo}" begin="0" end="${relatedItemFileInfo.size()}" step="1">
                                                                         <c:if test="${relatedItem.id eq relatedItemFileInfoSub.userId and relatedItemFileInfoSub.note eq 'onlineImage'.concat(relatedItem.note).concat('_1')}">
-                                                                            <c:set var="relatedItemFileSrc" value="${fn:replace(relatedItemFileInfoSub.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                            <c:set var="relatedItemFileSrc" value="${fn:replace(relatedItemFileInfoSub.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                             <img src="${relatedItemFileSrc}" class="thumbImg">
                                                                         </c:if>
                                                                     </c:forEach>
@@ -669,7 +669,7 @@
                                                                 <c:forEach var="relatedItemFileInfo" items="${relatedItemFileList}" begin="0" end="${relatedItemFileList.size()}" step="1">
                                                                     <c:forEach var="relatedItemFileInfoSub" items="${relatedItemFileInfo}" begin="0" end="${relatedItemFileInfo.size()}" step="1">
                                                                         <c:if test="${relatedItem.id eq relatedItemFileInfoSub.userId and relatedItemFileInfoSub.note eq 'productImage'.concat(relatedItem.note).concat('_1')}">
-                                                                            <c:set var="relatedItemFileSrc" value="${fn:replace(relatedItemFileInfoSub.fullFilePath, '/usr/local/tomcat/webapps', '/../../../..')}" />
+                                                                            <c:set var="relatedItemFileSrc" value="${fn:replace(relatedItemFileInfoSub.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
                                                                             <img src="${relatedItemFileSrc}" class="thumbImg">
                                                                         </c:if>
                                                                     </c:forEach>
