@@ -2312,6 +2312,90 @@ public class KibsMngController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    // 1. 뉴스레터 변환 도구 페이지 이동 (GET)
+    @RequestMapping(value = "/mng/newsletter/tool.do", method = RequestMethod.GET)
+    public ModelAndView mng_newsletter_tool(HttpSession session) {
+        System.out.println("KibsMngController > mng_newsletter_tool");
+        ModelAndView mv = new ModelAndView();
+
+        // [보안] 'meetingfan' 계정만 접근 가능하도록 체크
+        String adminId = (String) session.getAttribute("id");
+        if (!"meetingfan".equals(adminId)) {
+            mv.setViewName("redirect:/mng/index.do"); // 권한 없으면 메인으로 튕겨냄
+            return mv;
+        }
+
+        mv.setViewName("/mng/center/board/newsletter_ko/tool"); // JSP 경로
+        return mv;
+    }
+
+    // 2. 뉴스레터 이미지 업로드 및 HTML 변환 처리 (POST)
+    @RequestMapping(value = "/mng/newsletter/convert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> mng_newsletter_convert(
+            MultipartHttpServletRequest request,
+            @RequestParam("domainUrl") String domainUrl,
+            @RequestParam("folderName") String folderName,
+            @RequestParam("htmlContent") String htmlContent) {
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        // 1. 저장할 기본 경로 설정 (뉴스레터 전용 폴더)
+        // 예: /usr/local/tomcat/webapps/upload/newsletter/20231225/
+        String webRootPath = "/upload/newsletter/" + folderName + "/";
+        String physicalRootPath = "/usr/local/tomcat/webapps" + webRootPath;
+
+        // 2. HTML에 치환될 절대 경로 (Full URL)
+        // 예: https://www.kibs.com/upload/newsletter/20240501/
+        // 도메인 뒤에 슬래시가 중복되지 않도록 처리
+        if (domainUrl.endsWith("/")) {
+            domainUrl = domainUrl.substring(0, domainUrl.length() - 1);
+        }
+        String fullUrlPath = domainUrl + webRootPath;
+
+        File saveDir = new File(physicalRootPath);
+        if (!saveDir.exists()) {
+            saveDir.mkdirs();
+        }
+
+        try {
+            Iterator<String> iterator = request.getFileNames();
+            String processedHtml = htmlContent;
+
+            while (iterator.hasNext()) {
+                MultipartFile file = request.getFile(iterator.next());
+                if (file != null && !file.isEmpty()) {
+                    String originalFilename = file.getOriginalFilename();
+
+                    // [핵심 수정] 파일명 중복 체크 및 변경 (appendSuffixName 활용)
+                    // 예: main.jpg가 있으면 main_1.jpg로 변경됨
+                    String savedFilename = appendSuffixName(physicalRootPath, originalFilename, 1);
+
+                    // 3. 변경된 파일명으로 서버에 저장
+                    File destFile = new File(physicalRootPath + savedFilename);
+                    file.transferTo(destFile);
+
+                    // 4. HTML 내용 치환 (변경된 파일명 적용)
+                    // HTML 내의 "main.jpg"를 "https://.../main_1.jpg"로 변환
+                    if (originalFilename != null) {
+                        processedHtml = processedHtml.replace(originalFilename, fullUrlPath + savedFilename);
+                    }
+                }
+            }
+
+            resultMap.put("resultCode", "0");
+            resultMap.put("resultMsg", "변환 완료");
+            resultMap.put("processedHtml", processedHtml); // 변환된 HTML 반환
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("resultCode", "-1");
+            resultMap.put("resultMsg", "오류 발생: " + e.getMessage());
+        }
+
+        return resultMap;
+    }
+
     @RequestMapping(value = "/mng/center/board/newsletter_ko.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_newsletter_ko() {
         System.out.println("KibsMngController > mng_center_board_newsletter_ko");
@@ -4860,7 +4944,7 @@ public class KibsMngController {
         // --- 2. 셀 데이터 생성 (헤더 순서대로) ---
 
         dataRow.createCell(cellCnt++).setCellValue("Y".equals(info.getExportMeetingYn()) ? "참가" : "참가 안 함");
-        dataRow.createCell(cellCnt++).setCellValue(df.format(registrationFee) + " 원"); // 등록비
+        dataRow.createCell(cellCnt++).setCellValue(df.format(registrationFee)); // 등록비
         int standAlone = info.getStandAloneBoothCnt() != null ? info.getStandAloneBoothCnt() : 0;
         int assembly = info.getAssemblyBoothCnt() != null ? info.getAssemblyBoothCnt() : 0;
         int online = info.getOnlineBoothCnt() != null ? info.getOnlineBoothCnt() : 0;
@@ -4868,9 +4952,9 @@ public class KibsMngController {
         dataRow.createCell(cellCnt++).setCellValue(assembly);
         dataRow.createCell(cellCnt++).setCellValue(online);
         dataRow.createCell(cellCnt++).setCellValue(standAlone + assembly + online); // 총 부스 수
-        dataRow.createCell(cellCnt++).setCellValue(df.format(boothPriceOnly) + " 원"); // 부스가격
+        dataRow.createCell(cellCnt++).setCellValue(df.format(boothPriceOnly)); // 부스가격
 
-        dataRow.createCell(cellCnt++).setCellValue(df.format(boothPrcSum) + " 원"); // 참가비 합계
+        dataRow.createCell(cellCnt++).setCellValue(df.format(boothPrcSum)); // 참가비 합계
 
         dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountEarly1()) ? "O" : "");
         dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountEarly2()) ? "O" : "");
@@ -4886,19 +4970,19 @@ public class KibsMngController {
         dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountLeisure()) ? "O" : ""); // 협회할인
 
         // 특별 할인
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountSpecial1Yn()) ? df.format(specialDiscount1Amount) + " 원" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountSpecial1Yn()) ? df.format(specialDiscount1Amount) : "");
         dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial1Note());
 
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountSpecial2Yn()) ? df.format(specialDiscount2Amount) + " 원" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountSpecial2Yn()) ? df.format(specialDiscount2Amount) : "");
         dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Reason());
         dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial2Note());
 
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountSpecial3Yn()) ? df.format(specialDiscount3Amount) + " 원" : "");
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountSpecial3Yn()) ? df.format(specialDiscount3Amount) : "");
         dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Reason());
         dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Note()); // 특할3 비고
 
-        dataRow.createCell(cellCnt++).setCellValue(df.format(totalDiscount) + " 원"); // 할인가격
-        dataRow.createCell(cellCnt++).setCellValue(developmentFund > 0 ? df.format(developmentFund) + " 원" : ""); // 협회 발전기금
+        dataRow.createCell(cellCnt++).setCellValue(df.format(totalDiscount)); // 할인가격
+        dataRow.createCell(cellCnt++).setCellValue(developmentFund > 0 ? df.format(developmentFund) : ""); // 협회 발전기금
 
         // --- 유틸리티 신청내역 생성 ---
         StringBuilder utilityDetails = new StringBuilder();
@@ -4920,12 +5004,12 @@ public class KibsMngController {
         // 1. 유틸리티 신청내역 셀
         dataRow.createCell(cellCnt++).setCellValue(utilityDetailsStr);
         // 2. 유틸리티 총액 셀
-        dataRow.createCell(cellCnt++).setCellValue(utilityPrcSum > 0 ? df.format(utilityPrcSum) + " 원" : "");
+        dataRow.createCell(cellCnt++).setCellValue(utilityPrcSum > 0 ? df.format(utilityPrcSum) : "");
 
         // 최종 금액 (재계산된 값 사용)
-        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcSum) + " 원"); // 소계(공급가액)
-        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcVat) + " 원"); // 부가세
-        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcTotal) + " 원"); // 총계
+        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcSum)); // 소계(공급가액)
+        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcVat)); // 부가세
+        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcTotal)); // 총계
         return cellCnt;
     }
 
@@ -4936,7 +5020,7 @@ public class KibsMngController {
             // 제품분류 값이 있을 때만 데이터를 입력합니다.
             if (productOptionBig != null && !productOptionBig.trim().isEmpty()) {
                 String[] productOptionSmallSplit = info.getProductOptionSmall() != null ? info.getProductOptionSmall().split("\\^", -1) : new String[0];
-                dataRow.createCell(cellCnt++).setCellValue((productOptionBig != null && !productOptionBig.isEmpty()) ? productOptionBig + " / " + convertValue(productOptionSmallSplit, i) : "");
+                dataRow.createCell(cellCnt++).setCellValue(!productOptionBig.isEmpty() ? productOptionBig + " / " + convertValue(productOptionSmallSplit, i) : "");
 
                 String[] productIsNewSplit = info.getProductIsNew() != null ? info.getProductIsNew().split("\\^", -1) : new String[0];
                 String isNew = convertValue(productIsNewSplit, i);
@@ -8073,7 +8157,7 @@ public class KibsMngController {
                     row.createCell(cellCnt++).setCellValue(booth.getCompanyNameEn()); // 2. 회사명(영문)
                     row.createCell(cellCnt++).setCellValue(booth.getInvoiceYn().equals("Y") ? "O" : ""); // 3. 인보이스
 
-                    row.createCell(cellCnt++).setCellValue(df.format(registrationFee) + " 원"); // 4. 참가비
+                    row.createCell(cellCnt++).setCellValue(df.format(registrationFee)); // 4. 참가비
 
                     String originalBoothType = booth.getBoothType();
                     String displayBoothType = "";
@@ -8092,10 +8176,10 @@ public class KibsMngController {
 
                     row.createCell(cellCnt++).setCellValue(displayBoothType); // 5. 부스구분
                     row.createCell(cellCnt++).setCellValue(booth.getStandAloneBoothCnt() + booth.getAssemblyBoothCnt() + booth.getOnlineBoothCnt()); // 6. 부스수량
-                    row.createCell(cellCnt++).setCellValue(df.format(boothPriceOnly) + " 원"); // 7. 부스가격
+                    row.createCell(cellCnt++).setCellValue(df.format(boothPriceOnly)); // 7. 부스가격
 
                     // 8. 참가비 합계(참가비+부스가격)
-                    row.createCell(cellCnt++).setCellValue(df.format(boothPrcSum) + " 원");
+                    row.createCell(cellCnt++).setCellValue(df.format(boothPrcSum));
 
                     // (할인 항목 9 ~ 20)
                     row.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(booth.getDiscountEarly1()) ? "O" : "");
@@ -8125,7 +8209,7 @@ public class KibsMngController {
                     row.createCell(cellCnt++).setCellValue(String.format("%,d", recalculatedPrcSum));
 
                     // 25. 부가세
-                    row.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcVat) + " 원");
+                    row.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcVat));
 
                     // 26. 최종합계(VAT포함)
                     row.createCell(cellCnt++).setCellValue(String.format("%,d", recalculatedPrcTotal));
@@ -8591,7 +8675,7 @@ public class KibsMngController {
                     Integer utilityPrcSum = util.getUtilityPrcSum();
                     int sum = (utilityPrcSum != null) ? utilityPrcSum : 0;
 
-                    row.createCell(6).setCellValue(df.format(sum) + " 원");
+                    row.createCell(6).setCellValue(df.format(sum));
                     row.createCell(7).setCellValue(util.getInitRegiDttm() != null ? util.getInitRegiDttm().substring(0, 10) : "");
                     row.createCell(8).setCellValue(sum > 0 ? "신청" : "미신청");
 

@@ -593,6 +593,8 @@ function requestMakeMailFormat(data){
     if(nvl(note,'') === '개발사') {
         receiverArr.push({email: 'eh32408@kintex.com'});
         receiverArr.push({email: 'eh32508@kintex.com'});
+        receiverArr.push({email: 'eh32509@kintex.com'});
+        receiverArr.push({email: 'eh32515@kintex.com'});
     }else{
         // kyj@meetingfan.com
         // khe@meetingfan.com

@@ -1,6 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%
+    // 오늘 날짜 구하기 (예: 20240501) - 폴더명 기본값
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyyMMdd");
+    String today = sdf.format(new java.util.Date());
+%>
 <!DOCTYPE html>
 <!--
 Author: Keenthemes
@@ -55,9 +61,7 @@ License: For each use you must have a valid license purchased only from above li
 <body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
       data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
       data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
-      data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true"
-      data-kt-app-page-loading-enabled="true" data-kt-app-page-loading="on"
-      class="app-default">
+      data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
 <!--begin::Theme mode setup on page load-->
 <script>var defaultThemeMode = "light";
 var themeMode;
@@ -87,13 +91,6 @@ if (document.documentElement) {
 </c:if>
 
 <c:if test="${sessionScope.get('status') eq 'logon'}">
-
-    <!--begin::Page loading(append to body)-->
-    <div class="page-loader flex-column bg-dark bg-opacity-25">
-        <span class="spinner-border text-primary" role="status"></span>
-        <span class="text-gray-800 fs-6 fw-semibold mt-5">Loading...</span>
-    </div>
-    <!--end::Page loading-->
 
     <!--begin::App-->
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
@@ -2255,19 +2252,14 @@ if (document.documentElement) {
                                 <!--end::Page title-->
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
-                                    <!--begin::Export export-->
-                                    <button type="button" onclick="f_excel_export('kt_center_board_newsletter_ko_table', '뉴스레터_국문')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
-                                        <i class="ki-duotone ki-exit-down fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>Export as Excel</button>
-                                    <!--end::Export export-->
+                                    <!--begin::Filter menu-->
+                                    <!--end::Filter menu-->
+                                    <!--begin::Secondary button-->
+                                    <!--end::Secondary button-->
+                                    <!--begin::Primary button-->
+                                    <!--end::Primary button-->
                                 </div>
                                 <!--end::Actions-->
-
-                                <!--begin::Hide default export buttons-->
-                                <div id="kt_datatable_excel_hidden_buttons" class="d-none"></div>
-                                <!--end::Hide default export buttons-->
                             </div>
                             <!--end::Toolbar container-->
                         </div>
@@ -2275,92 +2267,108 @@ if (document.documentElement) {
                         <!--begin::Content-->
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
-                            <div id="kt_app_content_container" class="app-container container-full">
-                                <!--begin::Products-->
-                                <div class="card card-flush">
-                                    <!--begin::Card header-->
-                                    <div class="card-header align-items-center py-5 gap-2">
-                                        <!--begin::Card title-->
-                                        <div class="card-title w-100">
-                                            <!--begin::Search-->
-                                            <div class="d-flex align-items-center position-relative my-1 mr15">
-                                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                                <input type="text" id="search_text" name="search_text" value="" class="form-control form-control-solid w-250px ps-12" placeholder="제목 입력"/>
-                                            </div>
-                                            <!--end::Search-->
-                                            <!--begin:Action-->
-                                            <div class="d-flex align-items-center">
-                                                <button type="button" onclick="f_board_newsletter_ko_search()" class="btn btn-primary me-5">Search</button>
-                                            </div>
-                                            <!--end:Action-->
-                                            <div class="ms-auto">
+                            <div id="kt_app_content_container" class="app-container container-xxl">
 
-                                                <c:if test="${sessionScope.get('id') eq 'meetingfan'}">
-                                                    <a href="/mng/newsletter/tool.do" class="btn btn-dark ms-auto">뉴스레터 변환</a>
-                                                </c:if>
-
-                                                <!--begin::글쓰기-->
-                                                <a href="/mng/center/board/newsletter/detail.do?lang=KO&seq=" class="btn btn-primary ms-auto">글쓰기</a>
-                                                <!--end::글쓰기-->
+                                <div class="card mb-5 mb-xl-10">
+                                    <div class="card-header border-0 pt-6">
+                                        <div class="card-title">
+                                            <div class="d-flex align-items-center position-relative my-1">
+                                                <h3>📧 뉴스레터 이미지 경로 자동 변환 도구</h3>
                                             </div>
                                         </div>
-                                        <!--end::Card title-->
                                     </div>
-                                    <!--end::Card header-->
-                                    <!--begin::Card body-->
-                                    <div class="card-body pt-0">
-                                        <div class="fw-bold"><span class="mr10">검색결과</span><span id="search_cnt" style="color: #009ef7;">0</span> 개</div>
-                                        <!--begin::Table-->
-                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_center_board_newsletter_ko_table">
-                                            <thead>
-                                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                                                    <th class="text-center min-w-50px">번호</th>
-                                                    <th class="text-center">ID</th>
-                                                    <th class="text-center min-w-50px">작성상태</th>
-                                                    <th class="text-center min-w-50px">중요공지</th>
-                                                    <th class="text-center min-w-50px">홈페이지</th>
-                                                    <th class="text-center min-w-50px">무역관</th>
-                                                    <th class="text-center min-w-50px">체류</th>
-                                                    <th class="text-center min-w-300px">제목</th>
-                                                    <th class="text-center min-w-125px">작성자</th>
-                                                    <th class="text-center min-w-150px">등록일시</th>
-                                                    <th class="text-center min-w-150px">수정일시</th>
-                                                    <th class="text-center min-w-50px">조회수</th>
-                                                    <th class="text-center min-w-100px">기능</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="fw-semibold text-gray-600">
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <!--end::Table-->
+
+                                    <div class="card-body py-4">
+
+                                        <div class="alert alert-primary d-flex align-items-center p-5 mb-10">
+                                            <span class="svg-icon svg-icon-2hx svg-icon-primary me-4">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"/>
+                                                    <rect x="11" y="14" width="2" height="7" rx="1" fill="currentColor"/>
+                                                    <rect x="11" y="10" width="2" height="2" rx="1" fill="currentColor"/>
+                                                </svg>
+                                            </span>
+                                            <div class="d-flex flex-column">
+                                                <h4 class="mb-1 text-primary">사용 가이드</h4>
+                                                <span>
+                                                    1. <b>폴더명(날짜)</b>을 확인하세요. 서버의 <code>/upload/newsletter/{폴더명}/</code> 경로에 저장됩니다.<br>
+                                                    2. 뉴스레터에 사용된 <b>모든 이미지 파일</b>을 한 번에 선택해서 업로드하세요.<br>
+                                                    3. <b>원본 HTML</b>을 붙여넣고 [변환 실행] 버튼을 클릭하세요.
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <form id="convertForm">
+                                            <div class="mb-10">
+                                                <label for="domainUrl" class="required form-label fw-bold">0. 서비스 도메인 (이미지 서버 주소)</label>
+                                                <input type="text" class="form-control form-control-solid" id="domainUrl" name="domainUrl"
+                                                       placeholder="예: https://kibs.com" value="https://kibs.com"/>
+                                                <div class="text-muted fs-7 mt-2">뉴스레터 내 이미지 경로의 앞부분에 붙을 주소입니다. (반드시 <b>https://</b> 포함)</div>
+                                            </div>
+
+                                            <div class="mb-10">
+                                                <label for="folderName" class="required form-label fw-bold">1. 저장할 폴더명 (날짜)</label>
+                                                <input type="text" class="form-control form-control-solid" id="folderName" name="folderName"
+                                                       placeholder="예: 20240501" value="<%=today%>" />
+                                                <div class="text-muted fs-7 mt-2">
+                                                    서버 저장 경로: /usr/local/tomcat/webapps/upload/newsletter/<b>{폴더명}</b>/<br>
+                                                    최종 이미지 경로: <b>{도메인}</b>/upload/newsletter/<b>{폴더명}</b>/파일명.jpg
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-10">
+                                                <label for="imageFiles" class="required form-label fw-bold">2. 이미지 파일 선택 (다중 선택)</label>
+                                                <input type="file" class="form-control form-control-solid" id="imageFiles" name="imageFiles" multiple accept="image/*" />
+                                                <div class="text-muted fs-7 mt-2"><code>img</code> 폴더 내의 모든 파일을 드래그해서 선택하세요.</div>
+                                            </div>
+
+                                            <div class="mb-10">
+                                                <label for="rawHtml" class="required form-label fw-bold">3. 원본 HTML 소스</label>
+                                                <textarea class="form-control form-control-solid" id="rawHtml" name="htmlContent" rows="10"
+                                                          placeholder='<html>...<img src="images/main.jpg">...</html>' style="font-family: monospace; font-size: 13px;"></textarea>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between">
+                                                <a href="/mng/center/board/newsletter_ko.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
+
+                                                <button type="button" class="btn btn-primary" id="btnConvert" onclick="convertNewsletter()">
+                                                    <span class="indicator-label">
+                                                        변환 및 업로드 실행
+                                                    </span>
+                                                    <span class="indicator-progress">
+                                                        처리중... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </form>
+
+                                        <div id="resultArea" class="mt-15 d-none">
+                                            <div class="separator separator-dashed mb-5"></div>
+
+                                            <div class="d-flex justify-content-between align-items-center mb-5">
+                                                <label class="form-label fw-bold text-success fs-4">✅ 변환 결과</label>
+                                                <button type="button" class="btn btn-sm btn-light-primary" onclick="copyToClipboard()">
+                                                    결과 복사하기
+                                                </button>
+                                            </div>
+
+                                            <textarea class="form-control form-control-solid border-success" id="resultHtml" rows="15" readonly
+                                                      style="font-family: monospace; font-size: 13px; background-color: #f4fff4;"></textarea>
+
+                                            <div class="mt-3 text-end">
+                                                <span class="text-muted fs-7">* 위 코드를 복사해서 전달하거나 뉴스레터 HTML 파일에 붙여넣으세요.</span>
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <!--end::Card body-->
                                 </div>
-                                <!--end::Products-->
                             </div>
                             <!--end::Content container-->
                         </div>
                         <!--end::Content-->
                     </div>
                     <!--end::Content wrapper-->
+
                     <!--begin::Footer-->
                     <div id="kt_app_footer" class="app-footer">
                         <!--begin::Footer container-->
@@ -2399,200 +2407,6 @@ if (document.documentElement) {
     </div>
     <!--end::App-->
 
-    <!--begin::Modal - 상세보기-->
-    <div class="modal fade" id="kt_modal_modify_history" tabindex="-1" aria-hidden="true">
-        <!--begin::Modal dialog-->
-        <div class="modal-dialog modal-dialog-centered mw-1000px">
-            <!--begin::Modal content-->
-            <div class="modal-content">
-                <!--begin::Modal header-->
-                <div class="modal-header" style="background-color: #1e1e2d;">
-                    <!--begin::Modal title-->
-                    <h2 style="color: #FFFFFF;">뉴스레터 상세보기</h2>
-                    <!--end::Modal title-->
-                    <!--begin::Close-->
-                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-                        <i class="ki-duotone ki-cross fs-1">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>
-                    </div>
-                    <!--end::Close-->
-                </div>
-                <!--end::Modal header-->
-                <!--begin::Modal body-->
-                <div class="modal-body py-lg-10 px-lg-10">
-                    <div class="card card-flush py-4">
-                            <%--<!--begin::Card header-->
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <h2>Meta Options</h2>
-                                </div>
-                            </div>
-                            <!--end::Card header-->--%>
-
-                        <!--begin::Card body-->
-                        <div class="card-body pt-0">
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">제목</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_title" placeholder="제목" readonly>
-                                <!--end::Input-->
-                                <!--begin::Description-->
-                                    <%--<div class="text-muted fs-7">Set a meta tag title. Recommended to be simple and precise keywords.</div>--%>
-                                <!--end::Description-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">작성자</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_writer" placeholder="작성자" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">작성일</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_write_date" placeholder="작성일" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">사이트 분류</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <!--begin::Col-->
-                                <div class="d-flex flex-wrap">
-                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                        <input class="form-check-input form-control-solid-bg"
-                                               type="checkbox" id="md_gbn1" value="홈페이지" disabled/>
-                                        <label class="form-check-label text-hover-primary" for="md_gbn1">
-                                            홈페이지
-                                        </label>
-                                    </div>
-                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                        <input class="form-check-input form-control-solid-bg"
-                                               type="checkbox" id="md_gbn2" value="무역관" disabled/>
-                                        <label class="form-check-label text-hover-primary" for="md_gbn2">
-                                            무역관
-                                        </label>
-                                    </div>
-                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                        <input class="form-check-input form-control-solid-bg"
-                                               type="checkbox" id="md_gbn3" value="체류" disabled/>
-                                        <label class="form-check-label text-hover-primary" for="md_gbn3">
-                                            체류
-                                        </label>
-                                    </div>
-                                </div>
-                                <!--end::Col-->
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">추가 설정</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <!--begin::Col-->
-                                <div class="d-flex flex-wrap">
-                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                        <input class="form-check-input form-control-solid-bg"
-                                               type="checkbox" id="md_notice_gbn" value="공지사항 고정" disabled/>
-                                        <label class="form-check-label text-hover-primary" for="md_notice_gbn">
-                                            공지사항 고정
-                                        </label>
-                                    </div>
-                                </div>
-                                <!--end::Col-->
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">내용</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <div id="md_content" class="form-control form-control-solid-bg resize-none h-250px overflow-y-auto" placeholder="내용" readonly></div>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">조회수</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_view_cnt" placeholder="조회수" readonly>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div id="file_list">
-                                <!--begin::Label-->
-                                <label class="form-label">첨부파일</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                    <%--<input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" readonly>--%>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                                <%--
-                                <!--begin::Input group-->
-                                <div class="mb-10">
-                                    <!--begin::Label-->
-                                    <label class="form-label">첨부파일 2</label>
-                                    <!--end::Label-->
-                                    <!--begin::Input-->
-                                    <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_upload_file_2" placeholder="첨부파일 2" readonly>
-                                    <!--end::Input-->
-                                </div>
-                                <!--end::Input group-->
-
-                                <!--begin::Input group-->
-                                <div class="mb-10">
-                                    <!--begin::Label-->
-                                    <label class="form-label">첨부파일 3</label>
-                                    <!--end::Label-->
-                                    <!--begin::Input-->
-                                    <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_upload_file_3" placeholder="첨부파일 3" readonly>
-                                    <!--end::Input-->
-                                </div>
-                                <!--end::Input group-->
-                                --%>
-                        </div>
-                        <!--end::Card header-->
-                    </div>
-                </div>
-                <!--end::Modal body-->
-            </div>
-            <!--end::Modal content-->
-        </div>
-        <!--end::Modal dialog-->
-    </div>
-    <!--end::Modal - 상세보기-->
-
     <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
         <i class="ki-duotone ki-arrow-up">
@@ -2624,19 +2438,127 @@ if (document.documentElement) {
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="/js/custom/newsletterKo.js?ver=<%=System.currentTimeMillis()%>"></script>
-
-    <script>
-        document.addEventListener("keyup", function(event) {
-            if (event.key === 'Enter') {
-                f_board_newsletter_ko_search();
-            }
-        });
-    </script>
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->
+    <script type="text/javascript">
+        /**
+         * 뉴스레터 변환 및 업로드 실행 함수
+         */
+        function convertNewsletter() {
+            // 1. 유효성 검사
+            let domainUrl = $('#domainUrl').val();
+            let folderName = $('#folderName').val();
+            let imageFiles = $('#imageFiles')[0].files;
+            let rawHtml = $('#rawHtml').val();
 
+            if (nvl(domainUrl, '') === '') {
+                Swal.fire('경고', '도메인 주소를 입력해주세요.', 'warning');
+                return;
+            }
+            if (nvl(folderName, '') === '') {
+                Swal.fire('경고', '폴더명을 입력해주세요.', 'warning');
+                return;
+            }
+            if (imageFiles.length === 0) {
+                Swal.fire('경고', '업로드할 이미지를 선택해주세요.', 'warning');
+                return;
+            }
+            if (nvl(rawHtml, '') === '') {
+                Swal.fire('경고', '원본 HTML 소스를 입력해주세요.', 'warning');
+                return;
+            }
+
+            // 2. FormData 생성
+            let formData = new FormData();
+            formData.append('domainUrl', domainUrl);
+            formData.append('folderName', folderName);
+            formData.append('htmlContent', rawHtml);
+
+            // 파일 다중 추가
+            for (let i = 0; i < imageFiles.length; i++) {
+                formData.append('file_' + i, imageFiles[i]); // Key값은 Controller에서 Iterator로 받으므로 크게 중요치 않음
+            }
+
+            // 3. 버튼 로딩 상태 변경
+            let btn = $('#btnConvert');
+            let label = btn.find('.indicator-label');
+            let progress = btn.find('.indicator-progress');
+
+            btn.prop('disabled', true);
+            label.hide();
+            progress.show();
+
+            // 4. AJAX 전송
+            $.ajax({
+                url: '/mng/newsletter/convert.do',
+                method: 'POST',
+                data: formData,
+                processData: false, // 파일 전송 시 필수
+                contentType: false, // 파일 전송 시 필수
+                success: function(res) {
+                    if (res.resultCode === "0") {
+                        // 성공 시 결과 표시
+                        $('#resultArea').removeClass('d-none');
+                        $('#resultHtml').val(res.processedHtml);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: '변환 완료!',
+                            text: '이미지가 업로드되고 HTML 경로가 수정되었습니다.',
+                            confirmButtonColor: '#00a8ff'
+                        });
+
+                        // 결과 영역으로 스크롤 이동
+                        $('html, body').animate({
+                            scrollTop: $("#resultArea").offset().top - 100
+                        }, 500);
+
+                    } else {
+                        Swal.fire('오류', '작업 실패: ' + res.resultMsg, 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    Swal.fire('서버 오류', '서버와 통신 중 오류가 발생했습니다.', 'error');
+                },
+                complete: function() {
+                    // 버튼 상태 복구
+                    btn.prop('disabled', false);
+                    label.show();
+                    progress.hide();
+                }
+            });
+        }
+
+        /**
+         * 결과 HTML 클립보드 복사
+         */
+        function copyToClipboard() {
+            let content = document.getElementById('resultHtml');
+            content.select();
+            document.execCommand('copy');
+
+            // 토스트 메시지나 알림 (선택 사항)
+            // Swal.fire({
+            //     toast: true,
+            //     position: 'top-end',
+            //     icon: 'success',
+            //     title: '복사되었습니다.',
+            //     showConfirmButton: false,
+            //     timer: 1500
+            // });
+            alert('클립보드에 복사되었습니다.'); // 간단 알림
+        }
+
+        // nvl 함수 (기존 main.js에 있다면 생략 가능하지만 안전을 위해 추가)
+        function nvl(str, defaultVal) {
+            if (str === undefined || str === null || str === '') {
+                return defaultVal;
+            }
+            return str;
+        }
+    </script>
     <!--end::login check-->
 </c:if>
 </body>

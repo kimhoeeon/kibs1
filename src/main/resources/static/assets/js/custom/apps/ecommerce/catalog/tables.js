@@ -4916,7 +4916,8 @@ let KTAppCenterBoardKibstv = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
+            'pageLength': 25,
             'select': false,
             'ordering': true,
             'order': [[0, 'desc']],
@@ -6030,10 +6031,16 @@ let DTRequestManagementList = function () {
                 },
                 {
                     'targets': 3,
+                    'width': '5%',
                     'render': function (data, type, row) { return renderEmergencyYnCell(data, type, row); }
                 },
                 {
+                    'targets': 4,
+                    'width': '5%'
+                },
+                {
                     'targets': 5,
+                    'width': '5%',
                     'render': function (data, type, row) { return renderProgressStepCell(data, type, row); }
                 },
                 {
