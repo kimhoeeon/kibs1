@@ -2273,57 +2273,53 @@ if (document.documentElement) {
                                     <div class="card-header border-0 pt-6">
                                         <div class="card-title">
                                             <div class="d-flex align-items-center position-relative my-1">
-                                                <h3>📧 뉴스레터 이미지 경로 자동 변환 도구</h3>
+                                                <i class="ki-outline ki-message-text-2 fs-1 text-primary me-3"></i>
+                                                <h3>뉴스레터 HTML 변환 도구</h3>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="card-body py-4">
 
-                                        <div class="alert alert-primary d-flex align-items-center p-5 mb-10">
-                                            <span class="svg-icon svg-icon-2hx svg-icon-primary me-4">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"/>
-                                                    <rect x="11" y="14" width="2" height="7" rx="1" fill="currentColor"/>
-                                                    <rect x="11" y="10" width="2" height="2" rx="1" fill="currentColor"/>
-                                                </svg>
-                                            </span>
+                                        <div class="alert alert-dismissible bg-light-primary border border-primary d-flex align-items-center p-5 mb-10">
+                                            <i class="ki-outline ki-information-5 fs-2hx text-primary me-4"></i>
+
                                             <div class="d-flex flex-column">
-                                                <h4 class="mb-1 text-primary">사용 가이드</h4>
-                                                <span>
-                                                    1. <b>폴더명(날짜)</b>을 확인하세요. 서버의 <code>/upload/newsletter/{폴더명}/</code> 경로에 저장됩니다.<br>
-                                                    2. 뉴스레터에 사용된 <b>모든 이미지 파일</b>을 한 번에 선택해서 업로드하세요.<br>
-                                                    3. <b>원본 HTML</b>을 붙여넣고 [변환 실행] 버튼을 클릭하세요.
+                                                <h5 class="mb-1 text-primary">사용 가이드</h5>
+                                                <span class="text-gray-700">
+                                                    <span class="badge badge-light-primary badge-sm me-1">Step 1</span> 도메인 주소와 저장할 폴더명(날짜)을 확인합니다.<br>
+                                                    <span class="badge badge-light-primary badge-sm me-1">Step 2</span> 뉴스레터에 사용된 <b>모든 이미지 파일</b>을 선택하여 업로드합니다.<br>
+                                                    <span class="badge badge-light-primary badge-sm me-1">Step 3</span> <b>원본 HTML</b>을 붙여넣고 [변환 실행] 버튼을 클릭합니다.
                                                 </span>
                                             </div>
                                         </div>
 
                                         <form id="convertForm">
-                                            <div class="mb-10">
-                                                <label for="domainUrl" class="required form-label fw-bold">0. 서비스 도메인 (이미지 서버 주소)</label>
-                                                <input type="text" class="form-control form-control-solid" id="domainUrl" name="domainUrl"
-                                                       placeholder="예: https://kibs.com" value="https://kibs.com"/>
-                                                <div class="text-muted fs-7 mt-2">뉴스레터 내 이미지 경로의 앞부분에 붙을 주소입니다. (반드시 <b>https://</b> 포함)</div>
-                                            </div>
 
-                                            <div class="mb-10">
-                                                <label for="folderName" class="required form-label fw-bold">1. 저장할 폴더명 (날짜)</label>
-                                                <input type="text" class="form-control form-control-solid" id="folderName" name="folderName"
-                                                       placeholder="예: 20240501" value="<%=today%>" />
-                                                <div class="text-muted fs-7 mt-2">
-                                                    서버 저장 경로: /usr/local/tomcat/webapps/upload/newsletter/<b>{폴더명}</b>/<br>
-                                                    최종 이미지 경로: <b>{도메인}</b>/upload/newsletter/<b>{폴더명}</b>/파일명.jpg
+                                            <div class="row">
+                                                <div class="col-md-6 mb-10">
+                                                    <label for="domainUrl" class="required form-label fw-bold">서비스 도메인 (URL)</label>
+                                                    <input type="text" class="form-control form-control-solid" id="domainUrl" name="domainUrl"
+                                                           placeholder="예: https://kibs.com" value="https://kibs.com" />
+                                                    <div class="text-muted fs-7 mt-2">이미지 경로 앞단에 붙을 도메인 주소입니다.</div>
+                                                </div>
+
+                                                <div class="col-md-6 mb-10">
+                                                    <label for="folderName" class="required form-label fw-bold">저장 폴더명 (날짜)</label>
+                                                    <input type="text" class="form-control form-control-solid" id="folderName" name="folderName"
+                                                           placeholder="예: 20240501" value="<%=today%>" />
+                                                    <div class="text-muted fs-7 mt-2">서버 저장 경로: <code>/upload/newsletter/{폴더명}/</code></div>
                                                 </div>
                                             </div>
 
                                             <div class="mb-10">
-                                                <label for="imageFiles" class="required form-label fw-bold">2. 이미지 파일 선택 (다중 선택)</label>
+                                                <label for="imageFiles" class="required form-label fw-bold">이미지 파일 선택</label>
                                                 <input type="file" class="form-control form-control-solid" id="imageFiles" name="imageFiles" multiple accept="image/*" />
-                                                <div class="text-muted fs-7 mt-2"><code>img</code> 폴더 내의 모든 파일을 드래그해서 선택하세요.</div>
+                                                <div class="text-muted fs-7 mt-2"><code>img</code> 폴더 내의 모든 이미지를 드래그하여 한 번에 선택하세요.</div>
                                             </div>
 
                                             <div class="mb-10">
-                                                <label for="rawHtml" class="required form-label fw-bold">3. 원본 HTML 소스</label>
+                                                <label for="rawHtml" class="required form-label fw-bold">원본 HTML 소스</label>
                                                 <textarea class="form-control form-control-solid" id="rawHtml" name="htmlContent" rows="10"
                                                           placeholder='<html>...<img src="images/main.jpg">...</html>' style="font-family: monospace; font-size: 13px;"></textarea>
                                             </div>
@@ -2332,7 +2328,8 @@ if (document.documentElement) {
                                                 <a href="/mng/center/board/newsletter_ko.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
 
                                                 <button type="button" class="btn btn-primary" id="btnConvert" onclick="convertNewsletter()">
-                                                    <span class="indicator-label">
+                                                    <span class="indicator-label d-flex align-items-center">
+                                                        <i class="ki-outline ki-cloud-change fs-2 me-2"></i>
                                                         변환 및 업로드 실행
                                                     </span>
                                                     <span class="indicator-progress">
@@ -2346,17 +2343,21 @@ if (document.documentElement) {
                                             <div class="separator separator-dashed mb-5"></div>
 
                                             <div class="d-flex justify-content-between align-items-center mb-5">
-                                                <label class="form-label fw-bold text-success fs-4">✅ 변환 결과</label>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="ki-outline ki-check-circle fs-2 text-success me-2"></i>
+                                                    <label class="form-label fw-bold text-dark fs-4 mb-0">변환 결과</label>
+                                                </div>
                                                 <button type="button" class="btn btn-sm btn-light-primary" onclick="copyToClipboard()">
-                                                    결과 복사하기
+                                                    <i class="ki-outline ki-copy fs-3 me-1"></i>
+                                                    코드 복사
                                                 </button>
                                             </div>
 
                                             <textarea class="form-control form-control-solid border-success" id="resultHtml" rows="15" readonly
-                                                      style="font-family: monospace; font-size: 13px; background-color: #f4fff4;"></textarea>
+                                                      style="font-family: monospace; font-size: 13px; background-color: #f9fff9;"></textarea>
 
                                             <div class="mt-3 text-end">
-                                                <span class="text-muted fs-7">* 위 코드를 복사해서 전달하거나 뉴스레터 HTML 파일에 붙여넣으세요.</span>
+                                                <span class="text-muted fs-7">* 변환된 코드를 복사하여 뉴스레터 HTML에 사용하세요.</span>
                                             </div>
                                         </div>
 
@@ -2504,8 +2505,8 @@ if (document.documentElement) {
 
                         Swal.fire({
                             icon: 'success',
-                            title: '변환 완료!',
-                            text: '이미지가 업로드되고 HTML 경로가 수정되었습니다.',
+                            title: '작업 완료',
+                            text: '이미지 업로드 및 HTML 변환이 성공적으로 처리되었습니다.',
                             confirmButtonColor: '#00a8ff'
                         });
 
@@ -2539,16 +2540,19 @@ if (document.documentElement) {
             content.select();
             document.execCommand('copy');
 
-            // 토스트 메시지나 알림 (선택 사항)
-            // Swal.fire({
-            //     toast: true,
-            //     position: 'top-end',
-            //     icon: 'success',
-            //     title: '복사되었습니다.',
-            //     showConfirmButton: false,
-            //     timer: 1500
-            // });
-            alert('클립보드에 복사되었습니다.'); // 간단 알림
+            // 토스트 메시지
+            if(typeof Swal !== 'undefined') {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: '코드가 복사되었습니다.',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                alert('코드가 복사되었습니다.');
+            }
         }
 
         // nvl 함수 (기존 main.js에 있다면 생략 가능하지만 안전을 위해 추가)

@@ -44,6 +44,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * The type Kibs page controller.
@@ -2375,10 +2376,19 @@ public class KibsMngController {
                     File destFile = new File(physicalRootPath + savedFilename);
                     file.transferTo(destFile);
 
-                    // 4. HTML 내용 치환 (변경된 파일명 적용)
-                    // HTML 내의 "main.jpg"를 "https://.../main_1.jpg"로 변환
+                    // 4. HTML 내용 치환 (링크 href는 보호하고 src만 변경)
                     if (originalFilename != null) {
-                        processedHtml = processedHtml.replace(originalFilename, fullUrlPath + savedFilename);
+                        // [Regex 설명]
+                        // (?i)             : 대소문자 구분 없음 (src, SRC 모두 동작)
+                        // src\s*=\s* : src= 문자를 찾음 (앞뒤 공백 허용) -> href는 여기서 걸러짐
+                        // (["'])           : 따옴표(' 또는 ") 시작 -> 그룹1
+                        // (?:(?!\\1).)*?   : 따옴표 안의 경로(img/...) 부분 (파일명 나오기 전까지)
+                        // filename         : 실제 파일명
+                        // \1               : 따옴표 닫힘
+                        String regex = "(?i)src\\s*=\\s*([\"'])(?:(?!\\1).)*?" + Pattern.quote(originalFilename) + "\\1";
+
+                        // 치환 결과: src="도메인/경로/저장된파일명"
+                        processedHtml = processedHtml.replaceAll(regex, "src=$1" + fullUrlPath + savedFilename + "$1");
                     }
                 }
             }
