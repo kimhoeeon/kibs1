@@ -3709,6 +3709,7 @@
              , join_yn
              , visitor_gbn
              , part_gbn
+             , time_gbn
              , name
              , tel
              , phone
@@ -3747,6 +3748,7 @@
              , join_yn
              , visitor_gbn
              , part_gbn
+             , time_gbn
              , name
              , tel
              , phone
@@ -3814,6 +3816,7 @@
         , join_yn
         , visitor_gbn
         , part_gbn
+        , time_gbn
         , name
         , tel
         , phone
@@ -3844,6 +3847,7 @@
                , #{joinYn}
                , #{visitorGbn}
                , #{partGbn}
+               , #{timeGbn}
                , TRIM(#{name})
                , TRIM(#{tel})
                , TRIM(#{phone})

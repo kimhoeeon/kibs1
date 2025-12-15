@@ -232,14 +232,14 @@
                         지정하고 있습니다.<br>
                         ▶ 개인정보 보호책임자 : 사업부사장<br>
                         ▶ 개인정보 보호 관리자<br>
-                        부서명 : 전시사업2팀<br>
-                        관리자 : 양주윤 팀장<br>
-                        연락처 : 031-995-8731 / frankyang@kintex.com<br><br>
+                        부서명 : 전시사업3팀<br>
+                        관리자 : 구기훈 팀장<br>
+                        연락처 : 031-995-8771 / ghkoo@kintex.com<br><br>
 
                         ▶ 개인정보 보호 담당자<br>
                         부서명 : 전시사업3팀<br>
-                        담당자 : 송욱선 과장<br>
-                        연락처 : 031-995-8779 / wooksun5150@kintex.com<br><br>
+                        담당자 : 오병훈 차장<br>
+                        연락처 : 031-995-8777 / sky@kintex.com<br><br>
 
                         2. 정보주체는 회사의 서비스(또는 사업)을 이용하면서 발생한 모든 개인정보 보호 관련 문의, 불만처리, 피해구제 등에 관한 사항을 개인정보 담당부서로 문의하실 수
                         있습니다. 회사는 정보주체의 문의에 대해 지체없이 답변 및 처리해드릴 것입니다.<br><br>
@@ -342,6 +342,24 @@
             </div>
             <!-- //약관 -->
 
+            <!-- 안내문구 -->
+            <div class="form_wrap">
+                <div class="form_pri">
+                    <div class="form_pri_item">
+                        &lt;1차 사전등록&gt;<br>
+                        - 기간 : 2026년 1월 1일(목) ~ 2026년 2월 15일(일)<br>
+                        - 금액 : 무료<br><br>
+                        &lt;2차 사전등록&gt;<br>
+                        - 기간 : 2026년 2월 16일(월) ~ 2026년 3월 3일(화)<br>
+                        - 금액 : 5,000원(50% 할인가)     ※ 현장에서 할인가로 티켓 구입 필요<br>
+
+                        <br>
+                        ※ 사전등록 완료 후 입력하신 이메일로 등록 내역이 발송될 예정이니 정보를 정확하게 기입해 주시기 바랍니다.
+                    </div>
+                </div>
+            </div>
+            <!-- //안내문구 -->
+
             <!--begin::Form-->
             <form id="joinForm" name="joinForm" method="post" onsubmit="return false;">
 
@@ -355,7 +373,7 @@
                     </div>
                     <ul class="form_box">
                         <li>
-                            <div class="input check">
+                            <div class="input check w-100">
                                 <label><input type="radio" name="partGbn" value="바이어" <c:if test="${info.partGbn eq '바이어'}">checked</c:if> disabled>바이어</label>
                                 <label><input type="radio" name="partGbn" value="일반관람" <c:if test="${info.partGbn eq '일반관람'}">checked</c:if> disabled>일반관람</label>
                                 <div class="cmnt">참관 구분은 수정 불가합니다.</div>
@@ -577,17 +595,15 @@
                                 <p>관심품목</p>
                             </div>
                             <div class="input check">
-                                <label><input type="checkbox" name="interestItem" value="요트/보트" <c:if test="${fn:contains(info.interestItem, '요트/보트')}">checked</c:if> >요트/보트</label>
+                                <label><input type="checkbox" name="interestItem" value="보트&요트" <c:if test="${fn:contains(info.interestItem, '보트&요트')}">checked</c:if> >보트&요트</label>
+                                <label><input type="checkbox" name="interestItem" value="무동력보트" <c:if test="${fn:contains(info.interestItem, '무동력보트')}">checked</c:if> >무동력보트</label>
                                 <label><input type="checkbox" name="interestItem" value="워크보트" <c:if test="${fn:contains(info.interestItem, '워크보트')}">checked</c:if> >워크보트</label>
-                                <label><input type="checkbox" name="interestItem" value="낚시" <c:if test="${fn:contains(info.interestItem, '낚시')}">checked</c:if> >낚시</label>
-                                <label><input type="checkbox" name="interestItem" value="다이빙" <c:if test="${fn:contains(info.interestItem, '다이빙')}">checked</c:if> >다이빙</label>
-                                <label><input type="checkbox" name="interestItem" value="카누/카약/무동력" <c:if test="${fn:contains(info.interestItem, '카누/카약/무동력')}">checked</c:if> >카누/카약/무동력</label>
-                                <label><input type="checkbox" name="interestItem" value="워터스포츠" <c:if test="${fn:contains(info.interestItem, '워터스포츠')}">checked</c:if> >워터스포츠</label>
-                                <label><input type="checkbox" name="interestItem" value="해양부품" <c:if test="${fn:contains(info.interestItem, '해양부품')}">checked</c:if> >해양부품</label>
-                                <label><input type="checkbox" name="interestItem" value="캠핑" <c:if test="${fn:contains(info.interestItem, '캠핑')}">checked</c:if> >캠핑</label>
-                                <label><input type="checkbox" name="interestItem" value="친환경" <c:if test="${fn:contains(info.interestItem, '친환경')}">checked</c:if> >친환경</label>
+                                <label><input type="checkbox" name="interestItem" value="해양부품&장비" <c:if test="${fn:contains(info.interestItem, '해양부품&장비')}">checked</c:if> >해양부품&장비</label>
+                                <label><input type="checkbox" name="interestItem" value="안전&마리나" <c:if test="${fn:contains(info.interestItem, '안전&마리나')}">checked</c:if> >안전&마리나</label>
                                 <label><input type="checkbox" name="interestItem" value="해양관광" <c:if test="${fn:contains(info.interestItem, '해양관광')}">checked</c:if> >해양관광</label>
-                                <label><input type="checkbox" name="interestItem" value="기타" <c:if test="${fn:contains(info.interestItem, '기타')}">checked</c:if> >기타</label>
+                                <label><input type="checkbox" name="interestItem" value="해양레저" <c:if test="${fn:contains(info.interestItem, '해양레저')}">checked</c:if> >해양레저</label>
+                                <label><input type="checkbox" name="interestItem" value="서핑" <c:if test="${fn:contains(info.interestItem, '서핑')}">checked</c:if> >서핑</label>
+                                <label><input type="checkbox" name="interestItem" value="수중레저" <c:if test="${fn:contains(info.interestItem, '수중레저')}">checked</c:if> >수중레저</label>
                                 <div class="cmnt">복수응답가능</div>
                             </div>
                         </li>
@@ -605,7 +621,7 @@
                                 <label><input type="checkbox" name="recognizePath" value="소셜 네트워크" <c:if test="${fn:contains(info.recognizePath, '소셜 네트워크')}">checked</c:if> >소셜 네트워크</label>
                                 <label><input type="checkbox" name="recognizePath" value="초청장" <c:if test="${fn:contains(info.recognizePath, '초청장')}">checked</c:if> >초청장</label>
                                 <label><input type="checkbox" name="recognizePath" value="방송광고" <c:if test="${fn:contains(info.recognizePath, '방송광고')}">checked</c:if> >방송광고</label>
-                                <label><input type="checkbox" name="recognizePath" value="KIBS 2024 참석" <c:if test="${fn:contains(info.recognizePath, 'KIBS 2024 참석')}">checked</c:if> >KIBS 2024 참석</label>
+                                <label><input type="checkbox" name="recognizePath" value="KIBS 참석" <c:if test="${fn:contains(info.recognizePath, 'KIBS 참석')}">checked</c:if> >KIBS 참석</label>
                                 <label><input type="checkbox" name="recognizePath" value="낚시박람회" <c:if test="${fn:contains(info.recognizePath, '낚시박람회')}">checked</c:if> >낚시박람회</label>
                                 <label><input type="checkbox" name="recognizePath" value="기타" <c:if test="${fn:contains(info.recognizePath, '기타')}">checked</c:if> >기타</label>
                                 <div class="cmnt">복수응답가능</div>

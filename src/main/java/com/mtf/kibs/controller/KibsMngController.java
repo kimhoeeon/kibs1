@@ -5938,7 +5938,7 @@ public class KibsMngController {
             /* 엑셀 그리기 */
             final String[] colNames_ex = {
                     /* 업체정보 */
-                    "No", "연도", "구분", "참석여부", "등록일", "수정일",
+                    "No", "연도", "차수", "구분", "참석여부", "등록일", "수정일",
                     /* 참관 구분 */
                     "참관구분",
                     /* 참관객 정보 */
@@ -5952,16 +5952,16 @@ public class KibsMngController {
                     "업계동향 파악 및 정보수집", "제품구매 및 기술도입 상담", "기존 거래업체 방문", "차기 전시회 참가여부 파악",
                     "일반관람", "기타",
                     /* 관심품목 */
-                    "요트/보트", "워크보트", "낚시", "다이빙", "카누/카약/무동력", "워터스포츠", "해양부품", "캠핑",
-                    "친환경", "해양관광", "기타",
+                    "보트&요트", "무동력보트", "워크보트", "해양부품&장비", "안전&마리나", "해양관광", "해양레저", "서핑",
+                    "수중레저",
                     /* 인지경로 */
                     "뉴스레터", "옥외광고물", "홈페이지", "전문지", "온라인 커뮤니티", "오프라인매장", "소셜 네트워크",
-                    "초청장", "방송광고", "KIBS 2024 참석", "낚시박람회", "기타",
+                    "초청장", "방송광고", "KIBS 참석", "낚시박람회", "기타",
                     /* 지난 전시회 참관 여부 */
                     "첫 참관", "2008", "2009", "2010", "2011",
                     "2012", "2013", "2014", "2015", "2016",
                     "2017", "2018", "2019", "2020", "2021",
-                    "2022", "2023", "2024",
+                    "2022", "2023", "2024", "2025",
                     /* 동반자 1 */
                     "성명", "연령",
                     /* 동반자 2 */
@@ -5976,7 +5976,7 @@ public class KibsMngController {
 
             // 헤더 사이즈
             final int[] colWidths_ex = {
-                    3000, 5000, 5000, 5000, 5000, 5000,
+                    3000, 5000, 5000, 5000, 5000, 5000, 5000,
                     5000,
                     5000, 5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000,
@@ -5985,13 +5985,13 @@ public class KibsMngController {
                     5000, 5000, 5000, 5000,
                     5000, 5000,
                     5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000,
+                    5000,
                     5000, 5000, 5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000,
+                    5000, 5000, 5000, 5000,
                     5000, 5000,
                     5000, 5000,
                     5000, 5000,
@@ -6175,50 +6175,50 @@ public class KibsMngController {
 
             // 헤더 정보 구성
             // 기본
-            sheet.addMergedRegion(new CellRangeAddress(0,0,0,6));
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,7));
             SXSSFCell mergeCell = row.createCell(0);
             mergeCell.setCellStyle(headerStyle);
             mergeCell.setCellValue("기본정보");
 
             // 참관객 정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,7,12));
-            SXSSFCell mergeCell2 = row.createCell(7);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,8,13));
+            SXSSFCell mergeCell2 = row.createCell(8);
             mergeCell2.setCellStyle(headerStyle);
             mergeCell2.setCellValue("참관객 정보");
 
             // 설문항목
-            sheet.addMergedRegion(new CellRangeAddress(0,0,13,16));
-            SXSSFCell mergeCell3 = row.createCell(13);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,14,17));
+            SXSSFCell mergeCell3 = row.createCell(14);
             mergeCell3.setCellStyle(headerStyle);
             mergeCell3.setCellValue("설문항목");
 
             // 관람 구분
-            sheet.addMergedRegion(new CellRangeAddress(0,0,17,26));
-            SXSSFCell mergeCell4 = row.createCell(17);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,18,27));
+            SXSSFCell mergeCell4 = row.createCell(18);
             mergeCell4.setCellStyle(headerStyle);
             mergeCell4.setCellValue("관람 구분");
 
             // 보트쇼 방문 목적
-            sheet.addMergedRegion(new CellRangeAddress(0,0,27,32));
-            SXSSFCell mergeCell5 = row.createCell(27);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,28,33));
+            SXSSFCell mergeCell5 = row.createCell(28);
             mergeCell5.setCellStyle(headerStyle);
             mergeCell5.setCellValue("보트쇼 방문 목적");
 
             // 관심품목
-            sheet.addMergedRegion(new CellRangeAddress(0,0,33,43));
-            SXSSFCell mergeCell6 = row.createCell(33);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,34,42));
+            SXSSFCell mergeCell6 = row.createCell(34);
             mergeCell6.setCellStyle(headerStyle);
             mergeCell6.setCellValue("관심품목");
 
             // 인지경로
-            sheet.addMergedRegion(new CellRangeAddress(0,0,44,55));
-            SXSSFCell mergeCell7 = row.createCell(44);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,43,54));
+            SXSSFCell mergeCell7 = row.createCell(43);
             mergeCell7.setCellStyle(headerStyle);
             mergeCell7.setCellValue("인지경로");
 
             // 지난 전시회 참관 여부
-            sheet.addMergedRegion(new CellRangeAddress(0,0,56,73));
-            SXSSFCell mergeCell8 = row.createCell(56);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,55,73));
+            SXSSFCell mergeCell8 = row.createCell(55);
             mergeCell8.setCellStyle(headerStyle);
             mergeCell8.setCellValue("지난 전시회 참관 여부");
 
@@ -6273,6 +6273,11 @@ public class KibsMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(info.getJoinYear());
+
+                // 차수
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(info.getTimeGbn());
 
                 // 구분
                 cell = row.createCell(cellCnt++);
@@ -6529,10 +6534,19 @@ public class KibsMngController {
                     interestItem = "";
                 }
 
-                // 요트/보트
+                // 보트&요트
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("요트/보트")){
+                if(interestItem.contains("보트&요트")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 무동력보트
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(interestItem.contains("무동력보트")){
                     cell.setCellValue("O");
                 }else{
                     cell.setCellValue("");
@@ -6547,64 +6561,19 @@ public class KibsMngController {
                     cell.setCellValue("");
                 }
 
-                // 낚시
+                // 해양부품&장비
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("낚시")){
+                if(interestItem.contains("해양부품&장비")){
                     cell.setCellValue("O");
                 }else{
                     cell.setCellValue("");
                 }
 
-                // 다이빙
+                // 안전&마리나
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("다이빙")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 카누/카약/무동력
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("카누/카약/무동력")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 워터스포츠
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("워터스포츠")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 해양부품
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("해양부품")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 캠핑
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("캠핑")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 친환경
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("친환경")){
+                if(interestItem.contains("안전&마리나")){
                     cell.setCellValue("O");
                 }else{
                     cell.setCellValue("");
@@ -6619,10 +6588,28 @@ public class KibsMngController {
                     cell.setCellValue("");
                 }
 
-                // 기타
+                // 해양레저
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("기타")){
+                if(interestItem.contains("해양레저")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 서핑
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(interestItem.contains("서핑")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 수중레저
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(interestItem.contains("수중레저")){
                     cell.setCellValue("O");
                 }else{
                     cell.setCellValue("");
@@ -6715,10 +6702,10 @@ public class KibsMngController {
                     cell.setCellValue("");
                 }
 
-                // KIBS 2024 참석
+                // KIBS 참석
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("KIBS 2024 참석")){
+                if(recognizePath.contains("KIBS 참석")){
                     cell.setCellValue("O");
                 }else{
                     cell.setCellValue("");
@@ -6909,6 +6896,15 @@ public class KibsMngController {
                 }else{
                     cell.setCellValue("");
                 }
+
+                // 2025
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(preObservationGbn.contains("2025")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
                 
                 // 동반자
                 for(int i=0; i<5; i++) {
@@ -6988,7 +6984,7 @@ public class KibsMngController {
                     "친환경", "해양관광", "기타",
                     /* 인지경로 */
                     "뉴스레터", "옥외광고물", "홈페이지", "전문지", "온라인 커뮤니티", "오프라인매장", "소셜 네트워크",
-                    "초청장", "방송광고", "KIBS 2024 참석", "낚시박람회", "기타",
+                    "초청장", "방송광고", "KIBS 참석", "낚시박람회", "기타",
                     /* 지난 전시회 참관 여부 */
                     "첫 참관", "2008", "2009", "2010", "2011",
                     "2012", "2013", "2014", "2015", "2016",
@@ -7743,10 +7739,10 @@ public class KibsMngController {
                     cell.setCellValue("");
                 }
 
-                // KIBS 2024 참석
+                // KIBS 참석
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("KIBS 2024 참석")){
+                if(recognizePath.contains("KIBS 참석")){
                     cell.setCellValue("O");
                 }else{
                     cell.setCellValue("");

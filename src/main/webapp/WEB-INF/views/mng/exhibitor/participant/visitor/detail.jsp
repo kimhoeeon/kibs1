@@ -2800,80 +2800,66 @@ if (document.documentElement) {
                                                     <!--begin::Col-->
                                                     <div class="col-lg-10 d-flex flex-wrap">
                                                         <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item1" name="interestItem" value="요트/보트"
-                                                                   <c:if test="${fn:contains(info.interestItem, '요트/보트')}">checked</c:if> />
+                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item1" name="interestItem" value="보트&요트"
+                                                                   <c:if test="${fn:contains(info.interestItem, '보트&요트')}">checked</c:if> />
                                                             <label class="form-check-label text-hover-primary" for="interest_item1">
-                                                                요트/보트
+                                                                보트&요트
                                                             </label>
                                                         </div>
                                                         <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item2" name="interestItem" value="워크보트"
-                                                                   <c:if test="${fn:contains(info.interestItem, '워크보트')}">checked</c:if> />
+                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item2" name="interestItem" value="무동력보트"
+                                                                   <c:if test="${fn:contains(info.interestItem, '무동력보트')}">checked</c:if> />
                                                             <label class="form-check-label text-hover-primary" for="interest_item2">
+                                                                무동력보트
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
+                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item3" name="interestItem" value="워크보트"
+                                                                   <c:if test="${fn:contains(info.interestItem, '워크보트')}">checked</c:if> />
+                                                            <label class="form-check-label text-hover-primary" for="interest_item3">
                                                                 워크보트
                                                             </label>
                                                         </div>
                                                         <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item3" name="interestItem" value="낚시"
-                                                                   <c:if test="${fn:contains(info.interestItem, '낚시')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item3">
-                                                                낚시
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item4" name="interestItem" value="다이빙"
-                                                                   <c:if test="${fn:contains(info.interestItem, '다이빙')}">checked</c:if> />
+                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item4" name="interestItem" value="해양부품&장비"
+                                                                   <c:if test="${fn:contains(info.interestItem, '해양부품&장비')}">checked</c:if> />
                                                             <label class="form-check-label text-hover-primary" for="interest_item4">
-                                                                다이빙
+                                                                해양부품&장비
                                                             </label>
                                                         </div>
                                                         <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item5" name="interestItem" value="카누/카약/무동력"
-                                                                   <c:if test="${fn:contains(info.interestItem, '카누/카약/무동력')}">checked</c:if> />
+                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item5" name="interestItem" value="안전&마리나"
+                                                                   <c:if test="${fn:contains(info.interestItem, '안전&마리나')}">checked</c:if> />
                                                             <label class="form-check-label text-hover-primary" for="interest_item5">
-                                                                카누/카약/무동력
+                                                                안전&마리나
                                                             </label>
                                                         </div>
                                                         <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item6" name="interestItem" value="워터스포츠"
-                                                                   <c:if test="${fn:contains(info.interestItem, '워터스포츠')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item6">
-                                                                워터스포츠
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item7" name="interestItem" value="해양부품"
-                                                                   <c:if test="${fn:contains(info.interestItem, '해양부품')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item7">
-                                                                해양부품
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item8" name="interestItem" value="캠핑"
-                                                                   <c:if test="${fn:contains(info.interestItem, '캠핑')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item8">
-                                                                캠핑
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item9" name="interestItem" value="친환경"
-                                                                   <c:if test="${fn:contains(info.interestItem, '친환경')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item9">
-                                                                친환경
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item10" name="interestItem" value="해양관광"
+                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item6" name="interestItem" value="해양관광"
                                                                    <c:if test="${fn:contains(info.interestItem, '해양관광')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item10">
+                                                            <label class="form-check-label text-hover-primary" for="interest_item6">
                                                                 해양관광
                                                             </label>
                                                         </div>
                                                         <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item11" name="interestItem" value="기타"
-                                                                   <c:if test="${fn:contains(info.interestItem, '기타')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item11">
-                                                                기타
+                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item7" name="interestItem" value="해양레저"
+                                                                   <c:if test="${fn:contains(info.interestItem, '해양레저')}">checked</c:if> />
+                                                            <label class="form-check-label text-hover-primary" for="interest_item7">
+                                                                해양레저
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
+                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item8" name="interestItem" value="서핑"
+                                                                   <c:if test="${fn:contains(info.interestItem, '서핑')}">checked</c:if> />
+                                                            <label class="form-check-label text-hover-primary" for="interest_item8">
+                                                                서핑
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
+                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item9" name="interestItem" value="수중레저"
+                                                                   <c:if test="${fn:contains(info.interestItem, '수중레저')}">checked</c:if> />
+                                                            <label class="form-check-label text-hover-primary" for="interest_item9">
+                                                                수중레저
                                                             </label>
                                                         </div>
                                                         <!--begin::Col-->
@@ -2956,10 +2942,10 @@ if (document.documentElement) {
                                                             </label>
                                                         </div>
                                                         <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path10" name="recognizePath" value="KIBS 2024 참석"
-                                                                   <c:if test="${fn:contains(info.recognizePath, 'KIBS 2024 참석')}">checked</c:if> />
+                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path10" name="recognizePath" value="KIBS 참석"
+                                                                   <c:if test="${fn:contains(info.recognizePath, 'KIBS 참석')}">checked</c:if> />
                                                             <label class="form-check-label text-hover-primary" for="recognize_path10">
-                                                                KIBS 2024 참석
+                                                                KIBS 참석
                                                             </label>
                                                         </div>
                                                         <div class="form-check form-check-custom form-check-lg mb-3 mr15">

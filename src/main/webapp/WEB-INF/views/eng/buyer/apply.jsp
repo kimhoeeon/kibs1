@@ -547,7 +547,7 @@
                                 <label><input type="checkbox" name="recognizePath" value="소셜 네트워크">SNS</label>
                                 <label><input type="checkbox" name="recognizePath" value="초청장">Invitation letter</label>
                                 <label><input type="checkbox" name="recognizePath" value="방송광고">TV advertisement</label>
-                                <label><input type="checkbox" name="recognizePath" value="KIBS 2024 참석">Participants to KIBS 2023</label>
+                                <label><input type="checkbox" name="recognizePath" value="KIBS 참석">Participants to KIBS 2023</label>
                                 <label><input type="checkbox" name="recognizePath" value="낚시박람회">Fishing Fair</label>
                                 <label><input type="checkbox" name="recognizePath" value="기타">Others</label>
                                 <div class="cmnt">Multiple choice available</div>

@@ -2890,10 +2890,10 @@ if (document.documentElement) {
                                                             </label>
                                                         </div>
                                                         <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path10" name="recognizePath" value="KIBS 2024 참석"
-                                                                   <c:if test="${fn:contains(info.recognizePath, 'KIBS 2024 참석')}">checked</c:if> />
+                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path10" name="recognizePath" value="KIBS 참석"
+                                                                   <c:if test="${fn:contains(info.recognizePath, 'KIBS 참석')}">checked</c:if> />
                                                             <label class="form-check-label text-hover-primary" for="recognize_path10">
-                                                                KIBS 2024 참석
+                                                                KIBS 참석
                                                             </label>
                                                         </div>
                                                         <div class="form-check form-check-custom form-check-lg mb-3 mr15">

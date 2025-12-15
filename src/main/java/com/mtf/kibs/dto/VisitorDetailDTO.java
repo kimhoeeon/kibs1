@@ -16,6 +16,7 @@ public class VisitorDetailDTO {
     String joinYn; //참석여부
     String visitorGbn; //구분
     String partGbn; //참관구분
+    String timeGbn; //1차/2차
     String name; //이름
     String tel; //전화번호
     String phone; //휴대전화

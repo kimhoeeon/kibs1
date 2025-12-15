@@ -554,8 +554,8 @@ function f_visitor_form_data_setting(gbn){
 function f_visitor_excel_export(){
     Swal.fire({
         icon: 'info',
-        title: '[ 참관객 상세 다운로드 ]',
-        html: '참관객 상세를 다운로드하시겠습니까 ?<br><span style="font-weight: bold; font-size: 1rem;">' +
+        title: '[ 참관객 상세 엑셀 다운로드 ]',
+        html: '참관객 상세 엑셀을 다운로드하시겠습니까 ?<br><span style="font-weight: bold; font-size: 1rem;">' +
             '( 데이터가 많을 경우 시간이 소요될 수 있습니다. )<br>( 해당 창이 닫혀도 다운로드가 완료될 때까지<br>대기해 주세요. )</span>',
         allowOutsideClick: false,
         showCancelButton: true,

@@ -6561,6 +6561,13 @@ function f_visitor_form_data_setting(){
     joinForm.joinYn = 'Y';
     joinForm.visitorGbn = '개인';
 
+    let nowTime = getCurrentDate(); //yyyymmddhhmmss
+    if(nowTime < '20260216000000'){ // 1차 사전등록
+        joinForm.timeGbn = '1차';
+    }else{ // 2차 사전등록
+        joinForm.timeGbn = '2차';
+    }
+
     joinForm.domain = $('#domain').val();
 
     joinForm.regionSi = joinForm.sido;

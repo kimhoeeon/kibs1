@@ -81,7 +81,7 @@
                 </div>
                 <h1 class="hd_logo">
                     <a href="javascript:void(0);" onclick="home('en')">
-                        <img src="/img/logo_eng.png?ver=20251205">
+                        <img src="/img/logo_eng.png?ver=20251215">
                     </a>
                 </h1>
                 <div class="hd_top_right">

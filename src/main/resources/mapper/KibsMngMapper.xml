@@ -2897,6 +2897,7 @@
              , join_yn
              , visitor_gbn
              , part_gbn
+             , time_gbn
              , name
              , tel
              , phone
@@ -2952,6 +2953,7 @@
              , join_yn
              , visitor_gbn
              , part_gbn
+             , time_gbn
              , name
              , tel
              , phone
@@ -3020,6 +3022,7 @@
         , join_yn
         , visitor_gbn
         , part_gbn
+        , time_gbn
         , name
         , tel
         , phone
@@ -3043,39 +3046,38 @@
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        ) VALUES
-        ( #{seq}
-        , #{lang}
-        , #{joinYear}
-        , #{joinYn}
-        , #{visitorGbn}
-        , #{partGbn}
-        , #{name}
-        , #{tel}
-        , #{phone}
-        , #{email}
-        , #{domain}
-        , #{companyName}
-        , #{companyAddress}
-        , #{companyAddressDetail}
-        , #{partnerYn}
-        , #{sex}
-        , #{regionSi}
-        , #{regionGu}
-        , #{country}
-        , #{ageGroup}
-        , #{observationGbn}
-        , #{visitPurpose}
-        , #{interestItem}
-        , #{recognizePath}
-        , #{preObservationGbn}
-        , #{note}
-        , 'VISITOR'
-        , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        , 'VISITOR'
-        , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-        )
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{lang}
+               , #{joinYear}
+               , #{joinYn}
+               , #{visitorGbn}
+               , #{partGbn}
+               , #{timeGbn}
+               , #{name}
+               , #{tel}
+               , #{phone}
+               , #{email}
+               , #{domain}
+               , #{companyName}
+               , #{companyAddress}
+               , #{companyAddressDetail}
+               , #{partnerYn}
+               , #{sex}
+               , #{regionSi}
+               , #{regionGu}
+               , #{country}
+               , #{ageGroup}
+               , #{observationGbn}
+               , #{visitPurpose}
+               , #{interestItem}
+               , #{recognizePath}
+               , #{preObservationGbn}
+               , #{note}
+               , 'VISITOR'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'VISITOR'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <delete id="deleteVisitor" parameterType="com.mtf.kibs.dto.VisitorDTO">
@@ -3163,6 +3165,7 @@
              , join_year
              , visitor_gbn
              , part_gbn
+             , time_gbn
              , join_yn
              , name
              , tel
@@ -5780,6 +5783,7 @@
              , v.join_yn
              , v.visitor_gbn
              , v.part_gbn
+             , v.time_gbn
              , v.name
              , v.tel
              , v.phone

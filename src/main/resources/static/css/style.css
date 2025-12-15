@@ -2942,6 +2942,10 @@ label:last-child {
     line-height: 2.2rem;
 }
 
+.form_s .form_box li .input.w-100{
+    width: 100%;
+}
+
 .form_s .form_box li .item p {
     position: absolute;
     top: 50%;
@@ -3550,6 +3554,8 @@ label:last-child {
     line-height: 2.2rem;
 }
 
+
+
 .form_s .form_pri_box .table {margin-top: 5px; overflow-x: auto;}
 .form_s .form_pri_box table {border: 1px solid #ddd; width: max-content; min-width: 100%; }
 .form_s .form_pri_box table th,
@@ -3566,6 +3572,14 @@ label:last-child {
 .form_s .form_pri_box .form_pri_titt {
     font-weight: 700;
     margin-bottom: 5px;
+}
+
+.form_s .form_pri_item{
+    background: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+    padding: 25px;
+    font-size: 1.6rem;
+    line-height: 2.2rem;
 }
 
 .form_s .form_pri_agree {
@@ -4807,6 +4821,19 @@ label:last-child {
     margin-top: 25px;
 }
 
+.vis_g1_box .txt2.flex{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.vis_g1_box .txt2.flex h3{
+    background-color: #1D5CAD;
+    color: #fff;
+    margin-bottom: 10px;
+    padding: 4px 0;
+}
+
 .vis_g1_box .txt2 p {
     font-size: 1.6rem;
     line-height: 2.2rem;
@@ -4828,6 +4855,7 @@ label:last-child {
 
 .vis_g1 .vis_g_table {
     margin-top: 40px;
+    margin-bottom: 70px;
 }
 
 .vis_g1 .vis_g_table .table_box {

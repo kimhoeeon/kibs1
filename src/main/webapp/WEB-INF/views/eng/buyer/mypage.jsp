@@ -315,7 +315,7 @@
                                 <label><input type="checkbox" name="recognizePath" value="소셜 네트워크" <c:if test="${fn:contains(info.recognizePath, '소셜 네트워크')}">checked</c:if> >SNS</label>
                                 <label><input type="checkbox" name="recognizePath" value="초청장" <c:if test="${fn:contains(info.recognizePath, '초청장')}">checked</c:if> >Invitation letter</label>
                                 <label><input type="checkbox" name="recognizePath" value="방송광고" <c:if test="${fn:contains(info.recognizePath, '방송광고')}">checked</c:if> >TV advertisement</label>
-                                <label><input type="checkbox" name="recognizePath" value="KIBS 2024 참석" <c:if test="${fn:contains(info.recognizePath, 'KIBS 2024 참석')}">checked</c:if> >Participants to KIBS 2024</label>
+                                <label><input type="checkbox" name="recognizePath" value="KIBS 참석" <c:if test="${fn:contains(info.recognizePath, 'KIBS 참석')}">checked</c:if> >Participants to KIBS 2024</label>
                                 <label><input type="checkbox" name="recognizePath" value="낚시박람회" <c:if test="${fn:contains(info.recognizePath, '낚시박람회')}">checked</c:if> >Fishing Fair</label>
                                 <label><input type="checkbox" name="recognizePath" value="기타" <c:if test="${fn:contains(info.recognizePath, '기타')}">checked</c:if> >Others</label>
                                 <div class="cmnt">Multiple choice available</div>
