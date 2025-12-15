@@ -6173,93 +6173,80 @@ function f_en_pre_apply_check_login(){
 
 function f_company_search(){
     let companyName = $('#search_companyName').val();
-    if(nvl(companyName,'') !== ''){
-        let jsonObj = {
-            wkplNm: companyName
-        }
-        
-        $.ajax({
-            url: '/visitor/companySearch.do',
-            method: 'post',
-            /*async: false,*/
-            data: JSON.stringify(jsonObj),
-            contentType: 'application/json; charset=utf-8', //server charset 확인 필요
-            beforeSend : function(request){
-                // Performed before calling Ajax
-                $('#spinner').show();
-            },
-            success: function (data) {
-                if(nvl(data,'') !== ''){
-                    if(nvl(data.header,'') !== ''){
-                        let resultCode = data.header.resultCode;
-                        if(resultCode === '00'){
-                            let totalCount = data.body.totalCount;
-                            if(totalCount > 0){
-                                let items = data.body.items.item;
-                                let uniqueList = [];
-                                items.forEach((element) => {
-                                    let wkplNm = element.wkplNm;
-                                    let wkplRoadNmDtlAddr = element.wkplRoadNmDtlAddr
-                                    let temp_val = wkplNm + '/' + wkplRoadNmDtlAddr;
-                                    if (!uniqueList.includes(temp_val)) {
-                                        uniqueList.push(temp_val);
-                                    }
-                                });
 
-                                let str = '';
-                                uniqueList.forEach((val) => {
-                                    let name = val.toString().split('/')[0];
-                                    let addr = val.toString().split('/')[1];
-                                    str += '<li>';
-                                    str += '<a href="javascript:void(0);" onclick="f_company_info_add(this)">';
-                                    str += '<div class="name">';
-                                    str += name;
-                                    str += '</div>';
-                                    str += '<div class="address">';
-                                    str += addr;
-                                    str += '</div>';
-                                    str += '</a>';
-                                    str += '</li>';
-                                });
+    if(nvl(companyName,'') === ''){
+        alert('직장명을 입력해주세요.');
+        return;
+    }
 
-                                $('.popCompanyName .companyList').html(str);
-                            }else{
-                                let str = '';
-                                str += '<div class="companyNot">';
-                                str += '검색결과가 없습니다.';
-                                str += '<br>';
-                                str += 'No results were found for your search.';
-                                str += '</div>';
-                                $('.popCompanyName .companyList').html(str);
-                            }
+    let jsonObj = { wkplNm: companyName }
 
-                        }else{
-                            showMessage('', 'error', '[ERROR]', '직장명 검색에 실패하였습니다. 관리자에게 문의해 주세요. ', '');
-                        }
-                    }else{
-                        alert('조회가 실패하였습니다. 직장명을 직접 입력해 주세요.');
-                        $('#spinner').hide();
+    $.ajax({
+        url: '/visitor/companySearch.do',
+        method: 'post',
+        data: JSON.stringify(jsonObj),
+        contentType: 'application/json; charset=utf-8', //server charset 확인 필요
+        beforeSend : function(request){
+            // Performed before calling Ajax
+            $('#spinner').show();
+        },
+        success: function (data) {
+            // 데이터 유효성 검사 강화
+            if(data && data.header && data.header.resultCode === '00' && data.body){
+                let totalCount = data.body.totalCount;
+
+                if(totalCount > 0 && data.body.items){
+                    let items = data.body.items.item;
+
+                    // [중요] API가 1건일 때 Object로 주는 경우 배열로 변환
+                    if (!Array.isArray(items)) {
+                        items = [items];
                     }
 
-                }else{
-                    let str = '';
-                    str += '<div class="companyNot">';
-                        str += '검색결과가 없습니다.';
-                        str += '<br>';
-                        str += 'No results were found for your search.';
-                    str += '</div>';
-                    $('.popCompanyName .companyList').html(str);
-                }
+                    let uniqueList = new Set(); // Set을 사용하여 중복 제거 효율화
+                    let htmlStr = '';
 
-                $('#spinner').hide();
-            },
-            error: function() {
-                // Do when ajax call fail
-                alert('오류가 발생했습니다. 관리자에게 문의해 주세요.');
-                $('#spinner').hide();
+                    items.forEach((element) => {
+                        let wkplNm = nvl(element.wkplNm, '');
+                        let wkplRoadNmDtlAddr = nvl(element.wkplRoadNmDtlAddr, '');
+                        let temp_val = wkplNm + '::' + wkplRoadNmDtlAddr; // 구분자 변경
+
+                        if (!uniqueList.has(temp_val)) {
+                            uniqueList.add(temp_val);
+
+                            htmlStr += '<li>';
+                            htmlStr += '<a href="javascript:void(0);" onclick="f_company_info_add(this)">';
+                            htmlStr += '<div class="name">' + wkplNm + '</div>';
+                            htmlStr += '<div class="address">' + wkplRoadNmDtlAddr + '</div>';
+                            htmlStr += '</a>';
+                            htmlStr += '</li>';
+                        }
+                    });
+
+                    $('.popCompanyName .companyList').html(htmlStr);
+
+                } else {
+                    renderNoResult();
+                }
+            } else {
+                // API 호출은 성공했으나, 비즈니스 로직상 실패(키 오류, 트래픽 초과 등)
+                renderNoResult();
+                console.warn("API 조회 실패 또는 결과 코드 오류");
             }
-        })
-    }
+        },
+        error: function(xhr, status, error) {
+            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.');
+            console.error(error);
+        },
+        complete: function() {
+            $('#spinner').hide();
+        }
+    });
+}
+
+function renderNoResult() {
+    let str = '<div class="companyNot">검색결과가 없습니다.<br>No results were found for your search.</div>';
+    $('.popCompanyName .companyList').html(str);
 }
 
 function f_company_info_add(el){
@@ -6576,19 +6563,25 @@ function f_visitor_form_data_setting(){
 
     let partnerInfoArr = [];
     if(joinForm.partnerYn === 'Y'){
-        //동반자 Setting
-        let visitPartnerCnt = parseInt($('.visitPartnerNum:last').text());
-        for(let i=0; i<visitPartnerCnt; i++){
-            let visitPartnerObj = {
-                seq: $('input[type=hidden][name=partnerSeq]').eq(i).val(),
-                visitorSeq: $('input[type=hidden][name=visitorSeq]').val(),
-                name: $('#name').val(),
-                phone: $('#phone').val(),
-                partnerName: $('input[name=partnerName]').eq(i).val(),
-                partnerAge: $('input[name=partnerAge]').eq(i).val()
-            };
-            partnerInfoArr.push(visitPartnerObj);
-        }
+        $('.visitPartnerBox').each(function(index, element) {
+            // 첫 번째 박스가 템플릿(빈 값) 역할인지, 실제 입력값인지 확인 필요
+            // 여기서는 이름이 입력된 경우만 수집하도록 처리
+            let pName = $(this).find('input[name=partnerName]').val();
+
+            if (nvl(pName, '') !== '') {
+                let visitPartnerObj = {
+                    seq: $(this).find('input[type=hidden][name=partnerSeq]').val(),
+                    visitorSeq: $('input[type=hidden][name=visitorSeq]').val(),
+                    // 신청자 본인 정보 (부모값)
+                    name: $('#name').val(),
+                    phone: $('#phone').val(),
+                    // 동반자 정보 (현재 row 값)
+                    partnerName: pName,
+                    partnerAge: $(this).find('input[name=partnerAge]').val()
+                };
+                partnerInfoArr.push(visitPartnerObj);
+            }
+        });
     }
     joinForm.partner = partnerInfoArr;
 

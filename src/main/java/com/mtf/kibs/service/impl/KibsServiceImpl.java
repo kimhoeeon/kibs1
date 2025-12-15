@@ -2036,28 +2036,46 @@ public class KibsServiceImpl implements KibsService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public SearchCompanyResponseDTO processSearchCompany(SearchCompanyRequestDTO searchCompanyRequestDTO) {
-        System.out.println("KibsServiceImpl > processSearchCompany");
-        SearchCompanyResponseDTO response = new SearchCompanyResponseDTO();
-        try {
+        //System.out.println("=============== [API 호출 시작] ===============");
+        //System.out.println("입력된 검색어: " + searchCompanyRequestDTO.getWkplNm());
 
-            StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B552015/NpsBplcInfoInqireService/getBassInfoSearch"); /*URL*/
-            urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + "nngY%2FlASnTg%2FKJlWdupohRX699RJx6xxaPIsfw3WMoP74fL3ElwqhwmIWWYrlYYABP%2B7SUiOfhPGiVY%2BRDSxdg%3D%3D"); /*Service Key*/
-            //urlBuilder.append("&" + URLEncoder.encode("ldong_addr_mgpl_dg_cd","UTF-8") + "=" + URLEncoder.encode("41", "UTF-8")); /*시도(행정자치부 법정동 주소코드 참조)*/
-            //urlBuilder.append("&" + URLEncoder.encode("ldong_addr_mgpl_sggu_cd","UTF-8") + "=" + URLEncoder.encode("117", "UTF-8")); /*시군구(행정자치부 법정동 주소코드 참조)*/
-            //urlBuilder.append("&" + URLEncoder.encode("ldong_addr_mgpl_sggu_emd_cd","UTF-8") + "=" + URLEncoder.encode("101", "UTF-8")); /*읍면동(행정자치부 법정동 주소코드 참조)*/
-            urlBuilder.append("&" + URLEncoder.encode("wkpl_nm", "UTF-8") + "=" + URLEncoder.encode(searchCompanyRequestDTO.getWkplNm(), "UTF-8")); /*사업장명*/
-            //urlBuilder.append("&" + URLEncoder.encode("bzowr_rgst_no","UTF-8") + "=" + URLEncoder.encode("124815", "UTF-8")); /*사업자등록번호(앞에서 6자리)*/
-            URL url = new URL(urlBuilder.toString());
+        SearchCompanyResponseDTO response = new SearchCompanyResponseDTO();
+
+        // [중요] 공공데이터포털에서 발급받은 '인코딩된' 인증키를 그대로 넣으세요. (디코딩된 키라면 URLEncoder 필요)
+        // 만약 키에 % 문자가 포함되어 있다면 이미 인코딩된 키일 확률이 높습니다.
+        String serviceKey = "nngY%2FlASnTg%2FKJlWdupohRX699RJx6xxaPIsfw3WMoP74fL3ElwqhwmIWWYrlYYABP%2B7SUiOfhPGiVY%2BRDSxdg%3D%3D";
+
+        try {
+            // 1. URL 생성
+            StringBuilder urlBuilder = new StringBuilder("https://apis.data.go.kr/B552015/NpsBplcInfoInqireServiceV2/getBassInfoSearchV2");
+            urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + serviceKey);
+            // 주의: serviceKey 변수가 이미 인코딩된 값이라면 URLEncoder.encode(serviceKey)를 하면 안됩니다. (이중 인코딩 됨)
+
+            urlBuilder.append("&" + URLEncoder.encode("wkplNm", "UTF-8") + "=" + URLEncoder.encode(searchCompanyRequestDTO.getWkplNm(), "UTF-8"));
+            urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("100", "UTF-8")); // 한 번에 가져올 개수
+            urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
+
+            String finalUrl = urlBuilder.toString();
+            //System.out.println("생성된 URL: " + finalUrl); // [체크포인트 1] 이 URL을 복사해서 브라우저 주소창에 넣어보세요.
+
+            // 2. 연결 설정
+            URL url = new URL(finalUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-type", "application/json");
-            System.out.println("Response code: " + conn.getResponseCode());
+
+            // 3. 응답 코드 확인
+            int responseCode = conn.getResponseCode();
+            //System.out.println("HTTP 응답 코드: " + responseCode); // [체크포인트 2] 200이 아니면 오류입니다.
+
+            // 4. 응답 데이터 읽기
             BufferedReader rd;
-            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-                rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            if (responseCode >= 200 && responseCode <= 300) {
+                rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
             } else {
-                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "UTF-8"));
             }
+
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = rd.readLine()) != null) {
@@ -2065,22 +2083,29 @@ public class KibsServiceImpl implements KibsService {
             }
             rd.close();
             conn.disconnect();
-            System.out.println(sb.toString());
 
-            String xmlData = sb.toString();
+            String responseBody = sb.toString();
+            //System.out.println("응답 본문(Raw Data): " + responseBody); // [체크포인트 3] XML 내용 확인
 
-            StringReader sr = new StringReader(xmlData);
-            if (!xmlData.contains("OpenAPI_")) {
+            // 5. XML 파싱 (JAXB)
+            // 응답이 정상 XML이 아닐 경우(서비스키 에러 등) 파싱 에러가 발생할 수 있습니다.
+            if (responseBody != null && responseBody.contains("<response>")) {
+                // JAXB 파싱 로직
+                StringReader sr = new StringReader(responseBody);
                 JAXBContext jaxbContext = JAXBContext.newInstance(SearchCompanyResponseDTO.class);
                 Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
                 response = (SearchCompanyResponseDTO) unmarshaller.unmarshal(sr);
+
+                //System.out.println("XML 파싱 성공");
+            } else {
+                System.out.println("정상적인 데이터 포맷이 아니거나 에러 메시지가 반환되었습니다.");
+                // 여기서 에러 DTO를 리턴하거나 null 처리
             }
 
-        } catch (IOException ioe) {
-
-            System.out.println(ioe.getMessage());
-        } catch (JAXBException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            // [체크포인트 4] 어떤 예외가 발생했는지 확인
+            System.out.println("=============== [에러 발생] ===============");
+            e.printStackTrace();
         }
 
         return response;
