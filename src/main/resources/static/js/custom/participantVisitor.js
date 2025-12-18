@@ -458,19 +458,25 @@ function f_visitor_form_data_setting(gbn){
 
     let partnerInfoArr = [];
     if(visitorForm.partnerYn === 'Y'){
-        //동반자 Setting
-        let partnerInfoCnt = $('.partnerInfoNum:last').text();
-        for(let i=0; i<partnerInfoCnt; i++){
-            let partnerInfoObj = {
-                seq: $('input[type=hidden][name=partnerSeq]').eq(i).val(),
-                visitorSeq: $('input[type=hidden][name=visitorSeq]').val(),
-                name: $('#name').val(),
-                phone: $('#phone').val(),
-                partnerName: $('input[name=partnerName]').eq(i).val(),
-                partnerAge: $('input[name=partnerAge]').eq(i).val()
-            };
-            partnerInfoArr.push(partnerInfoObj);
-        }
+        $('.partner_info_box').each(function(index, element) {
+            // 첫 번째 박스가 템플릿(빈 값) 역할인지, 실제 입력값인지 확인 필요
+            // 여기서는 이름이 입력된 경우만 수집하도록 처리
+            let pName = $(this).find('input[name=partnerName]').val();
+
+            if (nvl(pName, '') !== '') {
+                let visitPartnerObj = {
+                    seq: $(this).find('input[type=hidden][name=partnerSeq]').val(),
+                    visitorSeq: $('input[type=hidden][name=visitorSeq]').val(),
+                    // 신청자 본인 정보 (부모값)
+                    name: $('#name').val(),
+                    phone: $('#phone').val(),
+                    // 동반자 정보 (현재 row 값)
+                    partnerName: pName,
+                    partnerAge: $(this).find('input[name=partnerAge]').val()
+                };
+                partnerInfoArr.push(visitPartnerObj);
+            }
+        });
     }
     visitorForm.partner = partnerInfoArr;
 

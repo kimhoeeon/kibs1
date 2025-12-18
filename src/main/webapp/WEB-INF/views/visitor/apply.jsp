@@ -546,6 +546,8 @@
                                         <label><input type="checkbox" name="observationGbn" value="보트 소유자">보트 소유자</label>
                                         <label><input type="checkbox" name="observationGbn" value="보트 구매 예정자">보트 구매 예정자</label>
                                         <label><input type="checkbox" name="observationGbn" value="관련 업종 종사자">관련 업종 종사자</label>
+                                        <label><input type="checkbox" name="observationGbn" value="서핑 매니아">서핑 매니아</label>
+                                        <label><input type="checkbox" name="observationGbn" value="해양관광 예정자">해양관광 예정자</label>
                                         <label><input type="checkbox" name="observationGbn" value="낚시 매니아">낚시 매니아</label>
                                         <label><input type="checkbox" name="observationGbn" value="다이빙 매니아">다이빙 매니아</label>
                                         <label><input type="checkbox" name="observationGbn" value="캠핑카 매니아">캠핑카 매니아</label>

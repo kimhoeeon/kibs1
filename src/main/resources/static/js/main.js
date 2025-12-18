@@ -6871,6 +6871,13 @@ function f_en_visitor_form_data_setting(){
     joinForm.joinYn = 'Y';
     joinForm.visitorGbn = '개인';
 
+    let nowTime = getCurrentDate(); //yyyymmddhhmmss
+    if(nowTime < '20260216000000'){ // 1차 사전등록
+        joinForm.timeGbn = '1차';
+    }else{ // 2차 사전등록
+        joinForm.timeGbn = '2차';
+    }
+
     joinForm.domain = $('#domain').val();
 
     joinForm.regionSi = '';
@@ -6878,19 +6885,25 @@ function f_en_visitor_form_data_setting(){
 
     let partnerInfoArr = [];
     if(joinForm.partnerYn === 'Y'){
-        //동반자 Setting
-        let visitPartnerCnt = parseInt($('.visitPartnerNum:last').text());
-        for(let i=0; i<visitPartnerCnt; i++){
-            let visitPartnerObj = {
-                seq: $('input[type=hidden][name=partnerSeq]').eq(i).val(),
-                visitorSeq: $('input[type=hidden][name=visitorSeq]').val(),
-                name: $('#name').val(),
-                phone: $('#phone').val(),
-                partnerName: $('input[name=partnerName]').eq(i).val(),
-                partnerAge: $('input[name=partnerAge]').eq(i).val()
-            };
-            partnerInfoArr.push(visitPartnerObj);
-        }
+        $('.visitPartnerBox').each(function(index, element) {
+            // 첫 번째 박스가 템플릿(빈 값) 역할인지, 실제 입력값인지 확인 필요
+            // 여기서는 이름이 입력된 경우만 수집하도록 처리
+            let pName = $(this).find('input[name=partnerName]').val();
+
+            if (nvl(pName, '') !== '') {
+                let visitPartnerObj = {
+                    seq: $(this).find('input[type=hidden][name=partnerSeq]').val(),
+                    visitorSeq: $('input[type=hidden][name=visitorSeq]').val(),
+                    // 신청자 본인 정보 (부모값)
+                    name: $('#name').val(),
+                    phone: $('#phone').val(),
+                    // 동반자 정보 (현재 row 값)
+                    partnerName: pName,
+                    partnerAge: $(this).find('input[name=partnerAge]').val()
+                };
+                partnerInfoArr.push(visitPartnerObj);
+            }
+        });
     }
     joinForm.partner = partnerInfoArr;
 

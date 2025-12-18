@@ -5946,7 +5946,7 @@ public class KibsMngController {
                     /* 설문항목 */
                     "성별", "지역(시/도)", "지역(구/군)", "연령대",
                     /* 관람 구분 */
-                    "조종면허 보유자", "보트 소유자", "보트 구매 예정자", "관련 업종 종사자", "낚시 매니아",
+                    "조종면허 보유자", "보트 소유자", "보트 구매 예정자", "관련 업종 종사자", "서핑 매니아", "해양관광 예정자", "낚시 매니아",
                     "다이빙 매니아", "캠핑카 매니아", "학생", "일반관람", "기타",
                     /* 보트쇼 방문 목적*/
                     "업계동향 파악 및 정보수집", "제품구매 및 기술도입 상담", "기존 거래업체 방문", "차기 전시회 참가여부 파악",
@@ -5980,7 +5980,7 @@ public class KibsMngController {
                     5000,
                     5000, 5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000,
                     5000, 5000,
@@ -6193,38 +6193,38 @@ public class KibsMngController {
             mergeCell3.setCellValue("설문항목");
 
             // 관람 구분
-            sheet.addMergedRegion(new CellRangeAddress(0,0,18,27));
+            sheet.addMergedRegion(new CellRangeAddress(0,0,18,29));
             SXSSFCell mergeCell4 = row.createCell(18);
             mergeCell4.setCellStyle(headerStyle);
             mergeCell4.setCellValue("관람 구분");
 
             // 보트쇼 방문 목적
-            sheet.addMergedRegion(new CellRangeAddress(0,0,28,33));
-            SXSSFCell mergeCell5 = row.createCell(28);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,30,35));
+            SXSSFCell mergeCell5 = row.createCell(30);
             mergeCell5.setCellStyle(headerStyle);
             mergeCell5.setCellValue("보트쇼 방문 목적");
 
             // 관심품목
-            sheet.addMergedRegion(new CellRangeAddress(0,0,34,42));
-            SXSSFCell mergeCell6 = row.createCell(34);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,36,44));
+            SXSSFCell mergeCell6 = row.createCell(36);
             mergeCell6.setCellStyle(headerStyle);
             mergeCell6.setCellValue("관심품목");
 
             // 인지경로
-            sheet.addMergedRegion(new CellRangeAddress(0,0,43,54));
-            SXSSFCell mergeCell7 = row.createCell(43);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,45,56));
+            SXSSFCell mergeCell7 = row.createCell(45);
             mergeCell7.setCellStyle(headerStyle);
             mergeCell7.setCellValue("인지경로");
 
             // 지난 전시회 참관 여부
-            sheet.addMergedRegion(new CellRangeAddress(0,0,55,73));
-            SXSSFCell mergeCell8 = row.createCell(55);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,57,75));
+            SXSSFCell mergeCell8 = row.createCell(57);
             mergeCell8.setCellStyle(headerStyle);
             mergeCell8.setCellValue("지난 전시회 참관 여부");
 
             // 동반자
-            sheet.addMergedRegion(new CellRangeAddress(0,0,74,83));
-            SXSSFCell mergeCell9 = row.createCell(74);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,76,85));
+            SXSSFCell mergeCell9 = row.createCell(76);
             mergeCell9.setCellStyle(headerStyle);
             mergeCell9.setCellValue("동반자");
 
@@ -6409,6 +6409,24 @@ public class KibsMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 if(observationGbn.contains("관련 업종 종사자")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 서핑 매니아
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(observationGbn.contains("서핑 매니아")){
+                    cell.setCellValue("O");
+                }else{
+                    cell.setCellValue("");
+                }
+
+                // 해양관광 예정자
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle);
+                if(observationGbn.contains("해양관광 예정자")){
                     cell.setCellValue("O");
                 }else{
                     cell.setCellValue("");

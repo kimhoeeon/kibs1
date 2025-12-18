@@ -566,6 +566,8 @@
                                     <label><input type="checkbox" name="observationGbn" value="보트 소유자" <c:if test="${fn:contains(info.observationGbn, '보트 소유자')}">checked</c:if> >보트 소유자</label>
                                     <label><input type="checkbox" name="observationGbn" value="보트 구매 예정자" <c:if test="${fn:contains(info.observationGbn, '보트 구매 예정자')}">checked</c:if> >보트 구매 예정자</label>
                                     <label><input type="checkbox" name="observationGbn" value="관련 업종 종사자" <c:if test="${fn:contains(info.observationGbn, '관련 업종 종사자')}">checked</c:if> >관련 업종 종사자</label>
+                                    <label><input type="checkbox" name="observationGbn" value="서핑 매니아" <c:if test="${fn:contains(info.observationGbn, '서핑 매니아')}">checked</c:if> >서핑 매니아</label>
+                                    <label><input type="checkbox" name="observationGbn" value="해양관광 예정자" <c:if test="${fn:contains(info.observationGbn, '해양관광 예정자')}">checked</c:if> >해양관광 예정자</label>
                                     <label><input type="checkbox" name="observationGbn" value="낚시 매니아" <c:if test="${fn:contains(info.observationGbn, '낚시 매니아')}">checked</c:if> >낚시 매니아</label>
                                     <label><input type="checkbox" name="observationGbn" value="다이빙 매니아" <c:if test="${fn:contains(info.observationGbn, '다이빙 매니아')}">checked</c:if> >다이빙 매니아</label>
                                     <label><input type="checkbox" name="observationGbn" value="캠핑카 매니아" <c:if test="${fn:contains(info.observationGbn, '캠핑카 매니아')}">checked</c:if> >캠핑카 매니아</label>

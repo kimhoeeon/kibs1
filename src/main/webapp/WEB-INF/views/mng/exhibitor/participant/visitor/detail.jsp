@@ -2683,44 +2683,58 @@ if (document.documentElement) {
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn5" name="observationGbn" value="낚시 매니아"
-                                                                       <c:if test="${fn:contains(info.observationGbn, '낚시 매니아')}">checked</c:if> />
+                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn5" name="observationGbn" value="서핑 매니아"
+                                                                       <c:if test="${fn:contains(info.observationGbn, '서핑 매니아')}">checked</c:if> />
                                                                 <label class="form-check-label text-hover-primary" for="observation_gbn5">
+                                                                    서핑 매니아
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
+                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn6" name="observationGbn" value="해양관광 예정자"
+                                                                       <c:if test="${fn:contains(info.observationGbn, '해양관광 예정자')}">checked</c:if> />
+                                                                <label class="form-check-label text-hover-primary" for="observation_gbn6">
+                                                                    해양관광 예정자
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
+                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn7" name="observationGbn" value="낚시 매니아"
+                                                                       <c:if test="${fn:contains(info.observationGbn, '낚시 매니아')}">checked</c:if> />
+                                                                <label class="form-check-label text-hover-primary" for="observation_gbn7">
                                                                     낚시 매니아
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn6" name="observationGbn" value="다이빙 매니아"
+                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn8" name="observationGbn" value="다이빙 매니아"
                                                                        <c:if test="${fn:contains(info.observationGbn, '다이빙 매니아')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn6">
+                                                                <label class="form-check-label text-hover-primary" for="observation_gbn8">
                                                                     다이빙 매니아
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn7" name="observationGbn" value="캠핑카 매니아"
+                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn9" name="observationGbn" value="캠핑카 매니아"
                                                                        <c:if test="${fn:contains(info.observationGbn, '캠핑카 매니아')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn7">
+                                                                <label class="form-check-label text-hover-primary" for="observation_gbn9">
                                                                     캠핑카 매니아
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn8" name="observationGbn" value="학생"
+                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn10" name="observationGbn" value="학생"
                                                                        <c:if test="${fn:contains(info.observationGbn, '학생')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn8">
+                                                                <label class="form-check-label text-hover-primary" for="observation_gbn10">
                                                                     학생
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn9" name="observationGbn" value="일반관람"
+                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn11" name="observationGbn" value="일반관람"
                                                                        <c:if test="${fn:contains(info.observationGbn, '일반관람')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn9">
+                                                                <label class="form-check-label text-hover-primary" for="observation_gbn11">
                                                                     일반관람
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn10" name="observationGbn" value="기타"
+                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn12" name="observationGbn" value="기타"
                                                                        <c:if test="${fn:contains(info.observationGbn, '기타')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn10">
+                                                                <label class="form-check-label text-hover-primary" for="observation_gbn12">
                                                                     기타
                                                                 </label>
                                                             </div>
