@@ -147,7 +147,7 @@
                 <p class="copyright">Copyright(c) KIBS 2025. All rights reserved</p>
             </div>
             <div class="ft_cs_btn">
-                <a href="https://www.kintex.com/web/ko/customer/voice/write.do?newWin=Y&eventNo=2023034639&coursSeCode=7"
+                <a href="https://www.kintex.com/web/ko/customer/voice/Personal_auth2.do?newWin=Y&eventNo=2025040772&coursSeCode=7"
                    target="_blank">고객의 소리</a>
             </div>
         </div>

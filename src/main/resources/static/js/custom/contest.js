@@ -154,14 +154,19 @@ function f_board_contest_save(id){
 
                 /* File upload */
                 let fileIdList = '';
-                let uploadFileList = $('#uploadFileList li');
+                let uploadFileList = document.getElementById('uploadFileList').children;
                 let uploadFileListLen = uploadFileList.length;
                 for(let i=0; i<uploadFileListLen; i++){
-                    let fileId = uploadFileList.eq(i).find('input[type=hidden]').attr('id');
-                    //console.log(fileId);
-                    fileIdList += fileId;
-                    if((i+1) !== uploadFileListLen){
-                        fileIdList += ',';
+                    // 순서 상관없이 input[name=uploadFile] 요소를 직접 찾습니다.
+                    let fileInput = uploadFileList[i].querySelector('input[name="uploadFile"]');
+
+                    if (fileInput) {
+                        let fileId = fileInput.id;
+                        fileIdList += fileId;
+                        // 마지막 요소가 아니면 콤마 추가
+                        if((i+1) !== uploadFileListLen){
+                            fileIdList += ',';
+                        }
                     }
                 }
 
