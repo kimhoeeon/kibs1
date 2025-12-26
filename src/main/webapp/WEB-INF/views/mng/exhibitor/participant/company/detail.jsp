@@ -640,10 +640,10 @@
                                             <option selected disabled hidden>1순위</option>
                                         </select>
                                         <select class="w30" id="field2" name="fieldParticipatory2">
-                                            <option selected disabled hidden>2순위</option>
+                                            <option value="" selected disabled hidden>2순위</option>
                                         </select>
                                         <select class="w30" id="field3" name="fieldParticipatory3">
-                                            <option selected disabled hidden>3순위</option>
+                                            <option value="" selected disabled hidden>3순위</option>
                                         </select>
                                     </div>
                                 </li>
@@ -1300,11 +1300,11 @@
                     }
 
                     const currentVal1 = $field1.val();
-                    $field2.empty().append('<option selected disabled hidden>2순위</option>');
+                    $field2.empty().append('<option value="" selected disabled hidden>2순위</option>');
                     if (currentVal1) {
                         const optionsForField2 = fullOptions.filter(opt => opt !== currentVal1);
                         optionsForField2.forEach(option => {
-                            $field2.append($('<option></option>').val(option).text(option));
+                            $field2.append($('<option>').val(option).text(option));
                         });
                         if (val2 && optionsForField2.includes(val2)) {
                             $field2.val(val2);
@@ -1312,11 +1312,11 @@
                     }
 
                     const currentVal2 = $field2.val();
-                    $field3.empty().append('<option selected disabled hidden>3순위</option>');
+                    $field3.empty().append('<option value="" selected disabled hidden>3순위</option>');
                     if (currentVal1 && currentVal2) {
                         const optionsForField3 = fullOptions.filter(opt => opt !== currentVal1 && opt !== currentVal2);
                         optionsForField3.forEach(option => {
-                            $field3.append($('<option></option>').val(option).text(option));
+                            $field3.append($('<option>').val(option).text(option));
                         });
                         if (val3 && optionsForField3.includes(val3)) {
                             $field3.val(val3);
@@ -1344,21 +1344,32 @@
                         $field1.val(savedField1);
 
                         // 3. 2순위 옵션 채우고 값 설정
-                        $field2.empty().append('<option selected disabled hidden>2순위</option>');
+                        $field2.empty().append('<option value="" selected disabled hidden>2순위</option>');
+
                         const currentVal1 = $field1.val();
                         if (currentVal1) {
                             const optionsForField2 = fullOptions.filter(opt => opt !== currentVal1);
                             optionsForField2.forEach(option => $field2.append($('<option>').val(option).text(option)));
-                            $field2.val(savedField2);
+
+                            // 값이 존재하고, 문자열 'null'이 아닐 때만 값 설정
+                            if (savedField2 && savedField2 !== 'null') {
+                                $field2.val(savedField2);
+                            }
                         }
 
                         // 4. 3순위 옵션 채우고 값 설정
-                        $field3.empty().append('<option selected disabled hidden>3순위</option>');
+                        $field3.empty().append('<option value="" selected disabled hidden>3순위</option>');
+
                         const currentVal2 = $field2.val();
+                        // 2순위 값이 유효할 때만 3순위 구성
                         if (currentVal1 && currentVal2) {
                             const optionsForField3 = fullOptions.filter(opt => opt !== currentVal1 && opt !== currentVal2);
                             optionsForField3.forEach(option => $field3.append($('<option>').val(option).text(option)));
-                            $field3.val(savedField3);
+
+                            // 값이 존재하고, 문자열 'null'이 아닐 때만 값 설정
+                            if (savedField3 && savedField3 !== 'null') {
+                                $field3.val(savedField3);
+                            }
                         }
 
                     } else {
