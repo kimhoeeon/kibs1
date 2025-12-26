@@ -20,9 +20,62 @@ $(function(){
     });
 
     // 연락처 입력 시 자동으로 - 삽입과 숫자만 입력
-    $('.onlyTel').on("blur keyup", function () {
-        $(this).val($(this).val().replaceAll(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, "$1-$2-$3").replace("--", "-"));
+    $('.onlyTel').on('input', function (e) {
+        let $this = $(this);
+        let val = $this.val();
+
+        // 입력된 값에서 숫자만 추출
+        let number = val.replace(/[^0-9]/g, "");
+        let tel = "";
+
+        // 포맷팅 로직
+        if (number.length < 4) {
+            tel = number;
+        } else if (number.length < 8) {
+            tel = number.substr(0, 3) + "-" + number.substr(3);
+        } else {
+            tel = number.substr(0, 3) + "-" + number.substr(3, 4) + "-" + number.substr(7);
+        }
+
+        // 길이 제한 (13자리)
+        if (tel.length > 13) {
+            tel = tel.substr(0, 13);
+        }
+
+        // [중요] 모바일 커서 튐 방지 및 무한 루프 방지
+        // 기존 값과 포맷팅된 값이 다를 때만 값을 변경
+        if ($this.val() !== tel) {
+            $this.val(tel);
+        }
     });
+
+    // 2. 유효성 검사 (입력이 끝나고 포커스가 나갈 때 동작)
+    $('.onlyTel').on('blur', function () {
+        let $this = $(this);
+        let pureNum = $this.val().replace(/-/g, "");
+
+        if (pureNum.length === 0) return;
+
+        // 010 체크
+        if (pureNum.substring(0, 3) !== "010") {
+            alert('휴대전화번호는 "010"으로 시작해야 합니다.');
+            resetInput($this);
+            return;
+        }
+
+        // 길이 체크
+        if (pureNum.length !== 11) {
+            alert('휴대전화번호 형식이 올바르지 않습니다.\n(010-0000-0000 형식이어야 합니다)');
+            setTimeout(function(){ $this.focus(); }, 10);
+            return;
+        }
+    });
+
+    // 입력값 초기화 및 포커스 이동 함수
+    function resetInput($el) {
+        $el.val('');
+        setTimeout(function(){ $el.focus(); }, 10);
+    }
 
     // 영문, 숫자만 입력
     $('.onlyNumEng').on("blur keyup", function () {

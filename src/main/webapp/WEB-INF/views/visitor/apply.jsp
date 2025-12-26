@@ -425,7 +425,9 @@
                                         <p>휴대전화</p>
                                     </div>
                                     <div class="input">
-                                        <input type="tel" id="phone" name="phone" class="onlyTel" maxlength="13" onkeyup="f_phone_number_valid_check(this)" placeholder="숫자만 입력해 주세요. 하이픈(-) 자동 입력">
+                                        <input type="tel" id="phone" name="phone" class="onlyTel" inputmode="numeric"
+                                               pattern="[0-9]*"
+                                               autocomplete="off" placeholder="숫자만 입력해 주세요. 하이픈(-) 자동 입력">
                                     </div>
                                 </li>
                                 <li>

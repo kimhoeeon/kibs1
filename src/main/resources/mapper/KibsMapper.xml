@@ -3705,38 +3705,8 @@
     <select id="selectPreVisitorCheck" parameterType="com.mtf.kibs.dto.VisitorDTO" resultType="com.mtf.kibs.dto.VisitorDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectPreVisitorCheck */
         SELECT seq
-             , join_year
-             , join_yn
-             , visitor_gbn
-             , part_gbn
-             , time_gbn
-             , name
-             , tel
-             , phone
-             , email
-             , domain
-             , company_name
-             , company_address
-             , company_address_detail
-             , partner_yn
-             , sex
-             , region_si
-             , region_gu
-             , country
-             , age_group
-             , observation_gbn
-             , visit_purpose
-             , interest_item
-             , recognize_path
-             , pre_observation_gbn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
         FROM visitor
-        WHERE name = TRIM(#{name})
-          AND phone = TRIM(#{phone})
+        WHERE phone = TRIM(#{phone})
           AND join_year = #{joinYear}
         LIMIT 1
     </select>

@@ -2361,7 +2361,7 @@ if (document.documentElement) {
                                                     <!--end::Label-->
                                                     <!--begin::Col-->
                                                     <div class="col-lg-10">
-                                                        <input type="tel" id="phone" name="phone" class="form-control form-control-lg form-control-solid-bg onlyTel" value="${info.phone}" placeholder="휴대전화" maxlength="13"/>
+                                                        <input type="tel" id="phone" name="phone" class="form-control form-control-lg form-control-solid-bg onlyTel" value="${info.phone}" placeholder="휴대전화"/>
                                                     </div>
                                                     <!--end::Col-->
                                                 </div>

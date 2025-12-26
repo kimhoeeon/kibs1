@@ -1226,15 +1226,26 @@ function f_apply_comp(step, seq){
 
 /* //////////////////////////////// begin:step_01 ////////////////////////////////// */
 
-function f_phone_number_valid_check(el){
-    let phoneNum = $(el).val();
-    if(nvl(phoneNum,'') !== ''){
-        if(phoneNum.length > 2){
-            let num = phoneNum.substring(0,3);
-            if(num !== '010'){
-                alert('휴대전화번호는 앞자리 "010"으로 시작하는 번호만 등록 가능합니다.');
-                $(el).val('');
-            }
+function f_phone_number_valid_check($el) {
+    let phoneNum = $el.val();
+    // 하이픈 제거 후 순수 숫자만 추출
+    let pureNum = phoneNum.replace(/-/g, "");
+
+    // 값이 비어있지 않은 경우에만 검사
+    if (pureNum.length > 0) {
+        // 1) 010으로 시작하는지 검사
+        if (pureNum.substring(0, 3) !== "010") {
+            alert('휴대전화번호는 "010"으로 시작해야 합니다.');
+            $el.val(''); // 값 초기화
+            $el.focus(); // 다시 입력하도록 포커스 이동
+            return false;
+        }
+
+        // 2) 전체 자릿수 검사 (010 국번은 최소 11자리 숫자여야 함)
+        if (pureNum.length < 11) {
+            alert('휴대전화번호 형식이 올바르지 않습니다.\n(예: 010-1234-5678)');
+            $el.focus();
+            return false;
         }
     }
 }
@@ -6088,13 +6099,13 @@ function exibitLoginFormSubmit() {
 }
 
 function f_pre_apply_check_login(){
-    let name = $('#name').val();
-    if(nvl(name,'') === ''){ showMessage('', 'info', '입력 정보 확인', '이름을 입력해 주세요.', ''); return false; }
     let phone = $('#phone').val();
-    if(nvl(phone,'') === ''){ showMessage('', 'info', '입력 정보 확인', '휴대전화번호를 입력해 주세요.', ''); return false; }
+    if (nvl(phone, '') === '') {
+        showMessage('', 'info', '입력 정보 확인', '휴대전화번호를 입력해 주세요.', '');
+        return false;
+    }
 
     let jsonObj = {
-        name: name,
         phone: phone,
         joinYear: transferYear
     };
@@ -6320,33 +6331,42 @@ function f_visitor_apply(gbn){
                     url: '/visitor/save.do',
                     method: 'POST',
                     async: false,
-                    data: data,
+                    data: JSON.stringify(data),
                     dataType: 'json',
                     contentType: 'application/json; charset=utf-8',
-                    success: function (data) {
-                        if (data.resultCode === "0") {
+                    success: function (result) {
+                        if (result.resultCode === "0") {
 
-                            let visitorSeq = data.customValue; //visitorSeq return 값
-
-                            let returnUrl = '/visitor/completed.do';
-                            if(gbn === 'U'){
-                                returnUrl = '/visitor/mypage.do?seq=' + visitorSeq;
-                            }
-                            window.location.href = returnUrl;
-
-                            /*Swal.fire({
-                                title: '[사전등록하기]',
-                                html: '참관객 사전등록이 완료되었습니다.',
-                                icon: 'info',
-                                confirmButtonColor: '#00a8ff',
-                                confirmButtonText: '확인'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
+                            if(gbn === 'I'){
+                                /* 참관객 완료 메일 전송 */
+                                let subject = '2026 경기국제보트쇼 <1차 사전등록(무료)> 신청 완료';
+                                let template = '178';
+                                let timeGbn = data.timeGbn;
+                                if(timeGbn === '2차'){
+                                    subject = '2026 경기국제보트쇼 <2차 사전등록(무료)> 신청 완료';
+                                    template = '181';
                                 }
-                            });*/
+                                let email = data.email + '@' + data.domain;
+
+                                let jsonObj = {
+                                    subject: subject,
+                                    body: "", //본문
+                                    template: template, //템플릿 번호
+                                    receiver: [{email: email}]
+                                }
+                                let resData = ajaxConnect('/mail/send.do', 'post', jsonObj);
+                                if (resData.resultCode === "0") {
+                                    window.location.href = '/visitor/completed.do';
+                                }else{
+                                    showMessage('', 'warning', '부분 오류 발생', '참관객 사전 등록은 정상 완료되었으나,<br>참관객 안내 메일 전송에 실패하였습니다.<br>관리자에게 문의해 주세요.', '');
+                                }
+                            }else{
+                                let visitorSeq = result.customValue; //visitorSeq return 값
+                                window.location.href = '/visitor/mypage.do?seq=' + visitorSeq;
+                            }
 
                         } else {
-                            showMessage('', 'error', '에러 발생', '참관객 사전 등록 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
+                            showMessage('', 'error', '에러 발생', '참관객 사전 등록 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + result.resultMessage, '');
                         }
                     },
                     error: function (xhr, status) {
@@ -6404,12 +6424,12 @@ function f_visitor_form_valid_check(gbn){
             showMessage('#name', 'info', '[참관객 정보]', '올바른 이름을 입력해 주세요. (특수문자 제외)', '');
             return false;
         }else{
-            let json = { joinYear: transferYear, name : name , phone: phone };
+            let json = { joinYear: transferYear, phone: phone };
             let resData = ajaxConnectSimple('/visitor/preApplyCheck.do', 'post', json);
             if(nvl(resData,'') !== ''){
                 Swal.fire({
                     title: '[기존 정보 존재]',
-                    html: '이미 사전 등록된 성명, 휴대전화번호 입니다.<br>참관신청확인페이지에서 정보를 확인해 주세요.',
+                    html: '이미 사전 등록된 휴대전화번호 입니다.<br>참관신청확인페이지에서 정보를 확인해 주세요.',
                     icon: 'info',
                     allowOutsideClick: false,
                     confirmButtonColor: '#00a8ff',
@@ -6643,7 +6663,7 @@ function f_visitor_form_data_setting(){
     }
     joinForm.preObservationGbn = preObservationGbn;
 
-    return JSON.stringify(joinForm);
+    return joinForm;
 }
 
 function f_en_visitor_apply(gbn){
