@@ -6343,7 +6343,7 @@ function f_visitor_apply(gbn){
                                 let template = '178';
                                 let timeGbn = data.timeGbn;
                                 if(timeGbn === '2차'){
-                                    subject = '2026 경기국제보트쇼 <2차 사전등록(무료)> 신청 완료';
+                                    subject = '2026 경기국제보트쇼 <2차 사전등록> 신청 완료';
                                     template = '181';
                                 }
                                 let email = data.email + '@' + data.domain;
@@ -6361,8 +6361,19 @@ function f_visitor_apply(gbn){
                                     showMessage('', 'warning', '부분 오류 발생', '참관객 사전 등록은 정상 완료되었으나,<br>참관객 안내 메일 전송에 실패하였습니다.<br>관리자에게 문의해 주세요.', '');
                                 }
                             }else{
-                                let visitorSeq = result.customValue; //visitorSeq return 값
-                                window.location.href = '/visitor/mypage.do?seq=' + visitorSeq;
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: '[사전등록정보]',
+                                    html: '<span style="font-size: 1.2em;">' + '참관객 사전 등록 정보가 수정되었습니다.' + '</span>',
+                                    allowOutsideClick: false,
+                                    confirmButtonColor: '#00a8ff',
+                                    confirmButtonText: '확인'
+                                }).then((rst) => {
+                                    if (rst.isConfirmed) {
+                                        let visitorSeq = result.customValue; //visitorSeq return 값
+                                        window.location.href = '/visitor/mypage.do?seq=' + visitorSeq;
+                                    }
+                                });
                             }
 
                         } else {
