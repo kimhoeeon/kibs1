@@ -109,7 +109,7 @@
                 <div class="form_guide_comp" style="background: #fff;">
                     <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
                     <div class="form_guide_comp_txt">
-                        2025 경기국제보트쇼 사전등록 신청이 완료되었습니다.<br>
+                        2026 경기국제보트쇼 사전등록 신청이 완료되었습니다.<br>
                         신청내역은 마이페이지에서 확인하실 수 있습니다.
                     </div>
                     <a href="/visitor/login.do" class="form_guide_comp_btn btnSt01">신청확인하기</a>
