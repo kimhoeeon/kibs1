@@ -57,14 +57,14 @@
     if(gbn === 'PN'){
         let productInfo = '${empty productInfo}';
         if(productInfo === 'true'){
-            alert('잘못된 제품 정보 호출입니다. 이전 페이지로 돌아갑니다.');
-            history.back();
+            alert('잘못된 제품 정보 호출입니다. 메인 페이지로 돌아갑니다.');
+            window.location.href = '/';
         }
     }else{
         let onlineInfo = '${empty onlineInfo}';
         if(onlineInfo === 'true'){
-            alert('잘못된 제품 정보 호출입니다. 이전 페이지로 돌아갑니다.');
-            history.back();
+            alert('잘못된 제품 정보 호출입니다. 메인 페이지로 돌아갑니다.');
+            window.location.href = '/';
         }
     }
 </script>

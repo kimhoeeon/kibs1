@@ -142,7 +142,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectStatisticsParticipantCompanyDay */
         SELECT DATE_FORMAT(init_regi_dttm, '%Y.%m.%d') as x
              , COUNT(*) as y
-        FROM exhibitor
+        FROM exhibitor_new
         WHERE transfer_year = #{transferYear}
           AND cancel_yn = 'N'
         GROUP BY DATE_FORMAT(init_regi_dttm, '%Y.%m.%d')
@@ -162,7 +162,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectStatisticsParticipantCompanyMonth */
         SELECT DATE_FORMAT(init_regi_dttm, '%Y.%m') as x
              , COUNT(*) as y
-        FROM exhibitor
+        FROM exhibitor_new
         WHERE transfer_year = #{transferYear}
           AND cancel_yn = 'N'
         GROUP BY DATE_FORMAT(init_regi_dttm, '%Y.%m')
@@ -186,7 +186,7 @@
             , IFNULL(DATE_FORMAT(DATE_ADD(init_regi_dttm, INTERVAL(7-DAYOFWEEK(init_regi_dttm)) DAY), '%Y.%m.%d'),'0')
             ) as x
             , COUNT(*) AS y
-        FROM exhibitor
+        FROM exhibitor_new
         WHERE transfer_year = #{transferYear}
           AND cancel_yn = 'N'
         GROUP BY CONCAT(YEAR(init_regi_dttm), '/', WEEK(init_regi_dttm))
@@ -220,7 +220,7 @@
                          ELSE 0 END as cnt2
                    , CASE WHEN (LENGTH(booth_type) - LENGTH(REPLACE(booth_type, '온라인부스', ''))) > 0 THEN 1
                          ELSE 0 END as cnt3
-              FROM exhibitor
+              FROM exhibitor_new
               WHERE transfer_year = #{transferYear}
                 AND cancel_yn = 'N'
               ORDER BY LENGTH(booth_type)
@@ -230,18 +230,19 @@
     <select id="selectStatisticsCompanyFieldPart" parameterType="com.mtf.kibs.dto.StatisticsDTO" resultType="com.mtf.kibs.dto.StatisticsDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectStatisticsCompanyFieldPart */
         SELECT IFNULL(CONCAT(
-            SUM(r.cnt1),',',SUM(r.cnt2),',',SUM(r.cnt3),',',SUM(r.cnt4),',',SUM(r.cnt5),',',SUM(r.cnt6),',',SUM(r.cnt7),',',SUM(r.cnt8)
+            SUM(r.cnt1),',',SUM(r.cnt2),',',SUM(r.cnt3),',',SUM(r.cnt4),',',SUM(r.cnt5),',',SUM(r.cnt6),',',SUM(r.cnt7),',',SUM(r.cnt8),',',SUM(r.cnt9)
             ), '0') as inCount
         FROM (
-                 SELECT case when (LENGTH(field_part) - LENGTH(REPLACE(field_part, '요트·보트전', ''))) > 0 then 1 else 0 end as cnt1
-                      , case when (LENGTH(field_part) - LENGTH(REPLACE(field_part, '무동력보트전', ''))) > 0 then 1 else 0 end as cnt2
-                      , case when (LENGTH(field_part) - LENGTH(REPLACE(field_part, '워크보트전', ''))) > 0 then 1 else 0 end as cnt3
-                      , case when (LENGTH(field_part) - LENGTH(REPLACE(field_part, '해양레저관', ''))) > 0 then 1 else 0 end as cnt4
-                      , case when (LENGTH(field_part) - LENGTH(REPLACE(field_part, '카라반쇼', ''))) > 0 then 1 else 0 end as cnt5
-                      , case when (LENGTH(field_part) - LENGTH(REPLACE(field_part, '해양부품', ''))) > 0 then 1 else 0 end as cnt6
-                      , case when (LENGTH(field_part) - LENGTH(REPLACE(field_part, '친환경', ''))) > 0 then 1 else 0 end as cnt7
-                      , case when (LENGTH(field_part) - LENGTH(REPLACE(field_part, '한국해양관광전', ''))) > 0 then 1 else 0 end as cnt8
-                 FROM exhibitor
+                 SELECT case when (LENGTH(field_participatory_1) - LENGTH(REPLACE(field_participatory_1, '보트&amp;요트', ''))) > 0 then 1 else 0 end as cnt1
+                      , case when (LENGTH(field_participatory_1) - LENGTH(REPLACE(field_participatory_1, '무동력보트', ''))) > 0 then 1 else 0 end as cnt2
+                      , case when (LENGTH(field_participatory_1) - LENGTH(REPLACE(field_participatory_1, '워크보트', ''))) > 0 then 1 else 0 end as cnt3
+                      , case when (LENGTH(field_participatory_1) - LENGTH(REPLACE(field_participatory_1, '해양부품&amp;장비', ''))) > 0 then 1 else 0 end as cnt4
+                      , case when (LENGTH(field_participatory_1) - LENGTH(REPLACE(field_participatory_1, '안전&amp;마리나', ''))) > 0 then 1 else 0 end as cnt5
+                      , case when (LENGTH(field_participatory_1) - LENGTH(REPLACE(field_participatory_1, '해양관광', ''))) > 0 then 1 else 0 end as cnt6
+                      , case when (LENGTH(field_participatory_1) - LENGTH(REPLACE(field_participatory_1, '해양레저', ''))) > 0 then 1 else 0 end as cnt7
+                      , case when (LENGTH(field_participatory_1) - LENGTH(REPLACE(field_participatory_1, '수중레저', ''))) > 0 then 1 else 0 end as cnt8
+                      , case when (LENGTH(field_participatory_1) - LENGTH(REPLACE(field_participatory_1, '서핑', ''))) > 0 then 1 else 0 end as cnt9
+                 FROM exhibitor_new
                  WHERE transfer_year = #{transferYear}
                    AND cancel_yn = 'N'
              ) r
