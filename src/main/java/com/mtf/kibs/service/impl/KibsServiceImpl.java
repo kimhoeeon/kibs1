@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
 import javax.servlet.http.HttpSession;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -20,6 +23,7 @@ import java.io.*;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -2047,20 +2051,34 @@ public class KibsServiceImpl implements KibsService {
 
         try {
             // 1. URL 생성
-            StringBuilder urlBuilder = new StringBuilder("https://apis.data.go.kr/B552015/NpsBplcInfoInqireServiceV2/getBassInfoSearchV2");
+            StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B552015/NpsBplcInfoInqireServiceV2/getBassInfoSearchV2");
             urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + serviceKey);
-            // 주의: serviceKey 변수가 이미 인코딩된 값이라면 URLEncoder.encode(serviceKey)를 하면 안됩니다. (이중 인코딩 됨)
-
             urlBuilder.append("&" + URLEncoder.encode("wkplNm", "UTF-8") + "=" + URLEncoder.encode(searchCompanyRequestDTO.getWkplNm(), "UTF-8"));
             urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("100", "UTF-8")); // 한 번에 가져올 개수
             urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
 
-            String finalUrl = urlBuilder.toString();
-            //System.out.println("생성된 URL: " + finalUrl); // [체크포인트 1] 이 URL을 복사해서 브라우저 주소창에 넣어보세요.
+            URL url = new URL(urlBuilder.toString());
 
-            // 2. 연결 설정
-            URL url = new URL(finalUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            // 2. 연결 객체 생성 (부모 타입으로 받기)
+            URLConnection connection = url.openConnection();
+
+            // [중요] HTTPS일 경우에만 호스트명 검증 무시 설정 적용
+            if (connection instanceof HttpsURLConnection) {
+                HttpsURLConnection httpsConn = (HttpsURLConnection) connection;
+
+                // 모든 호스트 이름을 허용하는 검증기 설정
+                httpsConn.setHostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true; // 무조건 통과 (인증서 도메인 불일치 무시)
+                    }
+                });
+
+                // 필요하다면 SSLContext도 초기화 (일부 환경에서 필요할 수 있음)
+                // 만약 위 HostnameVerifier만으로 안 된다면, TrustManager 설정도 추가해야 합니다.
+            }
+
+            HttpURLConnection conn = (HttpURLConnection) connection;
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-type", "application/json");
 
@@ -2095,11 +2113,8 @@ public class KibsServiceImpl implements KibsService {
                 JAXBContext jaxbContext = JAXBContext.newInstance(SearchCompanyResponseDTO.class);
                 Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
                 response = (SearchCompanyResponseDTO) unmarshaller.unmarshal(sr);
-
-                //System.out.println("XML 파싱 성공");
             } else {
-                System.out.println("정상적인 데이터 포맷이 아니거나 에러 메시지가 반환되었습니다.");
-                // 여기서 에러 DTO를 리턴하거나 null 처리
+                System.out.println("API 호출 오류 또는 데이터 포맷 이상: " + responseBody);
             }
 
         } catch (Exception e) {

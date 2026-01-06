@@ -4,6 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
 <head>
+    <meta name="naver-site-verification" content="76c17948152ec85ff6f239419ca0e2bb6b3a9b0d" />
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,7 +49,6 @@
         <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
     <%-- Naver SEO --%>
-    <meta name="naver-site-verification" content="adc5540381e65e9f24333fe41cde2f8b36ae9690" />
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 </head>

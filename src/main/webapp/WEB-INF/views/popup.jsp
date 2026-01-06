@@ -48,7 +48,6 @@
         <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
         <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>    <%-- Naver SEO --%>
-    <meta name="naver-site-verification" content="adc5540381e65e9f24333fe41cde2f8b36ae9690" />
 
     <link href="/css/reset.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
     <link href="/css/font.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
