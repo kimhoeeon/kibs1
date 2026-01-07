@@ -417,7 +417,7 @@
                                         <p>전화번호</p>
                                     </div>
                                     <div class="input">
-                                        <input type="tel" id="tel" name="tel" class="onlyTel" maxlength="14" placeholder="숫자만 입력해 주세요. 하이픈(-) 자동 입력">
+                                        <input type="tel" id="tel" name="tel" class="onlyGeneralTel" maxlength="14" placeholder="숫자만 입력해 주세요. 하이픈(-) 자동 입력">
                                     </div>
                                 </li>
                                 <li class="w50">

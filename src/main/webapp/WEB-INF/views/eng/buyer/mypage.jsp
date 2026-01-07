@@ -95,7 +95,7 @@
                                 <p>Tel</p>
                             </div>
                             <div class="input">
-                                <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyTel" maxlength="14" placeholder="Please enter only numbers.">
+                                <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyGeneralTel" maxlength="14" placeholder="Please enter only numbers.">
                             </div>
                         </li>
                         <li class="w50">

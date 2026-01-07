@@ -240,7 +240,7 @@
                                         <p>전화</p>
                                     </div>
                                     <div class="input">
-                                        <input type="tel" id="companyTel" name="companyTel" value="${info.companyTel}" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
+                                        <input type="tel" id="companyTel" name="companyTel" value="${info.companyTel}" class="onlyGeneralTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
                                     </div>
                                 </li>
                                 <li class="w50">
@@ -436,7 +436,7 @@
                                         <p>전화번호</p>
                                     </div>
                                     <div class="input">
-                                        <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
+                                        <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyGeneralTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
                                     </div>
                                 </li>
                                 <li class="w50">
@@ -503,7 +503,7 @@
                                             <p>전화번호</p>
                                         </div>
                                         <div class="input">
-                                            <input type="tel" name="chargePersonTel" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
+                                            <input type="tel" name="chargePersonTel" class="onlyGeneralTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
                                         </div>
                                     </li>
                                     <li class="w50">
@@ -572,7 +572,7 @@
                                                 <p>전화번호</p>
                                             </div>
                                             <div class="input">
-                                                <input type="tel" name="chargePersonTel" value="${charge.chargePersonTel}" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
+                                                <input type="tel" name="chargePersonTel" value="${charge.chargePersonTel}" class="onlyGeneralTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
                                             </div>
                                         </li>
                                         <li class="w50">
@@ -1186,7 +1186,7 @@
                                             <p>전화번호</p>
                                         </div>
                                         <div class="input">
-                                            <input type="text" id="buyer_tel" name="buyerCompanyTel" class="onlyTel" maxlength="13" placeholder="하이픈(-)을 포함하여 입력해 주세요."/>
+                                            <input type="text" id="buyer_tel" name="buyerCompanyTel" class="onlyGeneralTel" maxlength="13" placeholder="하이픈(-)을 포함하여 입력해 주세요."/>
                                         </div>
                                     </li>
                                     <li>

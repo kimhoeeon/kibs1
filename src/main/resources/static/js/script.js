@@ -394,6 +394,62 @@ $(document).ready(function () {
         }
     });
 
+    // [신규] 일반 전화번호용 하이픈 자동 완성 및 숫자만 입력 (02, 031, 070 등 허용)
+    $(document).on('input keyup', '.onlyGeneralTel', function () {
+        // 1. 숫자만 남기기
+        $(this).val($(this).val().replace(/[^0-9]/g, ""));
+
+        let number = $(this).val();
+        let phone = "";
+
+        // 2. 하이픈(-) 처리 로직
+        if (number.length < 4) {
+            return number;
+        }
+
+        // 서울 (02) 인 경우
+        if(number.substring(0, 2) === "02") {
+            if (number.length < 10) {
+                // 02-123-4567 (9자리)
+                phone += number.substr(0, 2);
+                phone += "-";
+                phone += number.substr(2, 3);
+                phone += "-";
+                phone += number.substr(5);
+            } else {
+                // 02-1234-5678 (10자리)
+                phone += number.substr(0, 2);
+                phone += "-";
+                phone += number.substr(2, 4);
+                phone += "-";
+                phone += number.substr(6);
+            }
+        }
+        // 그 외 지역번호/인터넷전화 (031, 070, 010 등 3자리 국번)
+        else {
+            if (number.length < 11) {
+                // 031-123-4567 (10자리)
+                phone += number.substr(0, 3);
+                phone += "-";
+                phone += number.substr(3, 3);
+                phone += "-";
+                phone += number.substr(6);
+            } else {
+                // 031-1234-5678 (11자리)
+                phone += number.substr(0, 3);
+                phone += "-";
+                phone += number.substr(3, 4);
+                phone += "-";
+                phone += number.substr(7);
+            }
+        }
+
+        // 3. 마지막 하이픈 뒤의 값이 비어있을 경우 처리 (지울 때 자연스럽게)
+        if(number.length > 2){
+            $(this).val(phone);
+        }
+    });
+
     // 입력값 초기화 및 포커스 이동 함수
     function resetInput($el) {
         $el.val('');

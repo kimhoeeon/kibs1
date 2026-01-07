@@ -181,7 +181,7 @@
                                             <p>전화번호</p>
                                         </div>
                                         <div class="input">
-                                            <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
+                                            <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyGeneralTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
                                         </div>
                                     </li>
                                     <li class="w50">

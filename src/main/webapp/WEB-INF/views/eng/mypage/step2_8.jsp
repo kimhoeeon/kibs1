@@ -152,7 +152,7 @@
                                     <p>Telephone</p>
                                 </div>
                                 <div class="input">
-                                    <input type="tel" class="onlyTel" placeholder="Please enter numbers only">
+                                    <input type="tel" class="onlyGeneralTel" placeholder="Please enter numbers only">
                                 </div>
                             </li>
                             <li class="w50">
@@ -260,7 +260,7 @@
                                     <p>Telephone</p>
                                 </div>
                                 <div class="input">
-                                    <input type="tel" class="onlyTel" placeholder="Please enter numbers only">
+                                    <input type="tel" class="onlyGeneralTel" placeholder="Please enter numbers only">
                                 </div>
                             </li>
                             <li class="w50">

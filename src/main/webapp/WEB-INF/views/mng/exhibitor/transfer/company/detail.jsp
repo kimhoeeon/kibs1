@@ -2920,7 +2920,7 @@ if (document.documentElement) {
                                                             <!--end::Label-->
                                                             <!--begin::Col-->
                                                             <div class="col-lg-10">
-                                                                <input type="tel" name="chargePersonTel" class="form-control form-control-lg form-control-solid-bg onlyTel" maxlength="13" placeholder="전화번호 ( - 하이픈 포함 )" />
+                                                                <input type="tel" name="chargePersonTel" class="form-control form-control-lg form-control-solid-bg onlyGeneralTel" maxlength="13" placeholder="전화번호 ( - 하이픈 포함 )" />
                                                             </div>
                                                             <!--end::Col-->
                                                         </div>
@@ -3027,7 +3027,7 @@ if (document.documentElement) {
                                                             <!--end::Label-->
                                                             <!--begin::Col-->
                                                             <div class="col-lg-10">
-                                                                <input type="tel" id="chargePersonTel" name="chargePersonTel" class="form-control form-control-lg form-control-solid-bg onlyTel" maxlength="13" value="${charge.chargePersonTel}" placeholder="전화번호 ( - 하이픈 포함 )" />
+                                                                <input type="tel" id="chargePersonTel" name="chargePersonTel" class="form-control form-control-lg form-control-solid-bg onlyGeneralTel" maxlength="13" value="${charge.chargePersonTel}" placeholder="전화번호 ( - 하이픈 포함 )" />
                                                             </div>
                                                             <!--end::Col-->
                                                         </div>
