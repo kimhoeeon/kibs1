@@ -8085,7 +8085,7 @@ public class KibsMngController {
             // --- 2행: 서브 헤더 생성 ---
             // 총 29개
             String[] headers = {
-                    "번호", "회사명(국문)", "회사명(영문)", "인보이스", "참가비", "부스구분", "부스수량", "부스가격",
+                    "번호", "회사명(국문)", "회사명(영문)", "인보이스", "참가행사", "참가비", "부스구분", "부스수량", "부스가격",
                     "참가비 합계\n(참가비+부스가격)",
                     "1차 조기신청", "2차 조기신청", "첫 참가(10부스 미만)", "첫 참가(10부스 이상)", "재참가",
                     "규모(10+)", "규모(20+)", "규모(30+)", "규모(40+)", "규모(50+)", "규모(100+)",
@@ -8096,14 +8096,14 @@ public class KibsMngController {
             // --- 1행: 메인 헤더 생성 ---
             Row mainHeaderRow = sheet.createRow(0);
             mainHeaderRow.createCell(0).setCellValue("기본정보");
-            mainHeaderRow.createCell(9).setCellValue("할인구분");
-            mainHeaderRow.createCell(22).setCellValue("금액정보");
-            mainHeaderRow.createCell(27).setCellValue("일시");
+            mainHeaderRow.createCell(10).setCellValue("할인구분");
+            mainHeaderRow.createCell(23).setCellValue("금액정보");
+            mainHeaderRow.createCell(28).setCellValue("일시");
 
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 8));  // A1~I1 (기본정보 9개: 참가비 합계 포함)
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 9, 21)); // J1~V1 (할인구분 13개)
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 22, 26)); // W1~AA1 (금액정보 5개)
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 27, 28)); // AB1~AC1 (일시 2개)
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 9));  // A1~I1 (기본정보 9개: 참가비 합계 포함)
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 22)); // J1~V1 (할인구분 13개)
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 23, 27)); // W1~AA1 (금액정보 5개)
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 28, 29)); // AB1~AC1 (일시 2개)
 
             // headers.length (29)를 기준으로 스타일 적용
             for(int i=0; i < headers.length; i++){
@@ -8181,6 +8181,19 @@ public class KibsMngController {
                     row.createCell(cellCnt++).setCellValue(booth.getCompanyNameEn()); // 2. 회사명(영문)
                     row.createCell(cellCnt++).setCellValue(booth.getInvoiceYn().equals("Y") ? "O" : ""); // 3. 인보이스
 
+                    // --- 참가행사 ---
+                    String eventCode = booth.getFieldParticipatory(); // DTO에 getter가 있다고 가정
+                    String eventName = "";
+                    if (eventCode != null) {
+                        switch (eventCode) {
+                            case "boatShow": eventName = "경기국제보트쇼"; break;
+                            case "surfShow": eventName = "코리아서프쇼"; break;
+                            case "travelShow": eventName = "해양관광전"; break;
+                            default: eventName = eventCode; // 예외 시 코드 그대로 출력
+                        }
+                    }
+                    row.createCell(cellCnt++).setCellValue(eventName); // 4. 참가행사
+
                     row.createCell(cellCnt++).setCellValue(df.format(registrationFee)); // 4. 참가비
 
                     String originalBoothType = booth.getBoothType();
@@ -8241,17 +8254,18 @@ public class KibsMngController {
                     row.createCell(cellCnt++).setCellValue(booth.getInitRegiDttm()); // 27. 등록일시
                     row.createCell(cellCnt++).setCellValue(booth.getFinalRegiDttm()); // 28. 수정일시
 
-                    // 모든 셀에 스타일 적용
+                    // 스타일 적용
                     for (int j = 0; j < headers.length; j++) {
                         Cell cell = row.getCell(j);
                         if (cell == null) cell = row.createCell(j);
 
-                        if (j == 1 || j == 2) {
+                        // 인덱스에 맞춰 정렬 스타일 변경
+                        if (j == 1 || j == 2) { // 회사명
                             cell.setCellStyle(bodyLeftStyle);
                         }
-                        // 오른쪽 정렬 인덱스 업데이트 (금액 관련 컬럼들)
-                        // 4(참가비), 7(부스가격), 8(참가비합계), 22(할인가격), 23(발전기금), 24(총액), 25(부가세), 26(최종합계)
-                        else if (j == 4 || j == 7 || j == 8 || (j >= 22 && j <= 26)) {
+                        // 오른쪽 정렬 (금액 컬럼들 - 인덱스가 하나씩 밀림)
+                        // 수정: 5(참가비), 8(부스가격), 9(참가비합계), 23(할인가격)~27(최종합계)
+                        else if (j == 5 || j == 8 || j == 9 || (j >= 23 && j <= 27)) {
                             cell.setCellStyle(bodyRightStyle);
                         }
                         else {
@@ -8266,31 +8280,32 @@ public class KibsMngController {
             sheet.setColumnWidth(1, 8000);  // 회사명(국문)
             sheet.setColumnWidth(2, 8000);  // 회사명(영문)
             sheet.setColumnWidth(3, 2000);  // 인보이스
-            sheet.setColumnWidth(4, 5000);  // 참가비
-            sheet.setColumnWidth(5, 6000);  // 부스구분
-            sheet.setColumnWidth(6, 2000);  // 부스수량
-            sheet.setColumnWidth(7, 5000);  // 부스가격
-            sheet.setColumnWidth(8, 5000);  // 참가비 합계
-            sheet.setColumnWidth(9, 3000);  // 1차
-            sheet.setColumnWidth(10, 3000); // 2차
-            sheet.setColumnWidth(11, 4000); // 첫참가(10-)
-            sheet.setColumnWidth(12, 4000); // 첫참가(10+)
-            sheet.setColumnWidth(13, 3000); // 재참가
-            sheet.setColumnWidth(14, 3000); // 규모(10+)
-            sheet.setColumnWidth(15, 3000); // 규모(20+)
-            sheet.setColumnWidth(16, 3000); // 규모(30+)
-            sheet.setColumnWidth(17, 3000); // 규모(40+)
-            sheet.setColumnWidth(18, 3000); // 규모(50+)
-            sheet.setColumnWidth(19, 3000); // 규모(100+)
-            sheet.setColumnWidth(20, 3000); // 협회할인
-            sheet.setColumnWidth(21, 3000); // 특별할인
-            sheet.setColumnWidth(22, 5000); // 할인가격
-            sheet.setColumnWidth(23, 5000); // 발전기금
-            sheet.setColumnWidth(24, 5000); // 총액
-            sheet.setColumnWidth(25, 5000); // 부가세
-            sheet.setColumnWidth(26, 5000); // 최종합계
-            sheet.setColumnWidth(27, 5000); // 등록일시
-            sheet.setColumnWidth(28, 5000); // 수정일시
+            sheet.setColumnWidth(4, 5000);  // 참가행사
+            sheet.setColumnWidth(5, 5000);  // 참가비
+            sheet.setColumnWidth(6, 6000);  // 부스구분
+            sheet.setColumnWidth(7, 2000);  // 부스수량
+            sheet.setColumnWidth(8, 5000);  // 부스가격
+            sheet.setColumnWidth(9, 5000);  // 참가비 합계
+            sheet.setColumnWidth(10, 3000); // 1차
+            sheet.setColumnWidth(11, 3000); // 2차
+            sheet.setColumnWidth(12, 4000); // 첫참가(10-)
+            sheet.setColumnWidth(13, 4000); // 첫참가(10+)
+            sheet.setColumnWidth(14, 3000); // 재참가
+            sheet.setColumnWidth(15, 3000); // 규모(10+)
+            sheet.setColumnWidth(16, 3000); // 규모(20+)
+            sheet.setColumnWidth(17, 3000); // 규모(30+)
+            sheet.setColumnWidth(18, 3000); // 규모(40+)
+            sheet.setColumnWidth(19, 3000); // 규모(50+)
+            sheet.setColumnWidth(20, 3000); // 규모(100+)
+            sheet.setColumnWidth(21, 3000); // 협회할인
+            sheet.setColumnWidth(22, 3000); // 특별할인
+            sheet.setColumnWidth(23, 5000); // 할인가격
+            sheet.setColumnWidth(24, 5000); // 발전기금
+            sheet.setColumnWidth(25, 5000); // 총액
+            sheet.setColumnWidth(26, 5000); // 부가세
+            sheet.setColumnWidth(27, 5000); // 최종합계
+            sheet.setColumnWidth(28, 5000); // 등록일시
+            sheet.setColumnWidth(29, 5000); // 수정일시
 
             // --- 엑셀 파일 다운로드 ---
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");

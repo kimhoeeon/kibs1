@@ -14,6 +14,31 @@ $(function(){
         }
     }
 
+    /* 나이 제한 스크립트 (0~18세) */
+    $(document).on('input keyup', '.onlyChildAge', function () {
+        // 1. 숫자 이외의 문자 제거
+        let val = $(this).val().replace(/[^0-9]/g, "");
+
+        // 2. 값이 비어있지 않은 경우에만 로직 실행
+        if (val !== "") {
+            let age = parseInt(val, 10);
+
+            // 18세 초과 체크
+            if (age > 18) {
+                alert("동반자는 만 0~18세 사이만 등록 가능합니다.");
+                $(this).val("");
+                return;
+            }
+
+            // 정상 범위일 때 값 반영 (앞자리 0 제거: '05' -> '5')
+            $(this).val(age);
+
+        } else {
+            // 3. 값이 비어있으면(다 지웠으면) NaN이 뜨지 않게 빈 값 처리
+            $(this).val("");
+        }
+    });
+
     // 숫자만 입력
     $('.onlyNum').on("blur keyup", function () {
         $(this).val($(this).val().replaceAll(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'));

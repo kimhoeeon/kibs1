@@ -387,6 +387,11 @@ function f_visitor_form_valid_check(){
             if (nvl(partnerAge,'') === '') {
                 showMessage('', 'info', '[ 참관객 정보 ]', '동반자가 있을 경우 동반자 나이를 입력해 주세요.', '');
                 return false;
+            }else{
+                if(partnerAge > 18){
+                    showMessage('', 'info', '[ 참관객 정보 ]', '동반자는 만 0~18세 사이만 등록 가능합니다.', '');
+                    return false;
+                }
             }
         }
     }

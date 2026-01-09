@@ -792,26 +792,30 @@ let KTAppExhibitorNewApplicationBooth = function () {
                 },
                 {
                     'targets': 5,
-                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderFieldParticipatoryCell(data, type, row); }
                 },
                 {
                     'targets': 6,
-                    'render': function (data, type, row) { return renderBoothCntCell(data, type, row); }
+                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
                 },
                 {
                     'targets': 7,
-                    'render': function (data, type, row) { return renderBoothPrcCell(data, type, row); }
+                    'render': function (data, type, row) { return renderBoothCntCell(data, type, row); }
                 },
                 {
                     'targets': 8,
-                    'render': function (data, type, row) { return renderDiscountTypeCell(data, type, row); }
+                    'render': function (data, type, row) { return renderBoothPrcCell(data, type, row); }
                 },
                 {
                     'targets': 9,
-                    'render': function (data, type, row) { return renderDiscountPrcCell(data, type, row); }
+                    'render': function (data, type, row) { return renderDiscountTypeCell(data, type, row); }
                 },
                 {
                     'targets': 10,
+                    'render': function (data, type, row) { return renderDiscountPrcCell(data, type, row); }
+                },
+                {
+                    'targets': 11,
                     'render': function (data, type, row) { return renderBoothPrcSumCell(data, type, row); }
                 },
                 {
@@ -827,14 +831,14 @@ let KTAppExhibitorNewApplicationBooth = function () {
                 { data: 'companyNameKo' }, //회사명(국문)
                 { data: 'companyNameEn' }, //회사명(영문)
                 { data: 'invoiceYn' }, //인보이스존재여부
+                { data: 'fieldParticipatory' }, //참가행사
                 { data: 'boothType' }, //부스타입
                 { data: 'boothCnt' }, //부스수량
                 { data: 'boothPrc' }, //부스가격
                 { data: 'discountType' }, //할인타입
                 { data: 'discountPrc' }, //할인가격
                 { data: 'boothPrcSum' }, //부스신청 총액
-                { data: 'initRegiDttm' }, //등록일시
-                { data: 'finalRegiDttm' }, //수정일시
+                { data: 'initRegiDttm' }, //최초등록일시
                 { data: 'actions' }
             ]
         });
@@ -857,6 +861,27 @@ let KTAppExhibitorNewApplicationBooth = function () {
         let renderHTML = 'X';
         if(invoiceYn === 'Y'){
             renderHTML = 'O';
+        }
+        return renderHTML;
+    }
+
+    function renderFieldParticipatoryCell(data, type, row){
+        let fieldParticipatory = row.fieldParticipatory;
+        let renderHTML = '';
+        if(nvl(fieldParticipatory,"") !== ""){
+            switch (fieldParticipatory) {
+                case 'boatShow':
+                    renderHTML = '경기국제보트쇼';
+                    break;
+                case 'surfShow':
+                    renderHTML = '코리아서프쇼';
+                    break;
+                case 'travelShow':
+                    renderHTML = '해양관광전';
+                    break;
+            }
+        }else{
+            renderHTML = '-';
         }
         return renderHTML;
     }

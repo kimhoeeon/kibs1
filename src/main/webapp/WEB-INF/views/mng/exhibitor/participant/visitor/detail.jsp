@@ -2439,7 +2439,7 @@ if (document.documentElement) {
                                                                 없음
                                                             </label>
                                                         </div>
-                                                        <div class="w-100 mt10">개별 신청이 어려운 어린이, 노약자일 경우에 선택해 주세요.</div>
+                                                        <div class="w-100 mt10">만 0 ~ 18세만 동반자로 입력 가능합니다.</div>
                                                     </div>
                                                     <!--begin::Label-->
                                                 </div>
@@ -2479,7 +2479,7 @@ if (document.documentElement) {
                                                                 <!--end::Label-->
                                                                 <!--begin::Col-->
                                                                 <div class="col-lg-10">
-                                                                    <input type="text" name="partnerAge" class="form-control form-control-lg form-control-solid-bg onlyNum" maxlength="2" placeholder="나이"/>
+                                                                    <input type="text" name="partnerAge" class="form-control form-control-lg form-control-solid-bg onlyChildAge" maxlength="2" placeholder="나이"/>
                                                                 </div>
                                                                 <!--end::Col-->
                                                             </div>

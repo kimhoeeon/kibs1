@@ -54,4 +54,5 @@ public class BoothDetailDTO {
     private Integer prcTotal; //총계
     private String initRegiDttm; //최초 등록 일시
     private String finalRegiDttm; //최종 변경 일시
+    private String fieldParticipatory; //참가행사
 }

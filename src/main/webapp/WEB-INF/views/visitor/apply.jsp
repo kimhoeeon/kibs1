@@ -476,7 +476,7 @@
                                     <div class="input check">
                                         <label><input type="radio" name="partnerYn" id="Y" value="Y">있음</label>
                                         <label><input type="radio" name="partnerYn" id="N" value="N" checked>없음</label>
-                                        <div class="cmnt">개별 신청이 어려운 어린이, 노약자일 경우에 선택해 주세요.</div>
+                                        <div class="cmnt">만 0 ~ 18세만 동반자로 입력 가능합니다.</div>
                                     </div>
                                 </li>
                             </ul>
@@ -499,7 +499,7 @@
                                         <p>나이</p>
                                     </div>
                                     <div class="input">
-                                        <input type="text" name="partnerAge" class="onlyNum" maxlength="2">
+                                        <input type="text" name="partnerAge" class="onlyChildAge" maxlength="2" placeholder="나이(0~18세)">
                                     </div>
                                 </li>
                             </ul>

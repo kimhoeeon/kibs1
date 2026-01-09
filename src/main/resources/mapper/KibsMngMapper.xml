@@ -3486,6 +3486,7 @@
              , en.init_regi_dttm
              , en.final_regi_dttm
              , IF(( SELECT COUNT(*) FROM invoice_booth ib WHERE ib.exhibitor_seq = en.seq AND ib.del_yn = 'N') <![CDATA[>]]> 0, 'Y', 'N') AS invoiceYn
+             , en.field_participatory
         FROM exhibitor_new en
         WHERE 1=1
         <if test='transferYear != null and transferYear != ""'>
@@ -6105,6 +6106,7 @@
              , en.prc_sum
              , en.prc_vat
              , en.prc_total
+             , en.field_participatory
              , en.init_regi_dttm
              , en.final_regi_dttm
         FROM exhibitor_new en

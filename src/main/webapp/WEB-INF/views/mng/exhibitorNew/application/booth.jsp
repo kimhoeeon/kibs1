@@ -2426,14 +2426,14 @@ if (document.documentElement) {
                                                 <th class="text-center min-w-150px">회사명</th>
                                                 <th>companyNameEn</th>
                                                 <th class="text-center min-w-100px">인보이스</th>
+                                                <th class="text-center min-w-100px">참가행사</th>
                                                 <th class="text-center min-w-100px">부스구분</th>
                                                 <th class="text-center min-w-100px">부스수량</th>
                                                 <th class="text-center min-w-100px">부스가격</th>
                                                 <th class="text-center min-w-100px">할인구분</th>
                                                 <th class="text-center min-w-100px">할인가격</th>
                                                 <th class="text-center min-w-125px">총액(VAT미포함)</th>
-                                                <th class="text-center min-w-150px">등록일시</th>
-                                                <th class="text-center min-w-150px">수정일시</th>
+                                                <th class="text-center min-w-150px">최초등록일시</th>
                                                 <th class="text-center min-w-100px">기능</th>
                                             </tr>
                                             </thead>

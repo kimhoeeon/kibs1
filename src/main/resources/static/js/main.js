@@ -6421,18 +6421,18 @@ function f_visitor_form_valid_check(gbn){
 
         let name = $('#name').val();
         if (nvl(name,'') === '') {
-            showMessage('', 'info', '[참관객 정보]', '성명을 입력해 주세요.', '');
+            showMessage('', 'info', '[ 참관객 정보 ]', '성명을 입력해 주세요.', '');
             return false;
         }
 
         let phone = $('#phone').val();
         if (nvl(phone,'') === '') {
-            showMessage('', 'info', '[참관객 정보]', '휴대전화를 입력해 주세요.', '');
+            showMessage('', 'info', '[ 참관객 정보 ]', '휴대전화를 입력해 주세요.', '');
             return false;
         }
 
         if(!strCheck(name,"name")){
-            showMessage('#name', 'info', '[참관객 정보]', '올바른 이름을 입력해 주세요. (특수문자 제외)', '');
+            showMessage('#name', 'info', '[ 참관객 정보 ]', '올바른 이름을 입력해 주세요. (특수문자 제외)', '');
             return false;
         }else{
             let json = { joinYear: transferYear, phone: phone };
@@ -6450,35 +6450,35 @@ function f_visitor_form_valid_check(gbn){
             }
         }
 
-    }
+    } // 'I'
 
     let email = $('#email').val();
     if (nvl(email,'') === '') {
-        showMessage('', 'info', '[참관객 정보]', '이메일을 입력해 주세요.', '');
+        showMessage('', 'info', '[ 참관객 정보 ]', '이메일을 입력해 주세요.', '');
         return false;
     }else{
         if(email.includes('@')){
-            showMessage('', 'info', '[참관객 정보]', '포함될 수 없는 특수문자(@)가 있습니다.<br>이메일과 도메인을 따로 입력해 주세요.', '');
+            showMessage('', 'info', '[ 참관객 정보 ]', '포함될 수 없는 특수문자(@)가 있습니다.<br>이메일과 도메인을 따로 입력해 주세요.', '');
             return false;
         }
     }
 
     let domain = $('#domain').val();
     if (nvl(domain,'') === '') {
-        showMessage('', 'info', '[참관객 정보]', '이메일 도메인을 입력해 주세요.', '');
+        showMessage('', 'info', '[ 참관객 정보 ]', '이메일 도메인을 입력해 주세요.', '');
         return false;
     }
 
     if(nvl($('input[type=radio][name=partGbn]:checked').val(),'') === '바이어'){
         let companyName = $('#companyName').val();
         if (nvl(companyName,'') === '') {
-            showMessage('#companyName', 'info', '[참관객 정보]', '참관 구분>바이어 선택 시 직장명을 필수 입력해 주세요.', '');
+            showMessage('#companyName', 'info', '[ 참관객 정보 ]', '참관 구분>바이어 선택 시 직장명을 필수 입력해 주세요.', '');
             return false;
         }
 
         let companyAddress = $('#companyAddress').val();
         if (nvl(companyAddress,'') === '') {
-            showMessage('#companyAddress', 'info', '[참관객 정보]', '참관 구분>바이어 선택 시 직장 주소를 필수 입력해 주세요.', '');
+            showMessage('#companyAddress', 'info', '[ 참관객 정보 ]', '참관 구분>바이어 선택 시 직장 주소를 필수 입력해 주세요.', '');
             return false;
         }
     }
@@ -6489,7 +6489,7 @@ function f_visitor_form_valid_check(gbn){
         for(let i=0; i<partnerNameList.length; i++){
             let partnerName = partnerNameList.eq(i).val();
             if (nvl(partnerName,'') === '') {
-                showMessage('', 'info', '[참관객 정보]', '동반자가 있을 경우 동반자 이름을 입력해 주세요.', '');
+                showMessage('', 'info', '[ 참관객 정보 ]', '동반자가 있을 경우 동반자 이름을 입력해 주세요.', '');
                 return false;
             }
         }
@@ -6498,15 +6498,20 @@ function f_visitor_form_valid_check(gbn){
         for(let i=0; i<partnerAgeList.length; i++){
             let partnerAge = partnerAgeList.eq(i).val();
             if (nvl(partnerAge,'') === '') {
-                showMessage('', 'info', '[참관객 정보]', '동반자가 있을 경우 동반자 나이를 입력해 주세요.', '');
+                showMessage('', 'info', '[ 참관객 정보 ]', '동반자가 있을 경우 동반자 나이를 입력해 주세요.', '');
                 return false;
+            }else{
+                if(partnerAge > 18){
+                    showMessage('', 'info', '[ 참관객 정보 ]', '동반자는 만 0~18세 사이만 등록 가능합니다.', '');
+                    return false;
+                }
             }
         }
     }
 
     let sex = $('input[type=radio][name=sex]:checked').val();
     if(nvl(sex,'') === ''){
-        showMessage('', 'info', '[설문항목]', '성별을 선택해 주세요.', '');
+        showMessage('', 'info', '[ 설문항목 ]', '성별을 선택해 주세요.', '');
         return false;
     }
 
@@ -6514,23 +6519,14 @@ function f_visitor_form_valid_check(gbn){
     for(let i=0; i<sidoList.length; i++){
         let sido = sidoList.eq(i).val();
         if (nvl(sido,'시/도 선택') === '시/도 선택') {
-            showMessage('', 'info', '[설문항목]', '지역 시/도를 선택해 주세요.', '');
+            showMessage('', 'info', '[ 설문항목 ]', '지역 시/도를 선택해 주세요.', '');
             return false;
         }
     }
 
-    /*let gugunList = $('select[name=gugun]');
-    for(let i=0; i<gugunList.length; i++){
-        let gugun = gugunList.eq(i).val();
-        if (nvl(gugun,'구/군 선택') === '구/군 선택') {
-            showMessage('', 'info', '[설문항목]', '지역 구/군을 선택해 주세요.', '');
-            return false;
-        }
-    }*/
-
     let ageGroup = $('input[type=radio][name=ageGroup]:checked').val();
     if(nvl(ageGroup,'') === ''){
-        showMessage('', 'info', '[설문항목]', '연령대를 선택해 주세요.', '');
+        showMessage('', 'info', '[ 설문항목 ]', '연령대를 선택해 주세요.', '');
         return false;
     }
 
@@ -6538,32 +6534,32 @@ function f_visitor_form_valid_check(gbn){
     if(nvl(partGbn,'') === '일반관람') {
         let observationGbn = $('input[type=checkbox][name=observationGbn]').is(':checked');
         if (!observationGbn) {
-            showMessage('', 'info', '[설문항목]', '관람 구분을 하나 이상 체크해 주세요.', '');
+            showMessage('', 'info', '[ 설문항목 ]', '관람 구분을 하나 이상 체크해 주세요.', '');
             return false;
         }
     }
 
     let visitPurpose = $('input[type=checkbox][name=visitPurpose]').is(':checked');
     if (!visitPurpose) {
-        showMessage('', 'info', '[설문항목]', '보트쇼 방문 목적을 하나 이상 체크해 주세요.', '');
+        showMessage('', 'info', '[ 설문항목 ]', '보트쇼 방문 목적을 하나 이상 체크해 주세요.', '');
         return false;
     }
 
     let interestItem = $('input[type=checkbox][name=interestItem]').is(':checked');
     if (!interestItem) {
-        showMessage('', 'info', '[설문항목]', '관심품목을 하나 이상 체크해 주세요.', '');
+        showMessage('', 'info', '[ 설문항목 ]', '관심품목을 하나 이상 체크해 주세요.', '');
         return false;
     }
 
     let recognizePath = $('input[type=checkbox][name=recognizePath]').is(':checked');
     if (!recognizePath) {
-        showMessage('', 'info', '[설문항목]', '인지경로를 하나 이상 체크해 주세요.', '');
+        showMessage('', 'info', '[ 설문항목 ]', '인지경로를 하나 이상 체크해 주세요.', '');
         return false;
     }
 
     let preObservationGbn = $('input[type=checkbox][name=preObservationGbn]').is(':checked');
     if (!preObservationGbn) {
-        showMessage('', 'info', '[설문항목]', '지난 전시회 참관 여부를 하나 이상 체크해 주세요.', '');
+        showMessage('', 'info', '[ 설문항목 ]', '지난 전시회 참관 여부를 하나 이상 체크해 주세요.', '');
         return false;
     }
 
