@@ -50,6 +50,21 @@ License: For each use you must have a valid license purchased only from above li
     <!--begin::custom Mng css-->
     <link href="/css/mngStyle.css" rel="stylesheet" type="text/css"/>
     <!--end::custom Mng css-->
+
+    <style>
+        /* 미리보기 영역(#html_preview) 안의 모든 p 태그에 대해 마진 강제 제거 */
+        #html_preview p {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* 혹시 모를 div 여백 문제도 방지 */
+        #html_preview div {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    </style>
+
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -2405,12 +2420,22 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <div id="quill_editor_content" style="height: 500px; min-height: 500px; resize: vertical; overflow-y: auto;"<%--class="h-500px"--%>>${info.content}</div>
-                                                    <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true"/>">
+                                                    <div id="code_editor" style="height: 500px; min-height: 500px; resize: vertical; overflow-y: auto;">${info.content}</div>
+                                                    <input type="hidden" id="html_content" name="content" value="<c:out value="${info.content}" escapeXml="true"/>">
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+                                            <div class="row mb-6">
+                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">미리보기</label>
+                                                <div class="col-lg-10">
+                                                    <div class="rounded border p-5" style="background-color: #f5f8fa; height: 600px; overflow-y: auto;">
+                                                        <div id="html_preview" class="bg-white shadow-sm mx-auto" style="max-width: 800px; min-height: 500px; padding: 0;">
+                                                                ${info.content}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
@@ -2626,7 +2651,6 @@ if (document.documentElement) {
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251127"></script>
-    <script src="/assets/js/custom/apps/ecommerce/catalog/quill-editor.js?ver=202512"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>
@@ -2638,6 +2662,8 @@ if (document.documentElement) {
     <!--begin::Custom Javascript(used for common page)-->
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="/js/custom/newsletterKo.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script src="/js/html-code-editor.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->

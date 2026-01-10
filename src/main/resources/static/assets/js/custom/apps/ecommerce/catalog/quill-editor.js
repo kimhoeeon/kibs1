@@ -31,6 +31,15 @@ var KTQuillEditor = function () {
     Font.whitelist = fontNames;
     Quill.register(Font, true);
 
+    // ============================================================
+    // [수정] 기본 블록 태그를 <p>에서 <div>로 변경
+    // 설명: <table> 등 복잡한 HTML이 <p> 태그로 감싸져서 깨지는 현상을 방지합니다.
+    // ============================================================
+    var Block = Quill.import('blots/block');
+    Block.tagName = 'DIV';
+    Quill.register(Block, true);
+    // ============================================================
+
     // Private functions
     var toolbarOptions = [
         [{ 'font': fontNames }],
@@ -67,7 +76,7 @@ var KTQuillEditor = function () {
             selectLocalImage(quill);
         });
 
-        // 2. 붙여넣기(Paste) 이벤트 핸들러 추가 (여기가 핵심입니다)
+        // 2. 붙여넣기(Paste) 이벤트 핸들러 추가
         quill.root.addEventListener('paste', function(e) {
             var clipboardData = e.clipboardData || window.clipboardData;
             if (clipboardData && clipboardData.items) {
@@ -84,10 +93,9 @@ var KTQuillEditor = function () {
             }
         });
 
-        // (선택사항) 드래그 앤 드롭으로 이미지 넣을 때도 업로드 처리하려면 아래 주석 해제
+        // (선택사항) 드래그 앤 드롭
         quill.root.addEventListener('drop', function(e) {
             if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
-                // 첫 번째 파일만 처리 (필요시 반복문 처리 가능)
                 if (e.dataTransfer.files[0].type.indexOf('image') !== -1) {
                     e.preventDefault();
                     serverUpload(e.dataTransfer.files[0], quill);
@@ -99,14 +107,14 @@ var KTQuillEditor = function () {
     function selectLocalImage(quill) {
         const fileInput = document.createElement('input');
         fileInput.setAttribute('type', 'file');
-        fileInput.setAttribute('accept', 'image/*'); // 이미지 파일만 허용
+        fileInput.setAttribute('accept', 'image/*');
 
         fileInput.click();
 
         fileInput.addEventListener("change", function () {
             const file = fileInput.files[0];
             if(file) {
-                serverUpload(file, quill); // 공통 업로드 함수 호출
+                serverUpload(file, quill);
             }
         });
     }
@@ -116,29 +124,23 @@ var KTQuillEditor = function () {
         let formData = new FormData();
         formData.append('uploadFile', file);
 
-        // 기존에 사용하시던 컨트롤러 URL 그대로 사용
+        // 기존 URL 유지
         fetch('/file/upload.do?gbn=quill', {
             method: 'POST',
             body: formData
         })
             .then(res => res.json())
             .then(res => {
-                // 커서 위치 파악 (없으면 맨 뒤)
                 let range = quill.getSelection();
                 let index = range ? range.index : quill.getLength();
 
-                // 윈도우 경로 역슬래시 치환
                 if(res.uploadPath) {
                     res.uploadPath = res.uploadPath.replace(/\\/g, '/');
                 }
 
-                // 서버가 준 웹 경로를 그대로 사용하여 직접 접근
                 let imgUrl = res.uploadPath + "/" + res.fileName;
 
-                // 에디터에 이미지 태그 삽입
                 quill.insertEmbed(index, 'image', imgUrl);
-
-                // 이미지 삽입 후 커서를 이미지 뒤로 이동
                 quill.setSelection(index + 1);
             })
             .catch(err => {
@@ -150,7 +152,6 @@ var KTQuillEditor = function () {
     // Public methods
     return {
         init: function () {
-            // Init forms
             initQuill();
         }
     };

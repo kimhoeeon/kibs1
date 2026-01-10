@@ -49,6 +49,21 @@ License: For each use you must have a valid license purchased only from above li
     <!--begin::custom Mng css-->
     <link href="/css/mngStyle.css" rel="stylesheet" type="text/css"/>
     <!--end::custom Mng css-->
+
+    <style>
+        /* 미리보기 영역(#md_content) 안의 모든 p 태그에 대해 마진 강제 제거 */
+        #md_content p {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* 혹시 모를 div 여백 문제도 방지 */
+        #md_content div {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    </style>
+
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -2472,66 +2487,10 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">사이트 분류</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <!--begin::Col-->
-                                <div class="d-flex flex-wrap">
-                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                        <input class="form-check-input form-control-solid-bg"
-                                               type="checkbox" id="md_gbn1" value="홈페이지" disabled/>
-                                        <label class="form-check-label text-hover-primary" for="md_gbn1">
-                                            홈페이지
-                                        </label>
-                                    </div>
-                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                        <input class="form-check-input form-control-solid-bg"
-                                               type="checkbox" id="md_gbn2" value="무역관" disabled/>
-                                        <label class="form-check-label text-hover-primary" for="md_gbn2">
-                                            무역관
-                                        </label>
-                                    </div>
-                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                        <input class="form-check-input form-control-solid-bg"
-                                               type="checkbox" id="md_gbn3" value="체류" disabled/>
-                                        <label class="form-check-label text-hover-primary" for="md_gbn3">
-                                            체류
-                                        </label>
-                                    </div>
-                                </div>
-                                <!--end::Col-->
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">추가 설정</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <!--begin::Col-->
-                                <div class="d-flex flex-wrap">
-                                    <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                        <input class="form-check-input form-control-solid-bg"
-                                               type="checkbox" id="md_notice_gbn" value="공지사항 고정" disabled/>
-                                        <label class="form-check-label text-hover-primary" for="md_notice_gbn">
-                                            공지사항 고정
-                                        </label>
-                                    </div>
-                                </div>
-                                <!--end::Col-->
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
                                 <label class="form-label">내용</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <div id="md_content" class="form-control form-control-solid-bg resize-none h-250px overflow-y-auto" placeholder="내용" readonly></div>
+                                <div id="md_content" class="form-control form-control-solid-bg resize-none h-500px overflow-y-auto" placeholder="내용" readonly></div>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->

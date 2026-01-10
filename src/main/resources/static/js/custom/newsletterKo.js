@@ -72,30 +72,6 @@ function f_newsletter_ko_detail_modal_set(rowId){
     document.querySelector('#md_writer').value = resData.writer;
     document.querySelector('#md_write_date').value = resData.writeDate;
 
-    if(resData.gbn1==="1"){
-        document.querySelector('#md_gbn1').checked = true;
-    }else{
-        document.querySelector('#md_gbn1').checked = false;
-    }
-
-    if(resData.gbn2==="1"){
-        document.querySelector('#md_gbn2').checked = true;
-    }else{
-        document.querySelector('#md_gbn2').checked = false;
-    }
-
-    if(resData.gbn3==="1"){
-        document.querySelector('#md_gbn3').checked = true;
-    }else{
-        document.querySelector('#md_gbn3').checked = false;
-    }
-
-    if(resData.noticeGbn==="1"){
-        document.querySelector('#md_notice_gbn').checked = true;
-    }else{
-        document.querySelector('#md_notice_gbn').checked = false;
-    }
-
     document.querySelector('#md_content').innerHTML = resData.content;
     document.querySelector('#md_view_cnt').value = resData.viewCnt;
 
@@ -330,8 +306,6 @@ function f_board_newsletter_ko_save(id){
                 let data = objectifyForm(serialData);
 
                 data.tempSaveYn = 'N';
-                //console.log(JSON.stringify(data));
-                //{"id":"","title":"test","writer":"test","writeDate":"2023-08-06 12:00:00","gbn1":"on","noticeGbn":"on","content":"<p>test</p>","uploadFile":"./tomcat/webapps/upload/center/board/notice/1f228d20-bd68-48db-b598-512459e66f77_KIBS_TV_목록_excel_20230817151752.xlsx"}
 
                 /* Modify */
                 if(nvl(id, "") !== ""){
@@ -407,7 +381,7 @@ function f_board_newsletter_ko_valid(){
     let title = $('#title').val();
     let writer = $('#writer').val();
     let writeDate = $('#writeDate').val();
-    let content = $('#quill_content').val();
+    let content = $('#html_content').val();
 
     if(nvl(title,"") === ""){ showMessage('#title', 'error', '[ 글 등록 정보 ]', '제목을 입력해 주세요.', ''); return false; }
     if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[ 글 등록 정보 ]', '작성자를 입력해 주세요.', ''); return false; }
