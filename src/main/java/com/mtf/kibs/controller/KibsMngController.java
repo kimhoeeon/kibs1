@@ -3854,13 +3854,28 @@ public class KibsMngController {
     @ResponseBody
     public byte[] printEditorImage(@RequestParam final String filename) {
 
-        // 업로드된 파일의 전체 경로
-        String fileFullPath = "/usr/local/tomcat/webapps/upload/editor" + "/" + filename;
+        // [수정 1] 파라미터로 넘어온 filename에 경로(/upload/editor/)가 포함되어 있다면 제거하고 순수 파일명만 추출
+        String pureFileName = filename;
+        if (filename.contains("/") || filename.contains("\\")) {
+            // 마지막 슬래시 뒤의 문자열(파일명)만 가져옴
+            int lastSlashIdx = Math.max(filename.lastIndexOf("/"), filename.lastIndexOf("\\"));
+            pureFileName = filename.substring(lastSlashIdx + 1);
+        }
+
+        // [수정 2] 경로 순회(Directory Traversal) 보안 취약점 방지 (.. 문자 제거)
+        if (pureFileName.contains("..")) {
+            throw new RuntimeException("Invalid filename");
+        }
+
+        // 업로드된 파일의 전체 물리 경로 구성
+        String fileFullPath = "/usr/local/tomcat/webapps/upload/editor" + File.separator + pureFileName;
 
         // 파일이 없는 경우 예외 throw
         File uploadedFile = new File(fileFullPath);
         if (!uploadedFile.exists()) {
-            throw new RuntimeException();
+            // [수정 3] 디버깅을 위해 구체적인 에러 메시지 작성
+            System.out.println("File not found: " + fileFullPath);
+            throw new RuntimeException("File not found: " + pureFileName);
         }
 
         try {
@@ -4507,8 +4522,8 @@ public class KibsMngController {
             };
             Collections.addAll(headerList, fixedHeaders1);
 
-            // 1-2. 전시품 정보 (20개 * 11컬럼 = 220개)
-            String[] productCols = {"제품분류(품목)", "신제품 여부", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식"};
+            // 1-2. 전시품 정보 (20개 * 12컬럼 = 240개)
+            String[] productCols = {"제품분류(품목)", "신제품 여부", "제품명", "수량", "제조사(브랜드)", "특징", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식"};
             for (int i = 0; i < 20; i++) {
                 Collections.addAll(headerList, productCols);
             }
@@ -4578,10 +4593,10 @@ public class KibsMngController {
             // 64 ~ 71: 업체정보(소개) (8)
             // 72 ~ 81: 참가분야 (10)
             // 82 ~ 83: 해상전시회 (2)
-            // 84 ~ 303: 전시품 정보 (220)
-            // 304 ~ 307: 기업 뱃지 (4)
-            // 308 ~ 637: 온라인 제품 정보 (330)
-            // 638 ~ 672: 신청내역 (35)
+            // 84 ~ 323: 전시품 정보 (240)
+            // 324 ~ 327: 기업 뱃지 (4)
+            // 328 ~ 657: 온라인 제품 정보 (330)
+            // 658 ~ 692: 신청내역 (35)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 28));   headerRow.createCell(0).setCellValue("참가업체정보");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 29, 39));  headerRow.createCell(29).setCellValue("입금 현황");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 40, 45));  headerRow.createCell(40).setCellValue("대표 담당자");
@@ -4589,10 +4604,10 @@ public class KibsMngController {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 64, 71));  headerRow.createCell(64).setCellValue("업체정보(소개)");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 72, 81));  headerRow.createCell(72).setCellValue("참가분야");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 82, 83));  headerRow.createCell(82).setCellValue("해상전시회");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 84, 303)); headerRow.createCell(84).setCellValue("전시품 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 304, 307)); headerRow.createCell(304).setCellValue("기업 뱃지");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 308, 637)); headerRow.createCell(308).setCellValue("온라인 제품 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 638, 672)); headerRow.createCell(638).setCellValue("신청내역");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 84, 323)); headerRow.createCell(84).setCellValue("전시품 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 324, 327)); headerRow.createCell(324).setCellValue("기업 뱃지");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 328, 657)); headerRow.createCell(328).setCellValue("온라인 제품 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 658, 692)); headerRow.createCell(658).setCellValue("신청내역");
 
             for(int i=0; i < colNames_ex.length; i++){
                 if(headerRow.getCell(i) == null) headerRow.createCell(i);
@@ -5045,6 +5060,9 @@ public class KibsMngController {
                 String[] productBrandSplit = info.getProductBrand() != null ? info.getProductBrand().split("\\^", -1) : new String[0];
                 dataRow.createCell(cellCnt++).setCellValue(convertValue(productBrandSplit, i));
 
+                String[] productFeatureSplit = info.getProductFeature() != null ? info.getProductFeature().split("\\^", -1) : new String[0];
+                dataRow.createCell(cellCnt++).setCellValue(convertValue(productFeatureSplit, i));
+
                 String[] productLengthSplit = info.getProductLength() != null ? info.getProductLength().split("\\^", -1) : new String[0];
                 dataRow.createCell(cellCnt++).setCellValue(convertValue(productLengthSplit, i));
 
@@ -5064,8 +5082,8 @@ public class KibsMngController {
                 dataRow.createCell(cellCnt++).setCellValue(convertValue(productYearSplit, i));
 
             }else{
-                // 데이터가 없으면 11개 컬럼을 모두 빈칸으로 채움
-                for (int j = 0; j < 11; j++) {
+                // 데이터가 없으면 12개 컬럼을 모두 빈칸으로 채움
+                for (int j = 0; j < 12; j++) {
                     dataRow.createCell(cellCnt++).setCellValue("");
                 }
             }
@@ -8816,7 +8834,7 @@ public class KibsMngController {
             companySubCell2.setCellValue("업체명");
 
             // 1-2. 전시품 신청 헤더 (21개 반복)
-            String[] productHeaders = {"제품분류(대분류)", "제품분류(소분류)", "신제품 여부", "제품명", "수량", "제조사(브랜드)", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식"};
+            String[] productHeaders = {"제품분류(대분류)", "제품분류(소분류)", "신제품 여부", "제품명", "수량", "제조사(브랜드)", "특징", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식"};
             for (int i = 0; i < 20; i++) {
                 int startCol = 2 + (i * productHeaders.length);
                 Cell productMainCell = mainHeaderRow.createCell(startCol);
@@ -8855,7 +8873,7 @@ public class KibsMngController {
                 row.createCell(0).setCellValue(companyNum++);
                 row.createCell(1).setCellValue(products.get(0).getCompanyNameKo());
 
-                // 전시품 신청 채우기 (최대 21개)
+                // 전시품 신청 채우기 (최대 20개)
                 for (int i = 0; i < products.size() && i < 20; i++) {
                     ProductDetailDTO product = products.get(i);
                     int startCol = 2 + (i * productHeaders.length);
@@ -8869,12 +8887,13 @@ public class KibsMngController {
                         row.createCell(startCol + 3).setCellValue(product.getProductNameKo());
                         row.createCell(startCol + 4).setCellValue(product.getProductQty() != null ? String.valueOf(product.getProductQty()) : "");
                         row.createCell(startCol + 5).setCellValue(product.getProductBrand());
-                        row.createCell(startCol + 6).setCellValue(product.getProductLength() != null ? String.valueOf(product.getProductLength()) : "");
-                        row.createCell(startCol + 7).setCellValue(product.getProductWidth() != null ? String.valueOf(product.getProductWidth()) : "");
-                        row.createCell(startCol + 8).setCellValue(product.getProductHeight() != null ? String.valueOf(product.getProductHeight()) : "");
-                        row.createCell(startCol + 9).setCellValue(product.getProductWeight() != null ? String.valueOf(product.getProductWeight()) : "");
-                        row.createCell(startCol + 10).setCellValue(product.getProductMaterial());
-                        row.createCell(startCol + 11).setCellValue(product.getProductYear() != null ? String.valueOf(product.getProductYear()) : "");
+                        row.createCell(startCol + 6).setCellValue(product.getProductFeature());
+                        row.createCell(startCol + 7).setCellValue(product.getProductLength() != null ? String.valueOf(product.getProductLength()) : "");
+                        row.createCell(startCol + 8).setCellValue(product.getProductWidth() != null ? String.valueOf(product.getProductWidth()) : "");
+                        row.createCell(startCol + 9).setCellValue(product.getProductHeight() != null ? String.valueOf(product.getProductHeight()) : "");
+                        row.createCell(startCol + 10).setCellValue(product.getProductWeight() != null ? String.valueOf(product.getProductWeight()) : "");
+                        row.createCell(startCol + 11).setCellValue(product.getProductMaterial());
+                        row.createCell(startCol + 12).setCellValue(product.getProductYear() != null ? String.valueOf(product.getProductYear()) : "");
                     }
                 }
 
@@ -8894,7 +8913,11 @@ public class KibsMngController {
                     // 신제품 여부 컬럼 너비 조정 (약간 좁게)
                     if (j == 2) {
                         sheet.setColumnWidth(startCol + j, 3000);
-                    } else {
+                    }
+                    else if (j == 6) {
+                        sheet.setColumnWidth(startCol + j, 6000);
+                    }
+                    else {
                         sheet.setColumnWidth(startCol + j, 4000);
                     }
                 }

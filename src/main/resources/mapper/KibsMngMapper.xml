@@ -2391,6 +2391,7 @@
              , product_name_en
              , product_qty
              , product_brand
+             , product_feature
              , product_length
              , product_width
              , product_height
@@ -5492,6 +5493,7 @@
              , (SELECT GROUP_CONCAT(coalesce(p.product_name_ko,'') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productNameKo
              , (SELECT GROUP_CONCAT(coalesce(p.product_qty,'0') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productQty
              , (SELECT GROUP_CONCAT(coalesce(p.product_brand,'') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productBrand
+             , (SELECT GROUP_CONCAT(coalesce(p.product_feature,'') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productFeature
              , (SELECT GROUP_CONCAT(coalesce(p.product_length,'0') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productLength
              , (SELECT GROUP_CONCAT(coalesce(p.product_width,'0') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productWidth
              , (SELECT GROUP_CONCAT(coalesce(p.product_height,'0') SEPARATOR '^') FROM product_new p where p.ex_seq = e.seq) as productHeight
@@ -5526,6 +5528,7 @@
             (SELECT GROUP_CONCAT(product_name_en ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productNameEn,
             (SELECT GROUP_CONCAT(product_qty ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productQty,
             (SELECT GROUP_CONCAT(product_brand ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productBrand,
+            (SELECT GROUP_CONCAT(product_feature ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productFeature,
             (SELECT GROUP_CONCAT(product_length ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productLength,
             (SELECT GROUP_CONCAT(product_width ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productWidth,
             (SELECT GROUP_CONCAT(product_height ORDER BY seq SEPARATOR '^') FROM product_new WHERE ex_seq = e.seq) as productHeight,
@@ -6185,6 +6188,7 @@
             p.product_name_ko,
             p.product_qty,
             p.product_brand,
+            p.product_feature,
             p.product_length,
             p.product_width,
             p.product_height,

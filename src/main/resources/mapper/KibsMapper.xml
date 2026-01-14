@@ -318,6 +318,7 @@
         , product_name_en
         , product_qty
         , product_brand
+        , product_feature
         , product_length
         , product_width
         , product_height
@@ -338,6 +339,7 @@
                , #{productNameEn}
                , #{productQty}
                , <![CDATA[#{productBrand}]]>
+               , <![CDATA[#{productFeature}]]>
                , #{productLength}
                , #{productWidth}
                , #{productHeight}
@@ -540,6 +542,7 @@
           , product_name_en = <![CDATA[#{productNameEn}]]>
           , product_qty = #{productQty}
           , product_brand = <![CDATA[#{productBrand}]]>
+          , product_feature = <![CDATA[#{productFeature}]]>
           , product_length = #{productLength}
           , product_width = #{productWidth}
           , product_height = #{productHeight}
@@ -621,6 +624,7 @@
              , product_name_en
              , product_qty
              , product_brand
+             , product_feature
              , product_length
              , product_width
              , product_height
@@ -2272,6 +2276,7 @@
              , product_name_en
              , product_qty
              , product_brand
+             , product_feature
              , product_length
              , product_width
              , product_height
@@ -2370,6 +2375,7 @@
              , product_name_en
              , product_qty
              , product_brand
+             , product_feature
              , product_length
              , product_width
              , product_height

@@ -2864,6 +2864,21 @@ function step_2_9_check(exhibitorSeq){
                     return false;
                 }
 
+                // 특징 유효성 검사
+                let product_feature_el = $('textarea[name=productFeature]');
+                let product_feature_len = product_feature_el.length;
+                let product_feature_flag = true;
+                for (let i = 0; i < product_feature_len; i++) {
+                    if (nvl(product_feature_el.eq(i).val(), '') === '') {
+                        product_feature_flag = false;
+                        break;
+                    }
+                }
+                if (!product_feature_flag) {
+                    showMessage('', 'error', '[ 전시품 신청 ]', '제품 특징을 입력해 주세요.', '');
+                    return false;
+                }
+
                 // 길이
                 let product_length_el = $('input[type=text][name=productLength]');
                 let product_length_len = product_length_el.length;
@@ -2979,6 +2994,7 @@ function step_2_9_check(exhibitorSeq){
                             productNameKo: product_name_ko_el.eq(i).val(),
                             productQty: product_qty_el.eq(i).val(),
                             productBrand: product_brand_el.eq(i).val(),
+                            productFeature: product_feature_el.eq(i).val(),
                             productLength: product_length_el.eq(i).val(),
                             productWidth: product_width_el.eq(i).val(),
                             productHeight: product_height_el.eq(i).val(),
@@ -5290,6 +5306,21 @@ function my_step_2_9_check(exhibitorSeq){
             showMessage('', 'error', '[ 전시품 신청 ]', '제조사(브랜드)를 입력해 주세요.', '');
             return false;
         }
+
+        // 특징 유효성 검사
+        let product_feature_el = $('textarea[name=productFeature]');
+        let product_feature_len = product_feature_el.length;
+        let product_feature_flag = true;
+        for (let i = 0; i < product_feature_len; i++) {
+            if (nvl(product_feature_el.eq(i).val(), '') === '') {
+                product_feature_flag = false;
+                break;
+            }
+        }
+        if (!product_feature_flag) {
+            showMessage('', 'error', '[ 전시품 신청 ]', '제품 특징을 입력해 주세요.', '');
+            return false;
+        }
     
         // 길이
         let product_length_el = $('input[type=text][name=productLength]');
@@ -5405,6 +5436,7 @@ function my_step_2_9_check(exhibitorSeq){
                     productNameKo: product_name_ko_el.eq(i).val(),
                     productQty: product_qty_el.eq(i).val(),
                     productBrand: product_brand_el.eq(i).val(),
+                    productFeature: product_feature_el.eq(i).val(),
                     productLength: product_length_el.eq(i).val(),
                     productWidth: product_width_el.eq(i).val(),
                     productHeight: product_height_el.eq(i).val(),

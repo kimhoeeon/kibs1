@@ -1942,7 +1942,7 @@
                                     </div>--%>
                                 </div>
                                 <div id="certifyBox" class="input" style="display: none;">
-                                    <input type="text" id="certifyNum" class="onlyNum" maxlength="5" placeholder="인증번호를 입력해 주세요">
+                                    <input type="text" id="certifyNum" class="onlyNum" maxlength="5" placeholder="인증번호를 입력해 주세요.">
                                     <input type="button" id="certifyBtn" onclick="f_certify_confirm(this);" value="확인">
                                     <input type="hidden" id="certifyFlag" name="certifyFlag" value="false">
                                     <div class="time">유효시간 <span id="remainMin">05</span><span id="colon">:</span><span id="remainSec">00</span></div>

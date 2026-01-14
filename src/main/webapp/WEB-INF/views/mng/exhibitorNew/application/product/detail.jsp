@@ -2385,6 +2385,19 @@ if (document.documentElement) {
                                                             <!--begin::Input group-->
                                                             <div class="row mb-6">
                                                                 <!--begin::Label-->
+                                                                <label class="col-lg-2 col-form-label fw-semibold fs-6">특징</label>
+                                                                <!--end::Label-->
+                                                                <!--begin::Col-->
+                                                                <div class="col-lg-10">
+                                                                    <textarea name="productBrand" class="form-control form-control-lg form-control-solid-bg" placeholder="특징" disabled>${product.productFeature}</textarea>
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Input group-->
+
+                                                            <!--begin::Input group-->
+                                                            <div class="row mb-6">
+                                                                <!--begin::Label-->
                                                                 <label class="col-lg-2 col-form-label fw-semibold fs-6">길이(cm)</label>
                                                                 <!--end::Label-->
                                                                 <!--begin::Col-->

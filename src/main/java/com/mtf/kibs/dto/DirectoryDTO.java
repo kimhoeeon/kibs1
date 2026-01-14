@@ -51,6 +51,7 @@ public class DirectoryDTO {
     String productNameKo;
     String productQty;
     String productBrand;
+    String productFeature;
     String productLength;
     String productWidth;
     String productHeight;

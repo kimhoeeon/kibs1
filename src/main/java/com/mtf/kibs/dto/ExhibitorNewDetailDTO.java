@@ -105,6 +105,7 @@ public class ExhibitorNewDetailDTO {
     private String productNameEn;
     private String productQty;
     private String productBrand;
+    private String productFeature;
     private String productLength;
     private String productWidth;
     private String productHeight;

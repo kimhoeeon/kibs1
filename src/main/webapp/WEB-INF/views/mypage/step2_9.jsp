@@ -149,9 +149,9 @@
                                         <div class="small">
                                             입력하신 전시품 신청은 온라인 전시관에 자동 노출됩니다.<br><br>
                                             2026 경기국제보트쇼 장치 및 철거일정을 고려하여 전시품 선정 부탁드립니다.<br><br>
-                                            ○ 장치 및 전시품 반입 : 2026.3.4(수) ~ 3.5(목), 2일간<br>
+                                            ○ 장치 및 전시품 반입 : 2026.3.4(수) ~ 3.5(목) 08:00~20:00, 2일간<br>
                                             ○ 행사기간 : 2026.3.6(금) ~ 3.8(일), 3일간<br>
-                                            ○ 철거 및 전시품 반출 : 2026.3.8(일), 당일철거
+                                            ○ 철거 및 전시품 반출 : 2026.3.8(일) 08:00~20:00, 당일철거
                                         </div>
                                     </div>
 
@@ -193,6 +193,14 @@
                                                 </div>
                                                 <div class="input">
                                                     <input type="text" name="productBrand" placeholder="제품의 제조사(브랜드)를 입력하세요.">
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="item req">
+                                                    <p>특징</p>
+                                                </div>
+                                                <div class="input">
+                                                    <textarea name="productFeature" placeholder="전시품에 대한 설명과 특징을 작성해주세요."></textarea>
                                                 </div>
                                             </li>
                                             <li class="w50">
@@ -300,6 +308,14 @@
                                                     </div>
                                                     <div class="input">
                                                         <input type="text" name="productBrand" value="${product.productBrand}" placeholder="제품의 제조사(브랜드)를 입력하세요.">
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="item req">
+                                                        <p>특징</p>
+                                                    </div>
+                                                    <div class="input">
+                                                        <textarea name="productFeature" placeholder="전시품에 대한 설명과 특징을 작성해주세요.">${product.productFeature}</textarea>
                                                     </div>
                                                 </li>
                                                 <li class="w50">

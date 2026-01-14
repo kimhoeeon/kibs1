@@ -17,6 +17,7 @@ public class ProductNewDTO {
     String productNameEn; //제품명(영문)
     int productQty; //수량
     String productBrand; //브랜드(제조사)
+    String productFeature; //특징
     int productLength; //길이
     int productWidth; //너비
     int productHeight; //높이

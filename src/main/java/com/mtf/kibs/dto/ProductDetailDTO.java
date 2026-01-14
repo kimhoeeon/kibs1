@@ -19,6 +19,7 @@ public class ProductDetailDTO {
     private String productNameKo;
     private Integer productQty;
     private String productBrand;
+    private String productFeature;
     private Integer productLength;
     private Integer productWidth;
     private Integer productHeight;
