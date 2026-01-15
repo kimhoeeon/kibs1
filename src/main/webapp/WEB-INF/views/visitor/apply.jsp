@@ -586,7 +586,7 @@
                                     <div class="input check">
                                         <label><input type="checkbox" name="interestItem" value="보트&요트">보트&요트</label>
                                         <label><input type="checkbox" name="interestItem" value="무동력보트">무동력보트</label>
-                                        <label><input type="checkbox" name="interestItem" value="워트보트">워트보트</label>
+                                        <label><input type="checkbox" name="interestItem" value="워크보트">워크보트</label>
                                         <label><input type="checkbox" name="interestItem" value="해양부품&장비">해양부품&장비</label>
                                         <label><input type="checkbox" name="interestItem" value="안전&마리나">안전&마리나</label>
                                         <label><input type="checkbox" name="interestItem" value="해양관광">해양관광</label>
