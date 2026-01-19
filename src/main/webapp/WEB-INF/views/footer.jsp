@@ -139,7 +139,7 @@
                     <p class="address"><span>우) 10390 경기도 고양시 일산서구 킨텍스로 217-60 킨텍스</span></p>
                     <p>
                         <span>법인명 킨텍스</span>
-                        <span>대표자 이재율</span>
+                        <span>대표자 이민우</span>
                         <span>사업자등록번호 128-81-78009</span>
                     </p>
                 </div>
