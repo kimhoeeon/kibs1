@@ -85,7 +85,7 @@
                     </a>
                 </h1>
                 <div class="hd_top_right">
-                    <%--<a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8788/8777');" class="login">LOGIN</a>--%>
+                    <%--<a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8946/8912');" class="login">LOGIN</a>--%>
                     <a href="javascript:void(0);" onclick="home('ko');" class="language">KOR</a>
                     <a href="#a" class="m_menu">
                         <span>Menu</span>
@@ -115,7 +115,7 @@
                             <a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors</span></a>
                             <ul class="dept2">
                                 <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors Categories</span></a></li>
-                                <li><a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8788/8777');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>"><span>Exhibitor Registration</span></a></li>
+                                <li><a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8946/8912');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>"><span>Exhibitor Registration</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/glance.do"/>"><span>Korea at a Glance</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
@@ -155,7 +155,7 @@
             <div class="site_map_box">
                 <div class="site_map_top">
                     <div class="site_map_top_btn">
-                        <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8788/8777');" class="login">LOGIN</a>
+                        <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8946/8912');" class="login">LOGIN</a>
                         <a href="<c:url value="/"/>" class="language">KOR</a>
                     </div>
                     <div class="site_map_top_sns">
@@ -193,7 +193,7 @@
                             <a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors</span></a>
                             <ul class="dept2">
                                 <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors Categories</span></a></li>
-                                <li><a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8788/8777');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>"><span>Exhibitor Registration</span></a></li>
+                                <li><a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8946/8912');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>"><span>Exhibitor Registration</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/glance.do"/>"><span>Korea at a Glance</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>

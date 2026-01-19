@@ -81,7 +81,7 @@
                 <div class="info">
                     <div class="secr">2026 경기국제보트쇼 사무국</div>
                     <div>경기도 고양시 일산서구 킨텍스로 217-60 킨텍스 제1전시장</div>
-                    <div>전화 : 031-995-8788/8777</div>
+                    <div>전화 : 031-995-8946/8912</div>
                     <div>팩스 : 031-995-8091</div>
                 </div>
                 <div class="issue">
@@ -312,7 +312,7 @@
         <!-- box -->
         <div class="cont_box">
             <div class="cmnt">
-                <div>문의처 : 킨텍스 경기국제보트쇼 사무국 (Tel : 031-995-8788/8777) (E-mail : kibs@kintex.com)</div>
+                <div>문의처 : 킨텍스 경기국제보트쇼 사무국 (Tel : 031-995-8946/8912) (E-mail : kibs@kintex.com)</div>
                 <div>귀사의 관심과 참여에 깊은 감사 드립니다.</div>
                 <div>동 전시회를 통해 조기 목표하신 성과를 거양하시도록 최선을 다하겠습니다.</div>
             </div>

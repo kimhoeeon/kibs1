@@ -77,7 +77,7 @@
                         <div class="tabOptSel">
                             <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
                             <a class="active" href="/eng/online/company.do">Exhibitor List</a>
-                            <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8788/8777');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>">Exhibitor Registration</a>
+                            <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8946/8912');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>">Exhibitor Registration</a>
                             <a href="/eng/exhibitor/qna.do">FAQ</a>
                         </div>
                     </div>

@@ -503,7 +503,7 @@
                 <div class="txt_box">
                     <div class="big">일정 심사를 거쳐 자격을 갖춘 바이어에게는 KIBS 공식 호텔 숙박비, 항공권 등 초청 비용을 지원합니다.
                     </div>
-                    <div class="small">(문의: 031-995-8788/8777, kibs@kintex.com)</div>
+                    <div class="small">(문의: 031-995-8946/8912, kibs@kintex.com)</div>
                 </div>
             </div>
         </div>
