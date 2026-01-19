@@ -21,6 +21,8 @@ public class InvoiceUtilityDTO {
     private int utilityJuganFee;
     private int utilityDayCnt;
     private int utilityDayFee;
+    private int utilityWorkCnt;
+    private int utilityWorkFee;
     private int utilityCompressedAirCnt;
     private int utilityCompressedAirFee;
     private int utilityWaterBasicCnt;

@@ -178,6 +178,12 @@
                                         <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
                                     </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
                                 </c:if>
+                                <c:if test="${invoiceInfo.utilityWorkCnt > 0}">
+                                    <tr>
+                                        <td>${utilityIdx}</td><td>작업전기 / 1kw</td><td>${invoiceInfo.utilityWorkCnt}개</td><td>80,000원</td>
+                                        <td class="text-r"><fmt:formatNumber value="${invoiceInfo.utilityWorkFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>원</td>
+                                    </tr><c:set var="utilityIdx" value="${utilityIdx + 1}"/>
+                                </c:if>
                                 <c:if test="${invoiceInfo.utilityCompressedAirCnt > 0}">
                                     <tr>
                                         <td>${utilityIdx}</td><td>압축공기 기본형</td><td>${invoiceInfo.utilityCompressedAirCnt}개</td><td>200,000원</td>

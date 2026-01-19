@@ -170,7 +170,9 @@ public class ExhibitorNewDetailDTO {
     private Integer utilityJuganCnt;
     private Integer utilityJuganFee; // 
     private Integer utilityDayCnt;
-    private Integer utilityDayFee; // 
+    private Integer utilityDayFee; //
+    private Integer utilityWorkCnt;
+    private Integer utilityWorkFee; //
     private Integer utilityCompressedAirCnt;
     private Integer utilityCompressedAirFee; // 
     private Integer utilityWaterBasicCnt;

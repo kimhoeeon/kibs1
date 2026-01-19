@@ -767,6 +767,8 @@
           , utility_jugan_fee          = IFNULL(#{utilityJuganFee}, 0)
           , utility_day_cnt            = IFNULL(#{utilityDayCnt}, 0)
           , utility_day_fee            = IFNULL(#{utilityDayFee}, 0)
+          , utility_work_cnt            = IFNULL(#{utilityWorkCnt}, 0)
+          , utility_work_fee            = IFNULL(#{utilityWorkFee}, 0)
           , utility_compressed_air_cnt = IFNULL(#{utilityCompressedAirCnt}, 0)
           , utility_compressed_air_fee = IFNULL(#{utilityCompressedAirFee}, 0)
           , utility_water_basic_cnt    = IFNULL(#{utilityWaterBasicCnt}, 0)

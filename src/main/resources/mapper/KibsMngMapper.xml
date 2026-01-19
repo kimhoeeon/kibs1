@@ -3770,6 +3770,7 @@
     <insert id="insertInvoiceUtility" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO" useGeneratedKeys="true" keyProperty="invoiceSeq">
         INSERT INTO invoice_utility (exhibitor_seq, invoice_code, title, recipient_email,
                                      utility_jugan_cnt, utility_jugan_fee, utility_day_cnt, utility_day_fee,
+                                     utility_work_cnt, utility_work_fee,
                                      utility_compressed_air_cnt, utility_compressed_air_fee, utility_water_basic_cnt,
                                      utility_water_basic_fee,
                                      utility_internet_cnt, utility_internet_fee, utility_pytex_new_cnt,
@@ -3781,6 +3782,7 @@
                                      end_dttm, init_regi_dttm)
         VALUES (#{exhibitorSeq}, #{invoiceCode}, #{title}, #{recipientEmail},
                 #{utilityJuganCnt}, #{utilityJuganFee}, #{utilityDayCnt}, #{utilityDayFee},
+                #{utilityWorkCnt}, #{utilityWorkFee},
                 #{utilityCompressedAirCnt}, #{utilityCompressedAirFee}, #{utilityWaterBasicCnt},
                 #{utilityWaterBasicFee},
                 #{utilityInternetCnt}, #{utilityInternetFee}, #{utilityPytexNewCnt}, #{utilityPytexNewFee},
@@ -4198,6 +4200,8 @@
              , IFNULL(en.utility_jugan_fee,0) as utility_jugan_fee
              , IFNULL(en.utility_day_cnt,0) as utility_day_cnt
              , IFNULL(en.utility_day_fee,0) as utility_day_fee
+             , IFNULL(en.utility_work_cnt,0) as utility_work_cnt
+             , IFNULL(en.utility_work_fee,0) as utility_work_fee
              , IFNULL(en.utility_compressed_air_cnt,0) as utility_compressed_air_cnt
              , IFNULL(en.utility_compressed_air_fee,0) as utility_compressed_air_fee
              , IFNULL(en.utility_water_basic_cnt,0) as utility_water_basic_cnt
@@ -4244,6 +4248,9 @@
             </if>
             <if test='utilityGbn eq "ALLDAY"'>
                 AND en.utility_day_cnt <![CDATA[>]]> 0
+            </if>
+            <if test='utilityGbn eq "WORK"'>
+                AND en.utility_work_cnt <![CDATA[>]]> 0
             </if>
             <if test='utilityGbn eq "COMPRESSEDAIR"'>
                 AND en.utility_compressed_air_cnt <![CDATA[>]]> 0
@@ -4302,6 +4309,8 @@
              , IFNULL(utility_jugan_fee,0) as utility_jugan_fee
              , IFNULL(utility_day_cnt,0) as utility_day_cnt
              , IFNULL(utility_day_fee,0) as utility_day_fee
+             , IFNULL(utility_work_cnt,0) as utility_work_cnt
+             , IFNULL(utility_work_fee,0) as utility_work_fee
              , IFNULL(utility_compressed_air_cnt,0) as utility_compressed_air_cnt
              , IFNULL(utility_compressed_air_fee,0) as utility_compressed_air_fee
              , IFNULL(utility_water_basic_cnt,0) as utility_water_basic_cnt
@@ -4321,8 +4330,8 @@
 
     <select id="selectInvoiceUtilityExSeqList" parameterType="com.mtf.kibs.dto.InvoiceUtilityDTO" resultType="com.mtf.kibs.dto.InvoiceUtilityDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectInvoiceUtilityExSeqList */
-        SELECT seq
-             , ex_seq
+        SELECT invoice_seq
+             , exhibitor_seq
              , invoice_code
              , title
              , send_dttm
@@ -4331,9 +4340,9 @@
              , send_result_msg
              , file_path
         FROM invoice_utility
-        WHERE ex_seq = #{exSeq}
+        WHERE exhibitor_seq = #{exSeq}
           AND del_yn = 'N'
-        ORDER BY seq
+        ORDER BY invoice_seq
     </select>
 
     <update id="updateUtility" parameterType="com.mtf.kibs.dto.ExhibitorDTO">
@@ -4373,6 +4382,8 @@
           , utility_jugan_fee          = IFNULL(#{utilityJuganFee}, 0)
           , utility_day_cnt            = IFNULL(#{utilityDayCnt}, 0)
           , utility_day_fee            = IFNULL(#{utilityDayFee}, 0)
+          , utility_work_cnt            = IFNULL(#{utilityWorkCnt}, 0)
+          , utility_work_fee            = IFNULL(#{utilityWorkFee}, 0)
           , utility_compressed_air_cnt = IFNULL(#{utilityCompressedAirCnt}, 0)
           , utility_compressed_air_fee = IFNULL(#{utilityCompressedAirFee}, 0)
           , utility_water_basic_cnt    = IFNULL(#{utilityWaterBasicCnt}, 0)

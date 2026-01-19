@@ -166,6 +166,8 @@ public class ExhibitorNewDTO {
     Integer utilityJuganFee; //주간단상 220v 비용
     Integer utilityDayCnt; //24시간용 220v 수량
     Integer utilityDayFee; //24시간용 220v 비용
+    Integer utilityWorkCnt; //작업전기 수량
+    Integer utilityWorkFee; //작업전기 비용
     Integer utilityCompressedAirCnt; //압축공기 기본형 수량
     Integer utilityCompressedAirFee; //압축공기 기본형 금액
     Integer utilityWaterBasicCnt; //급배수 기본형 수량

@@ -2663,6 +2663,12 @@ if (document.documentElement) {
                                                             <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
+                                                            <td><span class="fw-semibold d-block fs-7">작업전기</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">￦ 80,000/1kw</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">${info.utilityWorkCnt}</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWorkFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">압축공기 기본형</span></td>
                                                             <td><span class="fw-semibold d-block fs-7">￦ 200,000</span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityCompressedAirCnt}</span></td>

@@ -2356,6 +2356,7 @@ if (document.documentElement) {
                                                     <option disabled>- 유틸리티 항목 -</option>
                                                     <option value="JUGAN">주간 단상 220V</option>
                                                     <option value="ALLDAY">24시간용 220V</option>
+                                                    <option value="WORK">작업전기</option>
                                                     <option value="COMPRESSEDAIR">압축공기 기본형</option>
                                                     <option value="WATERBASIC">급배수 기본형</option>
                                                     <option value="INTERNET">인터넷</option>

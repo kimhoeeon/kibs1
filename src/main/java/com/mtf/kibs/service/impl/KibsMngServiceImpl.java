@@ -3782,6 +3782,8 @@ public class KibsMngServiceImpl implements KibsMngService {
         newInvoice.setUtilityJuganFee(currentInfo.getUtilityJuganFee());
         newInvoice.setUtilityDayCnt(currentInfo.getUtilityDayCnt());
         newInvoice.setUtilityDayFee(currentInfo.getUtilityDayFee());
+        newInvoice.setUtilityWorkCnt(currentInfo.getUtilityWorkCnt());
+        newInvoice.setUtilityWorkFee(currentInfo.getUtilityWorkFee());
         newInvoice.setUtilityCompressedAirCnt(currentInfo.getUtilityCompressedAirCnt());
         newInvoice.setUtilityCompressedAirFee(currentInfo.getUtilityCompressedAirFee());
         newInvoice.setUtilityWaterBasicCnt(currentInfo.getUtilityWaterBasicCnt());

@@ -432,6 +432,18 @@
                                                     <td>${info.finalRegiDttm}</td>
                                                 </tr>
                                             </c:if>
+                                            <c:if test="${info.utilityWorkCnt > 0}">
+                                                <c:set var="utilityRownum" value="${utilityRownum + 1}"/>
+                                                <tr>
+                                                    <td>${utilityRownum}</td>
+                                                    <td>작업전기</td>
+                                                    <td>${info.utilityWorkCnt}</td>
+                                                    <td>￦ 80,000/1kw</td>
+                                                    <td><fmt:formatNumber value="${info.utilityWorkFee}"/></td>
+                                                    <td>${info.initRegiDttm}</td>
+                                                    <td>${info.finalRegiDttm}</td>
+                                                </tr>
+                                            </c:if>
                                             <c:if test="${info.utilityCompressedAirCnt > 0}">
                                                 <c:set var="utilityRownum" value="${utilityRownum + 1}"/>
                                                 <tr>

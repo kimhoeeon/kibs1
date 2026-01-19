@@ -24,8 +24,9 @@ $(function(){
 
         let item1 = parseInt($("#utility_jugan_cnt").val() || 0);
         let item2 = parseInt($("#utility_day_cnt").val() || 0);
-        let item3 = parseInt($("#utility_compressed_air_cnt").val() || 0);
-        let item4 = parseInt($("#utility_water_basic_cnt").val() || 0);
+        let item3 = parseInt($("#utility_work_cnt").val() || 0);
+        let item4 = parseInt($("#utility_compressed_air_cnt").val() || 0);
+        let item5 = parseInt($("#utility_water_basic_cnt").val() || 0);
         let item6 = parseInt($("#utility_internet_cnt").val() || 0);
         let item7 = parseInt($("#utility_pytex_new_cnt").val() || 0);
         let item8 = parseInt($("#utility_pytex_re_cnt").val() || 0);
@@ -33,19 +34,21 @@ $(function(){
 
         var price1 = item1 * 80000; //주간 단상 220v
         var price2 = item2 * 100000; //24시간용 220v
-        var price3 = item3 * 200000; //압축공기 기본형
-        var price4 = item4 * 200000; //급배수 기본형
+        var price3 = item3 * 80000; //작업전기
+        var price4 = item4 * 200000; //압축공기 기본형
+        var price5 = item5 * 200000; //급배수 기본형
         var price6 = item6 * 200000; //인터넷
         var price7 = item7 * 80000; //파이텍스 (신품)
         var price8 = item8 * 50000; //파이텍스 (재사용품)
         var price9 = item9 * 200000; //참관객/바이어 바코드 리더기
-        var total = price1 + price2 + price3 + price4 + price6 + price7 + price8 + price9;
+        var total = price1 + price2 + price3 + price4 + price5 + price6 + price7 + price8 + price9;
 
         //console.log(sum);
         $("#utility_jugan_fee").val("￦ " + comma(price1));
         $("#utility_day_fee").val("￦ " + comma(price2));
-        $("#utility_compressed_air_fee").val("￦ " + comma(price3));
-        $("#utility_water_basic_fee").val("￦ " + comma(price4));
+        $("#utility_work_fee").val("￦ " + comma(price3));
+        $("#utility_compressed_air_fee").val("￦ " + comma(price4));
+        $("#utility_water_basic_fee").val("￦ " + comma(price5));
         $("#utility_internet_fee").val("￦ " + comma(price6));
         $("#utility_pytex_new_fee").val("￦ " + comma(price7));
         $("#utility_pytex_re_fee").val("￦ " + comma(price8));
@@ -272,6 +275,12 @@ function f_utility_form_data_setting(exhibitorSeq){
     // 유틸리티 신청정보 - 24시간용 - 금액
     let utility_day_fee = $('#utility_day_fee').val();
 
+    // 작업전기 - 수량
+    let utility_work_cnt = parseInt($('#utility_work_cnt').val());
+
+    // 유틸리티 신청정보 - 24시간용 - 금액
+    let utility_work_fee = $('#utility_work_fee').val();
+
     // 유틸리티 신청정보 - 압축공기 - 수량
     let utility_compressed_air_cnt = parseInt($('#utility_compressed_air_cnt').val());
 
@@ -316,6 +325,8 @@ function f_utility_form_data_setting(exhibitorSeq){
         utilityJuganFee: wonToInt(utility_jugan_fee),
         utilityDayCnt: utility_day_cnt,
         utilityDayFee: wonToInt(utility_day_fee),
+        utilityWorkCnt: utility_work_cnt,
+        utilityWorkFee: wonToInt(utility_work_fee),
         utilityCompressedAirCnt: utility_compressed_air_cnt,
         utilityCompressedAirFee: wonToInt(utility_compressed_air_fee),
         utilityWaterBasicCnt: utility_water_basic_cnt,

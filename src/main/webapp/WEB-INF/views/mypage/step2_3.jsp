@@ -215,6 +215,21 @@
                                                 <div class="note">행사기간(3/6~3/8, 총 3일)동안 사용가능</div>
                                             </li>
                                             <li>
+                                                <div class="cate">작업전기</div>
+                                                <div class="cost">￦ 80,000/1kw</div>
+                                                <div class="quantity">
+                                                    <p class="j_num">
+                                                        <input type="text" id="utility_work_cnt" class="num_sum onlyNum" value="${info.utilityWorkCnt}" placeholder="수량 입력">
+                                                    </p>
+                                                </div>
+                                                <div class="amount">
+                                                    <p class="price">
+                                                        <input type="text" id="utility_work_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityWorkFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                    </p>
+                                                </div>
+                                                <div class="note">장치기간(3/4~3/5, 총 2일)동안 사용가능</div>
+                                            </li>
+                                            <li>
                                                 <div class="cate">압축공기 기본형</div>
                                                 <div class="cost">￦ 200,000</div>
                                                 <div class="quantity">
@@ -353,6 +368,7 @@
                 let utilityPrcSum = 0;
                 utilityPrcSum += parseInt(uncomma($('#utility_jugan_fee').val())) || 0;
                 utilityPrcSum += parseInt(uncomma($('#utility_day_fee').val())) || 0;
+                utilityPrcSum += parseInt(uncomma($('#utility_work_fee').val())) || 0;
                 utilityPrcSum += parseInt(uncomma($('#utility_compressed_air_fee').val())) || 0;
                 utilityPrcSum += parseInt(uncomma($('#utility_water_basic_fee').val())) || 0;
                 utilityPrcSum += parseInt(uncomma($('#utility_internet_fee').val())) || 0;
@@ -385,6 +401,7 @@
                 // ※※※ 단가 확인 필수 ※※※ (CommConstants 값과 일치해야 함)
                 const UTILITY_JUGAN_PRICE = 80000;
                 const UTILITY_DAY_PRICE = 100000;
+                const UTILITY_WORK_PRICE = 80000;
                 const UTILITY_COMPRESSED_AIR_PRICE = 200000;
                 const UTILITY_WATER_BASIC_PRICE = 200000;
                 const UTILITY_INTERNET_PRICE = 200000;
@@ -394,6 +411,7 @@
 
                 $('#utility_jugan_cnt').on('input change', function() { autoUtilitySum('utility_jugan', UTILITY_JUGAN_PRICE); });
                 $('#utility_day_cnt').on('input change', function() { autoUtilitySum('utility_day', UTILITY_DAY_PRICE); });
+                $('#utility_work_cnt').on('input change', function() { autoUtilitySum('utility_work', UTILITY_WORK_PRICE); });
                 $('#utility_compressed_air_cnt').on('input change', function() { autoUtilitySum('utility_compressed_air', UTILITY_COMPRESSED_AIR_PRICE); });
                 $('#utility_water_basic_cnt').on('input change', function() { autoUtilitySum('utility_water_basic', UTILITY_WATER_BASIC_PRICE); });
                 $('#utility_internet_cnt').on('input change', function() { autoUtilitySum('utility_internet', UTILITY_INTERNET_PRICE); });

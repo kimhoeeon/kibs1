@@ -1765,6 +1765,7 @@ let KTAppExhibitorNewApplicationUtility = function () {
 
         let utilityJuganCnt = row.utilityJuganCnt;
         let utilityDayCnt = row.utilityDayCnt;
+        let utilityWorkCnt = row.utilityWorkCnt;
         let utilityCompressedAirCnt = row.utilityCompressedAirCnt;
         let utilityWaterBasicCnt = row.utilityWaterBasicCnt;
         let utilityInternetCnt = row.utilityInternetCnt;
@@ -1774,6 +1775,7 @@ let KTAppExhibitorNewApplicationUtility = function () {
 
         if(utilityJuganCnt > 0){ utilityType += ('주간 단상 220V' + ' (' + row.utilityJuganCnt + ')' + '<br>'); }
         if(utilityDayCnt > 0){ utilityType += ('24시간용 220V' + ' (' + row.utilityDayCnt + ')' + '<br>'); }
+        if(utilityWorkCnt > 0){ utilityType += ('작업전기' + ' (' + row.utilityWorkCnt + ')' + '<br>'); }
         if(utilityCompressedAirCnt > 0){ utilityType += ('압축공기 기본형' + ' (' + row.utilityCompressedAirCnt + ')' + '<br>'); }
         if(utilityWaterBasicCnt > 0){ utilityType += ('급배수 기본형' + ' (' + row.utilityWaterBasicCnt + ')' + '<br>'); }
         if(utilityInternetCnt > 0){ utilityType += ('인터넷' + ' (' + row.utilityInternetCnt + ')' + '<br>'); }

@@ -4152,7 +4152,7 @@ public class KibsMngController {
                     "산업 분류 기타", "임직원수", "회사소개영상", "회사소개(국문)", "회사소개(영문)",
                     "KIBS 참가목적(국문)", "KIBS 참가목적(영문)", "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
                     "성명", "직위", "부서", "전화번호", "휴대전화",
-                    "이메일", "제품 분류(품목)", "제품명", "수량", "제조사(브랜드)",
+                    "이메일", "제품 분류(품목)", "제품명", "수량", "제조사(브랜드)", "특징",
                     "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재",
                     "연식"
             };
@@ -4165,7 +4165,7 @@ public class KibsMngController {
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
                     5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000,
+                    5000, 5000, 5000, 5000, 5000, 6000,
                     5000, 5000, 5000, 5000, 5000,
                     5000
             };
@@ -4273,7 +4273,7 @@ public class KibsMngController {
             mergeCell2.setCellValue("대표담당자정보");
 
             // 전시정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,31,40));
+            sheet.addMergedRegion(new CellRangeAddress(0,0,31,41));
             XSSFCell mergeCell3 = row.createCell(31);
             mergeCell3.setCellStyle(headerStyle_di);
             mergeCell3.setCellValue("전시품정보");
@@ -4436,46 +4436,63 @@ public class KibsMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
                 cell.setCellValue(info.getEmail());
-                // 제품분류(품목)
+
+                // 1. 제품분류(품목)
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getProductOptionBig().replaceAll("\\^", "\n") + "/" + info.getProductOptionSmall().replaceAll("\\^", "\n"));
-                // 제품명
+                String pBig = info.getProductOptionBig() != null ? info.getProductOptionBig().replaceAll("\\^", "\n") : "";
+                String pSmall = info.getProductOptionSmall() != null ? info.getProductOptionSmall().replaceAll("\\^", "\n") : "";
+                cell.setCellValue(pBig + "/" + pSmall);
+
+                // 2. 제품명
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getProductNameKo().replaceAll("\\^","\n"));
-                // 수량
+                cell.setCellValue(info.getProductNameKo() != null ? info.getProductNameKo().replaceAll("\\^","\n") : "");
+
+                // 3. 수량
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getProductQty().replaceAll("\\^","\n"));
-                // 브랜드
+                cell.setCellValue(info.getProductQty() != null ? info.getProductQty().replaceAll("\\^","\n") : "");
+
+                // 4. 제조사(브랜드)
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getProductBrand().replaceAll("\\^","\n"));
-                // 길이
+                cell.setCellValue(info.getProductBrand() != null ? info.getProductBrand().replaceAll("\\^","\n") : "");
+
+                // 5. [신규 추가] 특징 (DTO에 getProductFeature가 있어야 함)
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getProductLength().replaceAll("\\^","\n"));
-                // 너비
+                cell.setCellValue(info.getProductFeature() != null ? info.getProductFeature().replaceAll("\\^","\n") : "");
+
+                // 6. 길이
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getProductWidth().replaceAll("\\^","\n"));
-                // 높이
+                cell.setCellValue(info.getProductLength() != null ? info.getProductLength().replaceAll("\\^","\n") : "");
+
+                // 7. 너비
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getProductHeight().replaceAll("\\^","\n"));
-                // 중량
+                cell.setCellValue(info.getProductWidth() != null ? info.getProductWidth().replaceAll("\\^","\n") : "");
+
+                // 8. 높이
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getProductWeight().replaceAll("\\^","\n"));
-                // 소재
+                cell.setCellValue(info.getProductHeight() != null ? info.getProductHeight().replaceAll("\\^","\n") : "");
+
+                // 9. 중량
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getProductMaterial().replaceAll("\\^","\n"));
-                // 연식
+                cell.setCellValue(info.getProductWeight() != null ? info.getProductWeight().replaceAll("\\^","\n") : "");
+
+                // 10. 소재
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
-                cell.setCellValue(info.getProductYear().replaceAll("\\^","\n"));
+                cell.setCellValue(info.getProductMaterial() != null ? info.getProductMaterial().replaceAll("\\^","\n") : "");
+
+                // 11. 연식
+                cell = row.createCell(cellCnt++);
+                cell.setCellStyle(bodyStyle_di);
+                cell.setCellValue(info.getProductYear() != null ? info.getProductYear().replaceAll("\\^","\n") : "");
             }
 
             //너비를 자동으로 다시 설정
@@ -4723,7 +4740,17 @@ public class KibsMngController {
             row = sheet2.createRow(rowCnt2++);
             row.createCell(0).setCellValue("구분"); row.createCell(1).setCellValue("기술지원 항목"); row.createCell(2).setCellValue("가격(원)"); row.createCell(3).setCellValue("비고");
             for(int i=0; i<4; i++) row.getCell(i).setCellStyle(mainHeaderStyle);
-            String[][] utilityData = { {"파이텍스", "신품", "80,000", ""}, {"파이텍스", "재사용품", "50,000", ""}, {"전기", "주간 단상 220v", "80,000", "원/kw"}, {"전기", "24시간용 220v", "100,000", "원/kw"}, {"인터넷", "인터넷", "160,000", "원/1회선"}, {"급배수 및 압축공기", "급배수", "180,000", "원/1구"}, {"급배수 및 압축공기", "압축공기", "180,000", "원/1구"}, {"바코드 리더기", "바코드 리더기", "200,000", "원/1개"} };
+            String[][] utilityData = {
+                    {"파이텍스", "신품", "80,000", ""},
+                    {"파이텍스", "재사용품", "50,000", ""},
+                    {"전기", "주간 단상 220v", "80,000", "원/kw"},
+                    {"전기", "24시간용 220v", "100,000", "원/kw"},
+                    {"전기", "작업전기", "80,000", "원/kw"},
+                    {"인터넷", "인터넷", "160,000", "원/1회선"},
+                    {"급배수 및 압축공기", "급배수", "180,000", "원/1구"},
+                    {"급배수 및 압축공기", "압축공기", "180,000", "원/1구"},
+                    {"바코드 리더기", "바코드 리더기", "200,000", "원/1개"}
+            };
             int utilityStartRow = rowCnt2;
             for(String[] u : utilityData){
                 row = sheet2.createRow(rowCnt2++);
@@ -4732,8 +4759,8 @@ public class KibsMngController {
 
             // 유틸리티 셀 병합 로직 수정
             sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow, utilityStartRow + 1, 0, 0)); // 파이텍스
-            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow + 2, utilityStartRow + 3, 0, 0)); // 전기
-            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow + 5, utilityStartRow + 6, 0, 0)); // 급배수 및 압축공기
+            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow + 2, utilityStartRow + 4, 0, 0)); // 전기
+            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow + 6, utilityStartRow + 7, 0, 0)); // 급배수 및 압축공기
             // 인터넷과 바코드 리더기는 1줄이므로 병합하지 않음
 
             for(int i = utilityStartRow; i < rowCnt2; i++){
@@ -5013,6 +5040,7 @@ public class KibsMngController {
         StringBuilder utilityDetails = new StringBuilder();
         if (info.getUtilityJuganCnt() != null && info.getUtilityJuganCnt() > 0) utilityDetails.append("주간 단상 220v (").append(info.getUtilityJuganCnt()).append(")\n");
         if (info.getUtilityDayCnt() != null && info.getUtilityDayCnt() > 0) utilityDetails.append("24시간용 220v (").append(info.getUtilityDayCnt()).append(")\n");
+        if (info.getUtilityWorkCnt() != null && info.getUtilityWorkCnt() > 0) utilityDetails.append("작업전기 (").append(info.getUtilityWorkCnt()).append(")\n");
         if (info.getUtilityCompressedAirCnt() != null && info.getUtilityCompressedAirCnt() > 0) utilityDetails.append("압축공기 기본형 (").append(info.getUtilityCompressedAirCnt()).append(")\n");
         if (info.getUtilityWaterBasicCnt() != null && info.getUtilityWaterBasicCnt() > 0) utilityDetails.append("급배수 기본형 (").append(info.getUtilityWaterBasicCnt()).append(")\n");
         if (info.getUtilityInternetCnt() != null && info.getUtilityInternetCnt() > 0) utilityDetails.append("인터넷 (").append(info.getUtilityInternetCnt()).append(")\n");

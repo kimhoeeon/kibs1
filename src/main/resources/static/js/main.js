@@ -3165,6 +3165,8 @@ function step_2_3_check(exhibitorSeq){
             let utility_jugan_fee = parseInt(wonToInt($('#utility_jugan_fee').val())) || 0;
             let utility_day_cnt = parseInt($('#utility_day_cnt').val()) || 0;
             let utility_day_fee = parseInt(wonToInt($('#utility_day_fee').val())) || 0;
+            let utility_work_cnt = parseInt($('#utility_work_cnt').val()) || 0;
+            let utility_work_fee = parseInt(wonToInt($('#utility_work_fee').val())) || 0;
             let utility_compressed_air_cnt = parseInt($('#utility_compressed_air_cnt').val()) || 0;
             let utility_compressed_air_fee = parseInt(wonToInt($('#utility_compressed_air_fee').val())) || 0;
             let utility_water_basic_cnt = parseInt($('#utility_water_basic_cnt').val()) || 0;
@@ -3179,7 +3181,7 @@ function step_2_3_check(exhibitorSeq){
             let utility_barcode_fee = parseInt(wonToInt($('#utility_barcode_fee').val())) || 0;
 
             // 유틸리티 총액을 화면이 아닌, 각 항목의 합계로 직접 계산
-            const utilityPrcSum = utility_jugan_fee + utility_day_fee + utility_compressed_air_fee +
+            const utilityPrcSum = utility_jugan_fee + utility_day_fee + utility_work_fee + utility_compressed_air_fee +
                 utility_water_basic_fee + utility_internet_fee + utility_pytex_new_fee +
                 utility_pytex_re_fee + utility_barcode_fee;
 
@@ -3189,6 +3191,8 @@ function step_2_3_check(exhibitorSeq){
                 utilityJuganFee: utility_jugan_fee,
                 utilityDayCnt: utility_day_cnt,
                 utilityDayFee: utility_day_fee,
+                utilityWorkCnt: utility_work_cnt,
+                utilityWorkFee: utility_work_fee,
                 utilityCompressedAirCnt: utility_compressed_air_cnt,
                 utilityCompressedAirFee: utility_compressed_air_fee,
                 utilityWaterBasicCnt: utility_water_basic_cnt,
@@ -5769,6 +5773,8 @@ function my_step_2_3_check(exhibitorSeq){
     let utility_jugan_fee = parseInt(wonToInt($('#utility_jugan_fee').val())) || 0;
     let utility_day_cnt = parseInt($('#utility_day_cnt').val()) || 0;
     let utility_day_fee = parseInt(wonToInt($('#utility_day_fee').val())) || 0;
+    let utility_work_cnt = parseInt($('#utility_work_cnt').val()) || 0;
+    let utility_work_fee = parseInt(wonToInt($('#utility_work_fee').val())) || 0;
     let utility_compressed_air_cnt = parseInt($('#utility_compressed_air_cnt').val()) || 0;
     let utility_compressed_air_fee = parseInt(wonToInt($('#utility_compressed_air_fee').val())) || 0;
     let utility_water_basic_cnt = parseInt($('#utility_water_basic_cnt').val()) || 0;
@@ -5783,7 +5789,7 @@ function my_step_2_3_check(exhibitorSeq){
     let utility_barcode_fee = parseInt(wonToInt($('#utility_barcode_fee').val())) || 0;
 
     // 유틸리티 총액을 화면이 아닌, 각 항목의 합계로 직접 계산
-    const utilityPrcSum = utility_jugan_fee + utility_day_fee + utility_compressed_air_fee +
+    const utilityPrcSum = utility_jugan_fee + utility_day_fee + utility_work_fee + utility_compressed_air_fee +
         utility_water_basic_fee + utility_internet_fee + utility_pytex_new_fee +
         utility_pytex_re_fee + utility_barcode_fee;
 
@@ -5793,6 +5799,8 @@ function my_step_2_3_check(exhibitorSeq){
         utilityJuganFee: utility_jugan_fee,
         utilityDayCnt: utility_day_cnt,
         utilityDayFee: utility_day_fee,
+        utilityWorkCnt: utility_work_cnt,
+        utilityWorkFee: utility_work_fee,
         utilityCompressedAirCnt: utility_compressed_air_cnt,
         utilityCompressedAirFee: utility_compressed_air_fee,
         utilityWaterBasicCnt: utility_water_basic_cnt,
