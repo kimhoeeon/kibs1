@@ -5818,8 +5818,6 @@ public class KibsMngServiceImpl implements KibsMngService {
              * 동일한 내용의 메일을 일부 글자만 변경하여 다수에게 발송하시는 경우 수신자 정보를 Json Array [{...}, {...}]로 구분하시어 한번에 발송하시는 것을 권장 드립니다.
              */
 
-            // 여기서부터 수정해주시기 바랍니다.
-
             String subject = mailRequestDTO.getSubject();   //필수입력(템플릿 사용시 23 line 설명 참조)
             String body = mailRequestDTO.getBody().replaceAll("\"","'");		//필수입력, 템플릿 사용시 빈값을 입력 하시기 바랍니다. 예시) String body = "";
             //String sender = "business@meetingfan.com";        //필수입력(미팅팬 발송테스트용)
@@ -5851,7 +5849,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             for(int i=0; i<mailRequestDTO.getReceiver().size(); i++){
                 JsonObject jsonObject = new JsonObject();
                 MailRequestDTO.Receiver receiverInfo = mailRequestDTO.getReceiver().get(i);
-//                jsonObject.addProperty("name", receiverInfo.getName());
+                //jsonObject.addProperty("name", receiverInfo.getName());
                 jsonObject.addProperty("email", receiverInfo.getEmail());
 
                 if(receiverInfo.getNote1() != null) {
@@ -5938,13 +5936,13 @@ public class KibsMngServiceImpl implements KibsMngService {
                 }
             }
 
-            // 3. 인보이스 메일일 경우, 정적 통장사본 파일 추가
+            // 3. 인보이스 메일일 경우, 정적 통장사본/사업자등록증 파일 추가
             if (isInvoiceMail) {
                 try {
-                    String staticFileNameUnencoded = "2026 경기국제보트쇼 통장사본.pdf";
                     String staticBaseUrl = "https://kibs.com/file/invoice/";
 
-                    // JS encodeURI와 동일하게 Java에서 인코딩 (공백->%20, 특수문자 유지)
+                    // 통장사본 및 사업자등록증
+                    String staticFileNameUnencoded = "경기국제보트쇼 통장사본 및 사업자등록증.pdf";
                     String staticFileNameEncoded = URLEncoder.encode(staticFileNameUnencoded, "UTF-8")
                             .replaceAll("\\+", "%20")
                             .replaceAll("\\%21", "!")
@@ -5952,9 +5950,8 @@ public class KibsMngServiceImpl implements KibsMngService {
                             .replaceAll("\\%28", "(")
                             .replaceAll("\\%29", ")")
                             .replaceAll("\\%7E", "~");
-
                     fileUrlList.add(staticBaseUrl + staticFileNameEncoded);
-                    fileNameList.add(staticFileNameEncoded); // JS에서 보낸 것과 동일하게 encoded된 값 추가
+                    fileNameList.add(staticFileNameEncoded);
 
                 } catch (UnsupportedEncodingException e) {
                     // UTF-8은 항상 지원되어야 하므로 이 예외는 거의 발생하지 않음.
@@ -5968,8 +5965,6 @@ public class KibsMngServiceImpl implements KibsMngService {
                 file_url = String.join("|", fileUrlList);
                 file_name = String.join("|", fileNameList); // file_name도 encoded된 상태로 | 연결
             }
-
-            /* 여기까지 수정해주시기 바랍니다. */
 
             String urlParameters = "\"subject\":\"" + subject + "\" "
                     + ", \"body\":\"" + body + "\" "

@@ -139,7 +139,7 @@
                     </c:if>
                     <c:if test="${not empty sessionScope.get('status')}">
                         <a href="/logout.do" class="logout">LOGOUT</a>
-                        <a href="javascript:void(0);" onclick="f_page_move('/mypage/index.do',{ id: `${sessionScope.id}` , transferYear: '2026' })" class="mypage">MYPAGE</a>
+                        <a href="javascript:void(0);" onclick="f_page_move('/mypage/index.do',{ id: `${sessionScope.get('id')}` , transferYear: '2026' })" class="mypage">MYPAGE</a>
                     </c:if>
                     <a href="javascript:void(0);" onclick="home('en')" class="language">ENG</a>
                     <a href="#a" class="m_menu">

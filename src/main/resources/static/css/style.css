@@ -5931,3 +5931,10 @@ position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-w
 .expo .video_wrap{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;margin-top: 2rem;}
 .expo .video_wrap #player{position:absolute;inset:0;width:100%;height:100%}
 .expo .maritime_poster{display: grid; grid-template-columns: repeat(3,1fr); width: 100%; gap: 10px; margin-top: 20px;}
+
+/* 260121 추가 */
+.summ_venue .txt_desc{margin-top: 10px; line-height: 25px; font-size: 18px;}
+.summ_venue .txt_desc span{font-weight: bold;}
+.summ_s .table_cmnt{margin-top: 20px;}
+.summ_s .table_cmnt p{padding-left: 15px;position: relative;margin: 5px 0;}
+.summ_s .table_cmnt p:before{ display: block;content: "※";left: 0;position: absolute;}

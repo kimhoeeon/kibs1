@@ -173,7 +173,71 @@
             <div class="inner">
                 <div class="summ_venue">
                     <div class="txt_box">
-                        <div class="tit">참가안내</div>
+                        <div class="tit">참가방법</div>
+                    </div>
+                    <div class="txt_desc">
+                        <span>서프쇼 일반참가 :</span> 경기국제보트쇼 홈페이지 신청 (보트쇼 사무국031-995-8788/ kibs@kintex.com)<br />
+                        <span>웨이브파크 특별관 :</span> 웨이브파크 신청(1544-9662 / waveparkcs@gmail.com)<br />
+                        <span>- 대상 :</span> 웨이브파크 협력업체
+                    </div>
+                    <div class="table_box">
+                        <table>
+                            <colgroup>
+                                <col width="33%">
+                                <col width="33%">
+                                <col width="">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>서프쇼 일반참가</th>
+                                <th>웨이브파크 특별관</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>대상</td>
+                                <td>서핑 업체</td>
+                                <td>웨이브파크 협력사</td>
+                            </tr>
+                            <tr>
+                                <td>부스 위치</td>
+                                <td>코리아서프쇼</td>
+                                <td>웨이브파크 특별관</td>
+                            </tr>
+                            <tr>
+                                <td>부스디자인</td>
+                                <td>특별 디자인부스</td>
+                                <td>일반 조립부스</td>
+                            </tr>
+                            <tr>
+                                <td>오픈컨퍼런스 발표지원</td>
+                                <td>우선지원</td>
+                                <td>없음</td>
+                            </tr>
+                            <tr>
+                                <td>참가비 지원</td>
+                                <td>최대 150만원 지원</td>
+                                <td>독립부스 : 별도 협의<br />
+                                    조립부스 : 600,000원<br />
+                                    ※ 영세사업장(5인 미만 사업장)의 경우<br />
+                                    조립부스 1개 무상 지원</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table_cmnt">
+                        <p>웨이브 파크 협력사라도 서프쇼 일반참가 신청 가능</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="summ_s padding_b summ_join">
+            <div class="inner">
+                <div class="summ_venue">
+                    <div class="txt_box">
+                        <div class="tit">일반 참가 안내</div>
                     </div>
                     <div class="table_box">
                         <table>

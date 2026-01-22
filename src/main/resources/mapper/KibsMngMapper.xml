@@ -6258,7 +6258,7 @@
         <if test='emergencyYn != null and emergencyYn != "" and emergencyYn != "N"'>
             AND r.emergency_yn = 'Y'
         </if>
-        ORDER BY r.init_regi_dttm DESC
+        ORDER BY FIELD(r.progress_step, '진행중', '처리대기', '논의필요', '완료', '처리불가') ASC, r.init_regi_dttm DESC
     </select>
 
     <select id="selectRequestSingle" parameterType="com.mtf.kibs.dto.RequestDTO" resultType="com.mtf.kibs.dto.RequestDTO">
