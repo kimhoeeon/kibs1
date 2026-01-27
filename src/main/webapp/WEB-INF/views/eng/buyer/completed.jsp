@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
 <head>
+    <jsp:include page="../../inc/ad_scripts.jsp" flush="true"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -110,11 +111,20 @@
 
 </div>
 
-<!-- NAVER SCRIPT START -->
-<script type="text/javascript" src="https://wcs.naver.net/wcslog.js"></script>
 <script type="text/javascript">
+    // Meta 전환
+    fbq('track', 'CompleteRegistration');
+
+    // Google 전환
+    gtag('event', 'conversion', {
+        'send_to': 'AW-866426231/bkbKCIjC0OwbEPe6kp0D',
+        'value': 1.0,
+        'currency': 'KRW'
+    });
+
+    // Naver 전환 (신규 요청 코드: 타입 1)
     var _nasa={};
-    if (window.wcs)  _nasa["cnv"] = wcs.cnv("4","1");
+    if(window.wcs) _nasa["cnv"] = wcs.cnv("1","1");
 </script>
 
 <c:import url="../footer.jsp" charEncoding="UTF-8"/>
