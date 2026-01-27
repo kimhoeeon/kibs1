@@ -452,7 +452,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitorNew/application/product.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">전시품 신청</span>
+                                                                            <span class="menu-title">요트/보트 출품 정보</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1569,7 +1569,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">전시품 신청</span>
+                                                <span class="menu-title">요트/보트 출품 정보</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2344,7 +2344,7 @@ if (document.documentElement) {
                                                     <!--begin::Select2-->
                                                     <select id="mngYear" name="mngYear" class="form-select form-select-solid" data-control="select2" aria-label="- 관리년도 -" data-placeholder="- 관리년도 -" data-hide-search="true">
                                                         <option></option>
-                                                        <option disabled>- 관리년도 -</option>
+                                                        <option value="" disabled>- 관리년도 -</option>
                                                         <c:forEach var="i" begin="0" end="${2026 - 2008}">
                                                             <c:set var="year" value="${2026 - i}" />
                                                             <option value="${year}" <c:if test="${targetYear eq year}">selected</c:if>>${year}</option>
@@ -2608,7 +2608,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251127"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

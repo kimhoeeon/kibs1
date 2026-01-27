@@ -460,7 +460,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitorNew/application/product.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">전시품 신청</span>
+                                                                            <span class="menu-title">요트/보트 출품 정보</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1577,7 +1577,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">전시품 신청</span>
+                                                <span class="menu-title">요트/보트 출품 정보</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2288,7 +2288,7 @@ if (document.documentElement) {
                                                 <select id="search_box" class="form-select form-select-solid" data-control="select2"
                                                         aria-label="- 언어 -" data-placeholder="- 언어 -" data-hide-search="true" data-allow-clear="true">
                                                     <option></option>
-                                                    <option disabled>- 전체 -</option>
+                                                    <option value="" disabled>- 전체 -</option>
                                                     <option value="ALL">전체</option>
                                                     <option value="KO">국문</option>
                                                     <option value="EN">영문</option>
@@ -2326,7 +2326,7 @@ if (document.documentElement) {
                                                         aria-label="- 카테고리 -" data-placeholder="- 카테고리 -" data-hide-search="true" data-allow-clear="true"
                                                         onchange="f_board_kibstv_search()">
                                                     <option></option>
-                                                    <option disabled>- 카테고리 -</option>
+                                                    <option value="" disabled>- 카테고리 -</option>
                                                     <option value="ALL">전체 [ALL]</option>
                                                     <option value="2025 경기국제보트쇼">2025 경기국제보트쇼 [2025 KIBS]</option>
                                                     <option value="해양레저 지식백과">해양레저 지식백과 [Encyclopedia Of Marine Leisure]</option>
@@ -2464,7 +2464,7 @@ if (document.documentElement) {
                                 <!--begin::Input-->
                                 <select id="md_category" class="form-select form-select-solid" data-placeholder="- 카테고리 -" disabled>
                                     <option></option>
-                                    <option disabled>- 카테고리 -</option>
+                                    <option value="" disabled>- 카테고리 -</option>
                                     <option value="2025 경기국제보트쇼">2025 경기국제보트쇼 [2025 KIBS]</option>
                                     <option value="해양레저 지식백과">해양레저 지식백과 [Encyclopedia Of Marine Leisure]</option>
                                     <option value="부스투어">부스투어 [Booth Tour]</option>
@@ -2613,7 +2613,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251127"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

@@ -2490,6 +2490,7 @@
              , buyer_company_country
              , buyer_company_location
              , buyer_company_homepage
+             , buyer_company_charge
              , buyer_company_depart
              , buyer_company_position
              , buyer_company_email
@@ -2894,35 +2895,7 @@
 
     <select id="selectVisitorList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.VisitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectVisitorList */
-        SELECT seq
-             , join_year
-             , join_yn
-             , visitor_gbn
-             , part_gbn
-             , time_gbn
-             , name
-             , tel
-             , phone
-             , email
-             , domain
-             , company_name
-             , company_address
-             , company_address_detail
-             , partner_yn
-             , sex
-             , region_si
-             , region_gu
-             , age_group
-             , observation_gbn
-             , visit_purpose
-             , interest_item
-             , recognize_path
-             , pre_observation_gbn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
+        SELECT *
         FROM visitor
         WHERE 1=1
           AND join_year = #{joinYear}
@@ -2946,40 +2919,40 @@
         ORDER BY init_regi_dttm desc
     </select>
 
-    <!--여기-->
     <select id="selectVisitorSingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.VisitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectVisitorSingle */
-        SELECT seq
-             , lang
-             , join_year
-             , join_yn
-             , visitor_gbn
-             , part_gbn
-             , time_gbn
-             , name
-             , tel
-             , phone
-             , email
-             , domain
-             , company_name
-             , company_address
-             , company_address_detail
-             , partner_yn
-             , sex
-             , region_si
-             , region_gu
-             , country
-             , age_group
-             , observation_gbn
-             , visit_purpose
-             , interest_item
-             , recognize_path
-             , pre_observation_gbn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
+        SELECT seq,
+               lang,
+               join_year,
+               join_yn,
+               visitor_gbn,
+               part_gbn,
+               event_gbn,
+               time_gbn,
+               name,
+               tel,
+               phone,
+               email,
+               domain,
+               company_name,
+               company_address,
+               company_address_detail,
+               partner_yn,
+               sex,
+               region_si,
+               region_gu,
+               country,
+               age_group,
+               observation_gbn,
+               visit_purpose,
+               interest_item,
+               recognize_path,
+               pre_observation_gbn,
+               note,
+               init_regi_pic,
+               init_regi_dttm,
+               final_regi_pic,
+               final_regi_dttm
         FROM visitor
         WHERE seq = #{seq}
     </select>
@@ -2994,6 +2967,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.updateVisitor */
         UPDATE visitor
         SET part_gbn = #{partGbn}
+          , event_gbn = #{eventGbn}
           , tel = #{tel}
           , email = #{email}
           , domain = #{domain}
@@ -3024,6 +2998,7 @@
         , join_yn
         , visitor_gbn
         , part_gbn
+        , event_gbn
         , time_gbn
         , name
         , tel
@@ -3055,6 +3030,7 @@
                , #{joinYn}
                , #{visitorGbn}
                , #{partGbn}
+               , #{eventGbn}
                , #{timeGbn}
                , #{name}
                , #{tel}
@@ -3358,6 +3334,7 @@
     <select id="selectBoothList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectBoothList */
         SELECT seq
+             , transfer_year
              , company_name_ko
              , company_name_en
              , booth_type
@@ -3398,9 +3375,6 @@
                 AND ( stand_alone_booth_cnt + assembly_booth_cnt + online_booth_cnt ) = #{searchText}
             </if>
         </if>
-        <if test='dateFrom != null and dateFrom != "" and dateTo != null and dateTo != ""'>
-            AND init_regi_dttm <![CDATA[>=]]> #{dateFrom} and init_regi_dttm <![CDATA[<=]]> #{dateTo}
-        </if>
         <if test='lang != null and lang != ""'>
             AND lang = #{lang}
         </if>
@@ -3439,7 +3413,7 @@
                 AND discount_leisure <![CDATA[>]]> 0
             </if>
         </if>
-        ORDER BY init_regi_dttm DESC, company_name_ko ASC
+        ORDER BY transfer_year DESC, init_regi_dttm DESC, company_name_ko ASC
     </select>
 
     <select id="selectExhibitorNewBoothList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
@@ -3503,9 +3477,6 @@
             <if test='condition eq "boothCnt"'>
                 AND ( en.stand_alone_booth_cnt + en.assembly_booth_cnt + en.online_booth_cnt ) = #{searchText}
             </if>
-        </if>
-        <if test='dateFrom != null and dateFrom != "" and dateTo != null and dateTo != ""'>
-            AND en.init_regi_dttm <![CDATA[>=]]> #{dateFrom} and en.init_regi_dttm <![CDATA[<=]]> #{dateTo}
         </if>
         <if test='lang != null and lang != ""'>
             AND en.lang = #{lang}
@@ -3930,6 +3901,7 @@
     <select id="selectSignList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectSignList */
         SELECT seq
+             , transfer_year
              , company_name_ko
              , company_name_en
              , company_sign_name_ko
@@ -3958,7 +3930,8 @@
         <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
             AND cancel_yn = #{cancelYn}
         </if>
-        ORDER BY NULLIF(company_sign_name_ko, '') IS NOT NULL DESC
+        ORDER BY transfer_year DESC
+               , NULLIF(company_sign_name_ko, '') IS NOT NULL DESC
                , NULLIF(company_sign_name_en, '') IS NOT NULL DESC
                , init_regi_dttm DESC
     </select>
@@ -4110,6 +4083,7 @@
     <select id="selectUtilityList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectUtilityList */
         SELECT seq
+             , transfer_year
              , company_name_ko
              , company_name_en
              , IFNULL(utility_jugan_cnt,0) as utility_jugan_cnt
@@ -4179,7 +4153,7 @@
                 AND utility_barcode_cnt <![CDATA[>]]> 0
             </if>
         </if>
-        ORDER BY (utility_jugan_cnt + utility_day_cnt + utility_compressed_air_cnt + utility_water_basic_cnt + utility_internet_cnt + utility_pytex_new_cnt + utility_pytex_re_cnt + utility_barcode_cnt) DESC
+        ORDER BY transfer_year DESC, (utility_jugan_cnt + utility_day_cnt + utility_compressed_air_cnt + utility_water_basic_cnt + utility_internet_cnt + utility_pytex_new_cnt + utility_pytex_re_cnt + utility_barcode_cnt) DESC
                , init_regi_dttm DESC
     </select>
 
@@ -4427,6 +4401,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectPassList */
         SELECT e.seq
              , p.seq AS id
+             , e.transfer_year
              , e.company_name_ko
              , e.company_name_en
              , p.pass_name
@@ -4464,7 +4439,8 @@
         <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
             AND e.cancel_yn = #{cancelYn}
         </if>
-        ORDER BY NULLIF(p.pass_name, '') IS NOT NULL DESC
+        ORDER BY e.transfer_year DESC
+            , NULLIF(p.pass_name, '') IS NOT NULL DESC
         , e.company_name_ko DESC
         , p.init_regi_dttm DESC
     </select>
@@ -4680,6 +4656,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectMngBuyerList */
         SELECT e.seq
              , b.seq as id
+             , e.transfer_year
              , e.company_name_ko
              , e.company_name_en
              , b.buyer_company_country
@@ -4720,9 +4697,10 @@
         <if test='cancelYn != null and cancelYn != "" and cancelYn neq "ALL"'>
             AND e.cancel_yn = #{cancelYn}
         </if>
-        ORDER BY NULLIF(b.buyer_company_name, '') IS NOT NULL DESC
-        , e.company_name_ko ASC
-        , b.init_regi_dttm DESC
+        ORDER BY e.transfer_year DESC
+               , NULLIF(b.buyer_company_name, '') IS NOT NULL DESC
+               , e.company_name_ko ASC
+               , b.init_regi_dttm DESC
     </select>
 
     <select id="selectExhibitorNewBuyerList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.MngBuyerDTO">
@@ -4735,6 +4713,7 @@
              , b.buyer_company_location
              , b.buyer_company_name
              , b.buyer_company_homepage
+             , b.buyer_company_charge
              , b.buyer_company_depart
              , b.buyer_company_position
              , b.buyer_company_email
@@ -4812,6 +4791,7 @@
              , b.buyer_company_country
              , b.buyer_company_location
              , b.buyer_company_homepage
+             , b.buyer_company_charge
              , b.buyer_company_depart
              , b.buyer_company_position
              , b.buyer_company_email
@@ -4839,6 +4819,7 @@
         , buyer_company_country
         , buyer_company_location
         , buyer_company_homepage
+        , buyer_company_charge
         , buyer_company_depart
         , buyer_company_position
         , buyer_company_email
@@ -4853,31 +4834,29 @@
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( CONCAT('BN', LPAD(next_val('buyer_new_seq'), '7', '0'))
-            , #{exSeq}
-            , #{buyerCompanyName}
-            , #{buyerCompanyCountry}
-            , #{buyerCompanyLocation}
-            , #{buyerCompanyHomepage}
-            , #{buyerCompanyDepart}
-            , #{buyerCompanyPosition}
-            , #{buyerCompanyEmail}
-            , #{buyerCompanyTel}
-            , #{buyerCompanyPhone}
-            , #{buyerCompanyFax}
-            , #{buyerCompanyItem}
-            , #{buyerCompanyInviteReason}
-            , #{buyerCompanyProgressYn}
-            , #{buyerCompanyHope}
-            , #{note}
-            , 'BUYER'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'BUYER'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        , final_regi_dttm)
+        VALUES ( CONCAT('BN', LPAD(next_val('buyer_new_seq'), '7', '0'))
+               , #{exSeq}
+               , #{buyerCompanyName}
+               , #{buyerCompanyCountry}
+               , #{buyerCompanyLocation}
+               , #{buyerCompanyHomepage}
+               , #{buyerCompanyCharge}
+               , #{buyerCompanyDepart}
+               , #{buyerCompanyPosition}
+               , #{buyerCompanyEmail}
+               , #{buyerCompanyTel}
+               , #{buyerCompanyPhone}
+               , #{buyerCompanyFax}
+               , #{buyerCompanyItem}
+               , #{buyerCompanyInviteReason}
+               , #{buyerCompanyProgressYn}
+               , #{buyerCompanyHope}
+               , #{note}
+               , 'BUYER'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'BUYER'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <update id="updateExhibitorNewBuyer" parameterType="com.mtf.kibs.dto.BuyerNewDTO">
@@ -4887,6 +4866,7 @@
           , buyer_company_country = #{buyerCompanyCountry}
           , buyer_company_location = #{buyerCompanyLocation}
           , buyer_company_homepage = #{buyerCompanyHomepage}
+          , buyer_company_charge = #{buyerCompanyCharge}
           , buyer_company_depart = #{buyerCompanyDepart}
           , buyer_company_position = #{buyerCompanyPosition}
           , buyer_company_email = #{buyerCompanyEmail}
@@ -5001,8 +4981,11 @@
         <if test='transferYear != null and transferYear != ""'>
             AND e.transfer_year = #{transferYear}
         </if>
-        GROUP BY e.seq, e.boat_entry_yn, e.company_name_ko, e.company_name_en, e.name, e.position, e.phone, e.init_regi_dttm
-        ORDER BY e.init_regi_dttm DESC
+        <if test='boatEntryYn != null and boatEntryYn != ""'>
+            AND e.boat_entry_yn = #{boatEntryYn}
+        </if>
+        GROUP BY e.transfer_year, e.seq, e.boat_entry_yn, e.company_name_ko, e.company_name_en, e.name, e.position, e.phone, e.init_regi_dttm
+        ORDER BY e.transfer_year DESC, e.boat_entry_yn DESC, e.init_regi_dttm DESC
     </select>
 
     <update id="updateCompanyBadge" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
@@ -5081,6 +5064,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectMngGiftList */
         SELECT e.seq
              , g.seq as id
+             , e.transfer_year
              , e.company_name_ko
              , e.company_name_en
              , g.gift_gbn
@@ -5106,9 +5090,10 @@
                 AND e.company_name_en LIKE CONCAT('%',#{searchText},'%')
             </if>
         </if>
-        ORDER BY NULLIF(g.gift_gbn, '') IS NOT NULL DESC
-        , e.company_name_ko ASC
-        , g.init_regi_dttm DESC
+        ORDER BY e.transfer_year DESC
+               , NULLIF(g.gift_gbn, '') IS NOT NULL DESC
+               , e.company_name_ko ASC
+               , g.init_regi_dttm DESC
     </select>
 
     <select id="selectExhibitorNewGiftList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.MngGiftDTO">
@@ -5578,6 +5563,7 @@
             (SELECT GROUP_CONCAT(buyer_company_country ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyCountry,
             (SELECT GROUP_CONCAT(buyer_company_location ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyLocation,
             (SELECT GROUP_CONCAT(buyer_company_homepage ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyHomepage,
+            (SELECT GROUP_CONCAT(buyer_company_charge ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyCharge,
             (SELECT GROUP_CONCAT(buyer_company_depart ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyDepart,
             (SELECT GROUP_CONCAT(buyer_company_position ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyPosition,
             (SELECT GROUP_CONCAT(buyer_company_email ORDER BY seq SEPARATOR '^') FROM buyer_new WHERE ex_seq = e.seq) as buyerCompanyEmail,

@@ -460,7 +460,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitorNew/application/product.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">전시품 신청</span>
+                                                                            <span class="menu-title">요트/보트 출품 정보</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1579,7 +1579,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">전시품 신청</span>
+                                                <span class="menu-title">요트/보트 출품 정보</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2321,7 +2321,7 @@ if (document.documentElement) {
                                                         data-hide-search="true" data-allow-clear="true"
                                                         data-placeholder="- 참가 여부 -" onchange="f_search_condition_sel_change()">
                                                     <option></option>
-                                                    <option disabled>- 참가 여부 -</option>
+                                                    <option value="" disabled>- 참가 여부 -</option>
                                                     <option value="Y">참가</option>
                                                     <option value="N">미참가</option>
                                                 </select>
@@ -2335,7 +2335,7 @@ if (document.documentElement) {
                                                         data-hide-search="true" data-allow-clear="true"
                                                         data-placeholder="- 참가구분 -" onchange="f_search_condition_sel_change()">
                                                     <option></option>
-                                                    <option disabled>- 참가구분 -</option>
+                                                    <option value="" disabled>- 참가구분 -</option>
                                                     <option value="sea">해상 전시(시승체험)</option>
                                                     <option value="land">육상 전시</option>
                                                 </select>
@@ -2452,7 +2452,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251127"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

@@ -1,6 +1,6 @@
 /***
  * mng/exhibitor/application/online.js
- * 참가신청서 관리 > 전시품 신청
+ * 참가신청서 관리 >  요트/보트 출품 정보
  * */
 var transferYear = '2026';
 $(function(){
@@ -19,7 +19,8 @@ function f_application_product_new_search_condition_init(){
 
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
-    $('#transfer_year').val('').select2({minimumResultsForSearch: Infinity});
+    $('#transferYear').val('').select2({minimumResultsForSearch: Infinity});
+    $('#boatEntryYn').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
     f_application_product_new_search();
@@ -84,13 +85,15 @@ function f_search_condition_sel_change(){
     dataTbl.clear();
     dataTbl.draw(false);
 
-    let transferYear = $('#transfer_year option:selected').val(); //참가년도
+    let transferYear = $('#transferYear option:selected').val(); //참가년도
+    let boatEntryYn = $('#boatEntryYn option:selected').val(); //출품여부
 
     let condition = $('#search_box option:selected').val();
     let searchText = $('#search_text').val();
 
     let jsonObj = {
         transferYear: transferYear,
+        boatEntryYn: boatEntryYn,
         condition: condition,
         searchText: searchText
     }
@@ -128,8 +131,8 @@ function f_application_product_new_modify_init_set(seq){
 
 function f_exhibitor_product_new_excel_export(){
     Swal.fire({
-        title: '[ 전체 전시품 신청 정보 상세 다운로드 ]',
-        html: '전체 전시품 신청 정보 상세를 다운로드하시겠습니까 ?',
+        title: '[ 전체 요트/보트 출품 정보 상세 다운로드 ]',
+        html: '전체 요트/보트 출품 정보 상세를 다운로드하시겠습니까 ?',
         icon: 'info',
         allowOutsideClick: false,
         showCancelButton: true,

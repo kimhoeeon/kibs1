@@ -460,7 +460,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitorNew/application/product.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">전시품 신청</span>
+                                                                            <span class="menu-title">요트/보트 출품 정보</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1579,7 +1579,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">전시품 신청</span>
+                                                <span class="menu-title">요트/보트 출품 정보</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2309,7 +2309,7 @@ if (document.documentElement) {
                                                         data-hide-search="true" data-allow-clear="true"
                                                         data-placeholder="- 참가신청 언어 -" onchange="f_search_condition_sel_change()">
                                                     <option></option>
-                                                    <option disabled>- 참가신청 언어 -</option>
+                                                    <option value="" disabled>- 참가신청 언어 -</option>
                                                     <option value="KO">KOR</option>
                                                     <option value="EN">ENG</option>
                                                 </select>
@@ -2323,7 +2323,7 @@ if (document.documentElement) {
                                                         data-hide-search="true" data-allow-clear="true"
                                                         data-placeholder="- 승인여부 -" onchange="f_search_condition_sel_change()">
                                                     <option></option>
-                                                    <option disabled>- 승인여부 -</option>
+                                                    <option value="" disabled>- 승인여부 -</option>
                                                     <option value="승인">승인</option>
                                                     <option value="승인요청">승인요청</option>
                                                     <option value="미승인">미승인</option>
@@ -2339,7 +2339,7 @@ if (document.documentElement) {
                                                         data-hide-search="true" data-allow-clear="true"
                                                         data-placeholder="- 참가취소포함여부 -" onchange="f_search_condition_sel_change()">
                                                     <option></option>
-                                                    <option disabled>- 참가취소포함여부 -</option>
+                                                    <option value="" disabled>- 참가취소포함여부 -</option>
                                                     <option value="ALL">참가취소포함</option>
                                                     <option value="N">참가취소만보기</option>
                                                 </select>
@@ -2353,7 +2353,7 @@ if (document.documentElement) {
                                                         data-hide-search="true" data-allow-clear="true"
                                                         data-placeholder="- 유틸리티 항목 -" onchange="f_search_condition_sel_change()">
                                                     <option></option>
-                                                    <option disabled>- 유틸리티 항목 -</option>
+                                                    <option value="" disabled>- 유틸리티 항목 -</option>
                                                     <option value="JUGAN">주간 단상 220V</option>
                                                     <option value="ALLDAY">24시간용 220V</option>
                                                     <option value="WORK">작업전기</option>
@@ -2556,7 +2556,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251127"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

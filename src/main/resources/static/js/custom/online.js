@@ -19,7 +19,7 @@ function f_application_online_search_condition_init(){
 
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
-    $('#transfer_year').val('').select2({minimumResultsForSearch: Infinity});
+    $('#transferYear').val('').select2({minimumResultsForSearch: Infinity});
     $('#company_online_view_yn').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
@@ -85,7 +85,7 @@ function f_search_condition_sel_change(){
     dataTbl.clear();
     dataTbl.draw(false);
 
-    let transferYear = $('#transfer_year option:selected').val(); //참가년도
+    let transferYear = $('#transferYear option:selected').val(); //참가년도
     let companyOnlineViewYn = $('#company_online_view_yn option:selected').val(); //노출여부
 
     let condition = $('#search_box option:selected').val();

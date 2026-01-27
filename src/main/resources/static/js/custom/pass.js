@@ -71,6 +71,7 @@ function f_application_pass_search_condition_init(){
 
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
+    $('#transferYear').val('').select2({minimumResultsForSearch: Infinity});
     $('#lang').val('').select2({minimumResultsForSearch: Infinity});
     $('#approvalYn').val('').select2({minimumResultsForSearch: Infinity});
     $('#cancelYn').val('').select2({minimumResultsForSearch: Infinity});
@@ -92,15 +93,16 @@ function f_application_pass_search(){
     /* TM 및 잠재DB 목록 데이터 조회 */
     let jsonObj;
     let searchText = $('#search_text').val();
+    let transferYear = $('#transferYear option:selected').val();
     if(nullToEmpty(searchText) === ""){
         jsonObj = {
-            "transferYear": transferYear
+            transferYear: transferYear
         };
     }else{
         jsonObj = {
-            "transferYear": transferYear,
-            "condition": $('#search_box option:selected').val(),
-            "searchText": searchText
+            transferYear: transferYear,
+            condition: $('#search_box option:selected').val(),
+            searchText: searchText
         }
     }
 
@@ -139,6 +141,7 @@ function f_search_condition_sel_change(){
     dataTbl.clear();
     dataTbl.draw(false);
 
+    let transferYear = $('#transferYear option:selected').val(); //참가년도
     let lang = $('#lang option:selected').val(); //참가신청언어
     let approvalYn = $('#approvalYn option:selected').val(); //승인여부
     let cancelYn = $('#cancelYn option:selected').val(); //참가취소여부
@@ -147,12 +150,12 @@ function f_search_condition_sel_change(){
     let searchText = $('#search_text').val();
 
     let jsonObj = {
-        "lang": lang,
-        "approvalStatus": approvalYn,
-        "cancelYn": cancelYn,
-        "transferYear": transferYear,
-        "condition": condition,
-        "searchText": searchText
+        lang: lang,
+        approvalStatus: approvalYn,
+        cancelYn: cancelYn,
+        transferYear: transferYear,
+        condition: condition,
+        searchText: searchText
     }
 
     //console.log(jsonObj);

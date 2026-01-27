@@ -452,7 +452,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitorNew/application/product.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">전시품 신청</span>
+                                                                            <span class="menu-title">요트/보트 출품 정보</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1572,7 +1572,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">전시품 신청</span>
+                                                <span class="menu-title">요트/보트 출품 정보</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2307,6 +2307,31 @@ if (document.documentElement) {
                                                     <!--begin::Label-->
                                                 </div>
                                                 <!--end::Input group-->
+                                                <!--begin::Input group-->
+                                                <div class="row mb-6">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">행사 구분</label>
+                                                    <!--begin::Label-->
+                                                    <!--begin::Label-->
+                                                    <div class="col-lg-10 d-flex flex-wrap align-items-center">
+                                                        <div class="form-check form-check-custom">
+                                                            <input class="form-check-input form-control-solid-bg" type="radio" value="경기국제보트쇼" id="eventGbn1" name="eventGbn" <c:if test="${info.eventGbn eq '경기국제보트쇼'}">checked</c:if> />
+                                                            <label class="form-check-label" for="eventGbn1">
+                                                                경기국제보트쇼(KIBS)·한국국제낚시박람회(KOFISH)
+                                                            </label>
+                                                            <input class="form-check-input form-control-solid-bg ml20" type="radio" value="코리아서프쇼" id="eventGbn2" name="eventGbn" <c:if test="${info.eventGbn eq '코리아서프쇼'}">checked</c:if> />
+                                                            <label class="form-check-label" for="eventGbn2">
+                                                                코리아서프쇼(KISS)
+                                                            </label>
+                                                            <input class="form-check-input form-control-solid-bg ml20" type="radio" value="해양관광전" id="eventGbn3" name="eventGbn" <c:if test="${info.eventGbn eq '해양관광전'}">checked</c:if> />
+                                                            <label class="form-check-label" for="eventGbn3">
+                                                                해양관광전(KMTS)
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <!--begin::Label-->
+                                                </div>
+                                                <!--end::Input group-->
                                             </div>
                                             <!--end::Card body-->
                                         </div>
@@ -2559,6 +2584,15 @@ if (document.documentElement) {
                                         <div id="kt_field_part_info" class="collapse show">
                                             <!--begin::Card body-->
                                             <div class="card-body border-top p-9">
+
+                                                <%-- [중요] 관리자용 플래그 및 저장 데이터 --%>
+                                                <input type="hidden" id="isDetail" value="Y">
+                                                <input type="hidden" id="h_observationGbn" value="${info.observationGbn}">
+                                                <input type="hidden" id="h_visitPurpose" value="${info.visitPurpose}">
+                                                <input type="hidden" id="h_interestItem" value="${info.interestItem}">
+                                                <input type="hidden" id="h_recognizePath" value="${info.recognizePath}">
+                                                <input type="hidden" id="h_preObservationGbn" value="${info.preObservationGbn}">
+
                                                 <!--begin::Input group-->
                                                 <div class="row mb-8">
                                                     <!--begin::Label-->
@@ -2646,487 +2680,32 @@ if (document.documentElement) {
                                                     <!--begin::Label-->
                                                 </div>
                                                 <!--end::Input group-->
-                                                <c:if test="${info.partGbn ne '바이어'}">
-                                                    <!--begin::Input group-->
-                                                    <div class="row mb-10" id="observationGbnDiv">
-                                                        <!--begin::Label-->
-                                                        <label class="col-lg-2 col-form-label fw-semibold fs-6 required">관람 구분</label>
-                                                        <!--end::Label-->
-                                                        <!--begin::Col-->
-                                                        <div class="col-lg-10 d-flex flex-wrap">
-                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn1" name="observationGbn" value="조종면허 보유자"
-                                                                        <c:if test="${fn:contains(info.observationGbn, '조종면허 보유자')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn1">
-                                                                    조종면허 보유자
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn2" name="observationGbn" value="보트 소유자"
-                                                                       <c:if test="${fn:contains(info.observationGbn, '보트 소유자')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn2">
-                                                                    보트 소유자
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn3" name="observationGbn" value="보트 구매 예정자"
-                                                                       <c:if test="${fn:contains(info.observationGbn, '보트 구매 예정자')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn3">
-                                                                    보트 구매 예정자
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn4" name="observationGbn" value="관련 업종 종사자"
-                                                                       <c:if test="${fn:contains(info.observationGbn, '관련 업종 종사자')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn4">
-                                                                    관련 업종 종사자
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn5" name="observationGbn" value="서핑 매니아"
-                                                                       <c:if test="${fn:contains(info.observationGbn, '서핑 매니아')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn5">
-                                                                    서핑 매니아
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn6" name="observationGbn" value="해양관광 예정자"
-                                                                       <c:if test="${fn:contains(info.observationGbn, '해양관광 예정자')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn6">
-                                                                    해양관광 예정자
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn7" name="observationGbn" value="낚시 매니아"
-                                                                       <c:if test="${fn:contains(info.observationGbn, '낚시 매니아')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn7">
-                                                                    낚시 매니아
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn8" name="observationGbn" value="다이빙 매니아"
-                                                                       <c:if test="${fn:contains(info.observationGbn, '다이빙 매니아')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn8">
-                                                                    다이빙 매니아
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn9" name="observationGbn" value="캠핑카 매니아"
-                                                                       <c:if test="${fn:contains(info.observationGbn, '캠핑카 매니아')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn9">
-                                                                    캠핑카 매니아
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn10" name="observationGbn" value="학생"
-                                                                       <c:if test="${fn:contains(info.observationGbn, '학생')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn10">
-                                                                    학생
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn11" name="observationGbn" value="일반관람"
-                                                                       <c:if test="${fn:contains(info.observationGbn, '일반관람')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn11">
-                                                                    일반관람
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                                <input class="form-check-input form-control-solid-bg" type="checkbox" id="observation_gbn12" name="observationGbn" value="기타"
-                                                                       <c:if test="${fn:contains(info.observationGbn, '기타')}">checked</c:if> />
-                                                                <label class="form-check-label text-hover-primary" for="observation_gbn12">
-                                                                    기타
-                                                                </label>
-                                                            </div>
-                                                            <!--begin::Col-->
-                                                            <div class="col-lg-12 mt-2 text-primary fw-bold">
-                                                                * 복수응답가능
-                                                            </div>
-                                                            <!--end::Col-->
-                                                        </div>
-                                                        <!--end::Col-->
-                                                    </div>
-                                                    <!--end::Input group-->
-                                                </c:if>
+                                                <div class="row mb-10" id="observationGbnDiv" <c:if test="${info.partGbn eq '바이어'}">style="display:none;"</c:if>>
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">관람 구분</label>
+                                                    <div class="col-lg-10 d-flex flex-wrap" id="ul_observationGbn"></div>
+                                                </div>
                                                 <!--begin::Input group-->
                                                 <div class="row mb-10">
-                                                    <!--begin::Label-->
-                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required">보트쇼 방문 목적</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-10 d-flex flex-wrap">
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="visit_purpose1" name="visitPurpose" value="업계동향 파악 및 정보수집"
-                                                                   <c:if test="${fn:contains(info.visitPurpose, '업계동향 파악 및 정보수집')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="visit_purpose1">
-                                                                업계동향 파악 및 정보수집
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="visit_purpose2" name="visitPurpose" value="제품구매 및 기술도입 상담"
-                                                                   <c:if test="${fn:contains(info.visitPurpose, '제품구매 및 기술도입 상담')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="visit_purpose2">
-                                                                제품구매 및 기술도입 상담
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="visit_purpose3" name="visitPurpose" value="기존 거래업체 방문"
-                                                                   <c:if test="${fn:contains(info.visitPurpose, '기존 거래업체 방문')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="visit_purpose3">
-                                                                기존 거래업체 방문
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="visit_purpose4" name="visitPurpose" value="차기 전시회 참가여부 파악"
-                                                                   <c:if test="${fn:contains(info.visitPurpose, '차기 전시회 참가여부 파악')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="visit_purpose4">
-                                                                차기 전시회 참가여부 파악
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="visit_purpose5" name="visitPurpose" value="일반관람"
-                                                                   <c:if test="${fn:contains(info.visitPurpose, '일반관람')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="visit_purpose5">
-                                                                일반관람
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="visit_purpose6" name="visitPurpose" value="기타"
-                                                                   <c:if test="${fn:contains(info.visitPurpose, '기타')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="visit_purpose6">
-                                                                기타
-                                                            </label>
-                                                        </div>
-                                                        <!--begin::Col-->
-                                                        <div class="col-lg-12 mt-2 text-primary fw-bold">
-                                                            * 복수응답가능
-                                                        </div>
-                                                        <!--end::Col-->
-                                                    </div>
-                                                    <!--end::Col-->
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6 required" id="visitPurposeTitle">방문 목적</label>
+                                                    <div class="col-lg-10 d-flex flex-wrap" id="ul_visitPurpose"></div>
                                                 </div>
                                                 <!--end::Input group-->
                                                 <!--begin::Input group-->
                                                 <div class="row mb-10">
-                                                    <!--begin::Label-->
                                                     <label class="col-lg-2 col-form-label fw-semibold fs-6 required">관심품목</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-10 d-flex flex-wrap">
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item1" name="interestItem" value="보트&요트"
-                                                                   <c:if test="${fn:contains(info.interestItem, '보트&요트')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item1">
-                                                                보트&요트
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item2" name="interestItem" value="무동력보트"
-                                                                   <c:if test="${fn:contains(info.interestItem, '무동력보트')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item2">
-                                                                무동력보트
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item3" name="interestItem" value="워크보트"
-                                                                   <c:if test="${fn:contains(info.interestItem, '워크보트')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item3">
-                                                                워크보트
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item4" name="interestItem" value="해양부품&장비"
-                                                                   <c:if test="${fn:contains(info.interestItem, '해양부품&장비')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item4">
-                                                                해양부품&장비
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item5" name="interestItem" value="안전&마리나"
-                                                                   <c:if test="${fn:contains(info.interestItem, '안전&마리나')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item5">
-                                                                안전&마리나
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item6" name="interestItem" value="해양관광"
-                                                                   <c:if test="${fn:contains(info.interestItem, '해양관광')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item6">
-                                                                해양관광
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item7" name="interestItem" value="해양레저"
-                                                                   <c:if test="${fn:contains(info.interestItem, '해양레저')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item7">
-                                                                해양레저
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item8" name="interestItem" value="서핑"
-                                                                   <c:if test="${fn:contains(info.interestItem, '서핑')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item8">
-                                                                서핑
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="interest_item9" name="interestItem" value="수중레저"
-                                                                   <c:if test="${fn:contains(info.interestItem, '수중레저')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="interest_item9">
-                                                                수중레저
-                                                            </label>
-                                                        </div>
-                                                        <!--begin::Col-->
-                                                        <div class="col-lg-12 mt-2 text-primary fw-bold">
-                                                            * 복수응답가능
-                                                        </div>
-                                                        <!--end::Col-->
-                                                    </div>
-                                                    <!--end::Col-->
+                                                    <div class="col-lg-10 d-flex flex-wrap" id="ul_interestItem"></div>
                                                 </div>
                                                 <!--end::Input group-->
                                                 <!--begin::Input group-->
                                                 <div class="row mb-10">
-                                                    <!--begin::Label-->
                                                     <label class="col-lg-2 col-form-label fw-semibold fs-6 required">인지경로</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Col-->
-                                                    <div class="col-lg-10 d-flex flex-wrap">
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path1" name="recognizePath" value="뉴스레터"
-                                                                   <c:if test="${fn:contains(info.recognizePath, '뉴스레터')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="recognize_path1">
-                                                                뉴스레터
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path2" name="recognizePath" value="옥외광고물"
-                                                                   <c:if test="${fn:contains(info.recognizePath, '옥외광고물')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="recognize_path2">
-                                                                옥외광고물
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path3" name="recognizePath" value="홈페이지"
-                                                                   <c:if test="${fn:contains(info.recognizePath, '홈페이지')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="recognize_path3">
-                                                                홈페이지
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path4" name="recognizePath" value="전문지"
-                                                                   <c:if test="${fn:contains(info.recognizePath, '전문지')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="recognize_path4">
-                                                                전문지
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path5" name="recognizePath" value="온라인 커뮤니티"
-                                                                   <c:if test="${fn:contains(info.recognizePath, '온라인 커뮤니티')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="recognize_path5">
-                                                                온라인 커뮤니티
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path6" name="recognizePath" value="오프라인매장"
-                                                                   <c:if test="${fn:contains(info.recognizePath, '오프라인매장')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="recognize_path6">
-                                                                오프라인매장
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path7" name="recognizePath" value="소셜 네트워크"
-                                                                   <c:if test="${fn:contains(info.recognizePath, '소셜 네트워크')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="recognize_path7">
-                                                                소셜 네트워크
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path8" name="recognizePath" value="초청장"
-                                                                   <c:if test="${fn:contains(info.recognizePath, '초청장')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="recognize_path8">
-                                                                초청장
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path9" name="recognizePath" value="방송광고"
-                                                                   <c:if test="${fn:contains(info.recognizePath, '방송광고')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="recognize_path9">
-                                                                방송광고
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path10" name="recognizePath" value="KIBS 참석"
-                                                                   <c:if test="${fn:contains(info.recognizePath, 'KIBS 참석')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="recognize_path10">
-                                                                KIBS 참석
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path11" name="recognizePath" value="낚시박람회"
-                                                                   <c:if test="${fn:contains(info.recognizePath, '낚시박람회')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="recognize_path11">
-                                                                낚시박람회
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" id="recognize_path12" name="recognizePath" value="기타"
-                                                                   <c:if test="${fn:contains(info.recognizePath, '기타')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="recognize_path12">
-                                                                기타
-                                                            </label>
-                                                        </div>
-                                                        <!--begin::Col-->
-                                                        <div class="col-lg-12 mt-2 text-primary fw-bold">
-                                                            * 복수응답가능
-                                                        </div>
-                                                        <!--end::Col-->
-                                                    </div>
-                                                    <!--end::Col-->
+                                                    <div class="col-lg-10 d-flex flex-wrap" id="ul_recognizePath"></div>
                                                 </div>
                                                 <!--end::Input group-->
                                                 <!--begin::Input group-->
-                                                <div class="row mb-10">
-                                                    <!--begin::Label-->
+                                                <div class="row mb-10" id="preObservationGbnLi" style="display:none;">
                                                     <label class="col-lg-2 col-form-label fw-semibold fs-6 required">지난 전시회 참관 여부</label>
-                                                    <!--begin::Label-->
-                                                    <!--begin::Label-->
-                                                    <div class="col-lg-10 d-flex flex-wrap">
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="first" id="pre_exhibit_yn_ko_first" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, 'first')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_first">
-                                                                첫 참관
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2008" id="pre_exhibit_yn_ko_08" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2008')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_08">
-                                                                2008
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2009" id="pre_exhibit_yn_ko_09" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2009')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_09">
-                                                                2009
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2010" id="pre_exhibit_yn_ko_10" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2010')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_10">
-                                                                2010
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2011" id="pre_exhibit_yn_ko_11" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2011')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_11">
-                                                                2011
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2012" id="pre_exhibit_yn_ko_12" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2012')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_12">
-                                                                2012
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2013" id="pre_exhibit_yn_ko_13" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2013')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_13">
-                                                                2013
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2014" id="pre_exhibit_yn_ko_14" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2014')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_14">
-                                                                2014
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2015" id="pre_exhibit_yn_ko_15" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2015')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_15">
-                                                                2015
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2016" id="pre_exhibit_yn_ko_16" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2016')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_16">
-                                                                2016
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2008" id="pre_exhibit_yn_ko_17" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2017')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_17">
-                                                                2017
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2018" id="pre_exhibit_yn_ko_18" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2018')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_18">
-                                                                2018
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2019" id="pre_exhibit_yn_ko_19" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2019')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_19">
-                                                                2019
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2020" id="pre_exhibit_yn_ko_20" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2020')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_20">
-                                                                2020
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2021" id="pre_exhibit_yn_ko_21" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2021')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_21">
-                                                                2021
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2022" id="pre_exhibit_yn_ko_22" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2022')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_22">
-                                                                2022
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2023" id="pre_exhibit_yn_ko_23" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2023')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_23">
-                                                                2023
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2024" id="pre_exhibit_yn_ko_24" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2024')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_24">
-                                                                2024
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check form-check-custom form-check-lg mb-3 mr15">
-                                                            <input class="form-check-input form-control-solid-bg" type="checkbox" value="2025" id="pre_exhibit_yn_ko_25" name="preObservationGbn"
-                                                                   <c:if test="${fn:contains(info.preObservationGbn, '2025')}">checked</c:if> />
-                                                            <label class="form-check-label text-hover-primary" for="pre_exhibit_yn_ko_25">
-                                                                2025
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <!--begin::Label-->
+                                                    <div class="col-lg-10 d-flex flex-wrap" id="ul_preObservationGbn"></div>
                                                 </div>
                                                 <!--end::Input group-->
                                             </div>
@@ -3203,7 +2782,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251127"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>
@@ -3215,6 +2794,7 @@ if (document.documentElement) {
     <!--begin::Custom Javascript(used for common page)-->
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="/js/custom/participantVisitor.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/custom/visitor.js?ver=20260127"></script>
     <script src="/js/sido.js"></script>
 
     <c:if test="${info ne null}">
@@ -3228,19 +2808,51 @@ if (document.documentElement) {
 
     <script>
         $(function(){
+            // 1. 행사 구분 변경 이벤트
+            $('input[name=eventGbn]').on('change', function(){
+                if(typeof renderSurveyItems === 'function'){
+                    renderSurveyItems($(this).val(), null);
+                }
+            });
+
+            // 2. 초기 로딩 시: 행사 구분 기본값 설정
+            let initialEvent = $('input[name=eventGbn]:checked').val();
+            if (!initialEvent) {
+                initialEvent = '경기국제보트쇼';
+                $('input[name=eventGbn][value="경기국제보트쇼"]').prop('checked', true);
+            }
+
+            if(initialEvent && typeof renderSurveyItems === 'function') {
+                let savedData = {
+                    observationGbn: $('#h_observationGbn').val(),
+                    visitPurpose: $('#h_visitPurpose').val(),
+                    interestItem: $('#h_interestItem').val(),
+                    recognizePath: $('#h_recognizePath').val(),
+                    preObservationGbn: $('#h_preObservationGbn').val()
+                };
+                renderSurveyItems(initialEvent, savedData);
+            }
+
+            // 3. 참관 구분 이벤트 및 초기화
             $('input[type=radio][name=partGbn]').on('change', function(){
                 let partGbn = $(this).val();
                 if(partGbn === '바이어'){
-                    $('input[type=checkbox][name=observationGbn]').prop('checked', false).prop('disabled', true);
                     $('#observationGbnDiv').hide();
                     $('#companyNameDiv').addClass('required');
                 }else{
-                    $('input[type=checkbox][name=observationGbn]').prop('disabled', false);
                     $('#observationGbnDiv').show();
                     $('#companyNameDiv').removeClass('required');
                 }
-            })
-        })
+            });
+
+            // [요청사항 적용] 참관 구분 기본값 (바이어)
+            let currentPartGbn = $('input[name=partGbn]:checked').val();
+            if(!currentPartGbn) {
+                $('input[name=partGbn][value="바이어"]').prop('checked', true).trigger('change');
+            } else {
+                $('input[name=partGbn][value="' + currentPartGbn + '"]').trigger('change');
+            }
+        });
     </script>
     <!--end::Custom Javascript-->
 

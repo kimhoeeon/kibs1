@@ -1,5 +1,5 @@
 var transferYear = '2026';
-// [신규] main.js 최상단에 전역 변수 선언
+// main.js 최상단에 전역 변수 선언
 let deletedFileIds = [];
 let isSubmitProceeding = false;
 $(function() {
@@ -2081,7 +2081,7 @@ async function step_01_check(exhibitorSeq){
             });
 
             try {
-                // 3-1. [신규] 사용자가 X 눌렀던 파일들 실제 삭제 (await)
+                // 3-1. 사용자가 X 눌렀던 파일들 실제 삭제 (await)
                 await processDeletedFiles();
 
                 // [핵심 수정] 파일 업로드가 끝날 때까지 기다림 (await)
@@ -2154,6 +2154,9 @@ function f_buyer_add(exSeq){
         return false;
     }*/
 
+    // 담당자 성명
+    let buyer_charge = $('#buyer_charge').val();
+
     // 부서
     let buyer_depart = $('#buyer_depart').val();
 
@@ -2210,6 +2213,7 @@ function f_buyer_add(exSeq){
         buyerCompanyCountry: buyer_country,
         buyerCompanyLocation: buyer_location,
         buyerCompanyHomepage: buyer_homepage,
+        buyerCompanyCharge: buyer_charge,
         buyerCompanyDepart: buyer_depart,
         buyerCompanyPosition: buyer_position,
         buyerCompanyEmail: buyer_email_input1 + '@' + buyer_email_input2,
@@ -2273,6 +2277,13 @@ function f_buyer_add(exSeq){
     buyerCompanyHomepage_el.name = 'buyerCompanyHomepage';
     buyerCompanyHomepage_el.id = 'buyerCompanyHomepage';
     buyerCompanyHomepage_el.value = buyer_homepage;
+
+    //담당자성명
+    let buyerCompanyCharge_el = document.createElement('input');
+    buyerCompanyCharge_el.type = 'hidden';
+    buyerCompanyCharge_el.name = 'buyerCompanyCharge';
+    buyerCompanyCharge_el.id = 'buyerCompanyCharge';
+    buyerCompanyCharge_el.value = buyer_charge;
 
     //부서
     let buyerCompanyDepart_el = document.createElement('input');
@@ -2370,6 +2381,7 @@ function f_buyer_add(exSeq){
     form_chuga_list.appendChild(buyerCompanyCountry_el);
     form_chuga_list.appendChild(buyerCompanyLocation_el);
     form_chuga_list.appendChild(buyerCompanyHomepage_el);
+    form_chuga_list.appendChild(buyerCompanyCharge_el);
     form_chuga_list.appendChild(buyerCompanyDepart_el);
     form_chuga_list.appendChild(buyerCompanyPosition_el);
     form_chuga_list.appendChild(buyerCompanyEmail_el);
@@ -2400,6 +2412,8 @@ function f_buyer_init(){
     document.querySelector('#buyer_location').value = null;
     // 홈페이지
     document.querySelector('#buyer_homepage').value = null;
+    // 담당자성명
+    document.querySelector('#buyer_charge').value = null;
     // 부서
     document.querySelector('#buyer_depart').value = null;
     // 직책
@@ -2444,6 +2458,7 @@ function f_buyer_modify_modal(gbn, value){
             buyerCompanyCountry: row_el.find('input[type=hidden][name=buyerCompanyCountry]').val(),
             buyerCompanyLocation: row_el.find('input[type=hidden][name=buyerCompanyLocation]').val(),
             buyerCompanyHomepage: row_el.find('input[type=hidden][name=buyerCompanyHomepage]').val(),
+            buyerCompanyCharge: row_el.find('input[type=hidden][name=buyerCompanyCharge]').val(),
             buyerCompanyDepart: row_el.find('input[type=hidden][name=buyerCompanyDepart]').val(),
             buyerCompanyPosition: row_el.find('input[type=hidden][name=buyerCompanyPosition]').val(),
             buyerCompanyEmail: row_el.find('input[type=hidden][name=buyerCompanyEmail]').val(),
@@ -2470,6 +2485,7 @@ function f_buyer_modal_set(jsonObj){
     $('#buyer_popup #buyer_country').val(jsonObj.buyerCompanyCountry);
     $('#buyer_popup #buyer_location').val(jsonObj.buyerCompanyLocation);
     $('#buyer_popup #buyer_homepage').val(jsonObj.buyerCompanyHomepage);
+    $('#buyer_popup #buyer_charge').val(jsonObj.buyerCompanyCharge);
     $('#buyer_popup #buyer_depart').val(jsonObj.buyerCompanyDepart);
     $('#buyer_popup #buyer_position').val(jsonObj.buyerCompanyPosition);
     $('#buyer_popup #buyer_email_input1').val(jsonObj.buyerCompanyEmail.split('@')[0]);
@@ -2764,7 +2780,7 @@ function step_2_9_check(exhibitorSeq){
 
     Swal.fire({
         icon: 'info',
-        title: '[ 전시품 신청 ]',
+        title: '[ 요트/보트 출품 정보 ]',
         html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
@@ -2777,12 +2793,12 @@ function step_2_9_check(exhibitorSeq){
 
         if (result.isConfirmed) {
 
-            /******************** 전시품 신청 ********************/
+            /******************** 요트/보트 출품 정보 ********************/
             let productList_json_arr = [];
 
             let boatEntryYn = nvl($('input[type=radio][name=boatEntryYn]:checked').val(),'N');
             if(boatEntryYn === 'Y') {
-                /*showMessage('', 'error', '[ 전시품 신청 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
+                /*showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
                 return false;*/
 
                 // 제품분류(대)
@@ -2798,7 +2814,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_option_big_flag) {
-                    showMessage('', 'error', '[ 전시품 신청 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
                     return false;
                 }
 
@@ -2815,7 +2831,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_option_small_flag) {
-                    showMessage('', 'error', '[ 전시품 신청 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
                     return false;
                 }
 
@@ -2830,7 +2846,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_name_ko_flag) {
-                    showMessage('', 'error', '[ 전시품 신청 ]', '제품명을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품명을 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2845,7 +2861,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_qty_flag) {
-                    showMessage('', 'error', '[ 전시품 신청 ]', '수량을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '수량을 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2860,7 +2876,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_brand_flag) {
-                    showMessage('', 'error', '[ 전시품 신청 ]', '제조사(브랜드)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2875,7 +2891,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_feature_flag) {
-                    showMessage('', 'error', '[ 전시품 신청 ]', '제품 특징을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품 특징을 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2890,7 +2906,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_length_flag) {
-                    showMessage('', 'error', '[ 전시품 신청 ]', '길이(cm)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '길이(cm)를 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2905,7 +2921,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_width_flag) {
-                    showMessage('', 'error', '[ 전시품 신청 ]', '너비(cm)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '너비(cm)를 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2920,7 +2936,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_height_flag) {
-                    showMessage('', 'error', '[ 전시품 신청 ]', '높이(cm)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '높이(cm)를 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2935,7 +2951,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_weight_flag) {
-                    showMessage('', 'error', '[ 전시품 신청 ]', '중량(kg)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '중량(kg)를 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2950,7 +2966,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_material_flag) {
-                    showMessage('', 'error', '[ 전시품 신청 ]', '소재를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '소재를 입력해 주세요.', '');
                     return false;
                 }
 
@@ -2965,7 +2981,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_year_flag) {
-                    showMessage('', 'error', '[ 전시품 신청 ]', '연식을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '연식을 입력해 주세요.', '');
                     return false;
                 }
 
@@ -3043,8 +3059,8 @@ function step_2_9_check(exhibitorSeq){
                         if (result.dismiss === Swal.DismissReason.timer) {
                             Swal.fire({
                                 icon: 'info',
-                                title: '[ 전시품 신청 ]',
-                                html: '<span style="font-size: 1.2em;">전시품 신청가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                                title: '[ 요트/보트 출품 정보 ]',
+                                html: '<span style="font-size: 1.2em;"> 요트/보트 출품 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
                                 allowOutsideClick: false,
                                 confirmButtonColor: '#00a8ff',
                                 confirmButtonText: '확인'
@@ -3056,7 +3072,7 @@ function step_2_9_check(exhibitorSeq){
                         }
                     });
                 }else{
-                    showMessage('', 'error', '[ 전시품 신청 ]', '전시품 신청 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', ' 요트/보트 출품 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
                 }
             }
 
@@ -5166,7 +5182,7 @@ async function my_step_01_check(exhibitorSeq){
             });
 
             try{
-                // 3-1. [신규] 사용자가 X 눌렀던 파일들 실제 삭제 (await)
+                // 3-1. 사용자가 X 눌렀던 파일들 실제 삭제 (await)
                 await processDeletedFiles();
 
                 // [핵심 수정] 파일 업로드가 끝날 때까지 기다림 (await)
@@ -5223,13 +5239,13 @@ async function my_step_01_check(exhibitorSeq){
 
 function my_step_2_9_check(exhibitorSeq){
 
-    /******************** 전시품 신청 ********************/
+    /******************** 요트/보트 출품 정보 ********************/
     //전시품정보 Json Create
     let productList_json_arr = [];
 
     let boatEntryYn = nvl($('input[type=radio][name=boatEntryYn]:checked').val(),'N');
     if(boatEntryYn === 'Y'){
-        /*showMessage('', 'error', '[ 전시품 신청 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
+        /*showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
         return false;*/
 
         // 제품분류(대)
@@ -5245,7 +5261,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_option_big_flag){
-            showMessage('', 'error', '[ 전시품 신청 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
             return false;
         }
     
@@ -5262,7 +5278,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_option_small_flag){
-            showMessage('', 'error', '[ 전시품 신청 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
             return false;
         }
     
@@ -5277,7 +5293,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_name_ko_flag){
-            showMessage('', 'error', '[ 전시품 신청 ]', '제품명을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품명을 입력해 주세요.', '');
             return false;
         }
     
@@ -5292,7 +5308,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_qty_flag){
-            showMessage('', 'error', '[ 전시품 신청 ]', '수량을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '수량을 입력해 주세요.', '');
             return false;
         }
     
@@ -5307,7 +5323,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_brand_flag){
-            showMessage('', 'error', '[ 전시품 신청 ]', '제조사(브랜드)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
             return false;
         }
 
@@ -5322,7 +5338,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if (!product_feature_flag) {
-            showMessage('', 'error', '[ 전시품 신청 ]', '제품 특징을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품 특징을 입력해 주세요.', '');
             return false;
         }
     
@@ -5337,7 +5353,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_length_flag){
-            showMessage('', 'error', '[ 전시품 신청 ]', '길이(cm)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '길이(cm)를 입력해 주세요.', '');
             return false;
         }
     
@@ -5352,7 +5368,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_width_flag){
-            showMessage('', 'error', '[ 전시품 신청 ]', '너비(cm)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '너비(cm)를 입력해 주세요.', '');
             return false;
         }
     
@@ -5367,7 +5383,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_height_flag){
-            showMessage('', 'error', '[ 전시품 신청 ]', '높이(cm)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '높이(cm)를 입력해 주세요.', '');
             return false;
         }
     
@@ -5382,7 +5398,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_weight_flag){
-            showMessage('', 'error', '[ 전시품 신청 ]', '중량(kg)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '중량(kg)를 입력해 주세요.', '');
             return false;
         }
     
@@ -5397,7 +5413,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_material_flag){
-            showMessage('', 'error', '[ 전시품 신청 ]', '소재를 입력해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '소재를 입력해 주세요.', '');
             return false;
         }
     
@@ -5412,7 +5428,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_year_flag){
-            showMessage('', 'error', '[ 전시품 신청 ]', '연식을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '연식을 입력해 주세요.', '');
             return false;
         }
 
@@ -5489,8 +5505,8 @@ function my_step_2_9_check(exhibitorSeq){
                 if (result.dismiss === Swal.DismissReason.timer) {
                     Swal.fire({
                         icon: 'info',
-                        title: '[ 전시품 신청 ]',
-                        html: '<span style="font-size: 1.2em;">전시품 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                        title: '[ 요트/보트 출품 정보 ]',
+                        html: '<span style="font-size: 1.2em;"> 요트/보트 출품 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
                         allowOutsideClick: false,
                         confirmButtonColor: '#00a8ff',
                         confirmButtonText: '확인'
@@ -5502,7 +5518,7 @@ function my_step_2_9_check(exhibitorSeq){
                 }
             });
         }else{
-            showMessage('', 'error', '[ 전시품 신청 ]', '전시품 신청 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', ' 요트/보트 출품 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
         }
     }
 }
@@ -6352,7 +6368,7 @@ function f_visitor_apply(gbn){
         }
 
         Swal.fire({
-            title: '[사전등록하기]',
+            title: '[ 사전등록 ]',
             html: showMsg,
             icon: 'info',
             allowOutsideClick: false,
@@ -6523,6 +6539,13 @@ function f_visitor_form_valid_check(gbn){
         }
     }
 
+    /* 행사 구분 유효성 검사 추가 */
+    let eventGbn = $('input[type=radio][name=eventGbn]:checked').val();
+    if(nvl(eventGbn,'') === ''){
+        showMessage('', 'info', '[ 참관객 정보 ]', '행사 구분 항목을 선택해 주세요.', '');
+        return false;
+    }
+
     let partnerYn = $('input[type=radio][name=partnerYn]:checked').val();
     if(partnerYn === "Y"){
         let partnerNameList = $('input[type=text][name=partnerName]');
@@ -6597,10 +6620,13 @@ function f_visitor_form_valid_check(gbn){
         return false;
     }
 
-    let preObservationGbn = $('input[type=checkbox][name=preObservationGbn]').is(':checked');
-    if (!preObservationGbn) {
-        showMessage('', 'info', '[ 설문항목 ]', '지난 전시회 참관 여부를 하나 이상 체크해 주세요.', '');
-        return false;
+    // 지난 전시회 참관 여부: 행사구분이 '경기국제보트쇼'일 때만 필수 체크
+    if (eventGbn === '경기국제보트쇼') {
+        let preObservationGbn = $('input[type=checkbox][name=preObservationGbn]').is(':checked');
+        if (!preObservationGbn) {
+            showMessage('', 'info', '[ 설문항목 ]', '지난 전시회 참관 여부를 하나 이상 체크해 주세요.', '');
+            return false;
+        }
     }
 
     return true;
@@ -7222,7 +7248,7 @@ async function f_company_uploadFile_call(id, path) {
         uploadPromises.push(f_company_uploadFile(id, 'exhibitor_apply_form', 'logoFile', 'exhibitor/company/' + path));
     }
 
-    /* 전시품 신청 - 제품사진 */
+    /* 요트/보트 출품 정보 - 제품사진 */
     /*let productImageFileList = $('input[type=file][name=productImageFile]');
     for(let i=0; i<productImageFileList.length; i++){
         let productImageNum = productImageFileList[i].id;
@@ -7490,7 +7516,7 @@ function f_file_remove(el, fileId){
         }
     }
 
-    // 2. [신규] 삭제할 파일 ID를 배열에 저장 (서버 삭제는 나중에)
+    // 2. 삭제할 파일 ID를 배열에 저장 (서버 삭제는 나중에)
     if (fileId && fileId !== 'undefined' && fileId !== '') {
         deletedFileIds.push(fileId);
     }
@@ -7507,7 +7533,7 @@ function f_file_remove(el, fileId){
     }*/
 }
 
-// [신규] 저장 시점에 일괄 삭제를 처리할 함수
+// 저장 시점에 일괄 삭제를 처리할 함수
 async function processDeletedFiles() {
     if (deletedFileIds.length === 0) return;
 

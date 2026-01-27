@@ -265,15 +265,19 @@ let KTAppVisitorMng = function () {
                     'render': function (data, type, row) { return renderPartGbnCell(data, type, row); }
                 },
                 {
-                    'targets': 6,
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderEventGbnCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
                     'render': function (data, type, row) { return renderEmailCell(data, type, row); }
                 },
                 {
-                    'targets': 11,
+                    'targets': 12,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,7] }
+                { visible: false, targets: [1,8] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
@@ -281,6 +285,7 @@ let KTAppVisitorMng = function () {
                 { data: 'visitorGbn' }, //구분
                 { data: 'joinYn' }, //참석여부
                 { data: 'partGbn' }, //참관구분
+                { data: 'eventGbn' }, //행사구분
                 { data: 'name' }, //이름
                 { data: 'email' }, //이메일
                 { data: 'domain' }, //도메인
@@ -298,6 +303,14 @@ let KTAppVisitorMng = function () {
             partGbn = '-';
         }
         return partGbn;
+    }
+
+    function renderEventGbnCell(data, type, row){
+        let eventGbn = row.eventGbn;
+        if(nvl(eventGbn,'') === ''){
+            eventGbn = '-';
+        }
+        return eventGbn;
     }
 
     function renderJoinYnCell(data, type, row){
@@ -380,7 +393,7 @@ let KTAppMemberMng = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
             'select': false,
             'ordering': true,
             'order': [[0, 'desc']],
@@ -534,7 +547,7 @@ let KTAppExhibitorTransferCompany = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
             'select': false,
             'ordering': true,
             'order': [[0, 'desc']],
@@ -773,7 +786,7 @@ let KTAppExhibitorNewApplicationBooth = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
             'select': false,
             'ordering': true,
             'order': [[0, 'desc']],
@@ -1068,7 +1081,7 @@ let KTAppExhibitorApplicationBooth = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
             'select': false,
             'ordering': true,
             'order': [[0, 'desc']],
@@ -1078,50 +1091,51 @@ let KTAppExhibitorApplicationBooth = function () {
                     'className': 'text-center'
                 },
                 {
-                    'targets': 2,
+                    'targets': 3,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 4,
+                    'targets': 5,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
                 },
                 {
-                    'targets': 5,
+                    'targets': 6,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderBoothCntCell(data, type, row); }
                 },
                 {
-                    'targets': 6,
+                    'targets': 7,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderBoothPrcCell(data, type, row); }
                 },
                 {
-                    'targets': 7,
+                    'targets': 8,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderDiscountTypeCell(data, type, row); }
                 },
                 {
-                    'targets': 8,
+                    'targets': 9,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderDiscountPrcCell(data, type, row); }
                 },
                 {
-                    'targets': 9,
+                    'targets': 10,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderBoothPrcSumCell(data, type, row); }
                 },
                 {
-                    'targets': 12,
+                    'targets': 13,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,3,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29] }
+                { visible: false, targets: [1,4,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
                 { data: 'seq'}, //seq
+                { data: 'transferYear'}, //연도
                 { data: 'companyNameKo' }, //회사명(국문)
                 { data: 'companyNameEn' }, //회사명(영문)
                 { data: 'boothType' }, //부스타입
@@ -1562,7 +1576,7 @@ let KTAppExhibitorApplicationSign = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
             'select': false,
             'ordering': true,
             'order': [[0, 'desc']],
@@ -1572,19 +1586,20 @@ let KTAppExhibitorApplicationSign = function () {
                     'className': 'text-center'
                 },
                 {
-                    'targets': 2,
+                    'targets': 3,
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 8,
+                    'targets': 9,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,3] }
+                { visible: false, targets: [1,4] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
                 { data: 'seq'}, //seq
+                { data: 'transferYear'}, //연도
                 { data: 'companyNameKo' }, //회사명(국문)
                 { data: 'companyNameEn' }, //회사명(영문)
                 { data: 'companySignNameKo' }, //상호간판명(국문)
@@ -1851,7 +1866,7 @@ let KTAppExhibitorApplicationUtility = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
             'select': false,
             'ordering': true,
             'order': [[0, 'desc']],
@@ -1861,27 +1876,28 @@ let KTAppExhibitorApplicationUtility = function () {
                     'className': 'text-center'
                 },
                 {
-                    'targets': 2,
+                    'targets': 3,
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 20,
+                    'targets': 21,
                     'render': function (data, type, row) { return renderUtilityGbnCell(data, type, row); }
                 },
                 {
-                    'targets': 21,
+                    'targets': 22,
                     'render': function (data, type, row) { return renderUtilityPrcSumCell(data, type, row); }
                 },
                 {
-                    'targets': 24,
+                    'targets': 25,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19] }
+                { visible: false, targets: [1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
                 { data: 'seq'}, //seq
+                { data: 'transferYear'}, //연도
                 { data: 'companyNameKo' }, //회사명(국문)
                 { data: 'companyNameEn' }, //회사명(영문)
                 { data: 'utilityJuganCnt' },
@@ -2132,7 +2148,7 @@ let KTAppExhibitorApplicationPass = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
             'select': false,
             'ordering': true,
             'order': [[0, 'desc']],
@@ -2142,48 +2158,49 @@ let KTAppExhibitorApplicationPass = function () {
                     'className': 'text-center'
                 },
                 {
-                    'targets': 3,
+                    'targets': 4,
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 5,
+                    'targets': 6,
                     'render': function (data, type, row) { return renderPassNameCell(data, type, row); }
                 },
                 {
-                    'targets': 6,
+                    'targets': 7,
                     'render': function (data, type, row) { return renderPassNameEnCell(data, type, row); }
                 },
                 {
-                    'targets': 8,
+                    'targets': 9,
                     'render': function (data, type, row) { return renderPassPositionKoCell(data, type, row); }
                 },
                 {
-                    'targets': 9,
+                    'targets': 10,
                     'render': function (data, type, row) { return renderPassPositionEnCell(data, type, row); }
                 },
                 {
-                    'targets': 10,
+                    'targets': 11,
                     'render': function (data, type, row) { return renderPassNoteCell(data, type, row); }
                 },
                 {
-                    'targets': 11,
+                    'targets': 12,
                     'render': function (data, type, row) { return renderInitRegiDttmCell(data, type, row); }
                 },
                 {
-                    'targets': 12,
+                    'targets': 13,
                     'render': function (data, type, row) { return renderFinalRegiDttmCell(data, type, row); }
                 },
                 {
-                    'targets': 13,
+                    'targets': 14,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,2,4,7] }
+                { visible: false, targets: [1,2,5,8] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
                 { data: 'seq' }, //업체seq
                 { data: 'id' }, //id
+                { data: 'transferYear' }, //연도
                 { data: 'companyNameko' }, //회사명(국문)
                 { data: 'companyNameEn' }, //회사명(영문)
                 { data: 'passName' }, //성명(국문)
@@ -2501,7 +2518,7 @@ let KTAppExhibitorApplicationBuyer = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
             'select': false,
             'ordering': true,
             'order': [[0, 'desc']],
@@ -2511,44 +2528,45 @@ let KTAppExhibitorApplicationBuyer = function () {
                     'className': 'text-center'
                 },
                 {
-                    'targets': 3,
+                    'targets': 4,
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 5,
+                    'targets': 6,
                     'render': function (data, type, row) { return renderCountryCell(data, type, row); }
                 },
                 {
-                    'targets': 7,
+                    'targets': 8,
                     'render': function (data, type, row) { return renderBuyerCompanyCell(data, type, row); }
                 },
                 {
-                    'targets': 9,
+                    'targets': 10,
                     'render': function (data, type, row) { return renderBuyerNameCell(data, type, row); }
                 },
                 {
-                    'targets': 11,
+                    'targets': 12,
                     'render': function (data, type, row) { return renderEmailCell(data, type, row); }
                 },
                 {
-                    'targets': 12,
+                    'targets': 13,
                     'render': function (data, type, row) { return renderConnectionCell(data, type, row); }
                 },
                 {
-                    'targets': 15,
+                    'targets': 16,
                     'render': function (data, type, row) { return renderInitRegiDttmCell(data, type, row); }
                 },
                 {
-                    'targets': 16,
+                    'targets': 17,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,2,4,6,8,10,13,14] }
+                { visible: false, targets: [1,2,5,7,9,11,14,15] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
                 { data: 'seq' }, //업체seq
                 { data: 'id' }, //id
+                { data: 'transferYear' }, //연도
                 { data: 'companyNameKo' }, //회사명(국문)
                 { data: 'companyNameEn' }, //회사명(영문)
                 { data: 'buyerCompanyCountry' }, //국가
@@ -2853,7 +2871,7 @@ let KTAppExhibitorApplicationGift = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
             'select': false,
             'ordering': true,
             'order': [[0, 'asc']],
@@ -2863,48 +2881,49 @@ let KTAppExhibitorApplicationGift = function () {
                     'className': 'text-center'
                 },
                 {
-                    'targets': 3,
+                    'targets': 4,
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 5,
+                    'targets': 6,
                     'render': function (data, type, row) { return renderGiftGbnCell(data, type, row); }
                 },
                 {
-                    'targets': 6,
+                    'targets': 7,
                     'render': function (data, type, row) { return renderGiftCntCell(data, type, row); }
                 },
                 {
-                    'targets': 7,
+                    'targets': 8,
                     'render': function (data, type, row) { return renderGiftClassifyCell(data, type, row); }
                 },
                 {
-                    'targets': 8,
+                    'targets': 9,
                     'render': function (data, type, row) { return renderGiftNameCell(data, type, row); }
                 },
                 {
-                    'targets': 9,
+                    'targets': 10,
                     'render': function (data, type, row) { return renderPriceCell(data, type, row); }
                 },
                 {
-                    'targets': 11,
+                    'targets': 12,
                     'render': function (data, type, row) { return renderInitRegiDttmCell(data, type, row); }
                 },
                 {
-                    'targets': 12,
+                    'targets': 13,
                     'render': function (data, type, row) { return renderFinalRegiDttmCell(data, type, row); }
                 },
                 {
-                    'targets': 13,
+                    'targets': 14,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,2,4,10] }
+                { visible: false, targets: [1,2,5,11] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
                 { data: 'seq'}, //업체seq
                 { data: 'id'}, //seq
+                { data: 'transferYear'}, //연도
                 { data: 'companyNameKo' }, //회사명(국문)
                 { data: 'companyNameEn' }, //회사명(영문)
                 { data: 'giftGbn' }, //구분
@@ -3309,7 +3328,7 @@ let KTAppExhibitorApplicationOnline = function () {
         // Init datatable --- more info on datatables: https://datatables.net/manual/
         datatable = $(table).DataTable({
             'info': false,
-            'paging' : false,
+            'paging' : true,
             'select': true,
             'ordering': true,
             'order': [[0, 'desc']],

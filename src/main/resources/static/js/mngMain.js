@@ -789,7 +789,7 @@ async function f_attach_file_upload(userId, formId, path) {
         let uploadResult = await f_mng_uploadFile(formId, path);
 
         let uploadFileResponse = uploadResult ? uploadResult.fullPath : '';
-        let oriFileName = uploadResult ? uploadResult.oriFileName : ''; // [신규] 원본 파일명
+        let oriFileName = uploadResult ? uploadResult.oriFileName : ''; // 원본 파일명
 
         if (nvl(uploadFileResponse, "") !== '') {
             Swal.fire({
@@ -942,7 +942,7 @@ function f_file_remove(el, fileId){
         }
     }
 
-    // [신규] 삭제 전 부모 UL 요소 찾기 (삭제 후에는 찾을 수 없으므로 미리 저장)
+    // 삭제 전 부모 UL 요소 찾기 (삭제 후에는 찾을 수 없으므로 미리 저장)
     let $parentUl = $(el).closest('ul');
 
     let jsonObj = {
@@ -963,7 +963,7 @@ function f_file_remove(el, fileId){
 }
 
 /**
- * [신규] 파일 목록 순서 번호 재정렬 함수
+ * 파일 목록 순서 번호 재정렬 함수
  * 특정 UL 내부의 순번만 다시 매깁니다.
  */
 function reorderFiles($targetUl) {

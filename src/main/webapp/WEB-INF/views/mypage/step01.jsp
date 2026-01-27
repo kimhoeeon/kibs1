@@ -97,7 +97,7 @@
                                     <ul class="list2">
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 신청</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">요트/보트 출품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
@@ -1303,6 +1303,7 @@
                                                     <input type="hidden" name="buyerCompanyCountry" value="${buyer.buyerCompanyCountry}">
                                                     <input type="hidden" name="buyerCompanyLocation" value="${buyer.buyerCompanyLocation}">
                                                     <input type="hidden" name="buyerCompanyHomepage" value="${buyer.buyerCompanyHomepage}">
+                                                    <input type="hidden" name="buyerCompanyCharge" value="${buyer.buyerCompanyCharge}">
                                                     <input type="hidden" name="buyerCompanyDepart" value="${buyer.buyerCompanyDepart}">
                                                     <input type="hidden" name="buyerCompanyPosition" value="${buyer.buyerCompanyPosition}">
                                                     <input type="hidden" name="buyerCompanyEmail" value="${buyer.buyerCompanyEmail}">
@@ -1389,6 +1390,14 @@
                                         </li>
                                         <li>
                                             <div class="item">
+                                                <p>담당자 성명</p>
+                                            </div>
+                                            <div class="input">
+                                                <input type="text" id="buyer_charge" name="buyerCompanyCharge" placeholder="담당자 성명">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item">
                                                 <p>부서</p>
                                             </div>
                                             <div class="input">
@@ -1411,7 +1420,7 @@
                                                 <input type="text" id="buyer_email_input1" name="buyerCompanyEmail" class="email_input1" placeholder="이메일"/>
                                                 <span>@</span>
                                                 <input type="text" id="buyer_email_input2" name="buyerCompanyDomain" class="email_input2" placeholder="직접입력"/>
-                                                <select id="buyer_email_select">
+                                                <select id="buyer_email_select" style="margin: 0 !important;">
                                                     <option selected>직접입력</option>
                                                     <option value="naver.com">naver.com</option>
                                                     <option value="daum.net">daum.net</option>
@@ -1511,7 +1520,7 @@
 
                         // 1. 저장이 진행 중이지 않고 (!isSubmitProceeding)
                         // 2. 현재 URL에 '/mng/' (관리자 경로)가 포함되지 않고
-                        // 3. [신규] iframe 내부가 아닌 경우에만 (최상위 창일 때만) 경고창 표시
+                        // 3. iframe 내부가 아닌 경우에만 (최상위 창일 때만) 경고창 표시
                         if (!isSubmitProceeding && !window.location.href.includes('/mng/') && window.self === window.top) {
                             e.preventDefault();
                             e.returnValue = '';

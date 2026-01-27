@@ -28,6 +28,7 @@
                             <img src="/img/footer/orgarniz01.png" alt="킨텍스">
                             <img src="/img/footer/orgarniz03_eng.png" alt="한국마리나협회">
                             <img src="/img/footer/orgarniz04_eng.png" alt="한국해양레저산업협회">
+                            <img src="/img/footer/orgarniz05_eng.png" alt="KOTRA">
                         </div>
                     </li>
                 </ul>
@@ -60,6 +61,7 @@
                             <img src="/img/footer/spon12.png" alt="한국낚시협회">
                             <img src="/img/footer/spon06.png" alt="대한민국해양연맹">
                             <img src="/img/footer/spon11.png" alt="중소조선연구원">
+                            <img src="/img/footer/spon38.png" alt="한국수상레저안전협회">
                             <img src="/img/footer/spon14.jpg" alt="한국수상레저안전연합회">
                             <img src="/img/footer/spon18.png" alt="한국조선해양기자재연구원">
                             <img src="/img/footer/spon16.png" alt="한국조선공업협동조합">

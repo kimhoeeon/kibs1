@@ -137,7 +137,7 @@
                                         <ul class="list2">
                                             <li><a>전시부스 신청</a></li>
                                             <li><a>해상전시회 신청</a></li>
-                                            <li><a>전시품 신청</a></li>
+                                            <li><a>요트/보트 출품 정보</a></li>
                                             <li><a>상호간판 신청</a></li>
                                             <li><a>유틸리티 신청</a></li>
                                             <li><a>출입증 신청</a></li>
@@ -1070,15 +1070,15 @@
                                     <%--<script src="/js/product.js"></script>
                                     <div class="form_wrap">
                                         <div class="form_tit">
-                                            <div class="big">전시품 신청</div>
-                                            <div class="small">입력하신 전시품 신청은 온라인 전시관에 자동 노출됩니다.</div>
+                                            <div class="big">요트/보트 출품 정보</div>
+                                            <div class="small">입력하신  요트/보트 출품 정보은 온라인 전시관에 자동 노출됩니다.</div>
                                         </div>
 
                                         <c:if test="${empty productList}">
                                             <ul class="form_box exhiInfoBox">
                                                 <li class="form_in_tit">
                                                     <input type="hidden" name="productSeq" value="">
-                                                    전시품 신청 #<span class="exhiInfoNum">1</span>
+                                                    요트/보트 출품 정보 #<span class="exhiInfoNum">1</span>
                                                     <span class="del_btn exhiInfoDel">삭제</span>
                                                 </li>
                                                 <li>
@@ -1725,7 +1725,8 @@
                                                         <input type="hidden" name="buyerCompanyName" value="${buyer.buyerCompanyName}">
                                                         <input type="hidden" name="buyerCompanyCountry" value="${buyer.buyerCompanyCountry}">
                                                         <input type="hidden" name="buyerCompanyLocation" value="${buyer.buyerCompanyLocation}">
-                                                        <input type="hidden" name="buyerCompanyHomepage" value="${buyer.buyerCompanyHomepage}">
+                                                        <input type="hidden" name="buyerCompanyHomepage" value="${buyer.buyerCompanyHomepage}">ㅊ
+                                                        <input type="hidden" name="buyerCompanyCharge" value="${buyer.buyerCompanyCharge}">
                                                         <input type="hidden" name="buyerCompanyDepart" value="${buyer.buyerCompanyDepart}">
                                                         <input type="hidden" name="buyerCompanyPosition" value="${buyer.buyerCompanyPosition}">
                                                         <input type="hidden" name="buyerCompanyEmail" value="${buyer.buyerCompanyEmail}">
@@ -1812,6 +1813,14 @@
                                             </li>
                                             <li>
                                                 <div class="item">
+                                                    <p>담당자 성명</p>
+                                                </div>
+                                                <div class="input">
+                                                    <input type="text" id="buyer_charge" name="buyerCompanyCharge" placeholder="담당자 성명">
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="item">
                                                     <p>부서</p>
                                                 </div>
                                                 <div class="input">
@@ -1834,7 +1843,7 @@
                                                     <input type="text" id="buyer_email_input1" name="buyerCompanyEmail" class="email_input1" placeholder="이메일"/>
                                                     <span>@</span>
                                                     <input type="text" id="buyer_email_input2" name="buyerCompanyDomain" class="email_input2" placeholder="직접입력"/>
-                                                    <select id="buyer_email_select">
+                                                    <select id="buyer_email_select" style="margin: 0 !important;">
                                                         <option selected>직접입력</option>
                                                         <option value="naver.com">naver.com</option>
                                                         <option value="daum.net">daum.net</option>
@@ -1987,7 +1996,7 @@
 
                             // 1. 저장이 진행 중이지 않고 (!isSubmitProceeding)
                             // 2. 현재 URL에 '/mng/' (관리자 경로)가 포함되지 않고
-                            // 3. [신규] iframe 내부가 아닌 경우에만 (최상위 창일 때만) 경고창 표시
+                            // 3. iframe 내부가 아닌 경우에만 (최상위 창일 때만) 경고창 표시
                             if (!isSubmitProceeding && !window.location.href.includes('/mng/') && window.self === window.top) {
                                 e.preventDefault();
                                 e.returnValue = '';

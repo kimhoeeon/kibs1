@@ -92,7 +92,7 @@ public class ExhibitorNewDTO {
     String fieldParticipatory2;
     String fieldParticipatory3;
 
-    //전시품 신청
+    // 요트/보트 출품 정보
     String boatEntryYn; // 요트/보트 출품 여부
     List<ProductNewDTO> productList; //전시품정보
 

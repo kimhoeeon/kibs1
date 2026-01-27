@@ -27,6 +27,7 @@ public class SearchDTO extends AbstractPagingRequestVo {
     String refundYn; //환불내역존재여부
     String transferYear; //이관년도
     String nowYear; //현재년도
+    String boatEntryYn;
 
     /* 참가자 관리 - 참관객 목록 */
     String joinYear; //참관년도

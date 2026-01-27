@@ -11,6 +11,7 @@ public class MngPassDTO {
     Integer rownum; //순번
     String seq; //업체SEQ
     String id; //ID
+    String transferYear;
     String companyNameKo; //회사명(국문)
     String companyNameEn; //회사명(영문)
     String passName; //출입증 성명(국문)

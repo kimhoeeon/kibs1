@@ -152,6 +152,7 @@
                                 <img src="/img/summ_logo03.png">
                                 <img src="/img/summ_logo05.png">
                                 <img src="/img/summ_logo06.png">
+                                <img src="/img/summ_logo07.png">
                             </div>
                         </li>
                     </ul>

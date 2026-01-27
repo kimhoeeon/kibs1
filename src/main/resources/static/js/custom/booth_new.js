@@ -6,45 +6,6 @@ var transferYear = '2026';
 
 $(function(){
 
-    let datepicker_from = document.querySelector('#datepicker_from');
-
-    if (datepicker_from) {
-        $("#datepicker_from").daterangepicker({
-                singleDatePicker: true,
-                showDropdowns: true,
-                minYear: 1901,
-                maxYear: parseInt(moment().format("YYYY"),12),
-                startDate: '01/01/' + (transferYear-1)
-            }, function(start, end, label) {
-                /*var years = moment().diff(start, "years");
-                alert("You are " + years + " years old!");*/
-            }
-        );
-
-        $('#datepicker_from').on('apply.daterangepicker', function(ev, picker) {
-            f_search_condition_sel_change();
-        });
-    }
-
-    let datepicker_to = document.querySelector('#datepicker_to');
-
-    if (datepicker_to) {
-        $("#datepicker_to").daterangepicker({
-                singleDatePicker: true,
-                showDropdowns: true,
-                minYear: 1901,
-                maxYear: parseInt(moment().format("YYYY"),12)
-            }, function(start, end, label) {
-                /*var years = moment().diff(start, "years");
-                alert("You are " + years + " years old!");*/
-            }
-        );
-
-        $('#datepicker_to').on('apply.daterangepicker', function(ev, picker) {
-            f_search_condition_sel_change();
-        });
-    }
-
     let myModalEl = document.getElementById('kt_modal_invoice_form');
 
     if(myModalEl){
@@ -73,19 +34,9 @@ $(function(){
 });
 
 function f_application_booth_new_search_condition_init(){
-    let date = new Date(); // Data 객체 생성
-    let year = date.getFullYear().toString(); // 년도 구하기
-    let month = date.getMonth() + 1; // 월 구하기
-    month = month < 10 ? '0' + month.toString() : month.toString(); // 10월 미만 0 추가
-    let day = date.getDate(); // 날짜 구하기
-    day = day < 10 ? '0' + day.toString() : day.toString(); // 10일 미만 0 추가
-
-    let todayFormat = month + '/' + day + '/' + year;
-
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
-    $('#datepicker_from').val(todayFormat);
-    $('#datepicker_to').val(todayFormat);
+    $('#transferYear').val('').select2({minimumResultsForSearch: Infinity});
     $('#lang').val('').select2({minimumResultsForSearch: Infinity});
     $('#approvalYn').val('').select2({minimumResultsForSearch: Infinity});
     $('#cancelYn').val('').select2({minimumResultsForSearch: Infinity});
@@ -177,11 +128,7 @@ function f_search_condition_sel_change(){
     dataTbl.clear();
     dataTbl.draw(false);
 
-    let date_from_val = $('#datepicker_from').val().split('/');
-    let date_from = date_from_val[2] + '-' + date_from_val[0] + '-' + date_from_val[1];
-    let date_to_val = $('#datepicker_to').val().split('/');
-    let date_to = date_to_val[2] + '-' + date_to_val[0] + '-' + date_to_val[1];
-
+    let transferYear = $('#transferYear option:selected').val(); //참가년도
     let lang = $('#lang option:selected').val(); //참가신청언어
     let approvalYn = $('#approvalYn option:selected').val(); //승인여부
     let cancelYn = $('#cancelYn option:selected').val(); //참가취소여부
@@ -192,8 +139,6 @@ function f_search_condition_sel_change(){
     let searchText = $('#search_text').val();
 
     let jsonObj = {
-        dateFrom: date_from,
-        dateTo: date_to,
         lang: lang,
         approvalStatus: approvalYn,
         cancelYn: cancelYn,

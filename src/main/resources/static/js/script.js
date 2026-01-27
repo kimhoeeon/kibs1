@@ -419,7 +419,7 @@ $(document).ready(function () {
         }
     });
 
-    // [신규] 일반 전화번호용 하이픈 자동 완성 및 숫자만 입력 (02, 031, 070 등 허용)
+    // 일반 전화번호용 하이픈 자동 완성 및 숫자만 입력 (02, 031, 070 등 허용)
     $(document).on('input keyup', '.onlyGeneralTel', function () {
         // 1. 숫자만 남기기
         $(this).val($(this).val().replace(/[^0-9]/g, ""));
@@ -868,7 +868,7 @@ $(document).ready(function () {
 
             //updateExhiInfoNum(this);
         }else{
-            showMessage('', 'info', '[ 전시품 신청 ]', '전시정보는 최대 20개까지만 등록 가능합니다.', '');
+            showMessage('', 'info', '[ 요트/보트 출품 정보 ]', '전시정보는 최대 20개까지만 등록 가능합니다.', '');
         }
     });
 
@@ -876,8 +876,8 @@ $(document).ready(function () {
     function deleteExhiInfoBox(el) {
         Swal.fire({
             icon: 'warning',
-            title: '[ 전시품 신청 ]',
-            html: '<span style="font-size: 1.2em;">해당 전시품 신청 정보를 삭제하시겠습니까?</span>',
+            title: '[ 요트/보트 출품 정보 ]',
+            html: '<span style="font-size: 1.2em;">해당 요트/보트 출품 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -893,7 +893,7 @@ $(document).ready(function () {
                     };
                     let resData = ajaxConnect('/mypage/step/deleteProductNew.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '전시품 신청 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                        showMessage('', 'error', '에러 발생', ' 요트/보트 출품 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
                     }
 
                     /*let fileList = $(el).parent().parent().find('.preValueList').find('.file_box ul .productImageFile_li').find('input[type=hidden][name=productImageUploadFile]');
@@ -983,7 +983,7 @@ $(document).ready(function () {
             // 업데이트 후 최대 5개까지 보이도록 제한
             updateExhiPrdBox();
         }else{
-            showMessage('', 'info', '[ 전시품 신청 ]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
+            showMessage('', 'info', '[ 요트/보트 출품 정보 ]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
         }
 
     });
@@ -1016,7 +1016,7 @@ $(document).ready(function () {
         });
     }
 
-    // [신규] 전시품 목록 순번 재정렬 함수 (ID, Name, No 텍스트 모두 갱신)
+    // 전시품 목록 순번 재정렬 함수 (ID, Name, No 텍스트 모두 갱신)
     function reorderExhiList() {
         $('.exhiInfoBox').each(function(index) {
             let newNum = index + 1; // 1부터 시작
@@ -1342,16 +1342,6 @@ $(document).ready(function () {
             $('input[type=checkbox][name=prePartYear]:not(:first)').prop('checked',false);
         }else{
             $('input[type=checkbox][name=prePartYear]:first').prop('checked',false);
-        }
-    })
-
-    //지난 전시회 참관 여부
-    $('input[type=checkbox][name=preObservationGbn]').on('change', function(){
-        let preObservationGbn = $(this).val();
-        if(preObservationGbn === 'first'){
-            $('input[type=checkbox][name=preObservationGbn]:not(:first)').prop('checked',false);
-        }else{
-            $('input[type=checkbox][name=preObservationGbn]:first').prop('checked',false);
         }
     })
 

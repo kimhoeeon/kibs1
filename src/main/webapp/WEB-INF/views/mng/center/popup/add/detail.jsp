@@ -453,7 +453,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitorNew/application/product.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">전시품 신청</span>
+                                                                            <span class="menu-title">요트/보트 출품 정보</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1570,7 +1570,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">전시품 신청</span>
+                                                <span class="menu-title">요트/보트 출품 정보</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2287,7 +2287,7 @@ if (document.documentElement) {
                                                 <!--begin::Select2-->
                                                 <select id="lang" name="lang" class="form-select form-select-solid" data-control="select2" aria-label="- 언어 -" data-placeholder="- 언어 -" data-hide-search="true">
                                                     <option></option>
-                                                    <option disabled>- 언어 -</option>
+                                                    <option value="" disabled>- 언어 -</option>
                                                     <option value="KO" <c:if test="${info.lang eq 'KO' or empty info}">selected</c:if> >국문</option>
                                                     <option value="EN" <c:if test="${info.lang eq 'EN'}">selected</c:if> >영문</option>
                                                 </select>
@@ -2380,7 +2380,7 @@ if (document.documentElement) {
                                                 <!--begin::Select2-->
                                                 <select id="align" name="align" class="form-select form-select-solid" data-control="select2" aria-label="- 정렬 -" data-placeholder="- 정렬 -" data-hide-search="true" onchange="f_center_popup_align_sel_set(this)">
                                                     <option></option>
-                                                    <option disabled>- 정렬 -</option>
+                                                    <option value="" disabled>- 정렬 -</option>
                                                     <option value="B_LEFT" <c:if test="${info.align eq 'B_LEFT' or empty info}">selected</c:if> >브라우저 왼쪽</option>
                                                     <option value="B_RIGHT" <c:if test="${info.align eq 'B_RIGHT'}">selected</c:if> >브라우저 오른쪽</option>
                                                 </select>
@@ -2560,7 +2560,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251127"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
     <script src="/assets/js/custom/apps/ecommerce/catalog/quill-editor.js?ver=202512"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>

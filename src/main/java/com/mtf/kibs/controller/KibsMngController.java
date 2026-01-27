@@ -18,7 +18,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -3836,7 +3835,7 @@ public class KibsMngController {
             // 파일 저장 (write to disk)
             File uploadFile = new File(fileFullPath);
             image.transferTo(uploadFile);
-            // [수정] 웹에서 접근 가능한 '웹 경로'를 포함하여 반환
+            // 웹에서 접근 가능한 '웹 경로'를 포함하여 반환
             return "/upload/editor/" + saveFilename;
 
         } catch (IOException e) {
@@ -3977,7 +3976,7 @@ public class KibsMngController {
     }
 
     /**
-     * [신규] 이미지 보기 (우클릭 저장 시 원본 파일명 적용)
+     * 이미지 보기 (우클릭 저장 시 원본 파일명 적용)
      * @param path : 파일의 물리적 경로 (또는 웹 경로)
      * @param fileName : 사용자가 저장할 때 보일 원본 파일명
      */
@@ -4101,7 +4100,7 @@ public class KibsMngController {
         if ("mail".equals(path)) {
             fileRepoPath = "/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/static/img/" + path;
         } else {
-            // [수정] path 앞에 슬래시가 누적되지 않도록 처리
+            // path 앞에 슬래시가 누적되지 않도록 처리
             if(path.startsWith("/")) path = path.substring(1);
             fileRepoPath = "/usr/local/tomcat/webapps/upload/" + path;
         }
@@ -4527,7 +4526,7 @@ public class KibsMngController {
             List<String> headerList = new ArrayList<>();
 
             // 1-1. 고정 헤더 (업체정보 ~ 해상전시회) : 83개
-            // [수정] "참가비수납여부" 제거 (업체정보 29개)
+            // "참가비수납여부" 제거 (업체정보 29개)
             String[] fixedHeaders1 = {
                     /* 업체정보 (29) */ "No", "참가상태", "승인구분", "부스번호", "아이디", "등록일", "최종수정일", "BP번호", "컨택내역-작성자", "컨택내역-날짜", "컨택내역-내용", "참고사항-작성자", "참고사항-날짜", "참고사항-내용", "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소", "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "기참가연도", "회원사 여부",
                     /* 입금 현황 (11) */ "금액", "내용", "수납여부", "입금일", "입금예정일", "세금계산서", "입금자", "확인자", "코멘트", "등록일시", "수정일시",
@@ -4641,7 +4640,7 @@ public class KibsMngController {
                 sheet.setColumnWidth(i, 5000);
             }
             sheet.setColumnWidth(0, 3000); // No 컬럼
-            // [수정] 유틸리티 신청내역 너비 설정 (638 + 30 = 668번 인덱스)
+            // 유틸리티 신청내역 너비 설정 (638 + 30 = 668번 인덱스)
             sheet.setColumnWidth(668, 8000);
 
             ExhibitorNewDetailDTO exhibitorDetailDTO = new ExhibitorNewDetailDTO();
@@ -8800,7 +8799,7 @@ public class KibsMngController {
         // SXSSFWorkbook: 대용량 데이터 처리 시 메모리 부족 방지를 위한 스트리밍 방식
         try (SXSSFWorkbook workbook = new SXSSFWorkbook()) {
 
-            SXSSFSheet sheet = workbook.createSheet("전시품 신청");
+            SXSSFSheet sheet = workbook.createSheet(" 요트/보트 출품 정보");
 
             sheet.trackAllColumnsForAutoSizing();
 
@@ -8861,12 +8860,12 @@ public class KibsMngController {
             Cell companySubCell2 = subHeaderRow.createCell(1);
             companySubCell2.setCellValue("업체명");
 
-            // 1-2. 전시품 신청 헤더 (21개 반복)
+            // 1-2. 요트/보트 출품 정보 헤더 (21개 반복)
             String[] productHeaders = {"제품분류(대분류)", "제품분류(소분류)", "신제품 여부", "제품명", "수량", "제조사(브랜드)", "특징", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식"};
             for (int i = 0; i < 20; i++) {
                 int startCol = 2 + (i * productHeaders.length);
                 Cell productMainCell = mainHeaderRow.createCell(startCol);
-                productMainCell.setCellValue("전시품 신청 " + (i + 1));
+                productMainCell.setCellValue(" 요트/보트 출품 정보 " + (i + 1));
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, startCol, startCol + productHeaders.length - 1));
 
                 for (int j = 0; j < productHeaders.length; j++) {
@@ -8901,7 +8900,7 @@ public class KibsMngController {
                 row.createCell(0).setCellValue(companyNum++);
                 row.createCell(1).setCellValue(products.get(0).getCompanyNameKo());
 
-                // 전시품 신청 채우기 (최대 20개)
+                // 요트/보트 출품 정보 채우기 (최대 20개)
                 for (int i = 0; i < products.size() && i < 20; i++) {
                     ProductDetailDTO product = products.get(i);
                     int startCol = 2 + (i * productHeaders.length);

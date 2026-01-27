@@ -75,6 +75,7 @@
     <c:otherwise>
 
         <c:import url="../header.jsp" charEncoding="UTF-8"/>
+        <script src="/js/custom/visitor.js?ver=20260127"></script>
 
         <%-- 25.02.25 참관신청 종료--%>
         <div id="container">
@@ -398,6 +399,23 @@
                             </ul>
                         </div>
 
+                        <!-- 행사 구분 -->
+                        <div class="form_wrap">
+                            <div class="form_tit">
+                                <div class="big">행사 구분</div>
+                            </div>
+                            <ul class="form_box">
+                                <li>
+                                    <div class="input check w-100">
+                                        <label><input type="radio" name="eventGbn" value="경기국제보트쇼">경기국제보트쇼(KIBS)·한국국제낚시박람회(KOFISH)</label>
+                                        <label><input type="radio" name="eventGbn" value="코리아서프쇼">코리아서프쇼(KISS)</label>
+                                        <label><input type="radio" name="eventGbn" value="해양관광전">해양관광전(KMTS)</label>
+                                        <div class="cmnt">참관하시는 관광전을 선택해주세요.</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
                         <!-- 참관객 정보 -->
                         <div class="form_wrap">
                             <div class="form_tit">
@@ -549,98 +567,31 @@
                                     <div class="item req">
                                         <p>관람 구분</p>
                                     </div>
-                                    <div class="input check">
-                                        <label><input type="checkbox" name="observationGbn" value="조종면허 보유자">조종면허 보유자</label>
-                                        <label><input type="checkbox" name="observationGbn" value="보트 소유자">보트 소유자</label>
-                                        <label><input type="checkbox" name="observationGbn" value="보트 구매 예정자">보트 구매 예정자</label>
-                                        <label><input type="checkbox" name="observationGbn" value="관련 업종 종사자">관련 업종 종사자</label>
-                                        <label><input type="checkbox" name="observationGbn" value="서핑 매니아">서핑 매니아</label>
-                                        <label><input type="checkbox" name="observationGbn" value="해양관광 예정자">해양관광 예정자</label>
-                                        <label><input type="checkbox" name="observationGbn" value="낚시 매니아">낚시 매니아</label>
-                                        <label><input type="checkbox" name="observationGbn" value="다이빙 매니아">다이빙 매니아</label>
-                                        <label><input type="checkbox" name="observationGbn" value="캠핑카 매니아">캠핑카 매니아</label>
-                                        <label><input type="checkbox" name="observationGbn" value="학생">학생</label>
-                                        <label><input type="checkbox" name="observationGbn" value="일반관람">일반관람</label>
-                                        <label><input type="checkbox" name="observationGbn" value="기타">기타</label>
-                                        <div class="cmnt">복수응답가능</div>
-                                    </div>
+                                    <div class="input check" id="ul_observationGbn"></div>
                                 </li>
                                 <li>
                                     <div class="item req">
-                                        <p>보트쇼 방문 목적</p>
+                                        <p id="visitPurposeTitle">방문 목적</p>
                                     </div>
-                                    <div class="input check">
-                                        <label><input type="checkbox" name="visitPurpose" value="업계동향 파악 및 정보수집">업계동향 파악 및 정보수집</label>
-                                        <label><input type="checkbox" name="visitPurpose" value="제품구매 및 기술도입 상담">제품구매 및 기술도입 상담</label>
-                                        <label><input type="checkbox" name="visitPurpose" value="기존 거래업체 방문">기존 거래업체 방문</label>
-                                        <label><input type="checkbox" name="visitPurpose" value="차기 전시회 참가여부 파악">차기 전시회 참가여부 파악</label>
-                                        <label><input type="checkbox" name="visitPurpose" value="일반관람">일반관람</label>
-                                        <label><input type="checkbox" name="visitPurpose" value="기타">기타</label>
-                                        <div class="cmnt">복수응답가능</div>
-                                    </div>
+                                    <div class="input check" id="ul_visitPurpose"></div>
                                 </li>
                                 <li>
                                     <div class="item req">
                                         <p>관심품목</p>
                                     </div>
-                                    <div class="input check">
-                                        <label><input type="checkbox" name="interestItem" value="보트&요트">보트&요트</label>
-                                        <label><input type="checkbox" name="interestItem" value="무동력보트">무동력보트</label>
-                                        <label><input type="checkbox" name="interestItem" value="워크보트">워크보트</label>
-                                        <label><input type="checkbox" name="interestItem" value="해양부품&장비">해양부품&장비</label>
-                                        <label><input type="checkbox" name="interestItem" value="안전&마리나">안전&마리나</label>
-                                        <label><input type="checkbox" name="interestItem" value="해양관광">해양관광</label>
-                                        <label><input type="checkbox" name="interestItem" value="해양레저">해양레저</label>
-                                        <label><input type="checkbox" name="interestItem" value="서핑">서핑</label>
-                                        <label><input type="checkbox" name="interestItem" value="수중레저">수중레저</label>
-                                        <div class="cmnt">복수응답가능</div>
-                                    </div>
+                                    <div class="input check" id="ul_interestItem"></div>
                                 </li>
                                 <li>
                                     <div class="item req">
                                         <p>인지경로</p>
                                     </div>
-                                    <div class="input check">
-                                        <label><input type="checkbox" name="recognizePath" value="뉴스레터">뉴스레터</label>
-                                        <label><input type="checkbox" name="recognizePath" value="옥외광고물">옥외광고물</label>
-                                        <label><input type="checkbox" name="recognizePath" value="홈페이지">홈페이지</label>
-                                        <label><input type="checkbox" name="recognizePath" value="전문지">전문지</label>
-                                        <label><input type="checkbox" name="recognizePath" value="온라인 커뮤니티">온라인 커뮤니티</label>
-                                        <label><input type="checkbox" name="recognizePath" value="오프라인매장">오프라인매장</label>
-                                        <label><input type="checkbox" name="recognizePath" value="소셜 네트워크">소셜 네트워크</label>
-                                        <label><input type="checkbox" name="recognizePath" value="초청장">초청장</label>
-                                        <label><input type="checkbox" name="recognizePath" value="방송광고">방송광고</label>
-                                        <label><input type="checkbox" name="recognizePath" value="KIBS 참석">KIBS 참석</label>
-                                        <label><input type="checkbox" name="recognizePath" value="낚시박람회">낚시박람회</label>
-                                        <label><input type="checkbox" name="recognizePath" value="기타">기타</label>
-                                        <div class="cmnt">복수응답가능</div>
-                                    </div>
+                                    <div class="input check" id="ul_recognizePath"></div>
                                 </li>
-                                <li>
+                                <li id="preObservationGbnLi" style="display:none;">
                                     <div class="item">
                                         <p>지난 전시회 참관 여부</p>
                                     </div>
-                                    <div class="input check">
-                                        <label><input type="checkbox" name="preObservationGbn" value="first">첫 참관</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2008">2008</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2009">2009</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2010">2010</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2011">2011</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2012">2012</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2013">2013</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2014">2014</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2015">2015</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2016">2016</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2017">2017</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2018">2018</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2019">2019</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2020">2020</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2021">2021</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2022">2022</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2023">2023</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2024">2024</label>
-                                        <label><input type="checkbox" name="preObservationGbn" value="2025">2025</label>
-                                    </div>
+                                    <div class="input check" id="ul_preObservationGbn"></div>
                                 </li>
                             </ul>
                         </div>
@@ -757,26 +708,53 @@
             </div>
         </div>
         <!-- //직장명 직접 입력 팝업 -->
-        </div>
 
         <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-    <script>
-        $(function(){
-            $('input[type=radio][name=partGbn]').on('change', function(){
-                let partGbn = $(this).val();
-                if(partGbn === '바이어'){
-                    $('input[type=checkbox][name=observationGbn]').prop('checked', false).prop('disabled', true);
-                    $('#observationGbnDiv').hide();
-                    $('#companyNameDiv').addClass('req');
-                }else{
-                    $('input[type=checkbox][name=observationGbn]').prop('disabled', false);
-                    $('#observationGbnDiv').show();
-                    $('#companyNameDiv').removeClass('req');
+        <script>
+            $(function(){
+                // 1. 행사 구분 변경 이벤트
+                $('input[name=eventGbn]').on('change', function() {
+                    if(typeof renderSurveyItems === 'function'){
+                        renderSurveyItems($(this).val(), null);
+                    }
+                });
+
+                // 2. 초기 로딩 시: 행사 구분 기본값 설정 (경기국제보트쇼)
+                let initialEvent = $('input[name=eventGbn]:checked').val();
+                if (!initialEvent) {
+                    initialEvent = '경기국제보트쇼';
+                    $('input[name=eventGbn][value="경기국제보트쇼"]').prop('checked', true);
                 }
-            })
-        })
-    </script>
+
+                // 설문 항목 렌더링
+                if(typeof renderSurveyItems === 'function') {
+                    renderSurveyItems(initialEvent, null);
+                }
+
+                // 3. 참관 구분 변경 이벤트
+                $('input[type=radio][name=partGbn]').on('change', function(){
+                    let partGbn = $(this).val();
+                    if(partGbn === '바이어'){
+                        $('#observationGbnDiv').hide();
+                        $('#companyNameDiv').addClass('req');
+                    }else{
+                        $('#observationGbnDiv').show();
+                        $('#companyNameDiv').removeClass('req');
+                    }
+                });
+
+                // 4. [요청사항 적용] 참관 구분 기본값 설정 (바이어)
+                let currentPartGbn = $('input[name=partGbn]:checked').val();
+                if(!currentPartGbn) {
+                    // 바이어를 기본으로 선택하고 change 이벤트 트리거 (UI 동기화)
+                    $('input[name=partGbn][value="바이어"]').prop('checked', true).trigger('change');
+                } else {
+                    // 이미 선택된 값이 있다면 해당 값으로 UI 동기화
+                    $('input[name=partGbn][value="' + currentPartGbn + '"]').trigger('change');
+                }
+            });
+        </script>
     </c:otherwise>
 </c:choose>
 

@@ -452,7 +452,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitorNew/application/product.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">전시품 신청</span>
+                                                                            <span class="menu-title">요트/보트 출품 정보</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1569,7 +1569,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">전시품 신청</span>
+                                                <span class="menu-title">요트/보트 출품 정보</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2291,7 +2291,7 @@ if (document.documentElement) {
                                                     <select id="category" name="category" class="form-select form-select-solid" data-control="select2"
                                                             aria-label="- 카테고리 -" data-placeholder="- 카테고리 -" data-hide-search="true">
                                                         <option></option>
-                                                        <option disabled>- 카테고리 -</option>
+                                                        <option value="" disabled>- 카테고리 -</option>
                                                         <option value="2025 경기국제보트쇼" <c:if test="${info.category eq '2025 경기국제보트쇼'}">selected</c:if> >2025 경기국제보트쇼 [2025 KIBS]</option>
                                                         <option value="해양레저 지식백과" <c:if test="${info.category eq '해양레저 지식백과'}">selected</c:if> >해양레저 지식백과 [Encyclopedia Of Marine Leisure]</option>
                                                         <option value="부스투어" <c:if test="${info.category eq '부스투어'}">selected</c:if> >부스투어 [Booth Tour]</option>
@@ -2498,7 +2498,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251127"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
     <script src="/assets/js/custom/apps/ecommerce/catalog/quill-editor.js?ver=202512"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>

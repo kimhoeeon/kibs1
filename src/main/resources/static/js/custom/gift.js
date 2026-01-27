@@ -84,6 +84,53 @@ $(function(){
     }
 })
 
+function f_search_condition_sel_change(){
+
+    /* 로딩페이지 */
+    loadingBarShow();
+
+    /* DataTable Data Clear */
+    let dataTbl = $('#kt_exhibitor_application_gift_table').DataTable();
+    dataTbl.clear();
+    dataTbl.draw(false);
+
+    let transferYear = $('#transferYear option:selected').val();
+    let condition = $('#search_box option:selected').val();
+    let searchText = $('#search_text').val();
+
+    let jsonObj = {
+        transferYear: transferYear,
+        condition: condition,
+        searchText: searchText
+    }
+
+    //console.log(jsonObj);
+
+    /* 목록 데이터 조회 */
+    let resData = ajaxConnect('/mng/exhibitor/application/gift/selectList.do', 'post', jsonObj);
+    dataTbl.rows.add(resData).draw();
+
+    /* 조회 카운트 입력 */
+    document.getElementById('search_cnt').innerText = resData.length;
+
+    /* DataTable Column tooltip Set */
+    let jb = $('#kt_exhibitor_application_gift_table tbody td');
+    let cnt = 0;
+    jb.each(function(index, item){
+        let itemText = $(item).text();
+        let itemText_trim = itemText.replaceAll(' ','');
+        if(itemText_trim !== ''){
+            $(item).attr('data-bs-toggle', 'tooltip');
+            $(item).attr('data-bs-trigger', 'hover');
+            $(item).attr('data-bs-custom-class', 'tooltip-inverse');
+            $(item).attr('data-bs-placement', 'top');
+            $(item).attr('title',itemText);
+        }
+        cnt++;
+    })
+    jb.tooltip();
+}
+
 function f_application_gift_search(){
 
     /* 로딩페이지 */
@@ -97,15 +144,16 @@ function f_application_gift_search(){
     /* TM 및 잠재DB 목록 데이터 조회 */
     let jsonObj;
     let searchText = $('#search_text').val();
+    let transferYear = $('#transferYear option:selected').val();
     if(nullToEmpty(searchText) === ""){
         jsonObj = {
-            "transferYear": transferYear
+            transferYear: transferYear
         };
     }else{
         jsonObj = {
-            "transferYear": transferYear,
-            "condition": $('#search_box option:selected').val(),
-            "searchText": searchText
+            transferYear: transferYear,
+            condition: $('#search_box option:selected').val(),
+            searchText: searchText
         }
     }
 
@@ -138,6 +186,7 @@ function f_application_gift_search_condition_init(){
 
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
+    $('#transferYear').val('').select2({minimumResultsForSearch: Infinity});
 
     /* 재조회 */
     f_application_gift_search();

@@ -97,7 +97,7 @@
                                     <ul class="list2">
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
-                                        <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">전시품 신청</a></li>
+                                        <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">요트/보트 출품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
@@ -120,7 +120,13 @@
                                 <div class="form_wrap">
                                     <div class="form_tit">
                                         <div class="big">요트/보트 출품 정보</div>
-                                        <div class="small">신청하실 경우 전시품 신청은 1개 이상 필수 등록입니다.</div>
+                                        <div class="small">
+                                            신청하실 경우 요트/보트 출품 정보는 1개 이상 필수 등록입니다.<br><br>
+                                            2026 경기국제보트쇼 장치 및 철거일정을 고려하여 전시품 선정 부탁드립니다.<br><br>
+                                            ○ 장치 및 전시품 반입 : 2026.3.4(수) ~ 3.5(목) 08:00~20:00, 2일간<br>
+                                            ○ 행사기간 : 2026.3.6(금) ~ 3.8(일), 3일간<br>
+                                            ○ 철거 및 전시품 반출 : 2026.3.8(일) 08:00~20:00, 당일철거
+                                        </div>
                                     </div>
                                     <ul class="form_box">
                                         <li>
@@ -145,21 +151,14 @@
                                 <script src="/js/product.js"></script>
                                 <div class="form_wrap productInfoWrap" style="display: none;">
                                     <div class="form_tit">
-                                        <div class="big">전시품 신청</div>
-                                        <div class="small">
-                                            입력하신 전시품 신청은 온라인 전시관에 자동 노출됩니다.<br><br>
-                                            2026 경기국제보트쇼 장치 및 철거일정을 고려하여 전시품 선정 부탁드립니다.<br><br>
-                                            ○ 장치 및 전시품 반입 : 2026.3.4(수) ~ 3.5(목) 08:00~20:00, 2일간<br>
-                                            ○ 행사기간 : 2026.3.6(금) ~ 3.8(일), 3일간<br>
-                                            ○ 철거 및 전시품 반출 : 2026.3.8(일) 08:00~20:00, 당일철거
-                                        </div>
+                                        <div class="big">요트/보트 출품 정보 입력</div>
                                     </div>
 
                                     <c:if test="${empty productList}">
                                         <ul class="form_box exhiInfoBox">
                                             <li class="form_in_tit">
                                                 <input type="hidden" name="productSeq" value="">
-                                                전시품 신청 #<span class="exhiInfoNum">1</span>
+                                                요트/보트 출품 정보 #<span class="exhiInfoNum">1</span>
                                                 <span class="del_btn exhiInfoDel">삭제</span>
                                             </li>
                                             <li>
@@ -436,7 +435,7 @@
                         let flag = false;
                         const productName_el = $('input[type=text][name=productNameKo]');
 
-                        // 입력된 전시품 신청가 있는지 확인
+                        // 입력된  요트/보트 출품 정보가 있는지 확인
                         productName_el.each(function() {
                             if ($(this).val() !== '') {
                                 flag = true;
@@ -447,8 +446,8 @@
                         if (flag) {
                             Swal.fire({
                                 icon: 'warning',
-                                title: '[ 전시품 신청 ]',
-                                html: '<span style="font-size: 1.2em;">요트/보트 출품 여부 \'미신청\' 으로 변경 시<br>등록한 전시품 신청가 모두 삭제됩니다.<br>변경하시겠습니까?</span>',
+                                title: '[ 요트/보트 출품 정보 ]',
+                                html: '<span style="font-size: 1.2em;">요트/보트 출품 여부 \'미신청\' 으로 변경 시<br>등록한  요트/보트 출품 정보가 모두 삭제됩니다.<br>변경하시겠습니까?</span>',
                                 allowOutsideClick: false,
                                 showCancelButton: true,
                                 confirmButtonColor: '#00a8ff',

@@ -200,6 +200,7 @@ public class ExhibitorNewDetailDTO {
     private String buyerCompanyCountry;
     private String buyerCompanyLocation;
     private String buyerCompanyHomepage;
+    private String buyerCompanyCharge;
     private String buyerCompanyDepart;
     private String buyerCompanyPosition;
     private String buyerCompanyEmail;

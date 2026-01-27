@@ -417,6 +417,7 @@
         , buyer_company_country
         , buyer_company_location
         , buyer_company_homepage
+        , buyer_company_charge
         , buyer_company_depart
         , buyer_company_position
         , buyer_company_email
@@ -438,6 +439,7 @@
                , #{buyerCompanyCountry}
                , #{buyerCompanyLocation}
                , #{buyerCompanyHomepage}
+               , #{buyerCompanyCharge}
                , #{buyerCompanyDepart}
                , #{buyerCompanyPosition}
                , #{buyerCompanyEmail}
@@ -580,6 +582,7 @@
           , buyer_company_country = #{buyerCompanyCountry}
           , buyer_company_location = #{buyerCompanyLocation}
           , buyer_company_homepage = #{buyerCompanyHomepage}
+          , buyer_company_charge = #{buyerCompanyCharge}
           , buyer_company_depart = #{buyerCompanyDepart}
           , buyer_company_position = #{buyerCompanyPosition}
           , buyer_company_email = #{buyerCompanyEmail}
@@ -675,6 +678,7 @@
              , buyer_company_country
              , buyer_company_location
              , buyer_company_homepage
+             , buyer_company_charge
              , buyer_company_depart
              , buyer_company_position
              , buyer_company_email
@@ -1824,6 +1828,7 @@
              , buyer_company_country
              , buyer_company_location
              , buyer_company_homepage
+             , buyer_company_charge
              , buyer_company_depart
              , buyer_company_position
              , buyer_company_email
@@ -3721,36 +3726,38 @@
 
     <select id="selectVisitorSingle" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.VisitorDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectVisitorSingle */
-        SELECT seq
-             , join_year
-             , join_yn
-             , visitor_gbn
-             , part_gbn
-             , time_gbn
-             , name
-             , tel
-             , phone
-             , email
-             , domain
-             , company_name
-             , company_address
-             , company_address_detail
-             , partner_yn
-             , sex
-             , region_si
-             , region_gu
-             , country
-             , age_group
-             , observation_gbn
-             , visit_purpose
-             , interest_item
-             , recognize_path
-             , pre_observation_gbn
-             , note
-             , init_regi_pic
-             , init_regi_dttm
-             , final_regi_pic
-             , final_regi_dttm
+        SELECT seq,
+               lang,
+               join_year,
+               join_yn,
+               visitor_gbn,
+               part_gbn,
+               event_gbn,
+               time_gbn,
+               name,
+               tel,
+               phone,
+               email,
+               domain,
+               company_name,
+               company_address,
+               company_address_detail,
+               partner_yn,
+               sex,
+               region_si,
+               region_gu,
+               country,
+               age_group,
+               observation_gbn,
+               visit_purpose,
+               interest_item,
+               recognize_path,
+               pre_observation_gbn,
+               note,
+               init_regi_pic,
+               init_regi_dttm,
+               final_regi_pic,
+               final_regi_dttm
         FROM visitor
         WHERE seq = #{seq}
     </select>
@@ -3758,7 +3765,8 @@
     <update id="updateVisitor" parameterType="com.mtf.kibs.dto.VisitorDTO">
         /* com.mtf.kibs.mapper.kibsMapper.updateVisitor */
         UPDATE visitor
-        SET tel = #{tel}
+        SET event_gbn = #{eventGbn}
+          , tel = #{tel}
           , email = TRIM(#{email})
           , domain = TRIM(#{domain})
           , company_name = #{companyName}
@@ -3793,6 +3801,7 @@
         , join_year
         , join_yn
         , visitor_gbn
+        , event_gbn
         , part_gbn
         , time_gbn
         , name
@@ -3824,6 +3833,7 @@
                , #{joinYear}
                , #{joinYn}
                , #{visitorGbn}
+               , #{eventGbn}
                , #{partGbn}
                , #{timeGbn}
                , TRIM(#{name})

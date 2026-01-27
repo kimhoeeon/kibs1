@@ -11,6 +11,7 @@ public class MngGiftDTO {
     Integer rownum; //순번
     String seq; //SEQ
     String id; //업체seq
+    String transferYear;
     String companyNameKo; //회사명(국문)
     String companyNameEn; //회사명(영문)
     String giftGbn; //경품구분

@@ -452,7 +452,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitorNew/application/product.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">전시품 신청</span>
+                                                                            <span class="menu-title">요트/보트 출품 정보</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1569,7 +1569,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">전시품 신청</span>
+                                                <span class="menu-title">요트/보트 출품 정보</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2326,7 +2326,7 @@ if (document.documentElement) {
                                                     <!--begin::Select2-->
                                                     <select id="mngYear" name="mngYear" class="form-select form-select-solid" data-control="select2" aria-label="- 관리년도 -" data-placeholder="- 관리년도 -">
                                                         <option></option>
-                                                        <option disabled>- 관리년도 -</option>
+                                                        <option value="" disabled>- 관리년도 -</option>
                                                         <option value="2025" <c:if test="${info.mngYear eq '2025'}">selected</c:if> >2025</option>
                                                         <option value="2024" <c:if test="${info.mngYear eq '2024'}">selected</c:if> >2024</option>
                                                         <option value="2023" <c:if test="${info.mngYear eq '2023'}">selected</c:if> >2023</option>
@@ -2597,7 +2597,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251127"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
     <script src="/assets/js/custom/apps/ecommerce/catalog/quill-editor.js?ver=202512"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>

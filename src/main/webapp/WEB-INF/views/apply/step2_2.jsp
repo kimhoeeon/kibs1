@@ -116,7 +116,7 @@
                             <ul class="list2">
                                 <li><a>전시부스 신청</a></li>
                                 <li><a>해상전시회 신청</a></li>
-                                <li><a>전시품 신청</a></li>
+                                <li><a>요트/보트 출품 정보</a></li>
                                 <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                 <li><a>유틸리티 신청</a></li>
                                 <li><a>출입증 신청</a></li>
@@ -198,7 +198,7 @@
                     <div class="form_btn">
                         <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')" class="form_btn_prev">
                             <div class="big">이전</div>
-                            <div class="small">전시품 신청</div>
+                            <div class="small">요트/보트 출품 정보</div>
                         </a>
                         <a href="javascript:void(0);" onclick="f_apply_comp('2_2','${info.seq}')" class="form_btn_next">
                             <div class="big">다음 / 건너뛰기</div>

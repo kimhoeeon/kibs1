@@ -1066,6 +1066,7 @@
                                             <input type="hidden" name="buyerCompanyCountry" value="${buyer.buyerCompanyCountry}">
                                             <input type="hidden" name="buyerCompanyLocation" value="${buyer.buyerCompanyLocation}">
                                             <input type="hidden" name="buyerCompanyHomepage" value="${buyer.buyerCompanyHomepage}">
+                                            <input type="hidden" name="buyerCompanyCharge" value="${buyer.buyerCompanyCharge}">
                                             <input type="hidden" name="buyerCompanyDepart" value="${buyer.buyerCompanyDepart}">
                                             <input type="hidden" name="buyerCompanyPosition" value="${buyer.buyerCompanyPosition}">
                                             <input type="hidden" name="buyerCompanyEmail" value="${buyer.buyerCompanyEmail}">
@@ -1149,6 +1150,14 @@
                                     </li>
                                     <li>
                                         <div class="item">
+                                            <p>담당자 성명</p>
+                                        </div>
+                                        <div class="input">
+                                            <input type="text" id="buyer_charge" name="buyerCompanyCharge" placeholder="담당자 성명">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
                                             <p>부서</p>
                                         </div>
                                         <div class="input">
@@ -1171,7 +1180,7 @@
                                             <input type="text" id="buyer_email_input1" name="buyerCompanyEmail" class="email_input1" placeholder="이메일"/>
                                             <span>@</span>
                                             <input type="text" id="buyer_email_input2" name="buyerCompanyDomain" class="email_input2" placeholder="직접입력"/>
-                                            <select id="buyer_email_select">
+                                            <select id="buyer_email_select" style="margin: 0 !important;">
                                                 <option selected>직접입력</option>
                                                 <option value="naver.com">naver.com</option>
                                                 <option value="daum.net">daum.net</option>

@@ -1,6 +1,6 @@
 var pageNum = 1; // 페이지 번호 생성 시점에 따른 변수 초기화
 var mngYear = '전체';
-var isSearching = false;  // [신규] 중복 요청 방지 플래그
+var isSearching = false;  // 중복 요청 방지 플래그
 $(function(){
     //페이지 오픈 시 default ()
     galleryList(pageNum, '전체');

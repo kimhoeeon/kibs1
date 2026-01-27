@@ -370,6 +370,13 @@ function f_visitor_form_valid_check(){
         }
     }
 
+    /* 행사 구분 유효성 검사 추가 */
+    let eventGbn = $('input[type=radio][name=eventGbn]:checked').val();
+    if(nvl(eventGbn,'') === ''){
+        showMessage('', 'info', '[ 참관객 정보 ]', '행사 구분 항목을 선택해 주세요.', '');
+        return false;
+    }
+
     let partnerYn = $('input[type=radio][name=partnerYn]:checked').val();
     if(partnerYn === "Y"){
         let partnerNameList = $('input[type=text][name=partnerName]');

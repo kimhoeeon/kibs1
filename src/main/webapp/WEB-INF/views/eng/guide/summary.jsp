@@ -201,6 +201,9 @@
                                         builders, parts equipment manufacturers, distributors, and service companies
                                         participate.</p>
                                 </div>
+                                <div class="contBox">
+                                    <img src="/img/summ_logo07_eng.png">
+                                </div>
                             </div>
                         </li>
                     </ul>

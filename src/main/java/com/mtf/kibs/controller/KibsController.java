@@ -463,7 +463,7 @@ public class KibsController {
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
 
-            /* 전시품 신청 */
+            /* 요트/보트 출품 정보 */
             ProductNewDTO productNewReq = new ProductNewDTO();
             productNewReq.setExSeq(exhibitor_new_seq);
             List<ProductNewDTO> productList = kibsService.processSelectProductNewList(productNewReq);
@@ -717,7 +717,7 @@ public class KibsController {
             List<ChargeNewDTO> chargeList = kibsService.processSelectChargeNewList(chargeNewReq);
             mv.addObject("chargeList", chargeList);
 
-            /* 전시품 신청 */
+            /* 요트/보트 출품 정보 */
             ProductNewDTO productNewReq = new ProductNewDTO();
             productNewReq.setExSeq(exhibitor_new_seq);
             List<ProductNewDTO> productList = kibsService.processSelectProductNewList(productNewReq);
@@ -1960,7 +1960,7 @@ public class KibsController {
         if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
             mv.addObject("info", exInfo);
 
-            /* 전시품 신청 */
+            /* 요트/보트 출품 정보 */
             ProductNewDTO productNewReq = new ProductNewDTO();
             productNewReq.setExSeq(exhibitor_new_seq);
             List<ProductNewDTO> productList = kibsService.processSelectProductNewList(productNewReq);
@@ -2273,7 +2273,7 @@ public class KibsController {
             List<ChargeNewDTO> chargeList = kibsService.processSelectChargeNewList(chargeNewReq);
             mv.addObject("chargeList", chargeList);
 
-            /* 전시품 신청 */
+            /* 요트/보트 출품 정보 */
             ProductNewDTO productNewReq = new ProductNewDTO();
             productNewReq.setExSeq(exhibitor_new_seq);
             List<ProductNewDTO> productList = kibsService.processSelectProductNewList(productNewReq);

@@ -476,7 +476,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitorNew/application/product.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">전시품 신청</span>
+                                                                            <span class="menu-title">요트/보트 출품 정보</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1595,7 +1595,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">전시품 신청</span>
+                                                <span class="menu-title">요트/보트 출품 정보</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2350,7 +2350,7 @@ if (document.documentElement) {
                                                         data-hide-search="true" data-allow-clear="true"
                                                         data-placeholder="- 참석여부 -" onchange="f_search_condition_sel_change()">
                                                     <option></option>
-                                                    <option disabled>- 참석여부 -</option>
+                                                    <option value="" disabled>- 참석여부 -</option>
                                                     <option value="Y">참석확인</option>
                                                     <option value="N">참석취소</option>
                                                     <option value="R">삭제</option>
@@ -2365,7 +2365,7 @@ if (document.documentElement) {
                                                             data-hide-search="true" data-allow-clear="true"
                                                             data-placeholder="- 개인단체구분 -" onchange="f_search_condition_sel_change()">
                                                         <option></option>
-                                                        <option disabled>- 개인단체구분 -</option>
+                                                        <option value="" disabled>- 개인단체구분 -</option>
                                                         <option value="개인">개인</option>
                                                         <option value="단체">단체</option>
                                                     </select>
@@ -2391,7 +2391,8 @@ if (document.documentElement) {
                                                     <th class="text-center">ID</th>
                                                     <th class="text-center min-w-50px">구분</th>
                                                     <th class="text-center min-w-80px">참석여부</th>
-                                                    <th class="text-center min-w-150px">참관구분</th>
+                                                    <th class="text-center min-w-100px">참관구분</th>
+                                                    <th class="text-center min-w-100px">행사구분</th>
                                                     <th class="text-center min-w-70px">이름</th>
                                                     <th class="text-center min-w-150px">이메일</th>
                                                     <th class="text-center">도메인</th>
@@ -2403,6 +2404,7 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -2472,7 +2474,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251127"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

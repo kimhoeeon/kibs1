@@ -460,7 +460,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitorNew/application/product.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">전시품 신청</span>
+                                                                            <span class="menu-title">요트/보트 출품 정보</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1579,7 +1579,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">전시품 신청</span>
+                                                <span class="menu-title">요트/보트 출품 정보</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2317,11 +2317,11 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="w-100 mw-175px">
                                                 <!--begin::Select2-->
-                                                <select id="transfer_year" class="form-select form-select-solid" data-control="select2"
-                                                        data-hide-search="true" data-allow-clear="true"
+                                                <select id="transferYear" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true"
                                                         data-placeholder="- 참가년도 -" onchange="f_search_condition_sel_change()">
                                                     <option></option>
-                                                    <option disabled>- 참가년도 -</option>
+                                                    <option value="" disabled>- 참가년도 -</option>
                                                     <option value="2025">2025</option>
                                                     <option value="2024">2024</option>
                                                     <option value="2023">2023</option>
@@ -2331,15 +2331,6 @@ if (document.documentElement) {
                                                     <option value="2019">2019</option>
                                                     <option value="2018">2018</option>
                                                     <option value="2017">2017</option>
-                                                    <option value="2016">2016</option>
-                                                    <option value="2015">2015</option>
-                                                    <option value="2014">2014</option>
-                                                    <option value="2013">2013</option>
-                                                    <option value="2012">2012</option>
-                                                    <option value="2011">2011</option>
-                                                    <option value="2010">2010</option>
-                                                    <option value="2009">2009</option>
-                                                    <option value="2008">2008</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
@@ -2351,7 +2342,7 @@ if (document.documentElement) {
                                                         data-hide-search="true" data-allow-clear="true"
                                                         data-placeholder="- 노출상태 -" onchange="f_search_condition_sel_change()">
                                                     <option></option>
-                                                    <option disabled>- 노출상태 -</option>
+                                                    <option value="" disabled>- 노출상태 -</option>
                                                     <option value="Y">노출</option>
                                                     <option value="N">미노출</option>
                                                 </select>
@@ -2475,7 +2466,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251127"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

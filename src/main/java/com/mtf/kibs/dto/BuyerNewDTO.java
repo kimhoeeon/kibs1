@@ -15,6 +15,7 @@ public class BuyerNewDTO {
     String buyerCompanyCountry; //국가
     String buyerCompanyLocation; //소재지
     String buyerCompanyHomepage; //홈페이지
+    String buyerCompanyCharge; //담당자성명
     String buyerCompanyDepart; //부서
     String buyerCompanyPosition; //직책
     String buyerCompanyEmail; //이메일

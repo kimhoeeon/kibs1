@@ -460,7 +460,7 @@ if (document.documentElement) {
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/exhibitorNew/application/product.do"
                                                                            class="menu-link">
-                                                                            <span class="menu-title">전시품 신청</span>
+                                                                            <span class="menu-title">요트/보트 출품 정보</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -1579,7 +1579,7 @@ if (document.documentElement) {
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
-                                                <span class="menu-title">전시품 신청</span>
+                                                <span class="menu-title">요트/보트 출품 정보</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -2300,18 +2300,43 @@ if (document.documentElement) {
                                             <!--begin:Action-->
                                             <div class="d-flex align-items-center">
                                                 <button type="button" onclick="f_application_gift_search()" class="btn btn-primary me-5">Search</button>
+                                                <!--begin::전시업체 등록-->
+                                                <button type="button" onclick="f_application_gift_search_condition_init()" class="btn btn-secondary ms-auto">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i>검색조건 초기화</button>
+                                                <!--end::전시업체 등록-->
                                             </div>
                                             <!--end:Action-->
 
-                                            <!--begin::전시업체 등록-->
-                                            <button type="button" onclick="f_application_gift_search_condition_init()" class="btn btn-secondary ms-auto">
-                                                <i class="ki-duotone ki-arrows-circle fs-3">
-                                                    <i class="path1"></i>
-                                                    <i class="path2"></i>
-                                                </i>검색조건 초기화</button>
-                                            <!--end::전시업체 등록-->
                                         </div>
                                         <!--end::Card title-->
+                                        <!--begin::Card toolbar-->
+                                        <div class="card-toolbar flex-row-fluid gap-5">
+                                            <%--begin::참가년도--%>
+                                            <div class="w-100 mw-200px">
+                                                <!--begin::Select2-->
+                                                <select id="transferYear" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true"
+                                                        data-placeholder="- 참가년도 -" onchange="f_search_condition_sel_change()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 참가년도 -</option>
+                                                    <option value="2025">2025</option>
+                                                    <option value="2024">2024</option>
+                                                    <option value="2023">2023</option>
+                                                    <option value="2022">2022</option>
+                                                    <option value="2021">2021</option>
+                                                    <option value="2020">2020</option>
+                                                    <option value="2019">2019</option>
+                                                    <option value="2018">2018</option>
+                                                    <option value="2017">2017</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                            </div>
+                                            <%--end::참가년도--%>
+                                        </div>
+                                        <!--end::Card toolbar-->
                                     </div>
                                     <!--end::Card header-->
                                     <!--begin::Card body-->
@@ -2324,6 +2349,7 @@ if (document.documentElement) {
                                                 <th class="text-center min-w-50px">번호</th>
                                                 <th>SEQ</th>
                                                 <th>Exhibitor SEQ</th>
+                                                <th class="text-center min-w-100px">연도</th>
                                                 <th class="text-center min-w-150px">회사명</th>
                                                 <th>companyNameEn</th>
                                                 <th class="text-center min-w-80px">구분</th>
@@ -2339,6 +2365,7 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                             <tr>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -2493,7 +2520,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20251127"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>
