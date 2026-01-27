@@ -50,95 +50,95 @@
 </head>
 
 <body>
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
+    <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-<div id="container">
+    <div id="container">
 
-    <!-- section -->
-    <div class="sub_top">
-        <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>홈</span><span>참관객</span><span>사전등록</span>
+        <!-- section -->
+        <div class="sub_top">
+            <div class="inner">
+                <div class="sub_top_box">
+                    <div class="sub_top_nav">
+                        <span>홈</span><span>참관객</span><span>사전등록</span>
+                    </div>
+                    <div class="sub_top_tit">사전등록</div>
                 </div>
-                <div class="sub_top_tit">사전등록</div>
             </div>
         </div>
-    </div>
-    <!-- //section -->
+        <!-- //section -->
 
-    <!-- section -->
-    <div class="sub_tab">
-        <div class="inner">
-            <div class="sub_tab_box">
-                <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
-                <div class="optionBox">
-                    <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">참관객</div>
-                        <div class="tabOptSel">
-                            <a href="/guide/summary.do">KIBS 안내</a>
-                            <a href="/exhibitor/guide.do">참가기업</a>
-                            <a class="active" href="/visitor/guide_off.do">참관객</a>
-                            <a href="/guide/notice.do">미디어센터</a>
-                            <a href="/online/kibstv.do">온라인 전시관</a>
-                            <a href="/guide/maritime_expo.do">해상전시회(시흥 거북섬마리나)</a>
-                            <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
-                            <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
+        <!-- section -->
+        <div class="sub_tab">
+            <div class="inner">
+                <div class="sub_tab_box">
+                    <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
+                    <div class="optionBox">
+                        <div class="tabOpt1 tabOption">
+                            <div class="tabOptAct">참관객</div>
+                            <div class="tabOptSel">
+                                <a href="/guide/summary.do">KIBS 안내</a>
+                                <a href="/exhibitor/guide.do">참가기업</a>
+                                <a class="active" href="/visitor/guide_off.do">참관객</a>
+                                <a href="/guide/notice.do">미디어센터</a>
+                                <a href="/online/kibstv.do">온라인 전시관</a>
+                                <a href="/guide/maritime_expo.do">해상전시회(시흥 거북섬마리나)</a>
+                                <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
+                                <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
+                            </div>
+                        </div>
+                        <div class="tabOpt2 tabOption">
+                            <div class="tabOptAct">사전등록</div>
+                            <div class="tabOptSel">
+                                <a href="/visitor/guide_off.do">참관안내</a>
+                                <a class="active" href="/visitor/apply.do">사전등록</a>
+                                <a href="/visitor/login.do">참관신청확인</a>
+                                <a href="/visitor/faq.do">FAQ</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">사전등록</div>
-                        <div class="tabOptSel">
-                            <a href="/visitor/guide_off.do">참관안내</a>
-                            <a class="active" href="/visitor/apply.do">사전등록</a>
-                            <a href="/visitor/login.do">참관신청확인</a>
-                            <a href="/visitor/faq.do">FAQ</a>
+                </div>
+            </div>
+        </div>
+        <!-- section -->
+
+        <!-- section -->
+        <div class="form_s padding_t">
+            <div class="inner">
+
+                <!-- 안내문구 -->
+                <div class="form_wrap">
+                    <div class="form_guide_comp" style="background: #fff;">
+                        <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
+                        <div class="form_guide_comp_txt">
+                            2026 경기국제보트쇼 사전등록 신청이 완료되었습니다.<br>
+                            신청내역은 마이페이지에서 확인하실 수 있습니다.
                         </div>
+                        <a href="/visitor/login.do" class="form_guide_comp_btn btnSt01">신청확인하기</a>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- //section -->
+
     </div>
-    <!-- section -->
 
-    <!-- section -->
-    <div class="form_s padding_t">
-        <div class="inner">
+    <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-            <!-- 안내문구 -->
-            <div class="form_wrap">
-                <div class="form_guide_comp" style="background: #fff;">
-                    <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
-                    <div class="form_guide_comp_txt">
-                        2026 경기국제보트쇼 사전등록 신청이 완료되었습니다.<br>
-                        신청내역은 마이페이지에서 확인하실 수 있습니다.
-                    </div>
-                    <a href="/visitor/login.do" class="form_guide_comp_btn btnSt01">신청확인하기</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- //section -->
+    <script type="text/javascript">
+        // Meta 전환
+        fbq('track', 'CompleteRegistration');
 
-</div>
+        // Google 전환
+        gtag('event', 'conversion', {
+            'send_to': 'AW-866426231/bkbKCIjC0OwbEPe6kp0D',
+            'value': 1.0,
+            'currency': 'KRW'
+        });
 
-<script type="text/javascript">
-    // Meta 전환
-    fbq('track', 'CompleteRegistration');
-
-    // Google 전환
-    gtag('event', 'conversion', {
-        'send_to': 'AW-866426231/bkbKCIjC0OwbEPe6kp0D',
-        'value': 1.0,
-        'currency': 'KRW'
-    });
-
-    // Naver 전환 (신규 요청 코드: 타입 1)
-    var _nasa={};
-    if(window.wcs) _nasa["cnv"] = wcs.cnv("1","1");
-</script>
-
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
+        // Naver 전환 (신규 요청 코드: 타입 1)
+        var _nasa={};
+        if(window.wcs) _nasa["cnv"] = wcs.cnv("1","1");
+    </script>
 
 </body>
 </html>

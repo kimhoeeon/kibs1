@@ -41,93 +41,93 @@
 </head>
 
 <body>
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
+    <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-<div id="container">
+    <div id="container">
 
-    <!-- section -->
-    <div class="sub_top">
-        <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>Home</span><span>Buyer</span><span>Pre-registration</span>
+        <!-- section -->
+        <div class="sub_top">
+            <div class="inner">
+                <div class="sub_top_box">
+                    <div class="sub_top_nav">
+                        <span>Home</span><span>Buyer</span><span>Pre-registration</span>
+                    </div>
+                    <div class="sub_top_tit">Pre-registration</div>
                 </div>
-                <div class="sub_top_tit">Pre-registration</div>
             </div>
         </div>
-    </div>
-    <!-- //section -->
+        <!-- //section -->
 
-    <!-- section -->
-    <div class="sub_tab">
-        <div class="inner">
-            <div class="sub_tab_box">
-                <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
-                <div class="optionBox">
-                    <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">Buyer</div>
-                        <div class="tabOptSel">
-                            <a href="/eng/guide/summary.do">KIBS 2026</a>
-                            <a href="/eng/exhibitor/categories.do">Exhibitors</a>
-                            <a class="active" href="/eng/buyer/apply.do">Buyer</a>
-                            <a href="/eng/board/notice.do">News</a>
+        <!-- section -->
+        <div class="sub_tab">
+            <div class="inner">
+                <div class="sub_tab_box">
+                    <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
+                    <div class="optionBox">
+                        <div class="tabOpt1 tabOption">
+                            <div class="tabOptAct">Buyer</div>
+                            <div class="tabOptSel">
+                                <a href="/eng/guide/summary.do">KIBS 2026</a>
+                                <a href="/eng/exhibitor/categories.do">Exhibitors</a>
+                                <a class="active" href="/eng/buyer/apply.do">Buyer</a>
+                                <a href="/eng/board/notice.do">News</a>
+                            </div>
+                        </div>
+                        <div class="tabOpt2 tabOption">
+                            <div class="tabOptAct">Pre-registration</div>
+                            <div class="tabOptSel">
+                                <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor guide</a>
+                                <a class="active" href="/eng/buyer/apply.do">Pre-registration</a>
+                                <a href="/eng/buyer/glance.do">Korea at a Glance</a>
+                                <a href="/eng/buyer/marina.do">Marine Industry in korea</a>
+                                <a href="/eng/buyer/match.do">Exhibitor-Buyer Matchmaking Program</a>
+                                <a href="/eng/buyer/qna.do">FAQ</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">Pre-registration</div>
-                        <div class="tabOptSel">
-                            <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor guide</a>
-                            <a class="active" href="/eng/buyer/apply.do">Pre-registration</a>
-                            <a href="/eng/buyer/glance.do">Korea at a Glance</a>
-                            <a href="/eng/buyer/marina.do">Marine Industry in korea</a>
-                            <a href="/eng/buyer/match.do">Exhibitor-Buyer Matchmaking Program</a>
-                            <a href="/eng/buyer/qna.do">FAQ</a>
+                </div>
+            </div>
+        </div>
+        <!-- section -->
+
+        <!-- section -->
+        <div class="form_s padding_t">
+            <div class="inner">
+
+                <!-- 안내문구 -->
+                <div class="form_wrap">
+                    <div class="form_guide_comp" style="background: #fff;">
+                        <div class="form_guide_comp_img"><img src="/img/logo3_eng.png"></div>
+                        <div class="form_guide_comp_txt">
+                            2025 Gyeonggi International Boat Show pre-registration has been completed.<br>
+                            Check the application details on MyPage.
                         </div>
+                        <a href="/eng/buyer/login.do" class="form_guide_comp_btn btnSt01">Confirm Application</a>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- //section -->
+
     </div>
-    <!-- section -->
 
-    <!-- section -->
-    <div class="form_s padding_t">
-        <div class="inner">
+    <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-            <!-- 안내문구 -->
-            <div class="form_wrap">
-                <div class="form_guide_comp" style="background: #fff;">
-                    <div class="form_guide_comp_img"><img src="/img/logo3_eng.png"></div>
-                    <div class="form_guide_comp_txt">
-                        2025 Gyeonggi International Boat Show pre-registration has been completed.<br>
-                        Check the application details on MyPage.
-                    </div>
-                    <a href="/eng/buyer/login.do" class="form_guide_comp_btn btnSt01">Confirm Application</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- //section -->
+    <script type="text/javascript">
+        // Meta 전환
+        fbq('track', 'CompleteRegistration');
 
-</div>
+        // Google 전환
+        gtag('event', 'conversion', {
+            'send_to': 'AW-866426231/bkbKCIjC0OwbEPe6kp0D',
+            'value': 1.0,
+            'currency': 'KRW'
+        });
 
-<script type="text/javascript">
-    // Meta 전환
-    fbq('track', 'CompleteRegistration');
-
-    // Google 전환
-    gtag('event', 'conversion', {
-        'send_to': 'AW-866426231/bkbKCIjC0OwbEPe6kp0D',
-        'value': 1.0,
-        'currency': 'KRW'
-    });
-
-    // Naver 전환 (신규 요청 코드: 타입 1)
-    var _nasa={};
-    if(window.wcs) _nasa["cnv"] = wcs.cnv("1","1");
-</script>
-
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
+        // Naver 전환 (신규 요청 코드: 타입 1)
+        var _nasa={};
+        if(window.wcs) _nasa["cnv"] = wcs.cnv("1","1");
+    </script>
 
 </body>
 </html>

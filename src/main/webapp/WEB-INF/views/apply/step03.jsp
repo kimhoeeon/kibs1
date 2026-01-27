@@ -52,143 +52,159 @@
 </head>
 
 <body>
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
+    <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-<div id="container">
+    <div id="container">
 
-    <!-- section -->
-    <div class="sub_top">
-        <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>홈</span><span>참가기업</span><span>참가기업 신청</span>
-                </div>
-                <div class="sub_top_tit">참가기업 신청</div>
-            </div>
-        </div>
-    </div>
-    <!-- //section -->
-
-    <!-- section -->
-    <div class="sub_tab">
-        <div class="inner">
-            <div class="sub_tab_box">
-                <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
-                <div class="optionBox">
-                    <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">참가기업</div>
-                        <div class="tabOptSel">
-                            <a href="/guide/summary.do">KIBS 안내</a>
-                            <a class="active" href="/exhibitor/guide.do">참가기업</a>
-                            <a href="/visitor/guide_off.do">참관객</a>
-                            <a href="/guide/notice.do">미디어센터</a>
-                            <a href="/online/kibstv.do">온라인 전시관</a>
-                            <a href="/guide/maritime_expo.do">해상전시회(시흥 거북섬마리나)</a>
-                            <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
-                            <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
-                        </div>
+        <!-- section -->
+        <div class="sub_top">
+            <div class="inner">
+                <div class="sub_top_box">
+                    <div class="sub_top_nav">
+                        <span>홈</span><span>참가기업</span><span>참가기업 신청</span>
                     </div>
-                    <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">참가기업 신청</div>
-                        <div class="tabOptSel">
-                            <a href="/exhibitor/guide.do">참가기업 안내</a>
-                            <a class="active" href="/apply/step01.do">참가기업 신청</a>
-                            <a href="/exhibitor/login.do">참가신청확인</a>
-                            <a href="/exhibitor/faq.do">FAQ</a>
-                        </div>
-                    </div>
+                    <div class="sub_top_tit">참가기업 신청</div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- section -->
+        <!-- //section -->
 
-
-    <!-- section -->
-    <div class="apply_s padding_tb" id="apply_s">
-        <div class="inner">
-
-            <div class="apply_nav">
-                <div class="apply_nav_list">
-                    <ul class="list1">
-                        <li><a>기본정보</a></li>
-                        <li>
-                            <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')">전시 신청 정보</a>
-                            <ul class="list2">
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')">요트/보트 출품 정보</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_2.do','${info.seq}')">상호간판 신청</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_4.do','${info.seq}')">출입증 신청</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_5.do','${info.seq}')">경품제공 신청</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_8.do','${info.seq}')">디렉토리 정보</a></li>
-                            </ul>
-                        </li>
-                        <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/apply/step03.do','${info.seq}')">전시참가 신청 완료</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="apply_step">
-                <div class="apply_tit">전시참가 신청 완료</div>
-                <div class="apply_step_wrap">
-                    <div class="apply_step_box step1">
-                        <div class="gubun">
-                            <p>Step 1</p>기본정보 입력
-                        </div>
-                        <div class="gauge">
-                            <progress class="gauge_bar" value="100" max="100"></progress>
-                        </div>
-                        <div class="txt">완료됨</div>
-                    </div>
-                    <div class="apply_step_box step2">
-                        <div class="gubun">
-                            <p>Step 2</p>전시 신청 정보
-                        </div>
-                        <div class="gauge">
-                            <progress class="gauge_bar" value="80" max="80"></progress>
-                        </div>
-                        <div class="txt">완료됨</div>
-                    </div>
-                    <div class="apply_step_box step3">
-                        <div class="gubun">
-                            <p>Step 3</p>전시참가 신청 완료
-                        </div>
-                        <div class="gauge">
-                            <progress class="gauge_bar" value="5" max="100"></progress>
-                        </div>
-                        <div class="txt">진행중..</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- section -->
-            <div class="apply_form form_s padding_t">
-                <div class="inner">
-
-                    <!-- 안내문구 -->
-                    <div class="form_wrap">
-                        <div class="form_guide_comp">
-                            <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
-                            <div class="form_guide_comp_txt">
-                                귀사는 2026 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
-                                최종적으로 아래의 참가신청 버튼을 눌러 행사 담당자에게 참가승인을 요청하시기 바랍니다.
+        <!-- section -->
+        <div class="sub_tab">
+            <div class="inner">
+                <div class="sub_tab_box">
+                    <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
+                    <div class="optionBox">
+                        <div class="tabOpt1 tabOption">
+                            <div class="tabOptAct">참가기업</div>
+                            <div class="tabOptSel">
+                                <a href="/guide/summary.do">KIBS 안내</a>
+                                <a class="active" href="/exhibitor/guide.do">참가기업</a>
+                                <a href="/visitor/guide_off.do">참관객</a>
+                                <a href="/guide/notice.do">미디어센터</a>
+                                <a href="/online/kibstv.do">온라인 전시관</a>
+                                <a href="/guide/maritime_expo.do">해상전시회(시흥 거북섬마리나)</a>
+                                <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
+                                <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
                             </div>
-                            <a href="javascript:f_apply_comp('03','${info.seq}')" class="form_guide_comp_btn btnSt01">참가신청완료</a>
+                        </div>
+                        <div class="tabOpt2 tabOption">
+                            <div class="tabOptAct">참가기업 신청</div>
+                            <div class="tabOptSel">
+                                <a href="/exhibitor/guide.do">참가기업 안내</a>
+                                <a class="active" href="/apply/step01.do">참가기업 신청</a>
+                                <a href="/exhibitor/login.do">참가신청확인</a>
+                                <a href="/exhibitor/faq.do">FAQ</a>
+                            </div>
                         </div>
                     </div>
-                    <!-- 안내문구 -->
-
                 </div>
             </div>
-            <!-- //section -->
         </div>
+        <!-- section -->
+
+
+        <!-- section -->
+        <div class="apply_s padding_tb" id="apply_s">
+            <div class="inner">
+
+                <div class="apply_nav">
+                    <div class="apply_nav_list">
+                        <ul class="list1">
+                            <li><a>기본정보</a></li>
+                            <li>
+                                <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')">전시 신청 정보</a>
+                                <ul class="list2">
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_1.do','${info.seq}')">전시부스 신청</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_9.do','${info.seq}')">요트/보트 출품 정보</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_2.do','${info.seq}')">상호간판 신청</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_4.do','${info.seq}')">출입증 신청</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_5.do','${info.seq}')">경품제공 신청</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/apply/step2_8.do','${info.seq}')">디렉토리 정보</a></li>
+                                </ul>
+                            </li>
+                            <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/apply/step03.do','${info.seq}')">전시참가 신청 완료</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="apply_step">
+                    <div class="apply_tit">전시참가 신청 완료</div>
+                    <div class="apply_step_wrap">
+                        <div class="apply_step_box step1">
+                            <div class="gubun">
+                                <p>Step 1</p>기본정보 입력
+                            </div>
+                            <div class="gauge">
+                                <progress class="gauge_bar" value="100" max="100"></progress>
+                            </div>
+                            <div class="txt">완료됨</div>
+                        </div>
+                        <div class="apply_step_box step2">
+                            <div class="gubun">
+                                <p>Step 2</p>전시 신청 정보
+                            </div>
+                            <div class="gauge">
+                                <progress class="gauge_bar" value="80" max="80"></progress>
+                            </div>
+                            <div class="txt">완료됨</div>
+                        </div>
+                        <div class="apply_step_box step3">
+                            <div class="gubun">
+                                <p>Step 3</p>전시참가 신청 완료
+                            </div>
+                            <div class="gauge">
+                                <progress class="gauge_bar" value="5" max="100"></progress>
+                            </div>
+                            <div class="txt">진행중..</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- section -->
+                <div class="apply_form form_s padding_t">
+                    <div class="inner">
+
+                        <!-- 안내문구 -->
+                        <div class="form_wrap">
+                            <div class="form_guide_comp">
+                                <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
+                                <div class="form_guide_comp_txt">
+                                    귀사는 2026 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
+                                    최종적으로 아래의 참가신청 버튼을 눌러 행사 담당자에게 참가승인을 요청하시기 바랍니다.
+                                </div>
+                                <a href="javascript:f_apply_comp('03','${info.seq}')" class="form_guide_comp_btn btnSt01">참가신청완료</a>
+                            </div>
+                        </div>
+                        <!-- 안내문구 -->
+
+                    </div>
+                </div>
+                <!-- //section -->
+            </div>
+        </div>
+
     </div>
 
-</div>
+    <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
+    <script type="text/javascript">
+        // Meta 전환
+        fbq('track', 'CompleteRegistration');
+
+        // Google 전환
+        gtag('event', 'conversion', {
+            'send_to': 'AW-866426231/bkbKCIjC0OwbEPe6kp0D',
+            'value': 1.0,
+            'currency': 'KRW'
+        });
+
+        // Naver 전환 (신규 요청 코드: 타입 1)
+        var _nasa={};
+        if(window.wcs) _nasa["cnv"] = wcs.cnv("1","1");
+    </script>
 
 </body>
 </html>
