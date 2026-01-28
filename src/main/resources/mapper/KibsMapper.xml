@@ -3719,8 +3719,11 @@
         /* com.mtf.kibs.mapper.KibsMapper.selectPreVisitorCheck */
         SELECT seq
         FROM visitor
-        WHERE phone = TRIM(#{phone})
-          AND join_year = #{joinYear}
+        WHERE join_year = #{joinYear}
+          AND phone = TRIM(#{phone})
+        <if test='name != null and name != ""'>
+          AND name = TRIM(#{name})
+        </if>
         LIMIT 1
     </select>
 

@@ -50,85 +50,135 @@
 </head>
 
 <body>
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
+    <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-<div id="container">
+    <div id="container">
 
-    <!-- section -->
-    <div class="sub_top">
-        <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>홈</span><span>참관객</span><span>참관신청확인</span>
+        <!-- section -->
+        <div class="sub_top">
+            <div class="inner">
+                <div class="sub_top_box">
+                    <div class="sub_top_nav">
+                        <span>홈</span><span>참관객</span><span>참관신청확인</span>
+                    </div>
+                    <div class="sub_top_tit">참관신청확인</div>
                 </div>
-                <div class="sub_top_tit">참관신청확인</div>
             </div>
         </div>
-    </div>
-    <!-- //section -->
+        <!-- //section -->
 
-    <!-- section -->
-    <div class="sub_tab">
-        <div class="inner">
-            <div class="sub_tab_box">
-                <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
-                <div class="optionBox">
-                    <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">참관객</div>
-                        <div class="tabOptSel">
-                            <a href="/guide/summary.do">KIBS 안내</a>
-                            <a href="/exhibitor/guide.do">참가기업</a>
-                            <a class="active" href="/visitor/guide_off.do">참관객</a>
-                            <a href="/guide/notice.do">미디어센터</a>
-                            <a href="/online/kibstv.do">온라인 전시관</a>
-                            <a href="/guide/maritime_expo.do">해상전시회(시흥 거북섬마리나)</a>
-                            <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
-                            <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
+        <!-- section -->
+        <div class="sub_tab">
+            <div class="inner">
+                <div class="sub_tab_box">
+                    <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
+                    <div class="optionBox">
+                        <div class="tabOpt1 tabOption">
+                            <div class="tabOptAct">참관객</div>
+                            <div class="tabOptSel">
+                                <a href="/guide/summary.do">KIBS 안내</a>
+                                <a href="/exhibitor/guide.do">참가기업</a>
+                                <a class="active" href="/visitor/guide_off.do">참관객</a>
+                                <a href="/guide/notice.do">미디어센터</a>
+                                <a href="/online/kibstv.do">온라인 전시관</a>
+                                <a href="/guide/maritime_expo.do">해상전시회(시흥 거북섬마리나)</a>
+                                <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
+                                <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
+                            </div>
+                        </div>
+                        <div class="tabOpt2 tabOption">
+                            <div class="tabOptAct">참관신청확인</div>
+                            <div class="tabOptSel">
+                                <a href="/visitor/guide_off.do">참관안내</a>
+                                <a href="/visitor/apply.do">사전등록</a>
+                                <a href="/guide/conference.do">컨퍼런스</a>
+                                <a href="/guide/program.do">체험 프로그램</a>
+                                <a class="active" href="/visitor/login.do">참관신청확인</a>
+                                <a href="/visitor/faq.do">FAQ</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">참관신청확인</div>
-                        <div class="tabOptSel">
-                            <a href="/visitor/guide_off.do">참관안내</a>
-                            <a href="/visitor/apply.do">사전등록</a>
-                            <a href="/guide/conference.do">컨퍼런스</a>
-                            <a href="/guide/program.do">체험 프로그램</a>
-                            <a class="active" href="/visitor/login.do">참관신청확인</a>
-                            <a href="/visitor/faq.do">FAQ</a>
+                </div>
+            </div>
+        </div>
+        <!-- section -->
+
+        <!-- section -->
+        <div class="login_s padding_tb">
+            <div class="inner">
+                <div class="login_top_txt">사전등록 신청 시 등록하셨던 정보를 입력해 주세요.</div>
+                <div class="login_box">
+                    <div class="login_form">
+                        <div class="loginInfo">
+                            <p>이름</p>
+                            <input type="text" id="name" name="name" placeholder="이름을 입력해 주세요.">
                         </div>
+                        <div class="loginInfo">
+                            <p>휴대전화</p>
+                            <input type="tel" id="phone" name="phone" class="phoneNumber" maxlength="13" placeholder="숫자만 입력해 주세요.">
+                        </div>
+                        <div class="btnLogin"><a href="javascript:void(0);" onclick="f_pre_apply_check_login()" class="btnSt01">등록 확인하기</a></div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- //section -->
+
     </div>
-    <!-- section -->
 
-    <!-- section -->
-    <div class="login_s padding_tb">
-        <div class="inner">
-            <div class="login_top_txt">사전등록 신청 시 등록하셨던 정보를 입력해 주세요.</div>
-            <div class="login_box">
-                <div class="login_form">
-                    <div class="loginInfo">
-                        <p>이름</p>
-                        <input type="text" id="name" name="name" placeholder="이름을 입력해 주세요.">
-                    </div>
-                    <div class="loginInfo">
-                        <p>휴대전화</p>
-                        <input type="tel" id="phone" name="phone" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
-                    </div>
-                    <div class="btnLogin"><a href="javascript:void(0);" onclick="f_pre_apply_check_login()" class="btnSt01">등록 확인하기</a></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- //section -->
+    <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-</div>
+    <script type="text/javascript">
+        // [중복 방지 플래그 변수] 전역 변수로 선언
+        var isLoginProcess = false;
 
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
+        $(document).ready(function() {
 
+            // 1. [연락처 자동 포맷팅] (입력 시 - 자동 삽입 및 숫자만 입력)
+            $('.phoneNumber').on('input', function (e) {
+                let $this = $(this);
+                let val = $this.val();
 
+                // 숫자만 추출
+                let number = val.replace(/[^0-9]/g, "");
+                let tel = "";
+
+                // 포맷팅 로직
+                if (number.length < 4) {
+                    tel = number;
+                } else if (number.length < 8) {
+                    tel = number.substr(0, 3) + "-" + number.substr(3);
+                } else {
+                    tel = number.substr(0, 3) + "-" + number.substr(3, 4) + "-" + number.substr(7);
+                }
+
+                // 길이 제한 (13자리: 010-0000-0000)
+                if (tel.length > 13) {
+                    tel = tel.substr(0, 13);
+                }
+
+                // 값 변경 (커서 튐 방지)
+                if ($this.val() !== tel) {
+                    $this.val(tel);
+                }
+            });
+
+            // 2. [엔터키 이벤트 핸들러]
+            $("#name, #phone").on("keydown", function(e) {
+                if (e.keyCode === 13) {
+                    // 이미 로직(팝업/통신)이 진행 중이면 엔터 무시
+                    if (isLoginProcess === true) {
+                        e.preventDefault();
+                        return false;
+                    }
+
+                    // 로직 시작: 잠금 설정
+                    isLoginProcess = true;
+                    f_pre_apply_check_login();
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>

@@ -2585,7 +2585,7 @@ if (document.documentElement) {
                                             <!--begin::Card body-->
                                             <div class="card-body border-top p-9">
 
-                                                <%-- [중요] 관리자용 플래그 및 저장 데이터 --%>
+                                                <%-- 관리자용 플래그 및 저장 데이터 --%>
                                                 <input type="hidden" id="isDetail" value="Y">
                                                 <input type="hidden" id="h_observationGbn" value="${info.observationGbn}">
                                                 <input type="hidden" id="h_visitPurpose" value="${info.visitPurpose}">

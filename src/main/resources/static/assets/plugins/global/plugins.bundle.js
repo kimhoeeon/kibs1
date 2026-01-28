@@ -26949,7 +26949,7 @@ var index = (_, tdClasses) => {
           zIndex: 1099
         };
 
-      if ($.isFunction(options) && !callback) {
+      if ("function"===typeof options && !callback) {
         callback = options;
         options = {};
       }

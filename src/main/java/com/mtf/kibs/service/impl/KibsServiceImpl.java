@@ -2045,7 +2045,7 @@ public class KibsServiceImpl implements KibsService {
 
         SearchCompanyResponseDTO response = new SearchCompanyResponseDTO();
 
-        // [중요] 공공데이터포털에서 발급받은 '인코딩된' 인증키를 그대로 넣으세요. (디코딩된 키라면 URLEncoder 필요)
+        // 공공데이터포털에서 발급받은 '인코딩된' 인증키를 그대로 넣으세요. (디코딩된 키라면 URLEncoder 필요)
         // 만약 키에 % 문자가 포함되어 있다면 이미 인코딩된 키일 확률이 높습니다.
         String serviceKey = "nngY%2FlASnTg%2FKJlWdupohRX699RJx6xxaPIsfw3WMoP74fL3ElwqhwmIWWYrlYYABP%2B7SUiOfhPGiVY%2BRDSxdg%3D%3D";
 
@@ -2062,7 +2062,7 @@ public class KibsServiceImpl implements KibsService {
             // 2. 연결 객체 생성 (부모 타입으로 받기)
             URLConnection connection = url.openConnection();
 
-            // [중요] HTTPS일 경우에만 호스트명 검증 무시 설정 적용
+            // HTTPS일 경우에만 호스트명 검증 무시 설정 적용
             if (connection instanceof HttpsURLConnection) {
                 HttpsURLConnection httpsConn = (HttpsURLConnection) connection;
 

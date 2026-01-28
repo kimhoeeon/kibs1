@@ -1237,14 +1237,14 @@ function f_phone_number_valid_check($el) {
         if (pureNum.substring(0, 3) !== "010") {
             alert('휴대전화번호는 "010"으로 시작해야 합니다.');
             $el.val(''); // 값 초기화
-            $el.focus(); // 다시 입력하도록 포커스 이동
+            $el.trigger('focus'); // 다시 입력하도록 포커스 이동
             return false;
         }
 
         // 2) 전체 자릿수 검사 (010 국번은 최소 11자리 숫자여야 함)
         if (pureNum.length < 11) {
             alert('휴대전화번호 형식이 올바르지 않습니다.\n(예: 010-1234-5678)');
-            $el.focus();
+            $el.trigger('focus');
             return false;
         }
     }
@@ -6154,46 +6154,131 @@ function exibitLoginFormSubmit() {
 
 }
 
+// 3. [통합된 로그인 체크 함수]
 function f_pre_apply_check_login(){
+
+    // --- [이름 검사] ---
+    let name = $('#name').val();
+    if (nvl(name, '') === '') {
+        setTimeout(function() {
+            Swal.fire({
+                icon: 'info', title: '입력 정보 확인',
+                html: '<span style="font-size: 1.2em;">이름을 입력해 주세요.</span>',
+                confirmButtonColor: '#00a8ff', confirmButtonText: '확인',
+                allowOutsideClick: false, allowEscapeKey: false,
+                returnFocus: false // 닫힐 때 이전 포커스로 돌아가지 않음
+            }).then((result) => {
+                isLoginProcess = false; // 잠금 해제
+                setTimeout(function(){ $('#name').trigger('focus'); }, 100);
+            });
+        }, 300);
+        return false;
+    }
+
+    // --- [휴대전화 검사 (통합됨)] ---
     let phone = $('#phone').val();
-    if (nvl(phone, '') === '') {
-        showMessage('', 'info', '입력 정보 확인', '휴대전화번호를 입력해 주세요.', '');
+    let pureNum = phone.replace(/-/g, ""); // 하이픈 제거한 순수 숫자
+
+    // 1) 값 입력 여부 확인
+    if (pureNum.length === 0) {
+        setTimeout(function() {
+            Swal.fire({
+                icon: 'warning', title: '입력 정보 확인',
+                html: '<span style="font-size: 1.2em;">휴대전화번호를 입력해 주세요.</span>',
+                confirmButtonColor: '#00a8ff', confirmButtonText: '확인',
+                allowOutsideClick: false, allowEscapeKey: false,
+                returnFocus: false // 닫힐 때 이전 포커스로 돌아가지 않음
+            }).then((result) => {
+                isLoginProcess = false; // 잠금 해제
+                setTimeout(function(){ $('#phone').trigger('focus'); }, 100);
+            });
+        }, 300);
+        return false;
+    }
+
+    // 2) 010 시작 여부 확인
+    if (pureNum.substring(0, 3) !== "010") {
+        setTimeout(function() {
+            Swal.fire({
+                icon: 'warning', title: '입력 정보 확인',
+                html: '<span style="font-size: 1.2em;">휴대전화번호는 "010"으로 시작해야 합니다.</span>',
+                confirmButtonColor: '#00a8ff', confirmButtonText: '확인',
+                allowOutsideClick: false, allowEscapeKey: false,
+                returnFocus: false // 닫힐 때 이전 포커스로 돌아가지 않음
+            }).then((result) => {
+                isLoginProcess = false; // 잠금 해제
+                // 입력값 초기화 후 포커스
+                $('#phone').val('');
+                setTimeout(function(){ $('#phone').trigger('focus'); }, 100);
+            });
+        }, 300);
+        return false;
+    }
+
+    // 3) 전체 길이(11자리) 확인
+    if (pureNum.length !== 11) {
+        setTimeout(function() {
+            Swal.fire({
+                icon: 'warning', title: '입력 정보 확인',
+                html: '<span style="font-size: 1.2em;">휴대전화번호 형식이 올바르지 않습니다.<br>(010-0000-0000)</span>',
+                confirmButtonColor: '#00a8ff', confirmButtonText: '확인',
+                allowOutsideClick: false, allowEscapeKey: false,
+                returnFocus: false // 닫힐 때 이전 포커스로 돌아가지 않음
+            }).then((result) => {
+                isLoginProcess = false; // 잠금 해제
+                setTimeout(function(){ $('#phone').trigger('focus'); }, 100);
+            });
+        }, 300);
         return false;
     }
 
     let jsonObj = {
+        name: name,
         phone: phone,
-        joinYear: transferYear
+        joinYear: transferYear // JSP 상단 혹은 공통 js에 선언된 변수로 가정
     };
 
+    // AJAX 호출
     let resData = ajaxConnectSimple('/visitor/preApplyCheck.do', 'post', jsonObj);
-    if(nvl(resData,'') !== ''){
-        Swal.fire({
-            icon: 'info',
-            title: '[ 참관 신청 확인 ]',
-            html: '<span style="font-size: 1.2em;">참관 신청 확인 되었습니다.<br>참관신청확인페이지로 이동합니다.</span>',
-            allowOutsideClick: false,
-            confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = '/visitor/mypage.do?seq=' + resData.seq;
-            }
-        })
-    }else{
-        Swal.fire({
-            icon: 'info',
-            title: '[ 참관 신청 확인 ]',
-            html: '<span style="font-size: 1.2em;">참관 신청 정보가 없습니다.<br>사전등록페이지로 이동합니다.</span>',
-            allowOutsideClick: false,
-            confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = '/visitor/apply.do';
-            }
-        })
-    }
+
+    // 결과 팝업 (딜레이 적용)
+    setTimeout(function() {
+        if(nvl(resData,'') !== ''){
+            // [CASE 1: 데이터 있음]
+            Swal.fire({
+                icon: 'info', title: '[ 참관 신청 확인 ]',
+                html: '<span style="font-size: 1.2em;">참관 신청 확인 되었습니다.<br>참관신청확인페이지로 이동합니다.</span>',
+                allowOutsideClick: false, allowEscapeKey: false,
+                confirmButtonColor: '#00a8ff', confirmButtonText: '확인',
+                returnFocus: false // 닫힐 때 이전 포커스로 돌아가지 않음
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/visitor/mypage.do?seq=' + resData.seq;
+                } else {
+                    isLoginProcess = false;
+                }
+            });
+        } else {
+            // [CASE 2: 데이터 없음]
+            Swal.fire({
+                icon: 'info', title: '[ 참관 신청 확인 ]',
+                html: '<span style="font-size: 1.2em;">참관 신청 정보가 없습니다.<br>사전등록페이지로 이동하시겠습니까?</span>',
+                allowOutsideClick: false, allowEscapeKey: false,
+                showCancelButton: true,
+                confirmButtonColor: '#00a8ff', confirmButtonText: '사전등록하기',
+                cancelButtonColor: '#D33', cancelButtonText: '취소',
+                returnFocus: false // 닫힐 때 이전 포커스로 돌아가지 않음
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/visitor/apply.do';
+                } else {
+                    isLoginProcess = false;
+                }
+            });
+        }
+    }, 300); // 0.3초 딜레이
+
+    return false;
 }
 
 function f_en_pre_apply_check_login(){
@@ -6265,7 +6350,7 @@ function f_company_search(){
                 if(totalCount > 0 && data.body.items){
                     let items = data.body.items.item;
 
-                    // [중요] API가 1건일 때 Object로 주는 경우 배열로 변환
+                    // API가 1건일 때 Object로 주는 경우 배열로 변환
                     if (!Array.isArray(items)) {
                         items = [items];
                     }
@@ -7183,7 +7268,7 @@ function smsByteChk(content){
             remain.innerText = String(90 - getByte(temp_str));
         }
 
-        content.focus();
+        content.trigger('focus');
     }
 
 }
@@ -7297,7 +7382,7 @@ async function f_company_uploadFile_call(id, path) {
         console.log("All files uploaded successfully");
     } catch (err) {
         console.error("File upload error:", err);
-        throw err; // [중요] 에러를 상위 함수(step_01_check)로 던져서 중단시켜야 함
+        throw err; // 에러를 상위 함수(step_01_check)로 던져서 중단시켜야 함
     }
 }
 

@@ -390,7 +390,7 @@ $(document).ready(function () {
             tel = tel.substr(0, 13);
         }
 
-        // [중요] 모바일 커서 튐 방지 및 무한 루프 방지
+        // 모바일 커서 튐 방지 및 무한 루프 방지
         // 기존 값과 포맷팅된 값이 다를 때만 값을 변경
         if ($this.val() !== tel) {
             $this.val(tel);
@@ -822,7 +822,7 @@ $(document).ready(function () {
             // 화면에 붙이기 전에 name을 임시 이름(temp_new)으로 변경하여 기존 항목(productIsNew_1)과 그룹이 섞이지 않게 함
             newExhiInfoBox.find('input[type=radio][name^="productIsNew_"]').attr('name', 'productIsNew_temp');
 
-            // [중요] 라디오 버튼 초기화 (값 'N' 체크)
+            // 라디오 버튼 초기화 (값 'N' 체크)
             // name은 reorderExhiList에서 일괄 처리되므로 여기서는 값만 초기화하면 됨
             newExhiInfoBox.find('input[type=radio][value="N"]').prop('checked', true);
 

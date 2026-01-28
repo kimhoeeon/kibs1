@@ -544,7 +544,7 @@
                             <div class="big">설문항목</div>
                         </div>
 
-                        <%-- [중요] 저장된 데이터를 JS로 넘기기 위한 Hidden 필드 --%>
+                        <%-- 저장된 데이터를 JS로 넘기기 위한 Hidden 필드 --%>
                         <input type="hidden" id="isDetail" value="N">
                         <input type="hidden" id="h_observationGbn" value="${info.observationGbn}">
                         <input type="hidden" id="h_visitPurpose" value="${info.visitPurpose}">
