@@ -5981,79 +5981,72 @@ public class KibsMngController {
         try(SXSSFWorkbook workbook = new SXSSFWorkbook()){ // Excel 2007 이상
 
             /* 엑셀 그리기 */
+            // 1. 헤더 이름 배열 구성 (행사 구분 추가 + 3개 행사 모든 설문 항목 통합)
             final String[] colNames_ex = {
-                    /* 업체정보 */
+                    /* 기본 정보 */
                     "No", "연도", "차수", "구분", "참석여부", "등록일", "수정일",
-                    /* 참관 구분 */
-                    "참관구분",
+                    /* 행사/참관 구분 */
+                    "행사 구분", "참관구분(일반/바이어)",
                     /* 참관객 정보 */
                     "성명", "전화번호", "휴대전화", "이메일", "직장명", "동반자 여부",
-                    /* 설문항목 */
+                    /* 설문항목 (성별/지역/나이) */
                     "성별", "지역(시/도)", "지역(구/군)", "연령대",
-                    /* 관람 구분 */
-                    "조종면허 보유자", "보트 소유자", "보트 구매 예정자", "관련 업종 종사자", "서핑 매니아", "해양관광 예정자", "낚시 매니아",
-                    "다이빙 매니아", "캠핑카 매니아", "학생", "일반관람", "기타",
-                    /* 보트쇼 방문 목적*/
-                    "업계동향 파악 및 정보수집", "제품구매 및 기술도입 상담", "기존 거래업체 방문", "차기 전시회 참가여부 파악",
-                    "일반관람", "기타",
-                    /* 관심품목 */
-                    "보트&요트", "무동력보트", "워크보트", "해양부품&장비", "안전&마리나", "해양관광", "해양레저", "서핑",
-                    "수중레저",
-                    /* 인지경로 */
-                    "뉴스레터", "옥외광고물", "홈페이지", "전문지", "온라인 커뮤니티", "오프라인매장", "소셜 네트워크",
-                    "초청장", "방송광고", "KIBS 참석", "낚시박람회", "기타",
-                    /* 지난 전시회 참관 여부 */
+
+                    /* [관람 구분] 통합 (KIBS + KISS + KMTS) */
+                    // KIBS
+                    "조종면허 보유자", "보트 소유자", "보트 구매 예정자", "관련 업종 종사자", "낚시 매니아", "캠핑카 매니아", "학생", "일반관람", "기타",
+                    // KISS 추가
+                    "서핑 매니아/입문", "다이빙 매니아/입문", "해양레저 관심자", "해양레저 체험 관람",
+                    // KMTS 추가
+                    "해양관광 예정자", "해양관광 관심자", "지역관광 관심자", "요트투어 희망자", "가족여행 목적 관람객", "지자체 공무원",
+
+                    /* [방문 목적] 통합 */
+                    // KIBS (공통 포함)
+                    "업계동향 파악 및 정보수집", "제품구매 및 기술도입 상담", "기존 거래업체 방문", "차기 전시회 참가여부 파악", "일반관람(목적)", "기타(목적)",
+                    // KISS 추가
+                    "서핑·다이빙 관련 용품 구매 상담", "체험 프로그램 참가",
+                    // KMTS 추가
+                    "지역 관광상품 및 프로그램 파악", "해양관광상품 상담",
+
+                    /* [관심 품목] 통합 */
+                    // KIBS
+                    "보트&요트", "무동력보트", "워크보트", "해양부품&장비", "안전&마리나", "해양관광", "해양레저", "서핑", "수중레저",
+                    // KISS 추가
+                    "서핑장비", "의류·패션", "체험 및 교육 프로그램", "라이프스타일",
+                    // KMTS 추가
+                    "해양레저 관광상품", "지역관광 콘텐츠", "치유 및 생태관광", "체험 콘텐츠",
+
+                    /* [인지 경로] 통합 */
+                    // 공통 및 KIBS
+                    "뉴스레터", "옥외광고물", "홈페이지", "지인추천", "온라인 커뮤니티", "유관 협회안내", "소셜 네트워크", "초청장(지류)", "방송광고", "KIBS 참석", "낚시박람회", "기타(경로)",
+                    // KISS/KMTS 추가
+                    "모바일 초청장", "유관기간 공문 안내",
+
+                    /* [지난 전시회 참관 여부] (KIBS 전용) */
                     "첫 참관", "2008", "2009", "2010", "2011",
                     "2012", "2013", "2014", "2015", "2016",
                     "2017", "2018", "2019", "2020", "2021",
                     "2022", "2023", "2024", "2025",
-                    /* 동반자 1 */
-                    "성명", "연령",
-                    /* 동반자 2 */
-                    "성명", "연령",
-                    /* 동반자 3 */
-                    "성명", "연령",
-                    /* 동반자 4 */
-                    "성명", "연령",
-                    /* 동반자 5 */
-                    "성명", "연령"
-            };
 
-            // 헤더 사이즈
-            final int[] colWidths_ex = {
-                    3000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000,
-                    5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000,
-                    5000, 5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000,
-                    5000, 5000, 5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000, 5000,
-                    5000, 5000, 5000, 5000,
-                    5000, 5000,
-                    5000, 5000,
-                    5000, 5000,
-                    5000, 5000,
-                    5000, 5000
+                    /* 동반자 1~5 */
+                    "동반자1_성명", "동반자1_연령",
+                    "동반자2_성명", "동반자2_연령",
+                    "동반자3_성명", "동반자3_연령",
+                    "동반자4_성명", "동반자4_연령",
+                    "동반자5_성명", "동반자5_연령"
             };
 
             // *** Style--------------------------------------------------
-            //Font
             Font fontHeader = workbook.createFont();
-            fontHeader.setFontName("맑은 고딕");	//글씨체
-            fontHeader.setFontHeight((short)(9 * 20));	//사이즈
-            fontHeader.setBold(true);	//볼드(굵게)
+            fontHeader.setFontName("맑은 고딕");
+            fontHeader.setFontHeight((short)(9 * 20));
+            fontHeader.setBold(true);
+
             Font font9 = workbook.createFont();
-            font9.setFontName("맑은 고딕");	//글씨체
-            font9.setFontHeight((short)(9 * 20));	//사이즈
-            // 엑셀 헤더 셋팅 default (참가업체정보)
+            font9.setFontName("맑은 고딕");
+            font9.setFontHeight((short)(9 * 20));
+
+            // 헤더 스타일
             CellStyle headerStyle = workbook.createCellStyle();
             headerStyle.setAlignment(HorizontalAlignment.CENTER);
             headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -6064,8 +6057,9 @@ public class KibsMngController {
             headerStyle.setFillForegroundColor(IndexedColors.GOLD.index);
             headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             headerStyle.setFont(fontHeader);
-            headerStyle.setWrapText(true); //개행
-            // 엑셀 바디 셋팅 default (참가업체정보)
+            headerStyle.setWrapText(true);
+
+            // 바디 스타일
             CellStyle bodyStyle = workbook.createCellStyle();
             bodyStyle.setAlignment(HorizontalAlignment.CENTER);
             bodyStyle.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -6074,211 +6068,106 @@ public class KibsMngController {
             bodyStyle.setBorderTop(BorderStyle.THIN);
             bodyStyle.setBorderBottom(BorderStyle.THIN);
             bodyStyle.setFont(font9);
-            bodyStyle.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIME)
-            CellStyle headerStyle_lime = workbook.createCellStyle();
-            headerStyle_lime.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_lime.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_lime.setBorderRight(BorderStyle.THIN);
-            headerStyle_lime.setBorderLeft(BorderStyle.THIN);
-            headerStyle_lime.setBorderTop(BorderStyle.THIN);
-            headerStyle_lime.setBorderBottom(BorderStyle.THIN);
-            headerStyle_lime.setFillForegroundColor(IndexedColors.LIME.index);
-            headerStyle_lime.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_lime.setFont(fontHeader);
-            headerStyle_lime.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_TURQUOISE)
-            CellStyle headerStyle_light_turquoise = workbook.createCellStyle();
-            headerStyle_light_turquoise.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_turquoise.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_turquoise.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_turquoise.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_turquoise.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_turquoise.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_turquoise.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.index);
-            headerStyle_light_turquoise.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_turquoise.setFont(fontHeader);
-            headerStyle_light_turquoise.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (CORNFLOWER_BLUE)
-            CellStyle headerStyle_cornflower_blue = workbook.createCellStyle();
-            headerStyle_cornflower_blue.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_cornflower_blue.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_cornflower_blue.setBorderRight(BorderStyle.THIN);
-            headerStyle_cornflower_blue.setBorderLeft(BorderStyle.THIN);
-            headerStyle_cornflower_blue.setBorderTop(BorderStyle.THIN);
-            headerStyle_cornflower_blue.setBorderBottom(BorderStyle.THIN);
-            headerStyle_cornflower_blue.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.index);
-            headerStyle_cornflower_blue.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_cornflower_blue.setFont(fontHeader);
-            headerStyle_cornflower_blue.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_BLUE)
-            CellStyle headerStyle_light_blue = workbook.createCellStyle();
-            headerStyle_light_blue.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_blue.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_blue.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_blue.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_blue.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_blue.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_blue.setFillForegroundColor(IndexedColors.LIGHT_BLUE.index);
-            headerStyle_light_blue.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_blue.setFont(fontHeader);
-            headerStyle_light_blue.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (GREEN)
-            CellStyle headerStyle_green = workbook.createCellStyle();
-            headerStyle_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_green.setFillForegroundColor(IndexedColors.GREEN.index);
-            headerStyle_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_green.setFont(fontHeader);
-            headerStyle_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_GREEN)
-            CellStyle headerStyle_light_green = workbook.createCellStyle();
-            headerStyle_light_green.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_green.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_green.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_green.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_green.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_green.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_green.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-            headerStyle_light_green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_green.setFont(fontHeader);
-            headerStyle_light_green.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LIGHT_ORANGE)
-            CellStyle headerStyle_light_orange = workbook.createCellStyle();
-            headerStyle_light_orange.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_light_orange.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_light_orange.setBorderRight(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderLeft(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderTop(BorderStyle.THIN);
-            headerStyle_light_orange.setBorderBottom(BorderStyle.THIN);
-            headerStyle_light_orange.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
-            headerStyle_light_orange.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_light_orange.setFont(fontHeader);
-            headerStyle_light_orange.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (ROSE)
-            CellStyle headerStyle_rose = workbook.createCellStyle();
-            headerStyle_rose.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_rose.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_rose.setBorderRight(BorderStyle.THIN);
-            headerStyle_rose.setBorderLeft(BorderStyle.THIN);
-            headerStyle_rose.setBorderTop(BorderStyle.THIN);
-            headerStyle_rose.setBorderBottom(BorderStyle.THIN);
-            headerStyle_rose.setFillForegroundColor(IndexedColors.ROSE.index);
-            headerStyle_rose.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_rose.setFont(fontHeader);
-            headerStyle_rose.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (TAN)
-            CellStyle headerStyle_tan = workbook.createCellStyle();
-            headerStyle_tan.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_tan.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_tan.setBorderRight(BorderStyle.THIN);
-            headerStyle_tan.setBorderLeft(BorderStyle.THIN);
-            headerStyle_tan.setBorderTop(BorderStyle.THIN);
-            headerStyle_tan.setBorderBottom(BorderStyle.THIN);
-            headerStyle_tan.setFillForegroundColor(IndexedColors.TAN.index);
-            headerStyle_tan.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_tan.setFont(fontHeader);
-            headerStyle_tan.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LAVENDER)
-            CellStyle headerStyle_lavender = workbook.createCellStyle();
-            headerStyle_lavender.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_lavender.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_lavender.setBorderRight(BorderStyle.THIN);
-            headerStyle_lavender.setBorderLeft(BorderStyle.THIN);
-            headerStyle_lavender.setBorderTop(BorderStyle.THIN);
-            headerStyle_lavender.setBorderBottom(BorderStyle.THIN);
-            headerStyle_lavender.setFillForegroundColor(IndexedColors.LAVENDER.index);
-            headerStyle_lavender.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_lavender.setFont(fontHeader);
-            headerStyle_lavender.setWrapText(true); //개행
-            // 엑셀 헤더 셋팅 (LEMON_CHIFFON)
-            CellStyle headerStyle_lemon_chiffon = workbook.createCellStyle();
-            headerStyle_lemon_chiffon.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle_lemon_chiffon.setVerticalAlignment(VerticalAlignment.CENTER);
-            headerStyle_lemon_chiffon.setBorderRight(BorderStyle.THIN);
-            headerStyle_lemon_chiffon.setBorderLeft(BorderStyle.THIN);
-            headerStyle_lemon_chiffon.setBorderTop(BorderStyle.THIN);
-            headerStyle_lemon_chiffon.setBorderBottom(BorderStyle.THIN);
-            headerStyle_lemon_chiffon.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.index);
-            headerStyle_lemon_chiffon.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle_lemon_chiffon.setFont(fontHeader);
-            headerStyle_lemon_chiffon.setWrapText(true); //개행
+            bodyStyle.setWrapText(true);
 
-            //rows
-            int rowCnt = 0;
+            // 설문 항목별 헤더 색상 스타일 (구분용)
+            CellStyle headerStyle_survey = workbook.createCellStyle();
+            headerStyle_survey.cloneStyleFrom(headerStyle);
+            headerStyle_survey.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+
+            CellStyle headerStyle_pre = workbook.createCellStyle();
+            headerStyle_pre.cloneStyleFrom(headerStyle);
+            headerStyle_pre.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.index);
 
             // *** Sheet-------------------------------------------------
-            // Sheet 생성
             SXSSFSheet sheet = workbook.createSheet("visitor");
+            int rowCnt = 0;
 
-            SXSSFCell cell = null;
+            // 1. 병합 헤더 (Grouping) 생성
             SXSSFRow row = sheet.createRow(rowCnt++);
 
-            // 헤더 정보 구성
-            // 기본
-            sheet.addMergedRegion(new CellRangeAddress(0,0,0,7));
+            // 기본정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,6));
             SXSSFCell mergeCell = row.createCell(0);
             mergeCell.setCellStyle(headerStyle);
             mergeCell.setCellValue("기본정보");
 
-            // 참관객 정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,8,13));
-            SXSSFCell mergeCell2 = row.createCell(8);
+            // 행사/참관 구분
+            sheet.addMergedRegion(new CellRangeAddress(0,0,7,8));
+            SXSSFCell mergeCell2 = row.createCell(7);
             mergeCell2.setCellStyle(headerStyle);
-            mergeCell2.setCellValue("참관객 정보");
+            mergeCell2.setCellValue("구분");
 
-            // 설문항목
-            sheet.addMergedRegion(new CellRangeAddress(0,0,14,17));
-            SXSSFCell mergeCell3 = row.createCell(14);
+            // 참관객 정보
+            sheet.addMergedRegion(new CellRangeAddress(0,0,9,14));
+            SXSSFCell mergeCell3 = row.createCell(9);
             mergeCell3.setCellStyle(headerStyle);
-            mergeCell3.setCellValue("설문항목");
+            mergeCell3.setCellValue("참관객 정보");
 
-            // 관람 구분
-            sheet.addMergedRegion(new CellRangeAddress(0,0,18,29));
-            SXSSFCell mergeCell4 = row.createCell(18);
+            // 설문항목 (기초)
+            sheet.addMergedRegion(new CellRangeAddress(0,0,15,18));
+            SXSSFCell mergeCell4 = row.createCell(15);
             mergeCell4.setCellStyle(headerStyle);
-            mergeCell4.setCellValue("관람 구분");
+            mergeCell4.setCellValue("기초 설문");
 
-            // 보트쇼 방문 목적
-            sheet.addMergedRegion(new CellRangeAddress(0,0,30,35));
-            SXSSFCell mergeCell5 = row.createCell(30);
-            mergeCell5.setCellStyle(headerStyle);
-            mergeCell5.setCellValue("보트쇼 방문 목적");
+            // 관람 구분 (19개 항목)
+            // 인덱스: 19 ~ 37
+            sheet.addMergedRegion(new CellRangeAddress(0,0,19,37));
+            SXSSFCell mergeCell5 = row.createCell(19);
+            mergeCell5.setCellStyle(headerStyle_survey);
+            mergeCell5.setCellValue("관람 구분");
 
-            // 관심품목
-            sheet.addMergedRegion(new CellRangeAddress(0,0,36,44));
-            SXSSFCell mergeCell6 = row.createCell(36);
-            mergeCell6.setCellStyle(headerStyle);
-            mergeCell6.setCellValue("관심품목");
+            // 방문 목적 (10개 항목)
+            // 인덱스: 38 ~ 47
+            sheet.addMergedRegion(new CellRangeAddress(0,0,38,47));
+            SXSSFCell mergeCell6 = row.createCell(38);
+            mergeCell6.setCellStyle(headerStyle_survey);
+            mergeCell6.setCellValue("방문 목적");
 
-            // 인지경로
-            sheet.addMergedRegion(new CellRangeAddress(0,0,45,56));
-            SXSSFCell mergeCell7 = row.createCell(45);
-            mergeCell7.setCellStyle(headerStyle);
-            mergeCell7.setCellValue("인지경로");
+            // 관심 품목 (17개 항목)
+            // 인덱스: 48 ~ 64
+            sheet.addMergedRegion(new CellRangeAddress(0,0,48,64));
+            SXSSFCell mergeCell7 = row.createCell(48);
+            mergeCell7.setCellStyle(headerStyle_survey);
+            mergeCell7.setCellValue("관심 품목");
 
-            // 지난 전시회 참관 여부
-            sheet.addMergedRegion(new CellRangeAddress(0,0,57,75));
-            SXSSFCell mergeCell8 = row.createCell(57);
-            mergeCell8.setCellStyle(headerStyle);
-            mergeCell8.setCellValue("지난 전시회 참관 여부");
+            // 인지 경로 (14개 항목)
+            // 인덱스: 65 ~ 78
+            sheet.addMergedRegion(new CellRangeAddress(0,0,65,78));
+            SXSSFCell mergeCell8 = row.createCell(65);
+            mergeCell8.setCellStyle(headerStyle_survey);
+            mergeCell8.setCellValue("인지 경로");
 
-            // 동반자
-            sheet.addMergedRegion(new CellRangeAddress(0,0,76,85));
-            SXSSFCell mergeCell9 = row.createCell(76);
-            mergeCell9.setCellStyle(headerStyle);
-            mergeCell9.setCellValue("동반자");
+            // 지난 전시회 (19개 항목)
+            // 인덱스: 79 ~ 97
+            sheet.addMergedRegion(new CellRangeAddress(0,0,79,97));
+            SXSSFCell mergeCell9 = row.createCell(79);
+            mergeCell9.setCellStyle(headerStyle_pre);
+            mergeCell9.setCellValue("지난 전시회 참관 여부 (KIBS)");
 
+            // 동반자 (10개 항목)
+            // 인덱스: 98 ~ 107
+            sheet.addMergedRegion(new CellRangeAddress(0,0,98,107));
+            SXSSFCell mergeCell10 = row.createCell(98);
+            mergeCell10.setCellStyle(headerStyle);
+            mergeCell10.setCellValue("동반자");
+
+            // 2. 컬럼 헤더 생성
             row = sheet.createRow(rowCnt++);
             for (int i = 0; i < colNames_ex.length; i++) {
-                cell = row.createCell(i);
-                cell.setCellStyle(headerStyle);
+                SXSSFCell cell = row.createCell(i);
+
+                // 스타일 분기 적용
+                if (i >= 19 && i <= 78) {
+                    cell.setCellStyle(headerStyle_survey);
+                } else if (i >= 79 && i <= 97) {
+                    cell.setCellStyle(headerStyle_pre);
+                } else {
+                    cell.setCellStyle(headerStyle);
+                }
+
                 cell.setCellValue(colNames_ex[i]);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(colWidths_ex[i]) + 1024));	//column width 지정
+                sheet.setColumnWidth(i, 5000); // 기본 너비 설정
             }
 
             // 데이터 조회
@@ -6286,737 +6175,180 @@ public class KibsMngController {
             visitorDetailDTO.setJoinYear(joinYear);
             List<VisitorDetailDTO> visitorDetailList = kibsMngService.processSelectVisitorDetailList(visitorDetailDTO);
 
-            int cellCnt = 0;
             int listCount = visitorDetailList.size();
 
-            //데이터 부분 생성
+            // 3. 데이터 부분 생성
             for(VisitorDetailDTO info : visitorDetailList) {
-                cellCnt = 0;
+                int cellCnt = 0;
                 row = sheet.createRow(rowCnt++);
 
-                int nCount = 0;
-                String[] remark = info.getName().split("\\^");
-
-                //줄 높이 계산
-                for (String s : remark) {
-                    if (s.length() > 0) {
-                        nCount++;
-                    }
-                }
-
-                //줄 높이 설정
-                if (nCount > 1){
-                    row.setHeightInPoints((nCount * sheet.getDefaultRowHeightInPoints()));
-                }
-
-                // 넘버링
-                cell = row.createCell(cellCnt++);
+                // No
+                SXSSFCell cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(listCount--);
 
-                // 연도
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getJoinYear());
+                // 연도, 차수, 구분, 참석여부, 등록일, 수정일
+                writeCell(row, cellCnt++, info.getJoinYear(), bodyStyle);
+                writeCell(row, cellCnt++, info.getTimeGbn(), bodyStyle);
+                writeCell(row, cellCnt++, info.getVisitorGbn(), bodyStyle);
+                writeCell(row, cellCnt++, "N".equals(info.getJoinYn()) ? "참석취소" : "참석확인", bodyStyle);
+                writeCell(row, cellCnt++, info.getInitRegiDttm(), bodyStyle);
+                writeCell(row, cellCnt++, info.getFinalRegiDttm(), bodyStyle);
 
-                // 차수
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getTimeGbn());
+                // [신규] 행사 구분
+                writeCell(row, cellCnt++, info.getEventGbn(), bodyStyle);
 
-                // 구분
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getVisitorGbn());
-
-                // 참석여부
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                String joinYn = "참석확인";
-                if("N".equals(info.getJoinYn())){
-                    joinYn = "참석취소";
-                }
-                cell.setCellValue(joinYn);
-
-                // 등록일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getInitRegiDttm());
-
-                // 수정일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFinalRegiDttm());
-
-                // 참관구분
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPartGbn());
+                // 참관 구분 (바이어/일반)
+                writeCell(row, cellCnt++, info.getPartGbn(), bodyStyle);
 
                 // 참관객 정보
-                // 성명
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getName());
+                writeCell(row, cellCnt++, info.getName(), bodyStyle);
+                writeCell(row, cellCnt++, info.getTel(), bodyStyle);
+                writeCell(row, cellCnt++, info.getPhone(), bodyStyle);
+                writeCell(row, cellCnt++, info.getEmail() + "@" + info.getDomain(), bodyStyle);
+                writeCell(row, cellCnt++, info.getCompanyName(), bodyStyle);
+                writeCell(row, cellCnt++, "Y".equals(info.getPartnerYn()) ? "O" : "", bodyStyle);
+
+                // 설문항목 (기초)
+                writeCell(row, cellCnt++, info.getSex(), bodyStyle);
+                writeCell(row, cellCnt++, info.getRegionSi(), bodyStyle);
+                writeCell(row, cellCnt++, info.getRegionGu(), bodyStyle);
+                writeCell(row, cellCnt++, info.getAgeGroup() != null ? info.getAgeGroup() + "대" : "", bodyStyle);
+
+                /* [관람 구분] 체크 (Contains 방식) */
+                String obs = nvl(info.getObservationGbn());
+                writeCheckCell(row, cellCnt++, obs, "조종면허 보유자", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "보트 소유자", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "보트 구매 예정자", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "관련 업종 종사자", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "낚시 매니아", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "캠핑카 매니아", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "학생", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "일반관람", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "기타", bodyStyle);
+                // KISS
+                writeCheckCell(row, cellCnt++, obs, "서핑 매니아/입문", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "다이빙 매니아/입문", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "해양레저 관심자", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "해양레저 체험 관람", bodyStyle);
+                // KMTS
+                writeCheckCell(row, cellCnt++, obs, "해양관광 예정자", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "해양관광 관심자", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "지역관광 관심자", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "요트투어 희망자", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "가족여행 목적 관람객", bodyStyle);
+                writeCheckCell(row, cellCnt++, obs, "지자체 공무원", bodyStyle);
+
+                /* [방문 목적] 체크 */
+                String purp = nvl(info.getVisitPurpose());
+                writeCheckCell(row, cellCnt++, purp, "업계동향 파악 및 정보수집", bodyStyle);
+                writeCheckCell(row, cellCnt++, purp, "제품구매 및 기술도입 상담", bodyStyle);
+                writeCheckCell(row, cellCnt++, purp, "기존 거래업체 방문", bodyStyle);
+                writeCheckCell(row, cellCnt++, purp, "차기 전시회 참가여부 파악", bodyStyle);
+                writeCheckCell(row, cellCnt++, purp, "일반관람", bodyStyle);
+                writeCheckCell(row, cellCnt++, purp, "기타", bodyStyle);
+                // KISS
+                writeCheckCell(row, cellCnt++, purp, "서핑·다이빙 관련 용품 구매 상담", bodyStyle);
+                writeCheckCell(row, cellCnt++, purp, "체험 프로그램 참가", bodyStyle);
+                // KMTS
+                writeCheckCell(row, cellCnt++, purp, "지역 관광상품 및 프로그램 파악", bodyStyle);
+                writeCheckCell(row, cellCnt++, purp, "해양관광상품 상담", bodyStyle);
+
+                /* [관심 품목] 체크 */
+                String item = nvl(info.getInterestItem());
+                writeCheckCell(row, cellCnt++, item, "보트&요트", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "무동력보트", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "워크보트", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "해양부품&장비", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "안전&마리나", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "해양관광", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "해양레저", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "서핑", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "수중레저", bodyStyle);
+                // KISS
+                writeCheckCell(row, cellCnt++, item, "서핑장비", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "의류·패션", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "체험 및 교육 프로그램", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "라이프스타일", bodyStyle);
+                // KMTS
+                writeCheckCell(row, cellCnt++, item, "해양레저 관광상품", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "지역관광 콘텐츠", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "치유 및 생태관광", bodyStyle);
+                writeCheckCell(row, cellCnt++, item, "체험 콘텐츠", bodyStyle);
+
+                /* [인지 경로] 체크 */
+                String path = nvl(info.getRecognizePath());
+                writeCheckCell(row, cellCnt++, path, "뉴스레터", bodyStyle);
+                writeCheckCell(row, cellCnt++, path, "옥외광고물", bodyStyle);
+                writeCheckCell(row, cellCnt++, path, "홈페이지", bodyStyle);
+                writeCheckCell(row, cellCnt++, path, "지인추천", bodyStyle);
+                writeCheckCell(row, cellCnt++, path, "온라인 커뮤니티", bodyStyle);
+                writeCheckCell(row, cellCnt++, path, "유관 협회안내", bodyStyle);
+                writeCheckCell(row, cellCnt++, path, "소셜 네트워크", bodyStyle);
+                writeCheckCell(row, cellCnt++, path, "초청장", bodyStyle);
+                writeCheckCell(row, cellCnt++, path, "방송광고", bodyStyle);
+                writeCheckCell(row, cellCnt++, path, "KIBS 참석", bodyStyle);
+                writeCheckCell(row, cellCnt++, path, "낚시박람회", bodyStyle);
+                writeCheckCell(row, cellCnt++, path, "기타", bodyStyle);
+                // New
+                writeCheckCell(row, cellCnt++, path, "모바일 초청장", bodyStyle);
+                writeCheckCell(row, cellCnt++, path, "유관기간 공문 안내", bodyStyle);
+
+                /* [지난 전시회 참관] 체크 (KIBS) */
+                String pre = nvl(info.getPreObservationGbn());
+                writeCheckCell(row, cellCnt++, pre, "first", "첫 참관", bodyStyle);
+                for(int y=2008; y<=2025; y++) {
+                    writeCheckCell(row, cellCnt++, pre, String.valueOf(y), bodyStyle);
+                }
+
+                /* [동반자 정보] */
+                String[] pNames = info.getPartnerName() != null ? info.getPartnerName().split("\\^") : new String[0];
+                String[] pAges = info.getPartnerAge() != null ? info.getPartnerAge().split("\\^") : new String[0];
 
-                // 전화번호
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(info.getTel() != null){
-                    cell.setCellValue(info.getTel());
-                }else{
-                    cell.setCellValue("-");
-                }
-
-                // 휴대전화
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
-
-                // 이메일
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail() + "@" + info.getDomain());
-
-                // 직장명
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyName());
-
-                // 동반자여부
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if("Y".equals(info.getPartnerYn())){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 설문항목
-                // 성별
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getSex());
-
-                // 지역(시/도)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRegionSi());
-
-                // 지역(구/군)
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getRegionGu());
-
-                // 연령대
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(info.getAgeGroup() != null){
-                    cell.setCellValue(info.getAgeGroup() + "대");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 참관구분
-                String observationGbn = info.getObservationGbn();
-                if(observationGbn == null){
-                    observationGbn = "";
-                }
-
-                // 조정면허 보유자
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(observationGbn.contains("조정면허 보유자")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 보트 소유자
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(observationGbn.contains("보트 소유자")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 보트 구매 예정자
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(observationGbn.contains("보트 구매 예정자")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 관련 업종 종사자
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(observationGbn.contains("관련 업종 종사자")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 서핑 매니아
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(observationGbn.contains("서핑 매니아")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 해양관광 예정자
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(observationGbn.contains("해양관광 예정자")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 낚시 매니아
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(observationGbn.contains("낚시 매니아")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 다이빙 매니아
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(observationGbn.contains("다이빙 매니아")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 캠핑카 매니아
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(observationGbn.contains("캠핑카 매니아")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 학생
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(observationGbn.contains("학생")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 일반관람
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(observationGbn.contains("일반관람")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 기타
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(observationGbn.contains("기타")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 보트쇼 방문 목적
-                String visitPurpose = info.getVisitPurpose();
-                if(visitPurpose == null){
-                    visitPurpose = "";
-                }
-
-                // 업계동향 파악 및 정보수집
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(visitPurpose.contains("업계동향 파악 및 정보수집")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 제품구매 및 기술도입 상담
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(visitPurpose.contains("제품구매 및 기술도입 상담")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 기존 거래업체 방문
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(visitPurpose.contains("기존 거래업체 방문")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 차기 전시회 참가여부 파악
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(visitPurpose.contains("차기 전시회 참가여부 파악")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 일반관람
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(visitPurpose.contains("일반관람")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 기타
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(visitPurpose.contains("기타")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 관심품목
-                String interestItem = info.getInterestItem();
-                if(interestItem == null){
-                    interestItem = "";
-                }
-
-                // 보트&요트
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("보트&요트")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 무동력보트
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("무동력보트")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 워크보트
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("워크보트")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 해양부품&장비
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("해양부품&장비")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 안전&마리나
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("안전&마리나")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 해양관광
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("해양관광")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 해양레저
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("해양레저")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 서핑
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("서핑")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 수중레저
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(interestItem.contains("수중레저")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 인지경로
-                String recognizePath = info.getRecognizePath();
-                if(recognizePath == null){
-                    recognizePath = "";
-                }
-
-                // 뉴스레터
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("뉴스레터")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 옥외광고물
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("옥외광고물")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 홈페이지
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("홈페이지")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 전문지
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("전문지")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 온라인 커뮤니티
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("온라인 커뮤니티")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 오프라인매장
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("오프라인매장")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 소셜 네트워크
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("소셜 네트워크")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 초청장
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("초청장")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 방송광고
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("방송광고")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // KIBS 참석
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("KIBS 참석")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 낚시박람회
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("낚시박람회")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 기타
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(recognizePath.contains("기타")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 지난 전시회 참관 여부
-                String preObservationGbn = info.getPreObservationGbn();
-                if(preObservationGbn == null) {
-                    preObservationGbn = "";
-                }
-
-                // 첫 참관
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("first")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2008
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2008")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2009
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2009")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2010
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2010")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2011
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2011")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2012
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2012")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2013
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2013")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2014
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2014")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2015
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2015")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2016
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2016")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2017
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2017")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2018
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2018")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2019
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2019")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2020
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2020")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2021
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2021")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2022
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2022")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2023
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2023")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2024
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2024")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-
-                // 2025
-                cell = row.createCell(cellCnt++);
-                cell.setCellStyle(bodyStyle);
-                if(preObservationGbn.contains("2025")){
-                    cell.setCellValue("O");
-                }else{
-                    cell.setCellValue("");
-                }
-                
-                // 동반자
                 for(int i=0; i<5; i++) {
-                    // 성명
-                    String[] partnerNameSplit = new String[5];
-                    if(info.getPartnerName() != null && !"".equals(info.getPartnerName())){
-                        if (info.getPartnerName().contains("^")) {
-                            partnerNameSplit = info.getPartnerName().split("\\^");
-                        } else {
-                            partnerNameSplit[0] = info.getPartnerName();
-                        }
-                    }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(partnerNameSplit, i));
-
-                    // 나이
-                    String[] partnerAgeSplit = new String[5];
-                    if(info.getPartnerAge() != null && !"".equals(info.getPartnerAge())){
-                        if (info.getPartnerAge().contains("^")) {
-                            partnerAgeSplit = info.getPartnerAge().split("\\^");
-                        } else {
-                            partnerAgeSplit[0] = info.getPartnerAge();
-                        }
-                    }
-                    cell = row.createCell(cellCnt++);
-                    cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(partnerAgeSplit, i));
+                    String name = (i < pNames.length) ? pNames[i] : "";
+                    String age = (i < pAges.length) ? pAges[i] : "";
+                    writeCell(row, cellCnt++, name, bodyStyle);
+                    writeCell(row, cellCnt++, age, bodyStyle);
                 }
-
-            }
-
-            //너비를 자동으로 다시 설정
-            for (int i = 0; i < colNames_ex.length; i++) {
-                sheet.trackColumnForAutoSizing(i);
-                sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
             }
 
             // excel 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            // 엑셀 파일명 설정
-            res.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
 
             workbook.write(res.getOutputStream());
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
+    }
 
+    // 엑셀 기입용 헬퍼 메소드 (내부 클래스 또는 컨트롤러 하단에 추가)
+    private void writeCell(SXSSFRow row, int colIndex, String value, CellStyle style) {
+        SXSSFCell cell = row.createCell(colIndex);
+        cell.setCellStyle(style);
+        cell.setCellValue(value != null ? value : "");
+    }
+
+    private void writeCheckCell(SXSSFRow row, int colIndex, String targetStr, String checkStr, CellStyle style) {
+        SXSSFCell cell = row.createCell(colIndex);
+        cell.setCellStyle(style);
+        // 저장된 데이터(targetStr)에 해당 항목(checkStr)이 포함되어 있으면 'O'
+        cell.setCellValue(targetStr.contains(checkStr) ? "O" : "");
+    }
+
+    // DB 값이 'first'로 저장된 경우 등 값과 매핑 문자열이 다른 경우를 위한 오버로딩
+    private void writeCheckCell(SXSSFRow row, int colIndex, String targetStr, String checkKey, String displayStr, CellStyle style) {
+        SXSSFCell cell = row.createCell(colIndex);
+        cell.setCellStyle(style);
+        // targetStr에 key가 있으면 O 표시
+        cell.setCellValue(targetStr.contains(checkKey) ? "O" : "");
+    }
+
+    // nvl 헬퍼
+    private String nvl(String str) {
+        return str == null ? "" : str;
     }
 
     @RequestMapping(value = "/mng/visitor/join/download.do", method = RequestMethod.GET)

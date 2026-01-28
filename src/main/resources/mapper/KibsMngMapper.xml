@@ -5780,37 +5780,9 @@
 
     <select id="selectVisitorDetailList" parameterType="com.mtf.kibs.dto.VisitorDetailDTO" resultType="com.mtf.kibs.dto.VisitorDetailDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectVisitorDetailList */
-        SELECT v.seq
-             , v.join_year
-             , v.join_yn
-             , v.visitor_gbn
-             , v.part_gbn
-             , v.time_gbn
-             , v.name
-             , v.tel
-             , v.phone
-             , v.email
-             , v.domain
-             , v.company_name
-             , v.company_address
-             , v.company_address_detail
-             , v.partner_yn
-             , v.sex
-             , v.region_si
-             , v.region_gu
-             , v.age_group
-             , v.observation_gbn
-             , v.visit_purpose
-             , v.interest_item
-             , v.recognize_path
-             , v.pre_observation_gbn
+        SELECT v.*
              , (select GROUP_CONCAT(coalesce(p.partner_name,'-') separator '^') from partner p where p.visitor_seq = v.seq) as partnerName
              , (select GROUP_CONCAT(coalesce(p.partner_age,'-') separator '^') from partner p where p.visitor_seq = v.seq) as partnerAge
-             , v.note
-             , v.init_regi_pic
-             , v.init_regi_dttm
-             , v.final_regi_pic
-             , v.final_regi_dttm
         FROM visitor v
         WHERE v.join_year = #{joinYear}
         ORDER BY v.init_regi_dttm desc, v.name asc
