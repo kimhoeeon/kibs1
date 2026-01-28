@@ -50,6 +50,11 @@ License: For each use you must have a valid license purchased only from above li
     <!--begin::custom Mng css-->
     <link href="/css/mngStyle.css" rel="stylesheet" type="text/css"/>
     <!--end::custom Mng css-->
+
+    <%-- tui editor --%>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css" />
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css" />
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -2311,7 +2316,10 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${info.writeDate}"/>
+                                                    <c:set var="now" value="<%=new java.util.Date()%>"/>
+                                                    <fmt:formatDate var="fmNow" value="${now}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                                    <c:set var="sysdate" value="${info.writeDate eq null or info.writeDate eq '' ? fmNow : info.writeDate}"/>
+                                                    <input class="form-control form-control-solid" id="writeDate" name="writeDate" placeholder="작성일" value="${sysdate}"/>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -2378,8 +2386,7 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <div id="quill_editor_content" style="height: 500px; min-height: 500px; resize: vertical; overflow-y: auto;"<%--class="h-500px"--%>>${info.content}</div>
-                                                    <input type="hidden" id="quill_content" name="content" value="<c:out value="${info.content}" escapeXml="true" />">
+                                                    <div id="editor_content">${info.content}</div>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -2588,7 +2595,6 @@ if (document.documentElement) {
 
     <!--begin::Javascript-->
 
-    <script>var hostUrl = "/assets/";</script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="/assets/plugins/global/plugins.bundle.js"></script>
     <script src="/assets/js/scripts.bundle.js"></script>
@@ -2598,7 +2604,6 @@ if (document.documentElement) {
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
-    <script src="/assets/js/custom/apps/ecommerce/catalog/quill-editor.js?ver=202512"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>
@@ -2607,8 +2612,13 @@ if (document.documentElement) {
     <script src="/assets/js/custom/utilities/modals/users-search.js"></script>
     <!--end::Custom Javascript-->
 
+    <script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
+
     <!--begin::Custom Javascript(used for common page)-->
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/tuiEditor.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="/js/custom/press.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 

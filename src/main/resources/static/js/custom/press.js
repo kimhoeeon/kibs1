@@ -203,10 +203,8 @@ function f_board_press_save(id){
                     boardNoticeForm.append(hidden_el);
                 }
 
-                let serialData = JSON.parse(JSON.stringify($('#pressForm').serializeArray()));
-                let data = objectifyForm(serialData);
-                //console.log(JSON.stringify(data));
-                //{"id":"","title":"test","writer":"test","writeDate":"2023-08-06 12:00:00","gbn1":"on","noticeGbn":"on","content":"<p>test</p>","uploadFile":"./tomcat/webapps/upload/center/board/notice/1f228d20-bd68-48db-b598-512459e66f77_KIBS_TV_목록_excel_20230817151752.xlsx"}
+                let form = JSON.parse(JSON.stringify($('#pressForm').serializeObject()));
+                form.content = editor.getHTML();
 
                 /* Modify */
                 if(nvl(id, "") !== ""){
@@ -214,7 +212,7 @@ function f_board_press_save(id){
                         url: '/mng/center/board/press/modifySave.do',
                         method: 'POST',
                         async: false,
-                        data: JSON.stringify(data),
+                        data: JSON.stringify(form),
                         dataType: 'json',
                         contentType: 'application/json; charset=utf-8',
                         success: function (data) {
@@ -244,7 +242,7 @@ function f_board_press_save(id){
                         url: '/mng/center/board/press/insertSave.do',
                         method: 'POST',
                         async: false,
-                        data: JSON.stringify(data),
+                        data: JSON.stringify(form),
                         dataType: 'json',
                         contentType: 'application/json; charset=utf-8',
                         success: function (data) {
@@ -282,7 +280,7 @@ function f_board_press_valid(){
     let title = document.querySelector('#title').value;
     let writer = document.querySelector('#writer').value;
     let writeDate = document.querySelector('#writeDate').value;
-    let content = document.querySelector('#quill_content').value;
+    let content = editor.getMarkdown();
 
     if(nvl(title,"") === ""){ showMessage('#title', 'error', '[ 글 등록 정보 ]', '제목을 입력해 주세요.', ''); return false; }
     if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[ 글 등록 정보 ]', '작성자를 입력해 주세요.', ''); return false; }

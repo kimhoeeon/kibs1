@@ -206,7 +206,7 @@
                         The total area of South Korea is 100,412km². Excluding the northern end, which is joined to the Asian continent, the peninsula is surrounded by water on three sides, with flat land and mountains accounting for 30% and 70% of the entire territory, respectively. Mountains over 1,000m above sea level make up only 15% of the mountainous areas, while mountains lower than 500m account for 65%.<br><br>
 
                         In 1948, the two Koreas established their respective governments: the Republic of Korea (South Korea) and the Democratic People’s Republic of Korea (North Korea).<br>
-                        Defined as two different countries under international law, they joined the United Nations simultaneously. The Constitution of South Korea, however, regards North Korea as part of the Republic of Korea.<br><br>
+                        Defined as two different countries under international law, they joined the United Nations co-located. The Constitution of South Korea, however, regards North Korea as part of the Republic of Korea.<br><br>
 
                         Thanks to the remarkable education system and the high regard for education, the country has many skilled people.<br><br>
 
