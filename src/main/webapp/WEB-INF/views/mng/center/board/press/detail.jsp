@@ -2618,7 +2618,7 @@ if (document.documentElement) {
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="/js/tuiEditor.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/tuiEditor.js?ver=20260128"></script>
     <script src="/js/custom/press.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 

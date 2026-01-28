@@ -2803,7 +2803,7 @@ if (document.documentElement) {
         <!--begin::Custom Javascript(used for common page)-->
         <script src="https://cdn.jsdelivr.net/npm/flatpickr@latest/dist/l10n/ko.js"></script>
         <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-        <script src="/js/tuiEditor.js?ver=<%=System.currentTimeMillis()%>"></script>
+        <script src="/js/tuiEditor.js?ver=20260128"></script>
         <script src="/js/custom/list.js?ver=<%=System.currentTimeMillis()%>"></script>
         <!--end::Custom Javascript-->
 
