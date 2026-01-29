@@ -375,7 +375,8 @@
                                 - 금액 : 5,000원(50% 할인가)     ※ 현장에서 할인가로 티켓 구입 필요<br>
 
                                 <br>
-                                ※ 사전등록 완료 후 입력하신 이메일로 등록 내역이 발송될 예정이니 정보를 정확하게 기입해 주시기 바랍니다.
+                                ※ 사전등록 완료 후 입력하신 이메일로 등록 내역이 발송될 예정이니 정보를 정확하게 기입해 주시기 바랍니다.<br>
+                                ※ 사전등록은 행사기간 3일 중 1일만 적용 가능
                             </div>
                         </div>
                     </div>
@@ -411,7 +412,7 @@
                                         <label><input type="radio" name="eventGbn" value="경기국제보트쇼">경기국제보트쇼(KIBS)·한국국제낚시박람회(KOFISH)</label>
                                         <label><input type="radio" name="eventGbn" value="코리아서프쇼">코리아서프쇼(KISS)</label>
                                         <label><input type="radio" name="eventGbn" value="해양관광전">해양관광전(KMTS)</label>
-                                        <div class="cmnt">참관하시는 관광전을 선택해주세요.</div>
+                                        <div class="cmnt">참관하시는 행사명을 선택해주세요</div>
                                     </div>
                                 </li>
                             </ul>

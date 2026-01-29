@@ -216,6 +216,9 @@
                                     <p>출입증 수령</p>
                                 </div>
                             </div>
+                            <div style="margin-top: 20px;">
+                                ※ 사전등록은 행사기간 3일 중 1일만 적용 가능
+                            </div>
                         </div>
                     </div>
                     <div class="vis_g1_box">

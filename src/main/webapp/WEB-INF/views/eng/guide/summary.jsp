@@ -179,7 +179,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li>
+                        <li style="border-bottom: 1px solid #ddd;">
                             <div class="gubun">Organizer</div>
                             <div class="cont">
                                 <div class="contBox">
@@ -190,10 +190,7 @@
                                         the most modern and efficient environment.</p>
                                 </div>
                                 <div class="contBox">
-                                    <img src="/img/summ_logo05_eng.png">
-                                    <p class="tit">Marina and Marine Industries Association of Korea</p>
-                                    <p class="txt">works hard to develop Korean marina and marine industry via providing
-                                        a platform to extend businesses while strengthening the boding within.</p>
+                                    <img src="/img/summ_logo07_eng.png">
                                 </div>
                                 <div class="contBox">
                                     <img src="/img/summ_logo06_eng.png">
@@ -203,7 +200,17 @@
                                         participate.</p>
                                 </div>
                                 <div class="contBox">
-                                    <img src="/img/summ_logo07_eng.png">
+                                    <img src="/img/summ_logo05_eng.png">
+                                    <p class="tit">Marina and Marine Industries Association of Korea</p>
+                                    <p class="txt">works hard to develop Korean marina and marine industry via providing a platform to extend businesses while strengthening the boding within.</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="gubun">Sponsorship</div>
+                            <div class="cont">
+                                <div class="contBox">
+                                    <img src="/img/summ_logo08.png">
                                 </div>
                             </div>
                         </li>

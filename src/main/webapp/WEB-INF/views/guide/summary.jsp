@@ -147,14 +147,18 @@
                                 <img src="/img/summ_logo02.png">
                             </div>
                         </li>
-                        <li>
+                        <li style="border-bottom: 1px solid #ddd;">
                             <div class="gubun">주관</div>
                             <div class="cont">
                                 <img src="/img/summ_logo03.png">
-                                <img src="/img/summ_logo05.png">
-                                <img src="/img/summ_logo06.png">
                                 <img src="/img/summ_logo07.png">
+                                <img src="/img/summ_logo06.png">
+                                <img src="/img/summ_logo05.png">
                             </div>
+                        </li>
+                        <li>
+                            <div class="gubun">협찬</div>
+                            <div class="cont"><img src="/img/summ_logo08.png"></div>
                         </li>
                     </ul>
                     <div class="eventField">
