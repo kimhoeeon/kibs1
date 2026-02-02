@@ -2301,13 +2301,22 @@ if (document.documentElement) {
                                             <!--begin:Action-->
                                             <div class="d-flex align-items-center">
                                                 <button type="button" onclick="f_application_buyer_new_search()" class="btn btn-primary me-5">Search</button>
+
+                                                <!--begin::전시업체 등록-->
+                                                <button type="button" onclick="f_application_buyer_new_search_condition_init()" class="btn btn-secondary ms-auto">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i>검색조건 초기화
+                                                </button>
+                                                <!--end::전시업체 등록-->
                                             </div>
                                             <!--end:Action-->
                                         </div>
                                         <!--end::Card title-->
                                         <!--begin::Card toolbar-->
                                         <div class="card-toolbar flex-row-fluid gap-5">
-                                                <%--begin::참가신청 언어--%>
+                                            <%--begin::참가신청 언어--%>
                                             <div class="w-100 mw-175px">
                                                 <!--begin::Select2-->
                                                 <select id="lang" class="form-select form-select-solid" data-control="select2"
@@ -2320,8 +2329,8 @@ if (document.documentElement) {
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
-                                                <%--end::참가신청 언어--%>
-                                                <%--begin::승인여부--%>
+                                            <%--end::참가신청 언어--%>
+                                            <%--begin::승인여부--%>
                                             <div class="w-100 mw-150px">
                                                 <!--begin::Select2-->
                                                 <select id="approvalYn" class="form-select form-select-solid" data-control="select2"
@@ -2336,8 +2345,8 @@ if (document.documentElement) {
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
-                                                <%--end::승인여부--%>
-                                                <%--begin::참가취소포함여부--%>
+                                            <%--end::승인여부--%>
+                                            <%--begin::참가취소포함여부--%>
                                             <div class="w-100 mw-200px">
                                                 <!--begin::Select2-->
                                                 <select id="cancelYn" class="form-select form-select-solid" data-control="select2"
@@ -2350,15 +2359,8 @@ if (document.documentElement) {
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
-                                                <%--end::참가취소포함여부--%>
+                                            <%--end::참가취소포함여부--%>
 
-                                            <!--begin::전시업체 등록-->
-                                            <button type="button" onclick="f_application_buyer_new_search_condition_init()" class="btn btn-secondary ms-auto">
-                                                <i class="ki-duotone ki-arrows-circle fs-3">
-                                                    <i class="path1"></i>
-                                                    <i class="path2"></i>
-                                                </i>검색조건 초기화</button>
-                                            <!--end::전시업체 등록-->
                                         </div>
                                         <!--end::Card toolbar-->
                                     </div>

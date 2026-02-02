@@ -2297,14 +2297,37 @@ if (document.documentElement) {
                                             <!--begin:Action-->
                                             <div class="d-flex align-items-center">
                                                 <button type="button" onclick="f_application_booth_new_search()" class="btn btn-primary me-5">Search</button>
+
+                                                <!--begin::전시업체 등록-->
+                                                <button type="button" onclick="f_application_booth_new_search_condition_init()" class="btn btn-secondary ms-auto">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i>검색조건 초기화</button>
+                                                <!--end::전시업체 등록-->
                                             </div>
                                             <!--end:Action-->
                                         </div>
                                         <!--end::Card title-->
                                         <!--begin::Card toolbar-->
-                                        <div class="card-toolbar flex-row-fluid gap-5">
+                                        <div class="card-toolbar flex-row-fluid gap-5 w-100">
+                                            <%--begin::행사구분--%>
+                                            <div class="w-200px">
+                                                <!--begin::Select2-->
+                                                <select id="condition_field_participatory" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 행사구분 -" onchange="f_search_condition_sel_change()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 행사구분 -</option>
+                                                    <option value="boatShow">경기국제보트쇼 (KIBS)</option>
+                                                    <option value="travelShow">해양관광전 (KMTS)</option>
+                                                    <option value="surfShow">코리아서프쇼 (KISS)</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                            </div>
+                                            <%--end::행사구분--%>
                                             <%--begin::참가년도--%>
-                                            <div class="w-100 mw-200px">
+                                            <div class="w-200px">
                                                 <!--begin::Select2-->
                                                 <select id="transferYear" class="form-select form-select-solid" data-control="select2"
                                                         data-hide-search="true" data-allow-clear="true"
@@ -2317,7 +2340,7 @@ if (document.documentElement) {
                                             </div>
                                             <%--end::참가년도--%>
                                             <%--begin::참가신청 언어--%>
-                                            <div class="w-100 mw-175px">
+                                            <div class="w-200px">
                                                 <!--begin::Select2-->
                                                 <select id="lang" class="form-select form-select-solid" data-control="select2"
                                                         data-hide-search="true" data-allow-clear="true"
@@ -2331,7 +2354,7 @@ if (document.documentElement) {
                                             </div>
                                             <%--end::참가신청 언어--%>
                                             <%--begin::승인여부--%>
-                                            <div class="w-100 mw-150px">
+                                            <div class="w-200px">
                                                 <!--begin::Select2-->
                                                 <select id="approvalYn" class="form-select form-select-solid" data-control="select2"
                                                         data-hide-search="true" data-allow-clear="true"
@@ -2346,8 +2369,10 @@ if (document.documentElement) {
                                                 <!--end::Select2-->
                                             </div>
                                             <%--end::승인여부--%>
+                                        </div>
+                                        <div class="card-toolbar flex-row-fluid gap-5 w-100">
                                             <%--begin::참가취소포함여부--%>
-                                            <div class="w-100 mw-200px">
+                                            <div class="w-200px">
                                                 <!--begin::Select2-->
                                                 <select id="cancelYn" class="form-select form-select-solid" data-control="select2"
                                                         data-hide-search="true" data-allow-clear="true"
@@ -2361,7 +2386,7 @@ if (document.documentElement) {
                                             </div>
                                             <%--end::참가취소포함여부--%>
                                             <%--begin::부스구분--%>
-                                            <div class="w-100 mw-150px">
+                                            <div class="w-200px">
                                                 <!--begin::Select2-->
                                                 <select id="boothGbn" class="form-select form-select-solid" data-control="select2"
                                                         data-hide-search="true" data-allow-clear="true"
@@ -2376,7 +2401,7 @@ if (document.documentElement) {
                                             </div>
                                             <%--end::부스구분--%>
                                             <%--begin::할인여부--%>
-                                            <div class="w-100 mw-275px">
+                                            <div class="w-275px">
                                                 <!--begin::Select2-->
                                                 <select id="discountYn" class="form-select form-select-solid" data-control="select2"
                                                         data-hide-search="true" data-allow-clear="true"
@@ -2399,14 +2424,6 @@ if (document.documentElement) {
                                                 <!--end::Select2-->
                                             </div>
                                             <%--end::할인여부--%>
-
-                                            <!--begin::전시업체 등록-->
-                                            <button type="button" onclick="f_application_booth_new_search_condition_init()" class="btn btn-secondary ms-auto">
-                                                <i class="ki-duotone ki-arrows-circle fs-3">
-                                                    <i class="path1"></i>
-                                                    <i class="path2"></i>
-                                                </i>검색조건 초기화</button>
-                                            <!--end::전시업체 등록-->
                                         </div>
                                         <!--end::Card toolbar-->
                                     </div>

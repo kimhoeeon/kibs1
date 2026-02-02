@@ -50,7 +50,6 @@
         <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 
-    <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
@@ -119,7 +118,7 @@
                     </div>
                     <div class="count">${pressInfo.viewCnt}</div>
                 </div>
-                <div class="board_view_cont ql-editor">
+                <div class="board_view_cont">
                     ${pressInfo.content}
                 </div>
                 <div class="board_view_file">

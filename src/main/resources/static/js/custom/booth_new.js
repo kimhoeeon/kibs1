@@ -128,6 +128,7 @@ function f_search_condition_sel_change(){
     dataTbl.clear();
     dataTbl.draw(false);
 
+    let fieldParticipatory = $('#condition_field_participatory option:selected').val();
     let transferYear = $('#transferYear option:selected').val(); //참가년도
     let lang = $('#lang option:selected').val(); //참가신청언어
     let approvalYn = $('#approvalYn option:selected').val(); //승인여부
@@ -139,12 +140,13 @@ function f_search_condition_sel_change(){
     let searchText = $('#search_text').val();
 
     let jsonObj = {
+        fieldParticipatory: fieldParticipatory,
+        transferYear: transferYear,
         lang: lang,
         approvalStatus: approvalYn,
         cancelYn: cancelYn,
         boothType: boothGbn,
         discountYn: discountYn,
-        transferYear: transferYear,
         condition: condition,
         searchText: searchText
     }

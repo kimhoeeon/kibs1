@@ -2296,6 +2296,15 @@ if (document.documentElement) {
                                             <!--begin:Action-->
                                             <div class="d-flex align-items-center">
                                                 <button type="button" onclick="f_application_utility_new_search()" class="btn btn-primary me-5">Search</button>
+
+                                                <!--begin::검색조건 초기화-->
+                                                <button type="button" onclick="f_application_utility_new_search_condition_init()" class="btn btn-secondary ms-auto">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i>검색조건 초기화
+                                                </button>
+                                                <!--end::검색조건 초기화-->
                                             </div>
                                             <!--end:Action-->
                                         </div>
@@ -2368,13 +2377,6 @@ if (document.documentElement) {
                                             </div>
                                             <%--end::할인여부--%>
 
-                                            <!--begin::검색조건 초기화-->
-                                            <button type="button" onclick="f_application_utility_new_search_condition_init()" class="btn btn-secondary ms-auto">
-                                                <i class="ki-duotone ki-arrows-circle fs-3">
-                                                    <i class="path1"></i>
-                                                    <i class="path2"></i>
-                                                </i>검색조건 초기화</button>
-                                            <!--end::검색조건 초기화-->
                                         </div>
                                         <!--end::Card toolbar-->
                                     </div>

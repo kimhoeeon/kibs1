@@ -17,6 +17,7 @@ public class SearchDTO extends AbstractPagingRequestVo {
     String progressStep;
 
     /* 참가자 관리 - 전시업체 목록*/
+    String fieldParticipatory; //행사구분
     String boothType; //부스타입
     String discountYn; //할인여부
     String taxYn; //세금계산서 발행여부

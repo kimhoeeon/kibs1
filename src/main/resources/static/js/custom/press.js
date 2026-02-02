@@ -130,12 +130,13 @@ function f_board_press_remove(rowId){
             "id": rowId
         }
         Swal.fire({
-            title: '선택한 보도자료를 삭제하시겠습니까?',
+            title: '[ 보도자료 ]',
+            html: '<span style="font-size: 1.2em;">' + '선택한 보도자료를 삭제하시겠습니까?' + '</span>',
             icon: 'warning',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
+            confirmButtonText: '삭제',
             cancelButtonColor: '#A1A5B7',
             cancelButtonText: '취소'
         }).then((result) => {
@@ -160,116 +161,96 @@ function f_board_press_modify_init_set(id){
 
 function f_board_press_save(id){
     //console.log(id + '변경내용저장 클릭');
+
+    if(!f_board_press_valid()) return;
+
     Swal.fire({
-        title: '입력된 정보를 저장하시겠습니까?',
+        title: '[ 보도자료 ]',
+        html: '<span style="font-size: 1.2em;">' + '입력된 정보를 저장하시겠습니까?' + '</span>',
         icon: 'info',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
-        confirmButtonText: '변경내용저장',
+        confirmButtonText: '저장',
         cancelButtonColor: '#A1A5B7',
         cancelButtonText: '취소'
     }).then(async (result) => {
         if (result.isConfirmed) {
 
-            /* form valid check */
-            let validCheck = f_board_press_valid();
+            /* File upload */
+            let fileIdList = '';
+            let uploadFileList = document.getElementById('uploadFileList').children;
+            let uploadFileListLen = uploadFileList.length;
+            for(let i=0; i<uploadFileListLen; i++){
+                // 순서 상관없이 input[name=uploadFile] 요소를 직접 찾습니다.
+                let fileInput = uploadFileList[i].querySelector('input[name="uploadFile"]');
 
-            if(validCheck){
-                /* File upload */
-                let fileIdList = '';
-                let uploadFileList = document.getElementById('uploadFileList').children;
-                let uploadFileListLen = uploadFileList.length;
-                for(let i=0; i<uploadFileListLen; i++){
-                    // 순서 상관없이 input[name=uploadFile] 요소를 직접 찾습니다.
-                    let fileInput = uploadFileList[i].querySelector('input[name="uploadFile"]');
-
-                    if (fileInput) {
-                        let fileId = fileInput.id;
-                        fileIdList += fileId;
-                        // 마지막 요소가 아니면 콤마 추가
-                        if((i+1) !== uploadFileListLen){
-                            fileIdList += ',';
-                        }
+                if (fileInput) {
+                    let fileId = fileInput.id;
+                    fileIdList += fileId;
+                    // 마지막 요소가 아니면 콤마 추가
+                    if((i+1) !== uploadFileListLen){
+                        fileIdList += ',';
                     }
                 }
+            }
 
-                if(fileIdList !== ''){
-                    let boardNoticeForm = document.getElementById('pressForm');
-                    let hidden_el = document.createElement('input');
-                    hidden_el.type = 'hidden';
-                    hidden_el.name = 'fileIdList';
-                    hidden_el.value = fileIdList;
-                    boardNoticeForm.append(hidden_el);
+            if(fileIdList !== ''){
+                let boardNoticeForm = document.getElementById('pressForm');
+                let hidden_el = document.createElement('input');
+                hidden_el.type = 'hidden';
+                hidden_el.name = 'fileIdList';
+                hidden_el.value = fileIdList;
+                boardNoticeForm.append(hidden_el);
+            }
+
+            let content = $('#summernote').summernote('code');
+
+            let jsonObj = {
+                "title" : document.querySelector('#title').value,
+                "writer" : document.querySelector('#writer').value,
+                "writeDate" : document.querySelector('#writeDate').value,
+                "content" : content // HTML 태그가 포함된 문자열
+            }
+
+            let url = '/mng/center/board/press/insertSave.do';
+            if(nvl(id, "") !== "") {
+                url = '/mng/center/board/press/modifySave.do';
+            }
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                async: false,
+                data: JSON.stringify(jsonObj),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.resultCode === "0") {
+                        Swal.fire({
+                            title: '[ 보도자료 ]',
+                            html: '<span style="font-size: 1.2em;">' + '입력된 정보가 저장되었습니다.' + '</span>',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            confirmButtonColor: '#00a8ff',
+                            confirmButtonText: '확인'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                if(nvl(id, "") !== ""){
+                                    f_board_press_modify_init_set(id); // 재조회
+                                }else{
+                                    window.location.href = '/mng/center/board/press.do'; // 목록으로 이동
+                                }
+                            }
+                        });
+                    } else {
+                        showMessage('', 'error', '에러 발생', '보도자료 정보 변경을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
+                    }
+                },
+                error: function (xhr, status) {
+                    alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
                 }
-
-                let form = JSON.parse(JSON.stringify($('#pressForm').serializeObject()));
-                form.content = editor.getHTML();
-
-                /* Modify */
-                if(nvl(id, "") !== ""){
-                    $.ajax({
-                        url: '/mng/center/board/press/modifySave.do',
-                        method: 'POST',
-                        async: false,
-                        data: JSON.stringify(form),
-                        dataType: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        success: function (data) {
-                            if (data.resultCode === "0") {
-                                Swal.fire({
-                                    title: '보도자료 정보 변경',
-                                    text: '보도자료 정보가 변경되었습니다.',
-                                    icon: 'info',
-                                    allowOutsideClick: false,
-                                    confirmButtonColor: '#00a8ff',
-                                    confirmButtonText: '확인'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        f_board_press_modify_init_set(id); // 재조회
-                                    }
-                                });
-                            } else {
-                                showMessage('', 'error', '에러 발생', '보도자료 정보 변경을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
-                            }
-                        },
-                        error: function (xhr, status) {
-                            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
-                        }
-                    })//ajax
-                }else { /* Insert */
-                    $.ajax({
-                        url: '/mng/center/board/press/insertSave.do',
-                        method: 'POST',
-                        async: false,
-                        data: JSON.stringify(form),
-                        dataType: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        success: function (data) {
-                            if (data.resultCode === "0") {
-                                Swal.fire({
-                                    title: '보도자료 정보 등록',
-                                    text: '보도자료 정보가 등록되었습니다.',
-                                    icon: 'info',
-                                    allowOutsideClick: false,
-                                    confirmButtonColor: '#00a8ff',
-                                    confirmButtonText: '확인'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = '/mng/center/board/press.do'; // 목록으로 이동
-                                    }
-                                });
-                            } else {
-                                showMessage('', 'error', '에러 발생', '보도자료 정보 등록을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
-                            }
-                        },
-                        error: function (xhr, status) {
-                            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
-                        }
-                    })//ajax
-                }// id check
-
-            }//validCheck
+            })//ajax
 
         }//result.isConfirmed
     })//swal
@@ -280,21 +261,23 @@ function f_board_press_valid(){
     let title = document.querySelector('#title').value;
     let writer = document.querySelector('#writer').value;
     let writeDate = document.querySelector('#writeDate').value;
-    let content = editor.getMarkdown();
+
+    // [수정 포인트 2] 유효성 검사 시에도 Summernote 내용 가져오기
+    // Summernote가 비어있는지 확인하는 전용 함수 이용 ('isEmpty')
+    let isSummernoteEmpty = $('#summernote').summernote('isEmpty');
+    // 내용을 문자열로 가져오려면 아래 코드 사용
+    let content = $('#summernote').summernote('code');
 
     if(nvl(title,"") === ""){ showMessage('#title', 'error', '[ 글 등록 정보 ]', '제목을 입력해 주세요.', ''); return false; }
     if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[ 글 등록 정보 ]', '작성자를 입력해 주세요.', ''); return false; }
     if(nvl(writeDate,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', '작성일을 입력해 주세요.', ''); return false; }
-    if(nvl(content,"") === ""){ showMessage('', 'error', '[ 글 등록 정보 ]', '내용을 입력해 주세요.', ''); return false; }
+
+    // [수정 포인트 3] 내용 빈값 체크 (isEmpty 사용 권장)
+    // Summernote는 내용이 없어도 <p><br></p> 태그가 남을 수 있어 단순 null 체크보다 isEmpty가 정확함
+    if(isSummernoteEmpty){
+        showMessage('', 'error', '[ 글 등록 정보 ]', '내용을 입력해 주세요.', '');
+        return false;
+    }
 
     return true;
-}
-
-function objectifyForm(formArray) {
-    //serialize data function
-    let returnArray = {};
-    for (let i = 0; i < formArray.length; i++){
-        returnArray[formArray[i]['name']] = formArray[i]['value'];
-    }
-    return returnArray;
 }

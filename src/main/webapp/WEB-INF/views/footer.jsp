@@ -64,6 +64,7 @@
                     <li>
                         <div class="gubun">후원</div>
                         <div class="img">
+                            <img src="/img/footer/spon39.png" alt="산업통상부">
                             <img src="/img/footer/spon12.png" alt="한국낚시협회">
                             <img src="/img/footer/spon06.png" alt="대한민국해양연맹">
                             <img src="/img/footer/spon11.png" alt="중소조선연구원">

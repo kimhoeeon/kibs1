@@ -47,14 +47,17 @@ License: For each use you must have a valid license purchased only from above li
     <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
     <!--end::Global Stylesheets Bundle-->
 
-    <!--begin::custom Mng css-->
-    <link href="/css/mngStyle.css" rel="stylesheet" type="text/css"/>
-    <!--end::custom Mng css-->
-
-    <%-- tui editor --%>
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
-    <link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.css" />
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.css" />
+    <%-- editor --%>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <style>
+        /* Metronic 테마와 Summernote 간의 미세한 스타일 충돌 보정 */
+        .note-editor .note-toolbar .note-dropdown-menu {
+            min-width: 180px; /* 드롭다운 메뉴 가로 너비 보정 */
+        }
+        .note-modal-footer {
+            height: 60px; /* 이미지 삽입 모달 하단 높이 보정 */
+        }
+    </style>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -2330,7 +2333,7 @@ if (document.documentElement) {
                                                 <label class="col-lg-2 col-form-label fw-semibold fs-6">사이트 분류</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
-                                                <div class="col-lg-8 d-flex flex-wrap">
+                                                <div class="col-lg-8 d-flex flex-wrap gap-4">
                                                     <div class="form-check form-check-custom form-check-lg mb-3 mr15">
                                                         <input class="form-check-input form-control-solid-bg"
                                                                type="checkbox" id="gbn1" name="gbn1"
@@ -2386,7 +2389,7 @@ if (document.documentElement) {
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-10">
-                                                    <div id="editor_content">${info.content}</div>
+                                                    <textarea id="summernote" name="content"><c:out value="${info.content}" escapeXml="false" /></textarea>
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -2612,13 +2615,12 @@ if (document.documentElement) {
     <script src="/assets/js/custom/utilities/modals/users-search.js"></script>
     <!--end::Custom Javascript-->
 
-    <script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.min.js"></script>
-    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-    <script src="https://uicdn.toast.com/editor-plugin-color-syntax/latest/toastui-editor-plugin-color-syntax.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="/js/tuiEditor.js?ver=20260128"></script>
+    <script src="/js/summernote.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="/js/custom/press.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 

@@ -164,15 +164,15 @@ let KTAppExhibitorMng = function () {
             renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + row.seq + '\'' + ')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_detail_info">';
                 if(nvl(companyNameEn,'') !== ''){
                     if(companyNameKo === '오션테크'){
-                        renderHTML += companyNameKo + '(덕영엔지니어링)' + '<br>' + companyNameEn;
+                        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '(덕영엔지니어링)' + '<br>' + companyNameEn;
                     }else{
-                        renderHTML += companyNameKo + '<br>' + companyNameEn;
+                        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
                     }
                 }else{
                     if(companyNameKo === '오션테크') {
-                        renderHTML += companyNameKo + '(덕영엔지니어링)';
+                        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '(덕영엔지니어링)';
                     }else{
-                        renderHTML += companyNameKo;
+                        renderHTML += f_exhibitor_name_gbn(companyNameKo);
                     }
                 }
             renderHTML += '</a>';
@@ -863,7 +863,7 @@ let KTAppExhibitorNewApplicationBooth = function () {
         let renderHTML = '<span class="fw-bold">';
         renderHTML += '<a href="/mng/exhibitorNew/application/booth/detail.do?seq=' + row.seq + '"';
         renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
-        renderHTML += companyNameKo + '<br>' + companyNameEn;
+        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
         renderHTML += '</a>';
         renderHTML += '</span>';
         return renderHTML;
@@ -1339,7 +1339,7 @@ let KTAppExhibitorNewApplicationMaritime = function () {
         let renderHTML = '<span class="fw-bold">';
         renderHTML += '<a href="/mng/exhibitorNew/application/maritime/detail.do?seq=' + row.seq + '"';
         renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
-        renderHTML += companyNameKo + '<br>' + companyNameEn;
+        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
         renderHTML += '</a>';
         renderHTML += '</span>';
         return renderHTML;
@@ -1488,7 +1488,7 @@ let KTAppExhibitorNewApplicationSign = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return companyNameKo + '<br>' + companyNameEn;
+        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
     }
 
     function renderCompanySignNameKoCell(data, type, row){
@@ -1735,7 +1735,7 @@ let KTAppExhibitorNewApplicationUtility = function () {
         let renderHTML = '<span class="fw-bold">';
         renderHTML += '<a href="/mng/exhibitorNew/application/utility/detail.do?seq=' + row.seq + '"';
         renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
-            renderHTML += companyNameKo + '<br>' + companyNameEn;
+            renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
         renderHTML += '</a>';
         renderHTML += '</span>';
         return renderHTML;
@@ -2088,7 +2088,7 @@ let KTAppExhibitorNewApplicationPass = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return companyNameKo + '<br>' + companyNameEn;
+        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
     }
 
     function renderActionsCell(data, type, row){
@@ -2421,7 +2421,7 @@ let KTAppExhibitorNewApplicationBuyer = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return companyNameKo + '<br>' + companyNameEn;
+        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
     }
 
     function renderCountryCell(data, type, row){
@@ -2803,7 +2803,7 @@ let KTAppExhibitorNewApplicationGift = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return companyNameKo + '<br>' + companyNameEn;
+        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
     }
 
     function renderPriceCell(data, type, row){
@@ -3242,7 +3242,7 @@ let KTAppExhibitorNewApplicationOnline = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return companyNameKo + '<br>' + companyNameEn;
+        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
     }
 
     function renderActionsCell(data, type, row){
@@ -3575,7 +3575,7 @@ let KTAppExhibitorNewApplicationProduct = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return companyNameKo + '<br>' + companyNameEn;
+        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
     }
 
     function renderActionsCell(data, type, row){
@@ -6327,3 +6327,31 @@ KTUtil.onDOMContentLoaded(function () {
     DTRequestManagementList.init(); // /mng/request/management/list.do
 
 });
+
+function f_exhibitor_name_gbn(companyName){
+    let returnCompanyName = companyName;
+    if(companyName === '웨이브파크'
+        || companyName === '오션블리스'
+        || companyName === '주식회사 웨이브힐'
+        || companyName === '라인 디'
+        || companyName === '엉클스톤'
+        || companyName === '주식회사 썸머유니버스'
+        || companyName === '와이케이서프'
+        || companyName === '바이미야'
+        || companyName === '사단법인비추온안전협회'
+        || companyName === '네이키드서프클럽'
+        || companyName === '(주)케이에이치트렌드'
+        || companyName === '양양청년협동조합'
+        || companyName === '라인업그룹'
+        || companyName === '바다이브'
+        || companyName === '지프로'
+        || companyName === '쓰리세컨즈'
+        || companyName === '서프랩'
+        || companyName === '서프잇'
+        || companyName === '오션차일드'
+        || companyName === '주식회사 익스트림모션'
+    ){
+        returnCompanyName += '(W)';
+    }
+    return returnCompanyName;
+}

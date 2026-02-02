@@ -2338,6 +2338,21 @@ if (document.documentElement) {
                                         <!--end::Card title-->
                                         <!--begin::Card toolbar-->
                                         <div class="card-toolbar flex-row-fluid gap-5">
+                                            <%--begin::행사구분--%>
+                                            <div class="w-100 mw-250px">
+                                                <!--begin::Select2-->
+                                                <select id="condition_field_participatory" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 행사구분 -" onchange="f_search_condition_box_change()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 행사구분 -</option>
+                                                    <option value="boatShow">경기국제보트쇼 (KIBS)</option>
+                                                    <option value="travelShow">해양관광전 (KMTS)</option>
+                                                    <option value="surfShow">코리아서프쇼 (KISS)</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                            </div>
+                                            <%--end::행사구분--%>
                                             <%--begin::부스구분--%>
                                             <div class="w-100 mw-150px">
                                                 <!--begin::Select2-->
@@ -2398,24 +2413,6 @@ if (document.documentElement) {
                                                 <!--end::Select2-->
                                             </div>
                                             <%--end::참가비 수납여부--%>
-
-                                            <div class="ms-auto d-flex align-items-center gap-2 gap-lg-3">
-                                                <!--begin::입금 상태 변경 버튼-->
-                                                <button type="button" id="prc_yn_btn" class="btn btn-danger" data-bs-target="#kt_modal_prc_yn_status">
-                                                    <i class="ki-duotone ki-arrows-circle fs-3">
-                                                        <i class="path1"></i>
-                                                        <i class="path2"></i>
-                                                    </i> 입금 상태 변경</button>
-                                                <!--end::입금 상태 변경 버튼-->
-
-                                                <!--begin::참가 상태 변경 버튼-->
-                                                <button type="button" id="approval_status_btn" class="btn btn-danger" data-bs-target="#kt_modal_approval_status">
-                                                    <i class="ki-duotone ki-arrows-circle fs-3">
-                                                        <i class="path1"></i>
-                                                        <i class="path2"></i>
-                                                    </i> 참가 상태 변경</button>
-                                                <!--end::참가 상태 변경 버튼-->
-                                            </div>
 
                                         </div>
                                         <!--end::Card toolbar-->
@@ -2492,9 +2489,23 @@ if (document.documentElement) {
                                             </div>
                                             <%--end::환불내역존재--%>
 
-                                            <!--begin::전시업체 등록-->
-                                            <%--<a href="/mng/exhibitor/participant/company/detail.do" class="btn btn-primary ms-auto">전시업체 등록</a>--%>
-                                            <!--end::전시업체 등록-->
+                                            <div class="ms-auto d-flex align-items-center gap-2 gap-lg-3">
+                                                <!--begin::입금 상태 변경 버튼-->
+                                                <button type="button" id="prc_yn_btn" class="btn btn-danger" data-bs-target="#kt_modal_prc_yn_status">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i> 입금 상태 변경</button>
+                                                <!--end::입금 상태 변경 버튼-->
+
+                                                <!--begin::참가 상태 변경 버튼-->
+                                                <button type="button" id="approval_status_btn" class="btn btn-danger" data-bs-target="#kt_modal_approval_status">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i> 참가 상태 변경</button>
+                                                <!--end::참가 상태 변경 버튼-->
+                                            </div>
                                         </div>
                                         <!--end::Card toolbar-->
                                     </div>

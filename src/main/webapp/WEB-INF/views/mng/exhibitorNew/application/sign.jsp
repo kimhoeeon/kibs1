@@ -2276,6 +2276,13 @@ if (document.documentElement) {
                                             <!--begin:Action-->
                                             <div class="d-flex align-items-center">
                                                 <button type="button" onclick="f_application_sign_new_search()" class="btn btn-primary me-5">Search</button>
+
+                                                <button type="button" onclick="f_application_sign_new_search_condition_init()" class="btn btn-secondary ms-auto">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i>검색조건 초기화
+                                                </button>
                                             </div>
                                             <!--end:Action-->
                                         </div>
@@ -2327,13 +2334,6 @@ if (document.documentElement) {
                                             </div>
                                             <%--end::참가취소포함여부--%>
 
-                                            <!--begin::전시업체 등록-->
-                                            <button type="button" onclick="f_application_sign_new_search_condition_init()" class="btn btn-secondary ms-auto">
-                                                <i class="ki-duotone ki-arrows-circle fs-3">
-                                                    <i class="path1"></i>
-                                                    <i class="path2"></i>
-                                                </i>검색조건 초기화</button>
-                                            <!--end::전시업체 등록-->
                                         </div>
                                         <!--end::Card toolbar-->
                                     </div>

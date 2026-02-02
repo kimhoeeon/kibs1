@@ -248,6 +248,7 @@ function f_search_condition_box_change(){
     dataTbl.draw(false);
 
      /*
+     fieldParticipatory; //행사구분
      boothType; //부스타입
      discountYn; //할인여부
      taxYn; //세금계산서 발행여부
@@ -258,6 +259,7 @@ function f_search_condition_box_change(){
      refundYn; //환불내역존재여부
      */
 
+    let fieldParticipatory = $('#condition_field_participatory option:selected').val();
     let boothType = $('#condition_booth_type option:selected').val();
     let discountYn = $('#condition_discount_yn option:selected').val();
     let taxYn = $('#condition_tax_yn option:selected').val();
@@ -276,6 +278,7 @@ function f_search_condition_box_change(){
     let searchText = $('#search_text').val();
 
     let jsonObj = {
+        fieldParticipatory: fieldParticipatory, //행사구분
         boothType: boothType, //부스타입
         discountYn: discountYn, //할인여부
         taxYn: taxYn, //세금계산서 발행여부
@@ -320,6 +323,7 @@ function f_search_condition_box_change(){
 function f_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
+    $('#condition_field_participatory').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_booth_type').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_discount_yn').val('').select2({minimumResultsForSearch: Infinity});
     $('#condition_tax_yn').val('').select2({minimumResultsForSearch: Infinity});

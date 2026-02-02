@@ -1784,6 +1784,9 @@
                 AND id LIKE CONCAT('%',#{searchText},'%')
             </if>
         </if>
+        <if test='fieldParticipatory != null and fieldParticipatory != ""'>
+            AND field_participatory = #{fieldParticipatory}
+        </if>
         <if test='boothType != null and boothType != ""'>
             AND INSTR(booth_type,#{boothType}) <![CDATA[>]]> 0
         </if>
@@ -3477,6 +3480,9 @@
             <if test='condition eq "boothCnt"'>
                 AND ( en.stand_alone_booth_cnt + en.assembly_booth_cnt + en.online_booth_cnt ) = #{searchText}
             </if>
+        </if>
+        <if test='fieldParticipatory != null and fieldParticipatory != ""'>
+            AND en.field_participatory = #{fieldParticipatory}
         </if>
         <if test='lang != null and lang != ""'>
             AND en.lang = #{lang}
