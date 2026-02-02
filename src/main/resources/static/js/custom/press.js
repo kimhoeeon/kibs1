@@ -204,14 +204,8 @@ function f_board_press_save(id){
                 boardNoticeForm.append(hidden_el);
             }
 
-            let content = $('#summernote').summernote('code');
-
-            let jsonObj = {
-                "title" : document.querySelector('#title').value,
-                "writer" : document.querySelector('#writer').value,
-                "writeDate" : document.querySelector('#writeDate').value,
-                "content" : content // HTML 태그가 포함된 문자열
-            }
+            let form = JSON.parse(JSON.stringify($('#pressForm').serializeObject()));
+            form.content = $('#summernote').summernote('code');
 
             let url = '/mng/center/board/press/insertSave.do';
             if(nvl(id, "") !== "") {
@@ -222,7 +216,7 @@ function f_board_press_save(id){
                 url: url,
                 method: 'POST',
                 async: false,
-                data: JSON.stringify(jsonObj),
+                data: JSON.stringify(form),
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
