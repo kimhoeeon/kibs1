@@ -39,23 +39,27 @@ let KTAppExhibitorMng = function () {
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 9,
-                    'render': function (data, type, row) { return renderPrcTotalCell(data, type, row); }
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderFieldParticipatoryCell(data, type, row); }
                 },
                 {
                     'targets': 10,
-                    'render': function (data, type, row) { return renderDepositCell(data, type, row); }
+                    'render': function (data, type, row) { return renderPrcTotalCell(data, type, row); }
                 },
                 {
                     'targets': 11,
-                    'render': function (data, type, row) { return renderBalanceCell(data, type, row); }
+                    'render': function (data, type, row) { return renderDepositCell(data, type, row); }
                 },
                 {
                     'targets': 12,
+                    'render': function (data, type, row) { return renderBalanceCell(data, type, row); }
+                },
+                {
+                    'targets': 13,
                     'render': function (data, type, row) { return renderPrcYnCell(data, type, row); }
                 },
                 {
-                    'targets': 14,
+                    'targets': 15,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -70,6 +74,7 @@ let KTAppExhibitorMng = function () {
                 { data: 'companyNameKo' }, //회사명(국문)
                 { data: 'companyNameEn' }, //회사명(영문)
                 { data: 'companyName' }, //회사명
+                { data: 'fieldParticipatory' }, //참가행사
                 { data: 'id'},
                 { data: 'prcTotal' }, //총액
                 { data: 'deposit' }, //선금
@@ -85,6 +90,27 @@ let KTAppExhibitorMng = function () {
         let renderHTML = '<div class="exhibitor_check form-check form-check-sm form-check-custom form-check-solid">' +
             '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.companyNameKo  + ' / ' + row.companyNameEn + '"/>' +
             '</div>';
+        return renderHTML;
+    }
+
+    function renderFieldParticipatoryCell(data, type, row){
+        let fieldParticipatory = row.fieldParticipatory;
+        let renderHTML = '';
+        if(nvl(fieldParticipatory,"") !== ""){
+            switch (fieldParticipatory) {
+                case 'boatShow':
+                    renderHTML = '경기국제보트쇼';
+                    break;
+                case 'surfShow':
+                    renderHTML = '코리아서프쇼';
+                    break;
+                case 'travelShow':
+                    renderHTML = '해양관광전';
+                    break;
+            }
+        }else{
+            renderHTML = '-';
+        }
         return renderHTML;
     }
 

@@ -1762,6 +1762,7 @@
              , booth_type
              , company_name_ko
              , company_name_en
+             , field_participatory
              , id
              , prc_total
              , deposit
