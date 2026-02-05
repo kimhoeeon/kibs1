@@ -69,7 +69,7 @@
                         <div class="tabOptSel">
                             <a class="active" href="/eng/guide/summary.do">KIBS 2026</a>
                             <a href="/eng/exhibitor/categories.do">Exhibitors</a>
-                            <a href="/eng/buyer/apply.do">Buyer</a>
+                            <a href="/eng/buyer/glance.do">Buyer</a>
                             <a href="/eng/board/notice.do">News</a>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
     <div class="summ_s summ_s1 padding_tb">
         <div class="inner">
             <div class="summ_box">
-                <div class="summ_poster"><img src="/img/keyvisual27_eng.jpg?ver=20260202"></div>
+                <div class="summ_poster"><img src="/img/keyvisual28_eng.jpg?ver=20260205"></div>
                 <div class="summ_info">
                     <ul class="infoBox">
                         <li>

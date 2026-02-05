@@ -82,7 +82,7 @@
                             <a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors</span></a>
                             <ul class="dept2">
                                 <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors Categories</span></a></li>
-                                <li><a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8946/8912');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>"><span>Exhibitor Registration</span></a></li>
+                                <li><a href="<c:url value="/apply/step01.do"/>"><span>Exhibitor Registration</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/glance.do"/>"><span>Korea at a Glance</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
@@ -91,10 +91,10 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="<c:url value="/eng/buyer/apply.do"/>"><span>Buyers</span></a>
+                            <a href="<c:url value="/eng/buyer/glance.do"/>"><span>Buyers</span></a>
                             <ul class="dept2">
                                 <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Visitor guide</span></a></li>
-                                <li><a href="<c:url value="/eng/buyer/apply.do"/>"><span>Pre-registration</span></a></li>
+                                <li><a href="<c:url value="/visitor/apply.do"/>"><span>Pre-registration</span></a></li>
                                 <li><a href="<c:url value="/eng/buyer/glance.do"/>"><span>Korea at a Glance</span></a></li>
                                 <li><a href="<c:url value="/eng/buyer/marina.do"/>"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="<c:url value="/eng/buyer/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
@@ -160,7 +160,7 @@
                             <a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors</span></a>
                             <ul class="dept2">
                                 <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors Categories</span></a></li>
-                                <li><a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8946/8912');<%--TODO : 참가신청 기간에 오픈 /eng/apply/step01.do--%>"><span>Exhibitor Registration</span></a></li>
+                                <li><a href="/apply/step01.do"><span>Exhibitor Registration</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/glance.do"/>"><span>Korea at a Glance</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
@@ -169,10 +169,10 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="<c:url value="/eng/buyer/apply.do"/>"><span>Buyers</span></a>
+                            <a href="<c:url value="/eng/buyer/glance.do"/>"><span>Buyers</span></a>
                             <ul class="dept2">
                                 <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Visitor guide</span></a></li>
-                                <li><a href="<c:url value="/eng/buyer/apply.do"/>"><span>Pre-registration</span></a></li>
+                                <li><a href="<c:url value="/visitor/apply.do"/>"><span>Pre-registration</span></a></li>
                                 <li><a href="<c:url value="/eng/buyer/glance.do"/>"><span>Korea at a Glance</span></a></li>
                                 <li><a href="<c:url value="/eng/buyer/marina.do"/>"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="<c:url value="/eng/buyer/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>

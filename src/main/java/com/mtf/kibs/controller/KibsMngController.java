@@ -8131,7 +8131,7 @@ public class KibsMngController {
         // SXSSFWorkbook: 대용량 데이터 처리 시 메모리 부족 방지를 위한 스트리밍 방식
         try (SXSSFWorkbook workbook = new SXSSFWorkbook()) {
 
-            SXSSFSheet sheet = workbook.createSheet(" 요트/보트 출품 정보");
+            SXSSFSheet sheet = workbook.createSheet("요트보트 출품 정보");
 
             sheet.trackAllColumnsForAutoSizing();
 

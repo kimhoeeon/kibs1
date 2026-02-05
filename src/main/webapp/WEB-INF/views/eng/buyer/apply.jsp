@@ -51,8 +51,7 @@
 
 <body>
 <script>
-    alert('We are preparing to accept pre-registration applications for visitors to the 2026 Gyeonggi International Boat Show.');
-    history.back();
+    window.location.href = "/visitor/apply.do";
 </script>
 
 <c:import url="../header.jsp" charEncoding="UTF-8"/>
@@ -84,7 +83,7 @@
                         <div class="tabOptSel">
                             <a href="/eng/guide/summary.do">KIBS 2026</a>
                             <a href="/eng/exhibitor/categories.do">Exhibitors</a>
-                            <a class="active" href="/eng/buyer/apply.do">Buyer</a>
+                            <a class="active" href="/eng/buyer/glance.do">Buyer</a>
                             <a href="/eng/board/notice.do">News</a>
                         </div>
                     </div>
@@ -92,7 +91,7 @@
                         <div class="tabOptAct">Pre-registration</div>
                         <div class="tabOptSel">
                             <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor guide</a>
-                            <a class="active" href="/eng/buyer/apply.do">Pre-registration</a>
+                            <a class="active" href="/eng/buyer/glance.do">Pre-registration</a>
                             <a href="/eng/buyer/glance.do">Korea at a Glance</a>
                             <a href="/eng/buyer/marina.do">Marine Industry in korea</a>
                             <a href="/eng/buyer/match.do">Exhibitor-Buyer Matchmaking Program</a>
