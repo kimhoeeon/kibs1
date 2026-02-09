@@ -26,12 +26,14 @@
     gtag('config', 'AW-866426231');
 </script>
 
-<%--NAVER--%>
+<!-- NAVER SCRIPT START-->
 <script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
 <script type="text/javascript">
-    if(!wcs_add) var wcs_add = {};
+    if (!wcs_add) var wcs_add={};
     wcs_add["wa"] = "s_3ee90871e561";
     if(window.wcs) {
-        wcs_do();
+        wcs.inflow("kibs.com");
     }
+    wcs_do();
 </script>
+<!-- NAVER SCRIPT END -->

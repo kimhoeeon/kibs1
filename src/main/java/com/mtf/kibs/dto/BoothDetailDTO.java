@@ -16,13 +16,13 @@ public class BoothDetailDTO {
 
     private String boothType;
     private Integer registrationCnt;
-    private Integer registrationFee; // [추가] 등록비 금액
+    private Integer registrationFee; // 등록비 금액
     private Integer standAloneBoothCnt;
-    private Integer standAloneBoothFee; // [추가] 독립부스 금액
+    private Integer standAloneBoothFee; // 독립부스 금액
     private Integer assemblyBoothCnt;
-    private Integer assemblyBoothFee; // [추가] 조립부스 금액
+    private Integer assemblyBoothFee; // 조립부스 금액
     private Integer onlineBoothCnt;
-    private Integer onlineBoothFee; // [추가] 온라인부스 금액
+    private Integer onlineBoothFee; // 온라인부스 금액
     private Boolean discountEarly1;
     private Boolean discountEarly2;
     private Boolean discountFirstUnder10;

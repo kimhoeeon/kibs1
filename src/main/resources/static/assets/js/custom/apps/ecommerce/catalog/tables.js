@@ -6376,6 +6376,9 @@ function f_exhibitor_name_gbn(companyName){
         || companyName === '서프잇'
         || companyName === '오션차일드'
         || companyName === '주식회사 익스트림모션'
+        || companyName === '에스클라세'
+        || companyName === '한국 보드라이더스 클럽 주식회사'
+        || companyName === '포인트 브레이크'
     ){
         returnCompanyName += '(W)';
     }

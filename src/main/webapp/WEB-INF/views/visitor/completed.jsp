@@ -135,9 +135,13 @@
             'currency': 'KRW'
         });
 
-        // Naver 전환 (신규 요청 코드: 타입 1)
-        var _nasa={};
-        if(window.wcs) _nasa["cnv"] = wcs.cnv("1","1");
+        // Naver 전환 (Lead 타입)
+        // 공통 스크립트(ad_scripts.jsp)에서 wcslog.js 로드 및 계정 ID(s_3ee90871e561) 설정됨
+        if(window.wcs){
+            var _conv = {};
+            _conv.type = 'lead';
+            wcs.trans(_conv);
+        }
     </script>
 
 </body>

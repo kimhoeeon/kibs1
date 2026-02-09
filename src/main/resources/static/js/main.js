@@ -6440,6 +6440,13 @@ function strCheck(str, type) {
 
 function f_visitor_apply(gbn){
 
+    /* 이메일 공백 제거 */
+    // 화면의 값을 미리 변경해야 유효성 검사와 데이터 셋팅 모두 공백 없는 값으로 처리됩니다.
+    let $email = $('#email');
+    if ($email.length > 0) {
+        $email.val($email.val().replace(/\s/g, '')); // 모든 공백 제거
+    }
+
     /* 유효성 검사 */
     let validCheck = f_visitor_form_valid_check(gbn);
 
@@ -7300,7 +7307,7 @@ function getByte(str){
 
 async function f_company_uploadFile_call(id, path) {
 
-    const uploadPromises = []; // [추가] 프로미스 배열
+    const uploadPromises = []; // 프로미스 배열
 
     /* 사업자 등록증 */
     let companyLicenseFile = $('#companyLicense').val();
@@ -7376,7 +7383,7 @@ async function f_company_uploadFile_call(id, path) {
         }
     }
 
-    // [추가] 모든 업로드가 끝날 때까지 기다림
+    // 모든 업로드가 끝날 때까지 기다림
     try {
         await Promise.all(uploadPromises);
         console.log("All files uploaded successfully");
@@ -7429,7 +7436,7 @@ function f_web_file_upload_call(id, path) {
 
 function f_company_uploadFile(userId, formId, elementId, path) {
     /* 파일 업로드 */
-    return new Promise((resolve, reject) => { // [추가] Promise로 감싸기
+    return new Promise((resolve, reject) => { // Promise로 감싸기
         let file = document.querySelector('#' + elementId);
         const formData = new FormData();
 
@@ -7480,9 +7487,9 @@ function f_company_uploadFile(userId, formId, elementId, path) {
                                 // ajaxConnect는 async: false이므로 여기서 멈춥니다.
                                 let resData = ajaxConnect('/file/upload/save.do', 'post', jsonObj);
                                 if (resData.resultCode === "0") {
-                                    resolve(res.uploadPath + '\\' + res.fileName); // [추가] 성공 시 resolve
+                                    resolve(res.uploadPath + '\\' + res.fileName); // 성공 시 resolve
                                 } else {
-                                    reject(new Error('File DB Save Error')); // [추가] 실패 시 reject
+                                    reject(new Error('File DB Save Error')); // 실패 시 reject
                                 }
                             } else {
                                 resolve(); // 경로가 비어있으면 통과
@@ -7493,12 +7500,12 @@ function f_company_uploadFile(userId, formId, elementId, path) {
                     })
                     .catch(err => {
                         console.log(err);
-                        reject(err); // [추가] fetch 에러 시 reject
+                        reject(err); // fetch 에러 시 reject
                     });
             },
             error(err) {
                 console.log(err.message);
-                reject(err); // [추가] 압축 에러 시 reject
+                reject(err); // 압축 에러 시 reject
             },
         });
     });

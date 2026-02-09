@@ -1231,7 +1231,7 @@ async function f_company_file_upload(userId, formId, elementId, path) {
 
 function f_company_uploadFile(userId, formId, elementId, path) {
     /* 파일 업로드 */
-    return new Promise((resolve, reject) => { // [추가] Promise로 감싸기
+    return new Promise((resolve, reject) => { // Promise로 감싸기
         let file = document.querySelector('#' + elementId);
         const formData = new FormData();
 
@@ -1282,9 +1282,9 @@ function f_company_uploadFile(userId, formId, elementId, path) {
                                 // ajaxConnect는 async: false이므로 여기서 멈춥니다.
                                 let resData = ajaxConnect('/file/upload/save.do', 'post', jsonObj);
                                 if (resData.resultCode === "0") {
-                                    resolve(res.uploadPath + '\\' + res.fileName); // [추가] 성공 시 resolve
+                                    resolve(res.uploadPath + '\\' + res.fileName); // 성공 시 resolve
                                 } else {
-                                    reject(new Error('File DB Save Error')); // [추가] 실패 시 reject
+                                    reject(new Error('File DB Save Error')); // 실패 시 reject
                                 }
                             } else {
                                 resolve(); // 경로가 비어있으면 통과
@@ -1295,12 +1295,12 @@ function f_company_uploadFile(userId, formId, elementId, path) {
                     })
                     .catch(err => {
                         console.log(err);
-                        reject(err); // [추가] fetch 에러 시 reject
+                        reject(err); // fetch 에러 시 reject
                     });
             },
             error(err) {
                 console.log(err.message);
-                reject(err); // [추가] 압축 에러 시 reject
+                reject(err); // 압축 에러 시 reject
             },
         });
     });

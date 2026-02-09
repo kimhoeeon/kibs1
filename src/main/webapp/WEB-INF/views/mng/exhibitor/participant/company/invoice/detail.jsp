@@ -2994,6 +2994,7 @@ if (document.documentElement) {
                                     <div id="kt_invoice_info">
                                         <!--begin::Card body-->
                                         <div class="card-body border-top p-9">
+                                            <h4 class="fw-bold text-gray-800 mb-5">■ 전시부스 인보이스</h4>
                                             <!--begin::Table container-->
                                             <div class="table-responsive">
                                                 <!--begin::Table-->
@@ -3049,6 +3050,7 @@ if (document.documentElement) {
                                         <!--end::Card body-->
                                         <!--begin::Card body-->
                                         <div class="card-body border-top p-9">
+                                            <h4 class="fw-bold text-gray-800 mb-5">■ 유틸리티 인보이스</h4>
                                             <!--begin::Table container-->
                                             <div class="table-responsive">
                                                 <!--begin::Table-->
@@ -3075,11 +3077,11 @@ if (document.documentElement) {
                                                         <c:forEach var="invoice" items="${utilityInvoiceList}">
                                                             <tr class="text-center align-middle">
                                                                 <td>
-                                                                        <%-- data-type="utility" 추가 --%>
+                                                                    <%-- data-type="utility" 추가 --%>
                                                                     <span class="fw-semibold d-block fs-7 invoice-item">
-                                                                            <input type="hidden" name="filePath" value="${invoice.filePath}"/>
-                                                                            <input type="checkbox" name="invoiceSeq" value="${invoice.invoiceSeq}" data-type="utility" class="form-check-input">
-                                                                        </span>
+                                                                        <input type="hidden" name="filePath" value="${invoice.filePath}"/>
+                                                                        <input type="checkbox" name="invoiceSeq" value="${invoice.invoiceSeq}" data-type="utility" class="form-check-input">
+                                                                    </span>
                                                                 </td>
                                                                 <td class="td_invoiceCode">${invoice.invoiceCode}</td>
                                                                 <td>${invoice.title}</td>
@@ -3330,7 +3332,7 @@ if (document.documentElement) {
     <script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260123"></script>
+    <script src="/assets/js/custom/apps/ecommerce/catalog/tables.js?ver=20260209"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
     <script src="/assets/js/custom/widgets.js"></script>
     <script src="/assets/js/custom/apps/chat/chat.js"></script>

@@ -2763,7 +2763,7 @@ public class KibsMngController {
                 FileUploadUtil.deleteFile(PHYSICAL_PATH_BASE + mainKoPath);
                 String newFileName = FileUploadUtil.saveFile(formData.getMainKoFile(), PHYSICAL_SAVE_PATH);
                 mainKoPath = WEB_PATH_BASE + newFileName;
-                mainKoOrigName = formData.getMainKoFile().getOriginalFilename(); // [추가] 원본 파일명 저장
+                mainKoOrigName = formData.getMainKoFile().getOriginalFilename(); // 원본 파일명 저장
             }
             formData.setMainKoPath(mainKoPath);
             formData.setMainKoOriginalName(mainKoOrigName); // [추가]
@@ -4522,18 +4522,17 @@ public class KibsMngController {
         // XSSFWorkbook 대신 SXSSFWorkbook 사용
         try (SXSSFWorkbook workbook = new SXSSFWorkbook()) {
 
-            // --- 1. 헤더 배열 구성 (총 672개 컬럼) ---
+            // --- 1. 헤더 배열 구성 ---
             List<String> headerList = new ArrayList<>();
 
-            // 1-1. 고정 헤더 (업체정보 ~ 해상전시회) : 83개
-            // "참가비수납여부" 제거 (업체정보 29개)
+            // 1-1. 고정 헤더 (업체정보 ~ 해상전시회)
             String[] fixedHeaders1 = {
                     /* 업체정보 (29) */ "No", "참가상태", "승인구분", "부스번호", "아이디", "등록일", "최종수정일", "BP번호", "컨택내역-작성자", "컨택내역-날짜", "컨택내역-내용", "참고사항-작성자", "참고사항-날짜", "참고사항-내용", "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소", "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "기참가연도", "회원사 여부",
                     /* 입금 현황 (11) */ "금액", "내용", "수납여부", "입금일", "입금예정일", "세금계산서", "입금자", "확인자", "코멘트", "등록일시", "수정일시",
                     /* 대표담당자 (6) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
                     /* 담당자 1~3 (18) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
                     /* 업체소개 (8) */ "회사소개영상", "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)", "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
-                    /* 참가분야 (10) */ "참가행사", "보트&요트", "무동력보트", "워크보트", "해양부품&장비", "안전&마리나", "해양관광", "해양레저", "수중레저", "서핑",
+                    /* 참가분야 (4) - [변경] */ "참가행사", "1순위", "2순위", "3순위",
                     /* 해상전시회 (2) */ "참가여부", "참가구분"
             };
             Collections.addAll(headerList, fixedHeaders1);
@@ -4544,7 +4543,7 @@ public class KibsMngController {
                 Collections.addAll(headerList, productCols);
             }
 
-            // 1-3. 기업 뱃지 ~ 온라인 제품 (4 + 330 = 334개)
+            // 1-3. 기업 뱃지 ~ 온라인 제품
             String[] fixedHeaders2 = {
                     /* 기업뱃지 (4) */ "보트쇼 3회 이상 참가", "올해의 제품상 수상", "보트쇼와 제작한 영상", "제품 등록 우수"
             };
@@ -4601,29 +4600,17 @@ public class KibsMngController {
             // --- 1행 헤더 생성 및 병합 ---
             Row headerRow = sheet.createRow(rowCnt++);
 
-            // 병합 인덱스 재계산
-            // 0 ~ 28: 업체정보 (29)
-            // 29 ~ 39: 입금 현황 (11)
-            // 40 ~ 45: 대표 담당자 (6)
-            // 46 ~ 63: 기타 담당자 (18)
-            // 64 ~ 71: 업체정보(소개) (8)
-            // 72 ~ 81: 참가분야 (10)
-            // 82 ~ 83: 해상전시회 (2)
-            // 84 ~ 323: 전시품 정보 (240)
-            // 324 ~ 327: 기업 뱃지 (4)
-            // 328 ~ 657: 온라인 제품 정보 (330)
-            // 658 ~ 692: 신청내역 (35)
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 28));   headerRow.createCell(0).setCellValue("참가업체정보");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 29, 39));  headerRow.createCell(29).setCellValue("입금 현황");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 40, 45));  headerRow.createCell(40).setCellValue("대표 담당자");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 46, 63));  headerRow.createCell(46).setCellValue("기타 담당자 정보");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 64, 71));  headerRow.createCell(64).setCellValue("업체정보(소개)");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 72, 81));  headerRow.createCell(72).setCellValue("참가분야");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 82, 83));  headerRow.createCell(82).setCellValue("해상전시회");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 84, 323)); headerRow.createCell(84).setCellValue("전시품 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 324, 327)); headerRow.createCell(324).setCellValue("기업 뱃지");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 328, 657)); headerRow.createCell(328).setCellValue("온라인 제품 정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 658, 692)); headerRow.createCell(658).setCellValue("신청내역");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 72, 75));  headerRow.createCell(72).setCellValue("참가분야");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 76, 77));  headerRow.createCell(76).setCellValue("해상전시회");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 78, 317)); headerRow.createCell(78).setCellValue("전시품 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 318, 321)); headerRow.createCell(318).setCellValue("기업 뱃지");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 322, 651)); headerRow.createCell(322).setCellValue("온라인 제품 정보");
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 652, 686)); headerRow.createCell(652).setCellValue("신청내역");
 
             for(int i=0; i < colNames_ex.length; i++){
                 if(headerRow.getCell(i) == null) headerRow.createCell(i);
@@ -4640,8 +4627,7 @@ public class KibsMngController {
                 sheet.setColumnWidth(i, 5000);
             }
             sheet.setColumnWidth(0, 3000); // No 컬럼
-            // 유틸리티 신청내역 너비 설정 (638 + 30 = 668번 인덱스)
-            sheet.setColumnWidth(668, 8000);
+            sheet.setColumnWidth(682, 8000);
 
             ExhibitorNewDetailDTO exhibitorDetailDTO = new ExhibitorNewDetailDTO();
             exhibitorDetailDTO.setTransferYear(transferYear);
@@ -4914,19 +4900,13 @@ public class KibsMngController {
 
         dataRow.createCell(cellCnt++).setCellValue(eventName); // 1. 참가행사
 
-        String f1 = info.getFieldParticipatory1();
-        String f2 = info.getFieldParticipatory2();
-        String f3 = info.getFieldParticipatory3();
+        // 2. 1순위
+        dataRow.createCell(cellCnt++).setCellValue(nvl(info.getFieldParticipatory1()));
+        // 3. 2순위
+        dataRow.createCell(cellCnt++).setCellValue(nvl(info.getFieldParticipatory2()));
+        // 4. 3순위
+        dataRow.createCell(cellCnt++).setCellValue(nvl(info.getFieldParticipatory3()));
 
-        dataRow.createCell(cellCnt++).setCellValue(checkField("보트&요트", f1, f2, f3)); // 2
-        dataRow.createCell(cellCnt++).setCellValue(checkField("무동력보트", f1, f2, f3)); // 3
-        dataRow.createCell(cellCnt++).setCellValue(checkField("워크보트", f1, f2, f3)); // 4
-        dataRow.createCell(cellCnt++).setCellValue(checkField("해양부품&장비", f1, f2, f3)); // 5
-        dataRow.createCell(cellCnt++).setCellValue(checkField("안전&마리나", f1, f2, f3)); // 6
-        dataRow.createCell(cellCnt++).setCellValue(checkField("해양관광", f1, f2, f3)); // 7
-        dataRow.createCell(cellCnt++).setCellValue(checkField("해양레저", f1, f2, f3)); // 8
-        dataRow.createCell(cellCnt++).setCellValue(checkField("수중레저", f1, f2, f3)); // 9
-        dataRow.createCell(cellCnt++).setCellValue(checkField("서핑", f1, f2, f3)); // 10
         return cellCnt;
     }
 
@@ -7824,7 +7804,7 @@ public class KibsMngController {
                     // 모든 셀에 스타일 적용
                     for (int j = 0; j < headers.length; j++) {
                         Cell cell = row.getCell(j);
-                        if (cell == null) cell = row.createCell(j); // [추가] 빈 셀 생성
+                        if (cell == null) cell = row.createCell(j); // 빈 셀 생성
 
                         if (j == 1 || j == 2) { // 회사명(국문), 회사명(영문)만 왼쪽 정렬
                             cell.setCellStyle(bodyLeftStyle);
@@ -8128,14 +8108,15 @@ public class KibsMngController {
         String fileName = req.getParameter("fileName");
         String transferYear = req.getParameter("transferYear");
 
-        // SXSSFWorkbook: 대용량 데이터 처리 시 메모리 부족 방지를 위한 스트리밍 방식
+        // SXSSFWorkbook: 대용량 데이터 처리용 스트리밍 워크북
         try (SXSSFWorkbook workbook = new SXSSFWorkbook()) {
 
             SXSSFSheet sheet = workbook.createSheet("요트보트 출품 정보");
 
-            sheet.trackAllColumnsForAutoSizing();
+            // [개선 2] 성능 저하를 유발하는 trackAllColumnsForAutoSizing 제거
+            // sheet.trackAllColumnsForAutoSizing();
 
-            // --- 폰트 및 스타일 정의 ---
+            // --- 스타일 정의 ---
             Font headerFont = workbook.createFont();
             headerFont.setFontName("맑은 고딕");
             headerFont.setBold(true);
@@ -8145,29 +8126,20 @@ public class KibsMngController {
             bodyFont.setFontName("맑은 고딕");
             bodyFont.setFontHeightInPoints((short) 10);
 
-            CellStyle mainHeaderStyle = workbook.createCellStyle();
-            mainHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
-            mainHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            mainHeaderStyle.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.index);
-            mainHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            mainHeaderStyle.setBorderTop(BorderStyle.THIN);
-            mainHeaderStyle.setBorderBottom(BorderStyle.THIN);
-            mainHeaderStyle.setBorderLeft(BorderStyle.THIN);
-            mainHeaderStyle.setBorderRight(BorderStyle.THIN);
-            mainHeaderStyle.setFont(headerFont);
+            // 헤더 스타일 (회색 배경)
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setBorderTop(BorderStyle.THIN);
+            headerStyle.setBorderBottom(BorderStyle.THIN);
+            headerStyle.setBorderLeft(BorderStyle.THIN);
+            headerStyle.setBorderRight(BorderStyle.THIN);
+            headerStyle.setFont(headerFont);
+            headerStyle.setWrapText(true);
 
-            CellStyle subHeaderStyle = workbook.createCellStyle();
-            subHeaderStyle.setAlignment(HorizontalAlignment.CENTER);
-            subHeaderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            subHeaderStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index);
-            subHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            subHeaderStyle.setBorderTop(BorderStyle.THIN);
-            subHeaderStyle.setBorderBottom(BorderStyle.THIN);
-            subHeaderStyle.setBorderLeft(BorderStyle.THIN);
-            subHeaderStyle.setBorderRight(BorderStyle.THIN);
-            subHeaderStyle.setFont(headerFont);
-            subHeaderStyle.setWrapText(true);
-
+            // 바디 스타일 (일반)
             CellStyle bodyStyle = workbook.createCellStyle();
             bodyStyle.setFont(bodyFont);
             bodyStyle.setAlignment(HorizontalAlignment.CENTER);
@@ -8178,108 +8150,72 @@ public class KibsMngController {
             bodyStyle.setBorderRight(BorderStyle.THIN);
             bodyStyle.setWrapText(true);
 
-            // --- 헤더 생성 ---
-            Row mainHeaderRow = sheet.createRow(0);
-            Row subHeaderRow = sheet.createRow(1);
+            // --- 헤더 생성 (1줄 구조) ---
+            String[] headers = {
+                    "No", "업체명",
+                    "제품분류(대분류)", "제품분류(소분류)", "신제품 여부",
+                    "제품명", "수량", "제조사(브랜드)", "특징",
+                    "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)",
+                    "소재", "연식"
+            };
 
-            // 1-1. 업체정보 헤더
-            Cell companyMainCell = mainHeaderRow.createCell(0);
-            companyMainCell.setCellValue("업체정보");
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
+            // 컬럼 너비 설정 (픽셀 단위 대략적 계산)
+            int[] colWidths = {
+                    2000, 8000, // No, 업체명
+                    4000, 4000, 3000, // 분류, 신제품
+                    6000, 3000, 5000, 8000, // 제품명, 수량, 브랜드, 특징
+                    3000, 3000, 3000, 3000, // 규격
+                    4000, 3000 // 소재, 연식
+            };
 
-            Cell companySubCell1 = subHeaderRow.createCell(0);
-            companySubCell1.setCellValue("순번");
-            Cell companySubCell2 = subHeaderRow.createCell(1);
-            companySubCell2.setCellValue("업체명");
-
-            // 1-2. 요트/보트 출품 정보 헤더 (21개 반복)
-            String[] productHeaders = {"제품분류(대분류)", "제품분류(소분류)", "신제품 여부", "제품명", "수량", "제조사(브랜드)", "특징", "길이(cm)", "너비(cm)", "높이(cm)", "중량(kg)", "소재", "연식"};
-            for (int i = 0; i < 20; i++) {
-                int startCol = 2 + (i * productHeaders.length);
-                Cell productMainCell = mainHeaderRow.createCell(startCol);
-                productMainCell.setCellValue(" 요트/보트 출품 정보 " + (i + 1));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, startCol, startCol + productHeaders.length - 1));
-
-                for (int j = 0; j < productHeaders.length; j++) {
-                    Cell productSubCell = subHeaderRow.createCell(startCol + j);
-                    productSubCell.setCellValue(productHeaders[j]);
-                }
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, colWidths[i]);
             }
 
-            // 1-3. 생성된 모든 헤더 셀에 스타일 적용
-            for (int i=0; i < subHeaderRow.getLastCellNum(); i++) {
-                if (mainHeaderRow.getCell(i) != null) mainHeaderRow.getCell(i).setCellStyle(mainHeaderStyle);
-                if (subHeaderRow.getCell(i) != null) subHeaderRow.getCell(i).setCellStyle(subHeaderStyle);
-            }
-
-            // --- 데이터 행 생성 ---
-            // 데이터 조회
+            // --- 데이터 조회 ---
+            // [구조 변경] 업체별 그룹화(Map) 과정 없이 전체 리스트를 순차적으로 출력
             List<ProductDetailDTO> rawData = kibsMngService.processSelectExcelProductDetailList(transferYear);
 
-            // 업체별로 데이터를 그룹화 (Map<업체SEQ, 제품리스트>)
-            Map<String, List<ProductDetailDTO>> groupedData = new LinkedHashMap<>();
+            // --- 데이터 행 생성 ---
+            int rowNum = 1;
+            int no = 1;
+
             for (ProductDetailDTO dto : rawData) {
-                groupedData.computeIfAbsent(dto.getExhibitorSeq(), k -> new ArrayList<>()).add(dto);
-            }
-
-            int rowNum = 2; // 데이터는 3행부터 시작
-            int companyNum = 1;
-            for (Map.Entry<String, List<ProductDetailDTO>> entry : groupedData.entrySet()) {
                 Row row = sheet.createRow(rowNum++);
-                List<ProductDetailDTO> products = entry.getValue();
+                int col = 0;
 
-                // 업체정보 채우기
-                row.createCell(0).setCellValue(companyNum++);
-                row.createCell(1).setCellValue(products.get(0).getCompanyNameKo());
+                // 1. 순번
+                createCell(row, col++, no++, bodyStyle);
 
-                // 요트/보트 출품 정보 채우기 (최대 20개)
-                for (int i = 0; i < products.size() && i < 20; i++) {
-                    ProductDetailDTO product = products.get(i);
-                    int startCol = 2 + (i * productHeaders.length);
+                // 2. 업체명
+                createCell(row, col++, dto.getCompanyNameKo(), bodyStyle);
 
-                    // 제품 정보가 null이 아닌 경우에만 셀 생성 (제품이 없는 업체의 경우 빈 칸으로 남음)
-                    if (product.getProductOptionBig() != null) {
-                        row.createCell(startCol).setCellValue(product.getProductOptionBig());
-                        row.createCell(startCol + 1).setCellValue(product.getProductOptionSmall());
-                        String isNew = "Y".equals(product.getProductIsNew()) ? "O" : "X";
-                        row.createCell(startCol + 2).setCellValue(isNew);
-                        row.createCell(startCol + 3).setCellValue(product.getProductNameKo());
-                        row.createCell(startCol + 4).setCellValue(product.getProductQty() != null ? String.valueOf(product.getProductQty()) : "");
-                        row.createCell(startCol + 5).setCellValue(product.getProductBrand());
-                        row.createCell(startCol + 6).setCellValue(product.getProductFeature());
-                        row.createCell(startCol + 7).setCellValue(product.getProductLength() != null ? String.valueOf(product.getProductLength()) : "");
-                        row.createCell(startCol + 8).setCellValue(product.getProductWidth() != null ? String.valueOf(product.getProductWidth()) : "");
-                        row.createCell(startCol + 9).setCellValue(product.getProductHeight() != null ? String.valueOf(product.getProductHeight()) : "");
-                        row.createCell(startCol + 10).setCellValue(product.getProductWeight() != null ? String.valueOf(product.getProductWeight()) : "");
-                        row.createCell(startCol + 11).setCellValue(product.getProductMaterial());
-                        row.createCell(startCol + 12).setCellValue(product.getProductYear() != null ? String.valueOf(product.getProductYear()) : "");
-                    }
-                }
+                // 3. 제품 정보
+                createCell(row, col++, dto.getProductOptionBig(), bodyStyle);
+                createCell(row, col++, dto.getProductOptionSmall(), bodyStyle);
+                createCell(row, col++, "Y".equals(dto.getProductIsNew()) ? "O" : "X", bodyStyle);
+                createCell(row, col++, dto.getProductNameKo(), bodyStyle);
 
-                // 생성된 모든 데이터 셀에 스타일 적용
-                for(int j=0; j < subHeaderRow.getLastCellNum(); j++){
-                    if(row.getCell(j) == null) row.createCell(j);
-                    row.getCell(j).setCellStyle(bodyStyle);
-                }
-            }
+                // [개선 1] 숫자형 데이터 처리 (Double로 저장)
+                createNumericCell(row, col++, dto.getProductQty(), bodyStyle);
 
-            // --- 컬럼 너비 설정 ---
-            sheet.setColumnWidth(0, 2000); // 순번
-            sheet.setColumnWidth(1, 8000); // 업체명
-            for (int i = 0; i < 20; i++) {
-                int startCol = 2 + (i * productHeaders.length);
-                for (int j = 0; j < productHeaders.length; j++) {
-                    // 신제품 여부 컬럼 너비 조정 (약간 좁게)
-                    if (j == 2) {
-                        sheet.setColumnWidth(startCol + j, 3000);
-                    }
-                    else if (j == 6) {
-                        sheet.setColumnWidth(startCol + j, 6000);
-                    }
-                    else {
-                        sheet.setColumnWidth(startCol + j, 4000);
-                    }
-                }
+                createCell(row, col++, dto.getProductBrand(), bodyStyle);
+                createCell(row, col++, dto.getProductFeature(), bodyStyle);
+
+                // [개선 1] 규격 데이터 숫자 처리
+                createNumericCell(row, col++, dto.getProductLength(), bodyStyle);
+                createNumericCell(row, col++, dto.getProductWidth(), bodyStyle);
+                createNumericCell(row, col++, dto.getProductHeight(), bodyStyle);
+                createNumericCell(row, col++, dto.getProductWeight(), bodyStyle);
+
+                createCell(row, col++, dto.getProductMaterial(), bodyStyle);
+
+                // [개선 1] 연식 데이터 숫자 처리
+                createNumericCell(row, col++, dto.getProductYear(), bodyStyle);
             }
 
             // --- 엑셀 파일 다운로드 ---
@@ -8289,6 +8225,30 @@ public class KibsMngController {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    // [Helper] 일반 텍스트 셀 생성
+    private void createCell(Row row, int colIndex, Object value, CellStyle style) {
+        Cell cell = row.createCell(colIndex);
+        cell.setCellStyle(style);
+        if (value != null) {
+            cell.setCellValue(String.valueOf(value));
+        } else {
+            cell.setCellValue("");
+        }
+    }
+
+    // [Helper] 숫자 데이터 셀 생성 (계산 가능하도록 처리)
+    private void createNumericCell(Row row, int colIndex, Number value, CellStyle style) {
+        Cell cell = row.createCell(colIndex);
+        cell.setCellStyle(style);
+        if (value != null) {
+            // Number 타입(Integer, Long, Double 등)을 double로 변환하여 저장
+            cell.setCellValue(value.doubleValue());
+        } else {
+            // 값이 없으면 빈 문자열 (0으로 처리하려면 0.0 입력)
+            cell.setCellValue("");
         }
     }
 
