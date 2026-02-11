@@ -147,7 +147,7 @@
                                                         <c:if test="${info.discountSpecial3Yn}">
                                                             <c:set var="specialDicountTotal" value="${specialDicountTotal + info.discountSpecial3Amount}"/>
                                                         </c:if>
-                                                        <fmt:formatNumber value="${info.boothPrcSum + ((info.boothPrcSum - info.discountPrcSum + specialDicountTotal) * 0.1)}" pattern="#,###"/> 원
+                                                        <fmt:formatNumber value="${info.boothPrcSum + ((info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum - specialDicountTotal) * 0.1)}" pattern="#,###"/> 원
                                                     </c:when>
                                                     <c:otherwise>
                                                         <fmt:formatNumber value="${info.boothPrcSum}" pattern="#,###"/> 원
@@ -174,7 +174,7 @@
                                         <div class="txt_box">
                                             <div class="gubun">할인</div>
                                             <div class="txt">
-                                                <c:set var="baseTotal" value="${info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum}"/>
+                                                <c:set var="baseTotal" value="${info.boothPrcSum - info.discountPrcSum}"/>
                                                 <c:set var="baseSpecialDiscount" value="0"/>
                                                 <c:if test="${info.discountSpecial1Yn}">
                                                     <c:set var="baseSpecialDiscount" value="${baseTotal * 0.5}"/>

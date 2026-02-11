@@ -412,7 +412,7 @@
                                                         </label>
                                                     </div>
                                                     <div class="cate">올해의 제품상 할인</div>
-                                                    <div class="note" id="discountSpecial1Note"><fmt:formatNumber value="${(info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum) * 0.5}" type="currency" maxFractionDigits="0" currencySymbol=""/> 원</div>
+                                                    <div class="note" id="discountSpecial1Note"><fmt:formatNumber value="${(info.boothPrcSum - info.discountPrcSum) * 0.5}" type="currency" maxFractionDigits="0" currencySymbol=""/> 원</div>
                                                     <div class="discount">50%</div>
                                                 </c:if>
 

@@ -4943,6 +4943,7 @@ public class KibsMngController {
         long baseAmountForSpecial = (boothPrcSum + utilityPrcSum) - basicDiscount;
 
         // 특별 할인액 계산
+        // 일반 계산식은 (부스비 - 할인금액) * 0.5 지만 엑셀에서는 (부스비 + 유틸리티신청총액 - 할인금액) * 0.5 로 계산
         long specialDiscount1Amount = 0;
         if (Boolean.TRUE.equals(info.getDiscountSpecial1Yn())) {
             specialDiscount1Amount = (long)Math.floor(baseAmountForSpecial * 0.5);

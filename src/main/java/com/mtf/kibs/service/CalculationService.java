@@ -89,8 +89,8 @@ public class CalculationService {
 
         // --- 3. 특별 할인 총액 계산 ---
         int specialDiscountTotal = 0;
-        // 특별 할인 기준액 = (부스비 + 유틸리티비) - 기본할인액
-        int baseAmountForSpecial = boothPrcSum + input.getUtilityPrcSum() - basicDiscountSum;
+        // 특별 할인 기준액 = 부스비 - 기본할인액
+        int baseAmountForSpecial = boothPrcSum - basicDiscountSum;
         if (baseAmountForSpecial < 0) baseAmountForSpecial = 0; // 음수 방지
 
         if (input.isDiscountSpecial1Yn()) {

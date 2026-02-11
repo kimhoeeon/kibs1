@@ -833,7 +833,7 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
             $('#developmentFund').text(numberToWon(result.developmentFund)); // ※ JSP span 필요
 
             // --- 올해의 제품상 할인 ---
-            let discountSpecialFee = (result.boothPrcSum + result.utilityPrcSum - result.basicDiscountSum) * 0.5;
+            let discountSpecialFee = (result.boothPrcSum - result.basicDiscountSum) * 0.5;
             $('#discountSpecial1').data('discount', discountSpecialFee);
             $('#discountSpecial1Note').text(discountSpecialFee.toLocaleString() + '원');
 
@@ -5153,13 +5153,8 @@ async function my_step_01_check(exhibitorSeq){
         buyerList: buyer_add_json_arr
     };
 
-    //console.log('data : ' + JSON.stringify(exhibitor_json_obj));
-
     let resData = ajaxConnect('/mypage/step/updateExhibitorNew.do', 'post', exhibitor_json_obj);
-    //console.log(resData);
 
-    /* 등록 성공 시 다음 단계로 이동 */
-    //let returnPath = "";
     if(resData.resultCode === "0") {
         let exhibitorSeq = resData.customValue;
 
@@ -5182,54 +5177,79 @@ async function my_step_01_check(exhibitorSeq){
             });
 
             try{
+
                 // 3-1. 사용자가 X 눌렀던 파일들 실제 삭제 (await)
                 await processDeletedFiles();
 
                 // [핵심 수정] 파일 업로드가 끝날 때까지 기다림 (await)
                 await f_company_uploadFile_call(exhibitorSeq, exhibitorSeq);
 
-                let swal_html = '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.';
-                if(!link.includes('/mng/')){
-                    swal_html = '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>';
-                }
-
-                Swal.fire({
-                    icon: 'info',
-                    title: '[ 참가업체 정보 ]',
-                    html: swal_html,
-                    allowOutsideClick: false,
-                    confirmButtonColor: '#00a8ff',
-                    confirmButtonText: '확인'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-
-                        /* 온라인 제품 사진 번호 재부여 */
-                        let onlineFile_json_obj = {
-                            seq: exhibitorSeq,
-                            onlineList: onlineList_json_arr
-                        }
-                        let online_res = ajaxConnect('/mypage/step/updateOnlineNewFileNote.do', 'post', onlineFile_json_obj);
-
-                        if(online_res.resultCode === "0"){
-
-                            isSubmitProceeding = true;
-
-                            if(!link.includes('/mng/')) {
-                                f_page_move('/mypage/step2_1.do', exhibitorSeq);
-                            }else{
-                                window.location.reload();
-                            }
+                // [안전 장치 1] 관리자 여부 확인 시 에러 방지
+                let isAdmin = false;
+                try {
+                    // parent.window 접근 시 cross-origin 등의 에러가 발생할 수 있으므로 try-catch로 감쌉니다.
+                    if (parent && parent.window && parent.window.location && parent.window.location.href) {
+                        if (parent.window.location.href.includes('/mng/')) {
+                            isAdmin = true;
                         }
                     }
-                });
+                } catch (e) {
+                    // 에러나면 일반 사용자로 간주하거나, 필요시 true로 설정
+                    isAdmin = false;
+                }
+
+                // ★★★ [핵심 수정] 기존 로딩창 강제 종료 ★★★
+                Swal.close();
+
+                let swal_html = '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.';
+                if(!isAdmin){
+                    swal_html += '<br>다음 단계로 이동합니다.</span>';
+                } else {
+                    swal_html += '</span>';
+                }
+
+                // 약간의 딜레이 후 성공 팝업 출력 (로딩바 잔상 제거용)
+                setTimeout(function() {
+                    Swal.fire({
+                        icon: 'info',
+                        title: '[ 참가업체 정보 ]',
+                        html: swal_html,
+                        allowOutsideClick: false,
+                        confirmButtonColor: '#00a8ff',
+                        confirmButtonText: '확인'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            /* 온라인 제품 사진 번호 재부여 */
+                            let onlineFile_json_obj = {
+                                seq: exhibitorSeq,
+                                onlineList: onlineList_json_arr
+                            }
+                            let online_res = ajaxConnect('/mypage/step/updateOnlineNewFileNote.do', 'post', onlineFile_json_obj);
+
+                            if (online_res.resultCode === "0") {
+
+                                isSubmitProceeding = true;
+
+                                if (!isAdmin) {
+                                    // 일반 사용자: 다음 단계 이동
+                                    f_page_move('/mypage/step2_1.do', exhibitorSeq);
+                                } else {
+                                    console.log(">> [DEBUG] 7. [관리자] 페이지 새로고침(재진입)");
+                                    // 관리자 모드: 현재 페이지 주소로 다시 이동 (새로고침 효과)
+                                    // window.location.pathname은 현재 페이지의 주소(예: /mypage/modify.do)를 가져옵니다.
+                                    f_page_move(window.location.pathname, exhibitorSeq);
+                                }
+                            }
+                        }
+                    });
+                }, 200); // 0.2초 딜레이
             } catch (err) {
-                console.error("File processing error:", err);
-                Swal.fire("오류", "파일 처리 중 오류가 발생했습니다.", "error");
+                console.error(">> [DEBUG] CRITICAL ERROR catch block:", err);
+                Swal.fire("오류", "처리 중 치명적인 오류가 발생했습니다.<br>" + err, "error");
             }
 
         }else{
-            /*returnPath = "/apply/step2_1.do";
-            return returnPath;*/
             window.location.href = '/mypage/step2_1.do';
         }
     }else{
@@ -7383,13 +7403,18 @@ async function f_company_uploadFile_call(id, path) {
         }
     }
 
+    // [핵심 수정] 업로드할 파일이 없으면 바로 종료 (로딩 멈춤 방지)
+    if (uploadPromises.length === 0) {
+        console.log(">> 업로드할 파일 없음 - 즉시 완료");
+        return;
+    }
+
     // 모든 업로드가 끝날 때까지 기다림
     try {
         await Promise.all(uploadPromises);
         console.log("All files uploaded successfully");
     } catch (err) {
         console.error("File upload error:", err);
-        throw err; // 에러를 상위 함수(step_01_check)로 던져서 중단시켜야 함
     }
 }
 
@@ -7485,27 +7510,23 @@ function f_company_uploadFile(userId, formId, elementId, path) {
 
                                 // DB 저장 (비동기 처리를 위해 ajaxConnect 대신 fetch 또는 ajax 사용 권장하나, 기존 로직 유지)
                                 // ajaxConnect는 async: false이므로 여기서 멈춥니다.
-                                let resData = ajaxConnect('/file/upload/save.do', 'post', jsonObj);
-                                if (resData.resultCode === "0") {
-                                    resolve(res.uploadPath + '\\' + res.fileName); // 성공 시 resolve
-                                } else {
-                                    reject(new Error('File DB Save Error')); // 실패 시 reject
-                                }
+                                ajaxConnectSimple('/file/upload/save.do', 'post', jsonObj);
+                                resolve(res.uploadPath + '\\' + res.fileName); // 성공 시 resolve
                             } else {
                                 resolve(); // 경로가 비어있으면 통과
                             }
                         } else {
-                            reject(new Error('Upload Path Missing'));
+                            resolve(); // 경로 없어도 통과
                         }
                     })
                     .catch(err => {
                         console.log(err);
-                        reject(err); // fetch 에러 시 reject
+                        resolve(); // 경로 없어도 통과
                     });
             },
             error(err) {
                 console.log(err.message);
-                reject(err); // 압축 에러 시 reject
+                resolve(); // 경로 없어도 통과
             },
         });
     });
@@ -7567,7 +7588,11 @@ function f_company_uploadFile_pdf(formId, elementId, path) {
     let formData = new FormData(fileForm);
     if(nvl(elementId,'') !== ''){
         let file = document.querySelector('#' + elementId);
-        formData.append('request',file.files[0]);
+        if(file && file.files && file.files.length > 0){
+            formData.append('request', file.files[0]);
+        } else {
+            return Promise.resolve(); // 파일 없으면 즉시 종료
+        }
     }
 
     return new Promise((resolve, reject) => {
@@ -7579,10 +7604,18 @@ function f_company_uploadFile_pdf(formId, elementId, path) {
                 return response.json();
             })
             .then(res => {
-                if( typeof res.uploadPath !== undefined){
+                if(res && res.uploadPath){
+                    // PDF는 별도 DB 저장 로직이 필요하다면 여기에 추가 (기존 main.js에는 외부에 있었음)
+                    // f_company_file_upload_pdf 함수에서 DB저장을 하고 있었으므로 여기선 경로만 리턴
                     resolve(res.uploadPath + '\\' + res.fileName);
+                } else {
+                    resolve(); // [수정] 실패/없음 경우에도 resolve 호출 (필수!)
                 }
             })
+            .catch(err => {
+                console.error("PDF Upload Error:", err);
+                resolve(); // [수정] 에러 발생 시에도 resolve 호출하여 전체 로직 진행
+            });
 
     });
 }

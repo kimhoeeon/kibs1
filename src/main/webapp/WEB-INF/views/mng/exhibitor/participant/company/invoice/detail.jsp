@@ -2448,7 +2448,7 @@ if (document.documentElement) {
                                                                 <td>
                                                                     <div class="amount">
                                                                         <p class="price">
-                                                                            <c:set var="baseTotal" value="${info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum}"/>
+                                                                            <c:set var="baseTotal" value="${info.boothPrcSum - info.discountPrcSum}"/>
                                                                             <c:set var="baseSpecialDiscount" value="0"/>
                                                                             <c:if test="${info.discountSpecial1Yn}">
                                                                                 <c:set var="baseSpecialDiscount" value="${baseTotal * 0.5}"/>
