@@ -2435,4 +2435,6 @@
     .expo .maritime_img{grid-template-columns: repeat(1,1fr); gap: 20px;}
     .expo .maritime_img img{ max-height: 200px; object-fit: cover; width: 100%;}
     .expo .maritime_poster{grid-template-columns: repeat(1,1fr);}
+
+    .exh_g_table.break{word-break:break-all}
 }

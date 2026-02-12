@@ -51,6 +51,13 @@
 
 <body>
 
+    <c:if test="${mode ne 'open'}">
+        <script>
+            alert('페이지 준비 중입니다.');
+            window.location.href = '/main.do';
+        </script>
+    </c:if>
+
     <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
     <div id="container">
@@ -105,21 +112,131 @@
         <!-- section -->
 
         <!-- section -->
-        <%--<div class="ready_s padding_t">
-            <div class="inner">
-                <div class="txt">프로그램 준비 중입니다.</div>
-            </div>
-        </div>--%>
-        <!-- section -->
-
-        <!-- section -->
-        <div class="padding_tb g_p_sec">
+        <div class="exh_g exh_g2 padding_tb">
             <div class="inner">
 
-                <div class="img_box" style="margin-bottom: 40px;"><img src="/img/img_soon_kor.jpg"></div>
+                <!-- <div class="img_box" style="margin-bottom: 40px;"><img src="../../img/img_soon_kor.jpg"></div> -->
+                <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/program_0213.png"></div>
 
-                <div class="btn_box"><a class="btnSt01" href="/guide/program2025.do">전년도 체험 프로그램 보기</a></div>
+                <!-- <div class="btn_box"><a class="btnSt01" href="program_2025.html">전년도 체험 프로그램 보기</a></div> -->
+                <div class="sub_cont_tit">
+                    <div class="big">체험프로그램 사전등록</div>
+                </div>
+                <div class="exh_g_table" style="padding-bottom: 20px;">
+                    <div class="table_box">
+                        <table>
+                            <colgroup>
+                                <col width="15%">
+                                <col width="20%">
+                                <col width="25%">
+                                <col width="15%">
+                                <col width="15%">
+                                <col width="">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>체험프로그램</th>
+                                <th>내용</th>
+                                <th>일정</th>
+                                <th>참여대상</th>
+                                <th>신청기한</th>
+                                <th>바로가기</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>수도권 주요 마리나 투어</td>
+                                <td>수도권 주요 마리나를 직접 방문하는 현장 투어 프로그램</td>
+                                <td>
+                                    2026. 3. 7.(토), 3. 8.(일) 10:20–14:20<br>
+                                    (토) 인천 왕산마리나, 김포 아라마리나<br>
+                                    (일) 전곡마리나, 제부마리나
+                                </td>
+                                <td>마리나 실제 사용예정자 및 관련자</td>
+                                <td>~ 2026. 2. 27. (선착순)</td>
+                                <td>
+                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000153" target="_blank">사전신청 안내 바로가기</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
+                <div class="exh_g_table" style="padding-bottom: 20px;">
+                    <div class="table_box">
+                        <table>
+                            <colgroup>
+                                <col width="15%">
+                                <col width="20%">
+                                <col width="25%">
+                                <col width="15%">
+                                <col width="15%">
+                                <col width="">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>체험프로그램</th>
+                                <th>내용</th>
+                                <th>일정</th>
+                                <th>소요시간</th>
+                                <th>신청기한</th>
+                                <th>바로가기</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>최운정 낚시프로와 함께하는 도슨트 투어</td>
+                                <td>전문가 해설과 함께 주요 참가기업 및 특별관을 순회하며 전시 품목과 기술을 설명하는 프로그램</td>
+                                <td>
+                                    2026. 3. 7.(토), 3. 8.(일) 14:00
+                                </td>
+                                <td>약 60분</td>
+                                <td>~ 2026. 2. 26. (선착순)</td>
+                                <td>
+                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000152" target="_blank">사전신청 안내 바로가기</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="exh_g_table">
+                    <div class="table_box">
+                        <table>
+                            <colgroup>
+                                <col width="15%">
+                                <col width="20%">
+                                <col width="25%">
+                                <col width="15%">
+                                <col width="15%">
+                                <col width="">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>체험프로그램</th>
+                                <th>내용</th>
+                                <th>일정</th>
+                                <th>체험시간</th>
+                                <th>신청기한</th>
+                                <th>바로가기</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>서핑라이더 체험 (서핑큐브)</td>
+                                <td>실내 인공파도를 활용하여 서핑을 체험하는 프로그램</td>
+                                <td>
+                                    2026. 3. 7.(토), 3. 8.(일)<br>11:00 / 14:00 / 15:00 / 16:00 (1일 4회)
+                                </td>
+                                <td>회당 약 50분</td>
+                                <td>~ 2026. 2. 26. (선착순)</td>
+                                <td>사전신청 안내 바로가기</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- section -->
