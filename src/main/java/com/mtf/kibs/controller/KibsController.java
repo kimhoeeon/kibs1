@@ -325,11 +325,11 @@ public class KibsController {
         System.out.println("KibsController > guide_program");
         ModelAndView mv = new ModelAndView();
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+        /*DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
         String today = dateFormat.format(new Date());
         if (Long.parseLong(today) > Long.parseLong("202602130859")) {
             mv.addObject("mode", "open");
-        }
+        }*/
 
         mv.setViewName("/guide/program");
         return mv;
@@ -2566,11 +2566,11 @@ public class KibsController {
         System.out.println("KibsController > eng_guide_program");
         ModelAndView mv = new ModelAndView();
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+        /*DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
         String today = dateFormat.format(new Date());
         if (Long.parseLong(today) > Long.parseLong("202602130859")) {
             mv.addObject("mode", "open");
-        }
+        }*/
 
         mv.setViewName("/eng/guide/program");
         return mv;

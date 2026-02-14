@@ -51,13 +51,6 @@
 
 <body>
 
-    <c:if test="${mode ne 'open'}">
-        <script>
-            alert('페이지 준비 중입니다.');
-            window.location.href = '/main.do';
-        </script>
-    </c:if>
-
     <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
     <div id="container">
@@ -115,8 +108,8 @@
         <div class="exh_g exh_g2 padding_tb">
             <div class="inner">
 
-                <!-- <div class="img_box" style="margin-bottom: 40px;"><img src="../../img/img_soon_kor.jpg"></div> -->
-                <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/program_0213.png"></div>
+                <!-- <div class="img_box" style="margin-bottom: 40px;"><img src="/img/img_soon_kor.jpg"></div> -->
+                <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/program_0213.png?ver=20260214"></div>
 
                 <!-- <div class="btn_box"><a class="btnSt01" href="program_2025.html">전년도 체험 프로그램 보기</a></div> -->
                 <div class="sub_cont_tit">
@@ -140,7 +133,7 @@
                                 <th>일정</th>
                                 <th>참여대상</th>
                                 <th>신청기한</th>
-                                <th>바로가기</th>
+                                <th>사전신청 안내</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -155,7 +148,7 @@
                                 <td>마리나 실제 사용예정자 및 관련자</td>
                                 <td>~ 2026. 2. 27. (선착순)</td>
                                 <td>
-                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000153" target="_blank">사전신청 안내 바로가기</a></td>
+                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000153" target="_blank" class="btnSt01" style="padding: 10px 0;">바로가기</a></td>
                             </tr>
                             </tbody>
                         </table>
@@ -180,7 +173,7 @@
                                 <th>일정</th>
                                 <th>소요시간</th>
                                 <th>신청기한</th>
-                                <th>바로가기</th>
+                                <th>사전신청 안내</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -193,7 +186,7 @@
                                 <td>약 60분</td>
                                 <td>~ 2026. 2. 26. (선착순)</td>
                                 <td>
-                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000152" target="_blank">사전신청 안내 바로가기</a>
+                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000152" target="_blank" class="btnSt01" style="padding: 10px 0;">바로가기</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -219,7 +212,7 @@
                                 <th>일정</th>
                                 <th>체험시간</th>
                                 <th>신청기한</th>
-                                <th>바로가기</th>
+                                <th>사전신청 안내</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -231,7 +224,9 @@
                                 </td>
                                 <td>회당 약 50분</td>
                                 <td>~ 2026. 2. 26. (선착순)</td>
-                                <td>사전신청 안내 바로가기</td>
+                                <td>
+                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000155" target="_blank" class="btnSt01" style="padding: 10px 0;">바로가기</a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>

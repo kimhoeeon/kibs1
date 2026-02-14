@@ -42,13 +42,6 @@
 
 <body>
 
-    <c:if test="${mode ne 'open'}">
-        <script>
-            alert('The page is being prepared.');
-            window.location.href = '/eng/index.do';
-        </script>
-    </c:if>
-
     <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
     <div id="container">
@@ -104,10 +97,14 @@
         <div class="exh_g exh_g2 padding_tb">
             <div class="inner">
 
-                <!-- <div class="img_box" style="margin-bottom: 40px;"><img src="../../img/img_soon_eng.jpg"></div> -->
+                <!-- <div class="img_box" style="margin-bottom: 40px;"><img src="/img/img_soon_eng.jpg"></div> -->
                 <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/program_0213.png"></div>
 
                 <!-- <div class="btn_box"><a class="btnSt01" href="program_2025.html">2025 Experience Programs</a></div> -->
+
+                <div class="sub_cont_tit">
+                    <div class="big">Experience Program Pre-Registration</div>
+                </div>
 
                 <div class="exh_g_table break" style="padding-bottom: 20px;">
                     <div class="table_box">
@@ -142,7 +139,7 @@
                                 <td>Prospective marina users and related personnel</td>
                                 <td>~ 2026. 2. 27. (First-come, first-served)</td>
                                 <td>
-                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000153" target="_blank">Pre-registration Information</a></td>
+                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000153" target="_blank" class="btnSt01" style="padding: 10px 0;">Learn More</a></td>
                             </tr>
                             </tbody>
                         </table>
@@ -180,7 +177,7 @@
                                 <td>Approximately 60 minutes</td>
                                 <td>~ 2026. 2. 26. (First-come, first-served)</td>
                                 <td>
-                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000152" target="_blank">Pre-registration Information</a>
+                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000152" target="_blank" class="btnSt01" style="padding: 10px 0;">Learn More</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -218,7 +215,9 @@
                                 </td>
                                 <td>Approximately 50 minutes per session</td>
                                 <td>~ 2026. 2. 26. (First-come, first-served)</td>
-                                <td>Pre-registration Information</td>
+                                <td>
+                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000155" target="_blank" class="btnSt01" style="padding: 10px 0;">Learn More</a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
