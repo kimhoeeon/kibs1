@@ -64,13 +64,13 @@
     <c:when test="${mode eq 'soon'}">
         <script>
             alert('2026 경기국제보트쇼 참관객 사전등록 신청 준비중입니다.');
-            history.back();
+            window.location.href = '/visitor/guide_off.do';
         </script>
     </c:when>
     <c:when test="${mode eq 'close'}">
         <script>
             alert('2026 경기국제보트쇼 참관객 사전등록 신청 마감입니다.');
-            history.back();
+            window.location.href = '/visitor/guide_off.do';
         </script>
     </c:when>
     <c:otherwise>

@@ -55,9 +55,15 @@
 <body>
 
 <c:choose>
-    <c:when test="${mode ne 'open'}">
+    <c:when test="${mode eq 'soon'}">
         <script>
-            alert('2026 경기국제보트쇼 참가신청 준비중입니다.');
+            alert('2026 경기국제보트쇼 참가기업 신청 준비중입니다.');
+            window.location.href = '/guide/summary.do';
+        </script>
+    </c:when>
+    <c:when test="${mode eq 'close'}">
+        <script>
+            alert('2026 경기국제보트쇼 참가기업 신청이 마감되었습니다.');
             window.location.href = '/guide/summary.do';
         </script>
     </c:when>

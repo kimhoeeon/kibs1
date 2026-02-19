@@ -98,7 +98,7 @@
             <div class="inner">
 
                 <!-- <div class="img_box" style="margin-bottom: 40px;"><img src="/img/img_soon_eng.jpg"></div> -->
-                <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/program_0213.png"></div>
+                <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/program_0213_eng.png"></div>
 
                 <!-- <div class="btn_box"><a class="btnSt01" href="program_2025.html">2025 Experience Programs</a></div> -->
 
@@ -132,7 +132,7 @@
                                 <td>Metropolitan Area Major Marina Tour</td>
                                 <td>On-site tour program visiting major marinas in the metropolitan area</td>
                                 <td>
-                                    2026. 3. 7.(Sat), 3. 8.(Sun) 10:20–14:20<br>
+                                    <span style="font-weight: bold;">2026. 3. 7.(Sat), 3. 8.(Sun) 10:20–14:20</span><br>
                                     (Sat) Incheon Wangsan Marina, Gimpo Ara Marina<br>
                                     (Sun) Jeongok Marina, Jebu Marina
                                 </td>
@@ -172,7 +172,7 @@
                                 <td>Docent Tour with Pro Angler Choi Woon-jung</td>
                                 <td>Program providing guided explanations of key exhibitors and special zones with expert commentary</td>
                                 <td>
-                                    2026. 3. 7.(Sat), 3. 8.(Sun) 14:00
+                                    <span style="font-weight: bold;">2026. 3. 7.(Sat), 3. 8.(Sun) 14:00</span>
                                 </td>
                                 <td>Approximately 60 minutes</td>
                                 <td>~ 2026. 2. 26. (First-come, first-served)</td>
@@ -211,7 +211,8 @@
                                 <td>Surf Rider Experience (Surfing Cube)</td>
                                 <td>Program offering a surfing experience using an indoor artificial wave system</td>
                                 <td>
-                                    2026. 3. 7.(Sat), 3. 8.(Sun)<br>11:00 / 14:00 / 15:00 / 16:00 (4 sessions per day)
+                                    <span style="font-weight: bold;">2026. 3. 6.(Fri)</span><br>13:00 / 14:30 (2 sessions per day)<br><br>
+                                    <span style="font-weight: bold;">2026. 3. 7.(Sat), 3. 8.(Sun)</span><br>11:00 / 14:00 / 15:00 / 16:00 (4 sessions per day)
                                 </td>
                                 <td>Approximately 50 minutes per session</td>
                                 <td>~ 2026. 2. 26. (First-come, first-served)</td>
