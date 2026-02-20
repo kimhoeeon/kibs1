@@ -109,7 +109,7 @@
             <div class="inner">
 
                 <!-- <div class="img_box" style="margin-bottom: 40px;"><img src="/img/img_soon_kor.jpg"></div> -->
-                <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/program_0213.png?ver=20260214"></div>
+                <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/program_0220.png?ver=20260214"></div>
 
                 <!-- <div class="btn_box"><a class="btnSt01" href="program_2025.html">전년도 체험 프로그램 보기</a></div> -->
                 <div class="sub_cont_tit">
