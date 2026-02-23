@@ -93,12 +93,54 @@
     <!-- section -->
 
     <!-- section -->
-    <div class="padding_tb g_p_sec">
+    <div class="padding_tb">
         <div class="inner">
 
-            <div class="img_box" style="margin-bottom: 40px;"><img src="/img/img_soon_eng.jpg"></div>
+            <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/conference_0223.png"></div>
 
-            <div class="btn_box"><a class="btnSt01" href="/eng/guide/conference2025.do">2025 Conference</a></div>
+            <!-- <div class="btn_box"><a class="btnSt01" href="conference_2025.html">2025 Conference Programs</a></div> -->
+
+            <div class="sub_cont_tit">
+                <div class="big">Conference Pre-Registration</div>
+            </div>
+            <div class="exh_g_table">
+                <div class="table_box">
+                    <table>
+                        <colgroup>
+                            <col width="15%">
+                            <col width="20%">
+                            <col width="25%">
+                            <col width="15%">
+                            <col width="15%">
+                            <col width="">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>Program Name</th>
+                            <th>Description</th>
+                            <th>Schedule</th>
+                            <th>Lecture Duration</th>
+                            <th>Application Deadline</th>
+                            <th>Link</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>'Understanding the Marine Leisure Industry'<br> Author Talk</td>
+                            <td>One free copy of the book [Understanding the Marine Leisure Industry] will be provided to pre-registered participants</td>
+                            <td>
+                                <span style="font-weight: bold;">2026. 3. 8.(Sun) 14:00–14:30</span>
+                            </td>
+                            <td>30 minutes</td>
+                            <td>Until March 5 (Thu)</td>
+                            <td>
+                                <a href="https://kibs.com/guide/noticeView.do?id=N0000156" target="_blank" class="btnSt01" style="padding: 10px 0;">Go to</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
         </div>
     </div>

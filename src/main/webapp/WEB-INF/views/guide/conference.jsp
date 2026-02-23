@@ -105,21 +105,54 @@
         <!-- section -->
 
         <!-- section -->
-        <%--<div class="ready_s padding_t">
-            <div class="inner">
-                <div class="txt">프로그램 준비 중입니다.</div>
-            </div>
-        </div>--%>
-        <!-- section -->
-
-        <!-- section -->
-        <div class="padding_tb g_p_sec">
+        <div class="padding_tb">
             <div class="inner">
 
-                <div class="img_box" style="margin-bottom: 40px;"><img src="/img/img_soon_kor.jpg"></div>
+                <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/conference_0223.png"></div>
 
-                <div class="btn_box"><a class="btnSt01" href="/guide/conference2025.do">전년도 컨퍼런스 보기</a></div>
+                <!-- <div class="btn_box"><a class="btnSt01" href="conference_2025.html">전년도 컨퍼런스 보기</a></div> -->
 
+                <div class="sub_cont_tit">
+                    <div class="big">컨퍼런스 사전등록</div>
+                </div>
+                <div class="exh_g_table">
+                    <div class="table_box">
+                        <table>
+                            <colgroup>
+                                <col width="15%">
+                                <col width="20%">
+                                <col width="25%">
+                                <col width="15%">
+                                <col width="15%">
+                                <col width="">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>프로그램명</th>
+                                <th>내용</th>
+                                <th>일정</th>
+                                <th>강연시간</th>
+                                <th>신청기한</th>
+                                <th>사전신청 안내</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>'해양레저산업의 이해'<br> 저자 간담회</td>
+                                <td>[해양레저산업의 이해] 사전신청자 대상 도서 1권 무료 증정</td>
+                                <td>
+                                    <span style="font-weight: bold;">2026. 3. 8.(일) 14:00–14:30</span>
+                                </td>
+                                <td>30분</td>
+                                <td>~3월 5일 (목) 까지</td>
+                                <td>
+                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000156" target="_blank" class="btnSt01" style="padding: 10px 0;">바로가기</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- section -->
