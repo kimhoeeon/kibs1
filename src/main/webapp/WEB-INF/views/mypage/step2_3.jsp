@@ -427,6 +427,19 @@
                 } else {
                     console.error("main.js의 calculateTotal 함수를 찾을 수 없습니다.");
                 }
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: '[ 유틸리티 신청 ]',
+                    html: '<span style="font-size: 1.2em;">유틸리티 신청은 마감되었습니다.<br>이후 신청 건은 사무국으로 문의 바랍니다.</span>',
+                    allowOutsideClick: false,
+                    confirmButtonColor: '#00a8ff',
+                    confirmButtonText: '확인'
+                })/*.then(async (result) => {
+                if (result.isConfirmed) {
+
+                }
+                })*/;
             });
         </script>
     </c:if>
