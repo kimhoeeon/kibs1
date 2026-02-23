@@ -5965,7 +5965,7 @@ public class KibsMngController {
             // 1. 헤더 이름 배열 구성 (행사 구분 추가 + 3개 행사 모든 설문 항목 통합)
             final String[] colNames_ex = {
                     /* 기본 정보 */
-                    "No", "연도", "차수", "구분", "참석여부", "등록일", "수정일",
+                    "No", "연도", "차수", "구분", "참석여부", "개인정보 제3자 제공에\n대한 별도 동의", "등록일", "수정일",
                     /* 행사/참관 구분 */
                     "행사 구분", "참관구분(일반/바이어)",
                     /* 참관객 정보 */
@@ -6067,81 +6067,78 @@ public class KibsMngController {
             // 1. 병합 헤더 (Grouping) 생성
             SXSSFRow row = sheet.createRow(rowCnt++);
 
-            // 기본정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,0,6));
+            // 기본정보 (항목이 1개 늘어났으므로 0~7)
+            sheet.addMergedRegion(new CellRangeAddress(0,0,0,7));
             SXSSFCell mergeCell = row.createCell(0);
             mergeCell.setCellStyle(headerStyle);
             mergeCell.setCellValue("기본정보");
 
-            // 행사/참관 구분
-            sheet.addMergedRegion(new CellRangeAddress(0,0,7,8));
-            SXSSFCell mergeCell2 = row.createCell(7);
+            // 행사/참관 구분 (이하 항목들 시작/끝 인덱스 1씩 밀림)
+            sheet.addMergedRegion(new CellRangeAddress(0,0,8,9));
+            SXSSFCell mergeCell2 = row.createCell(8);
             mergeCell2.setCellStyle(headerStyle);
             mergeCell2.setCellValue("구분");
 
             // 참관객 정보
-            sheet.addMergedRegion(new CellRangeAddress(0,0,9,14));
-            SXSSFCell mergeCell3 = row.createCell(9);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,10,15));
+            SXSSFCell mergeCell3 = row.createCell(10);
             mergeCell3.setCellStyle(headerStyle);
             mergeCell3.setCellValue("참관객 정보");
 
             // 설문항목 (기초)
-            sheet.addMergedRegion(new CellRangeAddress(0,0,15,18));
-            SXSSFCell mergeCell4 = row.createCell(15);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,16,19));
+            SXSSFCell mergeCell4 = row.createCell(16);
             mergeCell4.setCellStyle(headerStyle);
             mergeCell4.setCellValue("기초 설문");
 
             // 관람 구분 (19개 항목)
-            // 인덱스: 19 ~ 37
-            sheet.addMergedRegion(new CellRangeAddress(0,0,19,37));
-            SXSSFCell mergeCell5 = row.createCell(19);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,20,38));
+            SXSSFCell mergeCell5 = row.createCell(20);
             mergeCell5.setCellStyle(headerStyle_survey);
             mergeCell5.setCellValue("관람 구분");
 
             // 방문 목적 (10개 항목)
-            // 인덱스: 38 ~ 47
-            sheet.addMergedRegion(new CellRangeAddress(0,0,38,47));
-            SXSSFCell mergeCell6 = row.createCell(38);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,39,48));
+            SXSSFCell mergeCell6 = row.createCell(39);
             mergeCell6.setCellStyle(headerStyle_survey);
             mergeCell6.setCellValue("방문 목적");
 
             // 관심 품목 (17개 항목)
-            // 인덱스: 48 ~ 64
-            sheet.addMergedRegion(new CellRangeAddress(0,0,48,64));
-            SXSSFCell mergeCell7 = row.createCell(48);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,49,65));
+            SXSSFCell mergeCell7 = row.createCell(49);
             mergeCell7.setCellStyle(headerStyle_survey);
             mergeCell7.setCellValue("관심 품목");
 
             // 인지 경로 (14개 항목)
-            // 인덱스: 65 ~ 78
-            sheet.addMergedRegion(new CellRangeAddress(0,0,65,78));
-            SXSSFCell mergeCell8 = row.createCell(65);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,66,79));
+            SXSSFCell mergeCell8 = row.createCell(66);
             mergeCell8.setCellStyle(headerStyle_survey);
             mergeCell8.setCellValue("인지 경로");
 
             // 지난 전시회 (19개 항목)
-            // 인덱스: 79 ~ 97
-            sheet.addMergedRegion(new CellRangeAddress(0,0,79,97));
-            SXSSFCell mergeCell9 = row.createCell(79);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,80,98));
+            SXSSFCell mergeCell9 = row.createCell(80);
             mergeCell9.setCellStyle(headerStyle_pre);
             mergeCell9.setCellValue("지난 전시회 참관 여부 (KIBS)");
 
             // 동반자 (10개 항목)
-            // 인덱스: 98 ~ 107
-            sheet.addMergedRegion(new CellRangeAddress(0,0,98,107));
-            SXSSFCell mergeCell10 = row.createCell(98);
+            sheet.addMergedRegion(new CellRangeAddress(0,0,99,108));
+            SXSSFCell mergeCell10 = row.createCell(99);
             mergeCell10.setCellStyle(headerStyle);
             mergeCell10.setCellValue("동반자");
 
             // 2. 컬럼 헤더 생성
             row = sheet.createRow(rowCnt++);
+            // 줄 높이를 약간 키워서 개행이 잘 보이게 처리 (선택사항)
+            row.setHeight((short) (row.getHeight() * 2));
+
             for (int i = 0; i < colNames_ex.length; i++) {
                 SXSSFCell cell = row.createCell(i);
 
-                // 스타일 분기 적용
-                if (i >= 19 && i <= 78) {
+                // 스타일 분기 적용 (인덱스 +1 적용)
+                if (i >= 20 && i <= 79) {
                     cell.setCellStyle(headerStyle_survey);
-                } else if (i >= 79 && i <= 97) {
+                } else if (i >= 80 && i <= 98) {
                     cell.setCellStyle(headerStyle_pre);
                 } else {
                     cell.setCellStyle(headerStyle);
@@ -6168,15 +6165,16 @@ public class KibsMngController {
                 cell.setCellStyle(bodyStyle);
                 cell.setCellValue(listCount--);
 
-                // 연도, 차수, 구분, 참석여부, 등록일, 수정일
+                // 연도, 차수, 구분, 참석여부, 개인정보동의(신규), 등록일, 수정일
                 writeCell(row, cellCnt++, info.getJoinYear(), bodyStyle);
                 writeCell(row, cellCnt++, info.getTimeGbn(), bodyStyle);
                 writeCell(row, cellCnt++, info.getVisitorGbn(), bodyStyle);
                 writeCell(row, cellCnt++, "N".equals(info.getJoinYn()) ? "참석취소" : "참석확인", bodyStyle);
+                writeCell(row, cellCnt++, "동의", bodyStyle);
                 writeCell(row, cellCnt++, info.getInitRegiDttm(), bodyStyle);
                 writeCell(row, cellCnt++, info.getFinalRegiDttm(), bodyStyle);
 
-                // [신규] 행사 구분
+                // 행사 구분
                 writeCell(row, cellCnt++, info.getEventGbn(), bodyStyle);
 
                 // 참관 구분 (바이어/일반)
