@@ -93,7 +93,7 @@
     <!-- section -->
 
     <!-- section -->
-    <div class="padding_tb">
+    <div class="exh_g2 padding_tb">
         <div class="inner">
 
             <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/conference_0223.png"></div>
