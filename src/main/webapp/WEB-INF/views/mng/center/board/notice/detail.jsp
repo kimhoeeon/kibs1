@@ -2448,6 +2448,21 @@ if (document.documentElement) {
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group-->
+                                            <c:if test="${info.id ne null and info.id ne ''}">
+                                                <!--begin::Input group-->
+                                                <div class="row mb-6">
+                                                    <!--begin::Label-->
+                                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">페이지 링크</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Col-->
+                                                    <div class="col-lg-10 d-flex align-items-center">
+                                                        <c:set var="linkUrl" value="https://kibs.com/guide/noticeView.do?id=${info.id}"/>
+                                                        <a href="${linkUrl}" target="_blank">${linkUrl}</a>
+                                                    </div>
+                                                    <!--end::Col-->
+                                                </div>
+                                                <!--end::Input group-->
+                                            </c:if>
                                         </div>
                                         <!--end::Card body-->
                                     </form>

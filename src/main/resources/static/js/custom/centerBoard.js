@@ -113,6 +113,10 @@ function f_notice_detail_modal_set(rowId){
             file_list_el.append(input_el);
         }
     }
+
+    document.querySelector('#linkUrl').href = 'https://kibs.com/guide/noticeView.do?id=' + rowId;
+    document.querySelector('#linkUrl').target = '_blank';
+    document.querySelector('#linkUrl').innerText = 'https://kibs.com/guide/noticeView.do?id=' + rowId;
 }
 
 function f_board_notice_remove(rowId){

@@ -2539,6 +2539,17 @@ if (document.documentElement) {
                             </div>
                             <!--end::Input group-->
 
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">페이지 링크</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <a id="linkUrl" href="" class="form-control form-control-lg form-control-solid-bg mb-2"></a>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
                         </div>
                         <!--end::Card header-->
                     </div>

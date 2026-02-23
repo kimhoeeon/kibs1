@@ -90,6 +90,11 @@
                     </a>
                 </div>
             </div>
+            <div style="margin-top: 20px; text-align: center; width:49%">
+                <div class="box">
+                    <a href="http://kibs2026.micehub-gov.com/" target="_blank" class="btnSt01" style="padding: 15px 0;">수출상담회 신청하기</a>
+                </div>
+            </div>
         </div>
     </div>
     <!-- section -->
