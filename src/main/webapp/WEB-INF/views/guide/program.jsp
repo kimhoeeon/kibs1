@@ -146,9 +146,10 @@
                                     (일) 전곡마리나, 제부마리나
                                 </td>
                                 <td>마리나 실제 사용예정자 및 관련자</td>
-                                <td>~ 2026. 2. 27. (선착순)</td>
+                                <td style="color:red">마감</td>
                                 <td>
-                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000153" target="_blank" class="btnSt01" style="padding: 10px 0;">바로가기</a></td>
+                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000153" target="_blank" class="btnSt01" style="padding: 10px 0;">바로가기</a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -224,7 +225,7 @@
                                     <span style="font-weight: bold;">2026. 3. 7.(토), 3. 8.(일)</span><br>11:00 / 14:00 / 15:00 / 16:00 (1일 4회)
                                 </td>
                                 <td>회당 약 50분</td>
-                                <td>~ 2026. 2. 26. (선착순)</td>
+                                <td style="color:red">마감</td>
                                 <td>
                                     <a href="https://kibs.com/guide/noticeView.do?id=N0000155" target="_blank" class="btnSt01" style="padding: 10px 0;">바로가기</a>
                                 </td>

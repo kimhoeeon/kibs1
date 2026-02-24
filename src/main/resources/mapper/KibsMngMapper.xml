@@ -6256,6 +6256,7 @@
         /* com.mtf.kibs.mapper.KibsMngMapper.insertRequest */
         INSERT INTO request
         ( seq
+        , emergency_yn
         , gbn
         , progress_step
         , hope_closing_date
@@ -6268,30 +6269,29 @@
         , init_regi_pic
         , init_regi_dttm
         , final_regi_pic
-        , final_regi_dttm
-        )
-        VALUES
-            ( #{seq}
-            , #{gbn}
-            , #{progressStep}
-            , #{hopeClosingDate}
-            , #{completeExpectDate}
-            , <![CDATA[#{title}]]>
-            , <![CDATA[#{content}]]>
-            , #{writer}
-            , #{writeDate}
-            , #{note}
-            , 'REQUEST'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            , 'REQUEST'
-            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
-            )
+        , final_regi_dttm)
+        VALUES ( #{seq}
+               , #{emergencyYn}
+               , #{gbn}
+               , #{progressStep}
+               , #{hopeClosingDate}
+               , #{completeExpectDate}
+               , <![CDATA[#{title}]]>
+               , <![CDATA[#{content}]]>
+               , #{writer}
+               , #{writeDate}
+               , #{note}
+               , 'REQUEST'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+               , 'REQUEST'
+               , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
     <update id="updateRequest" parameterType="com.mtf.kibs.dto.RequestDTO">
         /* com.mtf.kibs.mapper.KibsMngMapper.updateRequest */
         UPDATE request
-        SET gbn = #{gbn}
+        SET emergency_yn = #{emergencyYn}
+          , gbn = #{gbn}
           , progress_step = #{progressStep}
           , hope_closing_date = #{hopeClosingDate}
         <if test='completeExpectDate != null and completeExpectDate != ""'>

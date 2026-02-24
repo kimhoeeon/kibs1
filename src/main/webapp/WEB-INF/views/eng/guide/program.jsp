@@ -138,10 +138,11 @@
                                 (Sun) Jeongok Marina, Jebu Marina
                             </td>
                             <td>Prospective marina users and related personnel</td>
-                            <td>~ 2026. 2. 27. (First-come, first-served)</td>
+                            <td style="color:red">Closed</td>
                             <td>
                                 <a href="https://kibs.com/guide/noticeView.do?id=N0000153" target="_blank"
-                                   class="btnSt01" style="padding: 10px 0;">Learn More</a></td>
+                                   class="btnSt01" style="padding: 10px 0;">Learn More</a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -222,7 +223,7 @@
                                 15:00 / 16:00 (4 sessions per day)
                             </td>
                             <td>Approximately 50 minutes per session</td>
-                            <td>~ 2026. 2. 26. (First-come, first-served)</td>
+                            <td style="color:red">Closed</td>
                             <td>
                                 <a href="https://kibs.com/guide/noticeView.do?id=N0000155" target="_blank"
                                    class="btnSt01" style="padding: 10px 0;">Learn More</a>
