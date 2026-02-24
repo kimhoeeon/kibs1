@@ -108,7 +108,7 @@
         <div class="exh_g2 padding_tb">
             <div class="inner">
 
-                <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/conference_0224.png"></div>
+                <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/conference_0224.png?ver=20260224"></div>
 
                 <!-- <div class="btn_box"><a class="btnSt01" href="conference_2025.html">전년도 컨퍼런스 보기</a></div> -->
 
