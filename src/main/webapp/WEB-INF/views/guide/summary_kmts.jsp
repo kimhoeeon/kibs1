@@ -97,7 +97,7 @@
         <div class="summ_s summ_s1 padding_tb kmts">
             <div class="inner">
                 <div class="summ_box">
-                    <div class="summ_poster"><img src="/img/keyvisual_kmts.jpg?ver=20251002"></div>
+                    <div class="summ_poster"><img src="/img/keyvisual_kmts.jpg?ver=20251002" alt="2026 해양관광전 공식 포스터"></div>
                     <div class="summ_info">
                         <ul class="infoBox">
                             <li>

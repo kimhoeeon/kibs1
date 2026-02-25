@@ -97,7 +97,7 @@
         <div class="summ_s summ_s1 padding_tb kiss">
             <div class="inner">
                 <div class="summ_box">
-                    <div class="summ_poster"><img src="/img/keyvisual_kiss.jpg"></div>
+                    <div class="summ_poster"><img src="/img/keyvisual_kiss.jpg" alt="2026 코리아 서프쇼 공식 포스터"></div>
                     <div class="summ_info">
                         <ul class="infoBox">
                             <li>
