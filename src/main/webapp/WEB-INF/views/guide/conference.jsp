@@ -108,7 +108,9 @@
         <div class="exh_g2 padding_tb">
             <div class="inner">
 
-                <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/conference_0224.png?ver=20260224"></div>
+                <div class="img_box" style="margin-bottom: 40px; text-align: center;">
+                    <img src="/img/conference_0226.png">
+                </div>
 
                 <!-- <div class="btn_box"><a class="btnSt01" href="conference_2025.html">전년도 컨퍼런스 보기</a></div> -->
 
@@ -144,7 +146,7 @@
                                     <span style="font-weight: bold;">2026. 3. 8.(일) 14:00–14:30</span>
                                 </td>
                                 <td>30분</td>
-                                <td>~3월 5일 (목) 까지</td>
+                                <td style="color:red">마감</td>
                                 <td>
                                     <a href="https://kibs.com/guide/noticeView.do?id=N0000156" target="_blank" class="btnSt01" style="padding: 10px 0;">바로가기</a>
                                 </td>

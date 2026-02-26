@@ -96,7 +96,9 @@
     <div class="exh_g2 padding_tb">
         <div class="inner">
 
-            <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/conference_0224.png?ver=20260224"></div>
+            <div class="img_box" style="margin-bottom: 40px; text-align: center;">
+                <img src="/img/conference_0226.png">
+            </div>
 
             <!-- <div class="btn_box"><a class="btnSt01" href="conference_2025.html">2025 Conference Programs</a></div> -->
 
@@ -132,7 +134,7 @@
                                 <span style="font-weight: bold;">2026. 3. 8.(Sun) 14:00–14:30</span>
                             </td>
                             <td>30 minutes</td>
-                            <td>Until March 5 (Thu)</td>
+                            <td style="color:red">Closed</td>
                             <td>
                                 <a href="https://kibs.com/guide/noticeView.do?id=N0000156" target="_blank" class="btnSt01" style="padding: 10px 0;">Go to</a>
                             </td>
