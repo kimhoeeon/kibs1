@@ -189,17 +189,19 @@ let KTAppExhibitorMng = function () {
         renderHTML += '<span class="fw-bold">';
             renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + row.seq + '\'' + ')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_detail_info">';
                 if(nvl(companyNameEn,'') !== ''){
-                    if(companyNameKo === '오션테크'){
+                    renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+                    /*if(companyNameKo === '오션테크'){
                         renderHTML += f_exhibitor_name_gbn(companyNameKo) + '(덕영엔지니어링)' + '<br>' + companyNameEn;
                     }else{
                         renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
-                    }
+                    }*/
                 }else{
-                    if(companyNameKo === '오션테크') {
+                    renderHTML += f_exhibitor_name_gbn(companyNameKo);
+                    /*if(companyNameKo === '오션테크') {
                         renderHTML += f_exhibitor_name_gbn(companyNameKo) + '(덕영엔지니어링)';
                     }else{
                         renderHTML += f_exhibitor_name_gbn(companyNameKo);
-                    }
+                    }*/
                 }
             renderHTML += '</a>';
         renderHTML += '</span>';
@@ -6382,5 +6384,15 @@ function f_exhibitor_name_gbn(companyName){
     ){
         returnCompanyName += '(W)';
     }
+
+    switch(companyName){
+        case '오션테크':
+            returnCompanyName += '(덕영엔지니어링)';
+            break;
+        case '엑스웨이브 CF MOTO Korea':
+            returnCompanyName += '(진일엔지니어링)';
+            break;
+    }
+
     return returnCompanyName;
 }

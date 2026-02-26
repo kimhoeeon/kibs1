@@ -533,7 +533,7 @@
                                 <div class="big">설문항목</div>
                             </div>
                             <ul class="form_box">
-                                <li class="w50">
+                                <li>
                                     <div class="item req">
                                         <p>성별</p>
                                     </div>
@@ -542,14 +542,16 @@
                                         <label><input type="radio" name="sex" value="여자">여자</label>
                                     </div>
                                 </li>
-                                <li class="w50">
+                                <li>
                                     <div class="item req">
                                         <p>지역</p>
                                     </div>
                                     <div class="input">
-                                        <script src="/js/sido.js"></script>
-                                        <select name="sido" class="w50"></select>
+                                        <script src="/js/sido.js?ver=20260226"></script>
+                                        <select name="sido" class="w50" style="line-height: 1;"></select>
                                         <select name="gugun" class="w50"></select>
+                                        <div class="cmnt">외국인일 경우 지역을 foreigner로 선택해 주세요.</div>
+                                        <div class="cmnt">Please select “Foreigner” as your region if you are a foreign participant.</div>
                                     </div>
                                 </li>
                                 <li>

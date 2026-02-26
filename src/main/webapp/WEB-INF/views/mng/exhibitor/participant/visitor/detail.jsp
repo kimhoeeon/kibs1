@@ -2795,7 +2795,7 @@ if (document.documentElement) {
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="/js/custom/participantVisitor.js?ver=<%=System.currentTimeMillis()%>"></script>
     <script src="/js/custom/visitor.js?ver=20260127"></script>
-    <script src="/js/sido.js"></script>
+    <script src="/js/sido.js?ver=20260226"></script>
 
     <c:if test="${info ne null}">
         <c:if test="${info.partnerYn eq 'Y'}">

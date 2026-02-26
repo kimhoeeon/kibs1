@@ -40,6 +40,36 @@ var KTQuillEditor = function () {
     Quill.register(Block, true);
     // ============================================================
 
+    // ============================================================
+    // 이미지 속성(크기, 정렬 style 등) 보존을 위한 Custom Image Blot 설정
+    // ============================================================
+    var BaseImageFormat = Quill.import('formats/image');
+    const ImageFormatAttributesList = ['alt', 'height', 'width', 'style', 'class'];
+
+    class CustomImage extends BaseImageFormat {
+        static formats(domNode) {
+            return ImageFormatAttributesList.reduce(function(formats, attribute) {
+                if (domNode.hasAttribute(attribute)) {
+                    formats[attribute] = domNode.getAttribute(attribute);
+                }
+                return formats;
+            }, {});
+        }
+        format(name, value) {
+            if (ImageFormatAttributesList.indexOf(name) > -1) {
+                if (value) {
+                    this.domNode.setAttribute(name, value);
+                } else {
+                    this.domNode.removeAttribute(name);
+                }
+            } else {
+                super.format(name, value);
+            }
+        }
+    }
+    Quill.register(CustomImage, true);
+    // ============================================================
+
     // Private functions
     var toolbarOptions = [
         [{ 'font': fontNames }],
@@ -60,7 +90,12 @@ var KTQuillEditor = function () {
         // Init quill --- more info: https://quilljs.com/docs/quickstart/
         var quill = new Quill('#quill_editor_content', {
             modules: {
-                toolbar: toolbarOptions
+                toolbar: toolbarOptions,
+                // ▼▼▼ 이미지 리사이즈 모듈 설정 추가 ▼▼▼
+                imageResize: {
+                    displaySize: true // 사이즈 조절 시 크기 텍스트 표시 여부
+                }
+                // ▲▲▲ 이미지 리사이즈 모듈 설정 추가 ▲▲▲
             },
             placeholder: '내용',
             theme: 'snow' // or 'bubble'

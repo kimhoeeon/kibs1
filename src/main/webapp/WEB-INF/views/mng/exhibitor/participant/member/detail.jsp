@@ -2483,7 +2483,7 @@ if (document.documentElement) {
     <!--end::Custom Javascript-->
 
     <!--begin::Custom Javascript(used for common page)-->
-    <script src="/js/sido.js"></script>
+    <script src="/js/sido.js?ver=20260226"></script>
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 
