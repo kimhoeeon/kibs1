@@ -97,6 +97,7 @@
         <div class="inner">
 
             <ul class="tab_menu">
+                <li data-tab="guideProgramTab1" class="on">Conference</li>
                 <li data-tab="guideProgramTab2">International conference</li>
                 <li data-tab="guideProgramTab3">Open conference</li>
             </ul>

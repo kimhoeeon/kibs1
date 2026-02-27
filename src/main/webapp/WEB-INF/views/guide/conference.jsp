@@ -109,6 +109,7 @@
             <div class="inner">
 
                 <ul class="tab_menu">
+                    <li data-tab="guideProgramTab1" class="on">컨퍼런스</li>
                     <li data-tab="guideProgramTab2">국제 컨퍼런스</li>
                     <li data-tab="guideProgramTab3">오픈 컨퍼런스</li>
                 </ul>
