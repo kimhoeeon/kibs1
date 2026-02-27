@@ -234,6 +234,9 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="img_box" style="text-align: center;"><img src="/img/program_list_0227.png"></div>
+
             </div>
         </div>
         <!-- section -->
