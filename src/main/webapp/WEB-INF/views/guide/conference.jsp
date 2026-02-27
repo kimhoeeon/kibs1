@@ -108,8 +108,27 @@
         <div class="exh_g2 padding_tb">
             <div class="inner">
 
-                <div class="img_box" style="margin-bottom: 40px; text-align: center;">
-                    <img src="/img/conference_0226.png">
+                <ul class="tab_menu">
+                    <li data-tab="guideProgramTab2">국제 컨퍼런스</li>
+                    <li data-tab="guideProgramTab3">오픈 컨퍼런스</li>
+                </ul>
+
+                <div class="tab_cont on" id="guideProgramTab1">
+                    <div class="g_p_box" style="margin-bottom: 40px; text-align: center;">
+                        <div class="img"><img src="/img/timetable_1_0227.jpg"></div>
+                    </div>
+                </div>
+
+                <div class="tab_cont" id="guideProgramTab2">
+                    <div class="g_p_box" style="margin-bottom: 40px; text-align: center;">
+                        <div class="img"><img src="/img/timetable_2_0227.jpg"></div>
+                    </div>
+                </div>
+
+                <div class="tab_cont" id="guideProgramTab3">
+                    <div class="g_p_box" style="margin-bottom: 40px; text-align: center;">
+                        <div class="img"><img src="/img/timetable_3_0227.jpg"></div>
+                    </div>
                 </div>
 
                 <!-- <div class="btn_box"><a class="btnSt01" href="conference_2025.html">전년도 컨퍼런스 보기</a></div> -->
