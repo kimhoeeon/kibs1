@@ -8319,7 +8319,7 @@ public class KibsMngController {
     @ResponseBody
     public ResponseEntity<ResponseDTO> mail_send(@RequestBody MailRequestDTO mailRequestDTO) {
         System.out.println("KibsMngController > mail_send");
-        System.out.println(mailRequestDTO.toString());
+        //System.out.println(mailRequestDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processMailSend(mailRequestDTO);
 

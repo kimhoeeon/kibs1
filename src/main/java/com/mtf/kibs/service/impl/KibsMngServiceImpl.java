@@ -6030,7 +6030,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             wr.close();
 
             int responseCode = con.getResponseCode();
-            System.out.println(responseCode); // 200
+            //System.out.println(responseCode); // 200
 
             /*
              * responseCode 가 200 이 아니면 내부에서 문제가 발생한 케이스입니다.
