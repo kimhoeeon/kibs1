@@ -98,7 +98,7 @@
         <div class="inner">
 
             <!-- <div class="img_box" style="margin-bottom: 40px;"><img src="/img/img_soon_eng.jpg"></div> -->
-            <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/program_0220_eng.png">
+            <div class="img_box" style="margin-bottom: 40px; text-align: center;"><img src="/img/program_0303.png">
             </div>
 
             <!-- <div class="btn_box"><a class="btnSt01" href="program_2025.html">2025 Experience Programs</a></div> -->

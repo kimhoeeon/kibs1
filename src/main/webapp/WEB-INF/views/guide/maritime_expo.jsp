@@ -62,7 +62,7 @@
                     <div class="sub_top_nav">
                         <span>홈</span><span>해상전시회(시흥 거북섬마리나)</span>
                     </div>
-                    <div class="sub_top_tit">해상전시회(시흥 거북섬마리나)</div>
+                    <div class="sub_top_tit">해상전시회(시흥 거북섬마리나_예정)</div>
                 </div>
             </div>
         </div>
@@ -111,7 +111,7 @@
                                 <div class="icon"><img src="/img/maritime_icon02.png"></div>
                                 <div class="txt">
                                     <div class="gubun">일자</div>
-                                    <div class="cont">2026년 6월</div>
+                                    <div class="cont">2026년 6월 (예정)</div>
                                 </div>
                             </li>
                             <li>
