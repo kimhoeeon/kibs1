@@ -171,6 +171,18 @@
                                     <a href="https://kibs.com/guide/noticeView.do?id=N0000156" target="_blank" class="btnSt01" style="padding: 10px 0;">바로가기</a>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>경기국제보트쇼 국제컨퍼런스 ICOMIA 패널토론</td>
+                                <td>How can the Marine Leisure Industry Grow in the Asia?</td>
+                                <td>
+                                    <span style="font-weight: bold;">2026. 3. 6.(금) 15:00–16:30</span>
+                                </td>
+                                <td>1시간 30분</td>
+                                <td>3/5 목</td>
+                                <td>
+                                    <a href="https://kibs.com/guide/noticeView.do?id=N0000164" target="_blank" class="btnSt01" style="padding: 10px 0;">바로가기</a>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
