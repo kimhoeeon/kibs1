@@ -318,7 +318,7 @@ function f_show_main_popup(param){
     let id = popupObj.id;
     let lang = popupObj.lang;
     let widthPixel = popupObj.widthPixel;
-    let heightPixel = (window.outerHeight - window.innerHeight);
+    let heightPixel = 600;
     let leftPixel = popupObj.leftPixel;
     let topPixel = popupObj.topPixel;
     let align = popupObj.align;

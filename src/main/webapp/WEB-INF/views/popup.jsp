@@ -149,25 +149,22 @@
 
     <script>
         $(window).on('load', function() {
+            setTimeout(function() {
+                // 1. 실제 콘텐츠의 너비와 높이를 측정합니다.
+                const contentHeight = $('.mainLayerPopup').outerHeight();
+                const contentWidth = $('.mainLayerPopup').outerWidth();
 
-            // 1. 실제 콘텐츠의 높이를 측정합니다.
-            const contentHeight = $('.mainLayerPopup').outerHeight();
-            const contentWidth = $('.mainLayerPopup').outerWidth();
+                // 2. 브라우저 크롬(툴바, 테두리 등)의 두께를 계산합니다.
+                const browserChromeHeight = window.outerHeight - window.innerHeight;
+                const browserChromeWidth = window.outerWidth - window.innerWidth;
 
-            // 2. (핵심) 현재 창의 내부 높이가 콘텐츠 높이보다 크거나 같다면,
-            //    이미 크기가 충분하므로 스크립트를 즉시 종료합니다.
-            if (window.innerHeight >= contentHeight) {
-                return;
-            }
+                // 3. 콘텐츠 크기에 브라우저 크롬 두께를 더하여 최종 팝업 크기를 결정합니다.
+                const finalHeight = contentHeight + browserChromeHeight;
+                const finalWidth = contentWidth + browserChromeWidth;
 
-            // 3. 창이 콘텐츠보다 작을 때만 아래 리사이징 로직을 실행합니다.
-            const browserChromeHeight = window.outerHeight - window.innerHeight;
-            const browserChromeWidth = window.outerWidth - window.innerWidth;
-
-            const finalHeight = contentHeight + browserChromeHeight + 7;
-            const finalWidth = contentWidth + browserChromeWidth + 5;
-
-            window.resizeTo(finalWidth, finalHeight);
+                // 4. 창 크기가 콘텐츠보다 작든 크든 무조건 딱 맞게 리사이징합니다.
+                window.resizeTo(finalWidth, finalHeight);
+            }, 100); // 렌더링 안정화를 위해 0.1초 딜레이 추가
         });
     </script>
 </body>
