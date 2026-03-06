@@ -56,8 +56,8 @@
 
     <!-- section -->
     <div class="sub_top_img">
-        <img src="/img/product_award2025_bnr.jpg" class="imgPc">
-        <img src="/img/product_award2025_bnr_m.jpg" class="imgM">
+        <img src="/img/product_award2025_bnr.jpg?ver=2026" class="imgPc">
+        <img src="/img/product_award2025_bnr_m.jpg?ver=2026" class="imgM">
     </div>
     <!-- //section -->
 
@@ -109,7 +109,7 @@
                         <div class="tit">심사대상</div>
                         <div class="cont">
                             <p>경기국제보트쇼 국내 참가기업 출품제품</p>
-                            <p>국내 해양레저분야 완제품 및 부품, 해외 요트/보트, 서핑, 카라반</p>
+                            <p>국내 해양레저분야 완제품 및 부품, 해외 요트/보트, 서핑, 해양관광</p>
                         </div>
                     </li>
                     <li>
@@ -117,8 +117,7 @@
                         <div class="tit">심사내용</div>
                         <div class="cont">
                             <p>
-                                경기국제보트쇼 국내 참가업체를 대상으로 업계 사기 진작과 기술 혁신을 촉진하기 위해 총 8개 분야
-                                (보트&요트·PWC, 장비·설비, 친환경 추진기, 선외기/선내기, 용품 및 부품 시스템 등 기타, 해양관광, 낚시, 카라반)으로 나누어 공모
+                                경기국제보트쇼 국내 참가업체를 대상으로 업계 사기 진작과 기술 혁신을 촉진하기 위해 총 8개 분야 (보트&요트·PWC, 장비·설비, 친환경 추진기, 선외기/선내기, 용품 및 부품 시스템 등 기타, 해양관광, 서핑)로 나누어 공모
                             </p>
                         </div>
                     </li>
@@ -140,10 +139,10 @@
     <div class="award_s award_s2 padding_b">
         <div class="inner">
             <div class="sub_cont_tit">
-                <div class="big">2025 제품상</div>
+                <div class="big">2026 제품상</div>
             </div>
             <div class="award_hist">
-                <img src="/img/product_award2025.jpg">
+                <img src="/img/product_award2026.jpg">
             </div>
         </div>
     </div>
