@@ -166,7 +166,7 @@
                                 <span style="font-weight: bold;">2026. 3. 6.(Fri) 15:00–16:30</span>
                             </td>
                             <td>1 hour 30 minutes</td>
-                            <td>3/5 (Thu)</td>
+                            <td style="color:red">Closed</td>
                             <td>
                                 <a href="https://kibs.com/guide/noticeView.do?id=N0000164" target="_blank" class="btnSt01" style="padding: 10px 0;">Go to</a>
                             </td>

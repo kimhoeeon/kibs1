@@ -185,7 +185,7 @@
                                     <span style="font-weight: bold;">2026. 3. 7.(토), 3. 8.(일) 14:00</span>
                                 </td>
                                 <td>약 60분</td>
-                                <td>~ 2026. 2. 26. (선착순)</td>
+                                <td style="color:red">마감</td>
                                 <td>
                                     <a href="https://kibs.com/guide/noticeView.do?id=N0000152" target="_blank" class="btnSt01" style="padding: 10px 0;">바로가기</a>
                                 </td>

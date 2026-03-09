@@ -180,7 +180,7 @@
                                 <span style="font-weight: bold;">2026. 3. 7.(Sat), 3. 8.(Sun) 14:00</span>
                             </td>
                             <td>Approximately 60 minutes</td>
-                            <td>~ 2026. 2. 26. (First-come, first-served)</td>
+                            <td style="color:red">Closed</td>
                             <td>
                                 <a href="https://kibs.com/guide/noticeView.do?id=N0000152" target="_blank"
                                    class="btnSt01" style="padding: 10px 0;">Learn More</a>

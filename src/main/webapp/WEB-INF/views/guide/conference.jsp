@@ -178,7 +178,7 @@
                                     <span style="font-weight: bold;">2026. 3. 6.(금) 15:00–16:30</span>
                                 </td>
                                 <td>1시간 30분</td>
-                                <td>3/5 목</td>
+                                <td style="color:red">마감</td>
                                 <td>
                                     <a href="https://kibs.com/guide/noticeView.do?id=N0000164" target="_blank" class="btnSt01" style="padding: 10px 0;">바로가기</a>
                                 </td>
