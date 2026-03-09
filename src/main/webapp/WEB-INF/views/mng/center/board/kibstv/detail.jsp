@@ -2292,7 +2292,7 @@ if (document.documentElement) {
                                                             aria-label="- 카테고리 -" data-placeholder="- 카테고리 -" data-hide-search="true">
                                                         <option></option>
                                                         <option value="" disabled>- 카테고리 -</option>
-                                                        <option value="2025 경기국제보트쇼" <c:if test="${info.category eq '2025 경기국제보트쇼'}">selected</c:if> >2025 경기국제보트쇼 [2025 KIBS]</option>
+                                                        <option value="경기국제보트쇼" <c:if test="${info.category eq '경기국제보트쇼'}">selected</c:if> >경기국제보트쇼 [KIBS]</option>
                                                         <option value="해양레저 지식백과" <c:if test="${info.category eq '해양레저 지식백과'}">selected</c:if> >해양레저 지식백과 [Encyclopedia Of Marine Leisure]</option>
                                                         <option value="부스투어" <c:if test="${info.category eq '부스투어'}">selected</c:if> >부스투어 [Booth Tour]</option>
                                                         <option value="해양레저 컨퍼런스" <c:if test="${info.category eq '해양레저 컨퍼런스'}">selected</c:if> >해양레저 컨퍼런스 [Marine Leisure Conference]</option>

@@ -136,6 +136,9 @@
                     <a class="cate" data-value="전체보기" onclick="f_kibstv_year_search(this, '전체보기')" style="cursor: pointer">전체보기</a>
                 </li>
                 <li>
+                    <a class="cate" data-value="2026" onclick="f_kibstv_year_search(this, '2026')" style="cursor: pointer">2026 KIBS</a>
+                </li>
+                <li>
                     <a class="cate" data-value="2025" onclick="f_kibstv_year_search(this, '2025')" style="cursor: pointer">2025 KIBS</a>
                 </li>
                 <li>

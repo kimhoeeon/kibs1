@@ -2328,7 +2328,7 @@ if (document.documentElement) {
                                                     <option></option>
                                                     <option value="" disabled>- 카테고리 -</option>
                                                     <option value="ALL">전체 [ALL]</option>
-                                                    <option value="2025 경기국제보트쇼">2025 경기국제보트쇼 [2025 KIBS]</option>
+                                                    <option value="경기국제보트쇼">경기국제보트쇼 [KIBS]</option>
                                                     <option value="해양레저 지식백과">해양레저 지식백과 [Encyclopedia Of Marine Leisure]</option>
                                                     <option value="부스투어">부스투어 [Booth Tour]</option>
                                                     <option value="해양레저 컨퍼런스">해양레저 컨퍼런스 [Marine Leisure Conference]</option>
@@ -2465,7 +2465,7 @@ if (document.documentElement) {
                                 <select id="md_category" class="form-select form-select-solid" data-placeholder="- 카테고리 -" disabled>
                                     <option></option>
                                     <option value="" disabled>- 카테고리 -</option>
-                                    <option value="2025 경기국제보트쇼">2025 경기국제보트쇼 [2025 KIBS]</option>
+                                    <option value="경기국제보트쇼">경기국제보트쇼 [KIBS]</option>
                                     <option value="해양레저 지식백과">해양레저 지식백과 [Encyclopedia Of Marine Leisure]</option>
                                     <option value="부스투어">부스투어 [Booth Tour]</option>
                                     <option value="해양레저 컨퍼런스">해양레저 컨퍼런스 [Marine Leisure Conference]</option>

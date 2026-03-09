@@ -136,7 +136,7 @@
                     <a class="cate" data-value="전체보기" onclick="f_kibstv_category_search(this, '전체보기')" style="cursor: pointer">전체보기</a>
                 </li>
                 <li>
-                    <a class="cate" data-value="2025 경기국제보트쇼" onclick="f_kibstv_category_search(this, '2025 경기국제보트쇼')" style="cursor: pointer">2025 경기국제보트쇼</a>
+                    <a class="cate" data-value="경기국제보트쇼" onclick="f_kibstv_category_search(this, '경기국제보트쇼')" style="cursor: pointer">경기국제보트쇼</a>
                 </li>
                 <li>
                     <a class="cate" data-value="해양레저 지식백과" onclick="f_kibstv_category_search(this, '해양레저 지식백과')" style="cursor: pointer">해양레저 지식백과</a>
