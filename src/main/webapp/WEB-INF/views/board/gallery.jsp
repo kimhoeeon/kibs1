@@ -110,6 +110,7 @@
         <div class="inner">
             <div class="year_tab_box">
                 <a class="cate active" data-value="전체" onclick="f_gallery_category_search(this, '전체')" style="cursor: pointer">전체</a>
+                <a class="cate" data-value="2026" onclick="f_gallery_category_search(this, '2026')" style="cursor: pointer">2026</a>
                 <a class="cate" data-value="2025" onclick="f_gallery_category_search(this, '2025')" style="cursor: pointer">2025</a>
                 <a class="cate" data-value="2024" onclick="f_gallery_category_search(this, '2024')" style="cursor: pointer">2024</a>
                 <a class="cate" data-value="2023" onclick="f_gallery_category_search(this, '2023')" style="cursor: pointer">2023</a>
