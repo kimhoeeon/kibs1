@@ -174,8 +174,8 @@
                         </table>
                     </div>
                     <div class="btn_box">
-                        <a onclick="alert('업데이트 예정입니다');return false;" class="btnSt01">2025 경기국제보트쇼 한 눈에 보기</a>
-                        <a onclick="alert('업데이트 예정입니다');return false;" class="btnSt01">2025 경기국제보트쇼 Show Guide 다운로드</a>
+                        <a href="/file/★2026 보트쇼 쇼가이드북.pdf" target="_blank" class="btnSt01">2026 경기국제보트쇼 한 눈에 보기</a>
+                        <a href="/file/★2026 보트쇼 쇼가이드북.pdf" download="2026_경기국제보트쇼_show_guide" class="btnSt01">2026 경기국제보트쇼 Show Guide 다운로드</a>
                     </div>
 
                 </div>
