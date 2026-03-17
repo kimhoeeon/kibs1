@@ -1,87 +1,73 @@
-var pageNum = 1; // 페이지 번호 생성 시점에 따른 변수 초기화
-var mngYear = '전체';
+var pageNum = 1; // 현재 페이지 번호
+var mngYear = '전체'; // 현재 선택된 연도 카테고리
 var isSearching = false;  // 중복 요청 방지 플래그
+
 $(function(){
-    //페이지 오픈 시 default ()
-    galleryList(pageNum, '전체');
+    // 1. 페이지 오픈 시 초기 조회
+    galleryList(pageNum, mngYear);
 
-    $(document).on('click', '.cate', function(e) {
-        if (isSearching) return; // 검색 중이면 클릭 무시
-        mngYear = $(e.target).data('value');
-        f_gallery_category_search(e.target, mngYear);
+    // 2. 카테고리(연도) 탭 클릭 이벤트 바인딩
+    $(document).on('click', '.year_tab_box .cate', function() {
+        if (isSearching) return; // 통신 중 중복 클릭 방지
+
+        // 탭 UI 활성화 처리
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+
+        // 전역 연도 변수 갱신 및 1페이지부터 다시 검색
+        mngYear = $(this).data('value');
+        galleryList(1, mngYear);
     });
-});
 
-const showPageCnt = 10; // 화면에 보일 페이지 번호 개수
-
-/**
- * @param pageNum 출력 페이지 번호
- * @param mngYearValue
- * */
-function galleryList(pageNum, mngYearValue) {
-    // 데이터 조회
-    searchPosts(pageNum, mngYearValue);
-
-    // 페이지당 건수(10, 30, 50)가 변경되면 재조회
-    /*$('#countPerPage').change(function() {
-        searchPosts(1);
-    });*/
-
-    // 페이지 번호 클릭
+    // 3. 페이지 번호 클릭 이벤트 (중복 방지를 위해 단 1번만 선언)
     $(document).on('click', '.paging>ol>li>a', function() {
         if (!$(this).hasClass('this')) {
             $(this).parent().find('a.this').removeClass('this');
             $(this).addClass('this');
 
-            searchPosts(Number($(this).text()), mngYear);
+            let targetPage = Number($(this).text());
+            galleryList(targetPage, mngYear); // 현재 유지중인 연도로 검색
         }
     });
 
-    // 페이징 Icon(<<, <, >, >>) 클릭
+    // 4. 페이징 화살표(<<, <, >, >>) 클릭 이벤트
     $(document).on('click', '.paging>span', function() {
-        const totalCnt = parseInt($('span.total').text());
+        const totalCnt = parseInt($('span.total').text().replace(/,/g, '')) || 0;
         const countPerPage = 12;
         const totalPage = Math.ceil(totalCnt / countPerPage);
-
         const id = $(this).attr('id');
 
-        if (id === 'first_page') { //<<
-            searchPosts(1, mngYear);
-        } else if (id === 'prev_page') { //<
-            let arrPages = [];
-            $('.paging>ol>li>a').each(function() {
-                arrPages.push(Number($(this).text()));
-            });
+        let arrPages = [];
+        $('.paging>ol>li>a').each(function() {
+            arrPages.push(Number($(this).text()));
+        });
+
+        if (id === 'first_page') { // <<
+            galleryList(1, mngYear);
+        } else if (id === 'prev_page') { // <
             const prevPage = Math.min(...arrPages) - 1;
-            searchPosts(prevPage, mngYear);
-        } else if (id === 'next_page') { //>
-            let arrPages = [];
-            $('.paging>ol>li>a').each(function() {
-                arrPages.push(Number($(this).text()));
-            });
+            if(prevPage >= 1) galleryList(prevPage, mngYear);
+        } else if (id === 'next_page') { // >
             const nextPage = Math.max(...arrPages) + 1;
-            searchPosts(nextPage, mngYear);
-        } else if (id === 'last_page') { //>>
-            searchPosts(totalPage, mngYear);
+            if(nextPage <= totalPage) galleryList(nextPage, mngYear);
+        } else if (id === 'last_page') { // >>
+            galleryList(totalPage, mngYear);
         }
     });
+});
 
+// ▼▼▼ 텍스트 검색 버튼 또는 엔터키 입력 시 호출 ▼▼▼
+function f_gallery_text_search() {
+    galleryList(1, mngYear);
 }
 
-/**
- * 페이지별 데이터를 조회합니다.
- * @param {int} pageNum - Page Number
- * @param mngYearValue - Category Value
- */
-function searchPosts(pageNum, mngYearValue) {
-    if (isSearching) return; // 중복 호출 방지
+// ▼▼▼ 메인 리스트 조회 API 함수 ▼▼▼
+function galleryList(targetPageNum, targetYear) {
+    if (isSearching) return;
     isSearching = true;
 
-    // 로딩바 표시 (선택 사항)
-    // if(typeof loadingBarShow === 'function') loadingBarShow();
-
     const countPerPage = 12;
-    let start = (pageNum - 1) * countPerPage;
+    let start = (targetPageNum - 1) * countPerPage;
     if(start < 0) start = 0;
 
     let link = document.location.href;
@@ -93,7 +79,7 @@ function searchPosts(pageNum, mngYearValue) {
     let jsonObj = {
         pageNum: start,
         rows: countPerPage,
-        mngYear: mngYearValue,
+        mngYear: targetYear,
         condition: condition,
         searchText: searchText
     };
@@ -106,41 +92,32 @@ function searchPosts(pageNum, mngYearValue) {
     })
         .done(function (data){
             let results = data;
-            let htmlArr = []; // [성능개선] 배열을 사용하여 HTML 구성
+            let htmlArr = [];
 
             if(nvl(results, "") !== "" && results.length > 0) {
                 $.each(results , function(i, item){
                     let title = (lang === 'KO') ? item.title : nvl(item.titleEn, item.title);
-                    let writeDate = item.writeDate.split(' ')[0].replaceAll('-','.');
 
-                    // 기본 이미지 설정
+                    let writeDate = "";
+                    if(item.writeDate) {
+                        writeDate = item.writeDate.split(' ')[0].replaceAll('-','.');
+                    }
+
                     let thumbnailSrc = '/img/sample_img.jpg';
-
-                    // [핵심] fileList에서 정보 가져오기
                     let fileList = item.fileList;
 
                     if(nvl(fileList, "") !== "" && fileList.length > 0){
-                        // 첫 번째 파일을 썸네일로 사용
                         let firstFile = fileList[0];
-
-                        // 1. 웹 경로 추출 (서버 절대 경로 제거)
-                        // FileDTO의 fullFilePath가 '/usr/local/...' 형태라면 치환
                         let webPath = firstFile.fullFilePath.replace('/usr/local/tomcat/webapps', '');
-
-                        // 2. 원본 파일명 (FileDTO의 fileName 필드가 원본명이라고 가정)
                         let originalName = firstFile.fileName;
-
-                        // 3. 컨트롤러 호출 URL 생성 (경로와 파일명 인코딩 필수)
                         thumbnailSrc = '/file/imageView.do?path=' + encodeURIComponent(webPath) + '&fileName=' + encodeURIComponent(originalName);
                     }
 
                     let li = '<li style="cursor: pointer">';
                     li += '<a class="viewGallery">';
                     li += '<div class="thumb75 thumbBox">';
-                    // [성능개선] loading="lazy" 추가
                     li += '<img class="thumbImg" loading="lazy" src="' + thumbnailSrc + '" alt="' + title + '">';
 
-                    // 슬라이드용 이미지 경로를 hidden input으로 저장
                     if(nvl(fileList, "") !== "") {
                         $.each(fileList , function(j, file) {
                             let slideWebPath = file.fullFilePath.replace('/usr/local/tomcat/webapps', '');
@@ -159,17 +136,15 @@ function searchPosts(pageNum, mngYearValue) {
                     htmlArr.push(li);
                 });
 
-                // 전체 개수 세팅 (첫 페이지일 때만 갱신하거나, 매번 갱신)
+                // 전체 개수 세팅
                 $('span.total').text(Number(results[0].totalRecords).toLocaleString());
-
-                // [성능개선] 한 번에 DOM 주입
+                // 한 번에 화면에 그리기
                 $('.board_gallery_box ul').empty().html(htmlArr.join(''));
-
                 // 페이징 정보 세팅
-                setPaging(pageNum);
+                setPaging(targetPageNum);
 
             } else {
-                // 데이터 없음
+                // 검색된 데이터가 없을 경우
                 $('span.total').text(0);
                 $('.paging ol').empty();
                 $('.board_gallery_box ul').html('<li><div style="width:100%; text-align:center; padding:50px 0;">해당 조건으로 검색된 자료가 없습니다.</div></li>');
@@ -181,36 +156,31 @@ function searchPosts(pageNum, mngYearValue) {
             alert("자료를 불러오는 중 오류가 발생했습니다.");
         })
         .always(function() {
-            isSearching = false; // 요청 완료 시 플래그 해제
-            // if(typeof KTApp !== 'undefined') KTApp.hidePageLoading(); // 로딩바 숨김
+            isSearching = false; // 완료 후 무조건 락(Lock) 해제
         });
 }
 
 /**
  * 페이징 정보를 세팅합니다.
- * @param {int} pageNum - Page Number
  */
-function setPaging(pageNum) {
+function setPaging(currentPage) {
     const totalCnt = parseInt($('span.total').text().replace(/,/g, '')) || 0;
     const countPerPage = 12;
-    const currentPage = pageNum;
+    const showPageCnt = 10;
     const totalPage = Math.ceil(totalCnt / countPerPage);
 
     showAllIcon();
 
-    // 이전/처음 버튼 숨김 처리
-    if (currentPage <= 1) { // 1페이지면 안 보임 (또는 그룹 단위 로직 적용 가능)
-        // 단순화: 1~10페이지 구간이면 prev 숨김 등을 처리하려면 showPageCnt 활용
-        const startPage = Math.floor((currentPage - 1) / showPageCnt) * showPageCnt + 1;
-        if(startPage === 1) {
-            $('#first_page').hide();
-            $('#prev_page').hide();
-        }
-    }
-
-    // 다음/마지막 버튼 숨김 처리
     const startPage = Math.floor((currentPage - 1) / showPageCnt) * showPageCnt + 1;
     const endPage = startPage + showPageCnt - 1;
+
+    // 이전/처음
+    if (startPage === 1) {
+        $('#first_page').hide();
+        $('#prev_page').hide();
+    }
+
+    // 다음/마지막
     if (endPage >= totalPage) {
         $('#next_page').hide();
         $('#last_page').hide();
@@ -224,9 +194,6 @@ function setPaging(pageNum) {
     $('.paging ol').html(sPagesHtml.join(''));
 }
 
-/**
- * Icon(<<, <, >, >>) All Show
- */
 function showAllIcon() {
     $('#first_page').show();
     $('#prev_page').show();
@@ -241,10 +208,11 @@ function hidePagingIcons() {
     $('#last_page').hide();
 }
 
-function f_gallery_category_search(target, mngYearValue){
-    $(target).siblings().removeClass('active');
-    $(target).addClass('active');
-
-    /* 조회 */
-    galleryList(1, mngYearValue);
+// -------------------------------------------------------------
+// nvl 헬퍼 함수
+function nvl(value, defaultValue) {
+    if (value === null || value === undefined || value === "" || value === "null" || (typeof value === "object" && !Object.keys(value || {}).length)) {
+        return defaultValue;
+    }
+    return value;
 }

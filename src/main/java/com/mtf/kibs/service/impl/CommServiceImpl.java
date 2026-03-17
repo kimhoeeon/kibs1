@@ -85,7 +85,7 @@ public class CommServiceImpl implements CommService {
                 "  <priority>0.80</priority>\n" +
                 "</url>\n" +
                 "<url>\n" +
-                "  <loc>https://kibs.com/board/history25.do</loc>\n" +
+                "  <loc>https://kibs.com/board/history26.do</loc>\n" +
                 "  <lastmod>2026-02-25T01:19:11+00:00</lastmod>\n" +
                 "  <priority>0.80</priority>\n" +
                 "</url>\n" +

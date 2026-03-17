@@ -90,7 +90,7 @@
                         <div class="tabOptAct">지난 전시회</div>
                         <div class="tabOptSel">
                             <a href="/guide/summary.do">행사소개</a>
-                            <a class="active" href="/board/history25.do">지난 전시회</a>
+                            <a class="active" href="/board/history26.do">지난 전시회</a>
                             <a href="/board/award.do">올해의 제품상</a>
                             <a href="/board/bi.do">KIBS BI</a>
                             <a href="/board/cerify.do">인증 및 수상현황</a>
@@ -106,6 +106,7 @@
     <div class="year_tab padding_t">
         <div class="inner">
             <div class="year_tab_box">
+                <a href="/board/history26.do">2026</a>
                 <a href="/board/history25.do">2025</a>
                 <a href="/board/history24.do">2024</a>
                 <a href="/board/history23.do">2023</a>

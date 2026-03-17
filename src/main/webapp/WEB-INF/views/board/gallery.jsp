@@ -109,25 +109,25 @@
     <div class="year_tab padding_t">
         <div class="inner">
             <div class="year_tab_box">
-                <a class="cate active" data-value="전체" onclick="f_gallery_category_search(this, '전체')" style="cursor: pointer">전체</a>
-                <a class="cate" data-value="2026" onclick="f_gallery_category_search(this, '2026')" style="cursor: pointer">2026</a>
-                <a class="cate" data-value="2025" onclick="f_gallery_category_search(this, '2025')" style="cursor: pointer">2025</a>
-                <a class="cate" data-value="2024" onclick="f_gallery_category_search(this, '2024')" style="cursor: pointer">2024</a>
-                <a class="cate" data-value="2023" onclick="f_gallery_category_search(this, '2023')" style="cursor: pointer">2023</a>
-                <a class="cate" data-value="2022" onclick="f_gallery_category_search(this, '2022')" style="cursor: pointer">2022</a>
-                <a class="cate" data-value="2021" onclick="f_gallery_category_search(this, '2021')" style="cursor: pointer">2021</a>
-                <a class="cate" data-value="2019" onclick="f_gallery_category_search(this, '2019')" style="cursor: pointer">2019</a>
-                <a class="cate" data-value="2018" onclick="f_gallery_category_search(this, '2018')" style="cursor: pointer">2018</a>
-                <a class="cate" data-value="2017" onclick="f_gallery_category_search(this, '2017')" style="cursor: pointer">2017</a>
-                <a class="cate" data-value="2016" onclick="f_gallery_category_search(this, '2016')" style="cursor: pointer">2016</a>
-                <a class="cate" data-value="2015" onclick="f_gallery_category_search(this, '2015')" style="cursor: pointer">2015</a>
-                <a class="cate" data-value="2014" onclick="f_gallery_category_search(this, '2014')" style="cursor: pointer">2014</a>
-                <a class="cate" data-value="2013" onclick="f_gallery_category_search(this, '2013')" style="cursor: pointer">2013</a>
-                <a class="cate" data-value="2012" onclick="f_gallery_category_search(this, '2012')" style="cursor: pointer">2012</a>
-                <a class="cate" data-value="2011" onclick="f_gallery_category_search(this, '2011')" style="cursor: pointer">2011</a>
-                <a class="cate" data-value="2010" onclick="f_gallery_category_search(this, '2010')" style="cursor: pointer">2010</a>
-                <a class="cate" data-value="2009" onclick="f_gallery_category_search(this, '2009')" style="cursor: pointer">2009</a>
-                <a class="cate" data-value="2008" onclick="f_gallery_category_search(this, '2008')" style="cursor: pointer">2008</a>
+                <a class="cate active" data-value="전체" style="cursor: pointer">전체</a>
+                <a class="cate" data-value="2026" style="cursor: pointer">2026</a>
+                <a class="cate" data-value="2025" style="cursor: pointer">2025</a>
+                <a class="cate" data-value="2024" style="cursor: pointer">2024</a>
+                <a class="cate" data-value="2023" style="cursor: pointer">2023</a>
+                <a class="cate" data-value="2022" style="cursor: pointer">2022</a>
+                <a class="cate" data-value="2021" style="cursor: pointer">2021</a>
+                <a class="cate" data-value="2019" style="cursor: pointer">2019</a>
+                <a class="cate" data-value="2018" style="cursor: pointer">2018</a>
+                <a class="cate" data-value="2017" style="cursor: pointer">2017</a>
+                <a class="cate" data-value="2016" style="cursor: pointer">2016</a>
+                <a class="cate" data-value="2015" style="cursor: pointer">2015</a>
+                <a class="cate" data-value="2014" style="cursor: pointer">2014</a>
+                <a class="cate" data-value="2013" style="cursor: pointer">2013</a>
+                <a class="cate" data-value="2012" style="cursor: pointer">2012</a>
+                <a class="cate" data-value="2011" style="cursor: pointer">2011</a>
+                <a class="cate" data-value="2010" style="cursor: pointer">2010</a>
+                <a class="cate" data-value="2009" style="cursor: pointer">2009</a>
+                <a class="cate" data-value="2008" style="cursor: pointer">2008</a>
             </div>
         </div>
     </div>
@@ -137,17 +137,15 @@
     <div class="board_search">
         <div class="inner">
             <div class="search">
-                <form class="search_box" onsubmit="return false;">
+                <form class="search_box" onsubmit="f_gallery_text_search(); return false;">
                     <span class="select">
                         <select id="search_box">
                             <option value="title" selected>제목</option>
-                            <%--<option value="content">내용</option>
-                            <option value="all">내용+제목</option>--%>
                         </select>
                     </span>
                     <span class="search">
                         <input type="text" id="search_text" placeholder="검색어를 입력해 주세요.">
-                        <button type="button" onclick="galleryList(1, '전체')" style="cursor: pointer"></button>
+                        <button type="button" onclick="f_gallery_text_search()" style="cursor: pointer"></button>
                     </span>
                 </form>
             </div>

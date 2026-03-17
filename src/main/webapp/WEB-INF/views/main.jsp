@@ -145,7 +145,7 @@
             <div class="inner">
                 <div class="main_tit">
                     <div class="top">Previous Boat Show Data</div>
-                    <div class="big">한눈에 보는 2025 KIBS</div>
+                    <div class="big">한눈에 보는 2026 KIBS</div>
                 </div>
                 <ul class="list">
                     <li>
@@ -158,21 +158,21 @@
                     <li>
                         <div class="icon"><img src="/img/icon_main_data_02.png"></div>
                         <div class="text">
-                            <div class="data">1,454+</div>
+                            <div class="data">1,313+</div>
                             <div class="nae">부스규모</div>
                         </div>
                     </li>
                     <li>
                         <div class="icon"><img src="/img/icon_main_data_03.png"></div>
                         <div class="text">
-                            <div class="data">65,000+</div>
+                            <div class="data">62,000+</div>
                             <div class="nae">참관객 수</div>
                         </div>
                     </li>
                     <li>
                         <div class="icon"><img src="/img/icon_main_data_04.png"></div>
                         <div class="text">
-                            <div class="data">180+</div>
+                            <div class="data">150+</div>
                             <div class="nae">전시보트</div>
                         </div>
                     </li>

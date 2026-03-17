@@ -122,7 +122,7 @@
                             <a href="<c:url value="/guide/summary.do"/>"><span>KIBS 안내</span></a>
                             <ul class="dept2">
                                 <li><a href="<c:url value="/guide/summary.do"/>"><span>행사소개</span></a></li>
-                                <li><a href="<c:url value="/board/history25.do"/>"><span>지난 전시회</span></a></li>
+                                <li><a href="<c:url value="/board/history26.do"/>"><span>지난 전시회</span></a></li>
                                 <li><a href="<c:url value="/board/award.do"/>"><span>올해의 제품상</span></a></li>
                                 <li><a href="<c:url value="/board/bi.do"/>"><span>KIBS BI</span></a></li>
                                 <li><a href="<c:url value="/board/cerify.do"/>"><span>인증 및 수상현황</span></a></li>
@@ -218,7 +218,7 @@
                             <a href="<c:url value="/guide/summary.do"/>"><span>KIBS 안내</span></a>
                             <ul class="dept2">
                                 <li><a href="<c:url value="/guide/summary.do"/>"><span>행사소개</span></a></li>
-                                <li><a href="<c:url value="/board/history25.do"/>"><span>지난 전시회</span></a></li>
+                                <li><a href="<c:url value="/board/history26.do"/>"><span>지난 전시회</span></a></li>
                                 <li><a href="<c:url value="/board/award.do"/>"><span>올해의 제품상</span></a></li>
                                 <li><a href="<c:url value="/board/bi.do"/>"><span>KIBS BI</span></a></li>
                                 <li><a href="<c:url value="/board/cerify.do"/>"><span>인증 및 수상현황</span></a></li>

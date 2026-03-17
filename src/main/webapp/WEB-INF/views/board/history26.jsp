@@ -106,7 +106,7 @@
     <div class="year_tab padding_t">
         <div class="inner">
             <div class="year_tab_box">
-                <a href="/board/history26.do">2026</a>
+                <a href="/board/history26.do" class="active">2026</a>
                 <a href="/board/history25.do">2025</a>
                 <a href="/board/history24.do">2024</a>
                 <a href="/board/history23.do">2023</a>
@@ -118,7 +118,7 @@
                 <a href="/board/history16.do">2016</a>
                 <a href="/board/history15.do">2015</a>
                 <a href="/board/history14.do">2014</a>
-                <a href="/board/history13.do" class="active">2013</a>
+                <a href="/board/history13.do">2013</a>
                 <a href="/board/history12.do">2012</a>
                 <a href="/board/history11.do">2011</a>
                 <a href="/board/history10.do">2010</a>
@@ -130,14 +130,14 @@
     <!-- //section -->
 
     <!-- section -->
-    <div class="history_s history_s1">
+    <div class="history_s history_s1 padding_b">
         <div class="inner">
             <div class="sub_cont_tit">
                 <div class="big">전시회개요</div>
             </div>
             <!-- 전시회개요 -->
             <div class="hist_info">
-                <div class="poster"><img src="/img/img_history_2013.jpg"></div>
+                <div class="poster"><img src="/img/img_history_2026.jpg"></div>
                 <div class="hist_table">
                     <div class="table_box">
                         <table>
@@ -148,146 +148,41 @@
                             <tbody>
                             <tr>
                                 <td>전시명</td>
-                                <td>2013 경기국제보트쇼 (Korea International Boat Show 2013)</td>
+                                <td>2026 경기국제보트쇼 (Korea International Boat Show 2026)</td>
                             </tr>
                             <tr>
                                 <td>개최일</td>
-                                <td>2013.5.30(목) ~ 6.2(일)</td>
+                                <td>2026. 3. 6(금) ~ 3. 8(일)</td>
                             </tr>
                             <tr>
                                 <td>규 모</td>
-                                <td>28,500(㎡)</td>
+                                <td>26,487㎡</td>
                             </tr>
                             <tr>
                                 <td>장 소</td>
-                                <td>KINTEX</td>
+                                <td>KINTEX 3,4,5홀 (온라인 전시회 상시운영)</td>
                             </tr>
                             <tr>
                                 <td>주 최</td>
-                                <td>경기도, SBS</td>
+                                <td>해양수산부, 경기도</td>
                             </tr>
                             <tr>
                                 <td>주 관</td>
-                                <td>KINTEX, KOTRA</td>
+                                <td>KINTEX, Kotra, 한국해양레저산업협회, 한국마리나협회</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
+                    <div class="btn_box">
+                        <a onclick="alert('업데이트 예정입니다');return false;" class="btnSt01">2025 경기국제보트쇼 한 눈에 보기</a>
+                        <a onclick="alert('업데이트 예정입니다');return false;" class="btnSt01">2025 경기국제보트쇼 Show Guide 다운로드</a>
+                    </div>
+
                 </div>
             </div>
             <!-- 전시회개요 -->
         </div>
     </div>
-
-    <!-- section -->
-    <div class="history_s history_s2">
-        <div class="inner">
-            <div class="sub_cont_tit">
-                <div class="big">전시회 성과</div>
-                <div class="small">참가규모</div>
-            </div>
-            <!-- 전시회성과 -->
-            <div class="hist_result">
-                <ul>
-                    <li>
-                        <div class="icon"><img src="/img/icon_history01.png"></div>
-                        <div class="txt_box">
-                            <div class="tit">전시참가국가</div>
-                            <div class="txt"><span class="big">33</span><span class="small">개국</span></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="icon"><img src="/img/icon_history02.png"></div>
-                        <div class="txt_box">
-                            <div class="tit">전시참가업체</div>
-                            <div class="txt"><span class="big">446</span><span class="small">개 업체</span></div>
-                            <div class="cmnt">(국내 256+국외 49)</div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="icon"><img src="/img/icon_history03.png"></div>
-                        <div class="txt_box">
-                            <div class="tit">투자 및 바이어</div>
-                            <div class="txt"><span class="big">141</span><span class="small">개 업체</span></div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <!-- 전시회성과 -->
-
-        </div>
-    </div>
-    <!-- //section -->
-
-    <!-- section -->
-    <div class="history_s history_s3 padding_b">
-        <div class="inner">
-            <div class="sub_cont_tit">
-                <div class="big">주요 사진</div>
-            </div>
-            <!-- 주요 사진 -->
-            <div class="hist_photo">
-                <div class="swiper_box">
-                    <div class="swiper swiper_histPhoto">
-                        <ul class="swiper-wrapper">
-                            <li class="swiper-slide">
-                                <div class="thumb11 thumbBox"><img class="thumbImg" src="/img/photo2013_1b.jpg">
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb11 thumbBox"><img class="thumbImg" src="/img/photo2013_2b.jpg">
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb11 thumbBox"><img class="thumbImg" src="/img/photo2013_3b.jpg">
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb11 thumbBox"><img class="thumbImg" src="/img/photo2013_4b.jpg">
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb11 thumbBox"><img class="thumbImg" src="/img/photo2013_5b.jpg">
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb11 thumbBox"><img class="thumbImg" src="/img/photo2013_6b.jpg">
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb11 thumbBox"><img class="thumbImg" src="/img/photo2013_7b.jpg">
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb11 thumbBox"><img class="thumbImg" src="/img/photo2013_8b.jpg">
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb11 thumbBox"><img class="thumbImg" src="/img/photo2013_9b.jpg">
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb11 thumbBox"><img class="thumbImg" src="/img/photo2013_10b.jpg">
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb11 thumbBox"><img class="thumbImg" src="/img/photo2013_11b.jpg">
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb11 thumbBox"><img class="thumbImg" src="/img/photo2013_12b.jpg">
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="swiper-button-prev swiper_histPhoto_prev"></div>
-                    <div class="swiper-button-next swiper_histPhoto_next"></div>
-                </div>
-            </div>
-            <!-- 주요 사진 -->
-        </div>
-    </div>
-    <!-- //section -->
 
 </div>
 

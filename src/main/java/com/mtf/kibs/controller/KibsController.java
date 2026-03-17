@@ -1396,12 +1396,19 @@ public class KibsController {
         return mv;
     }
 
-    // 최미나가 추가함
     @RequestMapping(value = "/board/history25.do", method = RequestMethod.GET)
     public ModelAndView board_history25() {
         System.out.println("KibsController > board_history25");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history25");
+        return mv;
+    }
+
+    @RequestMapping(value = "/board/history26.do", method = RequestMethod.GET)
+    public ModelAndView board_history26() {
+        System.out.println("KibsController > board_history26");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/board/history26");
         return mv;
     }
 

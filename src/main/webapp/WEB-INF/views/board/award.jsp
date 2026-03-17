@@ -84,7 +84,7 @@
                         <div class="tabOptAct">올해의 제품상</div>
                         <div class="tabOptSel">
                             <a href="/guide/summary.do">행사소개</a>
-                            <a href="/board/history25.do">지난 전시회</a>
+                            <a href="/board/history26.do">지난 전시회</a>
                             <a class="active" href="/board/award.do">올해의 제품상</a>
                             <a href="/board/bi.do">KIBS BI</a>
                             <a href="/board/cerify.do">인증 및 수상현황</a>
@@ -139,7 +139,7 @@
     <div class="award_s award_s2 padding_b">
         <div class="inner">
             <div class="sub_cont_tit">
-                <div class="big">2026 제품상</div>
+                <div class="big">2026 올해의 제품상</div>
             </div>
             <div class="award_hist">
                 <img src="/img/product_award2026.jpg">
@@ -152,7 +152,7 @@
     <div class="award_s award_s3 padding_b">
         <div class="inner">
             <div class="sub_cont_tit">
-                <div class="big">지난 전시회 제품상</div>
+                <div class="big">역대 올해의 제품상</div>
             </div>
             <div class="award_hist swiper_box">
                 <div class="swiper swiper_award_hist">

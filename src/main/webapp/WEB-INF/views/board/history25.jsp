@@ -90,7 +90,7 @@
                         <div class="tabOptAct">지난 전시회</div>
                         <div class="tabOptSel">
                             <a href="/guide/summary.do">행사소개</a>
-                            <a class="active" href="/board/history25.do">지난 전시회</a>
+                            <a class="active" href="/board/history26.do">지난 전시회</a>
                             <a href="/board/award.do">올해의 제품상</a>
                             <a href="/board/bi.do">KIBS BI</a>
                             <a href="/board/cerify.do">인증 및 수상현황</a>
@@ -106,6 +106,7 @@
     <div class="year_tab padding_t">
         <div class="inner">
             <div class="year_tab_box">
+                <a href="/board/history26.do">2026</a>
                 <a href="/board/history25.do" class="active">2025</a>
                 <a href="/board/history24.do">2024</a>
                 <a href="/board/history23.do">2023</a>
@@ -174,7 +175,7 @@
                     </div>
                     <div class="btn_box">
                         <a href="/file/★2025 보트쇼 쇼가이드북(리플렛).pdf" target="_blank" class="btnSt01">2025 경기국제보트쇼 한 눈에 보기</a>
-                        <a href="javascript:void(0);" onclick="alert('업데이트 예정입니다');return false;" class="btnSt01">2025 경기국제보트쇼 Show Guide 다운로드</a>
+                        <a href="/file/★2025 보트쇼 쇼가이드북(리플렛).pdf" download="2025_경기국제보트쇼_show_guide" class="btnSt01">2025 경기국제보트쇼 Show Guide 다운로드</a>
                     </div>
 
                 </div>

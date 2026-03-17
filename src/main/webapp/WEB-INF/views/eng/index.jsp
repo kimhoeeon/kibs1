@@ -148,21 +148,21 @@
                     <li>
                         <div class="icon"><img src="/img/icon_main_data_02.png"></div>
                         <div class="text">
-                            <div class="data">1,454+</div>
+                            <div class="data">1,313+</div>
                             <div class="nae">Number of Participating Booths</div>
                         </div>
                     </li>
                     <li>
                         <div class="icon"><img src="/img/icon_main_data_03.png"></div>
                         <div class="text">
-                            <div class="data">65,000+</div>
+                            <div class="data">62,000+</div>
                             <div class="nae">Number of Visitors</div>
                         </div>
                     </li>
                     <li>
                         <div class="icon"><img src="/img/icon_main_data_04.png"></div>
                         <div class="text">
-                            <div class="data">180+</div>
+                            <div class="data">150+</div>
                             <div class="nae">Number of Exhibition Boats</div>
                         </div>
                     </li>
