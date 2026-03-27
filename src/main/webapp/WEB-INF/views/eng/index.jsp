@@ -123,7 +123,7 @@
 
                 <div class="video_box">
                     <div class="embed-container">
-                        <iframe src="https://www.youtube.com/embed/uMN97io8RFA?autoplay=1&mute=1&controls=0&loop=1&playlist=uMN97io8RFA" frameborder="0" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/oZb5vu3fyC0?autoplay=1&mute=1&controls=0&loop=1&playlist=oZb5vu3fyC0" frameborder="0" allowfullscreen></iframe>
                     </div>
                 </div>
 
