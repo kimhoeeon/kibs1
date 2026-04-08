@@ -274,13 +274,13 @@ public class KibsController {
         return mv;
     }
 
-    @RequestMapping(value = "/guide/maritime_expo.do", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/guide/maritime_expo.do", method = RequestMethod.GET)
     public ModelAndView guide_maritime_expo() {
         //System.out.println("KibsController > guide_maritime_expo");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/guide/maritime_expo");
         return mv;
-    }
+    }*/
 
     @RequestMapping(value = "/guide/summary_kiss.do", method = RequestMethod.GET)
     public ModelAndView guide_summary_kiss() {

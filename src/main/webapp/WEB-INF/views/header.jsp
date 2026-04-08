@@ -174,9 +174,9 @@
                         <li class="kmts_nav">
                             <a href="<c:url value="/guide/summary_kmts.do"/>"><span>KMTS<br>(해양관광전)</span></a>
                         </li>
-                        <li class="expo">
+                        <%--<li class="expo">
                             <a href="<c:url value="/guide/maritime_expo.do"/>"><span>해상전시회<br>(시흥 거북섬마리나)</span></a>
-                        </li>
+                        </li>--%>
                     </ul>
                 </div>
             </div>
@@ -284,9 +284,9 @@
                         <li class="kmts_nav">
                             <a href="<c:url value="/guide/summary_kmts.do"/>"><span>KMTS<br>(해양관광전)</span></a>
                         </li>
-                        <li class="expo">
+                        <%--<li class="expo">
                             <a href="<c:url value="/guide/maritime_expo.do"/>"><span>해상전시회<br>(시흥 거북섬마리나)</span></a>
-                        </li>
+                        </li>--%>
                     </ul>
                 </div>
             </div>
