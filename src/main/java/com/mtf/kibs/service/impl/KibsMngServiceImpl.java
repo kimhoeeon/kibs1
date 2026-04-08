@@ -62,7 +62,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public AdminDTO login(AdminDTO adminDTO, HttpSession session) {
-        System.out.println("KibsMngServiceImpl > loginCheck : ======");
+        //System.out.println("KibsMngServiceImpl > loginCheck : ======");
         AdminDTO admin = kibsMngMapper.login(adminDTO);
         if(admin != null){
             session.setAttribute("status", "logon");
@@ -74,14 +74,14 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Override
     public void logoutCheck(HttpSession session) {
-        System.out.println("KibsMngServiceImpl > logoutCheck : ======");
+        //System.out.println("KibsMngServiceImpl > logoutCheck : ======");
         session.invalidate(); // 세션 초기화
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processSaveAccessIp(List<AccessDTO> accessDTOList) {
-        System.out.println("KibsMngServiceImpl > processSaveAccessIp");
+        //System.out.println("KibsMngServiceImpl > processSaveAccessIp");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -118,7 +118,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processSelectAccessIp(AccessDTO accessDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectAccessIp");
+        //System.out.println("KibsMngServiceImpl > processSelectAccessIp");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -156,119 +156,119 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public String processSelectAccessIpList() {
-        System.out.println("KibsMngServiceImpl > processSelectAccessIpList");
+        //System.out.println("KibsMngServiceImpl > processSelectAccessIpList");
         return kibsMngMapper.selectAccessIpList();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public StatisticsDTO processSelectCompanyCount(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectCompanyCount");
+        //System.out.println("KibsMngServiceImpl > processSelectCompanyCount");
         return kibsMngMapper.selectCompanyCount(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public StatisticsDTO processSelectVisitorCount(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectVisitorCount");
+        //System.out.println("KibsMngServiceImpl > processSelectVisitorCount");
         return kibsMngMapper.selectVisitorCount(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public StatisticsDTO processSelectProductCount(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectProductCount");
+        //System.out.println("KibsMngServiceImpl > processSelectProductCount");
         return kibsMngMapper.selectProductCount(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public StatisticsDTO processSelectProductQtyCount(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectProductQtyCount");
+        //System.out.println("KibsMngServiceImpl > processSelectProductQtyCount");
         return kibsMngMapper.selectProductQtyCount(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<StatisticsDTO> processSelectStatisticsAccessorDay(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectStatisticsAccessorDay");
+        //System.out.println("KibsMngServiceImpl > processSelectStatisticsAccessorDay");
         return kibsMngMapper.selectStatisticsAccessorDay(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<StatisticsDTO> processSelectStatisticsAccessorMonth(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectStatisticsAccessorMonth");
+        //System.out.println("KibsMngServiceImpl > processSelectStatisticsAccessorMonth");
         return kibsMngMapper.selectStatisticsAccessorMonth(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<StatisticsDTO> processSelectStatisticsAccessorWeek(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectStatisticsAccessorWeek");
+        //System.out.println("KibsMngServiceImpl > processSelectStatisticsAccessorWeek");
         return kibsMngMapper.selectStatisticsAccessorWeek(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<StatisticsDTO> processSelectStatisticsParticipantCompanyDay(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectStatisticsParticipantCompanyDay");
+        //System.out.println("KibsMngServiceImpl > processSelectStatisticsParticipantCompanyDay");
         return kibsMngMapper.selectStatisticsParticipantCompanyDay(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<StatisticsDTO> processSelectStatisticsParticipantVisitorDay(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectStatisticsParticipantVisitorDay");
+        //System.out.println("KibsMngServiceImpl > processSelectStatisticsParticipantVisitorDay");
         return kibsMngMapper.selectStatisticsParticipantVisitorDay(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<StatisticsDTO> processSelectStatisticsParticipantCompanyMonth(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectStatisticsParticipantCompanyMonth");
+        //System.out.println("KibsMngServiceImpl > processSelectStatisticsParticipantCompanyMonth");
         return kibsMngMapper.selectStatisticsParticipantCompanyMonth(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<StatisticsDTO> processSelectStatisticsParticipantVisitorMonth(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectStatisticsParticipantVisitorMonth");
+        //System.out.println("KibsMngServiceImpl > processSelectStatisticsParticipantVisitorMonth");
         return kibsMngMapper.selectStatisticsParticipantVisitorMonth(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<StatisticsDTO> processSelectStatisticsParticipantCompanyWeek(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectStatisticsParticipantCompanyWeek");
+        //System.out.println("KibsMngServiceImpl > processSelectStatisticsParticipantCompanyWeek");
         return kibsMngMapper.selectStatisticsParticipantCompanyWeek(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<StatisticsDTO> processSelectStatisticsParticipantVisitorWeek(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectStatisticsParticipantVisitorWeek");
+        //System.out.println("KibsMngServiceImpl > processSelectStatisticsParticipantVisitorWeek");
         return kibsMngMapper.selectStatisticsParticipantVisitorWeek(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public StatisticsDTO processSelectStatisticsCompanyBooth(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectStatisticsCompanyBooth");
+        //System.out.println("KibsMngServiceImpl > processSelectStatisticsCompanyBooth");
         return kibsMngMapper.selectStatisticsCompanyBooth(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public StatisticsDTO processSelectStatisticsCompanyFieldPart(StatisticsDTO statisticsDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectStatisticsCompanyFieldPart");
+        //System.out.println("KibsMngServiceImpl > processSelectStatisticsCompanyFieldPart");
         return kibsMngMapper.selectStatisticsCompanyFieldPart(statisticsDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertExhibitorComp(ParticipantCompanyDTO participantCompanyDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertExhibitorComp");
+        //System.out.println("KibsMngServiceImpl > processInsertExhibitorComp");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -307,14 +307,14 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ParticipantCompanyDTO> processSelectListExhibitorComp(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectListExhibitorComp");
+        //System.out.println("KibsMngServiceImpl > processSelectListExhibitorComp");
         return kibsMngMapper.selectListExhibitorComp(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteExhibitorComp(ParticipantCompanyDTO participantCompanyDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteExhibitorComp");
+        //System.out.println("KibsMngServiceImpl > processDeleteExhibitorComp");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -340,14 +340,14 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ParticipantCompanyDTO processSelectExhibitorComp(ParticipantCompanyDTO participantCompanyDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorComp");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorComp");
         return kibsMngMapper.selectExhibitorComp(participantCompanyDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorComp(ParticipantCompanyDTO participantCompanyDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorComp");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorComp");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -550,28 +550,28 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MemberDTO> processSelectMemberList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectMemberList");
+        //System.out.println("KibsMngServiceImpl > processSelectMemberList");
         return kibsMngMapper.selectMemberList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<NoticeDTO> processSelectNoticeList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectNoticeList");
+        //System.out.println("KibsMngServiceImpl > processSelectNoticeList");
         return kibsMngMapper.selectNoticeList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public NoticeDTO processSelectNoticeSingle(NoticeDTO noticeDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectNoticeSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectNoticeSingle");
         return kibsMngMapper.selectNoticeSingle(noticeDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteBoardNotice(NoticeDTO noticeDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteBoardNotice");
+        //System.out.println("KibsMngServiceImpl > processDeleteBoardNotice");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -602,7 +602,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBoardNotice(NoticeDTO noticeDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateBoardNotice");
+        //System.out.println("KibsMngServiceImpl > processUpdateBoardNotice");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -656,7 +656,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertBoardNotice(NoticeDTO noticeDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertBoardNotice");
+        //System.out.println("KibsMngServiceImpl > processInsertBoardNotice");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -711,21 +711,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<NewsletterDTO> processSelectNewsletterList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectNewsletterKoList");
+        //System.out.println("KibsMngServiceImpl > processSelectNewsletterKoList");
         return kibsMngMapper.selectNewsletterList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public NewsletterDTO processSelectNewsletterSingle(NewsletterDTO newsletterDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectNewsletterSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectNewsletterSingle");
         return kibsMngMapper.selectNewsletterSingle(newsletterDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteNewsletter(NewsletterDTO newsletterDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteNewsletter");
+        //System.out.println("KibsMngServiceImpl > processDeleteNewsletter");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -756,7 +756,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateNewsletter(NewsletterDTO newsletterDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateNewsletter");
+        //System.out.println("KibsMngServiceImpl > processUpdateNewsletter");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -811,7 +811,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertNewsletter(NewsletterDTO newsletterDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertNewsletter");
+        //System.out.println("KibsMngServiceImpl > processInsertNewsletter");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -867,21 +867,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<PressDTO> processSelectPressList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectPressList");
+        //System.out.println("KibsMngServiceImpl > processSelectPressList");
         return kibsMngMapper.selectPressList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public PressDTO processSelectPressSingle(PressDTO pressDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectPressSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectPressSingle");
         return kibsMngMapper.selectPressSingle(pressDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeletePress(PressDTO pressDTO) {
-        System.out.println("KibsMngServiceImpl > processDeletePress");
+        //System.out.println("KibsMngServiceImpl > processDeletePress");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -912,7 +912,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdatePress(PressDTO pressDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdatePress");
+        //System.out.println("KibsMngServiceImpl > processUpdatePress");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -967,7 +967,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertPress(PressDTO pressDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertPress");
+        //System.out.println("KibsMngServiceImpl > processInsertPress");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1022,21 +1022,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FaqDTO> processSelectFaqList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectFaqList");
+        //System.out.println("KibsMngServiceImpl > processSelectFaqList");
         return kibsMngMapper.selectFaqList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FaqDTO processSelectFaqSingle(FaqDTO faqDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectFaqSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectFaqSingle");
         return kibsMngMapper.selectFaqSingle(faqDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteFaq(FaqDTO faqDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteFaq");
+        //System.out.println("KibsMngServiceImpl > processDeleteFaq");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1067,7 +1067,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFaq(FaqDTO faqDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateFaq");
+        //System.out.println("KibsMngServiceImpl > processUpdateFaq");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1101,7 +1101,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertFaq(FaqDTO faqDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertFaq");
+        //System.out.println("KibsMngServiceImpl > processInsertFaq");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1134,21 +1134,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ColumnDTO> processSelectColumnList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectColumnList");
+        //System.out.println("KibsMngServiceImpl > processSelectColumnList");
         return kibsMngMapper.selectColumnList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ColumnDTO processSelectColumnSingle(ColumnDTO columnDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectColumnSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectColumnSingle");
         return kibsMngMapper.selectColumnSingle(columnDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteColumn(ColumnDTO columnDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteColumn");
+        //System.out.println("KibsMngServiceImpl > processDeleteColumn");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1179,7 +1179,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateColumn(ColumnDTO columnDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateColumn");
+        //System.out.println("KibsMngServiceImpl > processUpdateColumn");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1229,7 +1229,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertColumn(ColumnDTO columnDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertColumn");
+        //System.out.println("KibsMngServiceImpl > processInsertColumn");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1300,21 +1300,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ContestDTO> processSelectContestList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectContestList");
+        //System.out.println("KibsMngServiceImpl > processSelectContestList");
         return kibsMngMapper.selectContestList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ContestDTO processSelectContestSingle(ContestDTO contestDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectContestSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectContestSingle");
         return kibsMngMapper.selectContestSingle(contestDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteContest(ContestDTO contestDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteContest");
+        //System.out.println("KibsMngServiceImpl > processDeleteContest");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1345,7 +1345,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateContest(ContestDTO contestDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateContest");
+        //System.out.println("KibsMngServiceImpl > processUpdateContest");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1377,7 +1377,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertContest(ContestDTO contestDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertContest");
+        //System.out.println("KibsMngServiceImpl > processInsertContest");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1408,21 +1408,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<DataroomDTO> processSelectDataroomList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectDataroomList");
+        //System.out.println("KibsMngServiceImpl > processSelectDataroomList");
         return kibsMngMapper.selectDataroomList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public DataroomDTO processSelectDataroomSingle(DataroomDTO dataroomDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectDataroomSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectDataroomSingle");
         return kibsMngMapper.selectDataroomSingle(dataroomDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteDataroom(DataroomDTO dataroomDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteDataroom");
+        //System.out.println("KibsMngServiceImpl > processDeleteDataroom");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1453,7 +1453,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateDataroom(DataroomDTO dataroomDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateDataroom");
+        //System.out.println("KibsMngServiceImpl > processUpdateDataroom");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1485,7 +1485,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertDataroom(DataroomDTO dataroomDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertDataroom");
+        //System.out.println("KibsMngServiceImpl > processInsertDataroom");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1516,21 +1516,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<GalleryDTO> processSelectGalleryList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectGalleryList");
+        //System.out.println("KibsMngServiceImpl > processSelectGalleryList");
         return kibsMngMapper.selectGalleryList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public GalleryDTO processSelectGallerySingle(GalleryDTO galleryDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectGallerySingle");
+        //System.out.println("KibsMngServiceImpl > processSelectGallerySingle");
         return kibsMngMapper.selectGallerySingle(galleryDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteGallery(GalleryDTO galleryDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteGallery");
+        //System.out.println("KibsMngServiceImpl > processDeleteGallery");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1561,7 +1561,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateGallery(GalleryDTO galleryDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateGallery");
+        //System.out.println("KibsMngServiceImpl > processUpdateGallery");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1601,7 +1601,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertGallery(GalleryDTO galleryDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertGallery");
+        //System.out.println("KibsMngServiceImpl > processInsertGallery");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1642,21 +1642,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<KibstvDTO> processSelectKibstvList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectKibstvList");
+        //System.out.println("KibsMngServiceImpl > processSelectKibstvList");
         return kibsMngMapper.selectKibstvList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public KibstvDTO processSelectKibstvSingle(KibstvDTO kibstvDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectKibstvSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectKibstvSingle");
         return kibsMngMapper.selectKibstvSingle(kibstvDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteKibstv(KibstvDTO kibstvDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteKibstv");
+        //System.out.println("KibsMngServiceImpl > processDeleteKibstv");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1687,7 +1687,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateKibstv(KibstvDTO kibstvDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateKibstv");
+        //System.out.println("KibsMngServiceImpl > processUpdateKibstv");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1727,7 +1727,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertKibstv(KibstvDTO kibstvDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertKibstv");
+        //System.out.println("KibsMngServiceImpl > processInsertKibstv");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1763,7 +1763,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FileResponseDTO processInsertFileInfo(FileDTO fileDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertFileInfo");
+        //System.out.println("KibsMngServiceImpl > processInsertFileInfo");
         FileResponseDTO responseDTO = new FileResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1793,7 +1793,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FileResponseDTO processUpdateFileUseN(FileDTO fileDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateFileUseN");
+        //System.out.println("KibsMngServiceImpl > processUpdateFileUseN");
         FileResponseDTO responseDTO = new FileResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1826,21 +1826,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FileDTO> processSelectFileList(FileDTO fileDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectFileList");
+        //System.out.println("KibsMngServiceImpl > processSelectFileList");
         return kibsMngMapper.selectFileList(fileDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FileDTO processSelectFileInfo(FileDTO fileDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectFileInfo");
+        //System.out.println("KibsMngServiceImpl > processSelectFileInfo");
         return kibsMngMapper.selectFileInfo(fileDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public FileResponseDTO processUpdateFileInfo(FileDTO fileDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateFileInfo");
+        //System.out.println("KibsMngServiceImpl > processUpdateFileInfo");
         FileResponseDTO responseDTO = new FileResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1873,7 +1873,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFileUserId(FileDTO fileDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateFileUserId");
+        //System.out.println("KibsMngServiceImpl > processUpdateFileUserId");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1905,35 +1905,35 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorDTO> processSelectListExhibitor(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectListExhibitor");
+        //System.out.println("KibsMngServiceImpl > processSelectListExhibitor");
         return kibsMngMapper.selectListExhibitor(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorNewDTO> processSelectListExhibitorNew(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectListExhibitorNew");
+        //System.out.println("KibsMngServiceImpl > processSelectListExhibitorNew");
         return kibsMngMapper.selectListExhibitorNew(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorDTO processSelectExhibitorSingle(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorSingle");
         return kibsMngMapper.selectExhibitorSingle(exhibitorDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorNewDTO processSelectExhibitorNewSingle(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewSingle");
         return kibsMngMapper.selectExhibitorNewSingle(exhibitorNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertParticipantCompany(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertParticipantCompany");
+        //System.out.println("KibsMngServiceImpl > processInsertParticipantCompany");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2151,7 +2151,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateParticipantCompany(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateParticipantCompany");
+        //System.out.println("KibsMngServiceImpl > processUpdateParticipantCompany");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2380,7 +2380,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteExhibitorNew(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteExhibitorNew");
+        //System.out.println("KibsMngServiceImpl > processDeleteExhibitorNew");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2457,7 +2457,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteParticipantCompany(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteParticipantCompany");
+        //System.out.println("KibsMngServiceImpl > processDeleteParticipantCompany");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2504,21 +2504,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<VisitorDTO> processSelectVisitorList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectVisitorList");
+        //System.out.println("KibsMngServiceImpl > processSelectVisitorList");
         return kibsMngMapper.selectVisitorList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public VisitorDTO processSelectVisitorSingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectVisitorSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectVisitorSingle");
         return kibsMngMapper.selectVisitorSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateVisitor(VisitorDTO visitorDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateVisitor");
+        //System.out.println("KibsMngServiceImpl > processUpdateVisitor");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2571,7 +2571,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteVisitor(VisitorDTO visitorDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteVisitor");
+        //System.out.println("KibsMngServiceImpl > processDeleteVisitor");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2606,14 +2606,14 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<PartnerDTO> processSelectPartnerList(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectPartnerList");
+        //System.out.println("KibsMngServiceImpl > processSelectPartnerList");
         return kibsMngMapper.selectPartnerList(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeletePartner(PartnerDTO partnerDTO) {
-        System.out.println("KibsMngServiceImpl > processDeletePartner");
+        //System.out.println("KibsMngServiceImpl > processDeletePartner");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2644,56 +2644,56 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<DisplayDTO> processSelectDisplayList(DisplayDTO displayDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectDisplayList");
+        //System.out.println("KibsMngServiceImpl > processSelectDisplayList");
         return kibsMngMapper.selectDisplayList(displayDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ProductNewDTO> processSelectProductNewList(ProductNewDTO productNewDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectProductNewList");
+        //System.out.println("KibsMngServiceImpl > processSelectProductNewList");
         return kibsMngMapper.selectProductNewList(productNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<OnlineDTO> processSelectOnlineList(OnlineDTO onlineDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectOnlineList");
+        //System.out.println("KibsMngServiceImpl > processSelectOnlineList");
         return kibsMngMapper.selectOnlineList(onlineDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<OnlineNewDTO> processSelectOnlineNewList(OnlineNewDTO onlineNewDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectOnlineNewList");
+        //System.out.println("KibsMngServiceImpl > processSelectOnlineNewList");
         return kibsMngMapper.selectOnlineNewList(onlineNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorDTO> processSelectMngOnlineList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectMngOnlineList");
+        //System.out.println("KibsMngServiceImpl > processSelectMngOnlineList");
         return kibsMngMapper.selectMngOnlineList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorNewDTO> processSelectMngOnlineNewList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectMngOnlineNewList");
+        //System.out.println("KibsMngServiceImpl > processSelectMngOnlineNewList");
         return kibsMngMapper.selectMngOnlineNewList(searchDTO);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int updateCompanyBadge(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > updateCompanyBadge");
+        //System.out.println("KibsMngServiceImpl > updateCompanyBadge");
         return kibsMngMapper.updateCompanyBadge(exhibitorNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateViewYn(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateViewYn");
+        //System.out.println("KibsMngServiceImpl > processUpdateViewYn");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2726,7 +2726,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewOnlineViewYn(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewOnlineViewYn");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewOnlineViewYn");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2759,35 +2759,35 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngProductDTO> processSelectMngProductNewList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectMngProductNewList");
+        //System.out.println("KibsMngServiceImpl > processSelectMngProductNewList");
         return kibsMngMapper.selectMngProductNewList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<BuyerDTO> processSelectBuyerList(BuyerDTO buyerDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectBuyerList");
+        //System.out.println("KibsMngServiceImpl > processSelectBuyerList");
         return kibsMngMapper.selectBuyerList(buyerDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<BuyerNewDTO> processSelectBuyerNewList(BuyerNewDTO buyerNewDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectBuyerNewList");
+        //System.out.println("KibsMngServiceImpl > processSelectBuyerNewList");
         return kibsMngMapper.selectBuyerNewList(buyerNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public BuyerDTO processSelectBuyerSingle(BuyerDTO buyerDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectBuyerSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectBuyerSingle");
         return kibsMngMapper.selectBuyerSingle(buyerDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteBuyer(BuyerDTO buyerDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteBuyer");
+        //System.out.println("KibsMngServiceImpl > processDeleteBuyer");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2818,7 +2818,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteCharge(ChargePersonDTO chargePersonDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteCharge");
+        //System.out.println("KibsMngServiceImpl > processDeleteCharge");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2849,7 +2849,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteOnline(OnlineDTO onlineDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteOnline");
+        //System.out.println("KibsMngServiceImpl > processDeleteOnline");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2880,7 +2880,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteDisplay(DisplayDTO displayDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteDisplay");
+        //System.out.println("KibsMngServiceImpl > processDeleteDisplay");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2911,7 +2911,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteFile(FileDTO fileDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteFile");
+        //System.out.println("KibsMngServiceImpl > processDeleteFile");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2942,14 +2942,14 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<EdmHstDTO> processSelectEdmHstList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectEdmHstList");
+        //System.out.println("KibsMngServiceImpl > processSelectEdmHstList");
         return kibsMngMapper.selectEdmHstList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertEdmHst(EdmHstDTO edmHstDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertEdmHst");
+        //System.out.println("KibsMngServiceImpl > processInsertEdmHst");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -2977,7 +2977,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteEdmHst(EdmHstDTO edmHstDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteEdmHst");
+        //System.out.println("KibsMngServiceImpl > processDeleteEdmHst");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3002,21 +3002,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorDTO> processSelectListTransferCompany(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectListTransferCompany");
+        //System.out.println("KibsMngServiceImpl > processSelectListTransferCompany");
         return kibsMngMapper.selectListTransferCompany(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<VisitorDTO> processSelectListTransferVisitor(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectListTransferVisitor");
+        //System.out.println("KibsMngServiceImpl > processSelectListTransferVisitor");
         return kibsMngMapper.selectListTransferVisitor(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateTransferCompany(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateTransferCompany");
+        //System.out.println("KibsMngServiceImpl > processUpdateTransferCompany");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3232,7 +3232,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateTransferVisitor(VisitorDTO visitorDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateTransferVisitor");
+        //System.out.println("KibsMngServiceImpl > processUpdateTransferVisitor");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3285,105 +3285,105 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<AwardDTO> processSelectEventProductList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectEventProductList");
+        //System.out.println("KibsMngServiceImpl > processSelectEventProductList");
         return kibsMngMapper.selectEventProductList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<CompanyDTO> processSelectEventCompanyList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectEventCompanyList");
+        //System.out.println("KibsMngServiceImpl > processSelectEventCompanyList");
         return kibsMngMapper.selectEventCompanyList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public AwardDTO processSelectEventProductSingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectEventProductSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectEventProductSingle");
         return kibsMngMapper.selectEventProductSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public CompanyDTO processSelectEventCompanySingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectEventCompanySingle");
+        //System.out.println("KibsMngServiceImpl > processSelectEventCompanySingle");
         return kibsMngMapper.selectEventCompanySingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ChargePersonDTO> processSelectChargeList(ChargePersonDTO chargePersonDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectChargeList");
+        //System.out.println("KibsMngServiceImpl > processSelectChargeList");
         return kibsMngMapper.selectChargeList(chargePersonDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ChargeNewDTO> processSelectChargeNewList(ChargeNewDTO chargeNewDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectChargeNewList");
+        //System.out.println("KibsMngServiceImpl > processSelectChargeNewList");
         return kibsMngMapper.selectChargeNewList(chargeNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorDTO> processSelectBoothList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectBoothList");
+        //System.out.println("KibsMngServiceImpl > processSelectBoothList");
         return kibsMngMapper.selectBoothList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorNewDTO> processSelectExhibitorNewBoothList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBoothList");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBoothList");
         return kibsMngMapper.selectExhibitorNewBoothList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorDTO processSelectBoothSingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectBoothSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectBoothSingle");
         return kibsMngMapper.selectBoothSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorNewDTO processSelectExhibitorNewBoothSingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBoothSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBoothSingle");
         return kibsMngMapper.selectExhibitorNewBoothSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<InvoiceBoothDTO> processSelectInvoiceBoothExSeqList(InvoiceBoothDTO invoiceBoothDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectInvoiceBoothExSeqList");
+        //System.out.println("KibsMngServiceImpl > processSelectInvoiceBoothExSeqList");
         return kibsMngMapper.selectInvoiceBoothExSeqList(invoiceBoothDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public InvoiceBoothDTO processSelectInvoiceBoothSingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectInvoiceBoothSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectInvoiceBoothSingle");
         return kibsMngMapper.selectInvoiceBoothSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public InvoiceUtilityDTO processSelectInvoiceUtilitySingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectInvoiceUtilitySingle");
+        //System.out.println("KibsMngServiceImpl > processSelectInvoiceUtilitySingle");
         return kibsMngMapper.selectInvoiceUtilitySingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorNewDTO getExhibitorInfoForLogin(String exhibitorSeq) {
-        System.out.println("KibsMngServiceImpl > getExhibitorInfoForLogin");
+        //System.out.println("KibsMngServiceImpl > getExhibitorInfoForLogin");
         return kibsMngMapper.getExhibitorInfoForLogin(exhibitorSeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public int processUpdateExhibitorNewSpecialDiscount(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewSpecialDiscount");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewSpecialDiscount");
         // 1. 먼저 DB에서 현재 업체의 전체 정보를 조회합니다.
         ExhibitorNewDTO currentData = kibsMngMapper.selectExhibitorNewInvoiceDetail(exhibitorNewDTO.getSeq());
         if (currentData == null) {
@@ -3449,7 +3449,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<DepositHistoryDTO> selectDepositHistoryList(String exhibitorSeq) {
-        System.out.println("KibsMngServiceImpl > selectDepositHistoryList");
+        //System.out.println("KibsMngServiceImpl > selectDepositHistoryList");
         return kibsMngMapper.selectDepositHistoryList(exhibitorSeq);
     }
 
@@ -3494,7 +3494,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public Map<String, Object> updateDepositHistory(DepositHistoryDTO dto) {
-        System.out.println("KibsMngServiceImpl > updateDepositHistory");
+        //System.out.println("KibsMngServiceImpl > updateDepositHistory");
         Map<String, Object> resultMap = new HashMap<>();
 
         ExhibitorNewDTO exhibitorInfo = new ExhibitorNewDTO();
@@ -3546,7 +3546,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         // 삭제 전에 exhibitor_seq를 먼저 조회해야 합니다.
         String exhibitorSeq = kibsMngMapper.getExhibitorSeqByDepositSeq(depositSeq);
 
-        System.out.println("KibsMngServiceImpl > deleteDepositHistory");
+        //System.out.println("KibsMngServiceImpl > deleteDepositHistory");
         Map<String, Object> resultMap = new HashMap<>();
 
         // 1. Mapper를 호출하고, 반환된 int 값(영향받은 행의 수)을 받습니다.
@@ -3594,14 +3594,14 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorNewDTO getExhibitorNewInfo(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > getExhibitorNewInfo");
+        //System.out.println("KibsMngServiceImpl > getExhibitorNewInfo");
         return kibsMngMapper.getExhibitorNewInfo(exhibitorNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBooth(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateBooth");
+        //System.out.println("KibsMngServiceImpl > processUpdateBooth");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3631,7 +3631,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewBooth(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewBooth");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewBooth");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3849,7 +3849,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteExhibitorNewBoothInvoice(InvoiceBoothDTO invoiceBoothDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewBoothInvoice");
+        //System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewBoothInvoice");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3878,7 +3878,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteExhibitorNewUtilityInvoice(InvoiceUtilityDTO invoiceUtilityDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewUtilityInvoice");
+        //System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewUtilityInvoice");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3907,7 +3907,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewBoothInvoiceFilePath(InvoiceBoothDTO invoiceBoothDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewBoothInvoiceFilePath");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewBoothInvoiceFilePath");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3935,7 +3935,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewUtilityInvoiceFilePath(InvoiceUtilityDTO invoiceUtilityDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewUtilityInvoiceFilePath");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewUtilityInvoiceFilePath");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -3963,14 +3963,14 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorNewDTO processSelectExhibitorNewInvoiceDetail(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewInvoiceDetail");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewInvoiceDetail");
         return kibsMngMapper.selectExhibitorNewInvoiceDetail(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewBoothInvoiceSendResult(InvoiceBoothDTO invoiceBoothDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewBoothInvoiceSendResult");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewBoothInvoiceSendResult");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4007,7 +4007,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewUtilityInvoiceSendResult(InvoiceUtilityDTO invoiceUtilityDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewUtilityInvoiceSendResult");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewUtilityInvoiceSendResult");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4049,21 +4049,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorNewDTO> processSelectExhibitorNewMaritimeList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewMaritimeList");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewMaritimeList");
         return kibsMngMapper.selectExhibitorNewMaritimeList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorNewDTO processSelectExhibitorNewMaritimeSingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewMaritimeSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewMaritimeSingle");
         return kibsMngMapper.selectExhibitorNewMaritimeSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewMaritime");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewMaritime");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4093,35 +4093,35 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorDTO> processSelectSignList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectSignList");
+        //System.out.println("KibsMngServiceImpl > processSelectSignList");
         return kibsMngMapper.selectSignList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorNewDTO> processSelectExhibitorNewSignList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewSignList");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewSignList");
         return kibsMngMapper.selectExhibitorNewSignList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorDTO processSelectSignSingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectSignSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectSignSingle");
         return kibsMngMapper.selectSignSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorNewDTO processSelectExhibitorNewSignSingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewSignSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewSignSingle");
         return kibsMngMapper.selectExhibitorNewSignSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateSign(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateSign");
+        //System.out.println("KibsMngServiceImpl > processUpdateSign");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4151,7 +4151,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewSign(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewSign");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewSign");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4181,42 +4181,42 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorDTO> processSelectUtilityList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectUtilityList");
+        //System.out.println("KibsMngServiceImpl > processSelectUtilityList");
         return kibsMngMapper.selectUtilityList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorNewDTO> processSelectExhibitorNewUtilityList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewUtilityList");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewUtilityList");
         return kibsMngMapper.selectExhibitorNewUtilityList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorDTO processSelectUtilitySingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectUtilitySingle");
+        //System.out.println("KibsMngServiceImpl > processSelectUtilitySingle");
         return kibsMngMapper.selectUtilitySingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorNewDTO processSelectExhibitorNewUtilitySingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewUtilitySingle");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewUtilitySingle");
         return kibsMngMapper.selectExhibitorNewUtilitySingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<InvoiceUtilityDTO> processSelectInvoiceUtilityExSeqList(InvoiceUtilityDTO invoiceUtilityDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectInvoiceUtilityExSeqList");
+        //System.out.println("KibsMngServiceImpl > processSelectInvoiceUtilityExSeqList");
         return kibsMngMapper.selectInvoiceUtilityExSeqList(invoiceUtilityDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateUtility(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateUtility");
+        //System.out.println("KibsMngServiceImpl > processUpdateUtility");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4246,7 +4246,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewUtility(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewUtility");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewUtility");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4276,42 +4276,42 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public void updateInvoiceHistoryStatusToOpen(int historySeq) {
-        System.out.println("KibsMngServiceImpl > processUpdateInvoiceMailOpen");
+        //System.out.println("KibsMngServiceImpl > processUpdateInvoiceMailOpen");
         kibsMngMapper.updateInvoiceHistoryStatusToOpen(historySeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngPassDTO> processSelectPassList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectPassList");
+        //System.out.println("KibsMngServiceImpl > processSelectPassList");
         return kibsMngMapper.selectPassList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngPassDTO> processSelectExhibitorNewPassList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewPassList");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewPassList");
         return kibsMngMapper.selectExhibitorNewPassList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngPassDTO> processSelectPassDetailList(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectPassDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectPassDetailList");
         return kibsMngMapper.selectPassDetailList(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngPassDTO> processSelectExhibitorNewPassDetailList(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewPassDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewPassDetailList");
         return kibsMngMapper.selectExhibitorNewPassDetailList(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdatePass(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdatePass");
+        //System.out.println("KibsMngServiceImpl > processUpdatePass");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4351,7 +4351,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewPass(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewPass");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewPass");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4387,7 +4387,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeletePass(PassDTO passDTO) {
-        System.out.println("KibsMngServiceImpl > processDeletePass");
+        //System.out.println("KibsMngServiceImpl > processDeletePass");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4413,7 +4413,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteExhibitorNewPass(PassNewDTO passNewDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewPass");
+        //System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewPass");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4439,35 +4439,35 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngBuyerDTO> processSelectMngBuyerList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectMngBuyerList");
+        //System.out.println("KibsMngServiceImpl > processSelectMngBuyerList");
         return kibsMngMapper.selectMngBuyerList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngBuyerDTO> processSelectExhibitorNewBuyerList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBuyerList");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBuyerList");
         return kibsMngMapper.selectExhibitorNewBuyerList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngBuyerDTO> processSelectBuyerDetailList(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectBuyerDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectBuyerDetailList");
         return kibsMngMapper.selectBuyerDetailList(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngBuyerDTO> processSelectExhibitorNewBuyerDetailList(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBuyerDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBuyerDetailList");
         return kibsMngMapper.selectExhibitorNewBuyerDetailList(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateBuyer(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateBuyer");
+        //System.out.println("KibsMngServiceImpl > processUpdateBuyer");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4507,7 +4507,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewBuyer(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewBuyer");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewBuyer");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4543,7 +4543,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteExhibitorNewBuyer(BuyerNewDTO buyerNewDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewBuyer");
+        //System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewBuyer");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4574,35 +4574,35 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngGiftDTO> processSelectMngGiftList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectMngGiftList");
+        //System.out.println("KibsMngServiceImpl > processSelectMngGiftList");
         return kibsMngMapper.selectMngGiftList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngGiftDTO> processSelectExhibitorNewGiftList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewGiftList");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewGiftList");
         return kibsMngMapper.selectExhibitorNewGiftList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngGiftDTO> processSelectGiftDetailList(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectGiftDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectGiftDetailList");
         return kibsMngMapper.selectGiftDetailList(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngGiftDTO> processSelectExhibitorNewGiftDetailList(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewGiftDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewGiftDetailList");
         return kibsMngMapper.selectExhibitorNewGiftDetailList(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateGift(ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateGift");
+        //System.out.println("KibsMngServiceImpl > processUpdateGift");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4642,7 +4642,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewGift(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewGift");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewGift");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4678,7 +4678,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteGift(GiftDTO giftDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteGift");
+        //System.out.println("KibsMngServiceImpl > processDeleteGift");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4719,7 +4719,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteExhibitorNewGift(GiftNewDTO giftNewDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewGift");
+        //System.out.println("KibsMngServiceImpl > processDeleteExhibitorNewGift");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4760,21 +4760,21 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public  List<PopupDTO> processSelectPopupList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectPopupList");
+        //System.out.println("KibsMngServiceImpl > processSelectPopupList");
         return kibsMngMapper.selectPopupList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public PopupDTO processSelectPopupSingle(String seq) {
-        System.out.println("KibsMngServiceImpl > processSelectPopupSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectPopupSingle");
         return kibsMngMapper.selectPopupSingle(seq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdatePopup(PopupDTO popupDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdatePopup");
+        //System.out.println("KibsMngServiceImpl > processUpdatePopup");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4832,7 +4832,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertPopup(PopupDTO popupDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertPopup");
+        //System.out.println("KibsMngServiceImpl > processInsertPopup");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4889,7 +4889,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeletePopup(PopupDTO popupDTO) {
-        System.out.println("KibsMngServiceImpl > processDeletePopup");
+        //System.out.println("KibsMngServiceImpl > processDeletePopup");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4920,49 +4920,49 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<DirectoryDTO> processSelectDirectoryList(DirectoryDTO directoryDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectDirectoryList");
+        //System.out.println("KibsMngServiceImpl > processSelectDirectoryList");
         return kibsMngMapper.selectDirectoryList(directoryDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorDetailDTO> processSelectExhibitorDetailList(ExhibitorDetailDTO exhibitorDetailDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorDetailList");
         return kibsMngMapper.selectExhibitorDetailList(exhibitorDetailDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorNewDetailDTO> processSelectExhibitorNewDetailList(ExhibitorNewDetailDTO exhibitorNewDetailDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectExhibitorNewDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewDetailList");
         return kibsMngMapper.selectExhibitorNewDetailList(exhibitorNewDetailDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ExhibitorDetailDTO> processSelectTransferExhibitorDetailList(ExhibitorDetailDTO exhibitorDetailDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectTransferExhibitorDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectTransferExhibitorDetailList");
         return kibsMngMapper.selectTransferExhibitorDetailList(exhibitorDetailDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<VisitorDetailDTO> processSelectVisitorDetailList(VisitorDetailDTO visitorDetailDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectVisitorDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectVisitorDetailList");
         return kibsMngMapper.selectVisitorDetailList(visitorDetailDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<VisitorDetailDTO> processSelectTransferVisitorDetailList(VisitorDetailDTO visitorDetailDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectTransferVisitorDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectTransferVisitorDetailList");
         return kibsMngMapper.selectTransferVisitorDetailList(visitorDetailDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateApprovalStatus(List<ExhibitorDTO> exhibitorList) {
-        System.out.println("KibsMngServiceImpl > processUpdateApprovalStatus");
+        //System.out.println("KibsMngServiceImpl > processUpdateApprovalStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -4999,7 +4999,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewApprovalStatus(List<ExhibitorNewDTO> exhibitorList) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewApprovalStatus");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewApprovalStatus");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5036,7 +5036,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdatePrcYn(List<ExhibitorDTO> exhibitorList) {
-        System.out.println("KibsMngServiceImpl > processUpdatePrcYn");
+        //System.out.println("KibsMngServiceImpl > processUpdatePrcYn");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5073,7 +5073,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateExhibitorNewPrcYn(List<ExhibitorNewDTO> exhibitorList) {
-        System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewPrcYn");
+        //System.out.println("KibsMngServiceImpl > processUpdateExhibitorNewPrcYn");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5110,7 +5110,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateEventProduct(AwardDTO awardDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateEventProduct");
+        //System.out.println("KibsMngServiceImpl > processUpdateEventProduct");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5148,7 +5148,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteEventProduct(AwardDTO awardDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteEventProduct");
+        //System.out.println("KibsMngServiceImpl > processDeleteEventProduct");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5179,7 +5179,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateEventCompany(CompanyDTO companyDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateEventCompany");
+        //System.out.println("KibsMngServiceImpl > processUpdateEventCompany");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5217,7 +5217,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteEventCompany(CompanyDTO companyDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteEventCompany");
+        //System.out.println("KibsMngServiceImpl > processDeleteEventCompany");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5243,63 +5243,63 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<String> getExhibitorNewEmailList(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngServiceImpl > getExhibitorNewEmailList");
+        //System.out.println("KibsMngServiceImpl > getExhibitorNewEmailList");
         return kibsMngMapper.getExhibitorNewEmailList(exhibitorNewDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<BoothDetailDTO> processSelectExcelBoothDetailList(String transferYear) {
-        System.out.println("KibsMngServiceImpl > processSelectExcelBoothDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectExcelBoothDetailList");
         return kibsMngMapper.selectExcelBoothDetailList(transferYear);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<PassDetailDTO> processSelectExcelPassDetailList(String transferYear) {
-        System.out.println("KibsMngServiceImpl > processSelectExcelPassDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectExcelPassDetailList");
         return kibsMngMapper.selectExcelPassDetailList(transferYear);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<SignDetailDTO> processSelectExcelSignDetailList(String transferYear) {
-        System.out.println("KibsMngServiceImpl > processSelectExcelSignDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectExcelSignDetailList");
         return kibsMngMapper.selectExcelSignDetailList(transferYear);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<UtilityDetailDTO> processSelectExcelUtilityDetailList(String transferYear) {
-        System.out.println("KibsMngServiceImpl > processSelectExcelUtilityDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectExcelUtilityDetailList");
         return kibsMngMapper.selectExcelUtilityDetailList(transferYear);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ProductDetailDTO> processSelectExcelProductDetailList(String transferYear) {
-        System.out.println("KibsMngServiceImpl > processSelectExcelProductDetailList");
+        //System.out.println("KibsMngServiceImpl > processSelectExcelProductDetailList");
         return kibsMngMapper.selectExcelProductDetailList(transferYear);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<RequestDTO> processSelectRequestList(SearchDTO searchDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectRequestList");
+        //System.out.println("KibsMngServiceImpl > processSelectRequestList");
         return kibsMngMapper.selectRequestList(searchDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public RequestDTO processSelectRequestSingle(RequestDTO requestDTO) {
-        System.out.println("KibsMngServiceImpl > processSelectRequestSingle");
+        //System.out.println("KibsMngServiceImpl > processSelectRequestSingle");
         return kibsMngMapper.selectRequestSingle(requestDTO);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertRequest(RequestDTO requestDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertRequest");
+        //System.out.println("KibsMngServiceImpl > processInsertRequest");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5331,7 +5331,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateRequest(RequestDTO requestDTO) {
-        System.out.println("KibsMngServiceImpl > processUpdateRequest");
+        //System.out.println("KibsMngServiceImpl > processUpdateRequest");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5363,7 +5363,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteRequest(RequestDTO requestDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteRequest");
+        //System.out.println("KibsMngServiceImpl > processDeleteRequest");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5394,14 +5394,14 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<ReplyDTO> processSelectReplyList(String requestSeq) {
-        System.out.println("KibsMngServiceImpl > processSelectReplyList");
+        //System.out.println("KibsMngServiceImpl > processSelectReplyList");
         return kibsMngMapper.selectReplyList(requestSeq);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processInsertReply(ReplyDTO replyDTO) {
-        System.out.println("KibsMngServiceImpl > processInsertReply");
+        //System.out.println("KibsMngServiceImpl > processInsertReply");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5433,7 +5433,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteReply(ReplyDTO replyDTO) {
-        System.out.println("KibsMngServiceImpl > processDeleteReply");
+        //System.out.println("KibsMngServiceImpl > processDeleteReply");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5464,7 +5464,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateRequestProgressStep(List<RequestDTO> requestList) {
-        System.out.println("KibsMngServiceImpl > processUpdateRequestProgressStep");
+        //System.out.println("KibsMngServiceImpl > processUpdateRequestProgressStep");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5501,7 +5501,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateRequestCompleteExpect(List<RequestDTO> requestList) {
-        System.out.println("KibsMngServiceImpl > processUpdateRequestCompleteExpect");
+        //System.out.println("KibsMngServiceImpl > processUpdateRequestCompleteExpect");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -5771,7 +5771,7 @@ public class KibsMngServiceImpl implements KibsMngService {
      * *****************************************/
 
     public ResponseDTO processMailSend(MailRequestDTO mailRequestDTO) {
-        System.out.println("KibsMngServiceImpl > processMailSend");
+        //System.out.println("KibsMngServiceImpl > processMailSend");
         ResponseDTO responseDto = new ResponseDTO();
         // URL
         String url = "https://directsend.co.kr/index.php/api_v2/mail_change_word";

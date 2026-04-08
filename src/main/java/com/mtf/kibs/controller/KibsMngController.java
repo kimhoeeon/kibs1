@@ -79,7 +79,7 @@ public class KibsMngController {
      */
     @RequestMapping(value = "/mng/index.do")
     public ModelAndView mng_index() {
-        System.out.println("KibsMngController > mng_index");
+        //System.out.println("KibsMngController > mng_index");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/index");
         return mv;
@@ -87,7 +87,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/main.do")
     public ModelAndView mng_main() {
-        System.out.println("KibsMngController > mng_main");
+        //System.out.println("KibsMngController > mng_main");
         ModelAndView mv = new ModelAndView();
 
         // 현재 날짜 구하기 (시스템 시계, 시스템 타임존)
@@ -127,7 +127,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/main/statistics/accessor/day.do", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<StatisticsDTO>> mng_main_statistics_accessor_day() {
-        System.out.println("KibsMngController > mng_main_statistics_accessor_day");
+        //System.out.println("KibsMngController > mng_main_statistics_accessor_day");
         //System.out.println(searchDTO.toString());
 
         String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
@@ -142,7 +142,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/main/statistics/accessor/month.do", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<StatisticsDTO>> mng_main_statistics_accessor_month() {
-        System.out.println("KibsMngController > mng_main_statistics_accessor_month");
+        //System.out.println("KibsMngController > mng_main_statistics_accessor_month");
         //System.out.println(searchDTO.toString());
 
         String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
@@ -156,7 +156,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/main/statistics/accessor/week.do", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<StatisticsDTO>> mng_main_statistics_accessor_week() {
-        System.out.println("KibsMngController > mng_main_statistics_accessor_week");
+        //System.out.println("KibsMngController > mng_main_statistics_accessor_week");
         //System.out.println(searchDTO.toString());
 
         String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
@@ -170,7 +170,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/main/statistics/participant/day.do", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<SplineStatisticsDTO>> mng_main_statistics_participant_day() {
-        System.out.println("KibsMngController > mng_main_statistics_participant_day");
+        //System.out.println("KibsMngController > mng_main_statistics_participant_day");
         //System.out.println(searchDTO.toString());
 
         String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
@@ -231,7 +231,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/main/statistics/participant/month.do", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<SplineStatisticsDTO>> mng_main_statistics_participant_month() {
-        System.out.println("KibsMngController > mng_main_statistics_participant_month");
+        //System.out.println("KibsMngController > mng_main_statistics_participant_month");
         //System.out.println(searchDTO.toString());
 
         String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
@@ -292,7 +292,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/main/statistics/participant/week.do", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<SplineStatisticsDTO>> mng_main_statistics_participant_week() {
-        System.out.println("KibsMngController > mng_main_statistics_participant_week");
+        //System.out.println("KibsMngController > mng_main_statistics_participant_week");
         //System.out.println(searchDTO.toString());
 
         String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
@@ -353,7 +353,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/main/statistics/company/booth.do", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<SplineStatisticsDTO> mng_main_statistics_company_booth() {
-        System.out.println("KibsMngController > mng_main_statistics_company_booth");
+        //System.out.println("KibsMngController > mng_main_statistics_company_booth");
         //System.out.println(searchDTO.toString());
 
         String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
@@ -381,7 +381,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/main/statistics/company/fieldPart.do", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<Integer>> mng_main_statistics_company_fieldPart() {
-        System.out.println("KibsMngController > mng_main_statistics_company_fieldPart");
+        //System.out.println("KibsMngController > mng_main_statistics_company_fieldPart");
         //System.out.println(searchDTO.toString());
 
         String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
@@ -406,14 +406,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/login.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<AdminDTO> login(@RequestBody AdminDTO adminDTO, HttpSession session) {
-        System.out.println("KibsMngController > login");
+        //System.out.println("KibsMngController > login");
         AdminDTO result = kibsMngService.login(adminDTO, session);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping("/mng/logoutCheck.do")
     public ModelAndView logoutCheck(HttpSession session, ModelAndView mv) {
-        System.out.println("KibsMngController > logoutCheck");
+        //System.out.println("KibsMngController > logoutCheck");
         kibsMngService.logoutCheck(session);
         mv.setViewName("/mng/index");
         return mv;
@@ -421,7 +421,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/admin/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_admin_detail() {
-        System.out.println("KibsMngController > mng_admin_detail");
+        //System.out.println("KibsMngController > mng_admin_detail");
         ModelAndView mv = new ModelAndView();
         String ipList = kibsMngService.processSelectAccessIpList();
         mv.addObject("ipList", ipList);
@@ -432,7 +432,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/admin/access/save.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_admin_access_save(@RequestBody List<AccessDTO> accessDTOList) {
-        System.out.println("KibsMngController > mng_admin_access_save");
+        //System.out.println("KibsMngController > mng_admin_access_save");
         //System.out.println(searchDTO.toString());
 
         ResponseDTO response = kibsMngService.processSaveAccessIp(accessDTOList);
@@ -443,7 +443,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/admin/access/selectIp.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_admin_access_selectIp(@RequestBody AccessDTO accessDTO) {
-        System.out.println("KibsMngController > mng_admin_access_selectIp");
+        //System.out.println("KibsMngController > mng_admin_access_selectIp");
         //System.out.println(searchDTO.toString());
 
         ResponseDTO response = kibsMngService.processSelectAccessIp(accessDTO);
@@ -457,7 +457,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/participant/company.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_participant_company(String nameKo) {
-        System.out.println("KibsMngController > mng_exhibitor_company");
+        //System.out.println("KibsMngController > mng_exhibitor_company");
         ModelAndView mv = new ModelAndView();
         if(nameKo != null){
             mv.addObject("nameKo", nameKo);
@@ -469,7 +469,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/company/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorDTO>> mng_exhibitor_participant_company_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_participant_company_selectList");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_company_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorDTO> responseList = kibsMngService.processSelectListExhibitor(searchDTO);
@@ -480,7 +480,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/participant/company/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_participant_company_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_participant_company_selectList");
+        //System.out.println("KibsMngController > mng_exhibitorNew_participant_company_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorNewDTO> responseList = kibsMngService.processSelectListExhibitorNew(searchDTO);
@@ -560,7 +560,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/participant/company/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_company_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_company_detail");
+        //System.out.println("KibsMngController > mng_exhibitorNew_company_detail");
         //System.out.println(seq);
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
@@ -668,7 +668,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/company/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ExhibitorDTO> mng_exhibitor_participant_company_selectSingle(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_participant_company_selectSingle");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_company_selectSingle");
         //System.out.println(searchDTO.toString());
 
         ExhibitorDTO response = kibsMngService.processSelectExhibitorSingle(exhibitorDTO);
@@ -679,7 +679,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/company/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_participant_company_insert(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_participant_company_insert");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_company_insert");
         //System.out.println(exhibitorDTO.toString());
         
         ResponseDTO responseDTO = kibsMngService.processInsertParticipantCompany(exhibitorDTO);
@@ -690,7 +690,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/company/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_participant_company_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_participant_company_update");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_company_update");
         //System.out.println(exhibitorDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateParticipantCompany(exhibitorDTO);
@@ -701,7 +701,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/participant/company/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_participant_company_delete(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_participant_company_delete");
+        //System.out.println("KibsMngController > mng_exhibitorNew_participant_company_delete");
         //System.out.println(exhibitorDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processDeleteExhibitorNew(exhibitorNewDTO);
@@ -712,7 +712,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/company/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_participant_company_delete(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_participant_company_delete");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_company_delete");
         //System.out.println(exhibitorDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processDeleteParticipantCompany(exhibitorDTO);
@@ -723,7 +723,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/company/deleteCharge.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_participant_company_deleteCharge(@RequestBody ChargePersonDTO chargePersonDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_participant_company_deleteCharge");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_company_deleteCharge");
         //System.out.println(onlineDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processDeleteCharge(chargePersonDTO);
@@ -734,7 +734,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/company/deleteOnline.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_participant_company_deleteOnline(@RequestBody OnlineDTO onlineDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_participant_company_deleteOnline");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_company_deleteOnline");
         //System.out.println(onlineDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processDeleteOnline(onlineDTO);
@@ -745,7 +745,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/company/deleteDisplay.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_participant_company_deleteDisplay(@RequestBody DisplayDTO displayDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_participant_company_deleteDisplay");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_company_deleteDisplay");
         //System.out.println(displayDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processDeleteDisplay(displayDTO);
@@ -756,7 +756,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/company/deleteFile.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_participant_company_deleteFile(@RequestBody FileDTO fileDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_participant_company_deleteFile");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_company_deleteFile");
         //System.out.println(fileDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processDeleteFile(fileDTO);
@@ -766,7 +766,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/participant/visitor.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_visitor(String nameKo) {
-        System.out.println("KibsMngController > mng_exhibitor_visitor");
+        //System.out.println("KibsMngController > mng_exhibitor_visitor");
         ModelAndView mv = new ModelAndView();
         if(nameKo != null){
             mv.addObject("nameKo", nameKo);
@@ -778,7 +778,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/visitor/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<VisitorDTO>> mng_exhibitor_visitor_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_visitor_selectList");
+        //System.out.println("KibsMngController > mng_exhibitor_visitor_selectList");
         //System.out.println(searchDTO.toString());
 
         List<VisitorDTO> responseList = kibsMngService.processSelectVisitorList(searchDTO);
@@ -788,7 +788,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/participant/visitor/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_visitor_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitor_visitor_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_visitor_detail");
         ModelAndView mv = new ModelAndView();
 
         if(seq != null && !"".equals(seq)){
@@ -806,7 +806,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/visitor/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_visitor_update(@RequestBody VisitorDTO visitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_visitor_update");
+        //System.out.println("KibsMngController > mng_exhibitor_visitor_update");
         ResponseDTO response = kibsMngService.processUpdateVisitor(visitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -814,7 +814,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/visitor/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_visitor_delete(@RequestBody VisitorDTO visitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_visitor_delete");
+        //System.out.println("KibsMngController > mng_exhibitor_visitor_delete");
         ResponseDTO response = kibsMngService.processDeleteVisitor(visitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -822,14 +822,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/visitor/deletePartner.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_visitor_deletePartner(@RequestBody PartnerDTO partnerDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_visitor_deletePartner");
+        //System.out.println("KibsMngController > mng_exhibitor_visitor_deletePartner");
         ResponseDTO response = kibsMngService.processDeletePartner(partnerDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitor/participant/member.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_participant_member() {
-        System.out.println("KibsMngController > mng_exhibitor_participant_member");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_member");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/participant/member");
         return mv;
@@ -838,7 +838,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/member/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MemberDTO>> mng_exhibitor_participant_member_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_participant_member_selectList");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_member_selectList");
         //System.out.println(searchDTO.toString());
 
         List<MemberDTO> responseList = kibsMngService.processSelectMemberList(searchDTO);
@@ -848,7 +848,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/participant/member/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_member_detail() {
-        System.out.println("KibsMngController > mng_exhibitor_member_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_member_detail");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/participant/member/detail");
         return mv;
@@ -920,7 +920,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/transfer/company.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_transfer_company() {
-        System.out.println("KibsMngController > mng_exhibitor_transfer_company");
+        //System.out.println("KibsMngController > mng_exhibitor_transfer_company");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/transfer/company");
         return mv;
@@ -928,7 +928,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/transfer/company/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_transfer_company_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitor_transfer_company_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_transfer_company_detail");
         //System.out.println(seq);
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
@@ -999,7 +999,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/transfer/company/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorDTO>> mng_exhibitor_transfer_company_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_transfer_company_selectList");
+        //System.out.println("KibsMngController > mng_exhibitor_transfer_company_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorDTO> responseList = kibsMngService.processSelectListTransferCompany(searchDTO);
@@ -1010,7 +1010,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/transfer/company/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ExhibitorDTO> mng_exhibitor_transfer_company_selectSingle(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_transfer_company_selectSingle");
+        //System.out.println("KibsMngController > mng_exhibitor_transfer_company_selectSingle");
         //System.out.println(searchDTO.toString());
 
         ExhibitorDTO response = kibsMngService.processSelectExhibitorSingle(exhibitorDTO);
@@ -1021,7 +1021,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/transfer/company/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_transfer_company_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_transfer_company_update");
+        //System.out.println("KibsMngController > mng_exhibitor_transfer_company_update");
         //System.out.println(exhibitorDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateTransferCompany(exhibitorDTO);
@@ -1031,7 +1031,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/transfer/visitor.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_transfer_visitor() {
-        System.out.println("KibsMngController > mng_exhibitor_transfer_visitor");
+        //System.out.println("KibsMngController > mng_exhibitor_transfer_visitor");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/transfer/visitor");
         return mv;
@@ -1040,7 +1040,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/transfer/visitor/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<VisitorDTO>> mng_exhibitor_transfer_visitor_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_transfer_visitor_selectList");
+        //System.out.println("KibsMngController > mng_exhibitor_transfer_visitor_selectList");
         //System.out.println(searchDTO.toString());
 
         List<VisitorDTO> responseList = kibsMngService.processSelectListTransferVisitor(searchDTO);
@@ -1050,7 +1050,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/transfer/visitor/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_transfer_visitor_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitor_transfer_visitor_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_transfer_visitor_detail");
         ModelAndView mv = new ModelAndView();
 
         if(seq != null && !seq.isEmpty()){
@@ -1068,7 +1068,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/transfer/visitor/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_transfer_visitor_update(@RequestBody VisitorDTO visitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_transfer_visitor_update");
+        //System.out.println("KibsMngController > mng_exhibitor_transfer_visitor_update");
         ResponseDTO response = kibsMngService.processUpdateTransferVisitor(visitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1079,7 +1079,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/booth.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_booth() {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_booth");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNew/application/booth");
         return mv;
@@ -1088,7 +1088,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/booth/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_booth_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_selectList");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorNewDTO> responseList = kibsMngService.processSelectExhibitorNewBoothList(searchDTO);
@@ -1098,7 +1098,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/booth/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_booth_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_detail");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewInvoiceDetail(seq);
@@ -1118,7 +1118,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/utility/invoice/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_utility_invoice_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_detail");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             InvoiceUtilityDTO invoiceInfo = kibsMngService.processSelectInvoiceUtilitySingle(seq);
@@ -1136,14 +1136,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/booth/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_update");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewBooth(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/booth/invoice/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_booth_invoice_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_detail");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             InvoiceBoothDTO invoiceInfo = kibsMngService.processSelectInvoiceBoothSingle(seq);
@@ -1161,7 +1161,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/booth/invoice/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_invoice_delete(@RequestBody InvoiceBoothDTO invoiceBoothDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_delete");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewBoothInvoice(invoiceBoothDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1169,7 +1169,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/utility/invoice/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_invoice_delete(@RequestBody InvoiceUtilityDTO invoiceUtilityDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_delete");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewUtilityInvoice(invoiceUtilityDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1177,7 +1177,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/booth/invoice/filePath/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_invoice_filePath_update(@RequestBody InvoiceBoothDTO invoiceBoothDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_filePath_update");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_filePath_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewBoothInvoiceFilePath(invoiceBoothDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1185,7 +1185,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/utility/invoice/filePath/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_invoice_filePath_update(@RequestBody InvoiceUtilityDTO invoiceUtilityDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_filePath_update");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_filePath_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewUtilityInvoiceFilePath(invoiceUtilityDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1193,7 +1193,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/booth/invoice/mail/result/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_invoice_mail_result_update(@RequestBody InvoiceBoothDTO invoiceBoothDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_mail_result_update");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_mail_result_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewBoothInvoiceSendResult(invoiceBoothDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1207,7 +1207,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/utility/invoice/mail/result/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_invoice_mail_result_update(@RequestBody InvoiceUtilityDTO invoiceUtilityDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_mail_result_update");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_mail_result_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewUtilityInvoiceSendResult(invoiceUtilityDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1215,14 +1215,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/getExhibitorNewInfo.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ExhibitorNewDTO> mng_getExhibitorNewInfo(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngController > mng_getExhibitorNewInfo");
+        //System.out.println("KibsMngController > mng_getExhibitorNewInfo");
         ExhibitorNewDTO result = kibsMngService.getExhibitorNewInfo(exhibitorNewDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/maritime.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_maritime() {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_maritime");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_maritime");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNew/application/maritime");
         return mv;
@@ -1231,7 +1231,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/maritime/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_maritime_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_maritime_selectList");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_maritime_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorNewDTO> responseList = kibsMngService.processSelectExhibitorNewMaritimeList(searchDTO);
@@ -1241,7 +1241,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/maritime/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_maritime_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_maritime_detail");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_maritime_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             ExhibitorNewDTO exhibitorInfo = kibsMngService.processSelectExhibitorNewMaritimeSingle(seq);
@@ -1254,14 +1254,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/maritime/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_maritime_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_maritime_update");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_maritime_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewMaritime(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/sign.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_sign() {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_sign");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_sign");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNew/application/sign");
         return mv;
@@ -1270,7 +1270,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/sign/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_sign_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_sign_selectList");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_sign_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorNewDTO> responseList = kibsMngService.processSelectExhibitorNewSignList(searchDTO);
@@ -1280,7 +1280,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/sign/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_sign_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_sign_detail");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_sign_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             ExhibitorNewDTO exhibitorInfo = kibsMngService.processSelectExhibitorNewSignSingle(seq);
@@ -1293,14 +1293,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/sign/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_sign_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_sign_update");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_sign_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewSign(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/utility.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_utility() {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_utility");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNew/application/utility");
         return mv;
@@ -1309,7 +1309,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/utility/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_utility_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_selectList");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorNewDTO> responseList = kibsMngService.processSelectExhibitorNewUtilityList(searchDTO);
@@ -1319,7 +1319,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/utility/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_utility_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_detail");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewInvoiceDetail(seq);
@@ -1340,7 +1340,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/utility/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_utility_update");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewUtility(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1348,7 +1348,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/invoice/mail/open/update.do", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public void mng_exhibitorNew_application_invoice_mail_open_update(@RequestParam("hseq") int historySeq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_invoice_mail_open_update");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_invoice_mail_open_update");
         kibsMngService.updateInvoiceHistoryStatusToOpen(historySeq);
     }
 
@@ -1360,7 +1360,7 @@ public class KibsMngController {
             @RequestParam("email") String email,
             @RequestParam(value = "mail_reserve_id", required = false) String reserveId
     ) {
-        System.out.println("DirectSend Webhook(OPEN) 수신: type=" + type + ", mail_id=" + mailId);
+        //System.out.println("DirectSend Webhook(OPEN) 수신: type=" + type + ", mail_id=" + mailId);
 
         try {
             // 1. "open" 타입이고, mail_id가 있는지 확인
@@ -1384,7 +1384,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/pass.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_pass() {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_pass");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_pass");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNew/application/pass");
         return mv;
@@ -1393,7 +1393,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/pass/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MngPassDTO>> mng_exhibitorNew_application_pass_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_pass_selectList");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_pass_selectList");
         //System.out.println(searchDTO.toString());
 
         List<MngPassDTO> responseList = kibsMngService.processSelectExhibitorNewPassList(searchDTO);
@@ -1403,7 +1403,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/pass/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_pass_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_pass_detail");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_pass_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             List<MngPassDTO> passList = kibsMngService.processSelectExhibitorNewPassDetailList(seq);
@@ -1417,7 +1417,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/pass/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_pass_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_pass_update");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_pass_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewPass(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1425,14 +1425,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/pass/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_pass_delete(@RequestBody PassNewDTO passNewDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_pass_delete");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_pass_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewPass(passNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/buyer.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_buyer() {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_buyer");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_buyer");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNew/application/buyer");
         return mv;
@@ -1441,7 +1441,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/buyer/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MngBuyerDTO>> mng_exhibitorNew_application_buyer_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_selectList");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_selectList");
         //System.out.println(searchDTO.toString());
 
         List<MngBuyerDTO> responseList = kibsMngService.processSelectExhibitorNewBuyerList(searchDTO);
@@ -1451,7 +1451,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/buyer/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_buyer_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_detail");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             List<MngBuyerDTO> buyerList = kibsMngService.processSelectExhibitorNewBuyerDetailList(seq);
@@ -1465,7 +1465,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/buyer/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_buyer_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_update");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewBuyer(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1473,14 +1473,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/buyer/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_buyer_delete(@RequestBody BuyerNewDTO buyerNewDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_delete");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewBuyer(buyerNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/gift.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_gift() {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_gift");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_gift");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNew/application/gift");
         return mv;
@@ -1489,7 +1489,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/gift/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MngGiftDTO>> mng_exhibitorNew_application_gift_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_gift_selectList");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_gift_selectList");
         //System.out.println(searchDTO.toString());
 
         List<MngGiftDTO> responseList = kibsMngService.processSelectExhibitorNewGiftList(searchDTO);
@@ -1499,7 +1499,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/gift/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_gift_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_gift_detail");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_gift_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             List<MngGiftDTO> giftList = kibsMngService.processSelectExhibitorNewGiftDetailList(seq);
@@ -1535,7 +1535,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/gift/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_gift_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_gift_update");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_gift_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewGift(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1543,14 +1543,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/gift/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_gift_delete(@RequestBody GiftNewDTO giftNewDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_gift_delete");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_gift_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewGift(giftNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNew/application/online.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_online() {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_online");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_online");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNew/application/online");
         return mv;
@@ -1559,7 +1559,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/online/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_online_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_online_selectList");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_online_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorNewDTO> responseList = kibsMngService.processSelectMngOnlineNewList(searchDTO);
@@ -1569,7 +1569,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/online/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_online_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitor_application_online_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_application_online_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             /* 전시업체정보 */
@@ -1609,7 +1609,7 @@ public class KibsMngController {
     @PostMapping("/mng/exhibitorNew/updateCompanyBadge.do")
     @ResponseBody
     public ResponseDTO updateCompanyBadge(@RequestBody Map<String, String> payload) {
-        System.out.println("KibsMngController > updateCompanyBadge");
+        //System.out.println("KibsMngController > updateCompanyBadge");
         ResponseDTO res = new ResponseDTO();
         try {
             String seq = payload.get("seq");
@@ -1638,7 +1638,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/online/updateViewYn.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_online_updateViewYn(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_online_updateViewYn");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_online_updateViewYn");
         //System.out.println(exhibitorNewDTO.getSeq());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateExhibitorNewOnlineViewYn(exhibitorNewDTO);
@@ -1648,7 +1648,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/product.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_product() {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_product");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_product");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNew/application/product");
         return mv;
@@ -1657,7 +1657,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/application/product/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MngProductDTO>> mng_exhibitorNew_application_product_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_product_selectList");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_product_selectList");
         //System.out.println(searchDTO.toString());
 
         List<MngProductDTO> responseList = kibsMngService.processSelectMngProductNewList(searchDTO);
@@ -1667,7 +1667,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/application/product/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_product_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_application_product_detail");
+        //System.out.println("KibsMngController > mng_exhibitorNew_application_product_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             /* 전시업체정보 */
@@ -1693,7 +1693,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/application/booth.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_booth() {
-        System.out.println("KibsMngController > mng_exhibitor_application_booth");
+        //System.out.println("KibsMngController > mng_exhibitor_application_booth");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/application/booth");
         return mv;
@@ -1702,7 +1702,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/booth/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorDTO>> mng_exhibitor_application_booth_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_booth_selectList");
+        //System.out.println("KibsMngController > mng_exhibitor_application_booth_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorDTO> responseList = kibsMngService.processSelectBoothList(searchDTO);
@@ -1712,7 +1712,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/application/booth/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_booth_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitor_application_booth_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_application_booth_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             ExhibitorDTO exhibitorInfo = kibsMngService.processSelectBoothSingle(seq);
@@ -1725,14 +1725,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/booth/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_booth_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_booth_update");
+        //System.out.println("KibsMngController > mng_exhibitor_application_booth_update");
         ResponseDTO response = kibsMngService.processUpdateBooth(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitor/application/sign.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_sign() {
-        System.out.println("KibsMngController > mng_exhibitor_application_sign");
+        //System.out.println("KibsMngController > mng_exhibitor_application_sign");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/application/sign");
         return mv;
@@ -1741,7 +1741,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/sign/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorDTO>> mng_exhibitor_application_sign_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_sign_selectList");
+        //System.out.println("KibsMngController > mng_exhibitor_application_sign_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorDTO> responseList = kibsMngService.processSelectSignList(searchDTO);
@@ -1751,7 +1751,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/application/sign/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_sign_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitor_application_sign_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_application_sign_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             ExhibitorDTO exhibitorInfo = kibsMngService.processSelectSignSingle(seq);
@@ -1764,14 +1764,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/sign/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_sign_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_sign_update");
+        //System.out.println("KibsMngController > mng_exhibitor_application_sign_update");
         ResponseDTO response = kibsMngService.processUpdateSign(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitor/application/utility.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_utility() {
-        System.out.println("KibsMngController > mng_exhibitor_application_utility");
+        //System.out.println("KibsMngController > mng_exhibitor_application_utility");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/application/utility");
         return mv;
@@ -1780,7 +1780,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/utility/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorDTO>> mng_exhibitor_application_utility_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_utility_selectList");
+        //System.out.println("KibsMngController > mng_exhibitor_application_utility_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorDTO> responseList = kibsMngService.processSelectUtilityList(searchDTO);
@@ -1790,7 +1790,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/application/utility/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_utility_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitor_application_utility_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_application_utility_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             ExhibitorDTO exhibitorInfo = kibsMngService.processSelectUtilitySingle(seq);
@@ -1803,14 +1803,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/utility/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_utility_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_utility_update");
+        //System.out.println("KibsMngController > mng_exhibitor_application_utility_update");
         ResponseDTO response = kibsMngService.processUpdateUtility(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitor/application/pass.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_pass() {
-        System.out.println("KibsMngController > mng_exhibitor_application_pass");
+        //System.out.println("KibsMngController > mng_exhibitor_application_pass");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/application/pass");
         return mv;
@@ -1819,7 +1819,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/pass/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MngPassDTO>> mng_exhibitor_application_pass_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_pass_selectList");
+        //System.out.println("KibsMngController > mng_exhibitor_application_pass_selectList");
         //System.out.println(searchDTO.toString());
 
         List<MngPassDTO> responseList = kibsMngService.processSelectPassList(searchDTO);
@@ -1829,7 +1829,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/application/pass/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_pass_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitor_application_pass_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_application_pass_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             List<MngPassDTO> passList = kibsMngService.processSelectPassDetailList(seq);
@@ -1843,7 +1843,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/pass/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_pass_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_pass_update");
+        //System.out.println("KibsMngController > mng_exhibitor_application_pass_update");
         ResponseDTO response = kibsMngService.processUpdatePass(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1851,14 +1851,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/pass/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_pass_delete(@RequestBody PassDTO passDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_pass_delete");
+        //System.out.println("KibsMngController > mng_exhibitor_application_pass_delete");
         ResponseDTO response = kibsMngService.processDeletePass(passDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitor/application/buyer.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_buyer() {
-        System.out.println("KibsMngController > mng_exhibitor_application_buyer");
+        //System.out.println("KibsMngController > mng_exhibitor_application_buyer");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/application/buyer");
         return mv;
@@ -1867,7 +1867,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/buyer/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MngBuyerDTO>> mng_exhibitor_application_buyer_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_buyer_selectList");
+        //System.out.println("KibsMngController > mng_exhibitor_application_buyer_selectList");
         //System.out.println(searchDTO.toString());
 
         List<MngBuyerDTO> responseList = kibsMngService.processSelectMngBuyerList(searchDTO);
@@ -1877,7 +1877,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/application/buyer/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_buyer_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitor_application_buyer_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_application_buyer_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             List<MngBuyerDTO> buyerList = kibsMngService.processSelectBuyerDetailList(seq);
@@ -1891,7 +1891,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/buyer/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_buyer_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_buyer_update");
+        //System.out.println("KibsMngController > mng_exhibitor_application_buyer_update");
         ResponseDTO response = kibsMngService.processUpdateBuyer(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1899,14 +1899,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/buyer/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_buyer_delete(@RequestBody BuyerDTO buyerDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_buyer_delete");
+        //System.out.println("KibsMngController > mng_exhibitor_application_buyer_delete");
         ResponseDTO response = kibsMngService.processDeleteBuyer(buyerDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitor/application/gift.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_gift() {
-        System.out.println("KibsMngController > mng_exhibitor_application_gift");
+        //System.out.println("KibsMngController > mng_exhibitor_application_gift");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/application/gift");
         return mv;
@@ -1915,7 +1915,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/gift/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MngGiftDTO>> mng_exhibitor_application_gift_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_gift_selectList");
+        //System.out.println("KibsMngController > mng_exhibitor_application_gift_selectList");
         //System.out.println(searchDTO.toString());
 
         List<MngGiftDTO> responseList = kibsMngService.processSelectMngGiftList(searchDTO);
@@ -1925,7 +1925,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/application/gift/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_gift_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitor_application_gift_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_application_gift_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             List<MngGiftDTO> giftList = kibsMngService.processSelectGiftDetailList(seq);
@@ -1962,7 +1962,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/gift/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_gift_update(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_gift_update");
+        //System.out.println("KibsMngController > mng_exhibitor_application_gift_update");
         ResponseDTO response = kibsMngService.processUpdateGift(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -1970,14 +1970,14 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/gift/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_gift_delete(@RequestBody GiftDTO giftDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_gift_delete");
+        //System.out.println("KibsMngController > mng_exhibitor_application_gift_delete");
         ResponseDTO response = kibsMngService.processDeleteGift(giftDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitor/application/banner.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_banner() {
-        System.out.println("KibsMngController > mng_exhibitor_application_banner");
+        //System.out.println("KibsMngController > mng_exhibitor_application_banner");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/application/banner");
         return mv;
@@ -1985,7 +1985,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/application/banner/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_banner_detail() {
-        System.out.println("KibsMngController > mng_exhibitor_application_banner_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_application_banner_detail");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/application/banner/detail");
         return mv;
@@ -1993,7 +1993,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/application/online.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_online() {
-        System.out.println("KibsMngController > mng_exhibitor_application_online");
+        //System.out.println("KibsMngController > mng_exhibitor_application_online");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitor/application/online");
         return mv;
@@ -2002,7 +2002,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/online/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorDTO>> mng_exhibitor_application_online_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_online_selectList");
+        //System.out.println("KibsMngController > mng_exhibitor_application_online_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ExhibitorDTO> responseList = kibsMngService.processSelectMngOnlineList(searchDTO);
@@ -2012,7 +2012,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/application/online/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_application_online_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitor_application_online_detail");
+        //System.out.println("KibsMngController > mng_exhibitor_application_online_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             /* 전시업체정보 */
@@ -2048,8 +2048,8 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/application/online/updateViewYn.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_application_online_updateViewYn(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsMngController > mng_exhibitor_application_online_updateViewYn");
-        System.out.println(exhibitorDTO.getSeq());
+        //System.out.println("KibsMngController > mng_exhibitor_application_online_updateViewYn");
+        //System.out.println(exhibitorDTO.getSeq());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateViewYn(exhibitorDTO);
 
@@ -2059,7 +2059,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/company/updateApprovalStatus.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_participant_company_updateApprovalStatus(@RequestBody List<ExhibitorDTO> exhibitorList) {
-        System.out.println("KibsMngController > mng_exhibitor_participant_company_updateApprovalStatus");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_company_updateApprovalStatus");
 
         ResponseDTO responseDTO = kibsMngService.processUpdateApprovalStatus(exhibitorList);
 
@@ -2069,7 +2069,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/participant/company/updateExhibitorNewApprovalStatus.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_participant_company_updateExhibitorNewApprovalStatus(@RequestBody List<ExhibitorNewDTO> exhibitorList) {
-        System.out.println("KibsMngController > mng_exhibitorNew_participant_company_updateExhibitorNewApprovalStatus");
+        //System.out.println("KibsMngController > mng_exhibitorNew_participant_company_updateExhibitorNewApprovalStatus");
 
         ResponseDTO responseDTO = kibsMngService.processUpdateExhibitorNewApprovalStatus(exhibitorList);
 
@@ -2079,7 +2079,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitor/participant/company/updatePrcYn.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitor_participant_company_updatePrcYn(@RequestBody List<ExhibitorDTO> exhibitorList) {
-        System.out.println("KibsMngController > mng_exhibitor_participant_company_updatePrcYn");
+        //System.out.println("KibsMngController > mng_exhibitor_participant_company_updatePrcYn");
 
         ResponseDTO responseDTO = kibsMngService.processUpdatePrcYn(exhibitorList);
 
@@ -2089,7 +2089,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/participant/company/updateExhibitorNewPrcYn.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_participant_company_updateExhibitorNewPrcYn(@RequestBody List<ExhibitorNewDTO> exhibitorList) {
-        System.out.println("KibsMngController > mng_exhibitorNew_participant_company_updateExhibitorNewPrcYn");
+        //System.out.println("KibsMngController > mng_exhibitorNew_participant_company_updateExhibitorNewPrcYn");
 
         ResponseDTO responseDTO = kibsMngService.processUpdateExhibitorNewPrcYn(exhibitorList);
 
@@ -2099,7 +2099,7 @@ public class KibsMngController {
     @RequestMapping(value = "/getExhibitorNewEmailList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<String>> getExhibitorNewEmailList(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsMngController > getExhibitorNewEmailList");
+        //System.out.println("KibsMngController > getExhibitorNewEmailList");
         List<String> result = kibsMngService.getExhibitorNewEmailList(exhibitorNewDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -2110,7 +2110,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/event/product.do", method = RequestMethod.GET)
     public ModelAndView mng_event_product() {
-        System.out.println("KibsMngController > mng_event_product");
+        //System.out.println("KibsMngController > mng_event_product");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/event/product");
         return mv;
@@ -2119,7 +2119,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/event/product/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<AwardDTO>> mng_event_product_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_event_product_selectList");
+        //System.out.println("KibsMngController > mng_event_product_selectList");
         //System.out.println(searchDTO.toString());
 
         List<AwardDTO> responseList = kibsMngService.processSelectEventProductList(searchDTO);
@@ -2129,7 +2129,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/event/product/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_event_product_detail(String seq) {
-        System.out.println("KibsMngController > mng_event_product_detail");
+        //System.out.println("KibsMngController > mng_event_product_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null && !"".equals(seq)){
             AwardDTO info = kibsMngService.processSelectEventProductSingle(seq);
@@ -2154,7 +2154,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/event/product/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_event_product_update(@RequestBody AwardDTO awardDTO) {
-        System.out.println("KibsMngController > mng_event_product_update");
+        //System.out.println("KibsMngController > mng_event_product_update");
         //System.out.println(exhibitorDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateEventProduct(awardDTO);
@@ -2165,7 +2165,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/event/product/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_event_product_delete(@RequestBody AwardDTO awardDTO) {
-        System.out.println("KibsMngController > mng_event_product_delete");
+        //System.out.println("KibsMngController > mng_event_product_delete");
         //System.out.println(exhibitorDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processDeleteEventProduct(awardDTO);
@@ -2179,7 +2179,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/event/company.do", method = RequestMethod.GET)
     public ModelAndView mng_event_company() {
-        System.out.println("KibsMngController > mng_event_company");
+        //System.out.println("KibsMngController > mng_event_company");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/event/company");
         return mv;
@@ -2188,7 +2188,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/event/company/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<CompanyDTO>> mng_event_company_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_event_company_selectList");
+        //System.out.println("KibsMngController > mng_event_company_selectList");
         //System.out.println(searchDTO.toString());
 
         List<CompanyDTO> responseList = kibsMngService.processSelectEventCompanyList(searchDTO);
@@ -2198,7 +2198,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/event/company/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_event_company_detail(String seq) {
-        System.out.println("KibsMngController > mng_event_company_detail");
+        //System.out.println("KibsMngController > mng_event_company_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null && !"".equals(seq)){
             CompanyDTO info = kibsMngService.processSelectEventCompanySingle(seq);
@@ -2211,7 +2211,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/event/company/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_event_company_update(@RequestBody CompanyDTO companyDTO) {
-        System.out.println("KibsMngController > mng_event_company_update");
+        //System.out.println("KibsMngController > mng_event_company_update");
         //System.out.println(exhibitorDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateEventCompany(companyDTO);
@@ -2222,7 +2222,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/event/company/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_event_company_delete(@RequestBody CompanyDTO companyDTO) {
-        System.out.println("KibsMngController > mng_event_company_delete");
+        //System.out.println("KibsMngController > mng_event_company_delete");
         //System.out.println(exhibitorDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processDeleteEventCompany(companyDTO);
@@ -2236,7 +2236,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/notice.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_notice() {
-        System.out.println("KibsMngController > mng_center_board_notice");
+        //System.out.println("KibsMngController > mng_center_board_notice");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/board/notice");
         return mv;
@@ -2245,7 +2245,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/notice/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<NoticeDTO>> mng_center_board_notice_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_center_board_notice_selectList");
+        //System.out.println("KibsMngController > mng_center_board_notice_selectList");
         //System.out.println(searchDTO.toString());
 
         List<NoticeDTO> responseList = kibsMngService.processSelectNoticeList(searchDTO);
@@ -2256,7 +2256,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/notice/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<NoticeDTO> mng_center_board_notice_selectSingle(@RequestBody NoticeDTO noticeDTO) {
-        System.out.println("KibsMngController > mng_center_board_notice_selectSingle");
+        //System.out.println("KibsMngController > mng_center_board_notice_selectSingle");
         //System.out.println(searchDTO.toString());
 
         NoticeDTO response = kibsMngService.processSelectNoticeSingle(noticeDTO);
@@ -2267,8 +2267,8 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/notice/modifySave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_notice_modifySave(@RequestBody NoticeDTO noticeDTO) {
-        System.out.println("KibsMngController > mng_center_board_notice_modifySave");
-        System.out.println(noticeDTO.toString());
+        //System.out.println("KibsMngController > mng_center_board_notice_modifySave");
+        //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateBoardNotice(noticeDTO);
 
@@ -2291,8 +2291,8 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/notice/insertSave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_notice_insertSave(@RequestBody NoticeDTO noticeDTO) {
-        System.out.println("KibsMngController > mng_center_board_notice_insertSave");
-        System.out.println(noticeDTO.toString());
+        //System.out.println("KibsMngController > mng_center_board_notice_insertSave");
+        //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processInsertBoardNotice(noticeDTO);
 
@@ -2315,7 +2315,7 @@ public class KibsMngController {
     // 1. 뉴스레터 변환 도구 페이지 이동 (GET)
     @RequestMapping(value = "/mng/newsletter/tool.do", method = RequestMethod.GET)
     public ModelAndView mng_newsletter_tool(HttpSession session) {
-        System.out.println("KibsMngController > mng_newsletter_tool");
+        //System.out.println("KibsMngController > mng_newsletter_tool");
         ModelAndView mv = new ModelAndView();
 
         // [보안] 'meetingfan' 계정만 접근 가능하도록 체크
@@ -2407,7 +2407,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/newsletter_ko.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_newsletter_ko() {
-        System.out.println("KibsMngController > mng_center_board_newsletter_ko");
+        //System.out.println("KibsMngController > mng_center_board_newsletter_ko");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/board/newsletter_ko");
         return mv;
@@ -2416,7 +2416,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/newsletter/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<NewsletterDTO>> mng_center_board_newsletter_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_center_board_newsletter_selectList");
+        //System.out.println("KibsMngController > mng_center_board_newsletter_selectList");
         //System.out.println(searchDTO.toString());
 
         List<NewsletterDTO> responseList = kibsMngService.processSelectNewsletterList(searchDTO);
@@ -2427,7 +2427,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/newsletter/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<NewsletterDTO> mng_center_board_newsletter_selectSingle(@RequestBody NewsletterDTO newsletterDTO) {
-        System.out.println("KibsMngController > mng_center_board_newsletter_selectSingle");
+        //System.out.println("KibsMngController > mng_center_board_newsletter_selectSingle");
         //System.out.println(newsletterDTO.toString());
 
         NewsletterDTO response = kibsMngService.processSelectNewsletterSingle(newsletterDTO);
@@ -2438,7 +2438,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/newsletter/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_newsletter_delete(@RequestBody NewsletterDTO newsletterDTO) {
-        System.out.println("KibsMngController > mng_center_board_newsletter_delete");
+        //System.out.println("KibsMngController > mng_center_board_newsletter_delete");
 
         ResponseDTO responseDTO = kibsMngService.processDeleteNewsletter(newsletterDTO);
 
@@ -2447,7 +2447,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/newsletter_en.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_newsletter_en() {
-        System.out.println("KibsMngController > mng_center_board_newsletter_en");
+        //System.out.println("KibsMngController > mng_center_board_newsletter_en");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/board/newsletter_en");
         return mv;
@@ -2455,7 +2455,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/press.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_press() {
-        System.out.println("KibsMngController > mng_center_board_press");
+        //System.out.println("KibsMngController > mng_center_board_press");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/board/press");
         return mv;
@@ -2464,7 +2464,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/press/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<PressDTO>> mng_center_board_press_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_center_board_press_selectList");
+        //System.out.println("KibsMngController > mng_center_board_press_selectList");
         //System.out.println(searchDTO.toString());
 
         List<PressDTO> responseList = kibsMngService.processSelectPressList(searchDTO);
@@ -2475,7 +2475,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/press/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<PressDTO> mng_center_board_press_selectSingle(@RequestBody PressDTO pressDTO) {
-        System.out.println("KibsMngController > mng_center_board_press_selectSingle");
+        //System.out.println("KibsMngController > mng_center_board_press_selectSingle");
         //System.out.println(newsletterDTO.toString());
 
         PressDTO response = kibsMngService.processSelectPressSingle(pressDTO);
@@ -2486,7 +2486,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/press/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_press_delete(@RequestBody PressDTO pressDTO) {
-        System.out.println("KibsMngController > mng_center_board_press_delete");
+        //System.out.println("KibsMngController > mng_center_board_press_delete");
 
         ResponseDTO responseDTO = kibsMngService.processDeletePress(pressDTO);
 
@@ -2496,7 +2496,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/press/modifySave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_press_modifySave(@RequestBody PressDTO pressDTO) {
-        System.out.println("KibsMngController > mng_center_board_press_modifySave");
+        //System.out.println("KibsMngController > mng_center_board_press_modifySave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdatePress(pressDTO);
@@ -2520,7 +2520,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/press/insertSave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_press_insertSave(@RequestBody PressDTO pressDTO) {
-        System.out.println("KibsMngController > mng_center_board_press_insertSave");
+        //System.out.println("KibsMngController > mng_center_board_press_insertSave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processInsertPress(pressDTO);
@@ -2543,7 +2543,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/faq.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_faq() {
-        System.out.println("KibsMngController > mng_center_board_faq");
+        //System.out.println("KibsMngController > mng_center_board_faq");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/board/faq");
         return mv;
@@ -2552,7 +2552,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/faq/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<FaqDTO>> mng_center_board_faq_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_center_board_faq_selectList");
+        //System.out.println("KibsMngController > mng_center_board_faq_selectList");
         //System.out.println(searchDTO.toString());
 
         List<FaqDTO> responseList = kibsMngService.processSelectFaqList(searchDTO);
@@ -2563,7 +2563,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/faq/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<FaqDTO> mng_center_board_faq_selectSingle(@RequestBody FaqDTO faqDTO) {
-        System.out.println("KibsMngController > mng_center_board_faq_selectSingle");
+        //System.out.println("KibsMngController > mng_center_board_faq_selectSingle");
         //System.out.println(newsletterDTO.toString());
 
         FaqDTO response = kibsMngService.processSelectFaqSingle(faqDTO);
@@ -2574,7 +2574,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/faq/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_faq_delete(@RequestBody FaqDTO faqDTO) {
-        System.out.println("KibsMngController > mng_center_board_faq_delete");
+        //System.out.println("KibsMngController > mng_center_board_faq_delete");
 
         ResponseDTO responseDTO = kibsMngService.processDeleteFaq(faqDTO);
 
@@ -2584,7 +2584,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/faq/modifySave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_faq_modifySave(@RequestBody FaqDTO faqDTO) {
-        System.out.println("KibsMngController > mng_center_board_faq_modifySave");
+        //System.out.println("KibsMngController > mng_center_board_faq_modifySave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateFaq(faqDTO);
@@ -2609,7 +2609,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/faq/insertSave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_faq_insertSave(@RequestBody FaqDTO faqDTO) {
-        System.out.println("KibsMngController > mng_center_board_faq_insertSave");
+        //System.out.println("KibsMngController > mng_center_board_faq_insertSave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processInsertFaq(faqDTO);
@@ -2632,7 +2632,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/column.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_column() {
-        System.out.println("KibsMngController > mng_center_board_column");
+        //System.out.println("KibsMngController > mng_center_board_column");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/board/column");
         return mv;
@@ -2641,7 +2641,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/column/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ColumnDTO>> mng_center_board_column_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_center_board_column_selectList");
+        //System.out.println("KibsMngController > mng_center_board_column_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ColumnDTO> responseList = kibsMngService.processSelectColumnList(searchDTO);
@@ -2652,7 +2652,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/column/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ColumnDTO> mng_center_board_column_selectSingle(@RequestBody ColumnDTO columnDTO) {
-        System.out.println("KibsMngController > mng_center_board_column_selectSingle");
+        //System.out.println("KibsMngController > mng_center_board_column_selectSingle");
         //System.out.println(newsletterDTO.toString());
 
         ColumnDTO response = kibsMngService.processSelectColumnSingle(columnDTO);
@@ -2663,7 +2663,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/column/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_column_delete(@RequestBody ColumnDTO columnDTO) {
-        System.out.println("KibsMngController > mng_center_board_column_delete");
+        //System.out.println("KibsMngController > mng_center_board_column_delete");
 
         ResponseDTO responseDTO = kibsMngService.processDeleteColumn(columnDTO);
 
@@ -2673,7 +2673,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/column/modifySave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_column_modifySave(@RequestBody ColumnDTO columnDTO) {
-        System.out.println("KibsMngController > mng_center_board_column_modifySave");
+        //System.out.println("KibsMngController > mng_center_board_column_modifySave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateColumn(columnDTO);
@@ -2697,7 +2697,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/column/insertSave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_column_insertSave(@RequestBody ColumnDTO columnDTO) {
-        System.out.println("KibsMngController > mng_center_board_column_insertSave");
+        //System.out.println("KibsMngController > mng_center_board_column_insertSave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processInsertColumn(columnDTO);
@@ -2720,7 +2720,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/brochure.do", method = RequestMethod.GET)
     public String mng_center_board_brochure() {
-        System.out.println("KibsMngController > mng_center_board_brochure");
+        //System.out.println("KibsMngController > mng_center_board_brochure");
         return "redirect:/mng/center/board/brochure/detail.do";
     }
 
@@ -2824,7 +2824,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/contest.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_contest() {
-        System.out.println("KibsMngController > mng_center_board_contest");
+        //System.out.println("KibsMngController > mng_center_board_contest");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/board/contest");
         return mv;
@@ -2833,7 +2833,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/contest/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ContestDTO>> mng_center_board_contest_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_center_board_contest_selectList");
+        //System.out.println("KibsMngController > mng_center_board_contest_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ContestDTO> responseList = kibsMngService.processSelectContestList(searchDTO);
@@ -2843,7 +2843,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/contest/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_contest_detail(String seq) {
-        System.out.println("KibsMngController > mng_center_board_contest_detail");
+        //System.out.println("KibsMngController > mng_center_board_contest_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
         if(seq != null && !seq.isEmpty()){
@@ -2868,7 +2868,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/contest/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ContestDTO> mng_center_board_contest_selectSingle(@RequestBody ContestDTO contestDTO) {
-        System.out.println("KibsMngController > mng_center_board_contest_selectSingle");
+        //System.out.println("KibsMngController > mng_center_board_contest_selectSingle");
         //System.out.println(newsletterDTO.toString());
 
         ContestDTO response = kibsMngService.processSelectContestSingle(contestDTO);
@@ -2879,7 +2879,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/contest/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_contest_delete(@RequestBody ContestDTO contestDTO) {
-        System.out.println("KibsMngController > mng_center_board_contest_delete");
+        //System.out.println("KibsMngController > mng_center_board_contest_delete");
 
         ResponseDTO responseDTO = kibsMngService.processDeleteContest(contestDTO);
 
@@ -2893,7 +2893,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/contest/modifySave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_contest_modifySave(@RequestBody ContestDTO contestDTO) {
-        System.out.println("KibsMngController > mng_center_board_contest_modifySave");
+        //System.out.println("KibsMngController > mng_center_board_contest_modifySave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateContest(contestDTO);
@@ -2917,7 +2917,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/contest/insertSave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_contest_insertSave(@RequestBody ContestDTO contestDTO) {
-        System.out.println("KibsMngController > mng_center_board_contest_insertSave");
+        //System.out.println("KibsMngController > mng_center_board_contest_insertSave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processInsertContest(contestDTO);
@@ -2940,7 +2940,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/dataroom.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_dataroom() {
-        System.out.println("KibsMngController > mng_center_board_dataroom");
+        //System.out.println("KibsMngController > mng_center_board_dataroom");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/board/dataroom");
         return mv;
@@ -2949,7 +2949,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/dataroom/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<DataroomDTO>> mng_center_board_dataroom_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_center_board_dataroom_selectList");
+        //System.out.println("KibsMngController > mng_center_board_dataroom_selectList");
         //System.out.println(searchDTO.toString());
 
         List<DataroomDTO> responseList = kibsMngService.processSelectDataroomList(searchDTO);
@@ -2960,7 +2960,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/dataroom/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<DataroomDTO> mng_center_board_dataroom_selectSingle(@RequestBody DataroomDTO dataroomDTO) {
-        System.out.println("KibsMngController > mng_center_board_dataroom_selectSingle");
+        //System.out.println("KibsMngController > mng_center_board_dataroom_selectSingle");
         //System.out.println(newsletterDTO.toString());
 
         DataroomDTO response = kibsMngService.processSelectDataroomSingle(dataroomDTO);
@@ -2971,7 +2971,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/dataroom/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_dataroom_delete(@RequestBody DataroomDTO dataroomDTO) {
-        System.out.println("KibsMngController > mng_center_board_dataroom_delete");
+        //System.out.println("KibsMngController > mng_center_board_dataroom_delete");
 
         ResponseDTO responseDTO = kibsMngService.processDeleteDataroom(dataroomDTO);
 
@@ -2981,7 +2981,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/dataroom/modifySave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_dataroom_modifySave(@RequestBody DataroomDTO dataroomDTO) {
-        System.out.println("KibsMngController > mng_center_board_dataroom_modifySave");
+        //System.out.println("KibsMngController > mng_center_board_dataroom_modifySave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateDataroom(dataroomDTO);
@@ -3005,7 +3005,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/dataroom/insertSave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_dataroom_insertSave(@RequestBody DataroomDTO dataroomDTO) {
-        System.out.println("KibsMngController > mng_center_board_dataroom_insertSave");
+        //System.out.println("KibsMngController > mng_center_board_dataroom_insertSave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processInsertDataroom(dataroomDTO);
@@ -3028,7 +3028,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/gallery.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_gallery() {
-        System.out.println("KibsMngController > mng_center_board_gallery");
+        //System.out.println("KibsMngController > mng_center_board_gallery");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/board/gallery");
         return mv;
@@ -3037,7 +3037,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/gallery/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<GalleryDTO>> mng_center_board_gallery_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_center_board_gallery_selectList");
+        //System.out.println("KibsMngController > mng_center_board_gallery_selectList");
         //System.out.println(searchDTO.toString());
 
         List<GalleryDTO> responseList = kibsMngService.processSelectGalleryList(searchDTO);
@@ -3048,7 +3048,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/gallery/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<GalleryDTO> mng_center_board_gallery_selectSingle(@RequestBody GalleryDTO galleryDTO) {
-        System.out.println("KibsMngController > mng_center_board_gallery_selectSingle");
+        //System.out.println("KibsMngController > mng_center_board_gallery_selectSingle");
         //System.out.println(newsletterDTO.toString());
 
         GalleryDTO response = kibsMngService.processSelectGallerySingle(galleryDTO);
@@ -3059,7 +3059,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/gallery/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_gallery_delete(@RequestBody GalleryDTO galleryDTO) {
-        System.out.println("KibsMngController > mng_center_board_gallery_delete");
+        //System.out.println("KibsMngController > mng_center_board_gallery_delete");
 
         ResponseDTO responseDTO = kibsMngService.processDeleteGallery(galleryDTO);
 
@@ -3069,7 +3069,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/gallery/modifySave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_gallery_modifySave(@RequestBody GalleryDTO galleryDTO) {
-        System.out.println("KibsMngController > mng_center_board_gallery_modifySave");
+        //System.out.println("KibsMngController > mng_center_board_gallery_modifySave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateGallery(galleryDTO);
@@ -3093,7 +3093,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/gallery/insertSave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_gallery_insertSave(@RequestBody GalleryDTO galleryDTO) {
-        System.out.println("KibsMngController > mng_center_board_gallery_insertSave");
+        //System.out.println("KibsMngController > mng_center_board_gallery_insertSave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processInsertGallery(galleryDTO);
@@ -3116,7 +3116,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/kibstv.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_kibstv() {
-        System.out.println("KibsMngController > mng_center_board_kibstv");
+        //System.out.println("KibsMngController > mng_center_board_kibstv");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/board/kibstv");
         return mv;
@@ -3125,7 +3125,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/kibstv/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<KibstvDTO>> mng_center_board_kibstv_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_center_board_kibstv_selectList");
+        //System.out.println("KibsMngController > mng_center_board_kibstv_selectList");
         //System.out.println(searchDTO.toString());
 
         List<KibstvDTO> responseList = kibsMngService.processSelectKibstvList(searchDTO);
@@ -3136,7 +3136,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/kibstv/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<KibstvDTO> mng_center_board_kibstv_selectSingle(@RequestBody KibstvDTO kibstvDTO) {
-        System.out.println("KibsMngController > mng_center_board_kibstv_selectSingle");
+        //System.out.println("KibsMngController > mng_center_board_kibstv_selectSingle");
         //System.out.println(newsletterDTO.toString());
 
         KibstvDTO response = kibsMngService.processSelectKibstvSingle(kibstvDTO);
@@ -3147,7 +3147,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/kibstv/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_kibstv_delete(@RequestBody KibstvDTO kibstvDTO) {
-        System.out.println("KibsMngController > mng_center_board_kibstv_delete");
+        //System.out.println("KibsMngController > mng_center_board_kibstv_delete");
 
         ResponseDTO responseDTO = kibsMngService.processDeleteKibstv(kibstvDTO);
 
@@ -3157,7 +3157,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/kibstv/modifySave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_kibstv_modifySave(@RequestBody KibstvDTO kibstvDTO) {
-        System.out.println("KibsMngController > mng_center_board_kibstv_modifySave");
+        //System.out.println("KibsMngController > mng_center_board_kibstv_modifySave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateKibstv(kibstvDTO);
@@ -3168,7 +3168,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/kibstv/insertSave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_kibstv_insertSave(@RequestBody KibstvDTO kibstvDTO) {
-        System.out.println("KibsMngController > mng_center_board_kibstv_insertSave");
+        //System.out.println("KibsMngController > mng_center_board_kibstv_insertSave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processInsertKibstv(kibstvDTO);
@@ -3178,7 +3178,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/notice/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_notice_detail(String seq) {
-        System.out.println("KibsMngController > mng_center_board_notice_detail");
+        //System.out.println("KibsMngController > mng_center_board_notice_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
         if(seq != null && !seq.isEmpty()){
@@ -3201,7 +3201,7 @@ public class KibsMngController {
     @RequestMapping(value = "/file/upload/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<FileDTO>> file_upload_selectList(@RequestBody FileDTO fileDTO) {
-        System.out.println("KibsMngController > mng_center_board_kibstv_selectSingle");
+        //System.out.println("KibsMngController > mng_center_board_kibstv_selectSingle");
         //System.out.println(newsletterDTO.toString());
 
         List<FileDTO> fileList = kibsMngService.processSelectFileList(fileDTO);
@@ -3212,7 +3212,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/notice/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_notice_delete(@RequestBody NoticeDTO noticeDTO) {
-        System.out.println("KibsMngController > mng_center_board_notice_delete");
+        //System.out.println("KibsMngController > mng_center_board_notice_delete");
 
         ResponseDTO responseDTO = kibsMngService.processDeleteBoardNotice(noticeDTO);
 
@@ -3221,7 +3221,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/newsletter/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_newsletter_detail(String lang, String seq) {
-        System.out.println("KibsMngController > mng_center_board_newsletter_detail");
+        //System.out.println("KibsMngController > mng_center_board_newsletter_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
         if(seq != null && !seq.isEmpty()){
@@ -3249,7 +3249,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/newsletter/modifySave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_newsletter_modifySave(@RequestBody NewsletterDTO newsletterDTO) {
-        System.out.println("KibsMngController > mng_center_board_newsletter_modifySave");
+        //System.out.println("KibsMngController > mng_center_board_newsletter_modifySave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateNewsletter(newsletterDTO);
@@ -3273,7 +3273,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/board/newsletter/insertSave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_board_newsletter_insertSave(@RequestBody NewsletterDTO newsletterDTO) {
-        System.out.println("KibsMngController > mng_center_board_newsletter_insertSave");
+        //System.out.println("KibsMngController > mng_center_board_newsletter_insertSave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processInsertNewsletter(newsletterDTO);
@@ -3296,7 +3296,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/press/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_press_detail(String seq) {
-        System.out.println("KibsMngController > mng_center_board_press_detail");
+        //System.out.println("KibsMngController > mng_center_board_press_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
         if(seq != null && !seq.isEmpty()){
@@ -3318,7 +3318,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/faq/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_faq_detail(String seq) {
-        System.out.println("KibsMngController > mng_center_board_faq_detail");
+        //System.out.println("KibsMngController > mng_center_board_faq_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
         if(seq != null && !seq.isEmpty()){
@@ -3340,7 +3340,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/column/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_column_detail(String seq) {
-        System.out.println("KibsMngController > mng_center_board_column_detail");
+        //System.out.println("KibsMngController > mng_center_board_column_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
         if(seq != null && !seq.isEmpty()){
@@ -3362,7 +3362,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/dataroom/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_dataroom_detail(String seq) {
-        System.out.println("KibsMngController > mng_center_board_dataroom_detail");
+        //System.out.println("KibsMngController > mng_center_board_dataroom_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
         if(seq != null && !seq.isEmpty()){
@@ -3384,7 +3384,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/gallery/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_gallery_detail(String seq) {
-        System.out.println("KibsMngController > mng_center_board_gallery_detail");
+        //System.out.println("KibsMngController > mng_center_board_gallery_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
         if(seq != null && !"".equals(seq)){
@@ -3411,7 +3411,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/board/kibstv/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_kibstv_detail(String seq) {
-        System.out.println("KibsMngController > mng_center_board_kibstv_detail");
+        //System.out.println("KibsMngController > mng_center_board_kibstv_detail");
         ModelAndView mv = new ModelAndView();
         //seq == notice table id
         if(seq != null && !"".equals(seq)){
@@ -3430,7 +3430,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/popup/add.do", method = RequestMethod.GET)
     public ModelAndView mng_center_popup_add() {
-        System.out.println("KibsMngController > mng_center_popup_add");
+        //System.out.println("KibsMngController > mng_center_popup_add");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/popup/add");
         return mv;
@@ -3439,7 +3439,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/popup/add/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<PopupDTO>> mng_center_popup_add_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_center_popup_add_selectList");
+        //System.out.println("KibsMngController > mng_center_popup_add_selectList");
         //System.out.println(searchDTO.toString());
 
         List<PopupDTO> responseList = kibsMngService.processSelectPopupList(searchDTO);
@@ -3449,7 +3449,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/popup/add/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_center_popup_add_detail(String seq) {
-        System.out.println("KibsMngController > mng_center_popup_add_detail");
+        //System.out.println("KibsMngController > mng_center_popup_add_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null && !"".equals(seq)){
             PopupDTO response = kibsMngService.processSelectPopupSingle(seq);
@@ -3463,7 +3463,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/popup/add/modifySave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_popup_add_modifySave(@RequestBody PopupDTO popupDTO) {
-        System.out.println("KibsMngController > mng_center_popup_add_modifySave");
+        //System.out.println("KibsMngController > mng_center_popup_add_modifySave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdatePopup(popupDTO);
@@ -3474,7 +3474,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/popup/add/insertSave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_popup_add_insertSave(@RequestBody PopupDTO popupDTO) {
-        System.out.println("KibsMngController > mng_center_popup_add_insertSave");
+        //System.out.println("KibsMngController > mng_center_popup_add_insertSave");
         //System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processInsertPopup(popupDTO);
@@ -3485,7 +3485,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/popup/add/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_popup_add_delete(@RequestBody PopupDTO popupDTO) {
-        System.out.println("KibsMngController > mng_center_popup_add_delete");
+        //System.out.println("KibsMngController > mng_center_popup_add_delete");
 
         ResponseDTO responseDTO = kibsMngService.processDeletePopup(popupDTO);
 
@@ -3498,7 +3498,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/document/download.do", method = RequestMethod.GET)
     public ModelAndView mng_center_document_download() {
-        System.out.println("KibsMngController > mng_center_document_download");
+        //System.out.println("KibsMngController > mng_center_document_download");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/document/download");
         return mv;
@@ -3510,7 +3510,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/edm/list.do", method = RequestMethod.GET)
     public ModelAndView mng_center_edm_list() {
-        System.out.println("KibsMngController > mng_center_edm_list");
+        //System.out.println("KibsMngController > mng_center_edm_list");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/edm/list");
         return mv;
@@ -3518,7 +3518,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/center/edm/list/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_center_edm_list_detail() {
-        System.out.println("KibsMngController > mng_center_edm_list_detail");
+        //System.out.println("KibsMngController > mng_center_edm_list_detail");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/center/edm/list/detail");
         return mv;
@@ -3527,7 +3527,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/edm/list/selectHstList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<EdmHstDTO>> mng_center_edm_list_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_center_edm_list_selectList");
+        //System.out.println("KibsMngController > mng_center_edm_list_selectList");
         //System.out.println(searchDTO.toString());
 
         List<EdmHstDTO> responseList = kibsMngService.processSelectEdmHstList(searchDTO);
@@ -3538,7 +3538,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/edm/list/insertHst.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_edm_list_insertHst(@RequestBody EdmHstDTO edmHstDTO) {
-        System.out.println("KibsMngController > mng_center_edm_list_insertHst");
+        //System.out.println("KibsMngController > mng_center_edm_list_insertHst");
         //System.out.println(participantCompanyDTO.toString());
 
         ResponseDTO responseDto = kibsMngService.processInsertEdmHst(edmHstDTO);
@@ -3549,7 +3549,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/center/edm/list/deleteHst.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_center_edm_list_deleteHst(@RequestBody EdmHstDTO edmHstDTO) {
-        System.out.println("KibsMngController > mng_center_edm_list_deleteHst");
+        //System.out.println("KibsMngController > mng_center_edm_list_deleteHst");
         //System.out.println(participantCompanyDTO.toString());
 
         ResponseDTO responseDto = kibsMngService.processDeleteEdmHst(edmHstDTO);
@@ -3563,7 +3563,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/request/management/list.do", method = RequestMethod.GET)
     public ModelAndView mng_request_management_list() {
-        System.out.println("KibsMngController > mng_request_management_list");
+        //System.out.println("KibsMngController > mng_request_management_list");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/request/management/list");
         return mv;
@@ -3572,7 +3572,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/request/management/list/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<RequestDTO>> mng_request_management_list_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("PosterMngController > mng_request_management_list_selectList");
+        //System.out.println("PosterMngController > mng_request_management_list_selectList");
         //System.System.out.println(searchDTO.toString());
 
         List<RequestDTO> responseList = kibsMngService.processSelectRequestList(searchDTO);
@@ -3582,7 +3582,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/request/management/list/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_request_management_list_detail(String seq) {
-        System.out.println("KibsMngController > mng_request_management_list_detail");
+        //System.out.println("KibsMngController > mng_request_management_list_detail");
         ModelAndView mv = new ModelAndView();
 
         if(seq != null && !"".equals(seq)){
@@ -3609,7 +3609,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/request/management/list/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_request_management_list_insert(@RequestBody RequestDTO requestDTO) {
-        System.out.println("KibsMngController > mng_request_management_list_insert");
+        //System.out.println("KibsMngController > mng_request_management_list_insert");
         //System.System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processInsertRequest(requestDTO);
@@ -3622,7 +3622,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/request/management/list/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_request_management_list_update(@RequestBody RequestDTO requestDTO) {
-        System.out.println("KibsMngController > mng_request_management_list_update");
+        //System.out.println("KibsMngController > mng_request_management_list_update");
         //System.System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateRequest(requestDTO);
@@ -3635,7 +3635,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/request/management/list/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_request_management_list_delete(@RequestBody RequestDTO requestDTO) {
-        System.out.println("KibsMngController > mng_request_management_list_delete");
+        //System.out.println("KibsMngController > mng_request_management_list_delete");
 
         ResponseDTO responseDTO = kibsMngService.processDeleteRequest(requestDTO);
 
@@ -3649,7 +3649,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/request/management/list/reply/insert.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_request_management_list_reply_insert(@RequestBody ReplyDTO replyDTO) {
-        System.out.println("KibsMngController > mng_request_management_list_reply_insert");
+        //System.out.println("KibsMngController > mng_request_management_list_reply_insert");
         //System.System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processInsertReply(replyDTO);
@@ -3660,7 +3660,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/request/management/list/reply/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_request_management_list_reply_delete(@RequestBody ReplyDTO replyDTO) {
-        System.out.println("KibsMngController > mng_request_management_list_reply_delete");
+        //System.out.println("KibsMngController > mng_request_management_list_reply_delete");
 
         ResponseDTO responseDTO = kibsMngService.processDeleteReply(replyDTO);
 
@@ -3670,7 +3670,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/request/management/list/progress/step/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_request_management_list_progress_step_update(@RequestBody List<RequestDTO> requestList) {
-        System.out.println("KibsMngController > mng_request_management_list_progress_step_update");
+        //System.out.println("KibsMngController > mng_request_management_list_progress_step_update");
         //System.System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateRequestProgressStep(requestList);
@@ -3681,7 +3681,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/request/management/list/complete/expect/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_request_management_list_complete_expect_update(@RequestBody List<RequestDTO> requestList) {
-        System.out.println("KibsMngController > mng_request_management_list_complete_expect_update");
+        //System.out.println("KibsMngController > mng_request_management_list_complete_expect_update");
         //System.System.out.println(noticeDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateRequestCompleteExpect(requestList);
@@ -3691,7 +3691,7 @@ public class KibsMngController {
     
     @RequestMapping(value = "/mng/participant/company/list.do", method = RequestMethod.GET)
     public ModelAndView mng_participant_company_list() {
-        System.out.println("KibsMngController > mng_participant_company_list");
+        //System.out.println("KibsMngController > mng_participant_company_list");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/participant/company/list");
         return mv;
@@ -3700,7 +3700,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/participant/company/list/save.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_participant_company_list_save(@RequestBody ParticipantCompanyDTO participantCompanyDTO) {
-        System.out.println("KibsMngController > mng_participant_company_list_save");
+        //System.out.println("KibsMngController > mng_participant_company_list_save");
         //System.out.println(participantCompanyDTO.toString());
 
         ResponseDTO responseDto = kibsMngService.processInsertExhibitorComp(participantCompanyDTO);
@@ -3711,7 +3711,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/participant/company/list/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ParticipantCompanyDTO>> mng_participant_company_list_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsMngController > mng_participant_company_list_selectList");
+        //System.out.println("KibsMngController > mng_participant_company_list_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ParticipantCompanyDTO> responseList = kibsMngService.processSelectListExhibitorComp(searchDTO);
@@ -3722,7 +3722,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/participant/company/list/deleteList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_participant_company_list_deleteList(@RequestBody ParticipantCompanyDTO participantCompanyDTO) {
-        System.out.println("KibsMngController > mng_participant_company_list_deleteList");
+        //System.out.println("KibsMngController > mng_participant_company_list_deleteList");
         //System.out.println(participantCompanyDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processDeleteExhibitorComp(participantCompanyDTO);
@@ -3732,7 +3732,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/participant/company/list/detail.do", method = RequestMethod.POST)
     public ModelAndView mng_participant_company_list_detail(ParticipantCompanyDTO participantCompanyDTO) {
-        System.out.println("KibsMngController > mng_participant_company_list_detail");
+        //System.out.println("KibsMngController > mng_participant_company_list_detail");
         //System.out.println(participantCompanyDTO.toString());
         ModelAndView mv = new ModelAndView();
         ParticipantCompanyDTO responseDTO = kibsMngService.processSelectExhibitorComp(participantCompanyDTO);
@@ -3744,7 +3744,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/participant/company/list/select.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ParticipantCompanyDTO> mng_participant_company_list_select(@RequestBody ParticipantCompanyDTO participantCompanyDTO) {
-        System.out.println("KibsMngController > mng_participant_company_list_select");
+        //System.out.println("KibsMngController > mng_participant_company_list_select");
         //System.out.println(participantCompanyDTO.toString());
 
         ParticipantCompanyDTO responseDTO = kibsMngService.processSelectExhibitorComp(participantCompanyDTO);
@@ -3755,7 +3755,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/participant/company/list/buyerSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<BuyerDTO> mng_participant_company_list_buyerSingle(@RequestBody BuyerDTO buyerDTO) {
-        System.out.println("KibsMngController > mng_participant_company_list_buyerSingle");
+        //System.out.println("KibsMngController > mng_participant_company_list_buyerSingle");
         //System.out.println(buyerDTO.toString());
 
         BuyerDTO responseDTO = kibsMngService.processSelectBuyerSingle(buyerDTO);
@@ -3766,7 +3766,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/participant/company/list/deleteBuyer.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_participant_company_list_deleteBuyer(@RequestBody BuyerDTO buyerDTO) {
-        System.out.println("KibsMngController > mng_participant_company_list_deleteBuyer");
+        //System.out.println("KibsMngController > mng_participant_company_list_deleteBuyer");
         //System.out.println(buyerDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processDeleteBuyer(buyerDTO);
@@ -3777,7 +3777,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/participant/company/list/modifySave.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_participant_company_list_modifySave(@RequestBody ParticipantCompanyDTO participantCompanyDTO) {
-        System.out.println("KibsMngController > mng_participant_company_list_modifySave");
+        //System.out.println("KibsMngController > mng_participant_company_list_modifySave");
         //System.out.println(participantCompanyDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processUpdateExhibitorComp(participantCompanyDTO);
@@ -3890,7 +3890,7 @@ public class KibsMngController {
     @RequestMapping(value = "/file/upload.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<JSONObject> file_upload(HttpServletRequest uploadFile) throws UnsupportedEncodingException {
-        System.out.println("KibsMngController > file_upload");
+        //System.out.println("KibsMngController > file_upload");
         String gbn = uploadFile.getParameter("gbn");
         uploadFile.setCharacterEncoding("UTF-8");
         JSONObject response = new JSONObject();
@@ -3967,8 +3967,8 @@ public class KibsMngController {
     @RequestMapping(value = "/file/useYn/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<FileResponseDTO> file_useYn_update(@RequestBody FileDTO fileDTO) {
-        System.out.println("KibsMngController > file_useYn_update");
-        System.out.println(fileDTO.toString());
+        //System.out.println("KibsMngController > file_useYn_update");
+        //System.out.println(fileDTO.toString());
 
         FileResponseDTO responseDTO = kibsMngService.processUpdateFileUseN(fileDTO);
 
@@ -4052,8 +4052,8 @@ public class KibsMngController {
     @RequestMapping(value = "/file/upload/save.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<FileResponseDTO> file_upload_save(@RequestBody FileDTO fileDTO) {
-        System.out.println("KibsMngController > file_upload_save");
-        System.out.println(fileDTO.toString());
+        //System.out.println("KibsMngController > file_upload_save");
+        //System.out.println(fileDTO.toString());
 
         FileResponseDTO responseDTO = kibsMngService.processInsertFileInfo(fileDTO);
 
@@ -4063,8 +4063,8 @@ public class KibsMngController {
     @RequestMapping(value = "/file/upload/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<FileResponseDTO> file_upload_update(@RequestBody FileDTO fileDTO) {
-        System.out.println("KibsMngController > file_upload_update");
-        System.out.println(fileDTO.toString());
+        //System.out.println("KibsMngController > file_upload_update");
+        //System.out.println(fileDTO.toString());
 
         FileResponseDTO responseDTO = kibsMngService.processUpdateFileInfo(fileDTO);
 
@@ -4075,7 +4075,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/file/download.do", method = RequestMethod.POST)
     public void board_downloadFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("KibsMngController > board_downloadFile");
+        //System.out.println("KibsMngController > board_downloadFile");
         // 1. 요청 파라미터 가져오기
         String path = request.getParameter("path");
         String fileName = request.getParameter("fileName");
@@ -4136,7 +4136,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/directory/download.do", method = RequestMethod.GET)
     public void directory_download(HttpServletRequest req, HttpServletResponse res) {
-        System.out.println("KibsMngController > directory_download");
+        //System.out.println("KibsMngController > directory_download");
         String fileName = req.getParameter("fileName");
         String transferYear = req.getParameter("transferYear");
 
@@ -4515,7 +4515,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/download.do", method = RequestMethod.GET)
     public void exhibitor_download(HttpServletRequest req, HttpServletResponse res) {
-        System.out.println("KibsMngController > exhibitor_download");
+        //System.out.println("KibsMngController > exhibitor_download");
         String fileName = req.getParameter("fileName");
         String transferYear = req.getParameter("transferYear");
 
@@ -5166,7 +5166,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/transfer/download.do", method = RequestMethod.GET)
     public void exhibitor_transfer_download(HttpServletRequest req, HttpServletResponse res) {
-        System.out.println("KibsMngController > exhibitor_transfer_download");
+        //System.out.println("KibsMngController > exhibitor_transfer_download");
         String fileName = req.getParameter("fileName");
         String transferYear = req.getParameter("transferYear");
 
@@ -5954,7 +5954,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/visitor/download.do", method = RequestMethod.GET)
     public void visitor_download(HttpServletRequest req, HttpServletResponse res) {
-        System.out.println("KibsMngController > visitor_download");
+        //System.out.println("KibsMngController > visitor_download");
         String fileName = req.getParameter("fileName");
         String joinYear = req.getParameter("joinYear");
 
@@ -6332,7 +6332,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/visitor/join/download.do", method = RequestMethod.GET)
     public void visitor_join_download(HttpServletRequest req, HttpServletResponse res) {
-        System.out.println("KibsMngController > visitor_join_download");
+        //System.out.println("KibsMngController > visitor_join_download");
         String fileName = req.getParameter("fileName");
         String joinYear = req.getParameter("joinYear");
 
@@ -7360,7 +7360,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/booth/download.do", method = RequestMethod.GET)
     public void exhibitor_booth_download(HttpServletRequest req, HttpServletResponse res) {
-        System.out.println("KibsMngController > exhibitor_booth_download");
+        //System.out.println("KibsMngController > exhibitor_booth_download");
         String fileName = req.getParameter("fileName");
         String transferYear = req.getParameter("transferYear");
 
@@ -7675,7 +7675,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/pass/download.do", method = RequestMethod.GET)
     public void exhibitor_pass_download(HttpServletRequest req, HttpServletResponse res) {
-        System.out.println("KibsMngController > exhibitor_pass_download");
+        //System.out.println("KibsMngController > exhibitor_pass_download");
         String fileName = req.getParameter("fileName");
         String transferYear = req.getParameter("transferYear");
 
@@ -7839,7 +7839,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/sign/download.do", method = RequestMethod.GET)
     public void exhibitor_sign_download(HttpServletRequest req, HttpServletResponse res) {
-        System.out.println("KibsMngController > exhibitor_sign_download");
+        //System.out.println("KibsMngController > exhibitor_sign_download");
         String fileName = req.getParameter("fileName");
         String transferYear = req.getParameter("transferYear");
 
@@ -7969,7 +7969,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/utility/download.do", method = RequestMethod.GET)
     public void exhibitor_utility_download(HttpServletRequest req, HttpServletResponse res) {
-        System.out.println("KibsMngController > exhibitor_utility_download");
+        //System.out.println("KibsMngController > exhibitor_utility_download");
         String fileName = req.getParameter("fileName");
         String transferYear = req.getParameter("transferYear");
 
@@ -8103,7 +8103,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitor/product/download.do", method = RequestMethod.GET)
     public void exhibitor_product_download(HttpServletRequest req, HttpServletResponse res) {
-        System.out.println("KibsMngController > exhibitor_product_download");
+        //System.out.println("KibsMngController > exhibitor_product_download");
         String fileName = req.getParameter("fileName");
         String transferYear = req.getParameter("transferYear");
 
@@ -8253,7 +8253,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/admin/stat/download.do", method = RequestMethod.GET)
     public void mng_admin_stat_download(HttpServletRequest req, HttpServletResponse res) {
-        System.out.println("KibsMngController > mng_admin_stat_download");
+        //System.out.println("KibsMngController > mng_admin_stat_download");
         String fileName = req.getParameter("fileName");
 
         try {
@@ -8280,7 +8280,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/excelUpload.do" , method = RequestMethod.POST , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_excelUpload(MultipartHttpServletRequest request) {
-        System.out.println("KibsMngController > mng_excelUpload");
+        //System.out.println("KibsMngController > mng_excelUpload");
         ResponseDTO responseDto = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -8294,8 +8294,8 @@ public class KibsMngController {
                 file = request.getFile(iterator.next());
             }
 
-            System.out.println(Objects.requireNonNull(file).getOriginalFilename());
-            System.out.println(file.getName());
+            //System.out.println(Objects.requireNonNull(file).getOriginalFilename());
+            //System.out.println(file.getName());
 
             List<?> list = kibsMngService.uploadExcelFile(file);
             if(list !=null) {
@@ -8318,7 +8318,7 @@ public class KibsMngController {
     @RequestMapping(value = "/mail/send.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mail_send(@RequestBody MailRequestDTO mailRequestDTO) {
-        System.out.println("KibsMngController > mail_send");
+        //System.out.println("KibsMngController > mail_send");
         //System.out.println(mailRequestDTO.toString());
 
         ResponseDTO responseDTO = kibsMngService.processMailSend(mailRequestDTO);
@@ -8338,7 +8338,7 @@ public class KibsMngController {
 
     @RequestMapping(value = "/mng/exhibitorNew/participant/company/invoice/detail.do", method = RequestMethod.POST)
     public ModelAndView mng_exhibitorNew_company_invoice_detail(String seq) {
-        System.out.println("KibsMngController > mng_exhibitorNew_company_invoice_detail");
+        //System.out.println("KibsMngController > mng_exhibitorNew_company_invoice_detail");
         //System.out.println(seq);
         ModelAndView mv = new ModelAndView();
 

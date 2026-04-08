@@ -60,7 +60,7 @@ public class KibsController {
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView home() {
-        System.out.println("KibsController > home : ======");
+        //System.out.println("KibsController > home : ======");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("index");
         return mv;
@@ -68,7 +68,7 @@ public class KibsController {
 
     @RequestMapping(value = "/login.do", method = RequestMethod.GET)
     public ModelAndView login() {
-        System.out.println("KibsController > login");
+        //System.out.println("KibsController > login");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("login");
         return mv;
@@ -76,7 +76,7 @@ public class KibsController {
 
     @RequestMapping(value = "/logout.do", method = RequestMethod.GET)
     public ModelAndView logout(HttpSession session, ModelAndView mv) {
-        System.out.println("KibsController > logout");
+        //System.out.println("KibsController > logout");
         kibsService.logoutCheck(session);
         mv.setViewName("index");
         return mv;
@@ -84,7 +84,7 @@ public class KibsController {
 
     @RequestMapping(value = "/main.do", method = RequestMethod.GET)
     public ModelAndView main() {
-        System.out.println("KibsController > main");
+        //System.out.println("KibsController > main");
         ModelAndView mv = new ModelAndView();
         String lang = "KO";
 
@@ -154,7 +154,7 @@ public class KibsController {
 
     @RequestMapping(value = "/popup.do", method = RequestMethod.POST)
     public ModelAndView popup(PopupDTO popupDTO) {
-        System.out.println("KibsController > popup");
+        //System.out.println("KibsController > popup");
         ModelAndView mv = new ModelAndView();
         //System.out.println(popupDTO);
 
@@ -169,7 +169,7 @@ public class KibsController {
 
     @RequestMapping(value = "/privacy.do", method = RequestMethod.GET)
     public ModelAndView privacy() {
-        System.out.println("KibsController > privacy");
+        //System.out.println("KibsController > privacy");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/privacy");
         return mv;
@@ -178,7 +178,7 @@ public class KibsController {
     @RequestMapping(value = "/insta/refresh/select.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<InstaTokenDTO> insta_refresh_select() {
-        System.out.println("KibsController > insta_refresh_select");
+        //System.out.println("KibsController > insta_refresh_select");
 
         InstaTokenDTO response = kibsService.processSelectInstaRefresh();
 
@@ -188,7 +188,7 @@ public class KibsController {
     @RequestMapping(value = "/insta/refresh/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> insta_refresh_update(@RequestBody InstaTokenDTO instaTokenDTO) {
-        System.out.println("KibsController > insta_refresh_update");
+        //System.out.println("KibsController > insta_refresh_update");
         //System.out.println(exhibitorDTO.toString());
 
         ResponseDTO responseDTO = kibsService.processUpdateInstaRefresh(instaTokenDTO);
@@ -202,7 +202,7 @@ public class KibsController {
 
     @RequestMapping(value = "/guide/notice.do", method = RequestMethod.GET)
     public ModelAndView guide_notice() {
-        System.out.println("KibsController > guide_notice");
+        //System.out.println("KibsController > guide_notice");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/guide/notice");
         return mv;
@@ -211,7 +211,7 @@ public class KibsController {
     @RequestMapping(value = "/guide/notice/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<NoticeDTO>> guide_notice_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsController > guide_notice_selectList");
+        //System.out.println("KibsController > guide_notice_selectList");
         //System.out.println(searchDTO.getPageNum());
         //System.out.println(searchDTO.getRows());
 
@@ -222,7 +222,7 @@ public class KibsController {
 
     @RequestMapping(value = "/guide/noticeView.do", method = RequestMethod.GET)
     public ModelAndView guide_noticeView(String id) {
-        System.out.println("KibsController > guide_noticeView");
+        //System.out.println("KibsController > guide_noticeView");
         //System.out.println(id);
         ModelAndView mv = new ModelAndView();
 
@@ -257,7 +257,7 @@ public class KibsController {
 
     @RequestMapping(value = "/guide/summary.do", method = RequestMethod.GET)
     public ModelAndView guide_summary() {
-        System.out.println("KibsController > guide_summary");
+        //System.out.println("KibsController > guide_summary");
         ModelAndView mv = new ModelAndView();
 
         // 브로슈어
@@ -276,7 +276,7 @@ public class KibsController {
 
     @RequestMapping(value = "/guide/maritime_expo.do", method = RequestMethod.GET)
     public ModelAndView guide_maritime_expo() {
-        System.out.println("KibsController > guide_maritime_expo");
+        //System.out.println("KibsController > guide_maritime_expo");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/guide/maritime_expo");
         return mv;
@@ -284,7 +284,7 @@ public class KibsController {
 
     @RequestMapping(value = "/guide/summary_kiss.do", method = RequestMethod.GET)
     public ModelAndView guide_summary_kiss() {
-        System.out.println("KibsController > guide_summary_kiss");
+        //System.out.println("KibsController > guide_summary_kiss");
         ModelAndView mv = new ModelAndView();
 
         // 브로슈어
@@ -303,7 +303,7 @@ public class KibsController {
 
     @RequestMapping(value = "/guide/summary_kmts.do", method = RequestMethod.GET)
     public ModelAndView guide_summary_kmts() {
-        System.out.println("KibsController > guide_summary_kmts");
+        //System.out.println("KibsController > guide_summary_kmts");
         ModelAndView mv = new ModelAndView();
 
         // 브로슈어
@@ -322,7 +322,7 @@ public class KibsController {
 
     @RequestMapping(value = "/guide/program.do", method = RequestMethod.GET)
     public ModelAndView guide_program() {
-        System.out.println("KibsController > guide_program");
+        //System.out.println("KibsController > guide_program");
         ModelAndView mv = new ModelAndView();
 
         /*DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
@@ -338,7 +338,7 @@ public class KibsController {
     // 최미나가 추가함
     @RequestMapping(value = "/guide/program2025.do", method = RequestMethod.GET)
     public ModelAndView guide_program2025() {
-        System.out.println("KibsController > guide_program2025");
+        //System.out.println("KibsController > guide_program2025");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/guide/program2025");
         return mv;
@@ -346,7 +346,7 @@ public class KibsController {
 
     @RequestMapping(value = "/guide/conference.do", method = RequestMethod.GET)
     public ModelAndView guide_conference() {
-        System.out.println("KibsController > guide_conference");
+        //System.out.println("KibsController > guide_conference");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/guide/conference");
         return mv;
@@ -354,7 +354,7 @@ public class KibsController {
 
     @RequestMapping(value = "/guide/conference2025.do", method = RequestMethod.GET)
     public ModelAndView guide_conference2025() {
-        System.out.println("KibsController > guide_conference2025");
+        //System.out.println("KibsController > guide_conference2025");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/guide/conference2025");
         return mv;
@@ -366,7 +366,7 @@ public class KibsController {
 
     @RequestMapping(value = "/apply/step01.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step01(String mode, ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > apply_step01");
+        //System.out.println("KibsController > apply_step01");
         ModelAndView mv = new ModelAndView();
 
         if(mode != null && !mode.isEmpty()){
@@ -453,7 +453,7 @@ public class KibsController {
 
     @RequestMapping(value = "/apply/step2_9.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step2_9(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > apply_step2_9");
+        //System.out.println("KibsController > apply_step2_9");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -491,7 +491,7 @@ public class KibsController {
     
     @RequestMapping(value = "/apply/step2_1.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step2_1(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > apply_step2_1");
+        //System.out.println("KibsController > apply_step2_1");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -522,7 +522,7 @@ public class KibsController {
 
     @RequestMapping(value = "/apply/step2_2.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step2_2(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > apply_step2_2");
+        //System.out.println("KibsController > apply_step2_2");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -552,7 +552,7 @@ public class KibsController {
 
     @RequestMapping(value = "/apply/step2_10.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step2_10(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > apply_step2_10");
+        //System.out.println("KibsController > apply_step2_10");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -582,7 +582,7 @@ public class KibsController {
 
     @RequestMapping(value = "/apply/step2_3.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step2_3(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > apply_step2_3");
+        //System.out.println("KibsController > apply_step2_3");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -612,7 +612,7 @@ public class KibsController {
 
     @RequestMapping(value = "/apply/step2_4.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step2_4(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > apply_step2_4");
+        //System.out.println("KibsController > apply_step2_4");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -649,7 +649,7 @@ public class KibsController {
 
     @RequestMapping(value = "/apply/step2_5.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step2_5(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > apply_step2_5");
+        //System.out.println("KibsController > apply_step2_5");
 
         ModelAndView mv = new ModelAndView();
         /* 기본정보 - 참가업체 정보 */
@@ -683,7 +683,7 @@ public class KibsController {
 
     @RequestMapping(value = "/apply/step2_6.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step2_6() {
-        System.out.println("KibsController > apply_step2_6");
+        //System.out.println("KibsController > apply_step2_6");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/apply/step2_6");
         return mv;
@@ -691,7 +691,7 @@ public class KibsController {
 
     @RequestMapping(value = "/apply/step2_7.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step2_7() {
-        System.out.println("KibsController > apply_step2_7");
+        //System.out.println("KibsController > apply_step2_7");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/apply/step2_7");
         return mv;
@@ -699,7 +699,7 @@ public class KibsController {
 
     @RequestMapping(value = "/apply/step2_8.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step2_8(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > apply_step2_8");
+        //System.out.println("KibsController > apply_step2_8");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -776,7 +776,7 @@ public class KibsController {
 
     @RequestMapping(value = "/apply/step03.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView apply_step03(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > apply_step03");
+        //System.out.println("KibsController > apply_step03");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -810,7 +810,7 @@ public class KibsController {
 
     @RequestMapping(value = "/exhibitor/guide.do", method = RequestMethod.GET)
     public ModelAndView exhibitor_guide() {
-        System.out.println("KibsController > exhibitor_guide");
+        //System.out.println("KibsController > exhibitor_guide");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/exhibitor/guide");
         return mv;
@@ -818,7 +818,7 @@ public class KibsController {
 
     @RequestMapping(value = "/exhibitor/login.do", method = RequestMethod.GET)
     public ModelAndView exhibitor_login() {
-        System.out.println("KibsController > exhibitor_login");
+        //System.out.println("KibsController > exhibitor_login");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/exhibitor/login");
         return mv;
@@ -826,7 +826,7 @@ public class KibsController {
 
     @RequestMapping(value = "/exhibitor/faq.do", method = RequestMethod.GET)
     public ModelAndView exhibitor_faq() {
-        System.out.println("KibsController > exhibitor_faq");
+        //System.out.println("KibsController > exhibitor_faq");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/exhibitor/faq");
         return mv;
@@ -834,7 +834,7 @@ public class KibsController {
 
     @RequestMapping(value = "/exhibitor/faq/selectList.do", method = RequestMethod.POST)
     public ResponseEntity<List<FaqDTO>> exhibitor_faq_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsController > exhibitor_faq_selectList");
+        //System.out.println("KibsController > exhibitor_faq_selectList");
         //System.out.println(searchDTO.toString());
 
         List<FaqDTO> responseList = kibsService.processSelectFaqList(searchDTO);
@@ -844,7 +844,7 @@ public class KibsController {
 
     @RequestMapping(value = "/exhibitor/privacy.do", method = RequestMethod.GET)
     public ModelAndView exhibitor_privacy() {
-        System.out.println("KibsController > exhibitor_privacy");
+        //System.out.println("KibsController > exhibitor_privacy");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/exhibitor/privacy");
         return mv;
@@ -852,7 +852,7 @@ public class KibsController {
 
     @RequestMapping(value = "/exhibitor/findpw.do", method = RequestMethod.GET)
     public ModelAndView exhibitor_findpw() {
-        System.out.println("KibsController > exhibitor_findpw");
+        //System.out.println("KibsController > exhibitor_findpw");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/exhibitor/findpw");
         return mv;
@@ -864,7 +864,7 @@ public class KibsController {
 
     @RequestMapping(value = "/visitor/guide_off.do", method = RequestMethod.GET)
     public ModelAndView visitor_guide_off() {
-        System.out.println("KibsController > visitor_guide_off");
+        //System.out.println("KibsController > visitor_guide_off");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/visitor/guide_off");
         return mv;
@@ -872,7 +872,7 @@ public class KibsController {
 
     @RequestMapping(value = "/visitor/apply.do", method = RequestMethod.GET)
     public ModelAndView visitor_apply(String mode) {
-        System.out.println("KibsController > visitor_apply");
+        //System.out.println("KibsController > visitor_apply");
         ModelAndView mv = new ModelAndView();
         if(mode != null && !mode.isEmpty()){
             mv.addObject("mode", mode);
@@ -895,7 +895,7 @@ public class KibsController {
 
     @RequestMapping(value = "/visitor/completed.do", method = RequestMethod.GET)
     public ModelAndView visitor_completed() {
-        System.out.println("KibsController > visitor_completed");
+        //System.out.println("KibsController > visitor_completed");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/visitor/completed");
         return mv;
@@ -903,7 +903,7 @@ public class KibsController {
 
     @RequestMapping(value = "/visitor/login.do", method = RequestMethod.GET)
     public ModelAndView visitor_login() {
-        System.out.println("KibsController > visitor_login");
+        //System.out.println("KibsController > visitor_login");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/visitor/login");
         return mv;
@@ -912,7 +912,7 @@ public class KibsController {
     @RequestMapping(value = "/visitor/preApplyCheck.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<VisitorDTO> visitor_preApplyCheck(@RequestBody VisitorDTO visitorDTO) {
-        System.out.println("KibsController > visitor_preApplyCheck");
+        //System.out.println("KibsController > visitor_preApplyCheck");
         VisitorDTO result = kibsService.processSelectPreVisitorCheck(visitorDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -920,14 +920,14 @@ public class KibsController {
     @RequestMapping(value = "/visitor/save.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> visitor_save(@RequestBody VisitorDTO visitorDTO) {
-        System.out.println("KibsController > visitor_save");
+        //System.out.println("KibsController > visitor_save");
         ResponseDTO response = kibsService.processSaveVisitor(visitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/visitor/mypage.do", method = RequestMethod.GET)
     public ModelAndView visitor_mypage(String seq) {
-        System.out.println("KibsController > visitor_mypage");
+        //System.out.println("KibsController > visitor_mypage");
         ModelAndView mv = new ModelAndView();
         VisitorDTO info = kibsService.processSelectVisitorSingle(seq);
 
@@ -944,7 +944,7 @@ public class KibsController {
     @RequestMapping(value = "/visitor/mypage/deletePartner.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> visitor_mypage_deletePartner(@RequestBody PartnerDTO partnerDTO) {
-        System.out.println("KibsController > visitor_mypage_deletePartner");
+        //System.out.println("KibsController > visitor_mypage_deletePartner");
         //System.out.println(displayDTO.toString());
 
         ResponseDTO responseDTO = kibsService.processDeletePartner(partnerDTO);
@@ -954,7 +954,7 @@ public class KibsController {
 
     @RequestMapping(value = "/visitor/faq.do", method = RequestMethod.GET)
     public ModelAndView visitor_faq() {
-        System.out.println("KibsController > visitor_faq");
+        //System.out.println("KibsController > visitor_faq");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/visitor/faq");
         return mv;
@@ -963,7 +963,7 @@ public class KibsController {
     @RequestMapping(value = "/visitor/companySearch.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<SearchCompanyResponseDTO> visitor_companySearch(@RequestBody SearchCompanyRequestDTO searchCompanyRequestDTO) {
-        System.out.println("KibsController > visitor_companySearch");
+        //System.out.println("KibsController > visitor_companySearch");
         SearchCompanyResponseDTO result = kibsService.processSearchCompany(searchCompanyRequestDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -971,7 +971,7 @@ public class KibsController {
     @RequestMapping(value = "/apis/data/NpsBplcInfoInqireService/getBassInfoSearch/companySearch.do", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<ResponseDTO> data_companySearch(Integer code, Integer pageNo, Integer totalCount) {
-        System.out.println("KibsController > data_companySearch");
+        //System.out.println("KibsController > data_companySearch");
         ResponseDTO response = new ResponseDTO();
         try{
             //int pageNo = 1;
@@ -1025,7 +1025,7 @@ public class KibsController {
                         businessDTO.setWkplJnngStcd(item.getWkplJnngStcd());
 
                         kibsService.insertBusiness(businessDTO);
-                        System.out.println("total : " + total + " , pageNo : " + pageNo + " idx : " + idx);
+                        //System.out.println("total : " + total + " , pageNo : " + pageNo + " idx : " + idx);
                         idx++;
                     }
                 }
@@ -1048,7 +1048,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/contest.do", method = RequestMethod.GET)
     public ModelAndView board_contest() {
-        System.out.println("KibsController > board_contest");
+        //System.out.println("KibsController > board_contest");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/contest");
         return mv;
@@ -1057,7 +1057,7 @@ public class KibsController {
     @RequestMapping(value = "/board/contest/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ContestDTO>> board_contest_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsController > board_contest_selectList");
+        //System.out.println("KibsController > board_contest_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ContestDTO> responseList = kibsService.processSelectContestList(searchDTO);
@@ -1076,7 +1076,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/gallery.do", method = RequestMethod.GET)
     public ModelAndView board_gallery() {
-        System.out.println("KibsController > board_gallery");
+        //System.out.println("KibsController > board_gallery");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/gallery");
         return mv;
@@ -1085,7 +1085,7 @@ public class KibsController {
     @RequestMapping(value = "/board/gallery/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<DataroomDTO>> board_gallery_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsController > board_gallery_selectList");
+        //System.out.println("KibsController > board_gallery_selectList");
         //System.out.println(searchDTO.toString());
 
         List<DataroomDTO> responseList = kibsService.processSelectGalleryList(searchDTO);
@@ -1108,7 +1108,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/press.do", method = RequestMethod.GET)
     public ModelAndView board_press() {
-        System.out.println("KibsController > board_press");
+        //System.out.println("KibsController > board_press");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/press");
         return mv;
@@ -1117,7 +1117,7 @@ public class KibsController {
     @RequestMapping(value = "/board/press/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<PressDTO>> board_press_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsController > board_press_selectList");
+        //System.out.println("KibsController > board_press_selectList");
         //System.out.println(searchDTO.toString());
 
         List<PressDTO> responseList = kibsService.processSelectPressList(searchDTO);
@@ -1127,7 +1127,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/pressView.do", method = RequestMethod.GET)
     public ModelAndView board_pressView(String id) {
-        System.out.println("KibsController > board_pressView");
+        //System.out.println("KibsController > board_pressView");
         ModelAndView mv = new ModelAndView();
 
         /* 조회 카운트 Update */
@@ -1159,7 +1159,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/column.do", method = RequestMethod.GET)
     public ModelAndView board_column() {
-        System.out.println("KibsController > board_column");
+        //System.out.println("KibsController > board_column");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/column");
         return mv;
@@ -1168,7 +1168,7 @@ public class KibsController {
     @RequestMapping(value = "/board/column/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ColumnDTO>> board_column_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsController > board_column_selectList");
+        //System.out.println("KibsController > board_column_selectList");
         //System.out.println(searchDTO.toString());
 
         List<ColumnDTO> responseList = kibsService.processSelectColumnList(searchDTO);
@@ -1178,7 +1178,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/columnView.do", method = RequestMethod.GET)
     public ModelAndView board_columnView(String id) {
-        System.out.println("KibsController > board_columnView");
+        //System.out.println("KibsController > board_columnView");
         ModelAndView mv = new ModelAndView();
 
         /* 조회 카운트 Update */
@@ -1210,7 +1210,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/newsletter.do", method = RequestMethod.GET)
     public ModelAndView board_newsletter() {
-        System.out.println("KibsController > board_newsletter");
+        //System.out.println("KibsController > board_newsletter");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/newsletter");
         return mv;
@@ -1219,7 +1219,7 @@ public class KibsController {
     @RequestMapping(value = "/board/newsletter/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<NewsletterDTO>> board_newsletter_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsController > board_newsletter_selectList");
+        //System.out.println("KibsController > board_newsletter_selectList");
         //System.out.println(searchDTO.toString());
 
         List<NewsletterDTO> responseList = kibsService.processSelectNewsletterList(searchDTO);
@@ -1229,7 +1229,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/newsletterView.do", method = RequestMethod.GET)
     public ModelAndView board_newsletterView(String id) {
-        System.out.println("KibsController > board_newsletterView");
+        //System.out.println("KibsController > board_newsletterView");
         ModelAndView mv = new ModelAndView();
 
         /* 조회 카운트 Update */
@@ -1262,7 +1262,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history.do", method = RequestMethod.GET)
     public ModelAndView board_history() {
-        System.out.println("KibsController > board_history");
+        //System.out.println("KibsController > board_history");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history");
         return mv;
@@ -1270,7 +1270,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history08.do", method = RequestMethod.GET)
     public ModelAndView board_history08() {
-        System.out.println("KibsController > board_history08");
+        //System.out.println("KibsController > board_history08");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history08");
         return mv;
@@ -1278,7 +1278,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history09.do", method = RequestMethod.GET)
     public ModelAndView board_history09() {
-        System.out.println("KibsController > board_history09");
+        //System.out.println("KibsController > board_history09");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history09");
         return mv;
@@ -1286,7 +1286,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history10.do", method = RequestMethod.GET)
     public ModelAndView board_history10() {
-        System.out.println("KibsController > board_history10");
+        //System.out.println("KibsController > board_history10");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history10");
         return mv;
@@ -1294,7 +1294,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history11.do", method = RequestMethod.GET)
     public ModelAndView board_history11() {
-        System.out.println("KibsController > board_history11");
+        //System.out.println("KibsController > board_history11");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history11");
         return mv;
@@ -1302,7 +1302,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history12.do", method = RequestMethod.GET)
     public ModelAndView board_history12() {
-        System.out.println("KibsController > board_history12");
+        //System.out.println("KibsController > board_history12");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history12");
         return mv;
@@ -1310,7 +1310,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history13.do", method = RequestMethod.GET)
     public ModelAndView board_history13() {
-        System.out.println("KibsController > board_history13");
+        //System.out.println("KibsController > board_history13");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history13");
         return mv;
@@ -1318,7 +1318,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history14.do", method = RequestMethod.GET)
     public ModelAndView board_history14() {
-        System.out.println("KibsController > board_history14");
+        //System.out.println("KibsController > board_history14");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history14");
         return mv;
@@ -1326,7 +1326,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history15.do", method = RequestMethod.GET)
     public ModelAndView board_history15() {
-        System.out.println("KibsController > board_history15");
+        //System.out.println("KibsController > board_history15");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history15");
         return mv;
@@ -1334,7 +1334,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history16.do", method = RequestMethod.GET)
     public ModelAndView board_history16() {
-        System.out.println("KibsController > board_history16");
+        //System.out.println("KibsController > board_history16");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history16");
         return mv;
@@ -1342,7 +1342,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history17.do", method = RequestMethod.GET)
     public ModelAndView board_history17() {
-        System.out.println("KibsController > board_history17");
+        //System.out.println("KibsController > board_history17");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history17");
         return mv;
@@ -1350,7 +1350,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history18.do", method = RequestMethod.GET)
     public ModelAndView board_history18() {
-        System.out.println("KibsController > board_history18");
+        //System.out.println("KibsController > board_history18");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history18");
         return mv;
@@ -1358,7 +1358,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history19.do", method = RequestMethod.GET)
     public ModelAndView board_history19() {
-        System.out.println("KibsController > board_history19");
+        //System.out.println("KibsController > board_history19");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history19");
         return mv;
@@ -1366,7 +1366,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history21.do", method = RequestMethod.GET)
     public ModelAndView board_history21() {
-        System.out.println("KibsController > board_history21");
+        //System.out.println("KibsController > board_history21");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history21");
         return mv;
@@ -1374,7 +1374,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history22.do", method = RequestMethod.GET)
     public ModelAndView board_history22() {
-        System.out.println("KibsController > board_history22");
+        //System.out.println("KibsController > board_history22");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history22");
         return mv;
@@ -1382,7 +1382,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history23.do", method = RequestMethod.GET)
     public ModelAndView board_history23() {
-        System.out.println("KibsController > board_history23");
+        //System.out.println("KibsController > board_history23");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history23");
         return mv;
@@ -1390,7 +1390,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history24.do", method = RequestMethod.GET)
     public ModelAndView board_history24() {
-        System.out.println("KibsController > board_history24");
+        //System.out.println("KibsController > board_history24");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history24");
         return mv;
@@ -1398,7 +1398,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history25.do", method = RequestMethod.GET)
     public ModelAndView board_history25() {
-        System.out.println("KibsController > board_history25");
+        //System.out.println("KibsController > board_history25");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history25");
         return mv;
@@ -1406,7 +1406,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/history26.do", method = RequestMethod.GET)
     public ModelAndView board_history26() {
-        System.out.println("KibsController > board_history26");
+        //System.out.println("KibsController > board_history26");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/history26");
         return mv;
@@ -1414,7 +1414,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/bi.do", method = RequestMethod.GET)
     public ModelAndView board_bi() {
-        System.out.println("KibsController > board_bi");
+        //System.out.println("KibsController > board_bi");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/bi");
         return mv;
@@ -1422,7 +1422,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/cerify.do", method = RequestMethod.GET)
     public ModelAndView board_cerify() {
-        System.out.println("KibsController > board_cerify");
+        //System.out.println("KibsController > board_cerify");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/cerify");
         return mv;
@@ -1430,7 +1430,7 @@ public class KibsController {
 
     @RequestMapping(value = "/board/award.do", method = RequestMethod.GET)
     public ModelAndView board_award() {
-        System.out.println("KibsController > board_award");
+        //System.out.println("KibsController > board_award");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/board/award");
         return mv;
@@ -1442,7 +1442,7 @@ public class KibsController {
 
     @RequestMapping(value = "/online/kibstv.do", method = RequestMethod.GET)
     public ModelAndView online_kibstv() {
-        System.out.println("KibsController > online_kibstv");
+        //System.out.println("KibsController > online_kibstv");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/online/kibstv");
         return mv;
@@ -1451,7 +1451,7 @@ public class KibsController {
     @RequestMapping(value = "/online/kibstv_year/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<KibstvDTO>> online_kibstv_year_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsController > online_kibstv_year_selectList");
+        //System.out.println("KibsController > online_kibstv_year_selectList");
         //System.out.println(searchDTO.toString());
 
         List<KibstvDTO> responseList = kibsService.processSelectKibstvYearList(searchDTO);
@@ -1461,7 +1461,7 @@ public class KibsController {
 
     @RequestMapping(value = "/online/kibstv_cate.do", method = RequestMethod.GET)
     public ModelAndView online_kibstv_year() {
-        System.out.println("KibsController > online_kibstv_year");
+        //System.out.println("KibsController > online_kibstv_year");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/online/kibstv_cate");
         return mv;
@@ -1470,7 +1470,7 @@ public class KibsController {
     @RequestMapping(value = "/online/kibstv/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<KibstvDTO>> online_kibstv_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsController > online_kibstv_selectList");
+        //System.out.println("KibsController > online_kibstv_selectList");
         //System.out.println(searchDTO.toString());
 
         List<KibstvDTO> responseList = kibsService.processSelectKibstvList(searchDTO);
@@ -1480,7 +1480,7 @@ public class KibsController {
 
     @RequestMapping(value = "/online/company.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView online_company(HttpServletRequest request, String companyNameKo) {
-        System.out.println("KibsController > online_company");
+        //System.out.println("KibsController > online_company");
         ModelAndView mv = new ModelAndView();
         if("POST".equals(request.getMethod())){
             mv.addObject("companyNameKo", companyNameKo);
@@ -1492,7 +1492,7 @@ public class KibsController {
     @RequestMapping(value = "/online/company/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MainOnlineDTO>> online_company_selectList(@RequestBody MainOnlineDTO mainOnlineDTO) {
-        System.out.println("KibsController > online_company_selectList");
+        //System.out.println("KibsController > online_company_selectList");
         //System.out.println(mainOnlineDTO.toString());
 
         List<MainOnlineDTO> responseDTO = kibsService.processSelectOnlineListPaging(mainOnlineDTO);
@@ -1502,7 +1502,7 @@ public class KibsController {
 
     @RequestMapping(value = "/online/company_view.do", method = RequestMethod.GET)
     public ModelAndView online_company_view(String seq) {
-        System.out.println("KibsController > online_company_view");
+        //System.out.println("KibsController > online_company_view");
         ModelAndView mv = new ModelAndView();
 
         if(seq != null && !seq.isEmpty()) {
@@ -1538,7 +1538,7 @@ public class KibsController {
     @RequestMapping(value = "/exhibitor/company/selectChargeEmail.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ChargePersonDTO>> exhibitor_company_select_charge_email(@RequestBody ChargePersonDTO chargePersonDTO) {
-        System.out.println("KibsController > exhibitor_company_select_charge_email");
+        //System.out.println("KibsController > exhibitor_company_select_charge_email");
         //System.out.println(fileDTO.toString());
 
         List<ChargePersonDTO> response = kibsService.processSelectChargeEmail(chargePersonDTO);
@@ -1548,7 +1548,7 @@ public class KibsController {
 
     @RequestMapping(value = "/online/product.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView online_product(HttpServletRequest request, OnlineRelatedDTO onlineRelatedDTO) {
-        System.out.println("KibsController > online_product");
+        //System.out.println("KibsController > online_product");
         //System.out.println(onlineRelatedDTO.toString());
 
         ModelAndView mv = new ModelAndView();
@@ -1562,7 +1562,7 @@ public class KibsController {
     @RequestMapping(value = "/online/product/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> online_product_selectList(@RequestBody OnlineRelatedDTO onlineRelatedDTO) {
-        System.out.println("KibsController > online_product_selectList");
+        //System.out.println("KibsController > online_product_selectList");
         //System.out.println(onlineRelatedDTO.toString());
 
         //List<FileDTO> productFileList = new ArrayList<>();
@@ -1600,7 +1600,7 @@ public class KibsController {
 
     @RequestMapping(value = "/online/product_view.do", method = RequestMethod.GET)
     public ModelAndView online_product_view(String seq) {
-        System.out.println("KibsController > online_product_view");
+        //System.out.println("KibsController > online_product_view");
         //System.out.println(seq);
         ModelAndView mv = new ModelAndView();
         if (seq != null && !seq.isEmpty()) {
@@ -1730,7 +1730,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/index.do", method = RequestMethod.POST)
     public ModelAndView mypage_index(ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > mypage_index");
+        //System.out.println("KibsController > mypage_index");
         //System.out.println(exhibitorDTO.getSeq() + " / " + exhibitorDTO.getId() + " / " + exhibitorDTO.getTransferYear() );
         ModelAndView mv = new ModelAndView();
         ExhibitorNewDTO info = kibsService.processSelectExhibitorNewPrc(exhibitorNewDTO);
@@ -1742,7 +1742,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/selectBuyerSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<BuyerNewDTO> mypage_step_selectBuyerNewSingle(@RequestBody BuyerNewDTO buyerNewDTO) {
-        System.out.println("KibsController > mypage_step_selectBuyerNewSingle");
+        //System.out.println("KibsController > mypage_step_selectBuyerNewSingle");
         //System.out.println(buyerDTO.toString());
 
         BuyerNewDTO responseDTO = kibsService.processSelectBuyerNewSingle(buyerNewDTO);
@@ -1753,7 +1753,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/deleteBuyer.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_deleteBuyerNew(@RequestBody BuyerNewDTO buyerNewDTO) {
-        System.out.println("KibsController > mypage_step_deleteBuyerNew");
+        //System.out.println("KibsController > mypage_step_deleteBuyerNew");
         //System.out.println(buyerDTO.toString());
 
         ResponseDTO responseDTO = kibsService.processDeleteBuyerNew(buyerNewDTO);
@@ -1763,7 +1763,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/modify.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_modify(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_modify");
+        //System.out.println("KibsController > mypage_modify");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -1794,7 +1794,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/exhibitorNew/updateInfo.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_exhibitor_updateInfo(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > mypage_step_exhibitor_updateInfo");
+        //System.out.println("KibsController > mypage_step_exhibitor_updateInfo");
         //System.out.println(exhibitorDTO.toString());
 
         ResponseDTO responseDTO = kibsService.processUpdateExhibitorNewInfo(exhibitorNewDTO);
@@ -1804,7 +1804,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/step01.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_step01(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step01");
+        //System.out.println("KibsController > mypage_step01");
         ModelAndView mv = new ModelAndView();
 
         // 세션 ID로만 사용자 정보를 가져옵니다.
@@ -1874,7 +1874,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/updateExhibitorNew.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_updateExhibitorNew(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > mypage_step_updateExhibitorNew");
+        //System.out.println("KibsController > mypage_step_updateExhibitorNew");
 
         ResponseDTO responseDTO = kibsService.processUpdateExhibitorNew(exhibitorNewDTO);
 
@@ -1884,7 +1884,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/updateProductNewFileNote.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_updateProductFileNote(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > mypage_step_updateProductFileNote");
+        //System.out.println("KibsController > mypage_step_updateProductFileNote");
 
         for(ProductNewDTO productNew: exhibitorNewDTO.getProductList()){
             kibsService.processUpdateProductNewFileNote(exhibitorNewDTO.getSeq(), productNew.getNote());
@@ -1899,7 +1899,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/updateOnlineNewFileNote.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_updateOnlineFileNote(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > mypage_step_updateOnlineFileNote");
+        //System.out.println("KibsController > mypage_step_updateOnlineFileNote");
 
         for(OnlineNewDTO onlineNew: exhibitorNewDTO.getOnlineList()){
             kibsService.processUpdateOnlineNewFileNote(exhibitorNewDTO.getSeq(), onlineNew.getNote());
@@ -1914,7 +1914,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/deleteChargeNew.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_deleteChargeNew(@RequestBody ChargeNewDTO ChargeNewDTO) {
-        System.out.println("KibsController > mypage_step_deleteChargeNew");
+        //System.out.println("KibsController > mypage_step_deleteChargeNew");
         //System.out.println(onlineDTO.toString());
 
         ResponseDTO responseDTO = kibsService.processDeleteChargeNew(ChargeNewDTO);
@@ -1925,7 +1925,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/deleteProductNew.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_deleteProductNew(@RequestBody ProductNewDTO productNewDTO) {
-        System.out.println("KibsController > mypage_step_deleteProductNew");
+        //System.out.println("KibsController > mypage_step_deleteProductNew");
         //System.out.println(displayDTO.toString());
 
         ResponseDTO responseDTO = kibsService.processDeleteProductNew(productNewDTO);
@@ -1936,7 +1936,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/deleteOnlineNew.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_deleteOnlineNew(@RequestBody OnlineNewDTO onlineNewDTO) {
-        System.out.println("KibsController > mypage_step_deleteOnlineNew");
+        //System.out.println("KibsController > mypage_step_deleteOnlineNew");
         //System.out.println(onlineDTO.toString());
 
         ResponseDTO responseDTO = kibsService.processDeleteOnlineNew(onlineNewDTO);
@@ -1947,7 +1947,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/deleteFile.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_deleteFile(@RequestBody FileDTO fileDTO) {
-        System.out.println("KibsController > mypage_step_deleteFile");
+        //System.out.println("KibsController > mypage_step_deleteFile");
         //System.out.println(fileDTO.toString());
 
         ResponseDTO responseDTO = kibsService.processDeleteFile(fileDTO);
@@ -1957,7 +1957,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/step2_9.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_step2_9(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step2_9");
+        //System.out.println("KibsController > mypage_step2_9");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -1995,7 +1995,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/step2_1.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_step2_1(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step2_1");
+        //System.out.println("KibsController > mypage_step2_1");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -2028,7 +2028,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/updateExhibitBooth.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_updateExhibitBooth(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step_updateExhibitBooth");
+        //System.out.println("KibsController > mypage_step_updateExhibitBooth");
         //System.out.println(exhibitorDTO.toString());
         ResponseDTO response = kibsService.processUpdateExhibitBoothSeq(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -2036,7 +2036,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/step2_10.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_step2_10(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step2_10");
+        //System.out.println("KibsController > mypage_step2_10");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -2068,7 +2068,7 @@ public class KibsController {
     
     @RequestMapping(value = "/mypage/step2_2.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_step2_2(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step2_2");
+        //System.out.println("KibsController > mypage_step2_2");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -2101,7 +2101,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/updateCompanySign.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_updateCompanySign(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step_updateCompanySign");
+        //System.out.println("KibsController > mypage_step_updateCompanySign");
         //System.out.println(exhibitorDTO.toString());
         ResponseDTO response = kibsService.processUpdateCompanySignSeq(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -2109,7 +2109,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/step2_3.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_step2_3(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step2_3");
+        //System.out.println("KibsController > mypage_step2_3");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -2142,7 +2142,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/updateExhibitUtility.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_updateExhibitUtility(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step_updateExhibitUtility");
+        //System.out.println("KibsController > mypage_step_updateExhibitUtility");
         //System.out.println(exhibitorDTO.toString());
         ResponseDTO response = kibsService.processUpdateExhibitUtilitySeq(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -2150,7 +2150,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/step2_4.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_step2_4(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step2_4");
+        //System.out.println("KibsController > mypage_step2_4");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -2190,14 +2190,14 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/deletePassNew.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_deletePassNew(@RequestBody PassNewDTO passNewDTO) {
-        System.out.println("KibsController > mypage_step_deletePassNew");
+        //System.out.println("KibsController > mypage_step_deletePassNew");
         ResponseDTO response = kibsService.processDeletePassNew(passNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mypage/step2_5.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_step2_5(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step2_5");
+        //System.out.println("KibsController > mypage_step2_5");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -2238,7 +2238,7 @@ public class KibsController {
     @RequestMapping(value = "/mypage/step/updateExhibitGift.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mypage_step_updateExhibitGift(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step_updateExhibitGift");
+        //System.out.println("KibsController > mypage_step_updateExhibitGift");
         //System.out.println(exhibitorDTO.toString());
         ResponseDTO response = kibsService.processUpdateExhibitGiftSeq(exhibitorDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -2246,7 +2246,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/step2_6.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_step2_6() {
-        System.out.println("KibsController > mypage_step2_6");
+        //System.out.println("KibsController > mypage_step2_6");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mypage/step2_6");
         return mv;
@@ -2254,7 +2254,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/step2_7.do", method = RequestMethod.GET)
     public ModelAndView mypage_step2_7() {
-        System.out.println("KibsController > mypage_step2_7");
+        //System.out.println("KibsController > mypage_step2_7");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mypage/step2_7");
         return mv;
@@ -2262,7 +2262,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/step2_8.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_step2_8(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step2_8");
+        //System.out.println("KibsController > mypage_step2_8");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -2344,7 +2344,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/step03.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_step03(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_step03");
+        //System.out.println("KibsController > mypage_step03");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -2376,7 +2376,7 @@ public class KibsController {
 
     @RequestMapping(value = "/mypage/total.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView mypage_total(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > mypage_total");
+        //System.out.println("KibsController > mypage_total");
         ModelAndView mv = new ModelAndView();
 
         /* 기본정보 - 참가업체 정보 */
@@ -2430,7 +2430,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/index.do", method = RequestMethod.GET)
     public ModelAndView eng_index() {
-        System.out.println("KibsController > eng_index");
+        //System.out.println("KibsController > eng_index");
         ModelAndView mv = new ModelAndView();
         String lang = "EN";
 
@@ -2489,7 +2489,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/login.do", method = RequestMethod.GET)
     public ModelAndView eng_login() {
-        System.out.println("KibsController > eng_login");
+        //System.out.println("KibsController > eng_login");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/login");
         return mv;
@@ -2501,7 +2501,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/guide/summary.do", method = RequestMethod.GET)
     public ModelAndView eng_guide_summary() {
-        System.out.println("KibsController > eng_guide_summary");
+        //System.out.println("KibsController > eng_guide_summary");
         ModelAndView mv = new ModelAndView();
 
         // 브로슈어
@@ -2520,7 +2520,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/guide/venue.do", method = RequestMethod.GET)
     public ModelAndView eng_guide_venue() {
-        System.out.println("KibsController > eng_guide_venue");
+        //System.out.println("KibsController > eng_guide_venue");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/guide/venue");
         return mv;
@@ -2528,7 +2528,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/guide/to_kintex.do", method = RequestMethod.GET)
     public ModelAndView eng_guide_to_kintex() {
-        System.out.println("KibsController > eng_guide_to_kintex");
+        //System.out.println("KibsController > eng_guide_to_kintex");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/guide/to_kintex");
         return mv;
@@ -2536,7 +2536,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/guide/to_ara.do", method = RequestMethod.GET)
     public ModelAndView eng_guide_to_ara() {
-        System.out.println("KibsController > eng_guide_to_ara");
+        //System.out.println("KibsController > eng_guide_to_ara");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/guide/to_ara");
         return mv;
@@ -2544,7 +2544,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/guide/bi.do", method = RequestMethod.GET)
     public ModelAndView eng_guide_bi() {
-        System.out.println("KibsController > eng_guide_bi");
+        //System.out.println("KibsController > eng_guide_bi");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/guide/bi");
         return mv;
@@ -2552,7 +2552,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/guide/brochure.do", method = RequestMethod.GET)
     public ModelAndView eng_guide_brochure() {
-        System.out.println("KibsController > eng_guide_brochure");
+        //System.out.println("KibsController > eng_guide_brochure");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/guide/brochure");
         return mv;
@@ -2560,7 +2560,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/guide/certify.do", method = RequestMethod.GET)
     public ModelAndView eng_guide_certify() {
-        System.out.println("KibsController > eng_guide_certify");
+        //System.out.println("KibsController > eng_guide_certify");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/guide/certify");
         return mv;
@@ -2568,7 +2568,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/guide/contact.do", method = RequestMethod.GET)
     public ModelAndView eng_guide_contact() {
-        System.out.println("KibsController > eng_guide_contact");
+        //System.out.println("KibsController > eng_guide_contact");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/guide/contact");
         return mv;
@@ -2576,7 +2576,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/guide/program.do", method = RequestMethod.GET)
     public ModelAndView eng_guide_program() {
-        System.out.println("KibsController > eng_guide_program");
+        //System.out.println("KibsController > eng_guide_program");
         ModelAndView mv = new ModelAndView();
 
         /*DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
@@ -2592,7 +2592,7 @@ public class KibsController {
     // 최미나가 추가함
     @RequestMapping(value = "/eng/guide/program2025.do", method = RequestMethod.GET)
     public ModelAndView eng_guide_program2025() {
-        System.out.println("KibsController > eng_guide_program2025");
+        //System.out.println("KibsController > eng_guide_program2025");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/guide/program2025");
         return mv;
@@ -2600,7 +2600,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/guide/conference.do", method = RequestMethod.GET)
     public ModelAndView eng_guide_conference() {
-        System.out.println("KibsController > eng_guide_conference");
+        //System.out.println("KibsController > eng_guide_conference");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/guide/conference");
         return mv;
@@ -2608,7 +2608,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/guide/conference2025.do", method = RequestMethod.GET)
     public ModelAndView eng_guide_conference2025() {
-        System.out.println("KibsController > eng_guide_conference2025");
+        //System.out.println("KibsController > eng_guide_conference2025");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/guide/conference2025");
         return mv;
@@ -2620,7 +2620,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/categories.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_categories() {
-        System.out.println("KibsController > eng_exhibitor_categories");
+        //System.out.println("KibsController > eng_exhibitor_categories");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/categories");
         return mv;
@@ -2628,7 +2628,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/glance.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_glance() {
-        System.out.println("KibsController > eng_exhibitor_glance");
+        //System.out.println("KibsController > eng_exhibitor_glance");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/glance");
         return mv;
@@ -2636,7 +2636,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/marina.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_marina() {
-        System.out.println("KibsController > eng_exhibitor_marina");
+        //System.out.println("KibsController > eng_exhibitor_marina");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/marina");
         return mv;
@@ -2644,7 +2644,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/match.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_match() {
-        System.out.println("KibsController > eng_exhibitor_match");
+        //System.out.println("KibsController > eng_exhibitor_match");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/match");
         return mv;
@@ -2652,7 +2652,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/list.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_list() {
-        System.out.println("KibsController > eng_exhibitor_list");
+        //System.out.println("KibsController > eng_exhibitor_list");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/list");
         return mv;
@@ -2660,7 +2660,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/qna.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_qna() {
-        System.out.println("KibsController > eng_exhibitor_qna");
+        //System.out.println("KibsController > eng_exhibitor_qna");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/qna");
         return mv;
@@ -2669,7 +2669,7 @@ public class KibsController {
     @RequestMapping(value = "/eng/exhibitor/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<EnExhibitorListDTO>> eng_exhibitor_selectList(@RequestBody SearchDTO searchDTO) {
-        System.out.println("KibsController > eng_exhibitor_selectList");
+        //System.out.println("KibsController > eng_exhibitor_selectList");
         //System.out.println(searchDTO.getPageNum());
         //System.out.println(searchDTO.getRows());
 
@@ -2680,7 +2680,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/privacy.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_privacy() {
-        System.out.println("KibsController > eng_exhibitor_privacy");
+        //System.out.println("KibsController > eng_exhibitor_privacy");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/privacy");
         return mv;
@@ -2688,7 +2688,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/login.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_login() {
-        System.out.println("KibsController > eng_exhibitor_login");
+        //System.out.println("KibsController > eng_exhibitor_login");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/login");
         return mv;
@@ -2696,7 +2696,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/findpw.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_findpw() {
-        System.out.println("KibsController > eng_exhibitor_findpw");
+        //System.out.println("KibsController > eng_exhibitor_findpw");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/findpw");
         return mv;
@@ -2704,7 +2704,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/list22.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_list22() {
-        System.out.println("KibsController > eng_exhibitor_list22");
+        //System.out.println("KibsController > eng_exhibitor_list22");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/list22");
         return mv;
@@ -2712,7 +2712,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/list19.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_list19() {
-        System.out.println("KibsController > eng_exhibitor_list19");
+        //System.out.println("KibsController > eng_exhibitor_list19");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/list19");
         return mv;
@@ -2720,7 +2720,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/list18.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_list18() {
-        System.out.println("KibsController > eng_exhibitor_list18");
+        //System.out.println("KibsController > eng_exhibitor_list18");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/list18");
         return mv;
@@ -2728,7 +2728,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/list17.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_list17() {
-        System.out.println("KibsController > eng_exhibitor_list17");
+        //System.out.println("KibsController > eng_exhibitor_list17");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/list17");
         return mv;
@@ -2736,7 +2736,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/list16.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_list16() {
-        System.out.println("KibsController > eng_exhibitor_list16");
+        //System.out.println("KibsController > eng_exhibitor_list16");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/list16");
         return mv;
@@ -2744,7 +2744,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/list15.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_list15() {
-        System.out.println("KibsController > eng_exhibitor_list15");
+        //System.out.println("KibsController > eng_exhibitor_list15");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/list15");
         return mv;
@@ -2752,7 +2752,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/list14.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_list14() {
-        System.out.println("KibsController > eng_exhibitor_list14");
+        //System.out.println("KibsController > eng_exhibitor_list14");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/list14");
         return mv;
@@ -2760,7 +2760,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/exhibitor/list13.do", method = RequestMethod.GET)
     public ModelAndView eng_exhibitor_list13() {
-        System.out.println("KibsController > eng_exhibitor_list13");
+        //System.out.println("KibsController > eng_exhibitor_list13");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/exhibitor/list13");
         return mv;
@@ -2772,7 +2772,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/apply/step01.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView eng_apply_step01() {
-        System.out.println("KibsController > eng_apply_step01");
+        //System.out.println("KibsController > eng_apply_step01");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/apply/step01");
         return mv;
@@ -2780,7 +2780,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/apply/step2_1.do", method = RequestMethod.GET)
     public ModelAndView eng_apply_step2_1() {
-        System.out.println("KibsController > eng_apply_step2_1");
+        //System.out.println("KibsController > eng_apply_step2_1");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/apply/step2_1");
         return mv;
@@ -2788,7 +2788,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/apply/step2_2.do", method = RequestMethod.GET)
     public ModelAndView eng_apply_step2_2() {
-        System.out.println("KibsController > eng_apply_step2_2");
+        //System.out.println("KibsController > eng_apply_step2_2");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/apply/step2_2");
         return mv;
@@ -2796,7 +2796,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/apply/step2_3.do", method = RequestMethod.GET)
     public ModelAndView eng_apply_step2_3() {
-        System.out.println("KibsController > eng_apply_step2_3");
+        //System.out.println("KibsController > eng_apply_step2_3");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/apply/step2_3");
         return mv;
@@ -2804,7 +2804,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/apply/step2_4.do", method = RequestMethod.GET)
     public ModelAndView eng_apply_step2_4() {
-        System.out.println("KibsController > eng_apply_step2_4");
+        //System.out.println("KibsController > eng_apply_step2_4");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/apply/step2_4");
         return mv;
@@ -2812,7 +2812,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/apply/step2_5.do", method = RequestMethod.GET)
     public ModelAndView eng_apply_step2_5() {
-        System.out.println("KibsController > eng_apply_step2_5");
+        //System.out.println("KibsController > eng_apply_step2_5");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/apply/step2_5");
         return mv;
@@ -2820,7 +2820,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/apply/step2_6.do", method = RequestMethod.GET)
     public ModelAndView eng_apply_step2_6() {
-        System.out.println("KibsController > eng_apply_step2_6");
+        //System.out.println("KibsController > eng_apply_step2_6");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/apply/step2_6");
         return mv;
@@ -2828,7 +2828,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/apply/step2_7.do", method = RequestMethod.GET)
     public ModelAndView eng_apply_step2_7() {
-        System.out.println("KibsController > eng_apply_step2_7");
+        //System.out.println("KibsController > eng_apply_step2_7");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/apply/step2_7");
         return mv;
@@ -2836,7 +2836,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/apply/step2_8.do", method = RequestMethod.GET)
     public ModelAndView eng_apply_step2_8() {
-        System.out.println("KibsController > eng_apply_step2_8");
+        //System.out.println("KibsController > eng_apply_step2_8");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/apply/step2_8");
         return mv;
@@ -2844,7 +2844,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/apply/step03.do", method = RequestMethod.GET)
     public ModelAndView eng_apply_step03() {
-        System.out.println("KibsController > eng_apply_step03");
+        //System.out.println("KibsController > eng_apply_step03");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/apply/step03");
         return mv;
@@ -2856,7 +2856,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/buyer/apply.do", method = RequestMethod.GET)
     public ModelAndView eng_buyer_apply() {
-        System.out.println("KibsController > eng_buyer_apply");
+        //System.out.println("KibsController > eng_buyer_apply");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/buyer/apply");
         return mv;
@@ -2864,7 +2864,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/buyer/completed.do", method = RequestMethod.GET)
     public ModelAndView eng_buyer_completed() {
-        System.out.println("KibsController > eng_buyer_completed");
+        //System.out.println("KibsController > eng_buyer_completed");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/buyer/completed");
         return mv;
@@ -2872,7 +2872,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/buyer/glance.do", method = RequestMethod.GET)
     public ModelAndView eng_buyer_glance() {
-        System.out.println("KibsController > eng_buyer_glance");
+        //System.out.println("KibsController > eng_buyer_glance");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/buyer/glance");
         return mv;
@@ -2880,7 +2880,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/buyer/marina.do", method = RequestMethod.GET)
     public ModelAndView eng_buyer_marina() {
-        System.out.println("KibsController > eng_buyer_marina");
+        //System.out.println("KibsController > eng_buyer_marina");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/buyer/marina");
         return mv;
@@ -2888,7 +2888,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/buyer/match.do", method = RequestMethod.GET)
     public ModelAndView eng_buyer_match() {
-        System.out.println("KibsController > eng_buyer_match");
+        //System.out.println("KibsController > eng_buyer_match");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/buyer/match");
         return mv;
@@ -2896,7 +2896,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/buyer/login.do", method = RequestMethod.GET)
     public ModelAndView eng_buyer_login() {
-        System.out.println("KibsController > eng_buyer_login");
+        //System.out.println("KibsController > eng_buyer_login");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/buyer/login");
         return mv;
@@ -2904,7 +2904,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/buyer/mypage.do", method = RequestMethod.GET)
     public ModelAndView eng_buyer_mypage(String seq) {
-        System.out.println("KibsController > eng_buyer_mypage");
+        //System.out.println("KibsController > eng_buyer_mypage");
         ModelAndView mv = new ModelAndView();
         VisitorDTO info = kibsService.processSelectVisitorSingle(seq);
 
@@ -2919,7 +2919,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/buyer/qna.do", method = RequestMethod.GET)
     public ModelAndView eng_buyer_qna() {
-        System.out.println("KibsController > eng_buyer_qna");
+        //System.out.println("KibsController > eng_buyer_qna");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/buyer/qna");
         return mv;
@@ -2931,7 +2931,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/board/notice.do", method = RequestMethod.GET)
     public ModelAndView eng_board_notice() {
-        System.out.println("KibsController > eng_board_notice");
+        //System.out.println("KibsController > eng_board_notice");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/board/notice");
         return mv;
@@ -2939,7 +2939,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/board/kibstv.do", method = RequestMethod.GET)
     public ModelAndView eng_board_kibstv() {
-        System.out.println("KibsController > eng_board_kibstv");
+        //System.out.println("KibsController > eng_board_kibstv");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/board/kibstv");
         return mv;
@@ -2947,7 +2947,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/board/kibstv_cate.do", method = RequestMethod.GET)
     public ModelAndView eng_board_kibstv_cate() {
-        System.out.println("KibsController > eng_board_kibstv_cate");
+        //System.out.println("KibsController > eng_board_kibstv_cate");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/board/kibstv_cate");
         return mv;
@@ -2955,7 +2955,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/board/media.do", method = RequestMethod.GET)
     public ModelAndView eng_board_media() {
-        System.out.println("KibsController > eng_board_media");
+        //System.out.println("KibsController > eng_board_media");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/board/media");
         return mv;
@@ -2963,7 +2963,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/board/gallery.do", method = RequestMethod.GET)
     public ModelAndView eng_board_gallery() {
-        System.out.println("KibsController > eng_board_gallery");
+        //System.out.println("KibsController > eng_board_gallery");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/board/gallery");
         return mv;
@@ -2971,7 +2971,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/board/newsletter.do", method = RequestMethod.GET)
     public ModelAndView eng_board_newsletter() {
-        System.out.println("KibsController > eng_board_newsletter");
+        //System.out.println("KibsController > eng_board_newsletter");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/board/newsletter");
         return mv;
@@ -2979,7 +2979,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/board/mediaView.do", method = RequestMethod.GET)
     public ModelAndView eng_board_mediaView() {
-        System.out.println("KibsController > eng_board_mediaView");
+        //System.out.println("KibsController > eng_board_mediaView");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/board/mediaView");
         return mv;
@@ -2987,7 +2987,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/board/newsletterView.do", method = RequestMethod.GET)
     public ModelAndView eng_board_newsletterView() {
-        System.out.println("KibsController > eng_board_newsletterView");
+        //System.out.println("KibsController > eng_board_newsletterView");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/board/newsletterView");
         return mv;
@@ -2995,7 +2995,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/board/noticeView.do", method = RequestMethod.GET)
     public ModelAndView eng_board_noticeView(String id) {
-        System.out.println("KibsController > eng_board_noticeView");
+        //System.out.println("KibsController > eng_board_noticeView");
         //System.out.println(id);
         ModelAndView mv = new ModelAndView();
 
@@ -3034,7 +3034,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/index.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_index() {
-        System.out.println("KibsController > eng_mypage_index");
+        //System.out.println("KibsController > eng_mypage_index");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/index");
         return mv;
@@ -3042,7 +3042,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/modify.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_modify() {
-        System.out.println("KibsController > eng_mypage_modify");
+        //System.out.println("KibsController > eng_mypage_modify");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/modify");
         return mv;
@@ -3050,7 +3050,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/step01.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_step01() {
-        System.out.println("KibsController > eng_mypage_step01");
+        //System.out.println("KibsController > eng_mypage_step01");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/step01");
         return mv;
@@ -3058,7 +3058,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/step2_1.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_step2_1() {
-        System.out.println("KibsController > eng_mypage_step2_1");
+        //System.out.println("KibsController > eng_mypage_step2_1");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/step2_1");
         return mv;
@@ -3066,7 +3066,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/step2_2.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_step2_2() {
-        System.out.println("KibsController > eng_mypage_step2_2");
+        //System.out.println("KibsController > eng_mypage_step2_2");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/step2_2");
         return mv;
@@ -3074,7 +3074,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/step2_3.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_step2_3() {
-        System.out.println("KibsController > eng_mypage_step2_3");
+        //System.out.println("KibsController > eng_mypage_step2_3");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/step2_3");
         return mv;
@@ -3082,7 +3082,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/step2_4.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_step2_4() {
-        System.out.println("KibsController > eng_mypage_step2_4");
+        //System.out.println("KibsController > eng_mypage_step2_4");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/step2_4");
         return mv;
@@ -3090,7 +3090,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/step2_5.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_step2_5() {
-        System.out.println("KibsController > eng_mypage_step2_5");
+        //System.out.println("KibsController > eng_mypage_step2_5");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/step2_5");
         return mv;
@@ -3098,7 +3098,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/step2_6.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_step2_6() {
-        System.out.println("KibsController > eng_mypage_step2_6");
+        //System.out.println("KibsController > eng_mypage_step2_6");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/step2_6");
         return mv;
@@ -3106,7 +3106,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/step2_7.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_step2_7() {
-        System.out.println("KibsController > eng_mypage_step2_7");
+        //System.out.println("KibsController > eng_mypage_step2_7");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/step2_7");
         return mv;
@@ -3114,7 +3114,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/step2_8.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_step2_8() {
-        System.out.println("KibsController > eng_mypage_step2_8");
+        //System.out.println("KibsController > eng_mypage_step2_8");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/step2_8");
         return mv;
@@ -3122,7 +3122,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/step03.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_step03() {
-        System.out.println("KibsController > eng_mypage_step03");
+        //System.out.println("KibsController > eng_mypage_step03");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/step03");
         return mv;
@@ -3130,7 +3130,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/mypage/total.do", method = RequestMethod.GET)
     public ModelAndView eng_mypage_total() {
-        System.out.println("KibsController > eng_mypage_total");
+        //System.out.println("KibsController > eng_mypage_total");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/eng/mypage/total");
         return mv;
@@ -3142,7 +3142,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/online/company.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView eng_online_company(HttpServletRequest request, String companyNameEn) {
-        System.out.println("KibsController > eng_online_company");
+        //System.out.println("KibsController > eng_online_company");
         ModelAndView mv = new ModelAndView();
         if("POST".equals(request.getMethod())){
             mv.addObject("companyNameEn", companyNameEn);
@@ -3154,7 +3154,7 @@ public class KibsController {
     @RequestMapping(value = "/eng/online/company/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MainOnlineDTO>> eng_online_company_selectList(@RequestBody MainOnlineDTO mainOnlineDTO) {
-        System.out.println("KibsController > eng_online_company_selectList");
+        //System.out.println("KibsController > eng_online_company_selectList");
         //System.out.println(mainOnlineDTO.toString());
 
         List<MainOnlineDTO> responseDTO = kibsService.processSelectEnOnlineListPaging(mainOnlineDTO);
@@ -3164,7 +3164,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/online/company_view.do", method = RequestMethod.GET)
     public ModelAndView eng_online_company_view(String seq) {
-        System.out.println("KibsController > eng_online_company_view");
+        //System.out.println("KibsController > eng_online_company_view");
         ModelAndView mv = new ModelAndView();
 
         if(seq != null && !seq.isEmpty()) {
@@ -3211,7 +3211,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/online/product.do", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView eng_online_product(HttpServletRequest request, OnlineRelatedDTO onlineRelatedDTO) {
-        System.out.println("KibsController > eng_online_product");
+        //System.out.println("KibsController > eng_online_product");
         //System.out.println(onlineRelatedDTO.toString());
 
         ModelAndView mv = new ModelAndView();
@@ -3225,7 +3225,7 @@ public class KibsController {
     @RequestMapping(value = "/eng/online/product/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> eng_online_product_selectList(@RequestBody OnlineRelatedDTO onlineRelatedDTO) {
-        System.out.println("KibsController > eng_online_product_selectList");
+        //System.out.println("KibsController > eng_online_product_selectList");
         //System.out.println(onlineRelatedDTO.toString());
 
         //List<FileDTO> productFileList = new ArrayList<>();
@@ -3263,7 +3263,7 @@ public class KibsController {
 
     @RequestMapping(value = "/eng/online/product_view.do", method = RequestMethod.GET)
     public ModelAndView eng_online_product_view(String seq) {
-        System.out.println("KibsController > eng_online_product_view");
+        //System.out.println("KibsController > eng_online_product_view");
         //System.out.println(seq);
         ModelAndView mv = new ModelAndView();
         if (seq != null && !seq.isEmpty()) {
@@ -3420,7 +3420,7 @@ public class KibsController {
     @RequestMapping(value = "/checkDuplicateId.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Integer> checkDuplicateId(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > checkDuplicateId");
+        //System.out.println("KibsController > checkDuplicateId");
         Integer result = kibsService.checkDuplicateId(exhibitorNewDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -3428,7 +3428,7 @@ public class KibsController {
     @RequestMapping(value = "/searchExhibitorNewSeq.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> searchExhibitorNewSeq(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > searchExhibitorNewSeq");
+        //System.out.println("KibsController > searchExhibitorNewSeq");
         String seq = kibsService.processSearchExhibitorNewSeq(exhibitorNewDTO);
         return new ResponseEntity<>(seq, HttpStatus.OK);
     }
@@ -3436,7 +3436,7 @@ public class KibsController {
     @RequestMapping(value = "/getExhibitorNewEmail.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> getExhibitorNewEmail(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > getExhibitorNewEmail");
+        //System.out.println("KibsController > getExhibitorNewEmail");
         String result = kibsService.getExhibitorNewEmail(exhibitorNewDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -3444,7 +3444,7 @@ public class KibsController {
     @RequestMapping(value = "/getExhibitorNewRepEmail.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> getExhibitorNewRepEmail(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > getExhibitorNewRepEmail");
+        //System.out.println("KibsController > getExhibitorNewRepEmail");
         String result = kibsService.getExhibitorNewRepEmail(exhibitorNewDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -3452,7 +3452,7 @@ public class KibsController {
     @RequestMapping(value = "/preGetExhibitorEmail.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<String>> preGetExhibitorEmail(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > preGetExhibitorEmail");
+        //System.out.println("KibsController > preGetExhibitorEmail");
         List<String> result = kibsService.preGetExhibitorEmail(exhibitorDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -3460,7 +3460,7 @@ public class KibsController {
     @RequestMapping(value = "/updateExhibitorNewPasswordInit.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> updateExhibitorNewPasswordInit(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        System.out.println("KibsController > updateExhibitorNewPasswordInit");
+        //System.out.println("KibsController > updateExhibitorNewPasswordInit");
         ResponseDTO response = kibsService.processUpdateExhibitorNewPasswordInit(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -3468,7 +3468,7 @@ public class KibsController {
     @RequestMapping(value = "/exhibit/loginForm.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> exhibit_loginForm(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > exhibit_loginForm");
+        //System.out.println("KibsController > exhibit_loginForm");
         ResponseDTO response = kibsService.processLoginExhibitorNew(exhibitorNewDTO);
         if(response.getResultCode().equals("0")){
             session.setAttribute("status", "logon");
@@ -3483,7 +3483,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/insertExhibitorNew.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> insertExhibitorNew(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > insertExhibitorNew");
+        //System.out.println("KibsController > insertExhibitorNew");
         //System.out.println(exhibitorDTO.toString());
         ResponseDTO response = kibsService.processInsertExhibitorNew(exhibitorNewDTO);
         if(response.getResultCode().equals("0")){
@@ -3495,7 +3495,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/saveProductNew.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> saveProductNew(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > saveProductNew");
+        //System.out.println("KibsController > saveProductNew");
         //System.out.println(exhibitorDTO.toString());
         ResponseDTO response = kibsService.processSaveProductNew(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -3504,7 +3504,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/updateExhibitorNewBooth.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> updateExhibitorNewBooth(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > updateExhibitorNewBooth");
+        //System.out.println("KibsController > updateExhibitorNewBooth");
         ResponseDTO response = kibsService.processUpdateExhibitorNewBooth(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -3512,7 +3512,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/updateExhibitorNewMaritime.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> updateExhibitorNewMaritime(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > updateExhibitorNewMaritime");
+        //System.out.println("KibsController > updateExhibitorNewMaritime");
         ResponseDTO response = kibsService.processUpdateExhibitorNewMaritime(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -3520,7 +3520,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/updateExhibitorNewCompanySign.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> updateExhibitorNewCompanySign(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > updateExhibitorNewCompanySign");
+        //System.out.println("KibsController > updateExhibitorNewCompanySign");
         ResponseDTO response = kibsService.processUpdateExhibitorNewCompanySign(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -3528,7 +3528,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/updateExhibitorNewUtility.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> updateExhibitorNewUtility(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > updateExhibitorNewUtility");
+        //System.out.println("KibsController > updateExhibitorNewUtility");
         ResponseDTO response = kibsService.processUpdateExhibitorNewUtility(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -3536,7 +3536,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/insertPassNew.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> insertPassNew(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > insertPassNew");
+        //System.out.println("KibsController > insertPassNew");
         ResponseDTO response = kibsService.processInsertPassNew(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -3544,7 +3544,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/insertGiftNew.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> insertGiftNew(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > insertGiftNew");
+        //System.out.println("KibsController > insertGiftNew");
         ResponseDTO response = kibsService.processInsertGiftNew(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -3552,7 +3552,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/selectExhibitGift.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<GiftDTO> selectExhibitGift(@RequestBody GiftDTO giftDTO) {
-        System.out.println("KibsController > selectExhibitGift");
+        //System.out.println("KibsController > selectExhibitGift");
         //System.out.println(searchDTO.toString());
 
         GiftDTO response = kibsService.processSelectExhibitorGift(giftDTO);
@@ -3563,7 +3563,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/deleteExhibitGift.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> apply_step_deleteExhibitGift(@RequestBody GiftDTO giftDTO) {
-        System.out.println("KibsController > apply_step_deleteExhibitGift");
+        //System.out.println("KibsController > apply_step_deleteExhibitGift");
         //System.out.println(buyerDTO.toString());
 
         ResponseDTO responseDTO = kibsService.processDeleteExhibitGift(giftDTO);
@@ -3574,7 +3574,7 @@ public class KibsController {
     @RequestMapping(value = "/getExhibitorSeq.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> getExhibitorSeq(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > getExhibitorSeq");
+        //System.out.println("KibsController > getExhibitorSeq");
         //System.out.println(exhibitorDTO.toString());
         if(session.getAttribute("id") != null) {
             exhibitorDTO.setId(String.valueOf(session.getAttribute("id")));
@@ -3592,7 +3592,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/updateWebbanner.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> updateWebbanner(@RequestBody ExhibitorDTO exhibitorDTO, HttpSession session) {
-        System.out.println("KibsController > updateWebbanner");
+        //System.out.println("KibsController > updateWebbanner");
         //System.out.println(exhibitorDTO.toString());
         if(session.getAttribute("id") != null) {
             exhibitorDTO.setId(String.valueOf(session.getAttribute("id")));
@@ -3606,7 +3606,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/directory/selectExhibitorInfo.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ExhibitorDTO> selectExhibitorInfo(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > selectExhibitorInfo");
+        //System.out.println("KibsController > selectExhibitorInfo");
         //System.out.println(searchDTO.toString());
 
         ExhibitorDTO response = kibsService.processSelectExhibitorInfo(exhibitorDTO);
@@ -3621,7 +3621,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/directory/selectChargeNewInfo.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ChargeNewDTO>> selectChargeNewInfo(@RequestBody ChargeNewDTO chargeNewDTO) {
-        System.out.println("KibsController > selectChargeNewInfo");
+        //System.out.println("KibsController > selectChargeNewInfo");
         //System.out.println(searchDTO.toString());
 
         List<ChargeNewDTO> responseList = kibsService.processSelectChargeNewList(chargeNewDTO);
@@ -3632,7 +3632,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/directory/selectChargeInfo.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ChargePersonDTO>> selectChargeInfo(@RequestBody ChargePersonDTO chargePersonDTO) {
-        System.out.println("KibsController > selectChargeInfo");
+        //System.out.println("KibsController > selectChargeInfo");
         //System.out.println(searchDTO.toString());
 
         List<ChargePersonDTO> responseList = kibsService.processSelectChargeInfo(chargePersonDTO);
@@ -3643,7 +3643,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/directory/selectDisplayInfo.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<DisplayDTO>> selectDisplayInfo(@RequestBody DisplayDTO displayDTO) {
-        System.out.println("KibsController > selectDisplayInfo");
+        //System.out.println("KibsController > selectDisplayInfo");
         //System.out.println(searchDTO.toString());
 
         List<DisplayDTO> responseList = kibsService.processSelectDisplayInfo(displayDTO);
@@ -3654,7 +3654,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/directory/selectFileInfo.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<FileDTO> selectFileInfo(@RequestBody FileDTO fileDTO) {
-        System.out.println("KibsController > selectFileInfo");
+        //System.out.println("KibsController > selectFileInfo");
         //System.out.println(searchDTO.toString());
 
         FileDTO response = kibsService.processSelectFileInfo(fileDTO);
@@ -3665,7 +3665,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/insertDirectory.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> insertDirectory(@RequestBody DirectoryDTO directoryDTO, HttpSession session) {
-        System.out.println("KibsController > insertDirectory");
+        //System.out.println("KibsController > insertDirectory");
         ResponseDTO response = kibsService.processInsertDirectory(directoryDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -3673,7 +3673,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/step/updateExhibitorNewStatus.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> updateExhibitorNewStatus(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        System.out.println("KibsController > updateExhibitorNewStatus");
+        //System.out.println("KibsController > updateExhibitorNewStatus");
         ResponseDTO response = kibsService.processUpdateExhibitorNewApprovalStatus(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -3681,7 +3681,7 @@ public class KibsController {
     @RequestMapping(value = "/file/selectFileList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<FileDTO>> processSelectFileList(@RequestBody FileDTO fileDTO) {
-        System.out.println("KibsController > processSelectFileList");
+        //System.out.println("KibsController > processSelectFileList");
         //System.out.println(fileDTO.toString());
 
         List<FileDTO> response = kibsService.processSelectFileList(fileDTO.getUserId());
@@ -3692,7 +3692,7 @@ public class KibsController {
     @RequestMapping(value = "/apply/exhibitor/pre/selectSingle.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ExhibitorDTO> apply_exhibitor_pre_selectSingle(@RequestBody ExhibitorDTO exhibitorDTO) {
-        System.out.println("KibsController > apply_exhibitor_pre_selectSingle");
+        //System.out.println("KibsController > apply_exhibitor_pre_selectSingle");
         //System.out.println(searchDTO.toString());
 
         ExhibitorDTO info = kibsService.processSelectPreExhibitorSingle(exhibitorDTO);
@@ -3760,7 +3760,7 @@ public class KibsController {
     @RequestMapping(value = "/sms/send.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<SmsResponseDTO> processSmsSend(@RequestBody SmsDTO smsDTO) {
-        System.out.println("KibsController > processSelectFileList");
+        //System.out.println("KibsController > processSelectFileList");
         //System.out.println(fileDTO.toString());
 
         SmsResponseDTO response = commService.smsSend(smsDTO);

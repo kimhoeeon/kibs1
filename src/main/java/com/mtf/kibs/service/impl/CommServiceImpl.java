@@ -39,7 +39,7 @@ public class CommServiceImpl implements CommService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
     @Override
     public List<CommCodeDTO> getCommCodeList(CommCodeDTO commCodeDTO) {
-        System.out.println("CommServiceImpl > getCommCodeList : ======");
+        //System.out.println("Kibs.println("CommServiceImpl > getCommCodeList : ======");
         return commMapper.getCommCodeList(commCodeDTO);
     }
 
@@ -1099,7 +1099,7 @@ public class CommServiceImpl implements CommService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public void processUpdateFileDeleteUseN(FileDTO fileDTO) {
-        System.out.println("CommServiceImpl > processUpdateFileDeleteUseN");
+        //System.out.println("CommServiceImpl > processUpdateFileDeleteUseN");
         try {
             if(!StringUtil.isEmpty(fileDTO.getUserId())){
                 commMapper.updateFileDeleteUseN(fileDTO);
@@ -1112,7 +1112,7 @@ public class CommServiceImpl implements CommService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processUpdateFileParentSeq(FileDTO fileDTO) {
-        System.out.println("CommServiceImpl > processUpdateFileParentSeq");
+        //System.out.println("CommServiceImpl > processUpdateFileParentSeq");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
@@ -1144,7 +1144,7 @@ public class CommServiceImpl implements CommService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<FileDTO> processSelectFileParentSeqList(FileDTO fileDTO) {
-        System.out.println("CommServiceImpl > processSelectFileParentSeqList");
+        //System.out.println("CommServiceImpl > processSelectFileParentSeqList");
         return commMapper.selectFileParentSeqList(fileDTO);
     }
 
