@@ -596,7 +596,7 @@ function requestMakeMailFormat(data){
     let note = data.note;
 
     if(nvl(note,'') === '개발사') {
-        receiverArr.push({email: 'eh32408@kintex.com'});
+        receiverArr.push({email: 'kibs@kintex.com'});
         receiverArr.push({email: 'eh32509@kintex.com'});
         receiverArr.push({email: 'eh32515@kintex.com'});
     }else{
