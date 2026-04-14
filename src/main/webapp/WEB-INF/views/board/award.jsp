@@ -157,6 +157,93 @@
             <div class="award_hist swiper_box">
                 <div class="swiper swiper_award_hist">
                     <div class="swiper-wrapper">
+                        <!-- 2026 -->
+                        <div class="award_hist_box swiper-slide" id="award_hist_2026">
+                            <div class="year">
+                                <div class="swiper-button-prev swiper_award_hist_prev"></div>
+                                <div class="number">2026</div>
+                                <div class="swiper-button-next swiper_award_hist_next"></div>
+                            </div>
+                            <div class="list">
+                                <ul>
+                                    <li>
+                                        <div class="logo"><img src="/img/img_award_2026_01.jpg"></div>
+                                        <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_san.png"></div>
+                                            <div class="name">프리테크엠아이</div>
+                                            <div class="prd">병렬형 듀얼 추진 하이브리드 시스템</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="logo"><img src="/img/img_award_2026_02.jpg"></div>
+                                        <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_hae.png"></div>
+                                            <div class="name">㈜에스컴텍</div>
+                                            <div class="prd">24ft급 광폭 낚시보트</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="logo"><img src="/img/img_award_2026_03.jpg"></div>
+                                        <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_ggd.png"></div>
+                                            <div class="name">㈜네모</div>
+                                            <div class="prd">피싱노트</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="logo"><img src="/img/img_award_2026_04.jpg"></div>
+                                        <div class="txt">
+                                            <div class="crown"><img src="/img/img_award_crown_ggd.png"></div>
+                                            <div class="name">와이케이서프</div>
+                                            <div class="prd">서프보드</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="logo"><img src="/img/img_award_2026_05.jpg"></div>
+                                        <div class="txt">
+                                            <div class="name">에스텍마린</div>
+                                            <div class="prd">블루웨일 630 보트</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="logo"><img src="/img/img_award_2026_06.jpg"></div>
+                                        <div class="txt">
+                                            <div class="name">현대상공모터스</div>
+                                            <div class="prd">야마하 웨이크보트 255XD</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="logo"><img src="/img/img_award_2026_07.jpg"></div>
+                                        <div class="txt">
+                                            <div class="name">백산 프로펠라</div>
+                                            <div class="prd">네오</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="logo"><img src="/img/img_award_2026_08.jpg"></div>
+                                        <div class="txt">
+                                            <div class="name">쓰리세컨즈</div>
+                                            <div class="prd">그린웨이브 서프캡 브리즈</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="logo"><img src="/img/img_award_2026_09.jpg"></div>
+                                        <div class="txt">
+                                            <div class="name">오션테그</div>
+                                            <div class="prd">오션테그 스완 스노클링/프리다이빙/스쿠버 핀</div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="logo"><img src="/img/img_award_2026_10.jpg"></div>
+                                        <div class="txt">
+                                            <div class="name">주식회사 코드리스</div>
+                                            <div class="prd">친환경에너지 전용 유•무인 수중추진시스템 ‘KMUM-EM 4HP Cruse’</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- //2026 -->
                         <!-- 2025 -->
                         <div class="award_hist_box swiper-slide" id="award_hist_2025">
                             <div class="year">

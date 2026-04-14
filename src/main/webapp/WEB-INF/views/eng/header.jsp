@@ -82,7 +82,7 @@
                             <a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors</span></a>
                             <ul class="dept2">
                                 <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors Categories</span></a></li>
-                                <li><a href="<c:url value="/apply/step01.do"/>"><span>Exhibitor Registration</span></a></li>
+                                <li><a href="javascript:void(0);" onclick="alert('Exhibitor applications for the 2026 Gyeonggi International Boat Show are closed.');"><span>Exhibitor Registration</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/glance.do"/>"><span>Korea at a Glance</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
