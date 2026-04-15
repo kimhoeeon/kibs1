@@ -114,14 +114,14 @@
                             <div class="icon"><img src="/img/summ_icon01.png"></div>
                             <div class="txt">
                                 <div class="gubun">행사명</div>
-                                <div class="cont">2026 경기국제보트쇼</div>
+                                <div class="cont">2027 경기국제보트쇼</div>
                             </div>
                         </li>
                         <li>
                             <div class="icon"><img src="/img/summ_icon02.png"></div>
                             <div class="txt">
                                 <div class="gubun">행사기간</div>
-                                <div class="cont">2026.03.06(금) - 03.08(일)</div>
+                                <div class="cont">2027.03.12(금) - 03.14(일)</div>
                             </div>
                         </li>
                         <li>

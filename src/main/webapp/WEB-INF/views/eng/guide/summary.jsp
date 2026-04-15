@@ -103,14 +103,14 @@
                             <div class="icon"><img src="/img/summ_icon01.png"></div>
                             <div class="txt">
                                 <div class="gubun">Title</div>
-                                <div class="cont">Korea International Boat Show 2026</div>
+                                <div class="cont">Korea International Boat Show 2027</div>
                             </div>
                         </li>
                         <li>
                             <div class="icon"><img src="/img/summ_icon02.png"></div>
                             <div class="txt">
                                 <div class="gubun">Date</div>
-                                <div class="cont">2026.03.06(Fri) - 03.08(Sun)</div>
+                                <div class="cont">2027.03.12(Fri) - 03.14(Sun)</div>
                             </div>
                         </li>
                         <li>
