@@ -98,7 +98,7 @@
             </div>
             <div class="inner">
                 <div class="info_box">
-                    <div class="tit"><img src="/img/main_top_tit31_eng.png"></div>
+                    <div class="tit"><img src="/img/main_top_tit32_eng.png"></div>
                     <%--<ul class="proc">
                         <li>
                             <div class="txt">
