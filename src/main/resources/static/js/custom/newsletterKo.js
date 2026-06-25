@@ -238,7 +238,7 @@ function f_board_newsletter_ko_temp_save(id){
                                 confirmButtonText: '확인'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = '/mng/center/board/newsletter_ko.do'; // 목록으로 이동
+                                    window.location.href = '/mng/center/board/newsletter.do'; // 목록으로 이동
                                 }
                             });
                         } else {
@@ -357,7 +357,7 @@ function f_board_newsletter_ko_save(id){
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        window.location.href = '/mng/center/board/newsletter_ko.do'; // 목록으로 이동
+                                        window.location.href = '/mng/center/board/newsletter.do'; // 목록으로 이동
                                     }
                                 });
                             } else {

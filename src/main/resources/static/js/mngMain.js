@@ -1,7 +1,6 @@
 /***
  * mngMain.js
  * */
-
 $(function(){
 
     if (!window.location.href.includes('localhost')) {

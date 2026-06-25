@@ -151,7 +151,7 @@
             <div class="apply_form form_s padding_t" id="apply_s1">
                 <div class="inner">
 
-                    <!-- 온라인 전시관 참가 -->
+                    <!-- 제품 노출 정보 -->
                     <div class="form_wrap">
                         <div class="form_tit">
                             <div class="big">About The Online Exhibition</div>

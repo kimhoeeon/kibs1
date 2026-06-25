@@ -167,10 +167,10 @@
             <div class="apply_form form_s padding_t" id="apply_s1">
                 <div class="inner">
 
-                    <!-- 온라인 전시관 참가 -->
+                    <!-- 제품 노출 정보 -->
                     <div class="form_wrap">
                         <div class="form_tit">
-                            <div class="big">온라인 전시관 참가</div>
+                            <div class="big">제품 노출 정보</div>
                             <div class="small">최대 3개 이미지를 각각의 설명과 함께 등록하시고 3개 이상 등록이 필요하신 경우 사무국으로 문의 바랍니다.</div>
                         </div>
                         <ul class="form_box">

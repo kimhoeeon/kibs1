@@ -6322,7 +6322,7 @@ KTUtil.onDOMContentLoaded(function () {
 
     // 정보센터>게시판관리
     KTAppCenterBoardNotice.init(); // /mng/center/board/notice.do
-    KTAppCenterBoardNewsletterKo.init(); // /mng/center/board/newsletter_ko.do
+    KTAppCenterBoardNewsletterKo.init(); // /mng/center/board/newsletter.do
     KTAppCenterBoardNewsletterEn.init(); // /mng/center/board/newsletter_en.do
     KTAppCenterBoardPress.init(); // /mng/center/board/press.do
     KTAppCenterBoardFaq.init(); // /mng/center/board/faq.do

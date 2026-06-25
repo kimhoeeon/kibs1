@@ -1796,7 +1796,7 @@ async function step_01_check(exhibitorSeq){
     // 프로모션 정보
     let promotionPlan = $('#promotionPlan').val();
 
-    /******************** 온라인 전시관 참가 ********************/
+    /******************** 제품 노출 정보 ********************/
 
     let onlineList_json_arr = [];
 
@@ -1824,7 +1824,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
         if(!online_option_big_flag){
-            showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품 분류 첫 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 분류 첫 번째 항목을 선택해 주세요.', '');
             return false;
         }
 
@@ -1841,7 +1841,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
         if(!online_option_small_flag){
-            showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품 분류 두 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 분류 두 번째 항목을 선택해 주세요.', '');
             return false;
         }
 
@@ -1856,7 +1856,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
         if(!online_name_ko_flag){
-            showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품명(국문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품명(국문)을 입력해 주세요.', '');
             return false;
         }
 
@@ -1871,7 +1871,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
         if(!online_name_en_flag){
-            showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품명(영문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품명(영문)을 입력해 주세요.', '');
             return false;
         }
 
@@ -1881,7 +1881,7 @@ async function step_01_check(exhibitorSeq){
             let inputFile = onlinePrdBox.eq(i).find('.upload_name').val();
             let preFileList = $('.onlineInfoBox').eq(i).find('.preValueList').find('li.onlineImageFile_li').length;
             if(nvl(inputFile,"") === "" && preFileList === 0){
-                showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품사진을 첨부해 주세요.', '');
+                showMessage('', 'error', '[ 제품 노출 정보 ]', '제품사진을 첨부해 주세요.', '');
                 return false;
             }
         }
@@ -1896,7 +1896,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
         if(!online_intro_ko_flag){
-            showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품 설명(국문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 설명(국문)을 입력해 주세요.', '');
             return false;
         }
 
@@ -1910,7 +1910,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
         if(!online_intro_en_flag){
-            showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품 설명(영문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 설명(영문)을 입력해 주세요.', '');
             return false;
         }
 
@@ -1920,7 +1920,7 @@ async function step_01_check(exhibitorSeq){
             let online_link = online_link_el.eq(i).val();
             if(nvl(online_link,'') !== ''){
                 if(!checkUrl(online_link)){
-                    showMessage('', 'error', '[ 온라인 전시관 참가 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 제품 노출 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
                     return false;
                 }
             }
@@ -2040,7 +2040,7 @@ async function step_01_check(exhibitorSeq){
         newItemIntroKo: newItemIntroKo,
         newItemIntroEn: newItemIntroEn,
         promotionPlan: promotionPlan,
-        /* 온라인 전시관 참가 */
+        /* 제품 노출 정보 */
         onlineList: onlineList_json_arr,
         /* 수출상담회 */
         exportMeetingYn: export_meeting_yn,
@@ -4879,7 +4879,7 @@ async function my_step_01_check(exhibitorSeq){
     // 프로모션 정보
     let promotionPlan = $('#promotionPlan').val();
 
-    /******************** 온라인 전시관 참가 ********************/
+    /******************** 제품 노출 정보 ********************/
 
     let onlineList_json_arr = [];
 
@@ -4907,7 +4907,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
         if(!online_option_big_flag){
-            showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품 분류 첫 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 분류 첫 번째 항목을 선택해 주세요.', '');
             return false;
         }
 
@@ -4924,7 +4924,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
         if(!online_option_small_flag){
-            showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품 분류 두 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 분류 두 번째 항목을 선택해 주세요.', '');
             return false;
         }
 
@@ -4939,7 +4939,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
         if(!online_name_ko_flag){
-            showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품명(국문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품명(국문)을 입력해 주세요.', '');
             return false;
         }
 
@@ -4954,7 +4954,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
         if(!online_name_en_flag){
-            showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품명(영문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품명(영문)을 입력해 주세요.', '');
             return false;
         }
 
@@ -4964,7 +4964,7 @@ async function my_step_01_check(exhibitorSeq){
             let inputFile = onlinePrdBox.eq(i).find('.upload_name').val();
             let preFileList = $('.onlineInfoBox').eq(i).find('.preValueList').find('li.onlineImageFile_li').length;
             if(nvl(inputFile,"") === "" && preFileList === 0){
-                showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품사진을 첨부해 주세요.', '');
+                showMessage('', 'error', '[ 제품 노출 정보 ]', '제품사진을 첨부해 주세요.', '');
                 return false;
             }
         }
@@ -4979,7 +4979,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
         if(!online_intro_ko_flag){
-            showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품 설명(국문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 설명(국문)을 입력해 주세요.', '');
             return false;
         }
 
@@ -4993,7 +4993,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
         if(!online_intro_en_flag){
-            showMessage('', 'error', '[ 온라인 전시관 참가 ]', '제품 설명(영문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 설명(영문)을 입력해 주세요.', '');
             return false;
         }
 
@@ -5003,7 +5003,7 @@ async function my_step_01_check(exhibitorSeq){
             let online_link = online_link_el.eq(i).val();
             if(nvl(online_link,'') !== ''){
                 if(!checkUrl(online_link)){
-                    showMessage('', 'error', '[ 온라인 전시관 참가 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+                    showMessage('', 'error', '[ 제품 노출 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
                     return false;
                 }
             }
@@ -5146,7 +5146,7 @@ async function my_step_01_check(exhibitorSeq){
         newItemIntroKo: newItemIntroKo,
         newItemIntroEn: newItemIntroEn,
         promotionPlan: promotionPlan,
-        /* 온라인 전시관 참가 */
+        /* 제품 노출 정보 */
         onlineList: onlineList_json_arr,
         /* 수출상담회 */
         exportMeetingYn: export_meeting_yn,
@@ -7381,7 +7381,7 @@ async function f_company_uploadFile_call(id, path) {
         }
     }*/
 
-    /* 온라인 전시관 참가 - 제품사진 */
+    /* 제품 노출 정보 - 제품사진 */
     let onlineImageFileList = document.getElementsByName('onlineImageFile');
     let onlineImageFileList_len = onlineImageFileList.length;
     for(let i=0; i<onlineImageFileList_len; i++){

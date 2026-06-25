@@ -1390,12 +1390,12 @@
                                         </div>
                                     </div>--%>
 
-                                    <!-- 온라인 전시관 참가 -->
+                                    <!-- 제품 노출 정보 -->
                                     <script src="/js/online.js"></script>
                                     <div class="form_wrap">
                                         <div class="form_tit">
-                                            <div class="big">온라인 전시관 참가</div>
-                                            <div class="small">온라인 전시관에 추가 전시를 원하는 제품 정보를 입력해 주세요.</div>
+                                            <div class="big">제품 노출 정보</div>
+                                            <div class="small">홈페이지(온라인 전시관)에 노출될 제품 정보를 입력해 주세요.</div>
                                         </div>
 
                                         <c:if test="${empty onlineList}">

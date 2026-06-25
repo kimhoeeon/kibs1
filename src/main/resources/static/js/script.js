@@ -1051,8 +1051,8 @@ $(document).ready(function () {
         }
     }
 
-    ///////////////// 온라인 전시관 참가 추가 /////////////////
-    // 온라인 전시관 참가 추가 시 사용할 카운터 변수
+    ///////////////// 제품 노출 정보 추가 /////////////////
+    // 제품 노출 정보 추가 시 사용할 카운터 변수
     let onlineInfoCount = Number.parseInt($('.onlineInfoNum:last').text());
 
     // .onlineInfoBox를 추가하는 이벤트 핸들러 추가
@@ -1107,7 +1107,7 @@ $(document).ready(function () {
             $('.onlineInfoBox:last').after(newOnlineInfoBox);
             updateOnlineInfoNum(this);
         }else{
-            showMessage('', 'info', '[ 온라인 전시관 참가 ]', '제품 정보는 최대 40개까지만 등록 가능합니다.', '');
+            showMessage('', 'info', '[ 제품 노출 정보 ]', '제품 정보는 최대 40개까지만 등록 가능합니다.', '');
         }
     });
 
@@ -1115,7 +1115,7 @@ $(document).ready(function () {
     function deleteOnlineInfoBox(el) {
         Swal.fire({
             icon: 'warning',
-            title: '[ 온라인 전시관 참가 ]',
+            title: '[ 제품 노출 정보 ]',
             html: '<span style="font-size: 1.2em;">해당 제품 정보를 삭제하시겠습니까?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
@@ -1174,7 +1174,7 @@ $(document).ready(function () {
         deleteOnlineInfoBox(this);
     });
 
-    ///////////////// 온라인 전시관 참가 제품사진 추가 /////////////////
+    ///////////////// 제품 노출 정보 제품사진 추가 /////////////////
     // .onlinePrdAdd 클릭 시 새로운 .onlinePrdBox 추가
     $('.onlinePrdAdd').on('click', function () {
         let onlinePrdBoxes = $(this).closest('.onlineInfoBox').find('.onlinePrdBox');
@@ -1218,7 +1218,7 @@ $(document).ready(function () {
             // 업데이트 후 최대 5개까지 보이도록 제한
             updateOnlinePrdBox();
         }else{
-            showMessage('', 'info', '[온라인 전시관 참가]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
+            showMessage('', 'info', '[제품 노출 정보]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
         }
 
     });

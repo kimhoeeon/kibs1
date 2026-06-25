@@ -2405,7 +2405,7 @@ public class KibsMngController {
         return resultMap;
     }
 
-    @RequestMapping(value = "/mng/center/board/newsletter_ko.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/mng/center/board/newsletter.do", method = RequestMethod.GET)
     public ModelAndView mng_center_board_newsletter_ko() {
         //System.out.println("KibsMngController > mng_center_board_newsletter_ko");
         ModelAndView mv = new ModelAndView();
