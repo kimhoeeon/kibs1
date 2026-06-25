@@ -200,7 +200,14 @@
                                         <li class="nav-item mx-lg-1">
                                             <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
                                                data-bs-toggle="tab"
-                                               data-bs-target="#kt_app_header_menu_pages_application_new">참가신청서 관리 (2026~)</a>
+                                               data-bs-target="#kt_app_header_menu_pages_application_new_new">참가신청서 관리 (2027~)</a>
+                                        </li>
+                                        <!--end:Nav item-->
+                                        <!--begin:Nav item-->
+                                        <li class="nav-item mx-lg-1">
+                                            <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
+                                               data-bs-toggle="tab"
+                                               data-bs-target="#kt_app_header_menu_pages_application_new">참가신청서 관리 (2026)</a>
                                         </li>
                                         <!--end:Nav item-->
                                         <!--begin:Nav item-->
@@ -225,15 +232,6 @@
                                                 <div class="row">
                                                     <!--begin:Col-->
                                                     <div class="col-lg-12">
-                                                        <!--begin:Menu item-->
-                                                        <div class="menu-item p-0 m-0">
-                                                            <!--begin:Menu link-->
-                                                            <a href="/mng/exhibitor/participant/company.do" class="menu-link">
-                                                                <span class="menu-title">전시업체 목록</span>
-                                                            </a>
-                                                            <!--end:Menu link-->
-                                                        </div>
-                                                        <!--end:Menu item-->
                                                         <!--begin:Menu item-->
                                                         <div class="menu-item p-0 m-0">
                                                             <!--begin:Menu link-->
@@ -301,6 +299,107 @@
                                     </div>
                                     <!--end:Tab pane-->
                                     <!--begin:Tab pane-->
+                                    <div class="tab-pane w-lg-350px" id="kt_app_header_menu_pages_application_new_new">
+                                        <!--begin:Row-->
+                                        <div class="row">
+                                            <!--begin:Col-->
+                                            <div class="col-lg-12 mb-6 mb-lg-0">
+                                                <!--begin:Row-->
+                                                <div class="row">
+                                                    <!--begin:Col-->
+                                                    <div class="col-lg-12">
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitorNewNew/participant/company.do" class="menu-link">
+                                                                <span class="menu-title">전시업체 목록</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitorNewNew/application/booth.do" class="menu-link">
+                                                                <span class="menu-title">전시부스 신청</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitorNewNew/application/product.do" class="menu-link">
+                                                                <span class="menu-title">요트/보트 출품 정보</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitorNewNew/application/sign.do" class="menu-link">
+                                                                <span class="menu-title">상호간판 신청</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitorNewNew/application/utility.do" class="menu-link">
+                                                                <span class="menu-title">유틸리티 신청</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitorNewNew/application/pass.do" class="menu-link">
+                                                                <span class="menu-title">출입증 신청</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitorNewNew/application/buyer.do" class="menu-link">
+                                                                <span class="menu-title">초청 희망 바이어</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitorNewNew/application/gift.do" class="menu-link">
+                                                                <span class="menu-title">경품제공 신청</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitorNewNew/application/online.do" class="menu-link">
+                                                                <span class="menu-title">온라인 전시관</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                    </div>
+                                                    <!--end:Col-->
+                                                </div>
+                                                <!--end:Row-->
+                                            </div>
+                                            <!--end:Col-->
+                                        </div>
+                                        <!--end:Row-->
+                                    </div>
+                                    <!--end:Tab pane-->
+                                    <!--begin:Tab pane-->
                                     <div class="tab-pane w-lg-350px" id="kt_app_header_menu_pages_application_new">
                                         <!--begin:Row-->
                                         <div class="row">
@@ -310,6 +409,15 @@
                                                 <div class="row">
                                                     <!--begin:Col-->
                                                     <div class="col-lg-12">
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitorNew/participant/company.do" class="menu-link">
+                                                                <span class="menu-title">전시업체 목록</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
                                                         <!--begin:Menu item-->
                                                         <div class="menu-item p-0 m-0">
                                                             <!--begin:Menu link-->
@@ -411,6 +519,15 @@
                                                 <div class="row">
                                                     <!--begin:Col-->
                                                     <div class="col-lg-12">
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitor/participant/company.do" class="menu-link">
+                                                                <span class="menu-title">전시업체 목록</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
                                                         <!--begin:Menu item-->
                                                         <div class="menu-item p-0 m-0">
                                                             <!--begin:Menu link-->

@@ -1750,7 +1750,7 @@
             AND refund_yn = #{refundYn}
         </if>
         <if test='transferYear != null and transferYear != ""'>
-            AND transfer_year = #{transferYear}
+            AND transfer_year <![CDATA[ <= ]]> #{transferYear}
         </if>
         ORDER BY init_regi_dttm desc, company_name_ko asc
     </select>

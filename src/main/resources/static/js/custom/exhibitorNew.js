@@ -1,9 +1,9 @@
 /***
- * mng/exhibitor/participant/exhibitor.js
+ * mng/exhibitor/participant/exhibitorNew.js
  * 전시회 > 참가자 관리 > 전시업체 목록
  * */
 
-var transferYear = '2025';
+var transferYear = '2026';
 
 $(function(){
     let myModalEl = document.getElementById('kt_modal_approval_status');
@@ -194,7 +194,7 @@ function f_exhibitor_search(){
     loadingBarShow();
 
     /* DataTable Data Clear */
-    let dataTbl = $('#kt_exhibitor_table').DataTable();
+    let dataTbl = $('#kt_exhibitor_new_table').DataTable();
     dataTbl.clear();
     dataTbl.draw(false);
 
@@ -213,14 +213,14 @@ function f_exhibitor_search(){
         }
     }
 
-    let resData = ajaxConnect('/mng/exhibitor/participant/company/selectList.do', 'post', jsonObj);
+    let resData = ajaxConnect('/mng/exhibitorNew/participant/company/selectList.do', 'post', jsonObj);
     dataTbl.rows.add(resData).draw();
 
     /* 조회 카운트 입력 */
     document.getElementById('search_cnt').innerText = resData.length;
 
     /* DataTable Column tooltip Set */
-    let jb = $('#kt_exhibitor_table tbody td');
+    let jb = $('#kt_exhibitor_new_table tbody td');
     let cnt = 0;
     jb.each(function(index, item){
         let itemText = $(item).text();
@@ -243,7 +243,7 @@ function f_search_condition_box_change(){
     loadingBarShow();
 
     /* DataTable Data Clear */
-    let dataTbl = $('#kt_exhibitor_table').DataTable();
+    let dataTbl = $('#kt_exhibitor_new_table').DataTable();
     dataTbl.clear();
     dataTbl.draw(false);
 
@@ -296,14 +296,14 @@ function f_search_condition_box_change(){
     //console.log(jsonObj);
 
     /* 목록 데이터 조회 */
-    let resData = ajaxConnect('/mng/exhibitor/participant/company/selectList.do', 'post', jsonObj);
+    let resData = ajaxConnect('/mng/exhibitorNew/participant/company/selectList.do', 'post', jsonObj);
     dataTbl.rows.add(resData).draw();
 
     /* 조회 카운트 입력 */
     document.getElementById('search_cnt').innerText = resData.length;
 
     /* DataTable Column tooltip Set */
-    let jb = $('#kt_exhibitor_table tbody td');
+    let jb = $('#kt_exhibitor_new_table tbody td');
     let cnt = 0;
     jb.each(function(index, item){
         let itemText = $(item).text();
@@ -359,77 +359,6 @@ function f_exhibitor_pre_page_move(){
 
     }
 
-}
-
-function f_exhibitor_detail_modal_set(seq){
-    /* 목록 상세 조회 */
-    let jsonObj = {
-        "seq": seq
-    };
-
-    /* TODO: 상세페이지가 아닌 이력 조회 해야함. 지금은 임시*/
-    let resData = ajaxConnect('/mng/exhibitor/participant/company/selectSingle.do', 'post', jsonObj);
-
-    /* 상세보기 Modal form Set */
-    console.log(resData);
-
-    /*document.querySelector('#md_title').value = resData.title;
-    document.querySelector('#md_writer').value = resData.writer;
-    document.querySelector('#md_write_date').value = resData.writeDate;
-
-    if(resData.gbn1==="1"){
-        document.querySelector('#md_gbn1').checked = true;
-    }else{
-        document.querySelector('#md_gbn1').checked = false;
-    }
-
-    if(resData.gbn2==="1"){
-        document.querySelector('#md_gbn2').checked = true;
-    }else{
-        document.querySelector('#md_gbn2').checked = false;
-    }
-
-    if(resData.gbn3==="1"){
-        document.querySelector('#md_gbn3').checked = true;
-    }else{
-        document.querySelector('#md_gbn3').checked = false;
-    }
-
-    if(resData.noticeGbn==="1"){
-        document.querySelector('#md_notice_gbn').checked = true;
-    }else{
-        document.querySelector('#md_notice_gbn').checked = false;
-    }
-
-    document.querySelector('#md_content').innerHTML = resData.content;
-    document.querySelector('#md_view_cnt').value = resData.viewCnt;
-
-    /!* 파일 목록 상세 조회 *!/
-    let jsonObj2 = {
-        "userId": rowId
-    };
-
-    let file_list_el = document.getElementById('file_list');
-    while (file_list_el.hasChildNodes()) {
-        file_list_el.removeChild(file_list_el.firstChild);
-    }
-
-    let fileData = ajaxConnect('/file/upload/selectList.do', 'post', jsonObj2);
-    if(nullToEmpty(fileData) !== ''){
-        for(let i=0; i<fileData.length; i++){
-            let file_list_el = document.getElementById('file_list');
-            let input_el = document.createElement('input');
-            input_el.type = 'text';
-            input_el.classList.add('form-control');
-            input_el.classList.add('form-control-lg');
-            input_el.classList.add('form-control-solid-bg');
-            input_el.classList.add('mb-2');
-            input_el.value = fileData[i].fileName;
-            input_el.readOnly = true;
-
-            file_list_el.append(input_el);
-        }
-    }*/
 }
 
 function f_exhibitor_remove(seq){

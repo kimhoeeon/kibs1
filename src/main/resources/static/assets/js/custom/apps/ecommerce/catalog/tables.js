@@ -1,7 +1,270 @@
 "use strict";
 
-// Class definition kt_exhibitor_table
-let KTAppExhibitorMng = function () {
+let KTAppExhibitorNewNewMng = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : true,
+            'pageLength': 25,
+            'select': false,
+            'ordering': true,
+            'order': [[1, 'desc']],
+            'columnDefs': [
+                { orderable: false, targets: 0 }, // Disable ordering on column 0 (checkbox)
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 0,
+                    'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderBadgeCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderFieldParticipatoryCell(data, type, row); }
+                },
+                {
+                    'targets': 10,
+                    'render': function (data, type, row) { return renderPrcTotalCell(data, type, row); }
+                },
+                {
+                    'targets': 11,
+                    'render': function (data, type, row) { return renderDepositCell(data, type, row); }
+                },
+                {
+                    'targets': 12,
+                    'render': function (data, type, row) { return renderBalanceCell(data, type, row); }
+                },
+                {
+                    'targets': 13,
+                    'render': function (data, type, row) { return renderPrcYnCell(data, type, row); }
+                },
+                {
+                    'targets': 15,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [2,5,6] }
+            ],
+            columns: [
+                { data: '' },
+                { data: 'rownum' }, //순번
+                { data: 'seq'}, //SEQ
+                { data: 'approvalStatus' }, //승인여부
+                { data: 'boothType' }, //부스
+                { data: 'companyNameKo' }, //회사명(국문)
+                { data: 'companyNameEn' }, //회사명(영문)
+                { data: 'companyName' }, //회사명
+                { data: 'fieldParticipatory' }, //참가행사
+                { data: 'id'},
+                { data: 'prcTotal' }, //총액
+                { data: 'deposit' }, //선금
+                { data: 'balance' }, //잔액
+                { data: 'prcYn' }, //입금여부
+                { data: 'finalRegiDttm' }, //수정일
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderCheckBoxCell(data, type, row){
+        let renderHTML = '<div class="exhibitor_check form-check form-check-sm form-check-custom form-check-solid">' +
+            '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.companyNameKo  + ' / ' + row.companyNameEn + '"/>' +
+            '</div>';
+        return renderHTML;
+    }
+
+    function renderFieldParticipatoryCell(data, type, row){
+        let fieldParticipatory = row.fieldParticipatory;
+        let renderHTML = '';
+        if(nvl(fieldParticipatory,"") !== ""){
+            switch (fieldParticipatory) {
+                case 'boatShow':
+                    renderHTML = '경기국제보트쇼';
+                    break;
+                case 'surfShow':
+                    renderHTML = '코리아서프쇼';
+                    break;
+                case 'travelShow':
+                    renderHTML = '해양관광전';
+                    break;
+            }
+        }else{
+            renderHTML = '-';
+        }
+        return renderHTML;
+    }
+
+    function renderBoothTypeCell(data, type, row){
+        let renderHTML = row.boothType;
+        if(nvl(renderHTML,'') !== ''){
+            renderHTML = renderHTML.toString().replaceAll(',','<br>');
+        }else{
+            renderHTML = '-';
+        }
+        return renderHTML;
+    }
+
+    function renderPrcYnCell(data, type, row){
+        let renderHTML = '';
+        let prcYn = row.prcYn;
+        switch (prcYn){
+            case '0':
+                renderHTML = '미납';
+                break;
+            case '1':
+                renderHTML = '참가비 납부';
+                break;
+            case '2':
+                renderHTML = '50% 납부';
+                break;
+            case '3':
+                renderHTML = '전액 납부';
+                break;
+            case '4':
+                renderHTML = '완납(부대시설비)';
+                break;
+            default:
+                break;
+        }
+        return renderHTML;
+    }
+
+    function renderBalanceCell(data, type, row){
+        let renderHTML = Number(row.balance);
+        return renderHTML.toLocaleString();
+    }
+
+    function renderDepositCell(data, type, row){
+        let renderHTML = Number(row.deposit);
+        return renderHTML.toLocaleString();
+    }
+
+    function renderPrcTotalCell(data, type, row){
+        let renderHTML = Number(row.prcTotal);
+        return renderHTML.toLocaleString();
+    }
+
+    function renderBadgeCell(data, type, row){
+        let approvalStatus = row.approvalStatus;
+        let renderHTML = '';
+        switch (approvalStatus){
+            case '작성중':
+            case '승인요청':
+            case '참가승인':
+                renderHTML += '<div class="badge badge-light-primary fw-bold">';
+                break;
+            default:
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                break;
+        }
+        renderHTML += approvalStatus;
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    function renderCompanyNameCell(data, type, row){
+        let companyNameKo = row.companyNameKo;
+        let companyNameEn = row.companyNameEn;
+        let renderHTML = '';
+        renderHTML += '<span class="fw-bold">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + row.seq + '\'' + ')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_detail_info">';
+        if(nvl(companyNameEn,'') !== ''){
+            renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+            /*if(companyNameKo === '오션테크'){
+                renderHTML += f_exhibitor_name_gbn(companyNameKo) + '(덕영엔지니어링)' + '<br>' + companyNameEn;
+            }else{
+                renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+            }*/
+        }else{
+            renderHTML += f_exhibitor_name_gbn(companyNameKo);
+            /*if(companyNameKo === '오션테크') {
+                renderHTML += f_exhibitor_name_gbn(companyNameKo) + '(덕영엔지니어링)';
+            }else{
+                renderHTML += f_exhibitor_name_gbn(companyNameKo);
+            }*/
+        }
+        renderHTML += '</a>';
+        renderHTML += '</span>';
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.seq);
+        let rowSeq = row.seq;
+        let companyNameKo = row.companyNameKo;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_detail_info">상세/수정</a>';
+        renderHTML += '</div>';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_detail_modal_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">수정이력</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_select_login(' + '\'' + rowSeq + '\',\'' + companyNameKo + '\'' + ')" class="menu-link px-3">이 업체로 로그인</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_invoice_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">인보이스 정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_remove(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#kt_exhibitor_new_new_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#kt_exhibitor_new_new_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 1, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_exhibitor_search();
+        }
+    };
+}();
+
+let KTAppExhibitorNewMng = function () {
     // Shared variables
     let table;
     let datatable;
@@ -204,6 +467,270 @@ let KTAppExhibitorMng = function () {
                     }*/
                 }
             renderHTML += '</a>';
+        renderHTML += '</span>';
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.seq);
+        let rowSeq = row.seq;
+        let companyNameKo = row.companyNameKo;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_detail_info">상세/수정</a>';
+        renderHTML += '</div>';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_detail_modal_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">수정이력</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_select_login(' + '\'' + rowSeq + '\',\'' + companyNameKo + '\'' + ')" class="menu-link px-3">이 업체로 로그인</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_invoice_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">인보이스 정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_remove(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#kt_exhibitor_new_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#kt_exhibitor_new_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 1, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_exhibitor_search();
+        }
+    };
+}();
+
+let KTAppExhibitorMng = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : true,
+            'pageLength': 25,
+            'select': false,
+            'ordering': true,
+            'order': [[1, 'desc']],
+            'columnDefs': [
+                { orderable: false, targets: 0 }, // Disable ordering on column 0 (checkbox)
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 0,
+                    'render': function (data, type, row) { return renderCheckBoxCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderBadgeCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderFieldParticipatoryCell(data, type, row); }
+                },
+                {
+                    'targets': 10,
+                    'render': function (data, type, row) { return renderPrcTotalCell(data, type, row); }
+                },
+                {
+                    'targets': 11,
+                    'render': function (data, type, row) { return renderDepositCell(data, type, row); }
+                },
+                {
+                    'targets': 12,
+                    'render': function (data, type, row) { return renderBalanceCell(data, type, row); }
+                },
+                {
+                    'targets': 13,
+                    'render': function (data, type, row) { return renderPrcYnCell(data, type, row); }
+                },
+                {
+                    'targets': 15,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [2,5,6] }
+            ],
+            columns: [
+                { data: '' },
+                { data: 'rownum' }, //순번
+                { data: 'seq'}, //SEQ
+                { data: 'approvalStatus' }, //승인여부
+                { data: 'boothType' }, //부스
+                { data: 'companyNameKo' }, //회사명(국문)
+                { data: 'companyNameEn' }, //회사명(영문)
+                { data: 'companyName' }, //회사명
+                { data: 'fieldParticipatory' }, //참가행사
+                { data: 'id'},
+                { data: 'prcTotal' }, //총액
+                { data: 'deposit' }, //선금
+                { data: 'balance' }, //잔액
+                { data: 'prcYn' }, //입금여부
+                { data: 'finalRegiDttm' }, //수정일
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderCheckBoxCell(data, type, row){
+        let renderHTML = '<div class="exhibitor_check form-check form-check-sm form-check-custom form-check-solid">' +
+            '<input class="form-check-input" type="checkbox" value="'+ row.seq +'" data-value="' + row.companyNameKo  + ' / ' + row.companyNameEn + '"/>' +
+            '</div>';
+        return renderHTML;
+    }
+
+    function renderFieldParticipatoryCell(data, type, row){
+        let fieldParticipatory = row.fieldParticipatory;
+        let renderHTML = '';
+        if(nvl(fieldParticipatory,"") !== ""){
+            switch (fieldParticipatory) {
+                case 'boatShow':
+                    renderHTML = '경기국제보트쇼';
+                    break;
+                case 'surfShow':
+                    renderHTML = '코리아서프쇼';
+                    break;
+                case 'travelShow':
+                    renderHTML = '해양관광전';
+                    break;
+            }
+        }else{
+            renderHTML = '-';
+        }
+        return renderHTML;
+    }
+
+    function renderBoothTypeCell(data, type, row){
+        let renderHTML = row.boothType;
+        if(nvl(renderHTML,'') !== ''){
+            renderHTML = renderHTML.toString().replaceAll(',','<br>');
+        }else{
+            renderHTML = '-';
+        }
+        return renderHTML;
+    }
+
+    function renderPrcYnCell(data, type, row){
+        let renderHTML = '';
+        let prcYn = row.prcYn;
+        switch (prcYn){
+            case '0':
+                renderHTML = '미납';
+                break;
+            case '1':
+                renderHTML = '참가비 납부';
+                break;
+            case '2':
+                renderHTML = '50% 납부';
+                break;
+            case '3':
+                renderHTML = '전액 납부';
+                break;
+            case '4':
+                renderHTML = '완납(부대시설비)';
+                break;
+            default:
+                break;
+        }
+        return renderHTML;
+    }
+
+    function renderBalanceCell(data, type, row){
+        let renderHTML = Number(row.balance);
+        return renderHTML.toLocaleString();
+    }
+
+    function renderDepositCell(data, type, row){
+        let renderHTML = Number(row.deposit);
+        return renderHTML.toLocaleString();
+    }
+
+    function renderPrcTotalCell(data, type, row){
+        let renderHTML = Number(row.prcTotal);
+        return renderHTML.toLocaleString();
+    }
+
+    function renderBadgeCell(data, type, row){
+        let approvalStatus = row.approvalStatus;
+        let renderHTML = '';
+        switch (approvalStatus){
+            case '작성중':
+            case '승인요청':
+            case '참가승인':
+                renderHTML += '<div class="badge badge-light-primary fw-bold">';
+                break;
+            default:
+                renderHTML += '<div class="badge badge-light-danger fw-bold">';
+                break;
+        }
+        renderHTML += approvalStatus;
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    function renderCompanyNameCell(data, type, row){
+        let companyNameKo = row.companyNameKo;
+        let companyNameEn = row.companyNameEn;
+        let renderHTML = '';
+        renderHTML += '<span class="fw-bold">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + row.seq + '\'' + ')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_detail_info">';
+        if(nvl(companyNameEn,'') !== ''){
+            renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+            /*if(companyNameKo === '오션테크'){
+                renderHTML += f_exhibitor_name_gbn(companyNameKo) + '(덕영엔지니어링)' + '<br>' + companyNameEn;
+            }else{
+                renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+            }*/
+        }else{
+            renderHTML += f_exhibitor_name_gbn(companyNameKo);
+            /*if(companyNameKo === '오션테크') {
+                renderHTML += f_exhibitor_name_gbn(companyNameKo) + '(덕영엔지니어링)';
+            }else{
+                renderHTML += f_exhibitor_name_gbn(companyNameKo);
+            }*/
+        }
+        renderHTML += '</a>';
         renderHTML += '</span>';
         return renderHTML;
     }
@@ -6288,7 +6815,6 @@ let DTRequestManagementList = function () {
 KTUtil.onDOMContentLoaded(function () {
 
     // 전시회>참가자관리
-    KTAppExhibitorMng.init(); // /mng/exhibitor/participant/company.do
     KTAppVisitorMng.init(); // /mng/exhibitor/participant/visitor.do
     KTAppMemberMng.init(); // /mng/exhibitor/participant/member.do
 
@@ -6296,7 +6822,11 @@ KTUtil.onDOMContentLoaded(function () {
     KTAppExhibitorTransferCompany.init(); // /mng/exhibitor/transfer/company.do
     KTAppExhibitorTransferVisitor.init(); // /mng/exhibitor/transfer/visitor.do
 
-    // 전시회>참가신청서 관리 (2026~)
+    // 전시회>참가신청서 관리 (2027~)
+    KTAppExhibitorNewNewMng.init(); // /mng/exhibitorNewNew/participant/company.do
+    
+    // 전시회>참가신청서 관리 (2026)
+    KTAppExhibitorNewMng.init(); // /mng/exhibitorNew/participant/company.do
     KTAppExhibitorNewApplicationBooth.init(); // /mng/exhibitorNew/application/booth.do
     KTAppExhibitorNewApplicationMaritime.init(); // /mng/exhibitorNew/application/maritime.do
     KTAppExhibitorNewApplicationSign.init(); // /mng/exhibitorNew/application/sign.do
@@ -6308,6 +6838,7 @@ KTUtil.onDOMContentLoaded(function () {
     KTAppExhibitorNewApplicationProduct.init(); // /mng/exhibitorNew/application/product.do
 
     // 전시회>참가신청서 관리 (~2025)
+    KTAppExhibitorMng.init(); // /mng/exhibitor/participant/company.do
     KTAppExhibitorApplicationBooth.init(); // /mng/exhibitor/application/booth.do
     KTAppExhibitorApplicationSign.init(); // /mng/exhibitor/application/sign.do
     KTAppExhibitorApplicationUtility.init(); // /mng/exhibitor/application/utility.do

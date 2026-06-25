@@ -141,7 +141,7 @@ function f_member_detail(seq, nameKo){
                 window.location.href = '/mng/exhibitor/participant/visitor.do?nameKo=' + nameKo;
             }else{
                 //전시업체
-                window.location.href = '/mng/exhibitor/participant/company.do?nameKo=' + nameKo;
+                window.location.href = '/mng/exhibitorNew/participant/company.do?nameKo=' + nameKo;
             }
         }
     });

@@ -466,6 +466,28 @@ public class KibsMngController {
         return mv;
     }
 
+    @RequestMapping(value = "/mng/exhibitorNew/participant/company.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitor_new_participant_company(String nameKo) {
+        //System.out.println("KibsMngController > mng_exhibitor_company");
+        ModelAndView mv = new ModelAndView();
+        if(nameKo != null){
+            mv.addObject("nameKo", nameKo);
+        }
+        mv.setViewName("/mng/exhibitorNew/participant/company");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNewNew/participant/company.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitor_new_new_participant_company(String nameKo) {
+        //System.out.println("KibsMngController > mng_exhibitor_company");
+        ModelAndView mv = new ModelAndView();
+        if(nameKo != null){
+            mv.addObject("nameKo", nameKo);
+        }
+        mv.setViewName("/mng/exhibitorNewNew/participant/company");
+        return mv;
+    }
+
     @RequestMapping(value = "/mng/exhibitor/participant/company/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorDTO>> mng_exhibitor_participant_company_selectList(@RequestBody SearchDTO searchDTO) {
@@ -480,6 +502,17 @@ public class KibsMngController {
     @RequestMapping(value = "/mng/exhibitorNew/participant/company/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_participant_company_selectList(@RequestBody SearchDTO searchDTO) {
+        //System.out.println("KibsMngController > mng_exhibitorNew_participant_company_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<ExhibitorNewDTO> responseList = kibsMngService.processSelectListExhibitorNew(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/exhibitorNewNew/participant/company/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNewNew_participant_company_selectList(@RequestBody SearchDTO searchDTO) {
         //System.out.println("KibsMngController > mng_exhibitorNew_participant_company_selectList");
         //System.out.println(searchDTO.toString());
 
