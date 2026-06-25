@@ -151,7 +151,7 @@ if (document.documentElement) {
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                                     <!--begin::Export dropdown-->
-                                    <button type="button" onclick="f_excel_export('kt_exhibitor_application_online_new_table', '온라인전시관')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                    <button type="button" onclick="f_excel_export('kt_exhibitor_application_online_new_new_table', '온라인전시관')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -223,7 +223,7 @@ if (document.documentElement) {
                                                         data-placeholder="- 참가년도 -" onchange="f_search_condition_sel_change()">
                                                     <option></option>
                                                     <option value="" disabled>- 참가년도 -</option>
-                                                    <option value="2026">2026</option>
+                                                    <option value="2027" selected>2027</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
@@ -258,7 +258,7 @@ if (document.documentElement) {
                                     <div class="card-body pt-0">
                                         <div class="fw-bold"><span class="mr10">검색결과</span><span id="search_cnt" style="color: #009ef7;">0</span> 개</div>
                                         <!--begin::Table-->
-                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_exhibitor_application_online_new_table">
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_exhibitor_application_online_new_new_table">
                                             <thead>
                                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="text-center min-w-50px">번호</th>

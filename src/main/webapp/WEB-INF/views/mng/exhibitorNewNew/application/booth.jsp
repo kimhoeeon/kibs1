@@ -333,7 +333,7 @@ if (document.documentElement) {
                                     <div class="card-body pt-0">
                                         <div class="fw-bold"><span class="mr10">검색결과</span><span id="search_cnt" style="color: #009ef7;">0</span> 개</div>
                                         <!--begin::Table-->
-                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_exhibitor_application_booth_new_table">
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_exhibitor_application_booth_new_new_table">
                                             <thead>
                                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                 <th class="text-center min-w-50px">번호</th>

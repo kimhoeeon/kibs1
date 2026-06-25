@@ -1340,6 +1340,301 @@ let KTAppExhibitorTransferVisitor = function () {
     };
 }();
 
+let KTAppExhibitorNewNewApplicationBooth = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : true,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 2,
+                    'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderInvoiceYnCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderFieldParticipatoryCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderBoothCntCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderBoothPrcCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'render': function (data, type, row) { return renderDiscountTypeCell(data, type, row); }
+                },
+                {
+                    'targets': 10,
+                    'render': function (data, type, row) { return renderDiscountPrcCell(data, type, row); }
+                },
+                {
+                    'targets': 11,
+                    'render': function (data, type, row) { return renderBoothPrcSumCell(data, type, row); }
+                },
+                {
+                    'targets': 13,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1,3] }
+            ],
+            columns: [
+                { data: 'rownum' }, //순번
+                { data: 'seq'}, //seq
+                { data: 'companyNameKo' }, //회사명(국문)
+                { data: 'companyNameEn' }, //회사명(영문)
+                { data: 'invoiceYn' }, //인보이스존재여부
+                { data: 'fieldParticipatory' }, //참가행사
+                { data: 'boothType' }, //부스타입
+                { data: 'boothCnt' }, //부스수량
+                { data: 'boothPrc' }, //부스가격
+                { data: 'discountType' }, //할인타입
+                { data: 'discountPrc' }, //할인가격
+                { data: 'boothPrcSum' }, //부스신청 총액
+                { data: 'initRegiDttm' }, //최초등록일시
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderCompanyNameCell(data, type, row){
+        let companyNameKo = row.companyNameKo;
+        let companyNameEn = row.companyNameEn;
+        let renderHTML = '<span class="fw-bold">';
+        renderHTML += '<a href="/mng/exhibitorNewNew/application/booth/detail.do?seq=' + row.seq + '"';
+        renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
+        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        renderHTML += '</a>';
+        renderHTML += '</span>';
+        return renderHTML;
+    }
+
+    function renderInvoiceYnCell(data, type, row){
+        let invoiceYn = row.invoiceYn;
+        let renderHTML = 'X';
+        if(invoiceYn === 'Y'){
+            renderHTML = 'O';
+        }
+        return renderHTML;
+    }
+
+    function renderFieldParticipatoryCell(data, type, row){
+        let fieldParticipatory = row.fieldParticipatory;
+        let renderHTML = '';
+        if(nvl(fieldParticipatory,"") !== ""){
+            switch (fieldParticipatory) {
+                case 'boatShow':
+                    renderHTML = '경기국제보트쇼';
+                    break;
+                case 'surfShow':
+                    renderHTML = '코리아서프쇼';
+                    break;
+                case 'travelShow':
+                    renderHTML = '해양관광전';
+                    break;
+            }
+        }else{
+            renderHTML = '-';
+        }
+        return renderHTML;
+    }
+
+    function renderBoothTypeCell(data, type, row){
+        let renderHTML = '';
+        if(row.boothType != null) {
+            let boothType_arr = row.boothType.split(',');
+            for (let i = 0; i < boothType_arr.length; i++) {
+                let booth = boothType_arr[i];
+                if (booth === '독립부스') {
+                    renderHTML += booth + ' (' + row.standAloneBoothCnt + ')';
+                    renderHTML += '<br>';
+                } else if (booth === '조립부스') {
+                    renderHTML += booth + ' (' + row.assemblyBoothCnt + ')';
+                    renderHTML += '<br>';
+                } else if (booth === '온라인부스') {
+                    renderHTML += booth + ' (' + row.onlineBoothCnt + ')';
+                }
+            }
+        }
+        return renderHTML;
+    }
+
+    function renderBoothCntCell(data, type, row){
+        return (parseInt(row.standAloneBoothCnt) + parseInt(row.assemblyBoothCnt) + parseInt(row.onlineBoothCnt)).toString();
+    }
+
+    function renderBoothPrcCell(data, type, row){
+        const boothPriceSum = Number(row.boothPrcSum);
+        const registrationFee = Number(row.registrationFee);
+        const newPrice = boothPriceSum - registrationFee;
+        return newPrice.toLocaleString();
+    }
+
+    function renderDiscountTypeCell(data, type, row){
+        let renderHTML = '';
+
+        // 1. 기본 할인 (discountType)
+        if(row.discountType != null && row.discountType !== ""){
+            let discountType_arr = row.discountType.split(',');
+            for(let i=0; i<discountType_arr.length; i++){
+                renderHTML += discountType_arr[i];
+                renderHTML += '<br>';
+            }
+        }
+
+        // 2. 특별 할인
+        if (row.discountSpecial1Yn) {
+            renderHTML += '특할1(제품상)<br>';
+        }
+        if (row.discountSpecial2Yn && row.discountSpecial2Reason) {
+            renderHTML += row.discountSpecial2Reason + '<br>';
+        }
+        if (row.discountSpecial3Yn && row.discountSpecial3Reason) {
+            renderHTML += row.discountSpecial3Reason + '<br>';
+        }
+
+        // 3. 최종 HTML 반환
+        if(renderHTML === ''){
+            renderHTML = '-';
+        } else if (renderHTML.endsWith('<br>')) {
+            renderHTML = renderHTML.substring(0, renderHTML.length - 4);
+        }
+
+        return renderHTML;
+    }
+
+    function renderDiscountPrcCell(data, type, row){
+        // 1. 기본 할인액
+        const basicDiscount = parseInt(row.discountPrcSum || 0);
+
+        // 2. 특별 할인 기준액 계산 (유틸리티는 0으로 가정)
+        const boothPrcSum = parseInt(row.boothPrcSum || 0);
+        const baseAmountForSpecial = boothPrcSum - basicDiscount;
+
+        // 3. 특별 할인액 계산
+        let specialDiscountTotal = 0;
+        if (row.discountSpecial1Yn) {
+            specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
+        }
+        if (row.discountSpecial2Yn) {
+            specialDiscountTotal += (parseInt(row.discountSpecial2Amount || 0));
+        }
+        if (row.discountSpecial3Yn) {
+            specialDiscountTotal += (parseInt(row.discountSpecial3Amount || 0));
+        }
+
+        // 4. 최종 총 할인액
+        const totalDiscount = basicDiscount + specialDiscountTotal;
+
+        return totalDiscount.toLocaleString();
+    }
+
+    function renderBoothPrcSumCell(data, type, row){
+
+        // --- 1. 총 할인액 계산 (renderDiscountPrcCell 로직 동일) ---
+        const basicDiscount = parseInt(row.discountPrcSum || 0);
+        const boothPrcSum = parseInt(row.boothPrcSum || 0);
+        const baseAmountForSpecial = boothPrcSum - basicDiscount;
+
+        let specialDiscountTotal = 0;
+        if (row.discountSpecial1Yn) {
+            specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
+        }
+        if (row.discountSpecial2Yn) {
+            specialDiscountTotal += (parseInt(row.discountSpecial2Amount || 0));
+        }
+        if (row.discountSpecial3Yn) {
+            specialDiscountTotal += (parseInt(row.discountSpecial3Amount || 0));
+        }
+        const totalDiscount = basicDiscount + specialDiscountTotal;
+
+        // --- 2. 발전기금 계산 (엑셀 로직 동일) ---
+        let developmentFund = 0;
+        // (협회 회원이거나 협회 할인을 받은 경우)
+        if ((row.memberCompanyYn === 'Y' || row.discountLeisure) && boothPrcSum > 0) {
+            // (부스 총액 - 총 할인액) * 10%
+            let developmentBase = boothPrcSum - totalDiscount;
+            developmentFund = Math.floor(developmentBase * 0.1);
+        }
+
+        // --- 3. 최종 총액(VAT미포함) 재계산 ---
+        // (부스총액 + 발전기금) - 총 할인액
+        const recalculatedPrcSum = (boothPrcSum + developmentFund) - totalDiscount;
+
+        return recalculatedPrcSum.toLocaleString();
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.seq);
+        let rowSeq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_application_booth_new_modify_init_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">상세/수정</a>';
+        renderHTML += '</div>';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">참석확인</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#kt_exhibitor_application_booth_new_new_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#kt_exhibitor_application_booth_new_new_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_application_booth_new_search();
+        }
+    };
+}();
+
 let KTAppExhibitorNewApplicationBooth = function () {
     // Shared variables
     let table;
@@ -1990,6 +2285,146 @@ let KTAppExhibitorNewApplicationMaritime = function () {
     };
 }();
 
+let KTAppExhibitorNewNewApplicationSign = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 2,
+                    'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderCompanySignNameKoCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderCompanySignNameEnCell(data, type, row); }
+                },
+                {
+                    'targets': 11,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' }, //순번
+                { data: 'seq'}, //seq
+                { data: 'companyNameKo' }, //회사명(국문)
+                { data: 'name'},
+                { data: 'position'},
+                { data: 'phone'},
+                { data: 'boothType'},
+                { data: 'companySignNameKo' }, //상호간판명(국문)
+                { data: 'companySignNameEn' }, //상호간판명(영문)
+                { data: 'initRegiDttm' }, //등록일시
+                { data: 'finalRegiDttm' }, //수정일시
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderCompanyNameCell(data, type, row){
+        let companyNameKo = row.companyNameKo;
+        let companyNameEn = row.companyNameEn;
+        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+    }
+
+    function renderCompanySignNameKoCell(data, type, row){
+        return nvl(row.companySignNameKo,'-');
+    }
+
+    function renderBoothTypeCell(data, type, row){
+        let renderHTML = '';
+        if(row.boothType != null) {
+            let boothType_arr = row.boothType.split(',');
+            for (let i = 0; i < boothType_arr.length; i++) {
+                let booth = boothType_arr[i];
+                if (booth === '독립부스') {
+                    renderHTML += booth + ' (' + row.standAloneBoothCnt + ')';
+                    renderHTML += '<br>';
+                } else if (booth === '조립부스') {
+                    renderHTML += booth + ' (' + row.assemblyBoothCnt + ')';
+                    renderHTML += '<br>';
+                } else if (booth === '온라인부스') {
+                    renderHTML += booth + ' (' + row.onlineBoothCnt + ')';
+                }
+            }
+        }
+        return renderHTML;
+    }
+
+    function renderCompanySignNameEnCell(data, type, row){
+        return nvl(row.companySignNameEn,'-');
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.seq);
+        let rowSeq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_application_sign_new_modify_init_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">상세/수정</a>';
+        renderHTML += '</div>';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">참석확인</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#kt_exhibitor_application_sign_new_new_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#kt_exhibitor_application_sign_new_new_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_application_sign_new_search();
+        }
+    };
+}();
+
 let KTAppExhibitorNewApplicationSign = function () {
     // Shared variables
     let table;
@@ -2225,6 +2660,197 @@ let KTAppExhibitorApplicationSign = function () {
 
             /* 조회 */
             f_application_sign_search();
+        }
+    };
+}();
+
+let KTAppExhibitorNewNewApplicationUtility = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 2,
+                    'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderInvoiceYnCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderUtilityGbnCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'render': function (data, type, row) { return renderUtilityPrcSumCell(data, type, row); }
+                },
+                {
+                    'targets': 12,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' }, //순번
+                { data: 'seq'}, //seq
+                { data: 'companyNameKo' }, //회사명(국문)
+                { data: 'invoiceYn' }, //인보이스존재여부
+                { data: 'name' }, //담당자명
+                { data: 'position' }, //직책
+                { data: 'phone' }, //연락처
+                { data: 'boothType' }, //부스유형
+                { data: 'utilityGbn' }, //구분
+                { data: 'utilityPrcSum' }, //총액
+                { data: 'initRegiDttm' }, //등록일시
+                { data: 'finalRegiDttm' }, //수정일시
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderCompanyNameCell(data, type, row){
+        let companyNameKo = row.companyNameKo;
+        let companyNameEn = row.companyNameEn;
+        let renderHTML = '<span class="fw-bold">';
+        renderHTML += '<a href="/mng/exhibitorNewNew/application/utility/detail.do?seq=' + row.seq + '"';
+        renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
+        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        renderHTML += '</a>';
+        renderHTML += '</span>';
+        return renderHTML;
+    }
+
+    function renderInvoiceYnCell(data, type, row){
+        let invoiceYn = row.invoiceYn;
+        let renderHTML = 'X';
+        if(invoiceYn === 'Y'){
+            renderHTML = 'O';
+        }
+        return renderHTML;
+    }
+
+    function renderBoothTypeCell(data, type, row){
+        let renderHTML = '';
+        if(row.boothType != null) {
+            let boothType_arr = row.boothType.split(',');
+            for (let i = 0; i < boothType_arr.length; i++) {
+                let booth = boothType_arr[i];
+                if (booth === '독립부스') {
+                    renderHTML += booth + ' (' + row.standAloneBoothCnt + ')';
+                    renderHTML += '<br>';
+                } else if (booth === '조립부스') {
+                    renderHTML += booth + ' (' + row.assemblyBoothCnt + ')';
+                    renderHTML += '<br>';
+                } else if (booth === '온라인부스') {
+                    renderHTML += booth + ' (' + row.onlineBoothCnt + ')';
+                }
+            }
+        }
+        return renderHTML;
+    }
+
+    function renderUtilityPrcSumCell(data, type, row){
+        let renderHTML = Number(row.utilityPrcSum);
+        return renderHTML.toLocaleString();
+    }
+
+    function renderUtilityGbnCell(data, type, row){
+        let utilityType = '';
+
+        let utilityJuganCnt = row.utilityJuganCnt;
+        let utilityDayCnt = row.utilityDayCnt;
+        let utilityWorkCnt = row.utilityWorkCnt;
+        let utilityCompressedAirCnt = row.utilityCompressedAirCnt;
+        let utilityWaterBasicCnt = row.utilityWaterBasicCnt;
+        let utilityInternetCnt = row.utilityInternetCnt;
+        let utilityPytexNewCnt = row.utilityPytexNewCnt;
+        let utilityPytexReCnt = row.utilityPytexReCnt;
+        let utilityBarcodeCnt = row.utilityBarcodeCnt;
+
+        if(utilityJuganCnt > 0){ utilityType += ('주간 단상 220V' + ' (' + row.utilityJuganCnt + ')' + '<br>'); }
+        if(utilityDayCnt > 0){ utilityType += ('24시간용 220V' + ' (' + row.utilityDayCnt + ')' + '<br>'); }
+        if(utilityWorkCnt > 0){ utilityType += ('작업전기' + ' (' + row.utilityWorkCnt + ')' + '<br>'); }
+        if(utilityCompressedAirCnt > 0){ utilityType += ('압축공기 기본형' + ' (' + row.utilityCompressedAirCnt + ')' + '<br>'); }
+        if(utilityWaterBasicCnt > 0){ utilityType += ('급배수 기본형' + ' (' + row.utilityWaterBasicCnt + ')' + '<br>'); }
+        if(utilityInternetCnt > 0){ utilityType += ('인터넷' + ' (' + row.utilityInternetCnt + ')' + '<br>'); }
+        if(utilityPytexNewCnt > 0){ utilityType += ('파이텍스(신품)' + ' (' + row.utilityPytexNewCnt + ')' + '<br>'); }
+        if(utilityPytexReCnt > 0){ utilityType += ('파이텍스(재사용품)' + ' (' + row.utilityPytexReCnt + ')' + '<br>'); }
+        if(utilityBarcodeCnt > 0){ utilityType += ('바코드 리더기' + ' (' + row.utilityBarcodeCnt + ')' + '<br>'); }
+
+        if(utilityType.substring(utilityType.length-4) === '<br>'){
+            utilityType = utilityType.substring(0,utilityType.length-4);
+        }
+
+        if(nvl(utilityType,"") === ""){
+            utilityType = '-';
+        }
+
+        return utilityType;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.seq);
+        let rowSeq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_application_utility_new_modify_init_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">상세/수정</a>';
+        renderHTML += '</div>';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">참석확인</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#kt_exhibitor_application_utility_new_new_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#kt_exhibitor_application_utility_new_new_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_application_utility_new_search();
         }
     };
 }();
@@ -2580,6 +3206,128 @@ let KTAppExhibitorApplicationUtility = function () {
     };
 }();
 
+let KTAppExhibitorNewNewApplicationPass = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 2,
+                    'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderInitRegiDttmCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderFinalRegiDttmCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' }, //순번
+                { data: 'seq' }, //업체seq
+                { data: 'companyName' }, //회사명
+                { data: 'name' }, //성명
+                { data: 'position' }, //직책
+                { data: 'phone' }, //연락처
+                { data: 'passCnt' }, //인원
+                { data: 'initRegiDttm' }, //등록일시
+                { data: 'finalRegiDttm' }, //수정일시
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderFinalRegiDttmCell(data, type, row){
+        let finalRegiDttm = row.finalRegiDttm;
+        if(nvl(finalRegiDttm,"") === ""){
+            finalRegiDttm = '-';
+        }
+        return finalRegiDttm;
+    }
+
+    function renderInitRegiDttmCell(data, type, row){
+        let initRegiDttm = row.initRegiDttm;
+        if(nvl(initRegiDttm,"") === ""){
+            initRegiDttm = '-';
+        }
+        return initRegiDttm;
+    }
+
+    function renderCompanyNameCell(data, type, row){
+        let companyNameKo = row.companyNameKo;
+        let companyNameEn = row.companyNameEn;
+        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.seq);
+        let rowSeq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_application_pass_new_modify_init_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">상세/수정</a>';
+        renderHTML += '</div>';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">참석확인</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#kt_exhibitor_application_pass_new_new_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#kt_exhibitor_application_pass_new_new_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_application_pass_new_search();
+        }
+    };
+}();
+
 let KTAppExhibitorNewApplicationPass = function () {
     // Shared variables
     let table;
@@ -2890,6 +3638,184 @@ let KTAppExhibitorApplicationPass = function () {
 
             /* 조회 */
             f_application_pass_search();
+        }
+    };
+}();
+
+let KTAppExhibitorNewNewApplicationBuyer = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderCountryCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderBuyerCompanyCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'render': function (data, type, row) { return renderBuyerNameCell(data, type, row); }
+                },
+                {
+                    'targets': 11,
+                    'render': function (data, type, row) { return renderEmailCell(data, type, row); }
+                },
+                {
+                    'targets': 12,
+                    'render': function (data, type, row) { return renderConnectionCell(data, type, row); }
+                },
+                {
+                    'targets': 15,
+                    'render': function (data, type, row) { return renderInitRegiDttmCell(data, type, row); }
+                },
+                {
+                    'targets': 16,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1,2,4,6,8,10,13,14] }
+            ],
+            columns: [
+                { data: 'rownum' }, //순번
+                { data: 'seq' }, //업체seq
+                { data: 'id' }, //id
+                { data: 'companyNameKo' }, //회사명(국문)
+                { data: 'companyNameEn' }, //회사명(영문)
+                { data: 'buyerCompanyCountry' }, //국가
+                { data: 'buyerCompanyLocation' }, //소재지
+                { data: 'buyerCompanyName' }, //바이어업체명
+                { data: 'buyerCompanyHomepage' }, //바이어홈페이지
+                { data: 'buyerCompanyDepart' }, //바이어부서
+                { data: 'buyerCompanyPosition' }, //바이어직책
+                { data: 'buyerCompanyEmail' }, //바이어이메일
+                { data: 'buyerCompanyTel' }, //바이어전화번호
+                { data: 'buyerCompanyPhone' }, //바이어휴대전화
+                { data: 'buyerCompanyFax' }, //바이어Fax
+                { data: 'initRegiDttm' }, //등록일시
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderInitRegiDttmCell(data, type, row){
+        let initRegiDttm = row.initRegiDttm;
+        if(nvl(initRegiDttm,"") === ""){ initRegiDttm = '-'; }
+        return initRegiDttm;
+    }
+
+    function renderEmailCell(data, type, row){
+        let buyerCompanyEmail = row.buyerCompanyEmail;
+        if(nvl(buyerCompanyEmail,"") === ""){ buyerCompanyEmail = '-'; }
+        return buyerCompanyEmail;
+    }
+
+    function renderCompanyNameCell(data, type, row){
+        let companyNameKo = row.companyNameKo;
+        let companyNameEn = row.companyNameEn;
+        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+    }
+
+    function renderCountryCell(data, type, row){
+        let buyerCompanyCountry = row.buyerCompanyCountry;
+        if(nvl(buyerCompanyCountry,"") === ""){ buyerCompanyCountry = '-'; }
+        let buyerCompanyLocation = row.buyerCompanyLocation;
+        if(nvl(buyerCompanyLocation,"") === ""){ buyerCompanyLocation = '-'; }
+        return buyerCompanyCountry + ' / ' + buyerCompanyLocation;
+    }
+
+    function renderBuyerCompanyCell(data, type, row){
+        let buyerCompanyName = row.buyerCompanyName;
+        if(nvl(buyerCompanyName,"") === ""){ buyerCompanyName = '-'; }
+        let buyerCompanyHomepage = row.buyerCompanyHomepage;
+        if(nvl(buyerCompanyHomepage,"") === ""){ buyerCompanyHomepage = '-'; }
+        return buyerCompanyName + '<br>' + '( ' + buyerCompanyHomepage + ' )';
+    }
+
+    function renderBuyerNameCell(data, type, row){
+        let buyerCompanyDepart = row.buyerCompanyDepart;
+        if(nvl(buyerCompanyDepart,"") === ""){ buyerCompanyDepart = '-'; }
+        let buyerCompanyPosition = row.buyerCompanyPosition;
+        if(nvl(buyerCompanyPosition,"") === ""){ buyerCompanyPosition = '-'; }
+        return buyerCompanyDepart + ' / ' + buyerCompanyPosition;
+    }
+
+    function renderConnectionCell(data, type, row){
+        let buyerCompanyTel = row.buyerCompanyTel;
+        if(nvl(buyerCompanyTel,"") === ""){ buyerCompanyTel = '-'; }
+        let buyerCompanyPhone = row.buyerCompanyPhone;
+        if(nvl(buyerCompanyPhone,"") === ""){ buyerCompanyPhone = '-'; }
+        let buyerCompanyFax = row.buyerCompanyFax;
+        if(nvl(buyerCompanyFax,"") === ""){ buyerCompanyFax = '-'; }
+        let renderHTML = '전화번호: ' + buyerCompanyTel + '<br>';
+        renderHTML += '휴대전화: ' + buyerCompanyPhone + '<br>';
+        renderHTML += 'FAX: ' + buyerCompanyFax;
+        return renderHTML;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.seq);
+        let rowSeq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_application_buyer_new_modify_init_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">상세/수정</a>';
+        renderHTML += '</div>';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">참석확인</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#kt_exhibitor_application_buyer_new_new_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#kt_exhibitor_application_buyer_new_new_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_application_buyer_new_search();
         }
     };
 }();
@@ -3251,6 +4177,180 @@ let KTAppExhibitorApplicationBuyer = function () {
     };
 }();
 
+let KTAppExhibitorNewNewApplicationGift = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'asc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 3,
+                    'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderGiftGbnCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderGiftCntCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderGiftClassifyCell(data, type, row); }
+                },
+                {
+                    'targets': 8,
+                    'render': function (data, type, row) { return renderGiftNameCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'render': function (data, type, row) { return renderPriceCell(data, type, row); }
+                },
+                {
+                    'targets': 11,
+                    'render': function (data, type, row) { return renderInitRegiDttmCell(data, type, row); }
+                },
+                {
+                    'targets': 12,
+                    'render': function (data, type, row) { return renderFinalRegiDttmCell(data, type, row); }
+                },
+                {
+                    'targets': 13,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1,2,4,10] }
+            ],
+            columns: [
+                { data: 'rownum' }, //순번
+                { data: 'seq'}, //업체seq
+                { data: 'id'}, //seq
+                { data: 'companyNameKo' }, //회사명(국문)
+                { data: 'companyNameEn' }, //회사명(영문)
+                { data: 'giftGbn' }, //구분
+                { data: 'giftCnt' }, //수량
+                { data: 'giftClassify' }, //분류
+                { data: 'giftName' }, //;경품명
+                { data: 'giftPrice' }, //소비자가
+                { data: 'giftSponsorPrice' }, //협찬가
+                { data: 'initRegiDttm' }, //등록일시
+                { data: 'finalRegiDttm' }, //수정일시
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderFinalRegiDttmCell(data, type, row){
+        let finalRegiDttm = row.finalRegiDttm;
+        if(nvl(finalRegiDttm,"") === ""){ finalRegiDttm = '-'; }
+        return finalRegiDttm;
+    }
+
+    function renderInitRegiDttmCell(data, type, row){
+        let initRegiDttm = row.initRegiDttm;
+        if(nvl(initRegiDttm,"") === ""){ initRegiDttm = '-'; }
+        return initRegiDttm;
+    }
+
+    function renderGiftNameCell(data, type, row){
+        let giftName = row.giftName;
+        if(nvl(giftName,"") === ""){ giftName = '-'; }
+        return giftName;
+    }
+
+    function renderGiftClassifyCell(data, type, row){
+        let giftClassify = row.giftClassify;
+        if(nvl(giftClassify,"") === ""){ giftClassify = '-'; }
+        return giftClassify;
+    }
+
+    function renderGiftCntCell(data, type, row){
+        let giftCnt = row.giftCnt;
+        if(nvl(giftCnt,"") === ""){ giftCnt = '-'; }
+        return giftCnt;
+    }
+
+    function renderGiftGbnCell(data, type, row){
+        let giftGbn = row.giftGbn;
+        if(nvl(giftGbn,"") === ""){ giftGbn = '-'; }
+        return giftGbn;
+    }
+
+    function renderCompanyNameCell(data, type, row){
+        let companyNameKo = row.companyNameKo;
+        let companyNameEn = row.companyNameEn;
+        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+    }
+
+    function renderPriceCell(data, type, row){
+        let giftPrice = row.giftPrice;
+        if(nvl(giftPrice,"") === ""){ giftPrice = '-'; }else{giftPrice = Number(giftPrice);}
+        let giftSponsorPrice = row.giftSponsorPrice;
+        if(nvl(giftSponsorPrice,"") === ""){ giftSponsorPrice = '-'; }else{giftSponsorPrice = Number(giftSponsorPrice);}
+        return giftPrice.toLocaleString() + ' / ' + giftSponsorPrice.toLocaleString();
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.seq);
+        let rowSeq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_application_gift_new_modify_init_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">상세/수정</a>';
+        renderHTML += '</div>';
+        /*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">참석확인</a>';
+        renderHTML += '</div>';*/
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#kt_exhibitor_application_gift_new_new_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#kt_exhibitor_application_gift_new_new_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_application_gift_new_search();
+        }
+    };
+}();
+
 let KTAppExhibitorNewApplicationGift = function () {
     // Shared variables
     let table;
@@ -3600,7 +4700,7 @@ let KTAppExhibitorApplicationGift = function () {
     };
 }();
 
-let KTAppExhibitorApplicationBanner = function () {
+let KTAppExhibitorNewNewApplicationOnline = function () {
     // Shared variables
     let table;
     let datatable;
@@ -3611,32 +4711,46 @@ let KTAppExhibitorApplicationBanner = function () {
         datatable = $(table).DataTable({
             'info': false,
             'paging' : false,
-            'select': false,
+            'select': true,
             'ordering': true,
-            'order': [[0, 'asc']],
+            'order': [[0, 'desc']],
             'columnDefs': [
                 {
                     'targets': '_all',
                     'className': 'text-center'
                 },
                 {
-                    'targets': 3,
+                    'targets': 2,
+                    'render': function (data, type, row) { return renderViewYnCell(data, type, row); }
+                },
+                {
+                    'targets': 4,
                     'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
                 },
                 {
-                    'targets': 8,
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderFieldPartCell(data, type, row); }
+                },
+                {
+                    'targets': 7,
+                    'render': function (data, type, row) { return renderProductOptionSmallCell(data, type, row); }
+                },
+                {
+                    'targets': 10,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [1,2,4] }
+                { visible: false, targets: [1,5] }
             ],
             columns: [
                 { data: 'rownum' }, //순번
                 { data: 'seq'}, //seq
-                { data: 'exhibitorSeq'}, //업체seq
+                { data: 'companyOnlineViewYn'}, //온라인노출여부
+                { data: 'transferYear'}, //참가년도
                 { data: 'companyNameKo' }, //회사명(국문)
                 { data: 'companyNameEn' }, //회사명(영문)
-                { data: 'content' }, //내용
+                { data: 'fieldPart' }, //참가분야
+                { data: 'productOptionSmall' }, //제품분류(소)
                 { data: 'initRegiDttm' }, //등록일시
                 { data: 'finalRegiDttm' }, //수정일시
                 { data: 'actions' }
@@ -3644,34 +4758,95 @@ let KTAppExhibitorApplicationBanner = function () {
         });
     }
 
+    function renderProductOptionSmallCell(data, type, row){
+        let productOptionSmall_full = row.productOptionSmall;
+        let renderHTML = '';
+        if(nvl(productOptionSmall_full,"") !== ""){
+            if(productOptionSmall_full.includes('^')){
+                let productOptionSmall = productOptionSmall_full.toString().split('^');
+                for(let i=0; i<productOptionSmall.length; i++){
+                    renderHTML += '- ' + productOptionSmall[i];
+                    if((i+1) !== productOptionSmall.length){
+                        renderHTML += '<br>';
+                    }
+                }
+            }else{
+                renderHTML = productOptionSmall_full;
+            }
+        }
+        return renderHTML;
+    }
+
+    function renderFieldPartCell(data, type, row){
+        let fieldParticipatory = row.fieldParticipatory;
+        let renderHTML = '';
+        if(nvl(fieldParticipatory,"") !== ""){
+            switch (fieldParticipatory) {
+                case 'boatShow':
+                    renderHTML = '경기국제보트쇼';
+                    break;
+                case 'surfShow':
+                    renderHTML = '코리아서프쇼';
+                    break;
+                case 'travelShow':
+                    renderHTML = '해양관광전';
+                    break;
+            }
+        }else{
+            renderHTML = '-';
+        }
+        return renderHTML;
+    }
+
+    function renderViewYnCell(data, type, row){
+        let companyOnlineViewYn = row.companyOnlineViewYn;
+        let renderHTML = '';
+        if(companyOnlineViewYn === 'Y'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += '노출';
+            renderHTML += '</div>';
+        }else{
+            renderHTML += '<div class="badge badge-light-danger fw-bold">';
+            renderHTML += '미노출';
+            renderHTML += '</div>';
+        }
+        return renderHTML;
+    }
+
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        let renderHTML = companyNameKo + '<br>' + companyNameEn;
-        return renderHTML;
+        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
     }
 
     function renderActionsCell(data, type, row){
         //console.log(row.seq);
         let rowSeq = row.seq;
-        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        /*let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
         renderHTML += 'Actions';
         renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
         renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
         renderHTML += '<div class="menu-item px-3">';
-        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">상세/수정</a>';
+        renderHTML += '<a onclick="f_application_online_new_modify_init_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" style="color: #7e8299 !important;">상세/수정</a>';
         renderHTML += '</div>';
-        /*renderHTML += '<div class="menu-item px-3">';
+        /!*renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">참석확인</a>';
+        renderHTML += '</div>';*!/
         renderHTML += '</div>';*/
-        renderHTML += '</div>';
+        let renderHTML = '<a onclick="f_application_online_new_modify_init_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3 cursor-pointer text-decoration-none">';
+        renderHTML += '<i class="ki-duotone ki-notepad-edit">';
+        renderHTML += '<span class="path1"></span>';
+        renderHTML += '<span class="path2"></span>';
+        renderHTML += '</i>';
+        renderHTML += ' 상세보기';
+        renderHTML += '</a>';
         return renderHTML;
     }
 
     // Public methods
     return {
         init: function () {
-            table = document.querySelector('#kt_exhibitor_application_banner_table');
+            table = document.querySelector('#kt_exhibitor_application_online_new_new_table');
 
             if (!table) {
                 return;
@@ -3680,12 +4855,39 @@ let KTAppExhibitorApplicationBanner = function () {
             initDatatable();
 
             /* Data row clear */
-            let dataTbl = $('#kt_exhibitor_application_banner_table').DataTable();
+            let dataTbl = $('#kt_exhibitor_application_online_new_new_table').DataTable();
             dataTbl.clear();
             dataTbl.draw(false);
 
+            dataTbl.on( 'select', function ( e, dt, type, indexes ) {
+                if ( type === 'row' ) {
+                    let rowSeq = dataTbl.rows( indexes ).data().pluck( 'seq' )[0];
+                    let onlineViewYnBtn = $('#online_view_yn_btn');
+                    onlineViewYnBtn.attr('value', rowSeq);
+                    let companyOnlineViewYn = dataTbl.rows( indexes ).data().pluck( 'companyOnlineViewYn' )[0];
+                    onlineViewYnBtn.attr('data-view', companyOnlineViewYn);
+                }
+            } );
+
+            dataTbl.on( 'deselect', function ( e, dt, type, indexes ) {
+                if ( type === 'row' ) {
+                    let onlineViewYnBtn = $('#online_view_yn_btn');
+                    onlineViewYnBtn.removeAttr('value');
+                    onlineViewYnBtn.removeAttr('data-view');
+                }
+            } );
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            })
+                .draw();
+
             /* 조회 */
-            f_application_banner_search();
+            f_application_online_new_search();
         }
     };
 }();
@@ -4058,6 +5260,141 @@ let KTAppExhibitorApplicationOnline = function () {
 
             /* 조회 */
             f_application_online_search();
+        }
+    };
+}();
+
+let KTAppExhibitorNewNewApplicationProduct = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': false,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 0,
+                    'width': '2%'
+                },
+                {
+                    'targets': 2,
+                    'width': '3%',
+                    'render': function (data, type, row) { return renderBoatEntryYnCell(data, type, row); }
+                },
+                {
+                    'targets': 3,
+                    'width': '10%',
+                    'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
+                },
+                {
+                    'targets': [4,5,6,7,8],
+                    'width': '5%'
+                },
+                {
+                    'targets': 9,
+                    'data': 'actions',
+                    'width': '5%',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' }, //순번
+                { data: 'seq' }, //seq
+                { data: 'boatEntryYn' }, //출품여부
+                { data: 'companyName' }, //회사명
+                { data: 'name' }, //담당자명
+                { data: 'position' }, //직위
+                { data: 'phone' }, //휴대폰
+                { data: 'productCount' }, //제품수량
+                { data: 'initRegiDttm' }, //등록일시
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderBoatEntryYnCell(data, type, row){
+        let renderHTML = '';
+        renderHTML = '<div class="badge badge-light-primary fw-bold">';
+        renderHTML += '신청';
+        renderHTML += '</div>';
+        let boatEntryYn = row.boatEntryYn;
+        if (nvl(boatEntryYn, 'N') === 'N') {
+            renderHTML = '<div class="badge badge-light-danger fw-bold">';
+            renderHTML += '미신청';
+            renderHTML += '</div>';
+        }
+        return renderHTML;
+    }
+
+    function renderCompanyNameCell(data, type, row){
+        let companyNameKo = row.companyNameKo;
+        let companyNameEn = row.companyNameEn;
+        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.seq);
+        let rowSeq = row.seq;
+        /*let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_application_product_new_modify_init_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" style="color: #7e8299 !important;">상세/수정</a>';
+        renderHTML += '</div>';
+        /!*renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">참석확인</a>';
+        renderHTML += '</div>';*!/
+        renderHTML += '</div>';*/
+        let renderHTML = '<a onclick="f_application_product_new_modify_init_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3 cursor-pointer text-decoration-none">';
+        renderHTML += '<i class="ki-duotone ki-notepad-edit">';
+        renderHTML += '<span class="path1"></span>';
+        renderHTML += '<span class="path2"></span>';
+        renderHTML += '</i>';
+        renderHTML += ' 상세보기';
+        renderHTML += '</a>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#kt_exhibitor_application_product_new_new_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#kt_exhibitor_application_product_new_new_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            })
+                .draw();
+
+            /* 조회 */
+            f_application_product_new_search();
         }
     };
 }();
@@ -6833,6 +8170,14 @@ KTUtil.onDOMContentLoaded(function () {
 
     // 전시회>참가신청서 관리 (2027~)
     KTAppExhibitorNewNewMng.init(); // /mng/exhibitorNewNew/participant/company.do
+    KTAppExhibitorNewNewApplicationBooth.init(); // /mng/exhibitorNewNew/application/booth.do
+    KTAppExhibitorNewNewApplicationSign.init(); // /mng/exhibitorNewNew/application/sign.do
+    KTAppExhibitorNewNewApplicationUtility.init(); // /mng/exhibitorNewNew/application/utility.do
+    KTAppExhibitorNewNewApplicationPass.init(); // /mng/exhibitorNewNew/application/pass.do
+    KTAppExhibitorNewNewApplicationBuyer.init(); // /mng/exhibitorNewNew/application/buyer.do
+    KTAppExhibitorNewNewApplicationGift.init(); // /mng/exhibitorNewNew/application/gift.do
+    KTAppExhibitorNewNewApplicationOnline.init(); // /mng/exhibitorNewNew/application/online.do
+    KTAppExhibitorNewNewApplicationProduct.init(); // /mng/exhibitorNewNew/application/product.do
     
     // 전시회>참가신청서 관리 (2026)
     KTAppExhibitorNewMng.init(); // /mng/exhibitorNew/participant/company.do

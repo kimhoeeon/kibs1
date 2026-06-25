@@ -91,14 +91,14 @@ function f_application_gift_new_search(){
     loadingBarShow();
 
     /* DataTable Data Clear */
-    let dataTbl = $('#kt_exhibitor_application_gift_new_table').DataTable();
+    let dataTbl = $('#kt_exhibitor_application_gift_new_new_table').DataTable();
     dataTbl.clear();
     dataTbl.draw(false);
 
     /* TM 및 잠재DB 목록 데이터 조회 */
     let jsonObj;
     let searchText = $('#search_text').val();
-    if(nullToEmpty(searchText) === ""){
+    if(nvl(searchText,'') === ""){
         jsonObj = {
             transferYear: transferYear
         };
@@ -118,7 +118,7 @@ function f_application_gift_new_search(){
     document.getElementById('search_cnt').innerText = resData.length;
 
     /* DataTable Column tooltip Set */
-    let jb = $('#kt_exhibitor_application_gift_new_table tbody td');
+    let jb = $('#kt_exhibitor_application_gift_new_new_table tbody td');
     let cnt = 0;
     jb.each(function(index, item){
         let itemText = $(item).text();

@@ -2,7 +2,7 @@
  * mng/exhibitor/application/online.js
  * 참가신청서 관리 > 온라인 전시관
  * */
-
+var transferYear = '2027';
 $(function(){
     $('#kt_online_info .form-check-label').css({'color': '#000', 'opacity': 1});
     $('#kt_online_info .form-check-input').css({'color': '#000', 'opacity': 1});
@@ -73,16 +73,19 @@ function f_application_online_new_search(){
     loadingBarShow();
 
     /* DataTable Data Clear */
-    let dataTbl = $('#kt_exhibitor_application_online_new_table').DataTable();
+    let dataTbl = $('#kt_exhibitor_application_online_new_new_table').DataTable();
     dataTbl.clear();
     dataTbl.draw(false);
 
     /* TM 및 잠재DB 목록 데이터 조회 */
     let jsonObj;
     if(nvl(search_text,'') === ""){
-        jsonObj = {};
+        jsonObj = {
+            transferYear: transferYear
+        };
     }else{
         jsonObj = {
+            transferYear: transferYear,
             condition: search_box,
             searchText: search_text
         }
@@ -96,7 +99,7 @@ function f_application_online_new_search(){
     document.getElementById('search_cnt').innerText = resData.length;
 
     /* DataTable Column tooltip Set */
-    let jb = $('#kt_exhibitor_application_online_new_table tbody td');
+    let jb = $('#kt_exhibitor_application_online_new_new_table tbody td');
     let cnt = 0;
     jb.each(function(index, item){
         let itemText = $(item).text();
@@ -119,7 +122,7 @@ function f_search_condition_sel_change(){
     loadingBarShow();
 
     /* DataTable Data Clear */
-    let dataTbl = $('#kt_exhibitor_application_online_new_table').DataTable();
+    let dataTbl = $('#kt_exhibitor_application_online_new_new_table').DataTable();
     dataTbl.clear();
     dataTbl.draw(false);
 
@@ -146,7 +149,7 @@ function f_search_condition_sel_change(){
     document.getElementById('search_cnt').innerText = resData.length;
 
     /* DataTable Column tooltip Set */
-    let jb = $('#kt_exhibitor_application_online_new_table tbody td');
+    let jb = $('#kt_exhibitor_application_online_new_new_table tbody td');
     let cnt = 0;
     jb.each(function(index, item){
         let itemText = $(item).text();

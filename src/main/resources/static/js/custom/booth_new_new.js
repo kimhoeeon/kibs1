@@ -75,7 +75,7 @@ function f_application_booth_new_search(){
     loadingBarShow();
 
     /* DataTable Data Clear */
-    let dataTbl = $('#kt_exhibitor_application_booth_new_table').DataTable();
+    let dataTbl = $('#kt_exhibitor_application_booth_new_new_table').DataTable();
     dataTbl.clear();
     dataTbl.draw(false);
 
@@ -101,7 +101,7 @@ function f_application_booth_new_search(){
     document.getElementById('search_cnt').innerText = resData.length;
 
     /* DataTable Column tooltip Set */
-    let jb = $('#kt_exhibitor_application_booth_new_table tbody td');
+    let jb = $('#kt_exhibitor_application_booth_new_new_table tbody td');
     let cnt = 0;
     jb.each(function(index, item){
         let itemText = $(item).text();
@@ -124,7 +124,7 @@ function f_search_condition_sel_change(){
     loadingBarShow();
 
     /* DataTable Data Clear */
-    let dataTbl = $('#kt_exhibitor_application_booth_new_table').DataTable();
+    let dataTbl = $('#kt_exhibitor_application_booth_new_new_table').DataTable();
     dataTbl.clear();
     dataTbl.draw(false);
 
@@ -161,7 +161,7 @@ function f_search_condition_sel_change(){
     document.getElementById('search_cnt').innerText = resData.length;
 
     /* DataTable Column tooltip Set */
-    let jb = $('#kt_exhibitor_application_booth_new_table tbody td');
+    let jb = $('#kt_exhibitor_application_booth_new_new_table tbody td');
     let cnt = 0;
     jb.each(function(index, item){
         let itemText = $(item).text();
