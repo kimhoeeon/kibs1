@@ -98,7 +98,7 @@
                                     <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
+                                        <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">요트/보트 출품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
@@ -415,7 +415,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>주간 단상 220V</td>
                                                     <td>${info.utilityJuganCnt}</td>
-                                                    <td>￦ 80,000/1kw</td>
+                                                    <td>￦ 100,000/1kw</td>
                                                     <td><fmt:formatNumber value="${info.utilityJuganFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -427,7 +427,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>24시간용 220V</td>
                                                     <td>${info.utilityDayCnt}</td>
-                                                    <td>￦ 100,000/1kw</td>
+                                                    <td>￦ 150,000/1kw</td>
                                                     <td><fmt:formatNumber value="${info.utilityDayFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -439,7 +439,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>작업전기</td>
                                                     <td>${info.utilityWorkCnt}</td>
-                                                    <td>￦ 80,000/1kw</td>
+                                                    <td>￦ 100,000/1kw</td>
                                                     <td><fmt:formatNumber value="${info.utilityWorkFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -451,7 +451,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>압축공기 기본형</td>
                                                     <td>${info.utilityCompressedAirCnt}</td>
-                                                    <td>￦ 200,000</td>
+                                                    <td>￦ 250,000</td>
                                                     <td><fmt:formatNumber value="${info.utilityCompressedAirFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -463,7 +463,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>급배수 기본형</td>
                                                     <td>${info.utilityWaterBasicCnt}</td>
-                                                    <td>￦ 200,000</td>
+                                                    <td>￦ 250,000</td>
                                                     <td><fmt:formatNumber value="${info.utilityWaterBasicFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -475,7 +475,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>인터넷</td>
                                                     <td>${info.utilityInternetCnt}</td>
-                                                    <td>￦ 200,000</td>
+                                                    <td>￦ 250,000</td>
                                                     <td><fmt:formatNumber value="${info.utilityInternetFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -487,7 +487,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>파이텍스 (신품)</td>
                                                     <td>${info.utilityPytexNewCnt}</td>
-                                                    <td>￦ 80,000</td>
+                                                    <td>￦ 100,000</td>
                                                     <td><fmt:formatNumber value="${info.utilityPytexNewFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -511,7 +511,7 @@
                                                     <td>${utilityRownum}</td>
                                                     <td>참관객/바이어 바코드 리더기</td>
                                                     <td>${info.utilityBarcodeCnt}</td>
-                                                    <td>￦ 200,000</td>
+                                                    <td>￦ 250,000</td>
                                                     <td><fmt:formatNumber value="${info.utilityBarcodeFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>

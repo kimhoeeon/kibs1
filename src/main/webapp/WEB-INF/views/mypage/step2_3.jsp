@@ -98,7 +98,7 @@
                                     <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
+                                        <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">요트/보트 출품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
@@ -131,7 +131,7 @@
                             <input type="hidden" id="registrationCnt" value="1"/> <%-- 등록비 포함 여부 (보통 1) --%>
                             <input type="hidden" id="hiddenStandAloneCnt" value="${info.standAloneBoothCnt}"/> <%-- 독립부스 수 --%>
                             <input type="hidden" id="hiddenAssemblyCnt" value="${info.assemblyBoothCnt}"/> <%-- 조립부스 수 --%>
-                            <input type="hidden" id="hiddenOnlineCnt" value="${info.onlineBoothCnt}"/> <%-- 온라인부스 수 --%>
+                            <%--<input type="hidden" id="hiddenOnlineCnt" value="${info.onlineBoothCnt}"/>--%> <%-- 온라인부스 수 --%>
 
                             <%-- 2. 기본 할인 적용 여부 --%>
                             <input type="hidden" id="discountEarly1Checked" value="${info.discountEarly1}"/>
@@ -187,7 +187,7 @@
                                             </li>
                                             <li>
                                                 <div class="cate">주간 단상 220v</div>
-                                                <div class="cost">￦ 80,000/1kw</div>
+                                                <div class="cost">￦ 100,000/1kw</div>
                                                 <div class="quantity">
                                                     <p class="j_num">
                                                         <input type="text" id="utility_jugan_cnt" class="num_sum onlyNum" value="${info.utilityJuganCnt}" placeholder="수량 입력" <%--disabled--%>>
@@ -202,7 +202,7 @@
                                             </li>
                                             <li>
                                                 <div class="cate">24시간용 220v</div>
-                                                <div class="cost">￦ 100,000/1kw</div>
+                                                <div class="cost">￦ 150,000/1kw</div>
                                                 <div class="quantity">
                                                     <p class="j_num">
                                                         <input type="text" id="utility_day_cnt" class="num_sum onlyNum" value="${info.utilityDayCnt}" placeholder="수량 입력" <%--disabled--%>>
@@ -217,7 +217,7 @@
                                             </li>
                                             <li>
                                                 <div class="cate">작업전기</div>
-                                                <div class="cost">￦ 80,000/1kw</div>
+                                                <div class="cost">￦ 100,000/1kw</div>
                                                 <div class="quantity">
                                                     <p class="j_num">
                                                         <input type="text" id="utility_work_cnt" class="num_sum onlyNum" value="${info.utilityWorkCnt}" placeholder="수량 입력">
@@ -232,7 +232,7 @@
                                             </li>
                                             <li>
                                                 <div class="cate">압축공기 기본형</div>
-                                                <div class="cost">￦ 200,000</div>
+                                                <div class="cost">￦ 250,000</div>
                                                 <div class="quantity">
                                                     <p class="j_num">
                                                         <input type="text" id="utility_compressed_air_cnt" class="num_sum onlyNum" value="${info.utilityCompressedAirCnt}" placeholder="수량 입력" <%--disabled--%>>
@@ -247,7 +247,7 @@
                                             </li>
                                             <li>
                                                 <div class="cate">급배수 기본형</div>
-                                                <div class="cost">￦ 200,000</div>
+                                                <div class="cost">￦ 250,000</div>
                                                 <div class="quantity">
                                                     <p class="j_num">
                                                         <input type="text" id="utility_water_basic_cnt" class="num_sum onlyNum" value="${info.utilityWaterBasicCnt}" placeholder="수량 입력" <%--disabled--%>>
@@ -262,7 +262,7 @@
                                             </li>
                                             <li>
                                                 <div class="cate">인터넷</div>
-                                                <div class="cost">￦ 200,000</div>
+                                                <div class="cost">￦ 250,000</div>
                                                 <div class="quantity">
                                                     <p class="j_num">
                                                         <input type="text" id="utility_internet_cnt" class="num_sum onlyNum" value="${info.utilityInternetCnt}" placeholder="수량 입력" <%--disabled--%>>
@@ -277,7 +277,7 @@
                                             </li>
                                             <li>
                                                 <div class="cate">파이텍스 (신품)</div>
-                                                <div class="cost">￦ 80,000</div>
+                                                <div class="cost">￦ 100,000</div>
                                                 <div class="quantity">
                                                     <p class="j_num">
                                                         <input type="text" id="utility_pytex_new_cnt" class="num_sum onlyNum" value="${info.utilityPytexNewCnt}" placeholder="수량 입력" <%--disabled--%>>
@@ -307,7 +307,7 @@
                                             </li>
                                             <li>
                                                 <div class="cate">참관객/바이어 바코드 리더기</div>
-                                                <div class="cost">￦ 200,000</div>
+                                                <div class="cost">￦ 250,000</div>
                                                 <div class="quantity">
                                                     <p class="j_num">
                                                         <input type="text" id="utility_barcode_cnt" class="num_sum onlyNum" value="${info.utilityBarcodeCnt}" placeholder="수량 입력" <%--disabled--%>>
@@ -356,11 +356,6 @@
         <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
         <script type="text/javascript">
-            // ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
-            // ※ 기존 유틸리티 계산 관련 함수/로직은 여기서 완전히 삭제합니다. ※
-            // ※ (main.js의 calculateTotal 함수를 사용합니다)           ※
-            // ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
-
             /**
              * 화면의 유틸리티 항목별 금액 합계를 계산하여 반환하는 헬퍼 함수
              * (이 함수는 main.js의 calculateTotal 내부에서 호출됩니다)
@@ -400,15 +395,15 @@
 
                 // 각 유틸리티 항목 수량 변경 시 autoUtilitySum 호출
                 // ※※※ 단가 확인 필수 ※※※ (CommConstants 값과 일치해야 함)
-                const UTILITY_JUGAN_PRICE = 80000;
-                const UTILITY_DAY_PRICE = 100000;
-                const UTILITY_WORK_PRICE = 80000;
-                const UTILITY_COMPRESSED_AIR_PRICE = 200000;
-                const UTILITY_WATER_BASIC_PRICE = 200000;
-                const UTILITY_INTERNET_PRICE = 200000;
-                const UTILITY_PYTEX_NEW_PRICE = 80000;
+                const UTILITY_JUGAN_PRICE = 100000;
+                const UTILITY_DAY_PRICE = 150000;
+                const UTILITY_WORK_PRICE = 100000;
+                const UTILITY_COMPRESSED_AIR_PRICE = 250000;
+                const UTILITY_WATER_BASIC_PRICE = 250000;
+                const UTILITY_INTERNET_PRICE = 250000;
+                const UTILITY_PYTEX_NEW_PRICE = 100000;
                 const UTILITY_PYTEX_RE_PRICE = 50000;
-                const UTILITY_BARCODE_PRICE = 200000;
+                const UTILITY_BARCODE_PRICE = 250000;
 
                 $('#utility_jugan_cnt').on('input change', function() { autoUtilitySum('utility_jugan', UTILITY_JUGAN_PRICE); });
                 $('#utility_day_cnt').on('input change', function() { autoUtilitySum('utility_day', UTILITY_DAY_PRICE); });

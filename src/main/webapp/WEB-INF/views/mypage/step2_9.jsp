@@ -97,7 +97,7 @@
                                     <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
+                                        <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
                                         <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">요트/보트 출품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
@@ -388,9 +388,9 @@
                                 </div>
 
                                 <div class="form_btn">
-                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')" class="form_btn_prev">
+                                    <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')" class="form_btn_prev">
                                         <div class="big">이전</div>
-                                        <div class="small">해상전시회 신청</div>
+                                        <div class="small">전시부스 신청</div>
                                     </a>
                                     <a href="javascript:void(0);" onclick="f_mypage_comp('2_9','${info.seq}')" class="form_btn_next">
                                         <div class="big">다음</div>
@@ -427,7 +427,7 @@
                 $('input[type=radio][name=boatEntryYn]').on('change', function() {
                     const currentBoatEntryYn = $(this).val();
 
-                    // 💡 이전 값과 현재 값이 동일하면 아무것도 하지 않고 함수를 종료합니다.
+                    // 이전 값과 현재 값이 동일하면 아무것도 하지 않고 함수를 종료합니다.
                     if (currentBoatEntryYn === previousBoatEntryYn) {
                         return;
                     }
@@ -464,7 +464,7 @@
                                     $('input[type=text]').val('');
                                     previousBoatEntryYn = currentBoatEntryYn;
                                 } else {
-                                    // 💡 '취소'를 누르면 라디오 버튼 선택을 이전 상태로 되돌립니다.
+                                    // '취소'를 누르면 라디오 버튼 선택을 이전 상태로 되돌립니다.
                                     $('input[type=radio][name=boatEntryYn][value="' + previousBoatEntryYn + '"]').prop('checked', true);
                                 }
                             });

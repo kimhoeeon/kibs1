@@ -532,11 +532,11 @@ function minCnt(el, cnt){
 function checkBooth(){
     let standAloneBoothCnt = $.number((parseInt($('#standAloneBoothCnt').val() || 0)));
     let assemblyBoothCnt = $.number((parseInt($('#assemblyBoothCnt').val() || 0)));
-    let onlineBoothCnt = $.number((parseInt($('#onlineBoothCnt option:selected').val() || 0)));
-    if((standAloneBoothCnt > 0 || assemblyBoothCnt > 0) && onlineBoothCnt > 0){
-        alert('조립부스 또는 독립부스 신청 시, 온라인 부스는 무료 지원됩니다.');
-        $('#onlineBoothCnt').val(0);
-        $('#onlineBoothCnt option').eq(0).prop('selected',true);
+    //let onlineBoothCnt = $.number((parseInt($('#onlineBoothCnt option:selected').val() || 0)));
+    if((standAloneBoothCnt > 0 || assemblyBoothCnt > 0)/* && onlineBoothCnt > 0*/){
+        //alert('조립부스 또는 독립부스 신청 시, 온라인 부스는 무료 지원됩니다.');
+        //$('#onlineBoothCnt').val(0);
+        //$('#onlineBoothCnt option').eq(0).prop('selected',true);
         calculateTotal('booth');
     }
 }
@@ -728,7 +728,7 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
         registrationCnt: 1,
         standAloneBoothCnt: parseInt($('#standAloneBoothCnt').val()) || parseInt($('#hiddenStandAloneCnt').val()) || 0,
         assemblyBoothCnt: parseInt($('#assemblyBoothCnt').val()) || parseInt($('#hiddenAssemblyCnt').val()) || 0,
-        onlineBoothCnt: parseInt($('#onlineBoothCnt').val()) || parseInt($('#hiddenOnlineCnt').val()) || 0,
+        //onlineBoothCnt: parseInt($('#onlineBoothCnt').val()) || parseInt($('#hiddenOnlineCnt').val()) || 0,
 
         // 유틸리티 정보 (hidden input 또는 화면 input에서 계산)
         utilityPrcSum: (pageType === 'utility') ? calculateCurrentUtilitySum() : (parseInt($('#utilityPrcSum').val()) || 0),
@@ -765,14 +765,14 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
     if (pageType === 'booth') {
         let standAloneQty = parseInt($('#standAloneBoothCnt').val()) || 0;
         let assemblyQty = parseInt($('#assemblyBoothCnt').val()) || 0;
-        let onlineQty = parseInt($('#onlineBoothCnt').val()) || 0;
-        let standAloneFee = standAloneQty * boothPrices.standAlone; // boothPrices 상수는 main.js 상단에 있어야 함
-        let assemblyFee = assemblyQty * boothPrices.assembly;     // boothPrices 상수는 main.js 상단에 있어야 함
-        let onlineFee = onlineQty * boothPrices.online;         // boothPrices 상수는 main.js 상단에 있어야 함
+        //let onlineQty = parseInt($('#onlineBoothCnt').val()) || 0;
+        let standAloneFee = standAloneQty * boothPrices.standAlone;
+        let assemblyFee = assemblyQty * boothPrices.assembly;
+        //let onlineFee = onlineQty * boothPrices.online;
 
         $('#standAloneBoothFee').val(numberToWon(standAloneFee));
         $('#assemblyBoothFee').val(numberToWon(assemblyFee));
-        $('#onlineBoothFee').val(numberToWon(onlineFee));
+        //$('#onlineBoothFee').val(numberToWon(onlineFee));
 
         // 오프라인 부스 총 수량 계산
         let physicalBooths = standAloneQty + assemblyQty;
@@ -2575,20 +2575,20 @@ function step_2_1_check(exhibitorSeq){
     const registrationFee = 100000;
     const standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val()) || 0;
     const assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val()) || 0;
-    const onlineBoothCnt = parseInt($('#onlineBoothCnt').val()) || 0;
+    //const onlineBoothCnt = parseInt($('#onlineBoothCnt').val()) || 0;
     const physicalBooths = standAloneBoothCnt + assemblyBoothCnt ;
 
     const standAloneBoothFee = standAloneBoothCnt * boothPrices.standAlone;
     const assemblyBoothFee = assemblyBoothCnt * boothPrices.assembly;
-    const onlineBoothFee = onlineBoothCnt * boothPrices.online;
+    //const onlineBoothFee = onlineBoothCnt * boothPrices.online;
 
     // 부스 관련 총액 (등록비 포함)
-    const boothPrcSum = registrationFee + standAloneBoothFee + assemblyBoothFee + onlineBoothFee;
+    const boothPrcSum = registrationFee + standAloneBoothFee + assemblyBoothFee/* + onlineBoothFee*/;
 
     let boothType = '등록비';
     if (standAloneBoothCnt > 0) boothType += ',독립부스';
     if (assemblyBoothCnt > 0) boothType += ',조립부스';
-    if (onlineBoothCnt > 0) boothType += ',온라인부스';
+    //if (onlineBoothCnt > 0) boothType += ',온라인부스';
 
     // --- 2. 할인 정보 수집 및 계산 (전면 수정) ---
     let discountType = '';
@@ -2635,9 +2635,9 @@ function step_2_1_check(exhibitorSeq){
     const prcTotal = prcSum + prcVat;*/
 
     // --- 5. 유효성 검사 및 서버 전송 데이터 구성 ---
-    const totalBooths = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
+    const totalBooths = standAloneBoothCnt + assemblyBoothCnt/* + onlineBoothCnt*/;
     if (totalBooths === 0) {
-        showMessage('', 'error', '[ 전시부스 신청 ]', '부스(독립, 조립, 온라인)를 하나 이상 신청해 주세요.', '');
+        showMessage('', 'error', '[ 전시부스 신청 ]', '부스(독립, 조립)를 하나 이상 신청해 주세요.', '');
         return;
     }
 
@@ -2652,8 +2652,8 @@ function step_2_1_check(exhibitorSeq){
         standAloneBoothFee: standAloneBoothFee,
         assemblyBoothCnt: assemblyBoothCnt,
         assemblyBoothFee: assemblyBoothFee,
-        onlineBoothCnt: onlineBoothCnt,
-        onlineBoothFee: onlineBoothFee,
+        /*onlineBoothCnt: onlineBoothCnt,
+        onlineBoothFee: onlineBoothFee,*/
         discountEarly1: $('#discountEarly1').is(':checked'),
         discountEarly2: $('#discountEarly2').is(':checked'),
         discountFirstUnder10: $('#discountFirstUnder10').is(':checked'),
@@ -2687,7 +2687,7 @@ function step_2_1_check(exhibitorSeq){
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/apply/step2_10.do', exhibitorSeq);
+                f_page_move('/apply/step2_9.do', exhibitorSeq);
             }
         });
     }else{
@@ -5555,20 +5555,20 @@ function my_step_2_1_check(exhibitorSeq){
     const registrationFee = 100000;
     const standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val()) || 0;
     const assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val()) || 0;
-    const onlineBoothCnt = parseInt($('#onlineBoothCnt').val()) || 0;
+    //const onlineBoothCnt = parseInt($('#onlineBoothCnt').val()) || 0;
     const physicalBooths = standAloneBoothCnt + assemblyBoothCnt;
 
     const standAloneBoothFee = standAloneBoothCnt * boothPrices.standAlone;
     const assemblyBoothFee = assemblyBoothCnt * boothPrices.assembly;
-    const onlineBoothFee = onlineBoothCnt * boothPrices.online;
+    //const onlineBoothFee = onlineBoothCnt * boothPrices.online;
 
     // 부스 관련 총액 (등록비 포함)
-    const boothPrcSum = registrationFee + standAloneBoothFee + assemblyBoothFee + onlineBoothFee;
+    const boothPrcSum = registrationFee + standAloneBoothFee + assemblyBoothFee/* + onlineBoothFee*/;
 
     let boothType = '등록비';
     if (standAloneBoothCnt > 0) boothType += ',독립부스';
     if (assemblyBoothCnt > 0) boothType += ',조립부스';
-    if (onlineBoothCnt > 0) boothType += ',온라인부스';
+    //if (onlineBoothCnt > 0) boothType += ',온라인부스';
 
     // --- 2. 할인 정보 수집 및 계산 (전면 수정) ---
     let discountType = '';
@@ -5615,7 +5615,7 @@ function my_step_2_1_check(exhibitorSeq){
     const prcTotal = prcSum + prcVat;*/
 
     // --- 5. 유효성 검사 및 서버 전송 데이터 구성 ---
-    const totalBooths = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
+    const totalBooths = standAloneBoothCnt + assemblyBoothCnt/* + onlineBoothCnt*/;
     if (totalBooths === 0) {
         showMessage('', 'error', '[ 전시부스 신청 ]', '부스(독립, 조립, 온라인)를 하나 이상 신청해 주세요.', '');
         return;
@@ -5632,8 +5632,8 @@ function my_step_2_1_check(exhibitorSeq){
         standAloneBoothFee: standAloneBoothFee,
         assemblyBoothCnt: assemblyBoothCnt,
         assemblyBoothFee: assemblyBoothFee,
-        onlineBoothCnt: onlineBoothCnt,
-        onlineBoothFee: onlineBoothFee,
+        /*onlineBoothCnt: onlineBoothCnt,
+        onlineBoothFee: onlineBoothFee,*/
         discountEarly1: $('#discountEarly1').is(':checked'),
         discountEarly2: $('#discountEarly2').is(':checked'),
         discountFirstUnder10: $('#discountFirstUnder10').is(':checked'),
@@ -5667,7 +5667,7 @@ function my_step_2_1_check(exhibitorSeq){
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/mypage/step2_10.do', exhibitorSeq);
+                f_page_move('/mypage/step2_9.do', exhibitorSeq);
             }
         });
     }else{

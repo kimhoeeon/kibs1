@@ -39,3 +39,5 @@ out/
 ### my ignore ###
 /src/main/resources/application.properties
 /src/main/resources/static/file/
+/src/main/resources/static/img/
+/src/main/resources/static/video/

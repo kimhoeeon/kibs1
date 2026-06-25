@@ -108,7 +108,7 @@
                                     <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
                                     <ul class="list2">
                                         <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>
+                                        <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">요트/보트 출품 정보</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
@@ -264,7 +264,7 @@
                                                 </div>
                                                 <div class="note"></div>
                                             </li>
-                                            <li>
+                                            <%--<li>
                                                 <div class="cate">온라인부스</div>
                                                 <div class="cost">￦ 1,000,000</div>
                                                 <div class="quantity">
@@ -281,7 +281,7 @@
                                                     </p>
                                                 </div>
                                                 <div class="note">영상 제작 별도 : 영상 제작 희망 시 사무국 문의</div>
-                                            </li>
+                                            </li>--%>
                                         </ul>
                                     </div>
                                 </div>
@@ -451,8 +451,8 @@
                                                     <ul class="form_ptag_list">
                                                         <li class="form_ptag_hd">
                                                             <div class="cost">대상</div>
-                                                            <div class="cate">할인금액(부스당)</div>
-                                                            <div class="cate">내용</div>
+                                                            <div class="cate">금액</div>
+                                                            <div class="cate">비고</div>
                                                         </li>
                                                         <li>
                                                             <div class="cost">협회 회원사</div>
@@ -467,7 +467,7 @@
 
                                     </div>
                                     <div class="form_ptag_sum">
-                                        <div class="cate2">총액(VAT 미포함)</div>
+                                        <div class="cate2">총액(VAT 미포함, 발전기금 미포함)</div>
                                         <div class="amount2">
                                             <p class="price">
                                                 <input type="text" id="boothPrcSumDisplay" value="" disabled>
@@ -485,7 +485,7 @@
                                 </a>
                                 <a href="javascript:void(0);" onclick="f_mypage_comp('2_1','${info.seq}')" class="form_btn_next">
                                     <div class="big">다음</div>
-                                    <div class="small">해상전시회 신청</div>
+                                    <div class="small">요트/보트 출품 정보</div>
                                 </a>
                             </div>
 
@@ -586,7 +586,7 @@
 
                 // --- 모든 자동 계산을 시작하는 핵심 트리거 ---
                 // 부스 수량 변경 시 main.js의 calculateTotal 호출 ('booth' 타입 전달)
-                $('#standAloneBoothCnt, #assemblyBoothCnt, #onlineBoothCnt').on('input change', function() {
+                $('#standAloneBoothCnt, #assemblyBoothCnt/*, #onlineBoothCnt*/').on('input change', function() {
                     if (typeof calculateTotal === 'function') {
                         calculateTotal('booth'); // ★★★ 페이지 타입 전달 ★★★
                     } else {

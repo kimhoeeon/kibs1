@@ -44,4 +44,6 @@ public class CalculationInputDTO {
 
     // 6. 기타 정보
     private int deposit;                // 선납금 (잔액 계산용)
+
+    private String year;
 }
