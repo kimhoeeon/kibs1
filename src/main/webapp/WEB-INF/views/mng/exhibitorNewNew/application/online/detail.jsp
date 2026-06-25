@@ -535,7 +535,7 @@ if (document.documentElement) {
                                         <!--begin::Actions-->
                                         <div class="card-footer d-flex justify-content-between py-6 px-9">
                                             <div>
-                                                <a href="/mng/exhibitorNew/application/online.do" class="btn btn-info btn-active-light-info cursor-pointer">목록</a>
+                                                <a href="/mng/exhibitorNewNew/application/online.do" class="btn btn-info btn-active-light-info cursor-pointer">목록</a>
                                             </div>
                                             <div>
                                                 <%--<button type="button" onclick="f_application_booth_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
