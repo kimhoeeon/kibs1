@@ -134,7 +134,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">참가신청서 관리 (2026~)</li>
+                                        <li class="breadcrumb-item text-muted">참가신청서 관리 (2027~)</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -407,7 +407,7 @@ if (document.documentElement) {
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="/js/custom/gift_new.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/custom/gift_new_new.js?ver=<%=System.currentTimeMillis()%>"></script>
 
     <script>
         document.addEventListener("keyup", function(event) {
