@@ -622,6 +622,7 @@
                                                 <label><input type="checkbox" name="prePartYear" value="2023" <c:if test="${fn:contains(info.prePartYear, '2023')}">checked</c:if>/>2023</label>
                                                 <label><input type="checkbox" name="prePartYear" value="2024" <c:if test="${fn:contains(info.prePartYear, '2024')}">checked</c:if>/>2024</label>
                                                 <label><input type="checkbox" name="prePartYear" value="2025" <c:if test="${fn:contains(info.prePartYear, '2025')}">checked</c:if>/>2025</label>
+                                                <label><input type="checkbox" name="prePartYear" value="2026" <c:if test="${fn:contains(info.prePartYear, '2026')}">checked</c:if>/>2026</label>
                                             </div>
                                         </li>
                                         <li>

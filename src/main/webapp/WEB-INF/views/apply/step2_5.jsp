@@ -116,7 +116,7 @@
                             <a>전시 신청 정보</a>
                             <ul class="list2">
                                 <li><a>전시부스 신청</a></li>
-                                <%--<li><a>해상전시회 신청</a></li>--%>
+                                <li><a>해상전시회 신청</a></li>
                                 <li><a>요트/보트 출품 정보</a></li>
                                 <li><a>상호간판 신청</a></li>
                                 <li><a>유틸리티 신청</a></li>
@@ -209,6 +209,15 @@
                         </div>
                         <div class="form_chuga">
                             <input type="hidden" name="exhibitorSeq" value="${info.seq}">
+                            <c:set var="giftApplyYn" value="${not empty giftList ? 'Y' : 'N'}"/>
+
+                            <div class="input flex mb-20">
+                                <div class="flex_item">
+                                    <label><input type="radio" name="giftApplyYn" value="Y" <c:if test="${giftApplyYn eq 'Y'}">checked</c:if>>신청</label>
+                                </div>
+                                <label><input type="radio" name="giftApplyYn" value="N" <c:if test="${giftApplyYn eq 'N'}">checked</c:if>>미신청</label>
+                            </div>
+
                             <c:if test="${not empty giftList}">
                                 <c:forEach var="gift" items="${giftList}" begin="0" end="${giftList.size()}" step="1" varStatus="status">
                                     <div class="form_chuga_list">

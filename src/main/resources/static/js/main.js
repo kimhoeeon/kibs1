@@ -3406,8 +3406,60 @@ function step_2_4_check(exhibitorSeq){
 /* //////////////////////////////// end:step_2_4 ////////////////////////////////// */
 
 /* //////////////////////////////// begin:step_2_5 ////////////////////////////////// */
+// 1. 페이지 로드 시 '미신청' 상태면 등록 버튼과 리스트를 숨김 처리
+$(function() {
+    if($('input[name="giftApplyYn"]:checked').val() === 'N') {
+        $('#gift_add_btn').hide();
+        $('.form_chuga_list').hide();
+    }
+});
+
+// 2. 라디오 버튼 변경 이벤트
+$(document).on('change', 'input[name="giftApplyYn"]', function() {
+    let applyYn = $(this).val();
+
+    if (applyYn === 'N') {
+        // 기존에 등록된 경품(화면 리스트)이나 방금 추가한 경품(배열)이 있는 경우 경고
+        if (gift_add_json_arr.length > 0 || $('.form_chuga_list').length > 0) {
+            Swal.fire({
+                title: '미신청으로 변경 시 기존에 작성/등록된 경품 정보가 모두 삭제됩니다.\n변경하시겠습니까?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: '변경 및 삭제',
+                cancelButtonColor: '#A1A5B7',
+                cancelButtonText: '취소',
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#gift_add_btn').hide();
+                    $('.form_chuga_list').remove();
+                    gift_add_json_arr = [];       // 방금 추가한 배열 데이터 초기화
+                } else {
+                    // 취소 시 다시 '신청(Y)' 라디오 버튼으로 원복
+                    $('input[name="giftApplyYn"][value="Y"]').prop('checked', true);
+                }
+            });
+        } else {
+            // 등록된 데이터가 없으면 바로 숨김
+            $('#gift_add_btn').hide();
+        }
+    } else {
+        // 신청(Y) 선택 시 다시 노출
+        $('#gift_add_btn').show();
+        $('.form_chuga_list').show();
+    }
+});
 
 function step_2_5_check(exhibitorSeq){
+
+    let giftApplyYn = $('input[name="giftApplyYn"]:checked').val() || 'N';
+
+    // '신청(Y)'인데 등록된 경품이 단 1개도 없는 경우 진행 차단
+    if (giftApplyYn === 'Y' && gift_add_json_arr.length === 0 && $('.form_chuga_list').length === 0) {
+        showMessage('', 'error', '[ 경품제공 신청 ]', '신청 시 최소 1개 이상의 경품을 등록해 주세요.', '');
+        return false;
+    }
 
     Swal.fire({
         icon: 'info',
@@ -3424,9 +3476,11 @@ function step_2_5_check(exhibitorSeq){
 
         if (result.isConfirmed) {
 
+            // 라디오버튼 상태(giftApplyYn)를 서버로 함께 전송
             let giftList_json_obj = {
                 seq: exhibitorSeq,
-                giftList: gift_add_json_arr,
+                giftApplyYn: giftApplyYn,
+                giftList: gift_add_json_arr
             };
 
             let resData = ajaxConnect('/apply/step/insertGiftNew.do', 'post', giftList_json_obj);
@@ -3785,7 +3839,7 @@ function f_gift_init(){
     // 구분
     document.querySelector('#gift_gbn').checked = true;
     // 수량
-    document.querySelector('#gift_cnt').value = null;
+    document.querySelector('#gift_cnt').value = 0;
     // 분류
     document.querySelector('#gift_classify').value = null;
     // 품목명
@@ -3798,9 +3852,9 @@ function f_gift_init(){
     document.querySelector('#gift_company_logo').value = null;
     document.querySelector('.upload_hidden').value = null;
     // 소비자가
-    document.querySelector('#gift_price').value = null;
+    document.querySelector('#gift_price').value = 0;
     // 협찬가
-    document.querySelector('#gift_sponsor_price').value = null;
+    document.querySelector('#gift_sponsor_price').value = 0;
     // 비고
     document.querySelector('#gift_note').value = null;
 
@@ -6009,9 +6063,18 @@ function my_step_2_5_check(exhibitorSeq){
     /* 24.03.05 2024 보트쇼 종료로 인하여 바로 페이지 이동 */
     /*f_page_move('/mypage/step2_8.do', exhibitorSeq);*/
 
+    let giftApplyYn = $('input[name="giftApplyYn"]:checked').val() || 'N';
+
+    // '신청(Y)'인데 등록된 경품이 단 1개도 없는 경우 진행 차단
+    if (giftApplyYn === 'Y' && gift_add_json_arr.length === 0 && $('.form_chuga_list').length === 0) {
+        showMessage('', 'error', '[ 경품제공 신청 ]', '신청 시 최소 1개 이상의 경품을 등록해 주세요.', '');
+        return false;
+    }
+
     let giftList_json_obj = {
         seq: exhibitorSeq,
-        giftList: gift_add_json_arr,
+        giftApplyYn: giftApplyYn,
+        giftList: gift_add_json_arr
     };
 
     let resData = ajaxConnect('/apply/step/insertGiftNew.do', 'post', giftList_json_obj);

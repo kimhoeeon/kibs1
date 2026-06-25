@@ -212,7 +212,7 @@
                             </td>
                             <td>2,100,000</td>
                         </tr>
-                        <tr>
+                        <%--<tr>
                             <td>온라인부스</td>
                             <td><img src="/img/img_booth_sample03.png"></td>
                             <td>
@@ -220,7 +220,7 @@
                                 <div class="txtHp">독립부스 또는 조립부스 참가시 무료</div>
                             </td>
                             <td>1,000,000</td>
-                        </tr>
+                        </tr>--%>
                         </tbody>
                     </table>
                 </div>

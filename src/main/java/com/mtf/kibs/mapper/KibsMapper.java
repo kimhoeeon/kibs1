@@ -57,6 +57,10 @@ public interface KibsMapper {
 
     Integer updateExhibitorNewApprovalStatus(ExhibitorNewDTO exhibitorNewDTO);
 
+    void updateGiftFileUnused(List<String> fileIds);
+
+    void deleteAllGiftNew(String exSeq);
+
     Integer updateGiftNew(GiftNewDTO giftNewDTO);
 
     Integer insertGiftNew(GiftNewDTO giftNewDTO);

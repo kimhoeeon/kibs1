@@ -953,6 +953,24 @@
                , DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
     </insert>
 
+    <!-- 특정 업체(ex_seq)의 모든 경품 데이터 삭제 -->
+    <delete id="deleteAllGiftNew" parameterType="String">
+        /* com.mtf.kibs.mapper.KibsMapper.deleteAllGiftNew */
+        DELETE FROM gift_new
+        WHERE ex_seq = #{exSeq}
+    </delete>
+
+    <!-- 경품 삭제 시 연결된 파일들의 상태를 미사용(N)으로 변경 -->
+    <update id="updateGiftFileUnused" parameterType="java.util.List">
+        /* com.mtf.kibs.mapper.KibsMapper.updateGiftFileUnused */
+        UPDATE file
+        SET file_yn = 'N'
+        WHERE note IN
+        <foreach collection="list" item="fileId" open="(" separator="," close=")">
+            #{fileId}
+        </foreach>
+    </update>
+
     <update id="updateExhibitorNewApprovalStatus" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.KibsMapper.updateExhibitorNewApprovalStatus */
         UPDATE exhibitor_new

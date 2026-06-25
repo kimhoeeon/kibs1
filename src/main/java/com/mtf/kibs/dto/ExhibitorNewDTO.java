@@ -191,6 +191,7 @@ public class ExhibitorNewDTO {
 
     /* begin:step2_5 */
     List<GiftNewDTO> giftList; //경품제공신청
+    String giftApplyYn; // 경품 신청 여부
     /* end:step2_5 */
 
     /* begin:step2_6 */

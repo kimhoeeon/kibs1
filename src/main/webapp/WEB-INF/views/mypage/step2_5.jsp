@@ -168,6 +168,15 @@
                                 </div>
                                 <div class="form_chuga">
                                     <input type="hidden" name="exhibitorSeq" value="${info.seq}">
+                                    <c:set var="giftApplyYn" value="${not empty giftList ? 'Y' : 'N'}"/>
+
+                                    <div class="input flex mb-20">
+                                        <div class="flex_item">
+                                            <label><input type="radio" name="giftApplyYn" value="Y" <c:if test="${giftApplyYn eq 'Y'}">checked</c:if>>신청</label>
+                                        </div>
+                                        <label><input type="radio" name="giftApplyYn" value="N" <c:if test="${giftApplyYn eq 'N'}">checked</c:if>>미신청</label>
+                                    </div>
+
                                     <c:if test="${not empty giftList}">
                                         <c:forEach var="gift" items="${giftList}" begin="0" end="${giftList.size()}" step="1" varStatus="status">
                                             <div class="form_chuga_list">

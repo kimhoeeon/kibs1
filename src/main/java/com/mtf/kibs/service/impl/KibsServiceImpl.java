@@ -783,19 +783,54 @@ public class KibsServiceImpl implements KibsService {
 
         try {
             String exhibitorNewSeq = exhibitorNewDTO.getSeq();
-            List<GiftNewDTO> giftList = exhibitorNewDTO.getGiftList();
-            if (!giftList.isEmpty()) {
-                for (GiftNewDTO giftDTO : giftList) {
-                    giftDTO.setExSeq(exhibitorNewSeq);
-                    if (giftDTO.getSeq() != null && !giftDTO.getSeq().isEmpty()) {
-                        Integer upd_pass_result = kibsMapper.updateGiftNew(giftDTO);
-                    } else {
-                        Integer ist_pass_result = kibsMapper.insertGiftNew(giftDTO);
+            String giftApplyYn = exhibitorNewDTO.getGiftApplyYn();
+
+            // 1. 미신청(N) 처리 로직: 기존 데이터 및 파일 Soft Delete
+            if ("N".equals(giftApplyYn)) {
+
+                GiftNewDTO searchDTO = new GiftNewDTO();
+                searchDTO.setExSeq(exhibitorNewSeq);
+                List<GiftNewDTO> existingGifts = kibsMapper.selectGiftNewList(searchDTO);
+
+                if (existingGifts != null && !existingGifts.isEmpty()) {
+                    List<String> fileIds = new ArrayList<>();
+
+                    // 기존 경품들의 등록된 사진, 로고 파일 ID 수집
+                    for (GiftNewDTO gift : existingGifts) {
+                        if (gift.getGiftPhoto() != null && !gift.getGiftPhoto().isEmpty()) {
+                            fileIds.add(gift.getGiftPhoto());
+                        }
+                        if (gift.getGiftCompanyLogo() != null && !gift.getGiftCompanyLogo().isEmpty()) {
+                            fileIds.add(gift.getGiftCompanyLogo());
+                        }
+                    }
+
+                    // 파일 테이블 USE_YN='N' 업데이트 (Soft Delete)
+                    if (!fileIds.isEmpty()) {
+                        kibsMapper.updateGiftFileUnused(fileIds);
+                    }
+
+                    // 경품 마스터 데이터 삭제 (Hard Delete)
+                    kibsMapper.deleteAllGiftNew(exhibitorNewSeq);
+                }
+            }
+            // 2. 신청(Y) 처리 로직: 기존 로직 유지
+            else {
+                List<GiftNewDTO> giftList = exhibitorNewDTO.getGiftList();
+                if (giftList != null && !giftList.isEmpty()) {
+                    for (GiftNewDTO giftDTO : giftList) {
+                        giftDTO.setExSeq(exhibitorNewSeq);
+                        if (giftDTO.getSeq() != null && !giftDTO.getSeq().isEmpty()) {
+                            Integer upd_pass_result = kibsMapper.updateGiftNew(giftDTO);
+                        } else {
+                            Integer ist_pass_result = kibsMapper.insertGiftNew(giftDTO);
+                        }
                     }
                 }
             }
 
             responseDTO.setCustomValue(exhibitorNewSeq);
+
         } catch (Exception e) {
             resultCode = CommConstants.RESULT_CODE_FAIL;
             String eMessage = "[step2_5] processInsertGiftNew Error : ";
