@@ -483,7 +483,8 @@
     <update id="updateExhibitorNew" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMapper.updateExhibitorNew */
         UPDATE exhibitor_new
-        SET company_license_num = #{companyLicenseNum}
+        SET booth_num = <![CDATA[#{boothNum}]]>
+          , company_license_num = #{companyLicenseNum}
           , company_name_ko =  <![CDATA[#{companyNameKo}]]>
           , company_name_en =  <![CDATA[#{companyNameEn}]]>
           , company_address = #{companyAddress}

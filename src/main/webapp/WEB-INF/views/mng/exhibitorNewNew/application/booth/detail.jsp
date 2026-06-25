@@ -119,7 +119,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        인보이스 정보</h1>
+                                        전시부스 신청</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -134,7 +134,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">전시회</li>
+                                        <li class="breadcrumb-item text-muted">참가신청서 관리 (2026~)</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -142,23 +142,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">참가자 관리</li>
-                                        <!--end::Item-->
-                                        <!--begin::Item-->
-                                        <li class="breadcrumb-item">
-                                            <span class="bullet bg-gray-400 w-5px h-2px"></span>
-                                        </li>
-                                        <!--end::Item-->
-                                        <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">전시업체 목록</li>
-                                        <!--end::Item-->
-                                        <!--begin::Item-->
-                                        <li class="breadcrumb-item">
-                                            <span class="bullet bg-gray-400 w-5px h-2px"></span>
-                                        </li>
-                                        <!--end::Item-->
-                                        <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">인보이스 정보</li>
+                                        <li class="breadcrumb-item text-muted">전시부스 신청</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -208,15 +192,15 @@ if (document.documentElement) {
                                     </div>
                                     <!--end::Basic info-->
 
-                                    <%-- 계산 API 호출 시 필요한 기본 정보 --%>
+                                        <%-- 계산 API 호출 시 필요한 기본 정보 --%>
                                     <input type="hidden" id="registrationCnt" value="${info.registrationCnt}"/> <%-- 등록비 포함 여부 (보통 1) --%>
                                     <input type="hidden" id="baseBoothStandAloneCnt" value="${info.standAloneBoothCnt}"/> <%-- 독립부스 수 --%>
                                     <input type="hidden" id="baseBoothAssemblyCnt" value="${info.assemblyBoothCnt}"/> <%-- 조립부스 수 --%>
-                                    <input type="hidden" id="baseBoothOnlineCnt" value="${info.onlineBoothCnt}"/> <%-- 온라인부스 수 --%>
-                                     <input type="hidden" id="baseUtilitySum" value="${info.utilityPrcSum}"/>  <%-- 유틸리티 총액 (기존에 이미 있음) --%>
+                                    <%--<input type="hidden" id="baseBoothOnlineCnt" value="${info.onlineBoothCnt}"/>--%> <%-- 온라인부스 수 --%>
+                                    <input type="hidden" id="baseUtilitySum" value="${info.utilityPrcSum}"/>  <%-- 유틸리티 총액 (기존에 이미 있음) --%>
                                     <input type="hidden" id="deposit" value="${info.deposit}"/> <%-- 선납금 --%>
 
-                                    <%-- 기본 할인 적용 여부 (DB 값 그대로 전달) --%>
+                                        <%-- 기본 할인 적용 여부 (DB 값 그대로 전달) --%>
                                     <input type="hidden" id="discountEarly1Checked" value="${info.discountEarly1}"/>
                                     <input type="hidden" id="discountEarly2Checked" value="${info.discountEarly2}"/>
                                     <input type="hidden" id="discountFirstUnder10Checked" value="${info.discountFirstUnder10}"/>
@@ -247,65 +231,69 @@ if (document.documentElement) {
                                             <!--end::Card title-->
                                         </div>
                                         <!--begin::Card header-->
-                                        <!--begin::Card body-->
-                                        <div class="card-body border-top p-9">
-                                            <!--begin::Table container-->
-                                            <div class="table-responsive">
-                                                <!--begin::Table-->
-                                                <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
-                                                    <!--begin::Table head-->
-                                                    <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
-                                                        <tr class="text-center">
-                                                            <th class="w-150px">구분</th>
-                                                            <th class="w-150px">단가</th>
-                                                            <th class="w-150px">신청수량</th>
-                                                            <th class="w-175px">금액 (원)</th>
-                                                            <th>비고</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <!--end::Table head-->
-                                                    <!--begin::Table body-->
-                                                    <tbody>
-                                                        <tr class="text-center align-middle">
-                                                            <td>
-                                                                <div class="cate">
-                                                                    <span class="fw-semibold d-block fs-7">등록비</span>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div class="cost">
-                                                                    <span class="fw-semibold d-block fs-7">￦ 100,000</span>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div class="quantity">
-                                                                    <p class="j_num">
-                                                                        1
-                                                                    </p>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div class="amount">
-                                                                    <p class="price">
-                                                                        <input type="text" id="registrationFee" value="￦ 100,000" style="background:unset; border: 0; text-align: center;" disabled>
-                                                                    </p>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <span class="fw-semibold d-block fs-7">
-                                                                    2019년부터 참가업체의 홍보 지원을 위하여 업체당 참가신청 등록비를 받습니다.<br>
-                                                                    등록비는 참가업체의 각종 온라인 홍보 및 대외 홍보에 사용됩니다.
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                    <!--end::Table body-->
-                                                </table>
-                                                <!--end::Table-->
+                                        <!--begin::Content-->
+                                        <div id="kt_booth_info">
+                                            <!--begin::Card body-->
+                                            <div class="card-body border-top p-9">
+                                                <!--begin::Table container-->
+                                                <div class="table-responsive">
+                                                    <!--begin::Table-->
+                                                    <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border gy-7 gs-7">
+                                                        <!--begin::Table head-->
+                                                        <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
+                                                            <tr class="text-center">
+                                                                <th class="w-150px">구분</th>
+                                                                <th class="w-150px">단가</th>
+                                                                <th class="w-150px">신청수량</th>
+                                                                <th class="w-175px">금액 (원)</th>
+                                                                <th>비고</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <!--end::Table head-->
+                                                        <!--begin::Table body-->
+                                                        <tbody>
+                                                            <tr class="text-center align-middle">
+                                                                <td>
+                                                                    <div class="cate">
+                                                                        <span class="fw-semibold d-block fs-7">등록비</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="cost">
+                                                                        <span class="fw-semibold d-block fs-7">￦ 100,000</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="quantity">
+                                                                        <p class="j_num">
+                                                                            <input type="text" id="registrationCnt" placeholder="수량 입력" class="form-control form-control-lg form-control-solid-bg" value="1" readonly>
+                                                                        </p>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="amount">
+                                                                        <p class="price">
+                                                                            <input type="text" id="registrationFee" value="￦ 100,000" style="background:unset; border: 0; text-align: center;" disabled>
+                                                                        </p>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <span class="fw-semibold d-block fs-7">
+                                                                        2019년부터 참가업체의 홍보 지원을 위하여 업체당 참가신청 등록비를 받습니다.<br>
+                                                                        등록비는 참가업체의 각종 온라인 홍보 및 대외 홍보에 사용됩니다.
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <!--end::Table body-->
+                                                    </table>
+                                                    <!--end::Table-->
+                                                </div>
+                                                <!--begin::Table container-->
                                             </div>
-                                            <!--begin::Table container-->
+                                            <!--end::Card body-->
                                         </div>
-                                        <!--end::Card body-->
+                                        <!--end::Content-->
                                     </div>
                                     <!--end::Basic info-->
 
@@ -330,45 +318,45 @@ if (document.documentElement) {
                                                     <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
                                                         <!--begin::Table head-->
                                                         <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
-                                                            <tr class="text-center">
-                                                                <th class="w-300px">구분</th>
-                                                                <th class="w-175px">금액 (원)</th>
-                                                                <th>비고</th>
-                                                            </tr>
+                                                        <tr class="text-center">
+                                                            <th class="w-150px">구분</th>
+                                                            <th class="w-175px">금액 (원)</th>
+                                                            <th>비고</th>
+                                                        </tr>
                                                         </thead>
                                                         <!--end::Table head-->
                                                         <!--begin::Table body-->
                                                         <tbody>
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <div class="cate">
-                                                                        <span class="fw-semibold d-block fs-7">한국해양레저산업협회<br>발전기금</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="amount">
-                                                                        <p class="price">
-                                                                            <c:set var="baseTotal" value="${info.boothPrcSum - info.discountPrcSum}"/>
-                                                                            <c:set var="baseSpecialDiscount" value="0"/>
-                                                                            <c:if test="${info.discountSpecial1Yn}">
-                                                                                <c:set var="baseSpecialDiscount" value="${baseTotal * 0.5}"/>
-                                                                            </c:if>
-                                                                            <c:if test="${info.discountSpecial2Yn}">
-                                                                                <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial2Amount}"/>
-                                                                            </c:if>
-                                                                            <c:if test="${info.discountSpecial3Yn}">
-                                                                                <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial3Amount}"/>
-                                                                            </c:if>
-                                                                            <input type="text" value="<fmt:formatNumber value="${(info.boothPrcSum - (info.discountPrcSum + baseSpecialDiscount)) * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" style="background:unset; border: 0; text-align: center; color: #000000;" disabled>
-                                                                        </p>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="fw-semibold d-block fs-7">
-                                                                        참가비 내역 합계(공급가)의 10%
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td>
+                                                                <div class="cate">
+                                                                    <span class="fw-semibold d-block fs-7">한국해양레저산업협회<br>발전기금</span>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="amount">
+                                                                    <p class="price">
+                                                                        <c:set var="baseTotal" value="${info.boothPrcSum - info.discountPrcSum}"/>
+                                                                        <c:set var="baseSpecialDiscount" value="0"/>
+                                                                        <c:if test="${info.discountSpecial1Yn}">
+                                                                            <c:set var="baseSpecialDiscount" value="${baseTotal * 0.5}"/>
+                                                                        </c:if>
+                                                                        <c:if test="${info.discountSpecial2Yn}">
+                                                                            <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial2Amount}"/>
+                                                                        </c:if>
+                                                                        <c:if test="${info.discountSpecial3Yn}">
+                                                                            <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial3Amount}"/>
+                                                                        </c:if>
+                                                                        <input type="text" value="<fmt:formatNumber value="${(info.boothPrcSum - (info.discountPrcSum + baseSpecialDiscount)) * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" style="background:unset; border: 0; text-align: center; color: #000000;" disabled>
+                                                                    </p>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <span class="fw-semibold d-block fs-7">
+                                                                    참가비 내역 합계(공급가)의 10%
+                                                                </span>
+                                                            </td>
+                                                        </tr>
                                                         </tbody>
                                                         <!--end::Table body-->
                                                     </table>
@@ -397,7 +385,7 @@ if (document.documentElement) {
                                             <!--begin::Table container-->
                                             <div class="table-responsive">
                                                 <!--begin::Table-->
-                                                <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
+                                                <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border gy-7 gs-7">
                                                     <!--begin::Table head-->
                                                     <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
                                                         <tr class="text-center">
@@ -433,6 +421,7 @@ if (document.documentElement) {
                                                 </table>
                                                 <!--end::Table-->
                                             </div>
+                                            <!--begin::Table container-->
                                         </div>
                                         <!--end::Card body-->
                                     </div>
@@ -451,7 +440,6 @@ if (document.documentElement) {
                                         <!--begin::Card header-->
                                         <!--begin::Card body-->
                                         <div class="card-body border-top p-9">
-                                            <!--begin::Table container-->
                                             <div class="table-responsive mt-5">
                                                 <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
                                                     <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
@@ -543,100 +531,6 @@ if (document.documentElement) {
                                         <div class="card-header border-0">
                                             <!--begin::Card title-->
                                             <div class="card-title m-0">
-                                                <h3 class="fw-bold m-0">유틸리티 신청 정보</h3>
-                                            </div>
-                                            <!--end::Card title-->
-                                        </div>
-                                        <!--begin::Card header-->
-                                        <!--begin::Card body-->
-                                        <div class="card-body border-top p-9">
-                                            <!--begin::Table container-->
-                                            <div class="table-responsive">
-                                                <!--begin::Table-->
-                                                <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
-                                                    <!--begin::Table head-->
-                                                    <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
-                                                        <tr class="text-center">
-                                                            <th class="w-150px">품목</th>
-                                                            <th class="w-150px">단가</th>
-                                                            <th class="w-150px">신청수량</th>
-                                                            <th class="w-175px">금액 (원)</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <!--end::Table head-->
-                                                    <!--begin::Table body-->
-                                                    <tbody>
-                                                        <tr class="text-center align-middle">
-                                                            <td><span class="fw-semibold d-block fs-7">주간 단상 220V</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 80,000/1kw</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">${info.utilityJuganCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityJuganFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
-                                                        </tr>
-                                                        <tr class="text-center align-middle">
-                                                            <td><span class="fw-semibold d-block fs-7">24시간용 220V</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 100,000/1kw</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">${info.utilityDayCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
-                                                        </tr>
-                                                        <tr class="text-center align-middle">
-                                                            <td><span class="fw-semibold d-block fs-7">작업전기</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 80,000/1kw</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">${info.utilityWorkCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWorkFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
-                                                        </tr>
-                                                        <tr class="text-center align-middle">
-                                                            <td><span class="fw-semibold d-block fs-7">압축공기 기본형</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 200,000</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">${info.utilityCompressedAirCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityCompressedAirFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
-                                                        </tr>
-                                                        <tr class="text-center align-middle">
-                                                            <td><span class="fw-semibold d-block fs-7">급배수 기본형</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 200,000</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">${info.utilityWaterBasicCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWaterBasicFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
-                                                        </tr>
-                                                        <tr class="text-center align-middle">
-                                                            <td><span class="fw-semibold d-block fs-7">인터넷</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 200,000</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">${info.utilityInternetCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityInternetFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
-                                                        </tr>
-                                                        <tr class="text-center align-middle">
-                                                            <td><span class="fw-semibold d-block fs-7">파이텍스 (신품)</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 80,000</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">${info.utilityPytexNewCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityPytexNewFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
-                                                        </tr>
-                                                        <tr class="text-center align-middle">
-                                                            <td><span class="fw-semibold d-block fs-7">파이텍스 (재사용품)</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 50,000</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">${info.utilityPytexReCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityPytexReFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
-                                                        </tr>
-                                                        <tr class="text-center align-middle">
-                                                            <td><span class="fw-semibold d-block fs-7">참관객/바이어 바코드 리더기</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 200,000</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">${info.utilityBarcodeCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityBarcodeFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
-                                                        </tr>
-                                                    </tbody>
-                                                    <!--end::Table body-->
-                                                </table>
-                                                <!--end::Table-->
-                                            </div>
-                                            <!--begin::Table container-->
-                                        </div>
-                                        <!--end::Card body-->
-                                    </div>
-                                    <!--end::Basic info-->
-
-                                    <!--begin::Basic info-->
-                                    <div class="card mb-5 mb-xl-10">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0">
-                                            <!--begin::Card title-->
-                                            <div class="card-title m-0">
                                                 <h3 class="fw-bold m-0">특별 할인</h3>
                                             </div>
                                             <!--end::Card title-->
@@ -648,32 +542,32 @@ if (document.documentElement) {
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
                                                         <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
-                                                            <tr class="text-center">
-                                                                <th style="width: 8%;">선택</th>
-                                                                <th style="width: 25%;">할인 사유</th>
-                                                                <th style="width: 25%;">할인 금액(단위: 원)</th>
-                                                                <th>비고</th>
-                                                            </tr>
+                                                        <tr class="text-center">
+                                                            <th style="width: 8%;">선택</th>
+                                                            <th style="width: 25%;">할인 사유</th>
+                                                            <th style="width: 25%;">할인 금액(단위: 원)</th>
+                                                            <th>비고</th>
+                                                        </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr class="text-center align-middle">
-                                                                <td><input type="checkbox" id="discountSpecial1Yn" class="form-check-input special-discount-checkbox" <c:if test="${info.discountSpecial1Yn}">checked</c:if>></td>
-                                                                <td>올해의 제품상 할인</td>
-                                                                <td>50%</td>
-                                                                <td><input type="text" id="discountSpecial1Note" value="${info.discountSpecial1Note}" class="form-control form-control-solid-bg"/></td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td><input type="checkbox" id="discountSpecial2Yn" class="form-check-input special-discount-checkbox" <c:if test="${info.discountSpecial2Yn}">checked</c:if>></td>
-                                                                <td><input type="text" id="discountSpecial2Reason" value="${info.discountSpecial2Reason}" placeholder="할인 사유 입력" class="form-control form-control-solid-bg"/></td>
-                                                                <td><input type="text" id="discountSpecial2Amount" value="${info.discountSpecial2Amount}" placeholder="할인 금액 입력" class="form-control form-control-solid-bg special-discount-amount"/></td>
-                                                                <td><input type="text" id="discountSpecial2Note" value="${info.discountSpecial2Note}" class="form-control form-control-solid-bg"/></td>
-                                                            </tr>
-                                                            <tr class="text-center align-middle">
-                                                                <td><input type="checkbox" id="discountSpecial3Yn" class="form-check-input special-discount-checkbox" <c:if test="${info.discountSpecial3Yn}">checked</c:if>></td>
-                                                                <td><input type="text" id="discountSpecial3Reason" value="${info.discountSpecial3Reason}" placeholder="할인 사유 입력" class="form-control form-control-solid-bg"/></td>
-                                                                <td><input type="text" id="discountSpecial3Amount" value="${info.discountSpecial3Amount}" placeholder="할인 금액 입력" class="form-control form-control-solid-bg special-discount-amount"/></td>
-                                                                <td><input type="text" id="discountSpecial3Note" value="${info.discountSpecial3Note}" class="form-control form-control-solid-bg"/></td>
-                                                            </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" id="discountSpecial1Yn" class="form-check-input special-discount-checkbox" <c:if test="${info.discountSpecial1Yn}">checked</c:if>></td>
+                                                            <td>올해의 제품상 할인</td>
+                                                            <td>50%</td>
+                                                            <td><input type="text" id="discountSpecial1Note" value="${info.discountSpecial1Note}" class="form-control form-control-solid-bg"/></td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" id="discountSpecial2Yn" class="form-check-input special-discount-checkbox" <c:if test="${info.discountSpecial2Yn}">checked</c:if>></td>
+                                                            <td><input type="text" id="discountSpecial2Reason" value="${info.discountSpecial2Reason}" placeholder="할인 사유 입력" class="form-control form-control-solid-bg"/></td>
+                                                            <td><input type="text" id="discountSpecial2Amount" value="${info.discountSpecial2Amount}" placeholder="할인 금액 입력" class="form-control form-control-solid-bg special-discount-amount"/></td>
+                                                            <td><input type="text" id="discountSpecial2Note" value="${info.discountSpecial2Note}" class="form-control form-control-solid-bg"/></td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" id="discountSpecial3Yn" class="form-check-input special-discount-checkbox" <c:if test="${info.discountSpecial3Yn}">checked</c:if>></td>
+                                                            <td><input type="text" id="discountSpecial3Reason" value="${info.discountSpecial3Reason}" placeholder="할인 사유 입력" class="form-control form-control-solid-bg"/></td>
+                                                            <td><input type="text" id="discountSpecial3Amount" value="${info.discountSpecial3Amount}" placeholder="할인 금액 입력" class="form-control form-control-solid-bg special-discount-amount"/></td>
+                                                            <td><input type="text" id="discountSpecial3Note" value="${info.discountSpecial3Note}" class="form-control form-control-solid-bg"/></td>
+                                                        </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -684,200 +578,66 @@ if (document.documentElement) {
                                     <!--end::Basic info-->
 
                                     <!--begin::Basic info-->
-                                    <div class="row g-5 mb-5 mb-xl-10">
-                                        <div class="col-md-6">
-                                            <div class="card h-100">
-                                                <div class="card-body p-9">
-                                                    <%-- JavaScript에서 계산을 위해 기본값들을 hidden 필드로 저장 --%>
-                                                    <input type="hidden" id="baseBoothSum" value="${info.boothPrcSum}" />
-                                                    <input type="hidden" id="baseUtilitySum" value="${info.utilityPrcSum}" />
-                                                    <input type="hidden" id="baseDiscountSum" value="${info.discountPrcSum}" />
-
-                                                    <h3 class="fw-bold m-0 mb-5">전시부스 계산서</h3>
-
-                                                    <div class="table-responsive">
-                                                        <table class="table table-row-bordered table-row-gray-300 gy-4">
-                                                            <tbody>
-                                                            <tr>
-                                                                <th class="text-gray-700 fw-semibold fs-6" style="width: 60%;">부스 총액 + 등록비</th>
-                                                                <td id="summary_booth_total" class="text-end fw-bold fs-6"></td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <th class="text-gray-700 fw-semibold fs-6">기본 할인</th>
-                                                                <td id="summary_basic_discount" class="text-end fw-bold fs-6 text-danger"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th class="text-gray-700 fw-semibold fs-6">특별 할인</th>
-                                                                <td id="summary_special_discount" class="text-end fw-bold fs-6 text-danger"></td>
-                                                            </tr>
-
-                                                            <%-- 발전기금 표시 행 (조건부) --%>
-                                                            <c:if test="${info.memberCompanyYn == 'Y' || info.discountLeisure}">
-                                                                <tr id="developmentFundRow">
-                                                                    <th class="text-gray-700 fw-semibold fs-6">한국해양레저산업협회 발전기금</th>
-                                                                    <td id="summary_development_fund" class="text-end fw-bold fs-6 text-success"></td>
-                                                                </tr>
-                                                            </c:if>
-
-                                                            <tr class="border-top border-gray-300 border-top-dashed">
-                                                                <th class="text-gray-800 fw-bolder fs-5">소계 (공급가액)</th>
-                                                                <td id="summary_booth_subtotal" class="text-end fw-bolder fs-5"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th class="text-gray-800 fw-bolder fs-5">부가세 (VAT)</th>
-                                                                <td id="summary_booth_vat" class="text-end fw-bolder fs-5"></td>
-                                                            </tr>
-                                                            <tr class="bg-light-primary">
-                                                                <th class="text-primary fw-bolder fs-4">최종 합계 (총액)</th>
-                                                                <td id="summary_booth_final_total" class="text-end text-primary fw-bolder fs-4"></td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card h-100">
-                                                <div class="card-body p-9">
-                                                    <h3 class="fw-bold m-0 mb-5">유틸리티 계산서</h3>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-row-bordered table-row-gray-300 gy-4">
-                                                            <tbody>
-                                                            <tr>
-                                                                <th class="text-gray-700 fw-semibold fs-6" style="width: 60%;">유틸리티 총액</th>
-                                                                <td id="summary_utility_total" class="text-end fw-bold fs-6"></td>
-                                                            </tr>
-
-                                                            <%-- 빈 행을 추가하여 부스 계산서와 줄 맞춤 --%>
-                                                            <c:if test="${info.memberCompanyYn == 'Y' || info.discountLeisure}">
-                                                                <tr><th class="border-0">&nbsp;</th><td class="border-0">&nbsp;</td></tr>
-                                                            </c:if>
-                                                            <tr><th class="border-0">&nbsp;</th><td class="border-0">&nbsp;</td></tr>
-                                                            <tr><th class="border-0">&nbsp;</th><td class="border-0">&nbsp;</td></tr>
-
-                                                            <tr class="border-top border-gray-300 border-top-dashed">
-                                                                <th class="text-gray-800 fw-bolder fs-5">소계 (공급가액)</th>
-                                                                <td id="summary_utility_subtotal" class="text-end fw-bolder fs-5"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th class="text-gray-800 fw-bolder fs-5">부가세 (VAT)</th>
-                                                                <td id="summary_utility_vat" class="text-end fw-bolder fs-5"></td>
-                                                            </tr>
-                                                            <tr class="bg-light-primary">
-                                                                <th class="text-primary fw-bolder fs-4">최종 합계 (총액)</th>
-                                                                <td id="summary_utility_final_total" class="text-end text-primary fw-bolder fs-4"></td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--end::Basic info-->
-
                                     <div class="card mb-5 mb-xl-10">
-                                        <div class="card-header border-0">
-                                            <div class="card-title m-0">
-                                                <h3 class="fw-bold m-0">입금 현황</h3>
-                                            </div>
-                                        </div>
-                                        <div class="card-body border-top p-9">
-                                            <div id="depositForm" class="mb-10">
-                                                <input type="hidden" id="depositSeq" />
-                                                <div class="row g-4">
-                                                    <div class="col-md-3">
-                                                        <label class="form-label required">금액</label>
-                                                        <input type="text" id="depositAmount" class="form-control" placeholder="금액 입력"/>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label class="form-label">내용</label>
-                                                        <select id="depositContentType" class="form-select">
-                                                            <option value="참가비 선금">참가비 선금</option>
-                                                            <option value="참가비 잔금">참가비 잔금</option>
-                                                            <option value="참가비 전액">참가비 전액</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label class="form-label">세금계산서</label>
-                                                        <select id="depositTaxStatus" class="form-select">
-                                                            <option value="미발행">미발행</option>
-                                                            <option value="발행">발행</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label class="form-label">참가비 수납 여부</label>
-                                                        <select id="depositPaymentStatus" class="form-select">
-                                                            <option value="미납">미납</option>
-                                                            <option value="무료 부스">무료 부스</option>
-                                                            <option value="참가비 (50%) 납부">참가비 (50%) 납부</option>
-                                                            <option value="참가비 (100%) 납부">참가비 (100%) 납부</option>
-                                                            <option value="완납(참가비/부대시설비) 납부">완납(참가비/부대시설비) 납부</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label class="form-label required">입금일</label>
-                                                        <input type="date" id="depositDate" class="form-control"/>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label class="form-label">입금예정일</label>
-                                                        <input type="date" id="depositScheduledDate" class="form-control"/>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label class="form-label">입금자명</label>
-                                                        <input type="text" id="depositDepositorName" class="form-control" placeholder="입금자명 입력"/>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label class="form-label">확인자명</label>
-                                                        <input type="text" id="depositConfirmerName" class="form-control" placeholder="확인자명 입력"/>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <label class="form-label">코멘트</label>
-                                                        <input type="text" id="depositComment" class="form-control" placeholder="코멘트 입력"/>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex justify-content-end mt-4">
-                                                    <button type="button" id="saveDepositBtn" class="btn btn-primary">추가</button>
-                                                </div>
-                                            </div>
+                                        <div class="card-body p-9">
+                                            <%-- JavaScript에서 계산을 위해 기본값들을 hidden 필드로 저장 --%>
+                                            <input type="hidden" id="baseBoothSum" value="${info.boothPrcSum}" />
+                                            <input type="hidden" id="baseUtilitySum" value="${info.utilityPrcSum}" />
+                                            <input type="hidden" id="baseDiscountSum" value="${info.discountPrcSum}" />
+
+                                            <h3 class="fw-bold m-0 mb-5">계산서</h3>
 
                                             <div class="table-responsive">
-                                                <table id="depositHistoryTable" class="table table-bordered align-middle">
-                                                    <thead class="bg-light-primary">
-                                                    <tr class="fw-bold text-gray-700 text-center">
-                                                        <th>No</th>
-                                                        <th>금액</th>
-                                                        <th>내용</th>
-                                                        <th>수납여부</th>
-                                                        <th>입금일</th>
-                                                        <th>입금예정일</th>
-                                                        <th>세금계산서</th>
-                                                        <th>입금자</th>
-                                                        <th>확인자</th>
-                                                        <th>코멘트</th>
-                                                        <th>등록일시</th>
-                                                        <th>수정일시</th>
-                                                        <th>관리</th>
-                                                    </tr>
-                                                    </thead>
+                                                <table class="table table-row-bordered table-row-gray-300 gy-4">
                                                     <tbody>
+                                                    <tr>
+                                                        <th class="text-gray-700 fw-semibold fs-6" style="width: 70%;">부스 총액 + 등록비</th>
+                                                        <td id="summary_booth_total" class="text-end fw-bold fs-6"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-gray-700 fw-semibold fs-6">기본 할인</th>
+                                                        <td id="summary_basic_discount" class="text-end fw-bold fs-6 text-danger"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-gray-700 fw-semibold fs-6">특별 할인</th>
+                                                        <td id="summary_special_discount" class="text-end fw-bold fs-6 text-danger"></td>
+                                                    </tr>
+
+                                                    <c:if test="${info.memberCompanyYn == 'Y' || info.discountLeisure}">
+                                                        <tr id="developmentFundRow">
+                                                            <th class="text-gray-700 fw-semibold fs-6">한국해양레저산업협회 발전기금</th>
+                                                            <td id="summary_development_fund" class="text-end fw-bold fs-6 text-success"></td>
+                                                        </tr>
+                                                    </c:if>
+
+                                                    <tr class="border-top border-gray-300 border-top-dashed">
+                                                        <th class="text-gray-800 fw-bolder fs-5">소계 (공급가액)</th>
+                                                        <td id="summary_booth_subtotal" class="text-end fw-bolder fs-5"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-gray-800 fw-bolder fs-5">부가세 (VAT)</th>
+                                                        <td id="summary_booth_vat" class="text-end fw-bolder fs-5"></td>
+                                                    </tr>
+                                                    <tr class="bg-light-primary">
+                                                        <th class="text-primary fw-bolder fs-4">최종 합계 (총액)</th>
+                                                        <td id="summary_booth_final_total" class="text-end text-primary fw-bolder fs-4"></td>
+                                                    </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
+                                    <!--end::Basic info-->
 
                                     <!--begin::Basic info-->
                                     <div class="card mb-5 mb-xl-10">
                                         <!--begin::Actions-->
                                         <div class="card-footer d-flex justify-content-between py-6 px-9">
                                             <div>
-                                                <a href="/mng/exhibitorNewNew/participant/company.do" class="btn btn-info btn-active-light-info cursor-pointer">목록</a>
+                                                <a href="/mng/exhibitorNew/application/booth.do" class="btn btn-info btn-active-light-info cursor-pointer">목록</a>
                                             </div>
                                             <div>
-                                                <button type="button" onclick="window.location.reload();" class="btn btn-danger btn-active-light-danger">변경내용취소</button>
+                                                <button type="button" onclick="f_application_booth_new_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger">변경내용취소</button>
                                                 <button type="button" id="saveSpecialDiscountBtn" class="btn btn-primary btn-active-light-primary ms-2 me-2">변경내용저장</button>
                                                 <button type="button" class="btn btn-dark btn-active-light-dark" data-bs-toggle="modal" data-bs-target="#kt_modal_create_invoice">인보이스 생성</button>
                                             </div>
@@ -910,11 +670,10 @@ if (document.documentElement) {
                                     <div id="kt_invoice_info">
                                         <!--begin::Card body-->
                                         <div class="card-body border-top p-9">
-                                            <h4 class="fw-bold text-gray-800 mb-5">■ 전시부스 인보이스</h4>
                                             <!--begin::Table container-->
                                             <div class="table-responsive">
                                                 <!--begin::Table-->
-                                                <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
+                                                <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border gy-7 gs-7">
                                                     <!--begin::Table head-->
                                                     <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
                                                         <tr class="text-center">
@@ -930,88 +689,33 @@ if (document.documentElement) {
                                                     <!--begin::Table body-->
                                                     <tbody>
                                                         <c:if test="${empty boothInvoiceList}">
-                                                            <tr><td colspan="6" class="text-center">인보이스 내역 없음</td></tr>
+                                                            <tr><td colspan="6" style="text-align: center;">인보이스 내역 없음</td></tr>
                                                         </c:if>
 
-                                                        <%-- 1. 전시부스 인보이스 목록 표시 --%>
-                                                        <c:forEach var="invoice" items="${boothInvoiceList}">
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <%-- data-type="booth" 추가 --%>
-                                                                    <span class="fw-semibold d-block fs-7 invoice-item">
+                                                        <c:if test="${not empty boothInvoiceList}">
+                                                            <c:forEach var="invoice" items="${boothInvoiceList}">
+                                                                <tr class="text-center align-middle">
+                                                                    <td>
+                                                                        <%-- data-type="booth" 추가 --%>
+                                                                        <span class="fw-semibold d-block fs-7 invoice-item">
                                                                         <input type="hidden" name="filePath" value="${invoice.filePath}"/>
                                                                         <input type="checkbox" name="invoiceSeq" value="${invoice.invoiceSeq}" data-type="booth" class="form-check-input">
                                                                     </span>
-                                                                </td>
-                                                                <td class="td_invoiceCode">${invoice.invoiceCode}</td>
-                                                                <td>${invoice.title}</td>
-                                                                <td>전시부스</td>
-                                                                <td><span class="fw-semibold d-block fs-7">${fn:substring(invoice.initRegiDttm, 0, 16)}</span></td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-sm btn-light-info view-history-btn"
-                                                                            data-invoice-seq="${invoice.invoiceSeq}"
-                                                                            data-invoice-type="booth"
-                                                                            data-invoice-code="${invoice.invoiceCode}">이력보기
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        </c:forEach>
-                                                    </tbody>
-                                                    <!--end::Table body-->
-                                                </table>
-                                                <!--end::Table-->
-                                            </div>
-                                            <!--begin::Table container-->
-                                        </div>
-                                        <!--end::Card body-->
-                                        <!--begin::Card body-->
-                                        <div class="card-body border-top p-9">
-                                            <h4 class="fw-bold text-gray-800 mb-5">■ 유틸리티 인보이스</h4>
-                                            <!--begin::Table container-->
-                                            <div class="table-responsive">
-                                                <!--begin::Table-->
-                                                <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
-                                                    <!--begin::Table head-->
-                                                    <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
-                                                        <tr class="text-center">
-                                                            <th>선택</th>
-                                                            <th>NO</th>
-                                                            <th>제목</th>
-                                                            <th>발송유형</th>
-                                                            <th>발행일시</th>
-                                                            <th>발송이력</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <!--end::Table head-->
-                                                    <!--begin::Table body-->
-                                                    <tbody>
-                                                        <c:if test="${empty utilityInvoiceList}">
-                                                            <tr><td colspan="6" class="text-center">인보이스 내역 없음</td></tr>
+                                                                    </td>
+                                                                    <td class="td_invoiceCode">${invoice.invoiceCode}</td>
+                                                                    <td>${invoice.title}</td>
+                                                                    <td>전시부스</td>
+                                                                    <td><span class="fw-semibold d-block fs-7">${fn:substring(invoice.initRegiDttm, 0, 16)}</span></td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-sm btn-light-info view-history-btn"
+                                                                                data-invoice-seq="${invoice.invoiceSeq}"
+                                                                                data-invoice-type="booth"
+                                                                                data-invoice-code="${invoice.invoiceCode}">이력보기
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </c:forEach>
                                                         </c:if>
-
-                                                        <%-- 2. 유틸리티 인보이스 목록 표시 --%>
-                                                        <c:forEach var="invoice" items="${utilityInvoiceList}">
-                                                            <tr class="text-center align-middle">
-                                                                <td>
-                                                                    <%-- data-type="utility" 추가 --%>
-                                                                    <span class="fw-semibold d-block fs-7 invoice-item">
-                                                                        <input type="hidden" name="filePath" value="${invoice.filePath}"/>
-                                                                        <input type="checkbox" name="invoiceSeq" value="${invoice.invoiceSeq}" data-type="utility" class="form-check-input">
-                                                                    </span>
-                                                                </td>
-                                                                <td class="td_invoiceCode">${invoice.invoiceCode}</td>
-                                                                <td>${invoice.title}</td>
-                                                                <td>유틸리티</td>
-                                                                <td><span class="fw-semibold d-block fs-7">${fn:substring(invoice.initRegiDttm, 0, 16)}</span></td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-sm btn-light-info view-history-btn"
-                                                                            data-invoice-seq="${invoice.invoiceSeq}"
-                                                                            data-invoice-type="utility"
-                                                                            data-invoice-code="${invoice.invoiceCode}">이력보기
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        </c:forEach>
                                                     </tbody>
                                                     <!--end::Table body-->
                                                 </table>
@@ -1105,7 +809,6 @@ if (document.documentElement) {
                         <label for="invoiceTypeSelect" class="form-label fw-semibold">인보이스 종류:</label>
                         <select id="invoiceTypeSelect" class="form-select form-select-solid">
                             <option value="booth">전시부스</option>
-                            <option value="utility">유틸리티</option>
                         </select>
                     </div>
                 </div>

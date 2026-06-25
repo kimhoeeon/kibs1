@@ -795,10 +795,10 @@ if (document.documentElement) {
                                                         <label class="form-label">참가비 수납 여부</label>
                                                         <select id="depositPaymentStatus" class="form-select">
                                                             <option value="미납">미납</option>
-                                                            <option value="참가비 납부">참가비 납부</option>
-                                                            <option value="50% 납부">50% 납부</option>
-                                                            <option value="전액 납부">전액 납부</option>
-                                                            <option value="완납(부대시설비)">완납(부대시설비)</option>
+                                                            <option value="무료 부스">무료 부스</option>
+                                                            <option value="참가비 (50%) 납부">참가비 (50%) 납부</option>
+                                                            <option value="참가비 (100%) 납부">참가비 (100%) 납부</option>
+                                                            <option value="완납(참가비/부대시설비) 납부">완납(참가비/부대시설비) 납부</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3">

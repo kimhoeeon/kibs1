@@ -1760,6 +1760,7 @@
         SELECT seq
              , approval_status
              , booth_type
+             , booth_num
              , company_name_ko
              , company_name_en
              , field_participatory
@@ -1953,15 +1954,16 @@
 
     <update id="updateExhibitorPrcYnFromLatestDeposit" parameterType="java.lang.String">
         /* com.mtf.kibs.mapper.kibsMngMapper.getExhibitorSeqByDepositSeq */
+        <![CDATA[
         UPDATE
             exhibitor_new
         SET prc_yn = (SELECT COALESCE(
                                      (SELECT CASE dh.payment_status
                                                  WHEN '미납' THEN '0'
-                                                 WHEN '참가비 납부' THEN '1'
-                                                 WHEN '50% 납부' THEN '2'
-                                                 WHEN '전액 납부' THEN '3'
-                                                 WHEN '완납(부대시설비)' THEN '4'
+                                                 WHEN '무료 부스' THEN '1'
+                                                 WHEN '참가비 (50%) 납부' THEN '2'
+                                                 WHEN '참가비 (100%) 납부' THEN '3'
+                                                 WHEN '완납(참가비/부대시설비) 납부' THEN '4'
                                                  ELSE '0'
                                                  END
                                       FROM deposit_history dh
@@ -1970,6 +1972,7 @@
                                       LIMIT 1),
                                      '0'))
         WHERE seq = #{exSeq}
+        ]]>
     </update>
 
     <select id="sumDepositAmountByExhibitor" parameterType="java.lang.String" resultType="java.lang.Integer">

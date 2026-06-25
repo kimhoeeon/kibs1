@@ -591,8 +591,136 @@ public class KibsMngController {
         return mv;
     }*/
 
+    @RequestMapping(value = "/mng/exhibitorNewNew/participant/company/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitorNewNew_company_detail(String seq) {
+        //System.out.println("KibsMngController > mng_exhibitorNew_company_detail");
+        //System.out.println(seq);
+        ModelAndView mv = new ModelAndView();
+        //seq == notice table id
+        if(seq != null && !seq.isEmpty()){
+            /* 전시업체정보 */
+            ExhibitorNewDTO requestDto = new ExhibitorNewDTO();
+            requestDto.setSeq(seq);
+            ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewSingle(requestDto);
+
+            if(info != null){
+                mv.addObject("info", info);
+
+                String exhibitor_new_seq = info.getSeq();
+
+                /* 부담당자 정보*/
+                ChargeNewDTO chargeNewReq = new ChargeNewDTO();
+                chargeNewReq.setExSeq(exhibitor_new_seq);
+                List<ChargeNewDTO> chargeList = kibsMngService.processSelectChargeNewList(chargeNewReq);
+                mv.addObject("chargeList", chargeList);
+
+                /* 온라인정보 */
+                OnlineNewDTO onlineNewReq = new OnlineNewDTO();
+                onlineNewReq.setExSeq(exhibitor_new_seq);
+                List<OnlineNewDTO> onlineList = kibsMngService.processSelectOnlineNewList(onlineNewReq);
+                mv.addObject("onlineList", onlineList);
+
+                /* 바이어정보 */
+                BuyerNewDTO buyerNewReq = new BuyerNewDTO();
+                buyerNewReq.setExSeq(exhibitor_new_seq);
+                List<BuyerNewDTO> buyerList = kibsMngService.processSelectBuyerNewList(buyerNewReq);
+                mv.addObject("buyerList", buyerList);
+
+                /* 파일정보 */
+                FileDTO fileReq = new FileDTO();
+                fileReq.setUserId(exhibitor_new_seq);
+                List<FileDTO> fileList = kibsMngService.processSelectFileList(fileReq);
+                List<FileDTO> onlineImageFileList = new ArrayList<>();
+                for (FileDTO fileInfo : fileList) {
+                    String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
+                    switch (fileNote) {
+                        case "companyLicense":
+                            mv.addObject("companyLicenseFile", fileInfo);
+                            break;
+                        case "logo":
+                            mv.addObject("logoFile", fileInfo);
+                            break;
+                        case "onlineImage":
+                            onlineImageFileList.add(fileInfo);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                mv.addObject("onlineImageFileList", onlineImageFileList);
+            }
+
+        }
+        mv.setViewName("/mng/exhibitorNewNew/participant/company/detail");
+        return mv;
+    }
+
     @RequestMapping(value = "/mng/exhibitorNew/participant/company/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_company_detail(String seq) {
+        //System.out.println("KibsMngController > mng_exhibitorNew_company_detail");
+        //System.out.println(seq);
+        ModelAndView mv = new ModelAndView();
+        //seq == notice table id
+        if(seq != null && !seq.isEmpty()){
+            /* 전시업체정보 */
+            ExhibitorNewDTO requestDto = new ExhibitorNewDTO();
+            requestDto.setSeq(seq);
+            ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewSingle(requestDto);
+
+            if(info != null){
+                mv.addObject("info", info);
+
+                String exhibitor_new_seq = info.getSeq();
+
+                /* 부담당자 정보*/
+                ChargeNewDTO chargeNewReq = new ChargeNewDTO();
+                chargeNewReq.setExSeq(exhibitor_new_seq);
+                List<ChargeNewDTO> chargeList = kibsMngService.processSelectChargeNewList(chargeNewReq);
+                mv.addObject("chargeList", chargeList);
+
+                /* 온라인정보 */
+                OnlineNewDTO onlineNewReq = new OnlineNewDTO();
+                onlineNewReq.setExSeq(exhibitor_new_seq);
+                List<OnlineNewDTO> onlineList = kibsMngService.processSelectOnlineNewList(onlineNewReq);
+                mv.addObject("onlineList", onlineList);
+
+                /* 바이어정보 */
+                BuyerNewDTO buyerNewReq = new BuyerNewDTO();
+                buyerNewReq.setExSeq(exhibitor_new_seq);
+                List<BuyerNewDTO> buyerList = kibsMngService.processSelectBuyerNewList(buyerNewReq);
+                mv.addObject("buyerList", buyerList);
+
+                /* 파일정보 */
+                FileDTO fileReq = new FileDTO();
+                fileReq.setUserId(exhibitor_new_seq);
+                List<FileDTO> fileList = kibsMngService.processSelectFileList(fileReq);
+                List<FileDTO> onlineImageFileList = new ArrayList<>();
+                for (FileDTO fileInfo : fileList) {
+                    String fileNote = fileInfo.getNote().replaceAll("[0-9]", "").replaceAll("[_]", "");
+                    switch (fileNote) {
+                        case "companyLicense":
+                            mv.addObject("companyLicenseFile", fileInfo);
+                            break;
+                        case "logo":
+                            mv.addObject("logoFile", fileInfo);
+                            break;
+                        case "onlineImage":
+                            onlineImageFileList.add(fileInfo);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                mv.addObject("onlineImageFileList", onlineImageFileList);
+            }
+
+        }
+        mv.setViewName("/mng/exhibitorNew/participant/company/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/exhibitor/participant/company/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_exhibitor_company_detail(String seq) {
         //System.out.println("KibsMngController > mng_exhibitorNew_company_detail");
         //System.out.println(seq);
         ModelAndView mv = new ModelAndView();
@@ -8369,6 +8497,30 @@ public class KibsMngController {
         return result;
     }
 
+    @RequestMapping(value = "/mng/exhibitorNewNew/participant/company/invoice/detail.do", method = RequestMethod.POST)
+    public ModelAndView mng_exhibitorNewNew_company_invoice_detail(String seq) {
+        //System.out.println("KibsMngController > mng_exhibitorNew_company_invoice_detail");
+        //System.out.println(seq);
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !seq.isEmpty()){
+            // 1. 참가업체 통합 정보 조회 (기존 로직)
+            ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewInvoiceDetail(seq);
+            mv.addObject("info", info);
+
+            // 3. 해당 참가업체의 '전시부스 인보이스' 목록 조회
+            List<InvoiceBoothDTO> boothInvoiceList  = kibsMngService.getInvoiceBoothList(seq);
+            mv.addObject("boothInvoiceList", boothInvoiceList);
+
+            // 4. 유틸리티 인보이스 목록 조회 로직 추가
+            List<InvoiceUtilityDTO> utilityInvoiceList = kibsMngService.getInvoiceUtilityList(seq); // 이 Service 메소드를 새로 만들어야 합니다.
+            mv.addObject("utilityInvoiceList", utilityInvoiceList);
+        }
+
+        mv.setViewName("/mng/exhibitorNewNew/participant/company/invoice/detail");
+        return mv;
+    }
+
     @RequestMapping(value = "/mng/exhibitorNew/participant/company/invoice/detail.do", method = RequestMethod.POST)
     public ModelAndView mng_exhibitorNew_company_invoice_detail(String seq) {
         //System.out.println("KibsMngController > mng_exhibitorNew_company_invoice_detail");
@@ -8389,7 +8541,7 @@ public class KibsMngController {
             mv.addObject("utilityInvoiceList", utilityInvoiceList);
         }
 
-        mv.setViewName("/mng/exhibitor/participant/company/invoice/detail");
+        mv.setViewName("/mng/exhibitorNew/participant/company/invoice/detail");
         return mv;
     }
 

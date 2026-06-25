@@ -27,60 +27,65 @@ let KTAppExhibitorNewNewMng = function () {
                 },
                 {
                     'targets': 3,
-                    'render': function (data, type, row) { return renderBadgeCell(data, type, row); }
-                },
-                {
-                    'targets': 4,
-                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
-                },
-                {
-                    'targets': 7,
-                    'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
-                },
-                {
-                    'targets': 8,
-                    'render': function (data, type, row) { return renderFieldParticipatoryCell(data, type, row); }
-                },
-                {
-                    'targets': 10,
-                    'render': function (data, type, row) { return renderPrcTotalCell(data, type, row); }
-                },
-                {
-                    'targets': 11,
-                    'render': function (data, type, row) { return renderDepositCell(data, type, row); }
-                },
-                {
-                    'targets': 12,
-                    'render': function (data, type, row) { return renderBalanceCell(data, type, row); }
-                },
-                {
-                    'targets': 13,
-                    'render': function (data, type, row) { return renderPrcYnCell(data, type, row); }
-                },
-                {
-                    'targets': 15,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
-                { visible: false, targets: [2,5,6] }
+                {
+                    'targets': 4,
+                    'render': function (data, type, row) { return renderApprovalStatusCell(data, type, row); }
+                },
+                {
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderBoothTypeCell(data, type, row); }
+                },
+                {
+                    'targets': 6,
+                    'render': function (data, type, row) { return renderBoothNumCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
+                    'render': function (data, type, row) { return renderCompanyNameCell(data, type, row); }
+                },
+                {
+                    'targets': 10,
+                    'render': function (data, type, row) { return renderFieldParticipatoryCell(data, type, row); }
+                },
+                {
+                    'targets': 12,
+                    'render': function (data, type, row) { return renderPrcTotalCell(data, type, row); }
+                },
+                {
+                    'targets': 13,
+                    'render': function (data, type, row) { return renderDepositCell(data, type, row); }
+                },
+                {
+                    'targets': 14,
+                    'render': function (data, type, row) { return renderBalanceCell(data, type, row); }
+                },
+                {
+                    'targets': 15,
+                    'render': function (data, type, row) { return renderPrcYnCell(data, type, row); }
+                },
+                { visible: false, targets: [2,7,8] }
             ],
             columns: [
                 { data: '' },
                 { data: 'rownum' }, //순번
-                { data: 'seq'}, //SEQ
+                { data: 'seq' }, //SEQ
+                { data: 'actions' },
                 { data: 'approvalStatus' }, //승인여부
                 { data: 'boothType' }, //부스
+                { data: 'boothNum' }, //부스번호
                 { data: 'companyNameKo' }, //회사명(국문)
                 { data: 'companyNameEn' }, //회사명(영문)
                 { data: 'companyName' }, //회사명
                 { data: 'fieldParticipatory' }, //참가행사
-                { data: 'id'},
+                { data: 'id' },
                 { data: 'prcTotal' }, //총액
                 { data: 'deposit' }, //선금
                 { data: 'balance' }, //잔액
                 { data: 'prcYn' }, //입금여부
-                { data: 'finalRegiDttm' }, //수정일
-                { data: 'actions' }
+                { data: 'finalRegiDttm' } //수정일
             ]
         });
     }
@@ -123,6 +128,10 @@ let KTAppExhibitorNewNewMng = function () {
         return renderHTML;
     }
 
+    function renderBoothNumCell(data, type, row){
+        return nvl(row.boothNum,'-');
+    }
+
     function renderPrcYnCell(data, type, row){
         let renderHTML = '';
         let prcYn = row.prcYn;
@@ -131,16 +140,16 @@ let KTAppExhibitorNewNewMng = function () {
                 renderHTML = '미납';
                 break;
             case '1':
-                renderHTML = '참가비 납부';
+                renderHTML = '무료 부스';
                 break;
             case '2':
-                renderHTML = '50% 납부';
+                renderHTML = '참가비 (50%) 납부';
                 break;
             case '3':
-                renderHTML = '전액 납부';
+                renderHTML = '참가비 (100%) 납부';
                 break;
             case '4':
-                renderHTML = '완납(부대시설비)';
+                renderHTML = '완납(참가비/부대시설비) 납부';
                 break;
             default:
                 break;
@@ -163,7 +172,7 @@ let KTAppExhibitorNewNewMng = function () {
         return renderHTML.toLocaleString();
     }
 
-    function renderBadgeCell(data, type, row){
+    function renderApprovalStatusCell(data, type, row){
         let approvalStatus = row.approvalStatus;
         let renderHTML = '';
         switch (approvalStatus){
@@ -186,7 +195,7 @@ let KTAppExhibitorNewNewMng = function () {
         let companyNameEn = row.companyNameEn;
         let renderHTML = '';
         renderHTML += '<span class="fw-bold">';
-        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + row.seq + '\'' + ')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_detail_info">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + row.seq + '\'' + ')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_new_detail_info">';
         if(nvl(companyNameEn,'') !== ''){
             renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
             /*if(companyNameKo === '오션테크'){
@@ -212,11 +221,11 @@ let KTAppExhibitorNewNewMng = function () {
         let rowSeq = row.seq;
         let companyNameKo = row.companyNameKo;
         let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
-        renderHTML += 'Actions';
+        renderHTML += 'Act';
         renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
         renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
         renderHTML += '<div class="menu-item px-3">';
-        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_detail_info">상세/수정</a>';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_new_detail_info">상세/수정</a>';
         renderHTML += '</div>';
         /*renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_exhibitor_detail_modal_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">수정이력</a>';
@@ -714,7 +723,7 @@ let KTAppExhibitorMng = function () {
         let companyNameEn = row.companyNameEn;
         let renderHTML = '';
         renderHTML += '<span class="fw-bold">';
-        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + row.seq + '\'' + ')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_detail_info">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + row.seq + '\'' + ')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_detail_info">';
         if(nvl(companyNameEn,'') !== ''){
             renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
             /*if(companyNameKo === '오션테크'){
@@ -744,7 +753,7 @@ let KTAppExhibitorMng = function () {
         renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
         renderHTML += '<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
         renderHTML += '<div class="menu-item px-3">';
-        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_detail_info">상세/수정</a>';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_detail_info">상세/수정</a>';
         renderHTML += '</div>';
         /*renderHTML += '<div class="menu-item px-3">';
         renderHTML += '<a onclick="f_exhibitor_detail_modal_set(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">수정이력</a>';

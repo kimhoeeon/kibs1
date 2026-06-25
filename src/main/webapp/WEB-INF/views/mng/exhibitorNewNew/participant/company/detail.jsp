@@ -130,10 +130,10 @@
                                     <div class="input">
                                         <c:choose>
                                             <c:when test="${info.prcYn eq '0'}">미납</c:when>
-                                            <c:when test="${info.prcYn eq '1'}">참가비 납부</c:when>
-                                            <c:when test="${info.prcYn eq '2'}">50% 납부</c:when>
-                                            <c:when test="${info.prcYn eq '3'}">전액 납부</c:when>
-                                            <c:when test="${info.prcYn eq '4'}">완납(부대시설비)</c:when>
+                                            <c:when test="${info.prcYn eq '1'}">무료 부스</c:when>
+                                            <c:when test="${info.prcYn eq '2'}">참가비 (50%) 납부</c:when>
+                                            <c:when test="${info.prcYn eq '3'}">참가비 (100%) 납부</c:when>
+                                            <c:when test="${info.prcYn eq '4'}">완납(참가비/부대시설비) 납부</c:when>
                                         </c:choose>
                                     </div>
                                 </li>
@@ -151,6 +151,14 @@
                                     </div>
                                     <div class="input">
                                         ${info.applyComplt}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item">
+                                        <p>부스번호</p>
+                                    </div>
+                                    <div class="input">
+                                        <input type="text" id="boothNum" name="boothNum" value="${info.boothNum}" placeholder="부스번호 입력">
                                     </div>
                                 </li>
                             </ul>

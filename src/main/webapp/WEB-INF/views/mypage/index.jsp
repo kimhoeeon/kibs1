@@ -120,10 +120,10 @@
                         <div class="form_tit">
                             <div class="big">참가비 결제 현황 :
                                 <c:if test="${info.prcYn eq '0'}"><span class="txtRed">미납</span></c:if>
-                                <c:if test="${info.prcYn eq '1'}"><span class="txtBlue">참가비 납부</span></c:if>
-                                <c:if test="${info.prcYn eq '2'}"><span class="txtBlue">50% 납부</span></c:if>
-                                <c:if test="${info.prcYn eq '3'}"><span class="txtBlue">전액 납부</span></c:if>
-                                <c:if test="${info.prcYn eq '4'}"><span class="txtBlue">완납</span></c:if>
+                                <c:if test="${info.prcYn eq '1'}"><span class="txtBlue">무료 부스</span></c:if>
+                                <c:if test="${info.prcYn eq '2'}"><span class="txtBlue">참가비 (50%) 납부</span></c:if>
+                                <c:if test="${info.prcYn eq '3'}"><span class="txtBlue">참가비 (100%) 납부</span></c:if>
+                                <c:if test="${info.prcYn eq '4'}"><span class="txtBlue">완납(참가비/부대시설비) 납부</span></c:if>
                             </div>
                         </div>
                         <div class="my_main_pay">

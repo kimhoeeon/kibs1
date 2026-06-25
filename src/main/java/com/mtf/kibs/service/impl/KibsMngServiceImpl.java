@@ -3464,16 +3464,16 @@ public class KibsMngServiceImpl implements KibsMngService {
             case "미납":
                 prcYn = "0";
                 break;
-            case "참가비 납부":
+            case "무료 부스":
                 prcYn = "1";
                 break;
-            case "50% 납부":
+            case "참가비 (50%) 납부":
                 prcYn = "2";
                 break;
-            case "전액 납부":
+            case "참가비 (100%) 납부":
                 prcYn = "3";
                 break;
-            case "완납(부대시설비)":
+            case "완납(참가비/부대시설비) 납부":
                 prcYn = "4";
                 break;
         }
@@ -3504,16 +3504,16 @@ public class KibsMngServiceImpl implements KibsMngService {
             case "미납":
                 prcYn = "0";
                 break;
-            case "참가비 납부":
+            case "무료 부스":
                 prcYn = "1";
                 break;
-            case "50% 납부":
+            case "참가비 (50%) 납부":
                 prcYn = "2";
                 break;
-            case "전액 납부":
+            case "참가비 (100%) 납부":
                 prcYn = "3";
                 break;
-            case "완납(부대시설비)":
+            case "완납(참가비/부대시설비) 납부":
                 prcYn = "4";
                 break;
         }

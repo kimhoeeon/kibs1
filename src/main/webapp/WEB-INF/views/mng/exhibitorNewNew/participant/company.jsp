@@ -305,10 +305,10 @@ if (document.documentElement) {
                                                     <option></option>
                                                     <option value="" disabled>- 참가비 수납여부 -</option>
                                                     <option value="0">미납</option>
-                                                    <option value="1">참가비 납부</option>
-                                                    <option value="2">50% 납부</option>
-                                                    <option value="3">전액 납부</option>
-                                                    <option value="4">완납(부대시설비)</option>
+                                                    <option value="1">무료 부스</option>
+                                                    <option value="2">참가비 (50%) 납부</option>
+                                                    <option value="3">참가비 (100%) 납부</option>
+                                                    <option value="4">완납(참가비/부대시설비) 납부</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>
@@ -425,8 +425,10 @@ if (document.documentElement) {
                                                     </th>
                                                     <th class="text-center min-w-30px">#</th>
                                                     <th>ID</th>
+                                                    <th class="text-center min-w-100px">기능</th>
                                                     <th class="text-center min-w-85px">참가상태</th>
                                                     <th class="text-center min-w-100px">부스</th>
+                                                    <th class="text-center min-w-85px">부스번호</th>
                                                     <th>회사명(국문)</th>
                                                     <th>회사명(영문)</th>
                                                     <th class="text-center min-w-200px">회사명</th>
@@ -437,11 +439,11 @@ if (document.documentElement) {
                                                     <th class="text-center min-w-100px">잔액</th>
                                                     <th class="text-center min-w-80px">입금여부</th>
                                                     <th class="text-center min-w-100px">수정일</th>
-                                                    <th class="text-center min-w-100px">기능</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -653,10 +655,10 @@ if (document.documentElement) {
                                     <option></option>
                                     <option value="" disabled>- 참가비 수납여부 -</option>
                                     <option value="0">미납</option>
-                                    <option value="1">참가비 납부</option>
-                                    <option value="2">50% 납부</option>
-                                    <option value="3">전액 납부</option>
-                                    <option value="4">완납(부대시설비)</option>
+                                    <option value="1">무료 부스</option>
+                                    <option value="2">참가비 (50%) 납부</option>
+                                    <option value="3">참가비 (100%) 납부</option>
+                                    <option value="4">완납(참가비/부대시설비) 납부</option>
                                 </select>
                                 <!--end::Select2-->
                             </div>
@@ -696,7 +698,7 @@ if (document.documentElement) {
     <!--end::Modal - 수정이력-->
 
     <!--begin::Modal - 수정이력-->
-    <div class="modal fade" id="modal_exhibitor_new_detail_info" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modal_exhibitor_new_new_detail_info" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div id="ifDiv" class="modal-dialog modal-dialog-centered <%--mw-1000px--%>" style="max-width: 1280px;">
             <!--begin::Modal content-->
@@ -733,7 +735,7 @@ if (document.documentElement) {
     <!--end::Modal - 수정이력-->
 
     <!--begin::Modal - 수정이력-->
-    <div class="modal fade" id="modal_exhibitor_new_mypage_info" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modal_exhibitor_new_new_mypage_info" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered" style="max-width: 95%;">
             <!--begin::Modal content-->

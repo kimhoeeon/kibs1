@@ -3,7 +3,7 @@
  * 전시회 > 참가자 관리 > 전시업체 목록
  * */
 
-var transferYear = '2027';
+var transferYear = '2026';
 
 $(function(){
     let myModalEl = document.getElementById('kt_modal_approval_status');
@@ -140,7 +140,7 @@ $(function(){
         }
     });
 
-    $('#modal_exhibitor_new_mypage_info').on('hidden.bs.modal', function () {
+    $('#modal_exhibitor_new_new_mypage_info').on('hidden.bs.modal', function () {
         // 팝업이 닫힐 때, 업체로 로그인 중인 상태였는지 확인
         if (isAdminImpersonating) {
             // 상태 변수를 즉시 초기화
@@ -213,7 +213,7 @@ function f_exhibitor_search(){
         }
     }
 
-    let resData = ajaxConnect('/mng/exhibitorNew/participant/company/selectList.do', 'post', jsonObj);
+    let resData = ajaxConnect('/mng/exhibitorNewNew/participant/company/selectList.do', 'post', jsonObj);
     dataTbl.rows.add(resData).draw();
 
     /* 조회 카운트 입력 */
@@ -296,7 +296,7 @@ function f_search_condition_box_change(){
     //console.log(jsonObj);
 
     /* 목록 데이터 조회 */
-    let resData = ajaxConnect('/mng/exhibitorNew/participant/company/selectList.do', 'post', jsonObj);
+    let resData = ajaxConnect('/mng/exhibitorNewNew/participant/company/selectList.do', 'post', jsonObj);
     dataTbl.rows.add(resData).draw();
 
     /* 조회 카운트 입력 */
@@ -341,24 +341,7 @@ function f_search_condition_init(){
 function f_exhibitor_detail(seq){
     $('#applyDetailForm').removeAttr('src');
 
-    $('#applyDetailForm').attr('src','/mng/exhibitorNew/participant/company/detail.do?seq=' + seq);
-}
-
-function f_exhibitor_pre_page_move(){
-    let referrer = document.referrer;
-
-    if(referrer.includes('company.do')){
-
-        // 전시업체 페이지에서 이동 - /mng/exhibitorNew/participant/company.do
-        window.location.href = '/mng/exhibitorNew/participant/company.do';
-
-    }else if(referrer.includes('member.do')){
-
-        // 회원목록 페이지에서 이동 - /mng/exhibitor/participant/member.do
-        window.location.href = '/mng/exhibitor/participant/member.do';
-
-    }
-
+    $('#applyDetailForm').attr('src','/mng/exhibitorNewNew/participant/company/detail.do?seq=' + seq);
 }
 
 function f_exhibitor_remove(seq){
@@ -910,7 +893,7 @@ function f_exhibitor_invoice_detail(seq){
     sendForm.appendChild(hiddenField_seq);
 
     document.body.appendChild(sendForm);
-    sendForm.action = '/mng/exhibitorNew/participant/company/invoice/detail.do';
+    sendForm.action = '/mng/exhibitorNewNew/participant/company/invoice/detail.do';
 
     sendForm.submit();
 }
@@ -934,7 +917,7 @@ function f_exhibitor_select_login(seq, companyNameKo){
                 $('#exhibitorDetailForm').attr('src', '/mypage/step01.do');
 
                 // 3. 팝업(Modal) 열기
-                const mypageModal = new bootstrap.Modal(document.getElementById('modal_exhibitor_new_mypage_info'));
+                const mypageModal = new bootstrap.Modal(document.getElementById('modal_exhibitor_new_new_mypage_info'));
                 mypageModal.show();
             } else {
                 alert('업체로 로그인하는 데 실패했습니다: ' + response.resultMsg);

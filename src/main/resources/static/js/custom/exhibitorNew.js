@@ -344,23 +344,6 @@ function f_exhibitor_detail(seq){
     $('#applyDetailForm').attr('src','/mng/exhibitorNew/participant/company/detail.do?seq=' + seq);
 }
 
-function f_exhibitor_pre_page_move(){
-    let referrer = document.referrer;
-
-    if(referrer.includes('company.do')){
-
-        // 전시업체 페이지에서 이동 - /mng/exhibitorNew/participant/company.do
-        window.location.href = '/mng/exhibitorNew/participant/company.do';
-
-    }else if(referrer.includes('member.do')){
-
-        // 회원목록 페이지에서 이동 - /mng/exhibitor/participant/member.do
-        window.location.href = '/mng/exhibitor/participant/member.do';
-
-    }
-
-}
-
 function f_exhibitor_remove(seq){
 
     if(nvl(seq, "") !== ""){

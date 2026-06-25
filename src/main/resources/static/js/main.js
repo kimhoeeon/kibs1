@@ -1,4 +1,4 @@
-var transferYear = '2026';
+var transferYear = '2027';
 // main.js 최상단에 전역 변수 선언
 let deletedFileIds = [];
 let isSubmitProceeding = false;
@@ -45,7 +45,7 @@ function certificateEmail(el){
     certifyCode = generateRandomCode(5);
     //console.log(certifyCode);
     let jsonObj = {
-        subject: '[ 2026 경기국제보트쇼 ] 참가기업 인증 안내', //제목
+        subject: '[ 2027 경기국제보트쇼 ] 참가기업 인증 안내', //제목
         body: "", //본문
         template: "160", //템플릿 번호
         receiver: [{ email: email , note1: certifyCode }]
@@ -1107,7 +1107,7 @@ function f_pw_init(){
     }
 
     // ID 체크
-    let jsonStr = { id : id , transferYear: transferYear};// 2026
+    let jsonStr = { id : id , transferYear: transferYear};// 2027
     let seq = ajaxConnectSimple('/searchExhibitorNewSeq.do', 'post', jsonStr);
     if(nvl(seq,'') !== ''){
         Swal.fire({
@@ -1126,7 +1126,7 @@ function f_pw_init(){
                 let email = ajaxConnectSimple('/getExhibitorNewEmail.do', 'post', jsonStr);
                 if(nvl(email,'') !== ''){
                     let jsonObj = {
-                        subject: '[2026 경기국제보트쇼] 비밀번호 초기화 요청', //제목
+                        subject: '[2027 경기국제보트쇼] 비밀번호 초기화 요청', //제목
                         body: "", //본문
                         template: "12", //템플릿 번호
                         receiver: [{email: email}]
@@ -1267,7 +1267,7 @@ function f_id_duplicate_check(el){
         }
 
         // ID 중복체크
-        let jsonStr = { id : id , transferYear: transferYear};// 2026
+        let jsonStr = { id : id , transferYear: transferYear};// 2027
         let checkDuplicateId = ajaxConnect('/checkDuplicateId.do', 'post', jsonStr);
         if(checkDuplicateId !== 0){
             $(el).siblings('.cmnt').css('color', '#AD1D1D');
@@ -4394,7 +4394,7 @@ function step_03_check(exhibitorSeq){
                 for(let j=0; j<emailArr.length; j++){
                     let email = emailArr[j];
                     let jsonObj = {
-                        subject: '[2026 경기국제보트쇼] 참가업체 접수 완료', //제목
+                        subject: '[2027 경기국제보트쇼] 참가업체 접수 완료', //제목
                         body: "", //본문
                         template: "6", //템플릿 번호
                         receiver: [{email: email}]
@@ -5162,6 +5162,7 @@ async function my_step_01_check(exhibitorSeq){
         transferYear: transferYear,
         passwordYn: 'N',
         /* 참가업체 정보 */
+        boothNum: $('#boothNum').val(),
         companyLicenseNum: companyLicenseNum,
         companyNameKo: companyNameKo,
         companyNameEn: companyNameEn,
@@ -5292,7 +5293,8 @@ async function my_step_01_check(exhibitorSeq){
                                     console.log(">> [DEBUG] 7. [관리자] 페이지 새로고침(재진입)");
                                     // 관리자 모드: 현재 페이지 주소로 다시 이동 (새로고침 효과)
                                     // window.location.pathname은 현재 페이지의 주소(예: /mypage/modify.do)를 가져옵니다.
-                                    f_page_move(window.location.pathname, exhibitorSeq);
+                                    //f_page_move(window.location.pathname, exhibitorSeq);
+                                    window.location.href='/mng/exhibitorNewNew/participant/company/detail.do?seq=' + exhibitorSeq;
                                 }
                             }
                         }
@@ -6167,7 +6169,7 @@ function my_step_03_check(exhibitorSeq){
                 for(let j=0; j<emailArr.length; j++){
                     let email = emailArr[j];
                     let jsonObj = {
-                        subject: '[2026 경기국제보트쇼] 참가업체 접수 완료', //제목
+                        subject: '[2027 경기국제보트쇼] 참가업체 접수 완료', //제목
                         body: "", //본문
                         template: "6", //템플릿 번호
                         receiver: [{email: email}]
@@ -6570,11 +6572,11 @@ function f_visitor_apply(gbn){
 
                             if(gbn === 'I'){
                                 /* 참관객 완료 메일 전송 */
-                                let subject = '2026 경기국제보트쇼 <1차 사전등록(무료)> 신청 완료';
+                                let subject = '2027 경기국제보트쇼 <1차 사전등록(무료)> 신청 완료';
                                 let template = '178';
                                 let timeGbn = data.timeGbn;
                                 if(timeGbn === '2차'){
-                                    subject = '2026 경기국제보트쇼 <2차 사전등록> 신청 완료';
+                                    subject = '2027 경기국제보트쇼 <2차 사전등록> 신청 완료';
                                     template = '181';
                                 }
                                 let email = data.email + '@' + data.domain;
@@ -7831,7 +7833,7 @@ function makeJsonFormat(data){
     });
 
     returnJsonObj = {
-        subject: '[2026 경기국제보트쇼] 참가업체 접수 완료', //제목
+        subject: '[2027 경기국제보트쇼] 참가업체 접수 완료', //제목
         body: "", //본문
         template: "6", //템플릿 번호
         receiver: receiverArr

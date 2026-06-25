@@ -696,7 +696,7 @@ if (document.documentElement) {
     <!--end::Modal - 수정이력-->
 
     <!--begin::Modal - 수정이력-->
-    <div class="modal fade" id="modal_exhibitor_new_detail_info" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modal_exhibitor_detail_info" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div id="ifDiv" class="modal-dialog modal-dialog-centered <%--mw-1000px--%>" style="max-width: 1280px;">
             <!--begin::Modal content-->
@@ -733,7 +733,7 @@ if (document.documentElement) {
     <!--end::Modal - 수정이력-->
 
     <!--begin::Modal - 수정이력-->
-    <div class="modal fade" id="modal_exhibitor_new_mypage_info" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modal_exhibitor_mypage_info" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered" style="max-width: 95%;">
             <!--begin::Modal content-->
