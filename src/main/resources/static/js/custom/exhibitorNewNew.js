@@ -709,7 +709,7 @@ function f_exhibitor_excel_export(){
             loadingBarShow();
 
             let form = document.createElement('form');
-            form.setAttribute('action','/mng/exhibitor/download.do');
+            form.setAttribute('action','/mng/exhibitorNewNew/download.do');
             form.setAttribute('method','get');
 
             let obj = document.createElement('input');
