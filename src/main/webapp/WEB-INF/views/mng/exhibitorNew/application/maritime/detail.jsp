@@ -126,6 +126,14 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
+                                        <li class="breadcrumb-item text-muted">전시회</li>
+                                        <!--end::Item-->
+                                        <!--begin::Item-->
+                                        <li class="breadcrumb-item">
+                                            <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                                        </li>
+                                        <!--end::Item-->
+                                        <!--begin::Item-->
                                         <li class="breadcrumb-item text-muted">참가신청서 관리 (2026)</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->

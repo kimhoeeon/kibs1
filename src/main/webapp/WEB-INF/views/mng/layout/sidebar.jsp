@@ -498,7 +498,7 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
-                        <div class="menu-item">
+                        <%--<div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link" href="/mng/exhibitor/participant/company.do">
                                 <span class="menu-bullet">
@@ -507,7 +507,7 @@
                                 <span class="menu-title">전시업체 목록</span>
                             </a>
                             <!--end:Menu link-->
-                        </div>
+                        </div>--%>
                         <!--end:Menu item-->
                         <!--begin:Menu item-->
                         <div class="menu-item">

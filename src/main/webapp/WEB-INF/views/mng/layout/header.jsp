@@ -274,7 +274,7 @@
                                                         <div class="menu-item p-0 m-0">
                                                             <!--begin:Menu link-->
                                                             <a href="/mng/exhibitor/transfer/company.do" class="menu-link">
-                                                                <span class="menu-title">지난 행사 전시업체</span>
+                                                                <span class="menu-title">지난 행사 전시업체 (~2025)</span>
                                                             </a>
                                                             <!--end:Menu link-->
                                                         </div>
@@ -520,13 +520,13 @@
                                                     <!--begin:Col-->
                                                     <div class="col-lg-12">
                                                         <!--begin:Menu item-->
-                                                        <div class="menu-item p-0 m-0">
+                                                        <%--<div class="menu-item p-0 m-0">
                                                             <!--begin:Menu link-->
                                                             <a href="/mng/exhibitor/participant/company.do" class="menu-link">
                                                                 <span class="menu-title">전시업체 목록</span>
                                                             </a>
                                                             <!--end:Menu link-->
-                                                        </div>
+                                                        </div>--%>
                                                         <!--end:Menu item-->
                                                         <!--begin:Menu item-->
                                                         <div class="menu-item p-0 m-0">

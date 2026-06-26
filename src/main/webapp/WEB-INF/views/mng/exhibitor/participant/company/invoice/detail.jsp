@@ -142,7 +142,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">참가자 관리</li>
+                                        <li class="breadcrumb-item text-muted">참가신청서 관리 (2027~)</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
