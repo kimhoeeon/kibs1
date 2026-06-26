@@ -2,7 +2,7 @@
  * mng/exhibitor/application/buyer.js
  * 참가신청서 관리 > 초청희망바이어 신청
  * */
-var transferYear = '2027';
+var transferYear = '2026';
 $(function(){
 
     // 바이어 정보 input 이메일
@@ -354,6 +354,9 @@ function f_buyer_form_data_setting(exhibitorSeq){
     // 홈페이지
     let buyerCompanyHomepageList = $('input[type=text][name=buyerCompanyHomepage]');
 
+    // 담당자 성명
+    let buyerCompanyChargeList = $('input[type=text][name=buyerCompanyCharge]');
+
     // 부서
     let buyerCompanyDepartList = $('input[type=text][name=buyerCompanyDepart]');
 
@@ -398,6 +401,7 @@ function f_buyer_form_data_setting(exhibitorSeq){
             buyerCompanyCountry: buyerCompanyCountryList.eq(i).val(),
             buyerCompanyLocation: buyerCompanyLocationList.eq(i).val(),
             buyerCompanyHomepage: buyerCompanyHomepageList.eq(i).val(),
+            buyerCompanyCharge: buyerCompanyChargeList.eq(i).val(),
             buyerCompanyDepart: buyerCompanyDepartList.eq(i).val(),
             buyerCompanyPosition: buyerCompanyPositionList.eq(i).val(),
             buyerCompanyEmail: buyerCompanyEmailList.eq(i).val() + '@' + buyerCompanyDomainList.eq(i).val(),
@@ -419,4 +423,43 @@ function f_buyer_form_data_setting(exhibitorSeq){
     };
 
     return JSON.stringify(exhibitorArr);
+}
+
+function f_exhibitor_application_buyer_new_excel_export(){
+    Swal.fire({
+        icon: 'info',
+        title: '[ 전체 바이어 정보 상세 다운로드 ]',
+        html: '전체 바이어 정보 상세를 다운로드하시겠습니까 ?',
+        allowOutsideClick: false,
+        showCancelButton: true,
+        confirmButtonColor: '#00a8ff',
+        confirmButtonText: '다운로드',
+        cancelButtonColor: '#A1A5B7',
+        cancelButtonText: '취소'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            /* 로딩페이지 */
+            loadingBarShow();
+
+            let form = document.createElement('form');
+            form.setAttribute('action','/mng/exhibitor/buyer/download.do');
+            form.setAttribute('method','get');
+
+            let obj = document.createElement('input');
+            obj.setAttribute('type', 'hidden');
+            obj.setAttribute('name', 'fileName');
+            obj.setAttribute('value', '바이어_정보_' + getCurrentDate() + '.xlsx');
+
+            let obj2 = document.createElement('input');
+            obj2.setAttribute('type', 'hidden');
+            obj2.setAttribute('name', 'transferYear');
+            obj2.setAttribute('value', transferYear);
+
+            form.appendChild(obj);
+            form.appendChild(obj2);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
 }

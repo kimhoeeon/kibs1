@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class MngBuyerDTO {
+public class BuyerDetailDTO {
     Integer rownum; //순번
     String seq; //업체SEQ
     String id; //ID

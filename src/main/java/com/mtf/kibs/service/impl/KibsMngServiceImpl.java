@@ -5284,6 +5284,13 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
+    public List<BuyerDetailDTO> processSelectExcelBuyerDetailList(String transferYear) {
+        //System.out.println("KibsMngServiceImpl > processSelectExcelBuyerDetailList");
+        return kibsMngMapper.selectExcelBuyerDetailList(transferYear);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
     public List<RequestDTO> processSelectRequestList(SearchDTO searchDTO) {
         //System.out.println("KibsMngServiceImpl > processSelectRequestList");
         return kibsMngMapper.selectRequestList(searchDTO);

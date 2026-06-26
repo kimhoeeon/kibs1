@@ -810,7 +810,7 @@ public class KibsMngNewController {
 
             // 1-4. 신청내역 (35개)
             String[] appHeaders = {
-                    "수출상담회 참가희망여부", "등록비", "독립부스", "조립부스", "온라인부스", "총 부스 수", "부스가격",
+                    "수출상담회 참가희망여부", "참가비", "독립부스", "조립부스", "온라인부스", "총 부스 수", "부스가격",
                     "참가비 합계\n(등록비+부스가격)",
                     "1차 조기신청", "2차 조기신청", "첫 참가(10부스 미만)", "첫 참가(10부스 이상)", "재참가",
                     "규모(10+)", "규모(20+)", "규모(30+)", "규모(40+)", "규모(50+)", "규모(100+)",
@@ -1220,7 +1220,7 @@ public class KibsMngNewController {
         // --- 요청하신 새 공식 적용 ---
 
         // 참가비 합계 = 등록비 + 부스신청총액 + 발전기금 + 유틸리티신청총액
-        long participationFeeTotal = registrationFee + boothPriceOnly + developmentFund + utilityPrcSum;
+        long participationFeeTotal = registrationFee + boothPriceOnly + developmentFund/* + utilityPrcSum*/;
 
         // 소계(공급가액) = 참가비 합계 - 총 할인액
         long recalculatedPrcSum = participationFeeTotal - totalDiscount;

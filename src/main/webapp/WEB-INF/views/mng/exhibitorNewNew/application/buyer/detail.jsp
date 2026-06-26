@@ -347,6 +347,18 @@ if (document.documentElement) {
                                                         <!--begin::Input group-->
                                                         <div class="row mb-6">
                                                             <!--begin::Label-->
+                                                            <label class="col-lg-2 col-form-label fw-semibold fs-6">담당자 성명</label>
+                                                            <!--end::Label-->
+                                                            <!--begin::Col-->
+                                                            <div class="col-lg-10">
+                                                                <input type="text" name="buyerCompanyCharge" value="${buyer.buyerCompanyCharge}" class="form-control form-control-lg form-control-solid-bg" placeholder="담당자 성명"/>
+                                                            </div>
+                                                            <!--end::Col-->
+                                                        </div>
+                                                        <!--end::Input group-->
+                                                        <!--begin::Input group-->
+                                                        <div class="row mb-6">
+                                                            <!--begin::Label-->
                                                             <label class="col-lg-2 col-form-label fw-semibold fs-6">부서</label>
                                                             <!--end::Label-->
                                                             <!--begin::Col-->

@@ -453,7 +453,7 @@
 
                                 </div>
                                 <div class="form_ptag_sum">
-                                    <div class="cate2">총액(VAT 미포함, 발전기금 미포함)</div>
+                                    <div class="cate2">총액(VAT 미포함, 발전기금 포함)</div>
                                     <div class="amount2">
                                         <p class="price">
                                             <input type="text" id="boothPrcSumDisplay" value="" disabled>

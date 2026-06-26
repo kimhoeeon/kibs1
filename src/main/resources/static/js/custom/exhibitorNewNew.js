@@ -3,7 +3,7 @@
  * 전시회 > 참가자 관리 > 전시업체 목록
  * */
 
-var transferYear = '2027';
+var transferYear = '2026';
 
 $(function(){
     let myModalEl = document.getElementById('kt_modal_approval_status');

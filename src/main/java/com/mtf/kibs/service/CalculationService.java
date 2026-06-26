@@ -144,8 +144,8 @@ public class CalculationService {
         result.setUtilityTotal(utilTotal);
 
         // 5-2. 부스 계산서
-        // (부스비 총액) - (기본 할인 + 특별 할인)
-        int boothSubtotal = (boothPrcSum) - (basicDiscountSum + specialDiscountTotal);
+        // (부스비 총액 + 발전기금) - (기본 할인 + 특별 할인)
+        int boothSubtotal = (boothPrcSum + developmentFund) - (basicDiscountSum + specialDiscountTotal);
         int boothVat = (int) Math.floor(boothSubtotal * 0.1);
         int boothTotal = boothSubtotal + boothVat;
 

@@ -1757,69 +1757,69 @@
 
     <select id="selectListExhibitorNew" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectListExhibitorNew */
-        SELECT seq
-             , approval_status
-             , booth_type
-             , booth_num
-             , company_name_ko
-             , company_name_en
-             , field_participatory
-             , id
-             , prc_total
-             , deposit
-             , balance
-             , prc_yn
-             , final_regi_dttm
-        FROM exhibitor_new
+        SELECT en.seq
+        , en.approval_status
+        , en.booth_type
+        , en.booth_num
+        , en.company_name_ko
+        , en.company_name_en
+        , en.field_participatory
+        , en.id
+        , IFNULL(en.prc_total, 0) AS prc_total
+        , IFNULL((SELECT SUM(amount) FROM deposit_history dh WHERE dh.exhibitor_seq = en.seq), 0) AS deposit
+        , (IFNULL(en.prc_total, 0) - IFNULL((SELECT SUM(amount) FROM deposit_history dh WHERE dh.exhibitor_seq = en.seq), 0)) AS balance
+        , en.prc_yn
+        , en.final_regi_dttm
+        FROM exhibitor_new en
         WHERE 1=1
         <if test='searchText != null and searchText != ""'>
             <if test='condition eq "companyNameKo"'>
-                AND company_name_ko LIKE CONCAT('%',#{searchText},'%')
+                AND en.company_name_ko LIKE CONCAT('%',#{searchText},'%')
             </if>
             <if test='condition eq "companyNameEn"'>
-                AND company_name_en LIKE CONCAT('%',#{searchText},'%')
+                AND en.company_name_en LIKE CONCAT('%',#{searchText},'%')
             </if>
             <if test='condition eq "boothNumber"'>
-                AND booth_num LIKE CONCAT('%',#{searchText},'%')
+                AND en.booth_num LIKE CONCAT('%',#{searchText},'%')
             </if>
             <if test='condition eq "id"'>
-                AND id LIKE CONCAT('%',#{searchText},'%')
+                AND en.id LIKE CONCAT('%',#{searchText},'%')
             </if>
         </if>
         <if test='fieldParticipatory != null and fieldParticipatory != ""'>
-            AND field_participatory = #{fieldParticipatory}
+            AND en.field_participatory = #{fieldParticipatory}
         </if>
         <if test='boothType != null and boothType != ""'>
-            AND INSTR(booth_type,#{boothType}) <![CDATA[>]]> 0
+            AND INSTR(en.booth_type,#{boothType}) <![CDATA[>]]> 0
         </if>
         <if test='discountYn != null and discountYn != ""'>
-            AND discount_yn = #{discountYn}
+            AND en.discount_yn = #{discountYn}
         </if>
         <if test='taxYn != null and taxYn != ""'>
-            AND tax_yn = #{taxYn}
+            AND en.tax_yn = #{taxYn}
         </if>
         <if test='prcYn != null and prcYn != ""'>
-            AND prc_yn = #{prcYn}
+            AND en.prc_yn = #{prcYn}
         </if>
         <if test='lang != null and lang != ""'>
-            AND lang = #{lang}
+            AND en.lang = #{lang}
         </if>
         <if test='applyComplt != null and applyComplt != ""'>
-            AND apply_complt = #{applyComplt}
+            AND en.apply_complt = #{applyComplt}
         </if>
         <if test='approvalStatus != null and approvalStatus != ""'>
-            AND approval_status = #{approvalStatus}
+            AND en.approval_status = #{approvalStatus}
         </if>
         <if test='cancelYn != null and cancelYn != ""'>
-            AND cancel_yn = #{cancelYn}
+            AND en.cancel_yn = #{cancelYn}
         </if>
         <if test='refundYn != null and refundYn != ""'>
-            AND refund_yn = #{refundYn}
+            AND en.refund_yn = #{refundYn}
         </if>
         <if test='transferYear != null and transferYear != ""'>
-            AND transfer_year = #{transferYear}
+            AND en.transfer_year = #{transferYear}
         </if>
-        ORDER BY init_regi_dttm desc, company_name_ko asc
+        ORDER BY en.init_regi_dttm desc, en.company_name_ko asc
     </select>
 
     <select id="selectExhibitorSingle" parameterType="com.mtf.kibs.dto.ExhibitorDTO" resultType="com.mtf.kibs.dto.ExhibitorDTO">
@@ -6181,6 +6181,38 @@
             e.transfer_year = #{transferYear}
         ORDER BY
             e.seq ASC, p.seq ASC
+    </select>
+
+    <select id="selectExcelBuyerDetailList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.BuyerDetailDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.selectExcelBuyerDetailList */
+        SELECT e.seq
+             , b.seq AS id
+             , e.company_name_ko
+             , e.company_name_en
+             , b.buyer_company_name
+             , b.buyer_company_country
+             , b.buyer_company_location
+             , b.buyer_company_homepage
+             , b.buyer_company_charge
+             , b.buyer_company_depart
+             , b.buyer_company_position
+             , b.buyer_company_email
+             , b.buyer_company_tel
+             , b.buyer_company_phone
+             , b.buyer_company_fax
+             , b.buyer_company_item
+             , b.buyer_company_invite_reason
+             , b.buyer_company_progress_yn
+             , b.buyer_company_hope
+             , b.init_regi_dttm
+        FROM exhibitor_new e
+        JOIN buyer_new b
+        ON e.seq = b.ex_seq
+        WHERE 1=1
+          AND e.transfer_year = #{transferYear}
+        ORDER BY NULLIF(b.buyer_company_name, '') IS NOT NULL DESC
+               , e.company_name_ko ASC
+               , b.init_regi_dttm DESC
     </select>
 
     <update id="updateFileUseN" parameterType="com.mtf.kibs.dto.FileDTO">

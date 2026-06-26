@@ -649,4 +649,6 @@ public interface KibsMngMapper {
 
     // mail_id로 상태 업데이트 (Webhook용)
     int updateInvoiceHistoryStatusByMailId(@Param("mailId") String mailId, @Param("status") String status);
+
+    List<BuyerDetailDTO> selectExcelBuyerDetailList(String transferYear);
 }

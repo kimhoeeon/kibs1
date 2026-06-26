@@ -479,4 +479,6 @@ public interface KibsMngService {
     void saveOrUpdateBrochureInfo(BrochureDTO formData);
 
     void updateInvoiceHistoryStatusByMailId(String reserveId, String status);
+
+    List<BuyerDetailDTO> processSelectExcelBuyerDetailList(String transferYear);
 }

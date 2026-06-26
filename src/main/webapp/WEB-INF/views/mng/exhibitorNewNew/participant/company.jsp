@@ -434,8 +434,8 @@ if (document.documentElement) {
                                                     <th class="text-center min-w-200px">회사명</th>
                                                     <th class="text-center min-w-150px">참가행사</th>
                                                     <th class="text-center min-w-75px">ID(사업자등록번호)</th>
-                                                    <th class="text-center min-w-100px">총액</th>
-                                                    <th class="text-center min-w-100px">선금</th>
+                                                    <th class="text-center min-w-100px">참가비(총액)</th>
+                                                    <th class="text-center min-w-100px">납부금</th>
                                                     <th class="text-center min-w-100px">잔액</th>
                                                     <th class="text-center min-w-80px">입금여부</th>
                                                     <th class="text-center min-w-100px">수정일</th>
