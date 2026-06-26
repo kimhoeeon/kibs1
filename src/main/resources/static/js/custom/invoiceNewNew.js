@@ -60,7 +60,7 @@ $(function(){
         };
 
         $.ajax({
-            url: '/mng/exhibitorNew/participant/company/invoice/saveSpecialDiscount.do',
+            url: '/mng/exhibitorNewNew/participant/company/invoice/saveSpecialDiscount.do',
             type: 'POST',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(saveData),
@@ -187,7 +187,7 @@ $(function(){
      ******************************************************/
     // 1. 페이지 로드 시 AJAX로 입금 내역 불러오기
     // 참가자 관리 > 전시업체 목록 > 인보이스 정보 페이지에만 입금 현황 로드 수행
-    if(window.location.pathname === '/mng/exhibitorNew/participant/company/invoice/detail.do'){
+    if(window.location.pathname === '/mng/exhibitorNewNew/participant/company/invoice/detail.do'){
         loadDepositHistory();
     }
 
@@ -400,10 +400,10 @@ $(function(){
 
             let ajaxUrl = "", pdfSavePath = "";
             if (invoiceType === 'booth') {
-                ajaxUrl = '/mng/exhibitorNew/application/booth/invoice/insert.do';
+                ajaxUrl = '/mng/exhibitorNewNew/application/booth/invoice/insert.do';
                 pdfSavePath = 'exhibitor/invoice/booth/' + exhibitorSeq;
             } else if (invoiceType === 'utility') {
-                ajaxUrl = '/mng/exhibitorNew/application/utility/invoice/insert.do';
+                ajaxUrl = '/mng/exhibitorNewNew/application/utility/invoice/insert.do';
                 pdfSavePath = 'exhibitor/invoice/utility/' + exhibitorSeq;
             } else {
                 KTApp.hidePageLoading();
@@ -474,9 +474,9 @@ $(function(){
 
         let deleteUrl = "";
         if (invoiceType === 'booth') {
-            deleteUrl = '/mng/exhibitorNew/application/invoice/booth/delete.do';
+            deleteUrl = '/mng/exhibitorNewNew/application/invoice/booth/delete.do';
         } else if (invoiceType === 'utility') {
-            deleteUrl = '/mng/exhibitorNew/application/invoice/utility/delete.do';
+            deleteUrl = '/mng/exhibitorNewNew/application/invoice/utility/delete.do';
         } else {
             alert('삭제할 수 없는 타입의 인보이스입니다.');
             return;
@@ -591,12 +591,12 @@ $(function(){
                 template = '172';
                 subject = `[KIBS 2026] ` + companyNameKo + ` 전시부스 인보이스 발송` + ` (` + invoiceCode + `)`;
                 gbn = 'BOOTH';
-                updateUrl = '/mng/exhibitorNew/application/booth/invoice/mail/result/update.do';
+                updateUrl = '/mng/exhibitorNewNew/application/booth/invoice/mail/result/update.do';
             } else if (invoiceType === 'utility') {
                 template = '176';
                 subject = `[KIBS 2026] ` + companyNameKo + ` 유틸리티 인보이스 발송` + ` (` + invoiceCode + `)`;
                 gbn = 'UTILITY';
-                updateUrl = '/mng/exhibitorNew/application/utility/invoice/mail/result/update.do';
+                updateUrl = '/mng/exhibitorNewNew/application/utility/invoice/mail/result/update.do';
             }
 
             // 5. 메일 발송 API에 보낼 데이터 구성
@@ -820,12 +820,12 @@ async function createAndUploadPdfFromIframe(param, uploadPath, invoiceType) {
 
     if (invoiceType === 'booth') {
         fileName = `invoice_${companyNameKo}_booth_${new Date().getTime()}`;
-        viewUrl = `/mng/exhibitorNew/application/booth/invoice/detail.do?seq=${seq}`;
-        updateUrl = '/mng/exhibitorNew/application/booth/invoice/filePath/update.do';
+        viewUrl = `/mng/exhibitorNewNew/application/booth/invoice/detail.do?seq=${seq}`;
+        updateUrl = '/mng/exhibitorNewNew/application/booth/invoice/filePath/update.do';
     } else if (invoiceType === 'utility') {
         fileName = `invoice_${companyNameKo}_utility_${new Date().getTime()}`;
-        viewUrl = `/mng/exhibitorNew/application/utility/invoice/detail.do?seq=${seq}`;
-        updateUrl = '/mng/exhibitorNew/application/utility/invoice/filePath/update.do';
+        viewUrl = `/mng/exhibitorNewNew/application/utility/invoice/detail.do?seq=${seq}`;
+        updateUrl = '/mng/exhibitorNewNew/application/utility/invoice/filePath/update.do';
     } else {
         alert("알 수 없는 인보이스 타입입니다.");
         return Promise.reject("Unknown invoice type");
@@ -955,9 +955,9 @@ async function createAndUploadPdfFromIframe(param, uploadPath, invoiceType) {
 }
 
 function f_application_booth_new_modify_init_set(seq){
-    window.location.href = '/mng/exhibitorNew/application/booth/detail.do?seq=' + seq;
+    window.location.href = '/mng/exhibitorNewNew/application/booth/detail.do?seq=' + seq;
 }
 
 function f_application_utility_new_modify_init_set(id){
-    window.location.href = '/mng/exhibitorNew/application/utility/detail.do?seq=' + id;
+    window.location.href = '/mng/exhibitorNewNew/application/utility/detail.do?seq=' + id;
 }

@@ -172,7 +172,7 @@
                             <div class="form_guide_comp">
                                 <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
                                 <div class="form_guide_comp_txt">
-                                    귀사는 2026 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
+                                    귀사는 2027 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
                                     최종적으로 아래의 참가신청 버튼을 눌러 행사 담당자에게 참가승인을 요청하시기 바랍니다.
                                 </div>
                                 <a href="javascript:f_apply_comp('03','${info.seq}')" class="form_guide_comp_btn btnSt01">참가신청완료</a>

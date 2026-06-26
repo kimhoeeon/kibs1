@@ -1067,7 +1067,7 @@
                                                 <div class="input">
                                                     <textarea id="promotionPlan" name="promotionPlan" placeholder="-전시 기간 중 제품 할인이나 기타 이벤트 계획이 있다면 적어주세요.&#10;-사무국 검토 후 뉴스레터, SNS 콘텐츠 등 사전 홍보에 활용될 수 있습니다.">${info.promotionPlan}</textarea>
                                                     <div class="cmnt">부스에서 진행 예정인 이벤트가 있다면 행사 전 반드시 사무국에 알려야 합니다.</div>
-                                                    <div class="cmnt">26년 2월 1일 이후 입력한 사항은 프로모션 홍보가 어려울 수 있습니다.</div>
+                                                    <div class="cmnt">27년 2월 1일 이후 입력한 사항은 프로모션 홍보가 어려울 수 있습니다.</div>
                                                 </div>
                                             </li>
                                         </ul>

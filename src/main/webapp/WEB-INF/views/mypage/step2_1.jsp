@@ -377,7 +377,7 @@
                                                 </div>
                                                 <div class="cate">재참가 할인</div>
                                                 <div class="note">200,000 원</div>
-                                                <div class="discount">2015년 ~ 2025년 참가 업체</div>
+                                                <div class="discount">2015년 ~ 2026년 참가 업체</div>
 
                                                 <div class="select">
                                                     <label class="discount-item">

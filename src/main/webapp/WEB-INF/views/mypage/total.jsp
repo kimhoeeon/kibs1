@@ -331,7 +331,7 @@
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>2015년 ~ 2025년 참가 업체</td>
+                                                    <td>2015년 ~ 2026년 참가 업체</td>
                                                     <td>1 부스당 200,000 원 할인</td>
                                                     <td><c:out value="${physicalBoothCnt}"/></td>
                                                     <td>- <fmt:formatNumber value="${physicalBoothCnt * 200000}"/></td>

@@ -2,7 +2,7 @@
  * mng/exhibitor/participant/visitor.js
  * 참가자관리>참관객목록
  * */
-var transferYear = '2026';
+var transferYear = '2027';
 
 $(function(){
 

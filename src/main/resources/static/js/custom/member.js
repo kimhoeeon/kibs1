@@ -3,7 +3,7 @@
  * 전시회 > 참가자 관리 > 회원 목록
  * */
 
-var transferYear = '2026';
+var transferYear = '2027';
 
 $(function(){
 

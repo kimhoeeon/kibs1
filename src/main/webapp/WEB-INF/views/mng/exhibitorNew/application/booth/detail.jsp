@@ -489,7 +489,7 @@ if (document.documentElement) {
                                                     <tr class="text-center align-middle">
                                                         <td><input type="checkbox" class="form-check-input basic-discount" id="discountRe" data-discount="200000" <c:if test="${info.discountRe}">checked</c:if> disabled></td>
                                                         <td>재참가 할인</td>
-                                                        <td>2015년 ~ 2025년 참가 업체</td>
+                                                        <td>2015년 ~ 2026년 참가 업체</td>
                                                         <td>200,000 원</td>
                                                     </tr>
                                                     <tr class="text-center align-middle">

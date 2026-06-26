@@ -3395,10 +3395,10 @@ public class KibsMngServiceImpl implements KibsMngService {
         CalculationInputDTO input = new CalculationInputDTO();
 
         // [부스 정보] - DB 조회 (currentData)
-        input.setRegistrationCnt(currentData.getRegistrationCnt());
-        input.setStandAloneBoothCnt(currentData.getStandAloneBoothCnt());
-        input.setAssemblyBoothCnt(currentData.getAssemblyBoothCnt());
-        input.setOnlineBoothCnt(currentData.getOnlineBoothCnt());
+        input.setRegistrationCnt(exhibitorNewDTO.getRegistrationCnt() != null ? exhibitorNewDTO.getRegistrationCnt() : 0);
+        input.setStandAloneBoothCnt(exhibitorNewDTO.getStandAloneBoothCnt() != null ? exhibitorNewDTO.getStandAloneBoothCnt() : 0);
+        input.setAssemblyBoothCnt(exhibitorNewDTO.getAssemblyBoothCnt() != null ? exhibitorNewDTO.getAssemblyBoothCnt() : 0);
+        //input.setOnlineBoothCnt(currentData.getOnlineBoothCnt());
 
         // [기본 할인 정보] - DB 조회 (currentData)
         // (주의: 만약 관리자가 기본 할인도 수정한다면 exhibitorNewDTO에서 값을 가져와야 함)
@@ -3425,7 +3425,15 @@ public class KibsMngServiceImpl implements KibsMngService {
         // [기타 정보]
         input.setUtilityPrcSum(currentData.getUtilityPrcSum()); // DB 값
         input.setMemberCompanyYn(currentData.getMemberCompanyYn()); // DB 값
-        input.setDeposit(Integer.parseInt(currentData.getDeposit())); // DB 값
+        int depositVal = 0;
+        if (currentData.getDeposit() != null && !String.valueOf(currentData.getDeposit()).trim().isEmpty()) {
+            try {
+                depositVal = Integer.parseInt(String.valueOf(currentData.getDeposit()).trim());
+            } catch (NumberFormatException e) {
+                depositVal = 0;
+            }
+        }
+        input.setDeposit(depositVal);
 
         // 3. *** 공통 서비스 호출 ***
         CalculationResultDTO result = calculationService.calculateTotals(input);
@@ -3695,7 +3703,15 @@ public class KibsMngServiceImpl implements KibsMngService {
         input.setDiscountSpecial3Yn(currentExhibitorInfo.isDiscountSpecial3Yn());
         input.setDiscountSpecial3Amount(currentExhibitorInfo.getDiscountSpecial3Amount());
         input.setMemberCompanyYn(currentExhibitorInfo.getMemberCompanyYn());
-        input.setDeposit(Integer.parseInt(currentExhibitorInfo.getDeposit()));
+        int depositVal = 0;
+        if (currentExhibitorInfo.getDeposit() != null && !String.valueOf(currentExhibitorInfo.getDeposit()).trim().isEmpty()) {
+            try {
+                depositVal = Integer.parseInt(String.valueOf(currentExhibitorInfo.getDeposit()).trim());
+            } catch (NumberFormatException e) {
+                depositVal = 0;
+            }
+        }
+        input.setDeposit(depositVal);
 
         // 3. *** 공통 계산 서비스 호출 ***
         CalculationResultDTO calcResult = calculationService.calculateTotals(input);

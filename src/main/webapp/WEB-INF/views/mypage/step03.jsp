@@ -125,7 +125,7 @@
                                         <div class="form_guide_comp">
                                             <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
                                             <div class="form_guide_comp_txt">
-                                                귀사는 2026 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
+                                                귀사는 2027 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
                                                 최종적으로 아래의 참가신청 버튼을 눌러 행사 담당자에게 참가승인을 요청하시기 바랍니다.
                                             </div>
                                             <a href="javascript:f_apply_comp('03','${info.seq}')" class="form_guide_comp_btn btnSt01">참가신청완료</a>
@@ -139,7 +139,7 @@
                                         <div class="form_guide_comp">
                                             <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
                                             <div class="form_guide_comp_txt">
-                                                귀사는 2026 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
+                                                귀사는 2027 경기국제보트쇼에 참가하기 위한 필수 신청양식을 모두 입력하셨습니다.<br>
                                                 <span class="txtRed">정상적으로 참가 접수가 완료</span>되었으며, 빠른 시일 내에 경기국제보트쇼 사무국에서 연락드리도록 하겠습니다.<br>
                                                 감사합니다.
                                             </div>
@@ -153,7 +153,7 @@
                                         <div class="form_guide_comp">
                                             <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
                                             <div class="form_guide_comp_txt">
-                                                귀사는 2026 경기국제보트쇼 <span class="txtRed">참가 취소</span> 되었습니다.<br>
+                                                귀사는 2027 경기국제보트쇼 <span class="txtRed">참가 취소</span> 되었습니다.<br>
                                                 관련 문의사항은 경기국제보트쇼 사무국으로 연락 주시면 안내해 드리도록 하겠습니다.
                                             </div>
                                         </div>

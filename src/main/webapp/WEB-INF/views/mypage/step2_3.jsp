@@ -198,7 +198,7 @@
                                                         <input type="text" id="utility_jugan_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityJuganFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
                                                     </p>
                                                 </div>
-                                                <div class="note">행사기간(3/6~3/8, 총 3일)동안 사용가능</div>
+                                                <div class="note">행사기간(3/12~3/14, 총 3일)동안 사용가능</div>
                                             </li>
                                             <li>
                                                 <div class="cate">24시간용 220v</div>
@@ -213,7 +213,7 @@
                                                         <input type="text" id="utility_day_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
                                                     </p>
                                                 </div>
-                                                <div class="note">행사기간(3/6~3/8, 총 3일)동안 사용가능</div>
+                                                <div class="note">행사기간(3/12~3/14, 총 3일)동안 사용가능</div>
                                             </li>
                                             <li>
                                                 <div class="cate">작업전기</div>
@@ -228,7 +228,7 @@
                                                         <input type="text" id="utility_work_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityWorkFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
                                                     </p>
                                                 </div>
-                                                <div class="note">장치기간(3/4~3/5, 총 2일)동안 사용가능</div>
+                                                <div class="note">장치기간(3/10~3/11, 총 2일)동안 사용가능</div>
                                             </li>
                                             <li>
                                                 <div class="cate">압축공기 기본형</div>
@@ -318,7 +318,7 @@
                                                         <input type="text" id="utility_barcode_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityBarcodeFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
                                                     </p>
                                                 </div>
-                                                <div class="note">행사기간(3/6~3/8, 총 3일)동안 사용가능</div>
+                                                <div class="note">행사기간(3/12~3/14, 총 3일)동안 사용가능</div>
                                             </li>
                                         </ul>
                                     </div>
@@ -423,18 +423,18 @@
                     console.error("main.js의 calculateTotal 함수를 찾을 수 없습니다.");
                 }
 
-                Swal.fire({
-                    icon: 'warning',
-                    title: '[ 유틸리티 신청 ]',
-                    html: '<span style="font-size: 1.2em;">참가업체 유틸리티 신청은 마감되었습니다.<br>이후 신청 건은 사무국으로 문의 바랍니다.</span>',
-                    allowOutsideClick: false,
-                    confirmButtonColor: '#00a8ff',
-                    confirmButtonText: '확인'
-                })/*.then(async (result) => {
-                if (result.isConfirmed) {
+                /*Swal.fire({
+                icon: 'warning',
+                title: '[ 유틸리티 신청 ]',
+                html: '<span style="font-size: 1.2em;">참가업체 유틸리티 신청은 마감되었습니다.<br>이후 신청 건은 사무국으로 문의 바랍니다.</span>',
+                allowOutsideClick: false,
+                confirmButtonColor: '#00a8ff',
+                confirmButtonText: '확인'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
 
-                }
-                })*/;
+                    }
+                });*/
             });
         </script>
     </c:if>

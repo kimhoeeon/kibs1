@@ -332,7 +332,7 @@ if (document.documentElement) {
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <span class="fw-semibold d-block fs-7">행사기간(3/6~3/8, 총 3일)동안 사용가능</span>
+                                                                    <span class="fw-semibold d-block fs-7">행사기간(3/12~3/14, 총 3일)동안 사용가능</span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="text-center align-middle">
@@ -361,7 +361,7 @@ if (document.documentElement) {
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <span class="fw-semibold d-block fs-7">행사기간(3/6~3/8, 총 3일)동안 사용가능</span>
+                                                                    <span class="fw-semibold d-block fs-7">행사기간(3/12~3/14, 총 3일)동안 사용가능</span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="text-center align-middle">
@@ -535,7 +535,7 @@ if (document.documentElement) {
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <span class="fw-semibold d-block fs-7">행사기간(3/6~3/8, 총 3일)동안 사용가능</span>
+                                                                    <span class="fw-semibold d-block fs-7">행사기간(3/12~3/14, 총 3일)동안 사용가능</span>
                                                                 </td>
                                                             </tr>
                                                         </tbody>

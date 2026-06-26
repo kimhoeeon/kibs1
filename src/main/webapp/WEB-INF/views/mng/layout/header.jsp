@@ -244,7 +244,7 @@
                                                         <!--begin:Menu item-->
                                                         <div class="menu-item p-0 m-0">
                                                             <!--begin:Menu link-->
-                                                            <a href="/mng/exhibitor/member.do" class="menu-link">
+                                                            <a href="/mng/exhibitor/participant/member.do" class="menu-link">
                                                                 <span class="menu-title">회원 목록</span>
                                                             </a>
                                                             <!--end:Menu link-->

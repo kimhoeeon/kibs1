@@ -533,58 +533,59 @@ public class KibsServiceImpl implements KibsService {
             CalculationInputDTO input = new CalculationInputDTO();
 
             // [부스 정보] - 사용자 입력 (exhibitorNewDTO)
-            input.setRegistrationCnt(exhibitorNewDTO.getRegistrationCnt());
-            input.setStandAloneBoothCnt(exhibitorNewDTO.getStandAloneBoothCnt());
-            input.setAssemblyBoothCnt(exhibitorNewDTO.getAssemblyBoothCnt());
+            input.setRegistrationCnt(exhibitorNewDTO.getRegistrationCnt() != null ? exhibitorNewDTO.getRegistrationCnt() : 0);
+            input.setStandAloneBoothCnt(exhibitorNewDTO.getStandAloneBoothCnt() != null ? exhibitorNewDTO.getStandAloneBoothCnt() : 0);
+            input.setAssemblyBoothCnt(exhibitorNewDTO.getAssemblyBoothCnt() != null ? exhibitorNewDTO.getAssemblyBoothCnt() : 0);
             //input.setOnlineBoothCnt(exhibitorNewDTO.getOnlineBoothCnt());
 
             // [기본 할인 정보] - 사용자 입력 (exhibitorNewDTO)
-            input.setDiscountEarly1(exhibitorNewDTO.getDiscountEarly1());
-            input.setDiscountEarly2(exhibitorNewDTO.getDiscountEarly2());
-            input.setDiscountFirstUnder10(exhibitorNewDTO.getDiscountFirstUnder10());
-            input.setDiscountFirstOver10(exhibitorNewDTO.getDiscountFirstOver10());
-            input.setDiscountRe(exhibitorNewDTO.getDiscountRe());
-            input.setDiscountScale1(exhibitorNewDTO.getDiscountScale1());
-            input.setDiscountScale2(exhibitorNewDTO.getDiscountScale2());
-            input.setDiscountScale3(exhibitorNewDTO.getDiscountScale3());
-            input.setDiscountScale4(exhibitorNewDTO.getDiscountScale4());
-            input.setDiscountScale5(exhibitorNewDTO.getDiscountScale5());
-            input.setDiscountScale6(exhibitorNewDTO.getDiscountScale6());
-            input.setDiscountLeisure(exhibitorNewDTO.getDiscountLeisure());
+            input.setDiscountEarly1(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountEarly1()));
+            input.setDiscountEarly2(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountEarly2()));
+            input.setDiscountFirstUnder10(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountFirstUnder10()));
+            input.setDiscountFirstOver10(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountFirstOver10()));
+            input.setDiscountRe(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountRe()));
+            input.setDiscountScale1(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountScale1()));
+            input.setDiscountScale2(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountScale2()));
+            input.setDiscountScale3(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountScale3()));
+            input.setDiscountScale4(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountScale4()));
+            input.setDiscountScale5(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountScale5()));
+            input.setDiscountScale6(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountScale6()));
+            input.setDiscountLeisure(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountLeisure()));
 
             // [기타 정보] - DB 조회 (currentData)
-            input.setUtilityPrcSum(currentData.getUtilityPrcSum()); // 현재 유틸리티비
+            input.setUtilityPrcSum(currentData.getUtilityPrcSum() != null ? currentData.getUtilityPrcSum() : 0); // 현재 유틸리티비
             int depositVal = 0;
-            if (currentData.getDeposit() != null && !currentData.getDeposit().trim().isEmpty()) {
+            if (currentData.getDeposit() != null && !String.valueOf(currentData.getDeposit()).trim().isEmpty()) {
                 try {
-                    depositVal = Integer.parseInt(currentData.getDeposit().trim());
+                    depositVal = Integer.parseInt(String.valueOf(currentData.getDeposit()).trim());
                 } catch (NumberFormatException e) {
-                    depositVal = 0; // 숫자가 아닌 값이 들어있을 경우 에러 방지용 기본값 0
+                    depositVal = 0;
                 }
             }
             input.setDeposit(depositVal);
-            input.setDiscountSpecial1Yn(currentData.isDiscountSpecial1Yn()); // 현재 특별할인
+
+            // 5. [특별할인 정보] Null 방어
+            input.setDiscountSpecial1Yn(currentData.isDiscountSpecial1Yn());
             input.setDiscountSpecial2Yn(currentData.isDiscountSpecial2Yn());
             input.setDiscountSpecial2Amount(currentData.getDiscountSpecial2Amount());
             input.setDiscountSpecial3Yn(currentData.isDiscountSpecial3Yn());
             input.setDiscountSpecial3Amount(currentData.getDiscountSpecial3Amount());
-            input.setMemberCompanyYn(currentData.getMemberCompanyYn()); // 회원사 여부
+
+            input.setMemberCompanyYn(currentData.getMemberCompanyYn() != null ? currentData.getMemberCompanyYn() : "N"); // 회원사 여부
 
             // 3. *** 공통 서비스 호출 ***
-            CalculationResultDTO result = calculationService.calculateTotals(input);
+            CalculationResultDTO result = calculationService.calculateTotals(input, currentData.getTransferYear());
 
             // 4. DTO에 계산 결과 반영
             // (기본 할인, 특별 할인 정보는 이미 exhibitorNewDTO에 있음)
             exhibitorNewDTO.setBoothPrcSum(result.getBoothPrcSum());
             exhibitorNewDTO.setDiscountPrcSum(result.getBasicDiscountSum()); // 기본 할인 총액 저장
-            // exhibitorNewDTO.setDevelopmentFund(result.getDevelopmentFund()); // DB 컬럼이 있다면 저장
             exhibitorNewDTO.setPrcSum(result.getPrcSum());
             exhibitorNewDTO.setPrcVat(result.getPrcVat());
             exhibitorNewDTO.setPrcTotal(result.getPrcTotal());
 
             // 9. 최종본 DTO를 DB에 업데이트합니다.
-            String note = "step2_1";
-            exhibitorNewDTO.setNote(note);
+            exhibitorNewDTO.setNote("step2_1");
             Integer step2_1_ex_result = kibsMapper.updateExhibitorNewBooth(exhibitorNewDTO);
 
         } catch (Exception e) {
@@ -671,24 +672,36 @@ public class KibsServiceImpl implements KibsService {
             CalculationInputDTO input = new CalculationInputDTO();
 
             // [부스 정보] - DB 조회 (currentData)
-            input.setRegistrationCnt(currentData.getRegistrationCnt());
-            input.setStandAloneBoothCnt(currentData.getStandAloneBoothCnt());
-            input.setAssemblyBoothCnt(currentData.getAssemblyBoothCnt());
-            input.setOnlineBoothCnt(currentData.getOnlineBoothCnt());
+            input.setRegistrationCnt(exhibitorNewDTO.getRegistrationCnt() != null ? exhibitorNewDTO.getRegistrationCnt() : 0);
+            input.setStandAloneBoothCnt(exhibitorNewDTO.getStandAloneBoothCnt() != null ? exhibitorNewDTO.getStandAloneBoothCnt() : 0);
+            input.setAssemblyBoothCnt(exhibitorNewDTO.getAssemblyBoothCnt() != null ? exhibitorNewDTO.getAssemblyBoothCnt() : 0);
+            //input.setOnlineBoothCnt(currentData.getOnlineBoothCnt());
 
             // [기본 할인 정보] - DB 조회 (currentData)
-            input.setDiscountEarly1(currentData.getDiscountEarly1());
-            input.setDiscountEarly2(currentData.getDiscountEarly2());
-            input.setDiscountFirstUnder10(currentData.getDiscountFirstUnder10());
-            input.setDiscountFirstOver10(currentData.getDiscountFirstOver10());
-            input.setDiscountRe(currentData.getDiscountRe());
-            input.setDiscountScale1(currentData.getDiscountScale1());
-            input.setDiscountScale2(currentData.getDiscountScale2());
-            input.setDiscountScale3(currentData.getDiscountScale3());
-            input.setDiscountScale4(currentData.getDiscountScale4());
-            input.setDiscountScale5(currentData.getDiscountScale5());
-            input.setDiscountScale6(currentData.getDiscountScale6());
-            input.setDiscountLeisure(currentData.getDiscountLeisure());
+            input.setDiscountEarly1(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountEarly1()));
+            input.setDiscountEarly2(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountEarly2()));
+            input.setDiscountFirstUnder10(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountFirstUnder10()));
+            input.setDiscountFirstOver10(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountFirstOver10()));
+            input.setDiscountRe(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountRe()));
+            input.setDiscountScale1(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountScale1()));
+            input.setDiscountScale2(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountScale2()));
+            input.setDiscountScale3(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountScale3()));
+            input.setDiscountScale4(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountScale4()));
+            input.setDiscountScale5(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountScale5()));
+            input.setDiscountScale6(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountScale6()));
+            input.setDiscountLeisure(Boolean.TRUE.equals(exhibitorNewDTO.getDiscountLeisure()));
+
+            // [기타 정보] - DB 조회 (currentData)
+            input.setUtilityPrcSum(currentData.getUtilityPrcSum() != null ? currentData.getUtilityPrcSum() : 0); // 현재 유틸리티비
+            int depositVal = 0;
+            if (currentData.getDeposit() != null && !String.valueOf(currentData.getDeposit()).trim().isEmpty()) {
+                try {
+                    depositVal = Integer.parseInt(String.valueOf(currentData.getDeposit()).trim());
+                } catch (NumberFormatException e) {
+                    depositVal = 0;
+                }
+            }
+            input.setDeposit(depositVal);
 
             // [특별 할인 정보] - DB 조회 (currentData)
             input.setDiscountSpecial1Yn(currentData.isDiscountSpecial1Yn());
@@ -697,18 +710,15 @@ public class KibsServiceImpl implements KibsService {
             input.setDiscountSpecial3Yn(currentData.isDiscountSpecial3Yn());
             input.setDiscountSpecial3Amount(currentData.getDiscountSpecial3Amount());
 
-            // [기타 정보]
-            input.setUtilityPrcSum(exhibitorNewDTO.getUtilityPrcSum()); // 사용자 입력 유틸리티비
-            input.setMemberCompanyYn(currentData.getMemberCompanyYn()); // DB 값
+            input.setMemberCompanyYn(currentData.getMemberCompanyYn() != null ? currentData.getMemberCompanyYn() : "N"); // 회원사 여부
 
             // 3. *** 공통 서비스 호출 ***
-            CalculationResultDTO result = calculationService.calculateTotals(input);
+            CalculationResultDTO result = calculationService.calculateTotals(input, currentData.getTransferYear());
 
             // 4. DTO에 계산 결과 반영
             // (부스비, 기본/특별 할인은 이미 exhibitorNewDTO에 있음 - 유틸리티만 덮어쓰기)
             exhibitorNewDTO.setBoothPrcSum(result.getBoothPrcSum()); // 부스비 (DB값과 동일)
             exhibitorNewDTO.setDiscountPrcSum(result.getBasicDiscountSum()); // 기본 할인 (DB값과 동일)
-            // exhibitorNewDTO.setDevelopmentFund(result.getDevelopmentFund()); // DB 컬럼이 있다면 저장
             exhibitorNewDTO.setPrcSum(result.getPrcSum());
             exhibitorNewDTO.setPrcVat(result.getPrcVat());
             exhibitorNewDTO.setPrcTotal(result.getPrcTotal());
