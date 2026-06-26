@@ -536,7 +536,7 @@ public class KibsServiceImpl implements KibsService {
             input.setRegistrationCnt(exhibitorNewDTO.getRegistrationCnt());
             input.setStandAloneBoothCnt(exhibitorNewDTO.getStandAloneBoothCnt());
             input.setAssemblyBoothCnt(exhibitorNewDTO.getAssemblyBoothCnt());
-            input.setOnlineBoothCnt(exhibitorNewDTO.getOnlineBoothCnt());
+            //input.setOnlineBoothCnt(exhibitorNewDTO.getOnlineBoothCnt());
 
             // [기본 할인 정보] - 사용자 입력 (exhibitorNewDTO)
             input.setDiscountEarly1(exhibitorNewDTO.getDiscountEarly1());

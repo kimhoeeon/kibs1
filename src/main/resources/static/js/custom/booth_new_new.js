@@ -314,9 +314,9 @@ function f_booth_form_data_setting(exhibitorSeq){
     const discountYn = (discountType !== '') ? 'Y' : 'N';
 
     // --- 3. 서버 전송 데이터 생성 (JSON) ---
-    const totalBooths = standAloneBoothCnt + assemblyBoothCnt + onlineBoothCnt;
+    const totalBooths = standAloneBoothCnt + assemblyBoothCnt;
     if (totalBooths === 0) {
-        alert('부스(독립, 조립, 온라인)를 하나 이상 신청해 주세요.');
+        alert('부스(독립, 조립)를 하나 이상 신청해 주세요.');
         return;
     }
 
@@ -331,8 +331,6 @@ function f_booth_form_data_setting(exhibitorSeq){
         standAloneBoothFee: standAloneBoothFee,
         assemblyBoothCnt: assemblyBoothCnt,
         assemblyBoothFee: assemblyBoothFee,
-        onlineBoothCnt: onlineBoothCnt,
-        onlineBoothFee: onlineBoothFee,
         // 각 할인 항목의 선택 여부(true/false)를 전송
         discountEarly1: $('#discountEarly1').is(':checked'),
         discountEarly2: $('#discountEarly2').is(':checked'),
@@ -368,11 +366,7 @@ function minCnt(el, cnt){
 function checkBooth(){
     let standAloneBoothCnt = $.number((parseInt($('#stand_alone_booth_cnt').val() || 0)));
     let assemblyBoothCnt = $.number((parseInt($('#assembly_booth_cnt').val() || 0)));
-    let onlineBoothCnt = $.number((parseInt($('#online_booth_cnt option:selected').val() || 0)));
-    if((standAloneBoothCnt > 0 || assemblyBoothCnt > 0) && onlineBoothCnt > 0){
-        alert('조립부스 또는 독립부스 신청 시, 온라인 부스는 무료 지원됩니다.');
-        $('#online_booth_cnt').val(0);
-        $('#online_booth_cnt option').eq(0).prop('selected',true);
+    if((standAloneBoothCnt > 0 || assemblyBoothCnt > 0)){
         autoSum(3);
     }
 }

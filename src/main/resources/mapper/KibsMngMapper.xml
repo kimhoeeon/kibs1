@@ -3353,8 +3353,6 @@
              , stand_alone_booth_fee
              , assembly_booth_cnt
              , assembly_booth_fee
-             , online_booth_cnt
-             , online_booth_fee
              , discount_early_1
              , discount_early_2
              , discount_re_all
@@ -3379,7 +3377,7 @@
                 AND company_name_en LIKE CONCAT('%',#{searchText},'%')
             </if>
             <if test='condition eq "boothCnt"'>
-                AND ( stand_alone_booth_cnt + assembly_booth_cnt + online_booth_cnt ) = #{searchText}
+                AND ( stand_alone_booth_cnt + assembly_booth_cnt ) = #{searchText}
             </if>
         </if>
         <if test='lang != null and lang != ""'>
@@ -3437,8 +3435,6 @@
              , en.stand_alone_booth_fee
              , en.assembly_booth_cnt
              , en.assembly_booth_fee
-             , en.online_booth_cnt
-             , en.online_booth_fee
              , en.discount_early_1
              , en.discount_early_2
              , en.discount_first_under_10
@@ -3482,7 +3478,7 @@
                 AND en.company_name_en LIKE CONCAT('%',#{searchText},'%')
             </if>
             <if test='condition eq "boothCnt"'>
-                AND ( en.stand_alone_booth_cnt + en.assembly_booth_cnt + en.online_booth_cnt ) = #{searchText}
+                AND ( en.stand_alone_booth_cnt + en.assembly_booth_cnt ) = #{searchText}
             </if>
         </if>
         <if test='fieldParticipatory != null and fieldParticipatory != ""'>
@@ -3555,8 +3551,6 @@
              , stand_alone_booth_fee
              , assembly_booth_cnt
              , assembly_booth_fee
-             , online_booth_cnt
-             , online_booth_fee
              , discount_early_1
              , discount_early_2
              , discount_re_all
@@ -3590,8 +3584,6 @@
              , stand_alone_booth_fee
              , assembly_booth_cnt
              , assembly_booth_fee
-             , online_booth_cnt
-             , online_booth_fee
              , discount_early_1
              , discount_early_2
              , discount_first
@@ -3848,8 +3840,6 @@
           , stand_alone_booth_fee = #{standAloneBoothFee}
           , assembly_booth_cnt = #{assemblyBoothCnt}
           , assembly_booth_fee = #{assemblyBoothFee}
-          , online_booth_cnt = #{onlineBoothCnt}
-          , online_booth_fee = #{onlineBoothFee}
           , discount_early_1 = #{discountEarly1}
           , discount_early_2 = #{discountEarly2}
           , discount_re_all = #{discountReAll}
@@ -3880,8 +3870,6 @@
           , stand_alone_booth_fee   = #{standAloneBoothFee}
           , assembly_booth_cnt      = #{assemblyBoothCnt}
           , assembly_booth_fee      = #{assemblyBoothFee}
-          , online_booth_cnt        = #{onlineBoothCnt}
-          , online_booth_fee        = #{onlineBoothFee}
           , discount_early_1        = #{discountEarly1}
           , discount_early_2        = #{discountEarly2}
           , discount_first_under_10 = #{discountFirstUnder10}
@@ -4018,7 +4006,6 @@
              , booth_type
              , stand_alone_booth_cnt
              , assembly_booth_cnt
-             , online_booth_cnt
              , company_sign_name_ko
              , company_sign_name_en
              , init_regi_dttm
@@ -4179,7 +4166,6 @@
              , en.registration_cnt
              , en.stand_alone_booth_cnt
              , en.assembly_booth_cnt
-             , en.online_booth_cnt
              , IFNULL(en.utility_jugan_cnt,0) as utility_jugan_cnt
              , IFNULL(en.utility_jugan_fee,0) as utility_jugan_fee
              , IFNULL(en.utility_day_cnt,0) as utility_day_cnt
@@ -5689,7 +5675,6 @@
              , e.registration_cnt
              , e.stand_alone_booth_cnt
              , e.assembly_booth_cnt
-             , e.online_booth_cnt
              , e.discount_early_1
              , e.discount_early_2
              , e.discount_re_all
@@ -6057,8 +6042,6 @@
              , en.stand_alone_booth_fee
              , en.assembly_booth_cnt
              , en.assembly_booth_fee
-             , en.online_booth_cnt
-             , en.online_booth_fee
              , en.discount_early_1
              , en.discount_early_2
              , en.discount_first_under_10

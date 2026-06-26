@@ -710,8 +710,6 @@
           , stand_alone_booth_fee   = #{standAloneBoothFee}
           , assembly_booth_cnt      = #{assemblyBoothCnt}
           , assembly_booth_fee      = #{assemblyBoothFee}
-          , online_booth_cnt        = #{onlineBoothCnt}
-          , online_booth_fee        = #{onlineBoothFee}
           , discount_early_1        = #{discountEarly1}
           , discount_early_2        = #{discountEarly2}
           , discount_first_under_10 = #{discountFirstUnder10}
@@ -1225,8 +1223,6 @@
           , stand_alone_booth_fee = #{standAloneBoothFee}
           , assembly_booth_cnt = #{assemblyBoothCnt}
           , assembly_booth_fee = #{assemblyBoothFee}
-          , online_booth_cnt = #{onlineBoothCnt}
-          , online_booth_fee = #{onlineBoothFee}
           , discount_early_1 = #{discountEarly1}
           , discount_early_2 = #{discountEarly2}
           , discount_re_all = #{discountReAll}
@@ -1259,8 +1255,6 @@
         , stand_alone_booth_fee = #{standAloneBoothFee}
         , assembly_booth_cnt = #{assemblyBoothCnt}
         , assembly_booth_fee = #{assemblyBoothFee}
-        , online_booth_cnt = #{onlineBoothCnt}
-        , online_booth_fee = #{onlineBoothFee}
         , discount_early_1 = #{discountEarly1}
         , discount_early_2 = #{discountEarly2}
         , discount_re_all = #{discountReAll}
@@ -1687,8 +1681,6 @@
              , stand_alone_booth_fee
              , assembly_booth_cnt
              , assembly_booth_fee
-             , online_booth_cnt
-             , online_booth_fee
              , booth_prc_sum
              , discount_early_1
              , discount_early_2

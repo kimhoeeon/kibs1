@@ -987,13 +987,13 @@ function autoDiscountSum(checkbox){
         // 부스 수량 가져오기
         let boothSum = parseInt($('#stand_alone_booth_cnt').val() || 0)
             + parseInt($('#assembly_booth_cnt').val() || 0)
-            + parseInt($('#online_booth_cnt option:selected').val());
+            /*+ parseInt($('#online_booth_cnt option:selected').val())*/;
 
         if(boothSum > 0) {
 
             let boothPrc = (parseInt($('#stand_alone_booth_cnt').val() || 0) * 1800000)
                 + (parseInt($('#assembly_booth_cnt').val() || 0) * 2100000)
-                + (parseInt($('#online_booth_cnt option:selected').val()) * 1000000)
+                /*+ (parseInt($('#online_booth_cnt option:selected').val()) * 1000000)*/
                 + 100000;
 
             let discount_checkBox = $('input[type=checkbox][name=discount]:checked');
@@ -2668,10 +2668,10 @@ function step_2_1_check(exhibitorSeq){
         discountLeisure: $('#discountLeisure').is(':checked'),
         discountYn: (discountType !== '') ? 'Y' : 'N',
         boothPrcSum: boothPrcSum,
-        discountPrcSum: discountPrcSum/*,
-        prcSum: prcSum,
-        prcVat: prcVat,
-        prcTotal: prcTotal*/
+        discountPrcSum: discountPrcSum,
+        prcSum: parseInt($("input[name='prcSum']").val()) || 0,
+        prcVat: parseInt($("input[name='prcVat']").val()) || 0,
+        prcTotal: parseInt($("input[name='prcTotal']").val()) || 0
     };
 
     let resData = ajaxConnect('/apply/step/updateExhibitorNewBooth.do', 'post', booth_json_obj);
