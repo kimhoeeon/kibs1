@@ -554,6 +554,15 @@ public class KibsServiceImpl implements KibsService {
 
             // [기타 정보] - DB 조회 (currentData)
             input.setUtilityPrcSum(currentData.getUtilityPrcSum()); // 현재 유틸리티비
+            int depositVal = 0;
+            if (currentData.getDeposit() != null && !currentData.getDeposit().trim().isEmpty()) {
+                try {
+                    depositVal = Integer.parseInt(currentData.getDeposit().trim());
+                } catch (NumberFormatException e) {
+                    depositVal = 0; // 숫자가 아닌 값이 들어있을 경우 에러 방지용 기본값 0
+                }
+            }
+            input.setDeposit(depositVal);
             input.setDiscountSpecial1Yn(currentData.isDiscountSpecial1Yn()); // 현재 특별할인
             input.setDiscountSpecial2Yn(currentData.isDiscountSpecial2Yn());
             input.setDiscountSpecial2Amount(currentData.getDiscountSpecial2Amount());
