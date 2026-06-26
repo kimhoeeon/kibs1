@@ -2,7 +2,7 @@
  * mng/exhibitor/application/buyer.js
  * 참가신청서 관리 > 초청희망바이어 신청
  * */
-var transferYear = '2026';
+var transferYear = '2027';
 $(function(){
 
     // 바이어 정보 input 이메일
