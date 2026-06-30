@@ -11,7 +11,7 @@
     <meta name="description" property="og:description" content="2025 경기국제보트쇼">
     <meta name="author" content="2025 경기국제보트쇼">
     <meta name="format-detection" content="telephone=no"/>
-    <title>2026 경기국제보트쇼 관리자</title>
+    <title>2027 경기국제보트쇼 관리자</title>
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/mngStyle.css" rel="stylesheet">
 

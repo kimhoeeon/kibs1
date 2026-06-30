@@ -19,16 +19,16 @@ License: For each use you must have a valid license purchased only from above li
 <!--begin::Head-->
 <head>
     <base href="/mng/"/>
-    <title>2026 경기국제보트쇼 관리자</title>
+    <title>2027 경기국제보트쇼 관리자</title>
     <meta charset="utf-8"/>
-    <meta name="description" content="2026 경기국제보트쇼 홈페이지"/>
+    <meta name="description" content="2027 경기국제보트쇼 홈페이지"/>
     <meta name="keywords" content="KIBS"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta property="og:locale" content="ko_KR"/>
     <meta property="og:type" content="article"/>
     <meta property="og:title" content="KIBS"/>
     <meta property="og:url" content="https://koreaboatshow.or.kr/"/>
-    <meta property="og:site_name" content="2026 KIBS | 경기국제보트쇼"/>
+    <meta property="og:site_name" content="2027 KIBS | 경기국제보트쇼"/>
     <link rel="canonical" href="https://koreaboatshow.or.kr/"/>
 
     <%-- favicon --%>
@@ -658,8 +658,8 @@ if (document.documentElement) {
     <!--end::Custom Javascript-->
 
     <!--begin::Custom Javascript(used for common page)-->
-    <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="/js/custom/utility.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/mngMain.js?ver=20260630"></script>
+    <script src="/js/custom/utility.js?ver=20260630"></script>
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->

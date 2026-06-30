@@ -9,7 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Kibs 2026">
+    <meta name="author" content="Kibs 2027">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="경기국제보트쇼">
     <meta property="og:title" content="경기국제보트쇼">
@@ -34,7 +34,7 @@
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
-    <title>2026 경기국제보트쇼</title>
+    <title>2027 경기국제보트쇼</title>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
@@ -51,10 +51,10 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    <link href="/css/reset.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
-    <link href="/css/font.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
-    <link href="/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
-    <link href="/css/responsive.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
+    <link href="/css/reset.css?ver=20260630" rel="stylesheet">
+    <link href="/css/font.css?ver=20260630" rel="stylesheet">
+    <link href="/css/style.css?ver=20260630" rel="stylesheet">
+    <link href="/css/responsive.css?ver=20260630" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -71,9 +71,9 @@
 
     <script src="/js/jquery.number.min.js"></script>
     <script src="/js/resize/compressor.js"></script>
-    <script src="/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/script.js?ver=20260630"></script>
     <script src="/js/swiper.js"></script>
-    <script src="/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/main.js?ver=20260630"></script>
 
     <style>
         .apply_s .inner { margin-top: 20px; }

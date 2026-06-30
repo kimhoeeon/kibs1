@@ -5294,6 +5294,7 @@ async function my_step_01_check(exhibitorSeq){
                                     // 관리자 모드: 현재 페이지 주소로 다시 이동 (새로고침 효과)
                                     // window.location.pathname은 현재 페이지의 주소(예: /mypage/modify.do)를 가져옵니다.
                                     //f_page_move(window.location.pathname, exhibitorSeq);
+                                    parent.window.location.reload();
                                     window.location.href='/mng/exhibitorNewNew/participant/company/detail.do?seq=' + exhibitorSeq;
                                 }
                             }

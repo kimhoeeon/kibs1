@@ -9,7 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Kibs 2026">
+    <meta name="author" content="Kibs 2027">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="경기국제보트쇼">
     <meta property="og:title" content="경기국제보트쇼">
@@ -34,7 +34,7 @@
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
-    <title>2026 경기국제보트쇼</title>
+    <title>2027 경기국제보트쇼</title>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
@@ -49,7 +49,7 @@
         <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 
-    <link rel="stylesheet" href="/css/invoice.css?ver=<%=System.currentTimeMillis()%>">
+    <link rel="stylesheet" href="/css/invoice.css?ver=20260630">
 
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/jquery-migrate-3.3.0.js"></script>
@@ -75,13 +75,13 @@
             <div class="box">
                 <div class="event">
                     <div class="logo"><img src="/img/invoce_logo_kibs.png"></div>
-                    <div class="date">2026.3.6(FRI) ~ 2026.3.8.(SUN), KINTEX</div>
+                    <div class="date">2027.3.12(금) ~ 2027.3.14.(일), KINTEX</div>
                 </div>
                 <div class="doc">견적서</div>
             </div>
             <div class="box">
                 <div class="info">
-                    <div class="secr">2026 경기국제보트쇼 사무국</div>
+                    <div class="secr">2027 경기국제보트쇼 사무국</div>
                     <div>경기도 고양시 일산서구 킨텍스로 217-60 킨텍스 제1전시장</div>
                     <div>전화 : 031-995-8946/8912</div>
                     <div>팩스 : 031-995-8091</div>
@@ -460,7 +460,7 @@
 
         <!-- box -->
         <div class="bot_box">
-            <div class="secr">2026 경기국제보트쇼 사무국<span class="sm">(관인생략)</span></div>
+            <div class="secr">2027 경기국제보트쇼 사무국<span class="sm">(관인생략)</span></div>
             <div class="logo"><img src="/img/invoce_logo_kintex.png"></div>
         </div>
         <!-- //box -->

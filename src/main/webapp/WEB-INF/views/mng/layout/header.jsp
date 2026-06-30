@@ -38,7 +38,7 @@
                 <div class="menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0"
                      id="kt_app_header_menu" data-kt-menu="true">
                     <!--begin:Menu item-->
-                    <div data-kt-menu-trigger="hover"
+                    <%--<div data-kt-menu-trigger="hover"
                          data-kt-menu-placement="bottom-start"
                          class="menu-item menu-lg-down-accordion me-0 me-lg-2">
                         <!--begin:Menu link-->
@@ -163,7 +163,7 @@
                             <!--end:system menu-->
                         </div>
                         <!--end:Menu sub-->
-                    </div>
+                    </div>--%>
                     <!--end:Menu item-->
                     <!--begin:Menu item-->
                     <div data-kt-menu-trigger="hover"
@@ -193,13 +193,6 @@
                                         <li class="nav-item mx-lg-1">
                                             <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
                                                data-bs-toggle="tab"
-                                               data-bs-target="#kt_app_header_menu_pages_transfer">이관정보</a>
-                                        </li>
-                                        <!--end:Nav item-->
-                                        <!--begin:Nav item-->
-                                        <li class="nav-item mx-lg-1">
-                                            <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
-                                               data-bs-toggle="tab"
                                                data-bs-target="#kt_app_header_menu_pages_application_new_new">참가신청서 관리 (2027~)</a>
                                         </li>
                                         <!--end:Nav item-->
@@ -215,6 +208,13 @@
                                             <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
                                                data-bs-toggle="tab"
                                                data-bs-target="#kt_app_header_menu_pages_application">참가신청서 관리 (~2025)</a>
+                                        </li>
+                                        <!--end:Nav item-->
+                                        <!--begin:Nav item-->
+                                        <li class="nav-item mx-lg-1">
+                                            <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
+                                               data-bs-toggle="tab"
+                                               data-bs-target="#kt_app_header_menu_pages_transfer">이관정보</a>
                                         </li>
                                         <!--end:Nav item-->
                                     </ul>
@@ -246,44 +246,6 @@
                                                             <!--begin:Menu link-->
                                                             <a href="/mng/exhibitor/participant/member.do" class="menu-link">
                                                                 <span class="menu-title">회원 목록</span>
-                                                            </a>
-                                                            <!--end:Menu link-->
-                                                        </div>
-                                                        <!--end:Menu item-->
-                                                    </div>
-                                                    <!--end:Col-->
-                                                </div>
-                                                <!--end:Row-->
-                                            </div>
-                                            <!--end:Col-->
-                                        </div>
-                                        <!--end:Row-->
-                                    </div>
-                                    <!--end:Tab pane-->
-                                    <!--begin:Tab pane-->
-                                    <div class="tab-pane w-lg-350px" id="kt_app_header_menu_pages_transfer">
-                                        <!--begin:Row-->
-                                        <div class="row">
-                                            <!--begin:Col-->
-                                            <div class="col-lg-12 mb-6 mb-lg-0">
-                                                <!--begin:Row-->
-                                                <div class="row">
-                                                    <!--begin:Col-->
-                                                    <div class="col-lg-12">
-                                                        <!--begin:Menu item-->
-                                                        <div class="menu-item p-0 m-0">
-                                                            <!--begin:Menu link-->
-                                                            <a href="/mng/exhibitor/transfer/company.do" class="menu-link">
-                                                                <span class="menu-title">지난 행사 전시업체 (~2025)</span>
-                                                            </a>
-                                                            <!--end:Menu link-->
-                                                        </div>
-                                                        <!--end:Menu item-->
-                                                        <!--begin:Menu item-->
-                                                        <div class="menu-item p-0 m-0">
-                                                            <!--begin:Menu link-->
-                                                            <a href="/mng/exhibitor/transfer/visitor.do" class="menu-link">
-                                                                <span class="menu-title">지난 행사 참관객</span>
                                                             </a>
                                                             <!--end:Menu link-->
                                                         </div>
@@ -587,6 +549,44 @@
                                                             <!--begin:Menu link-->
                                                             <a href="/mng/exhibitor/application/online.do" class="menu-link">
                                                                 <span class="menu-title">온라인 전시관</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                    </div>
+                                                    <!--end:Col-->
+                                                </div>
+                                                <!--end:Row-->
+                                            </div>
+                                            <!--end:Col-->
+                                        </div>
+                                        <!--end:Row-->
+                                    </div>
+                                    <!--end:Tab pane-->
+                                    <!--begin:Tab pane-->
+                                    <div class="tab-pane w-lg-350px" id="kt_app_header_menu_pages_transfer">
+                                        <!--begin:Row-->
+                                        <div class="row">
+                                            <!--begin:Col-->
+                                            <div class="col-lg-12 mb-6 mb-lg-0">
+                                                <!--begin:Row-->
+                                                <div class="row">
+                                                    <!--begin:Col-->
+                                                    <div class="col-lg-12">
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitor/transfer/company.do" class="menu-link">
+                                                                <span class="menu-title">지난 행사 전시업체 (~2025)</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/exhibitor/transfer/visitor.do" class="menu-link">
+                                                                <span class="menu-title">지난 행사 참관객</span>
                                                             </a>
                                                             <!--end:Menu link-->
                                                         </div>

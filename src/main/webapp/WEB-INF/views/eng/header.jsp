@@ -16,7 +16,7 @@
 
     <link href="/css/reset.css" rel="stylesheet">
     <link href="/css/font.css" rel="stylesheet">
-    <link href="/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
+    <link href="/css/style.css?ver=20260630" rel="stylesheet">
     <link href="/css/responsive.css" rel="stylesheet">
 
 </head>
@@ -211,9 +211,9 @@
 
     <script src="/js/jquery.number.min.js"></script>
     <script src="/js/resize/compressor.js"></script>
-    <script src="/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/script.js?ver=20260630"></script>
     <script src="/js/swiper.js"></script>
-    <script src="/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/main.js?ver=20260630"></script>
 
 </body>
 </html>

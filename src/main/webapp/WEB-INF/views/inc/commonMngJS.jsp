@@ -20,5 +20,5 @@
 <script src="/js/jui-ui.min.js"></script>
 <script src="/js/jui-grid.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
-<script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="/js/script.js?ver=20260630"></script>
+<script src="/js/mngMain.js?ver=20260630"></script>

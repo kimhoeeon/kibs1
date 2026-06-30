@@ -589,12 +589,12 @@ $(function(){
             let subject = '', gbn = '', updateUrl = '', template = '';
             if (invoiceType === 'booth') {
                 template = '172';
-                subject = `[KIBS 2026] ` + companyNameKo + ` 전시부스 인보이스 발송` + ` (` + invoiceCode + `)`;
+                subject = `[KIBS 2027] ` + companyNameKo + ` 전시부스 인보이스 발송` + ` (` + invoiceCode + `)`;
                 gbn = 'BOOTH';
                 updateUrl = '/mng/exhibitorNewNew/application/booth/invoice/mail/result/update.do';
             } else if (invoiceType === 'utility') {
                 template = '176';
-                subject = `[KIBS 2026] ` + companyNameKo + ` 유틸리티 인보이스 발송` + ` (` + invoiceCode + `)`;
+                subject = `[KIBS 2027] ` + companyNameKo + ` 유틸리티 인보이스 발송` + ` (` + invoiceCode + `)`;
                 gbn = 'UTILITY';
                 updateUrl = '/mng/exhibitorNewNew/application/utility/invoice/mail/result/update.do';
             }

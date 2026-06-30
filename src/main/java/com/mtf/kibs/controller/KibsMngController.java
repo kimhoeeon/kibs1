@@ -8385,7 +8385,7 @@ public class KibsMngController {
             // --- 1행: 메인 헤더 생성 ---
             Row mainHeaderRow = sheet.createRow(0);
             mainHeaderRow.createCell(0).setCellValue("기본정보");
-            mainHeaderRow.createCell(5).setCellValue("바이어정보");
+            mainHeaderRow.createCell(3).setCellValue("바이어정보");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 2));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 3, 18));
             for(int i=0; i<19; i++){

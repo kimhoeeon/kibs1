@@ -10,7 +10,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Kibs 2026">
+    <meta name="author" content="Kibs 2027">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="경기국제보트쇼">
     <meta property="og:title" content="경기국제보트쇼">
@@ -35,7 +35,7 @@
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
-    <title>2026 경기국제보트쇼</title>
+    <title>2027 경기국제보트쇼</title>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
@@ -185,10 +185,10 @@
                                     <div class="big">요트/보트 출품 정보</div>
                                     <div class="small">
                                         신청하실 경우 요트/보트 출품 정보는 1개 이상 필수 등록입니다.<br><br>
-                                        2026 경기국제보트쇼 장치 및 철거일정을 고려하여 전시품 선정 부탁드립니다.<br><br>
-                                        ○ 장치 및 전시품 반입 : 2026.3.4(수) ~ 3.5(목) 08:00~20:00, 2일간<br>
-                                        ○ 행사기간 : 2026.3.6(금) ~ 3.8(일), 3일간<br>
-                                        ○ 철거 및 전시품 반출 : 2026.3.8(일) 08:00~20:00, 당일철거
+                                        2027 경기국제보트쇼 장치 및 철거일정을 고려하여 전시품 선정 부탁드립니다.<br><br>
+                                        ○ 장치 및 전시품 반입 : 2027.3.10(수) ~ 3.11(목) 08:00~20:00, 2일간<br>
+                                        ○ 행사기간 : 2027.3.12(금) ~ 3.14(일), 3일간<br>
+                                        ○ 철거 및 전시품 반출 : 2027.3.12(일) 08:00~20:00, 당일철거
                                     </div>
                                 </div>
                                 <ul class="form_box">

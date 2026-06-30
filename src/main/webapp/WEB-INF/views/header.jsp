@@ -63,10 +63,10 @@
     <!-- swiper 외부 라이브러리 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    <link href="/css/reset.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
-    <link href="/css/font.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
-    <link href="/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
-    <link href="/css/responsive.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
+    <link href="/css/reset.css?ver=20260630" rel="stylesheet">
+    <link href="/css/font.css?ver=20260630" rel="stylesheet">
+    <link href="/css/style.css?ver=20260630" rel="stylesheet">
+    <link href="/css/responsive.css?ver=20260630" rel="stylesheet">
 
 </head>
 <body>
@@ -311,9 +311,9 @@
 
     <script src="/js/jquery.number.min.js"></script>
     <script src="/js/resize/compressor.js"></script>
-    <script src="/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/script.js?ver=20260630"></script>
     <script src="/js/swiper.js"></script>
-    <script src="/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/main.js?ver=20260630"></script>
 
 </body>
 </html>

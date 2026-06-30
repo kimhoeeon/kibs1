@@ -19,16 +19,16 @@ License: For each use you must have a valid license purchased only from above li
 <!--begin::Head-->
 <head>
     <base href="/mng/"/>
-    <title>2026 경기국제보트쇼 관리자</title>
+    <title>2027 경기국제보트쇼 관리자</title>
     <meta charset="utf-8"/>
-    <meta name="description" content="2026 경기국제보트쇼 홈페이지"/>
+    <meta name="description" content="2027 경기국제보트쇼 홈페이지"/>
     <meta name="keywords" content="KIBS"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta property="og:locale" content="ko_KR"/>
     <meta property="og:type" content="article"/>
     <meta property="og:title" content="KIBS"/>
     <meta property="og:url" content="https://koreaboatshow.or.kr/"/>
-    <meta property="og:site_name" content="2026 KIBS | 경기국제보트쇼"/>
+    <meta property="og:site_name" content="2027 KIBS | 경기국제보트쇼"/>
     <link rel="canonical" href="https://koreaboatshow.or.kr/"/>
 
     <%-- favicon --%>
@@ -568,43 +568,43 @@ if (document.documentElement) {
                                                     <tbody>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">주간 단상 220V</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 80,000/1kw</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">￦ 100,000/1kw</span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityJuganCnt}</span></td>
                                                             <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityJuganFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">24시간용 220V</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 100,000/1kw</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">￦ 150,000/1kw</span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityDayCnt}</span></td>
                                                             <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">작업전기</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 80,000/1kw</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">￦ 100,000/1kw</span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityWorkCnt}</span></td>
                                                             <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWorkFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">압축공기 기본형</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 200,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">￦ 250,000</span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityCompressedAirCnt}</span></td>
                                                             <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityCompressedAirFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">급배수 기본형</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 200,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">￦ 250,000</span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityWaterBasicCnt}</span></td>
                                                             <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWaterBasicFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">인터넷</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 200,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">￦ 250,000</span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityInternetCnt}</span></td>
                                                             <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityInternetFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">파이텍스 (신품)</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 80,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">￦ 100,000</span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityPytexNewCnt}</span></td>
                                                             <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityPytexNewFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
                                                         </tr>
@@ -616,7 +616,7 @@ if (document.documentElement) {
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">참관객/바이어 바코드 리더기</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 200,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7">￦ 250,000</span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityBarcodeCnt}</span></td>
                                                             <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityBarcodeFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
                                                         </tr>
@@ -1264,8 +1264,8 @@ if (document.documentElement) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <!--begin::Custom Javascript(used for common page)-->
-    <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="/js/custom/invoiceNewNew.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/mngMain.js?ver=20260630"></script>
+    <script src="/js/custom/invoiceNewNew.js?ver=20260630"></script>
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->

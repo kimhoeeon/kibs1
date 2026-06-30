@@ -958,7 +958,7 @@ function f_invoice_booth_send(exSeq){
                         name: encodeURI(fileName)
                     }];
                     let jsonObj = {
-                        subject: '[KIBS 2026] ' + companyNameKo + ' 부스 참가비용 인보이스 발송', //제목
+                        subject: '[KIBS 2027] ' + companyNameKo + ' 부스 참가비용 인보이스 발송', //제목
                         body: "", //본문
                         template: "161", //템플릿 번호
                         receiver: [{email: email, note1: encodeURI('https://kibs.com/mng/exhibitorNewNew/application/invoice/mail/open/update.do?gbn=IB&seq=' + seq)}],

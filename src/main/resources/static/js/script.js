@@ -688,15 +688,15 @@ $(document).ready(function () {
         var item8 = parseInt($("#utility_pytex_re_cnt").val() || 0);
         var item9 = parseInt($("#utility_barcode_cnt").val() || 0);
 
-        var price1 = item1 * 80000; //주간 단상 220v
-        var price2 = item2 * 100000; //24시간용 220v
-        var price3 = item3 * 80000; //작업전기
-        var price4 = item4 * 200000; //압축공기 기본형
-        var price5 = item5 * 200000; //급배수 기본형
-        var price6 = item6 * 200000; //인터넷
-        var price7 = item7 * 80000; //파이텍스 (신품)
+        var price1 = item1 * 100000; //주간 단상 220v
+        var price2 = item2 * 150000; //24시간용 220v
+        var price3 = item3 * 100000; //작업전기
+        var price4 = item4 * 250000; //압축공기 기본형
+        var price5 = item5 * 250000; //급배수 기본형
+        var price6 = item6 * 250000; //인터넷
+        var price7 = item7 * 100000; //파이텍스 (신품)
         var price8 = item8 * 50000; //파이텍스 (재사용품)
-        var price9 = item9 * 200000; //참관객/바이어 바코드 리더기
+        var price9 = item9 * 250000; //참관객/바이어 바코드 리더기
         var total = price1 + price2 + price3 + price4 + price5 + price6 + price7 + price8 + price9;
         // var vat = total * 10 / 100;
         // var sum = total + vat;

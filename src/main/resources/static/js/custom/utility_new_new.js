@@ -528,7 +528,7 @@ function f_invoice_utility_send(exSeq){
                         name: encodeURI(fileName)
                     }];
                     let jsonObj = {
-                        subject: '[KIBS 2026] ' + companyNameKo + ' 유틸리티 참가비용 인보이스 발송', //제목
+                        subject: '[KIBS 2027] ' + companyNameKo + ' 유틸리티 참가비용 인보이스 발송', //제목
                         body: "", //본문
                         template: "164", //템플릿 번호
                         receiver: [{email: email, note1: encodeURI('https://kibs.com/mng/exhibitorNewNew/application/invoice/mail/open/update.do?gbn=IU&seq=' + seq)}],
@@ -642,7 +642,7 @@ async function createAndUploadPdfFromIframe(param , iframeId, uploadPath) {
     let seq = param.seq;
     let companyNameKo = param.companyNameKo;
 
-    let fileName = getCurrentDate_notime() + '_2026_보트쇼_인보이스_' + companyNameKo + '_유틸리티';
+    let fileName = getCurrentDate_notime() + '_2027_보트쇼_인보이스_' + companyNameKo + '_유틸리티';
     let url = '/mng/exhibitorNewNew/application/utility/invoice/detail.do?seq=' + seq;
 
     // HTML 문자열 가져오기

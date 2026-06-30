@@ -18,16 +18,16 @@ License: For each use you must have a valid license purchased only from above li
 <!--begin::Head-->
 <head>
     <base href="/mng/"/>
-    <title>2026 경기국제보트쇼 관리자</title>
+    <title>2027 경기국제보트쇼 관리자</title>
     <meta charset="utf-8"/>
-    <meta name="description" content="2026 경기국제보트쇼 홈페이지"/>
+    <meta name="description" content="2027 경기국제보트쇼 홈페이지"/>
     <meta name="keywords" content="KIBS"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta property="og:locale" content="ko_KR"/>
     <meta property="og:type" content="article"/>
     <meta property="og:title" content="KIBS"/>
     <meta property="og:url" content="https://koreaboatshow.or.kr/"/>
-    <meta property="og:site_name" content="2026 KIBS | 경기국제보트쇼"/>
+    <meta property="og:site_name" content="2027 KIBS | 경기국제보트쇼"/>
     <link rel="canonical" href="https://koreaboatshow.or.kr/"/>
 
     <%-- favicon --%>
@@ -163,7 +163,7 @@ if (document.documentElement) {
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
-                                        </i>바이어 상세 데이터 추출</button>
+                                        </i>바이어 상세 엑셀 다운로드</button>
                                     <!--end::Export dropdown-->
                                 </div>
                                 <!--end::Actions-->
@@ -465,8 +465,8 @@ if (document.documentElement) {
     <!--end::Custom Javascript-->
 
     <!--begin::Custom Javascript(used for common page)-->
-    <script src="/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="/js/custom/buyer_new_new.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="/js/mngMain.js?ver=20260630"></script>
+    <script src="/js/custom/buyer_new_new.js?ver=20260630"></script>
 
     <script>
         document.addEventListener("keyup", function(event) {

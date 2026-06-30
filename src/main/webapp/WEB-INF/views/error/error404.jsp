@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <title>2026 경기국제보트쇼</title>
+    <title>2027 경기국제보트쇼</title>
 
 </head>
 <body>

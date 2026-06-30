@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Kibs 2026">
+    <meta name="author" content="Kibs 2027">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="title" content="경기국제보트쇼">
     <meta property="og:title" content="경기국제보트쇼">
@@ -33,7 +33,7 @@
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
-    <title>2026 KIBS</title>
+    <title>2027 KIBS</title>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
@@ -71,7 +71,7 @@
                     <div class="form_pri_box">
 
                         <div class="form_pri_titt">제1조 (용어의 정의)</div>
-                        1. “전시회”라 함은 “2026 경기국제보트쇼(KIBS 2026)"를 말한다.<br>
+                        1. “전시회”라 함은 “2027 경기국제보트쇼(KIBS 2027)"를 말한다.<br>
                         2. ‘주최자’라 함은 경기도 및 공동주최기관을 말한다.<br>
                         3. “주관자”라 함은 전시회를 주관하는 ㈜킨텍스를 말한다.<br>
                         4. “전시자”라 함은 전시회 참가를 위해 참가신청서 제출과 함께 계약금을 납부한 회사·조합· 단체 및 개인 등의 전시 참가자를 말한다.<br><br>

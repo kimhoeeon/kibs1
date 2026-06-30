@@ -781,7 +781,7 @@ function f_approval_status_btn_yn(){
                             for(let j=0; j<emailArr.length; j++){
                                 let email = emailArr[j];
                                 let jsonObj = {
-                                    subject: '[ 2026 경기국제보트쇼 ] 참가기업 승인 안내', //제목
+                                    subject: '[ 2027 경기국제보트쇼 ] 참가기업 승인 안내', //제목
                                     body: "", //본문
                                     template: "171", //템플릿 번호
                                     receiver: [{ email: email }]
