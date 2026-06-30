@@ -81,7 +81,7 @@
                                 <a href="/exhibitor/guide.do">참가기업</a>
                                 <a href="/visitor/guide_off.do">참관객</a>
                                 <a href="/guide/notice.do">미디어센터</a>
-                                <a href="/online/kibstv.do">온라인 전시관</a>
+                                <a href="/online/company.do">온라인 전시관</a>
                                 <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
                                 <a class="active" href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
                                 <%--<a href="/guide/maritime_expo.do">해상전시회(시흥 거북섬마리나)</a>--%>
