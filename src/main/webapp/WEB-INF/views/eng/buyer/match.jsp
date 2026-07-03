@@ -50,7 +50,7 @@
         <div class="inner">
             <div class="sub_top_box">
                 <div class="sub_top_nav">
-                    <span>Home</span><span>Buyer</span><span>Exhibitor-Buyer Matchmaking Program</span>
+                    <span>Home</span><span>Buyers</span><span>Exhibitor-Buyer Matchmaking Program</span>
                 </div>
                 <div class="sub_top_tit">Exhibitor-Buyer Matchmaking Program</div>
             </div>
@@ -65,11 +65,11 @@
                 <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                 <div class="optionBox">
                     <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">Buyer</div>
+                        <div class="tabOptAct">Buyers</div>
                         <div class="tabOptSel">
                             <a href="/eng/guide/summary.do">KIBS 2026</a>
                             <a href="/eng/exhibitor/categories.do">Exhibitors</a>
-                            <a class="active" href="/eng/buyer/glance.do">Buyer</a>
+                            <a class="active" href="/eng/buyer/glance.do">Buyers</a>
                             <a href="/eng/board/notice.do">News</a>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                         <div class="tabOptAct">Exhibitor-Buyer Matchmaking Program</div>
                         <div class="tabOptSel">
                             <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor guide</a>
-                            <a href="/visitor/apply.do">Pre-registration</a>
+                            <a href="/eng/buyer/apply.do">Pre-registration</a>
                             <a href="/eng/buyer/glance.do">Korea at a Glance</a>
                             <a href="/eng/buyer/marina.do">Marine Industry in korea</a>
                             <a class="active" href="/eng/buyer/match.do">Exhibitor-Buyer Matchmaking Program</a>

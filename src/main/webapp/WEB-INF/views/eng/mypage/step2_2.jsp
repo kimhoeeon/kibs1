@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
@@ -38,114 +40,130 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+
+    <span itemscope="" itemtype="http://schema.org/Organization">
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+    </span>
 </head>
 
 <body>
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-<div id="container">
+    <c:if test="${sessionScope.get('status') ne 'logon'}">
+        <script>
+            alert("Please log in.");
+            location.href = '/eng/login.do';
+        </script>
+    </c:if>
 
-    <!-- section -->
-    <div class="sub_top">
-        <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>Home</span><span>Exhibitors</span><span>My Page</span>
-                </div>
-                <div class="sub_top_tit">My Page</div>
-            </div>
-        </div>
-    </div>
-    <!-- //section -->
+    <c:if test="${sessionScope.get('status') eq 'logon'}">
 
+        <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-    <!-- section -->
-    <div class="apply_s padding_tb" id="apply_s">
-        <div class="inner">
-
-            <div class="apply_nav">
-                <div class="apply_nav_list">
-                    <div class="apply_nav_txt">
-                        <div class="txt">Welcome, Meetingfan!</div>
-                        <div class="btn">
-                            <a href="/eng/mypage/modify.do" class="btnSt01">Member Info</a>
-                            <a href="/eng/mypage/index.do" class="btnSt01">My Page</a>
-                        </div>
-                    </div>
-                    <ul class="list1">
-                        <li><a href="/eng/mypage/step01.do">Basic Information</a></li>
-                        <li class="active">
-                            <a href="/eng/mypage/step2_1.do">Exhibition Req.</a>
-                            <ul class="list2">
-                                <li><a href="/eng/mypage/step2_1.do">Exhibitor Booth</a></li>
-                                <li class="active"><a href="/eng/mypage/step2_2.do">Fascia Board Title</a></li>
-                                <li><a href="/eng/mypage/step2_3.do">Utilities</a></li>
-                                <li><a href="/eng/mypage/step2_4.do">Exhibitor Pass</a></li>
-                                <li><a href="/eng/mypage/step2_5.do">Prize & Giveaway</a></li>
-                                <li><a href="/eng/mypage/step2_6.do">Web Banner</a></li>
-                                <%--<li><a href="/eng/mypage/step2_7.do">Online Exhibition</a></li>--%>
-                                <li><a href="/eng/mypage/step2_8.do">Directory</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/eng/mypage/step03.do">Complete Registration</a></li>
-                    </ul>
-                </div>
-            </div>
-
+        <div id="container">
 
             <!-- section -->
-            <div class="my_form form_s">
+            <div class="sub_top">
                 <div class="inner">
-                    <div class="apply_tit">Fascia Board Title</div>
-                    <div class="form_wrap">
-                        <ul class="form_guide">
-                            <li>Please mark Korean and English respectively</li>
-                            <li>Maximum number of characters: Korean (64), English (64)</li>
-                            <li>Please write the punctuation marks such as commas and periods and the trade name
-                                including 'CO., LTD.’
-                            </li>
-                            <li><span class="emRed">Only companies that apply for "assembly booth" must fill out the sign</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- 부스신청 -->
-                    <div class="form_wrap">
-                        <div class="form_tit">
-                            <div class="big">Fascia Board Title</div>
+                    <div class="sub_top_box">
+                        <div class="sub_top_nav">
+                            <span>Home</span><span>Exhibitors</span><span>Mypage</span>
                         </div>
-                        <ul class="form_box">
-                            <li>
-                                <div class="item req">
-                                    <p>Fascia Board Title</p>
-                                </div>
-                                <div class="input">
-                                    <input type="text">
-                                </div>
-                            </li>
-                        </ul>
+                        <div class="sub_top_tit">Mypage</div>
                     </div>
-
-                    <div class="form_btn">
-                        <a href="/eng/mypage/step2_1.do#apply_s" class="form_btn_prev">
-                            <div class="big">PREV</div>
-                            <div class="small">Exhibitor Booth</div>
-                        </a>
-                        <a href="/eng/mypage/step2_3.do#apply_s" class="form_btn_next">
-                            <div class="big">NEXT</div>
-                            <div class="small">Utilities</div>
-                        </a>
-                    </div>
-
                 </div>
             </div>
             <!-- //section -->
+
+            <!-- section -->
+            <div class="apply_s padding_tb" id="apply_s">
+                <div class="inner">
+
+                    <div class="apply_nav">
+                        <div class="apply_nav_txt">
+                            <div class="txt">Welcome, ${info.companyNameKo}</div>
+                            <div class="btn">
+                                <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/modify.do','${info.seq}')" class="btnSt01">Member Info</a>
+                                <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/index.do', {seq: `${info.seq}`})" class="btnSt01">MYPAGE</a>
+                            </div>
+                        </div>
+                        <div class="apply_nav_list">
+                            <ul class="list1">
+                                <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step01.do','${info.seq}')">Basic Info</a></li>
+                                <li class="active">
+                                    <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_1.do','${info.seq}')">Exhibition Info</a>
+                                    <ul class="list2">
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_1.do','${info.seq}')">Booth</a></li>
+                                        <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_9.do','${info.seq}')">Yacht/Boat</a></li>
+                                        <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_2.do','${info.seq}')">Signboard</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_3.do','${info.seq}')">Utilities</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_4.do','${info.seq}')">Badges</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_5.do','${info.seq}')">Giveaways</a></li>
+                                        <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_8.do','${info.seq}')">Directory</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step03.do','${info.seq}')">Complete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- section -->
+                    <div class="my_form form_s">
+                        <div class="inner">
+                            <div class="apply_tit">Signboard Title</div>
+                            <div class="form_wrap">
+                                <ul class="form_guide">
+                                    <li>Please mark Korean and English respectively</li>
+                                    <li>Maximum number of characters: Korean (64), English (64)</li>
+                                    <li>Please write the punctuation marks such as commas and periods and the trade name including 'CO., LTD.’</li>
+                                </ul>
+                            </div>
+
+                            <!-- 부스신청 -->
+                            <div class="form_wrap">
+                                <div class="form_tit">
+                                    <div class="big">Signboard</div>
+                                    <div class="assist">(Assembly booth exhibitors must be filled in)</div>
+                                </div>
+                                <ul class="form_box">
+                                    <li>
+                                        <div class="item req">
+                                            <p>Signboard Title</p>
+                                        </div>
+                                        <div class="input">
+                                            <input type="hidden" id="assemblyBoothCnt" value="${info.assemblyBoothCnt}">
+                                            <input type="text" id="companySignNameKo" value="${info.companySignNameKo}" placeholder="Korean">
+                                            <input type="text" id="companySignNameEn" value="${info.companySignNameEn}" placeholder="English" class="onlyNumEng">
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="form_btn">
+                                <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_9.do','${info.seq}')" class="form_btn_prev">
+                                    <div class="big">PREV</div>
+                                    <div class="small">Yacht/Boat</div>
+                                </a>
+                                <a href="javascript:void(0);" onclick="f_mypage_comp('2_2','${info.seq}')" class="form_btn_next">
+                                    <div class="big">NEXT</div>
+                                    <div class="small">Utilities</div>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- //section -->
+                </div>
+            </div>
+
         </div>
-    </div>
 
-</div>
-
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
-
+        <c:import url="../footer.jsp" charEncoding="UTF-8"/>
+    </c:if>
 </body>
 </html>

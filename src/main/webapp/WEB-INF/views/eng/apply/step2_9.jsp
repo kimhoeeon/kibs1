@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
 <head>
-    <jsp:include page="../inc/ad_scripts.jsp" flush="true"/>
+    <jsp:include page="../../inc/ad_scripts.jsp" flush="true"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,7 +35,7 @@
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
-    <title>2027 경기국제보트쇼</title>
+    <title>2027 KIBS</title>
 
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
@@ -72,9 +72,9 @@
             <div class="inner">
                 <div class="sub_top_box">
                     <div class="sub_top_nav">
-                        <span>홈</span><span>참가기업</span><span>참가기업 신청</span>
+                        <span>Home</span><span>Exhibitors</span><span>Exhibitor Registration</span>
                     </div>
-                    <div class="sub_top_tit">참가기업 신청</div>
+                    <div class="sub_top_tit">Exhibitor Registration</div>
                 </div>
             </div>
         </div>
@@ -84,28 +84,27 @@
         <div class="sub_tab">
             <div class="inner">
                 <div class="sub_tab_box">
-                    <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
+                    <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                     <div class="optionBox">
                         <div class="tabOpt1 tabOption">
-                            <div class="tabOptAct">참가기업</div>
+                            <div class="tabOptAct">Exhibitors</div>
                             <div class="tabOptSel">
-                                <a href="/guide/summary.do">KIBS 안내</a>
-                                <a class="active" href="/exhibitor/guide.do">참가기업</a>
-                                <a href="/visitor/guide_off.do">참관객</a>
-                                <a href="/guide/notice.do">미디어센터</a>
-                                <a href="/online/company.do">온라인 전시관</a>
-                                <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
-                                <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
-                                <%--<a href="/guide/maritime_expo.do">해상전시회(시흥 거북섬마리나)</a>--%>
+                                <a href="/eng/guide/summary.do">KIBS 2026</a>
+                                <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
+                                <a href="/eng/buyer/glance.do">Buyers</a>
+                                <a href="/eng/board/notice.do">News</a>
                             </div>
                         </div>
                         <div class="tabOpt2 tabOption">
-                            <div class="tabOptAct">참가기업 신청</div>
+                            <div class="tabOptAct">Exhibitor Registration</div>
                             <div class="tabOptSel">
-                                <a href="/exhibitor/guide.do">참가기업 안내</a>
-                                <a class="active" href="/apply/step01.do">참가기업 신청</a>
-                                <a href="/exhibitor/login.do">참가신청확인</a>
-                                <a href="/exhibitor/faq.do">FAQ</a>
+                                <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                                <a class="active" href="/eng/apply/step01.do">Exhibitor Registration</a>
+                                <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
+                                <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                                <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
+                                <a href="/eng/online/company.do">Exhibitor List</a>
+                                <a href="/eng/exhibitor/qna.do">FAQ</a>
                             </div>
                         </div>
                     </div>
@@ -121,54 +120,53 @@
                 <div class="apply_nav">
                     <div class="apply_nav_list">
                         <ul class="list1">
-                            <li><a>기본정보</a></li>
+                            <li><a>Basic Info</a></li>
                             <li class="active">
-                                <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_1.do','${info.seq}')">전시 신청 정보</a>
+                                <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_1.do','${info.seq}')">Exhibition Info</a>
                                 <ul class="list2">
-                                    <li><a>전시부스 신청</a></li>
-                                    <%--<li><a>해상전시회 신청</a></li>--%>
-                                    <li class="active"><a>요트/보트 출품 정보</a></li>
-                                    <li><a>상호간판 신청</a></li>
-                                    <li><a>유틸리티 신청</a></li>
-                                    <li><a>출입증 신청</a></li>
-                                    <li><a>경품제공 신청</a></li>
-                                    <li><a>디렉토리 정보</a></li>
+                                    <li><a>Booth</a></li>
+                                    <li class="active"><a>Yacht/Boat</a></li>
+                                    <li><a>Signboard</a></li>
+                                    <li><a>Utilities</a></li>
+                                    <li><a>Badges</a></li>
+                                    <li><a>Giveaways</a></li>
+                                    <li><a>Directory</a></li>
                                 </ul>
                             </li>
-                            <li><a>전시참가 신청 완료</a></li>
+                            <li><a>Complete</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="apply_step">
-                    <div class="apply_tit">요트/보트 출품 정보</div>
+                    <div class="apply_tit">Yacht/Boat Info</div>
                     <div class="apply_step_wrap">
                         <div class="apply_step_box step1">
                             <div class="gubun">
-                                <p>Step 1</p>기본정보 입력
+                                <p>Step 1</p>Basic Info
                             </div>
                             <div class="gauge">
                                 <progress class="gauge_bar" value="100" max="100"></progress>
                             </div>
-                            <div class="txt">완료됨</div>
+                            <div class="txt">Completed</div>
                         </div>
                         <div class="apply_step_box step2">
                             <div class="gubun">
-                                <p>Step 2</p>전시 신청 정보
+                                <p>Step 2</p>Exhibition Info
                             </div>
                             <div class="gauge">
                                 <progress class="gauge_bar" value="25" max="100"></progress>
                             </div>
-                            <div class="txt">진행중...<p>(총 <span>7</span>개 중 <span>1</span> 완료)</p></div>
+                            <div class="txt">In Progress <p>(<span>7</span> of <span>1</span> completed)</p></div>
                         </div>
                         <div class="apply_step_box step3">
                             <div class="gubun">
-                                <p>Step 3</p>전시참가 신청 완료
+                                <p>Step 3</p>Complete
                             </div>
                             <div class="gauge">
                                 <progress class="gauge_bar" value="0" max="100"></progress>
                             </div>
-                            <div class="txt">진행조건이 충족되지 않음</div>
+                            <div class="txt">Requirement Not Met</div>
                         </div>
                     </div>
                 </div>
@@ -182,28 +180,28 @@
                             <!-- 요트/보트 출품 정보 -->
                             <div class="form_wrap">
                                 <div class="form_tit">
-                                    <div class="big">요트/보트 출품 정보</div>
+                                    <div class="big">Yacht/Boat Info</div>
                                     <div class="small">
-                                        신청하실 경우 요트/보트 출품 정보는 1개 이상 필수 등록입니다.<br><br>
-                                        2027 경기국제보트쇼 장치 및 철거일정을 고려하여 전시품 선정 부탁드립니다.<br><br>
-                                        ○ 장치 및 전시품 반입 : 2027.3.10(수) ~ 3.11(목) 08:00~20:00, 2일간<br>
-                                        ○ 행사기간 : 2027.3.12(금) ~ 3.14(일), 3일간<br>
-                                        ○ 철거 및 전시품 반출 : 2027.3.12(일) 08:00~20:00, 당일철거
+                                        At least one yacht/boat entry is required.<br><br>
+                                        Please select exhibits considering the setup and dismantling schedule.<br><br>
+                                        ○ Booth Construction & Exhibit Move-in: March 4 (Wed) – March 5 (Thu), 2026, 08:00–20:00 (2 days)<br>
+                                        ○ Exhibition Period: March 6 (Fri) – March 8 (Sun), 2026 (3 days)<br>
+                                        ○ Booth Dismantling & Exhibit Move-out: March 8 (Sun), 2026, 08:00–20:00 (Same-day dismantling required)
                                     </div>
                                 </div>
                                 <ul class="form_box">
                                     <li>
                                         <div class="item req">
-                                            <p>요트/보트 출품 여부</p>
+                                            <p>Yacht/Boat Exhibit</p>
                                         </div>
                                         <div class="input check">
                                             <label>
                                                 <input type="radio" id="boatEntryY" name="boatEntryYn" value="Y" <c:if test="${info.boatEntryYn eq 'Y'}">checked</c:if> />
-                                                출품
+                                                Yes
                                             </label>
                                             <label>
                                                 <input type="radio" id="boatEntryN" name="boatEntryYn" value="N" <c:if test="${info.boatEntryYn eq 'N' or info.boatEntryYn eq null or info.boatEntryYn eq ''}">checked</c:if>/>
-                                                미출품
+                                                No
                                             </label>
                                         </div>
                                     </li>
@@ -211,23 +209,23 @@
                             </div>
 
                             <!-- 전시정보 -->
-                            <script src="/js/product.js"></script>
+                            <script src="/js/product_en.js"></script>
                             <div class="form_wrap productInfoWrap" style="display: none;">
 
                                 <div class="form_tit">
-                                    <div class="big">요트/보트 출품 정보 입력</div>
+                                    <div class="big">Yacht/Boat Entry Info</div>
                                 </div>
 
                                 <c:if test="${empty productList}">
                                     <ul class="form_box exhiInfoBox">
                                         <li class="form_in_tit">
                                             <input type="hidden" name="productSeq" value="">
-                                            요트/보트 출품 정보 #<span class="exhiInfoNum">1</span>
-                                            <span class="del_btn exhiInfoDel">삭제</span>
+                                            Yacht/Boat Entry #<span class="exhiInfoNum">1</span>
+                                            <span class="del_btn exhiInfoDel">Delete</span>
                                         </li>
                                         <li>
                                             <div class="item req">
-                                                <p>제품 분류(품목)</p>
+                                                <p>Category</p>
                                             </div>
                                             <div class="input">
                                                 <select id="productOptionBig_1" name="productOptionBig" class="w50"></select>
@@ -236,91 +234,91 @@
                                         </li>
                                         <li>
                                             <div class="item req">
-                                                <p>제품명</p>
+                                                <p>Name</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" name="productNameKo" placeholder="제품명을 입력하세요.">
+                                                <input type="text" name="productNameKo" placeholder="Enter product name.">
                                             </div>
                                         </li>
                                         <li>
                                             <div class="item req">
-                                                <p>수량</p>
+                                                <p>Quantity</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" name="productQty" class="onlyNum" maxlength="4" placeholder="숫자만 입력해 주세요.">
+                                                <input type="text" name="productQty" class="onlyNum" maxlength="4" placeholder="Numbers only.">
                                             </div>
                                         </li>
                                         <li>
                                             <div class="item req">
-                                                <p>제조사(브랜드)</p>
+                                                <p>Manufacturer</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" name="productBrand" placeholder="제품의 제조사(브랜드)를 입력하세요.">
+                                                <input type="text" name="productBrand" placeholder="Enter manufacturer (brand).">
                                             </div>
                                         </li>
                                         <li>
                                             <div class="item req">
-                                                <p>특징</p>
+                                                <p>Features</p>
                                             </div>
                                             <div class="input">
-                                                <textarea name="productFeature" placeholder="전시품에 대한 설명과 특징을 작성해주세요."></textarea>
+                                                <textarea name="productFeature" placeholder="Describe the product and its features."></textarea>
                                             </div>
                                         </li>
                                         <li class="w50">
                                             <div class="item req">
-                                                <p>길이(cm)</p>
+                                                <p>Length (cm)</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" name="productLength" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                <input type="text" name="productLength" class="onlyNum" maxlength="10" placeholder="Numbers only.">
                                             </div>
                                         </li>
                                         <li class="w50">
                                             <div class="item req">
-                                                <p>너비(cm)</p>
+                                                <p>Width (cm)</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" name="productWidth" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                <input type="text" name="productWidth" class="onlyNum" maxlength="10" placeholder="Numbers only.">
                                             </div>
                                         </li>
                                         <li class="w50">
                                             <div class="item req">
-                                                <p>높이(cm)</p>
+                                                <p>Height (cm)</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" name="productHeight" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                <input type="text" name="productHeight" class="onlyNum" maxlength="10" placeholder="Numbers only.">
                                             </div>
                                         </li>
                                         <li class="w50">
                                             <div class="item req">
-                                                <p>중량(kg)</p>
+                                                <p>Weight (kg)</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" name="productWeight" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                <input type="text" name="productWeight" class="onlyNum" maxlength="10" placeholder="Numbers only.">
                                             </div>
                                         </li>
                                         <li class="w50">
                                             <div class="item req">
-                                                <p>소재</p>
+                                                <p>Material</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" name="productMaterial" placeholder="플라스틱, 알루미늄, FRP 등">
+                                                <input type="text" name="productMaterial" placeholder="Plastic, Aluminum, FRP, etc">
                                             </div>
                                         </li>
                                         <li class="w50">
                                             <div class="item req">
-                                                <p>연식</p>
+                                                <p>Year</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" name="productYear" class="onlyNum" maxlength="4" placeholder="숫자만 입력해 주세요.">
+                                                <input type="text" name="productYear" class="onlyNum" maxlength="4" placeholder="Numbers only.">
                                             </div>
                                         </li>
                                         <li>
                                             <div class="item req">
-                                                <p>신제품 여부</p>
+                                                <p>New Product</p>
                                             </div>
                                             <div class="input check">
-                                                <label><input type="radio" name="productIsNew_1" value="Y">해당</label>
-                                                <label><input type="radio" name="productIsNew_1" value="N" checked>미해당</label>
+                                                <label><input type="radio" name="productIsNew_1" value="Y">Yes</label>
+                                                <label><input type="radio" name="productIsNew_1" value="N" checked>No</label>
                                             </div>
                                         </li>
                                     </ul>
@@ -331,12 +329,12 @@
                                         <ul class="form_box exhiInfoBox">
                                             <li class="form_in_tit">
                                                 <input type="hidden" name="productSeq" value="${product.seq}">
-                                                전시정보 #<span class="exhiInfoNum">${status.index + 1}</span>
-                                                <span class="del_btn exhiInfoDel">삭제</span>
+                                                Yacht/Boat Entry #<span class="exhiInfoNum">${status.index + 1}</span>
+                                                <span class="del_btn exhiInfoDel">Delete</span>
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>제품 분류(품목)</p>
+                                                    <p>Category</p>
                                                 </div>
                                                 <div class="input">
                                                     <select id="productOptionBig_${status.index + 1}" name="productOptionBig" class="w50"></select>
@@ -351,94 +349,94 @@
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>제품명</p>
+                                                    <p>Name</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="productNameKo" value="${product.productNameKo}" placeholder="제품명을 입력하세요.">
+                                                    <input type="text" name="productNameKo" value="${product.productNameKo}" placeholder="Enter product name.">
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>수량</p>
+                                                    <p>Quantity</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="productQty" value="${product.productQty}" class="onlyNum" maxlength="4" placeholder="숫자만 입력해 주세요.">
+                                                    <input type="text" name="productQty" value="${product.productQty}" class="onlyNum" maxlength="4" placeholder="Numbers only.">
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>제조사(브랜드)</p>
+                                                    <p>Manufacturer</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="productBrand" value="${product.productBrand}" placeholder="제품의 제조사(브랜드)를 입력하세요.">
+                                                    <input type="text" name="productBrand" value="${product.productBrand}" placeholder="Enter manufacturer (brand).">
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>특징</p>
+                                                    <p>Features</p>
                                                 </div>
                                                 <div class="input">
-                                                    <textarea name="productFeature" placeholder="전시품에 대한 설명과 특징을 작성해주세요.">${product.productFeature}</textarea>
+                                                    <textarea name="productFeature" placeholder="Describe the product and its features.">${product.productFeature}</textarea>
                                                 </div>
                                             </li>
                                             <li class="w50">
                                                 <div class="item req">
-                                                    <p>길이(cm)</p>
+                                                    <p>Length (cm)</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="productLength" value="${product.productLength}" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                    <input type="text" name="productLength" value="${product.productLength}" class="onlyNum" maxlength="10" placeholder="Numbers only.">
                                                 </div>
                                             </li>
                                             <li class="w50">
                                                 <div class="item req">
-                                                    <p>너비(cm)</p>
+                                                    <p>Width (cm)</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="productWidth" value="${product.productWidth}" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                    <input type="text" name="productWidth" value="${product.productWidth}" class="onlyNum" maxlength="10" placeholder="Numbers only.">
                                                 </div>
                                             </li>
                                             <li class="w50">
                                                 <div class="item req">
-                                                    <p>높이(cm)</p>
+                                                    <p>Height (cm)</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="productHeight" value="${product.productHeight}" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                    <input type="text" name="productHeight" value="${product.productHeight}" class="onlyNum" maxlength="10" placeholder="Numbers only.">
                                                 </div>
                                             </li>
                                             <li class="w50">
                                                 <div class="item req">
-                                                    <p>중량(kg)</p>
+                                                    <p>Weight (kg)</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="productWeight" value="${product.productWeight}" class="onlyNum" maxlength="10" placeholder="숫자만 입력해 주세요.">
+                                                    <input type="text" name="productWeight" value="${product.productWeight}" class="onlyNum" maxlength="10" placeholder="Numbers only.">
                                                 </div>
                                             </li>
                                             <li class="w50">
                                                 <div class="item req">
-                                                    <p>소재</p>
+                                                    <p>Material</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="productMaterial" value="${product.productMaterial}" placeholder="플라스틱, 알루미늄, FRP 등">
+                                                    <input type="text" name="productMaterial" value="${product.productMaterial}" placeholder="Plastic, Aluminum, FRP, etc">
                                                 </div>
                                             </li>
                                             <li class="w50">
                                                 <div class="item req">
-                                                    <p>연식</p>
+                                                    <p>Year</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="productYear" value="${product.productYear}" class="onlyNum" maxlength="4" placeholder="숫자만 입력해 주세요.">
+                                                    <input type="text" name="productYear" value="${product.productYear}" class="onlyNum" maxlength="4" placeholder="Numbers only.">
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>신제품 여부</p>
+                                                    <p>New Product</p>
                                                 </div>
                                                 <div class="input check">
                                                     <label>
-                                                        <input type="radio" name="productIsNew_${status.index + 1}" value="Y" <c:if test="${product.productIsNew eq 'Y'}">checked</c:if>>해당
+                                                        <input type="radio" name="productIsNew_${status.index + 1}" value="Y" <c:if test="${product.productIsNew eq 'Y'}">checked</c:if>>Yes
                                                     </label>
                                                     <label>
-                                                        <input type="radio" name="productIsNew_${status.index + 1}" value="N" <c:if test="${product.productIsNew ne 'Y'}">checked</c:if>>미해당
+                                                        <input type="radio" name="productIsNew_${status.index + 1}" value="N" <c:if test="${product.productIsNew ne 'Y'}">checked</c:if>>No
                                                     </label>
                                                 </div>
                                             </li>
@@ -446,18 +444,18 @@
                                     </c:forEach>
                                 </c:if>
                                 <div class="formAddBtn">
-                                    <span class="exhiInfoAdd">추가</span>
+                                    <span class="exhiInfoAdd">Add</span>
                                 </div>
                             </div>
 
                             <div class="form_btn">
-                                <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_1.do','${info.seq}')" class="form_btn_prev">
-                                    <div class="big">이전</div>
-                                    <div class="small">전시부스 신청</div>
+                                <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_1.do','${info.seq}')" class="form_btn_prev">
+                                    <div class="big">PREV</div>
+                                    <div class="small">Booth</div>
                                 </a>
                                 <a href="javascript:void(0);" onclick="f_apply_comp('2_9','${info.seq}')" class="form_btn_next">
-                                    <div class="big">다음 / 건너뛰기</div>
-                                    <div class="small">상호간판 신청</div>
+                                    <div class="big">NEXT / SKIP</div>
+                                    <div class="small">Signboard</div>
                                 </a>
                             </div>
                         </form>
@@ -465,7 +463,6 @@
                     </div>
                 </div>
                 <!-- //section -->
-
             </div>
         </div>
     </div>
@@ -509,7 +506,7 @@
                     if (flag) {
                         Swal.fire({
                             icon: 'warning',
-                            title: '[ 요트/보트 출품 정보 ]',
+                            title: '[ Yacht/Boat Entry ]',
                             html: '<span style="font-size: 1.2em;">요트/보트 출품 여부 \'미신청\' 으로 변경 시<br>등록한  요트/보트 출품 정보가 모두 삭제됩니다.<br>변경하시겠습니까?</span>',
                             allowOutsideClick: false,
                             showCancelButton: true,

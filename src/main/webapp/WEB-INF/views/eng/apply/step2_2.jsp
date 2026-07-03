@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
@@ -69,16 +71,19 @@
                         <div class="tabOptSel">
                             <a href="/eng/guide/summary.do">KIBS 2026</a>
                             <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
-                            <a href="/eng/buyer/glance.do">Buyer</a>
+                            <a href="/eng/buyer/glance.do">Buyers</a>
                             <a href="/eng/board/notice.do">News</a>
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">Exhibitors Registration</div>
+                        <div class="tabOptAct">Exhibitor Registration</div>
                         <div class="tabOptSel">
                             <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                            <a class="active" href="/eng/apply/step01.do">Exhibitor Registration</a>
+                            <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
+                            <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                            <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
                             <a href="/eng/online/company.do">Exhibitor List</a>
-                            <a class="active" href="/apply/step01.do">Exhibitor Registration</a>
                             <a href="/eng/exhibitor/qna.do">FAQ</a>
                         </div>
                     </div>
@@ -95,54 +100,53 @@
             <div class="apply_nav">
                 <div class="apply_nav_list">
                     <ul class="list1">
-                        <li><a href="/eng/apply/step01.do">Basic Information</a></li>
+                        <li><a>Basic Info</a></li>
                         <li class="active">
-                            <a href="/eng/apply/step2_1.do">Exhibition Req.</a>
+                            <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_1.do','${info.seq}')">Exhibition Info</a>
                             <ul class="list2">
-                                <li><a href="/eng/apply/step2_1.do">Exhibitor Booth</a></li>
-                                <li class="active"><a href="/eng/apply/step2_2.do">Fascia Board Title</a></li>
-                                <li><a href="/eng/apply/step2_3.do">Utilities</a></li>
-                                <li><a href="/eng/apply/step2_4.do">Exhibitor Pass</a></li>
-                                <li><a href="/eng/apply/step2_5.do">Prize & Giveaway</a></li>
-                                <li><a href="/eng/apply/step2_6.do">Web Banner</a></li>
-                                <%--<li><a href="/eng/apply/step2_7.do">Online Exhibition</a></li>--%>
-                                <li><a href="/eng/apply/step2_8.do">Directory</a></li>
+                                <li><a>Booth</a></li>
+                                <li><a>Yacht/Boat</a></li>
+                                <li class="active"><a>Signboard</a></li>
+                                <li><a>Utilities</a></li>
+                                <li><a>Badges</a></li>
+                                <li><a>Giveaways</a></li>
+                                <li><a>Directory</a></li>
                             </ul>
                         </li>
-                        <li><a href="/eng/apply/step03.do">Complete Registration</a></li>
+                        <li><a>Complete</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="apply_step">
-                <div class="apply_tit">Fascia Board Title</div>
+                <div class="apply_tit">Signboard Info</div>
                 <div class="apply_step_wrap">
                     <div class="apply_step_box step1">
                         <div class="gubun">
-                            <p>Step 1</p>Basic Information
+                            <p>Step 1</p>Basic Info
                         </div>
                         <div class="gauge">
                             <progress class="gauge_bar" value="100" max="100"></progress>
                         </div>
-                        <div class="txt">Complete</div>
+                        <div class="txt">Completed</div>
                     </div>
                     <div class="apply_step_box step2">
                         <div class="gubun">
-                            <p>Step 2</p>Exhibition Req.
+                            <p>Step 2</p>Exhibition Info
                         </div>
                         <div class="gauge">
-                            <progress class="gauge_bar" value="10" max="80"></progress>
+                            <progress class="gauge_bar" value="37.5" max="100"></progress>
                         </div>
-                        <div class="txt">Proceeding...(1/7)</div>
+                        <div class="txt">In Progress <p>(<span>7</span> of <span>2</span> completed)</p></div>
                     </div>
                     <div class="apply_step_box step3">
                         <div class="gubun">
-                            <p>Step 3</p>Complete Registration
+                            <p>Step 3</p>Complete
                         </div>
                         <div class="gauge">
                             <progress class="gauge_bar" value="0" max="100"></progress>
                         </div>
-                        <div class="txt">Condition Not Met</div>
+                        <div class="txt">Requirement Not Met</div>
                     </div>
                 </div>
             </div>
@@ -153,40 +157,39 @@
 
                     <div class="form_wrap">
                         <ul class="form_guide">
-                            <li>Please mark Korean and English respectively</li>
-                            <li>Maximum number of characters: Korean (64), English (64)</li>
-                            <li>Please write the punctuation marks such as commas and periods and the trade name
-                                including 'CO., LTD.’
-                            </li>
-                            <li><span class="emRed">Only companies that apply for "assembly booth" must fill out the sign</span>
-                            </li>
+                            <li>Please Enter Korean and English separately.</li>
+                            <li>Maximum 64 characters for each language.</li>
+                            <li>Please enter the company name exactly as registered, including punctuation and company designation.</li>
                         </ul>
                     </div>
 
                     <!-- 부스신청 -->
                     <div class="form_wrap">
-                        <div class="form_tit">
-                            <div class="big">Fascia Board Title</div>
+                        <div class="form_tit flex">
+                            <div class="big">Signboard Info</div>
+                            <div class="assist">(Assembly booth exhibitors must be required)</div>
                         </div>
                         <ul class="form_box">
                             <li>
-                                <div class="item req">
-                                    <p>Fascia Board Title</p>
+                                <div class="item <c:if test="${info.assemblyBoothCnt > 0}">req</c:if>">
+                                    <p>Signboard Text</p>
                                 </div>
                                 <div class="input">
-                                    <input type="text">
+                                    <input type="hidden" id="assemblyBoothCnt" value="${info.assemblyBoothCnt}">
+                                    <input type="text" id="companySignNameKo" value="${info.companySignNameKo}" placeholder="Korean">
+                                    <input type="text" id="companySignNameEn" value="${info.companySignNameEn}" placeholder="English" class="onlyNumEng">
                                 </div>
                             </li>
                         </ul>
                     </div>
 
                     <div class="form_btn">
-                        <a href="/eng/apply/step2_1.do#apply_s" class="form_btn_prev">
+                        <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_9.do','${info.seq}')" class="form_btn_prev">
                             <div class="big">PREV</div>
-                            <div class="small">Exhibitor Booth</div>
+                            <div class="small">Yacht/Boat</div>
                         </a>
-                        <a href="/eng/apply/step2_3.do#apply_s" class="form_btn_next">
-                            <div class="big">NEXT</div>
+                        <a href="javascript:void(0);" onclick="f_apply_comp('2_2','${info.seq}')" class="form_btn_next">
+                            <div class="big">NEXT / SKIP</div>
                             <div class="small">Utilities</div>
                         </a>
                     </div>

@@ -62,179 +62,178 @@
 
 <c:if test="${sessionScope.get('status') eq 'logon'}">
 
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
+    <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-<div id="container">
+    <div id="container">
 
-    <!-- section -->
-    <div class="sub_top">
-        <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>홈</span><span>참가기업</span><span>마이페이지</span>
+        <!-- section -->
+        <div class="sub_top">
+            <div class="inner">
+                <div class="sub_top_box">
+                    <div class="sub_top_nav">
+                        <span>홈</span><span>참가기업</span><span>마이페이지</span>
+                    </div>
+                    <div class="sub_top_tit">마이페이지</div>
                 </div>
-                <div class="sub_top_tit">마이페이지</div>
             </div>
         </div>
-    </div>
-    <!-- //section -->
+        <!-- //section -->
 
+        <!-- section -->
+        <div class="apply_s padding_tb" id="apply_s">
+            <div class="inner">
 
-    <!-- section -->
-    <div class="apply_s padding_tb" id="apply_s">
-        <div class="inner">
-
-            <div class="apply_nav">
-                <div class="apply_nav_txt">
-                    <div class="txt">${info.companyNameKo} 님 환영합니다!</div>
-                    <div class="btn">
-                        <a href="javascript:void(0);" onclick="f_page_move('/mypage/modify.do','${info.seq}')" class="btnSt01">회원정보관리</a>
-                        <a href="javascript:void(0);" onclick="f_page_move('/mypage/index.do', {seq: `${info.seq}`})" class="btnSt01">마이페이지</a>
+                <div class="apply_nav">
+                    <div class="apply_nav_txt">
+                        <div class="txt">${info.companyNameKo} 님 환영합니다!</div>
+                        <div class="btn">
+                            <a href="javascript:void(0);" onclick="f_page_move('/mypage/modify.do','${info.seq}')" class="btnSt01">회원정보관리</a>
+                            <a href="javascript:void(0);" onclick="f_page_move('/mypage/index.do', {seq: `${info.seq}`})" class="btnSt01">마이페이지</a>
+                        </div>
+                    </div>
+                    <div class="apply_nav_list">
+                        <ul class="list1">
+                            <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step01.do','${info.seq}')">기본정보</a></li>
+                            <li>
+                                <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
+                                <ul class="list2">
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
+                                    <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">요트/보트 출품 정보</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_5.do','${info.seq}')">경품제공 신청</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_8.do','${info.seq}')">디렉토리 정보</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step03.do','${info.seq}')">전시참가 신청 완료</a></li>
+                        </ul>
                     </div>
                 </div>
-                <div class="apply_nav_list">
-                    <ul class="list1">
-                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step01.do','${info.seq}')">기본정보</a></li>
-                        <li>
-                            <a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시 신청 정보</a>
-                            <ul class="list2">
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">전시부스 신청</a></li>
-                                <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_9.do','${info.seq}')">요트/보트 출품 정보</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_2.do','${info.seq}')">상호간판 신청</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">유틸리티 신청</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_4.do','${info.seq}')">출입증 신청</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_5.do','${info.seq}')">경품제공 신청</a></li>
-                                <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_8.do','${info.seq}')">디렉토리 정보</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step03.do','${info.seq}')">전시참가 신청 완료</a></li>
-                    </ul>
-                </div>
-            </div>
 
-            <!-- section -->
-            <div class="my_main my_form form_s">
-                <div class="inner">
-                    <div class="form_wrap">
-                        <div class="form_tit">
-                            <div class="big">참가비 결제 현황 :
-                                <c:if test="${info.prcYn eq '0'}"><span class="txtRed">미납</span></c:if>
-                                <c:if test="${info.prcYn eq '1'}"><span class="txtBlue">무료 부스</span></c:if>
-                                <c:if test="${info.prcYn eq '2'}"><span class="txtBlue">참가비 (50%) 납부</span></c:if>
-                                <c:if test="${info.prcYn eq '3'}"><span class="txtBlue">참가비 (100%) 납부</span></c:if>
-                                <c:if test="${info.prcYn eq '4'}"><span class="txtBlue">완납(참가비/부대시설비) 납부</span></c:if>
+                <!-- section -->
+                <div class="my_main my_form form_s">
+                    <div class="inner">
+                        <div class="form_wrap">
+                            <div class="form_tit">
+                                <div class="big">참가비 결제 현황 :
+                                    <c:if test="${info.prcYn eq '0'}"><span class="txtRed">미납</span></c:if>
+                                    <c:if test="${info.prcYn eq '1'}"><span class="txtBlue">무료 부스</span></c:if>
+                                    <c:if test="${info.prcYn eq '2'}"><span class="txtBlue">참가비 (50%) 납부</span></c:if>
+                                    <c:if test="${info.prcYn eq '3'}"><span class="txtBlue">참가비 (100%) 납부</span></c:if>
+                                    <c:if test="${info.prcYn eq '4'}"><span class="txtBlue">완납(참가비/부대시설비) 납부</span></c:if>
+                                </div>
                             </div>
-                        </div>
-                        <div class="my_main_pay">
-                            <ul class="payList">
-                                <li>
-                                    <div class="cont_box">
-                                        <div class="icon"><img src="/img/icon_my01.png"></div>
-                                        <div class="txt_box">
-                                            <div class="gubun">부스 참가비</div>
-                                            <div class="txt">
-                                                <c:set var="specialDicountTotal" value="0"/>
-                                                <c:choose>
-                                                    <c:when test="${info.memberCompanyYn eq 'Y'}">
-                                                        <c:set var="baseSpecialAmount" value="${info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum}"/>
-                                                        <c:if test="${info.discountSpecial1Yn}">
-                                                            <c:set var="specialDicountTotal" value="${baseSpecialAmount * 0.5}"/>
-                                                        </c:if>
-                                                        <c:if test="${info.discountSpecial2Yn}">
-                                                            <c:set var="specialDicountTotal" value="${specialDicountTotal + info.discountSpecial2Amount}"/>
-                                                        </c:if>
-                                                        <c:if test="${info.discountSpecial3Yn}">
-                                                            <c:set var="specialDicountTotal" value="${specialDicountTotal + info.discountSpecial3Amount}"/>
-                                                        </c:if>
-                                                        <fmt:formatNumber value="${info.boothPrcSum + ((info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum - specialDicountTotal) * 0.1)}" pattern="#,###"/> 원
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <fmt:formatNumber value="${info.boothPrcSum}" pattern="#,###"/> 원
-                                                    </c:otherwise>
-                                                </c:choose>
+                            <div class="my_main_pay">
+                                <ul class="payList">
+                                    <li>
+                                        <div class="cont_box">
+                                            <div class="icon"><img src="/img/icon_my01.png"></div>
+                                            <div class="txt_box">
+                                                <div class="gubun">부스 참가비</div>
+                                                <div class="txt">
+                                                    <c:set var="specialDicountTotal" value="0"/>
+                                                    <c:choose>
+                                                        <c:when test="${info.memberCompanyYn eq 'Y'}">
+                                                            <c:set var="baseSpecialAmount" value="${info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum}"/>
+                                                            <c:if test="${info.discountSpecial1Yn}">
+                                                                <c:set var="specialDicountTotal" value="${baseSpecialAmount * 0.5}"/>
+                                                            </c:if>
+                                                            <c:if test="${info.discountSpecial2Yn}">
+                                                                <c:set var="specialDicountTotal" value="${specialDicountTotal + info.discountSpecial2Amount}"/>
+                                                            </c:if>
+                                                            <c:if test="${info.discountSpecial3Yn}">
+                                                                <c:set var="specialDicountTotal" value="${specialDicountTotal + info.discountSpecial3Amount}"/>
+                                                            </c:if>
+                                                            <fmt:formatNumber value="${info.boothPrcSum + ((info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum - specialDicountTotal) * 0.1)}" pattern="#,###"/> 원
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <fmt:formatNumber value="${info.boothPrcSum}" pattern="#,###"/> 원
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <a class="btn" href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">┼</a>
-                                </li>
-                                <li>
-                                    <div class="cont_box">
-                                        <div class="icon"><img src="/img/icon_my02.png"></div>
-                                        <div class="txt_box">
-                                            <div class="gubun">유틸리티</div>
-                                            <div class="txt"><fmt:formatNumber value="${info.utilityPrcSum}" pattern="#,###"/> 원</div>
-                                        </div>
-                                    </div>
-                                    <a class="btn" href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">┼</a>
-                                </li>
-                                <li>
-                                    <div class="cont_box">
-                                        <div class="icon"><img src="/img/icon_my04.png"></div>
-                                        <div class="txt_box">
-                                            <div class="gubun">할인</div>
-                                            <div class="txt">
-                                                <c:set var="baseTotal" value="${info.boothPrcSum - info.discountPrcSum}"/>
-                                                <c:set var="baseSpecialDiscount" value="0"/>
-                                                <c:if test="${info.discountSpecial1Yn}">
-                                                    <c:set var="baseSpecialDiscount" value="${baseTotal * 0.5}"/>
-                                                </c:if>
-                                                <c:if test="${info.discountSpecial2Yn}">
-                                                    <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial2Amount}"/>
-                                                </c:if>
-                                                <c:if test="${info.discountSpecial3Yn}">
-                                                    <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial3Amount}"/>
-                                                </c:if>
-                                                <fmt:formatNumber value="${info.discountPrcSum + baseSpecialDiscount}" pattern="#,###"/> 원
+                                        <a class="btn" href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">┼</a>
+                                    </li>
+                                    <li>
+                                        <div class="cont_box">
+                                            <div class="icon"><img src="/img/icon_my02.png"></div>
+                                            <div class="txt_box">
+                                                <div class="gubun">유틸리티</div>
+                                                <div class="txt"><fmt:formatNumber value="${info.utilityPrcSum}" pattern="#,###"/> 원</div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <a class="btn" href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">┼</a>
-                                </li>
-                                <li>
-                                    <div class="cont_box">
-                                        <div class="icon"><img src="/img/icon_my05.png"></div>
-                                        <div class="txt_box">
-                                            <div class="gubun">합계(VAT 별도)</div>
-                                            <div class="txt"><fmt:formatNumber value="${info.prcSum}" pattern="#,###"/> 원</div>
+                                        <a class="btn" href="javascript:void(0);" onclick="f_page_move('/mypage/step2_3.do','${info.seq}')">┼</a>
+                                    </li>
+                                    <li>
+                                        <div class="cont_box">
+                                            <div class="icon"><img src="/img/icon_my04.png"></div>
+                                            <div class="txt_box">
+                                                <div class="gubun">할인</div>
+                                                <div class="txt">
+                                                    <c:set var="baseTotal" value="${info.boothPrcSum - info.discountPrcSum}"/>
+                                                    <c:set var="baseSpecialDiscount" value="0"/>
+                                                    <c:if test="${info.discountSpecial1Yn}">
+                                                        <c:set var="baseSpecialDiscount" value="${baseTotal * 0.5}"/>
+                                                    </c:if>
+                                                    <c:if test="${info.discountSpecial2Yn}">
+                                                        <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial2Amount}"/>
+                                                    </c:if>
+                                                    <c:if test="${info.discountSpecial3Yn}">
+                                                        <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial3Amount}"/>
+                                                    </c:if>
+                                                    <fmt:formatNumber value="${info.discountPrcSum + baseSpecialDiscount}" pattern="#,###"/> 원
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <a class="btn" href="javascript:void(0);" onclick="f_page_move('/mypage/total.do','${info.seq}')">┼</a>
-                                </li>
-                            </ul>
-                            <div class="payTotal">
-                                <span class="amount"><fmt:formatNumber value="${info.prcSum}" pattern="#,###"/> 원</span>
-                                <span class="vat"><fmt:formatNumber value="${info.prcVat}" pattern="#,###"/> 원(VAT)</span>
-                                <span class="total">총합계 <fmt:formatNumber value="${info.prcTotal}" pattern="#,###"/> 원</span>
+                                        <a class="btn" href="javascript:void(0);" onclick="f_page_move('/mypage/step2_1.do','${info.seq}')">┼</a>
+                                    </li>
+                                    <li>
+                                        <div class="cont_box">
+                                            <div class="icon"><img src="/img/icon_my05.png"></div>
+                                            <div class="txt_box">
+                                                <div class="gubun">합계(VAT 별도)</div>
+                                                <div class="txt"><fmt:formatNumber value="${info.prcSum}" pattern="#,###"/> 원</div>
+                                            </div>
+                                        </div>
+                                        <a class="btn" href="javascript:void(0);" onclick="f_page_move('/mypage/total.do','${info.seq}')">┼</a>
+                                    </li>
+                                </ul>
+                                <div class="payTotal">
+                                    <span class="amount"><fmt:formatNumber value="${info.prcSum}" pattern="#,###"/> 원</span>
+                                    <span class="vat"><fmt:formatNumber value="${info.prcVat}" pattern="#,###"/> 원(VAT)</span>
+                                    <span class="total">총합계 <fmt:formatNumber value="${info.prcTotal}" pattern="#,###"/> 원</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form_wrap">
+                            <div class="form_tit">
+                                <div class="big">참가신청서 <span class="txtRed">수정 방법</span></div>
+                            </div>
+                            <div>
+                                <ul>
+                                    <li style="margin-bottom: 15px; font-size: 1.8rem;">
+                                        1 . 마이페이지 좌측의 탭 중에서, 수정하고자 하는 탭을 클릭하신 후 수정할 정보를 입력해 주세요.
+                                    </li>
+                                    <li style="font-size: 1.8rem;">
+                                        2 . 수정할 정보 입력 후, 우측 하단의 [다음] 버튼을 눌러 저장하세요. “부스 신청 정보가 저장되었습니다“ 와 같은 안내 창이 뜨면 정상적으로 정보가 변경된 것입니다.
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="form_wrap">
-                        <div class="form_tit">
-                            <div class="big">참가신청서 <span class="txtRed">수정 방법</span></div>
-                        </div>
-                        <div>
-                            <ul>
-                                <li style="margin-bottom: 15px; font-size: 1.8rem;">
-                                    1 . 마이페이지 좌측의 탭 중에서, 수정하고자 하는 탭을 클릭하신 후 수정할 정보를 입력해 주세요.
-                                </li>
-                                <li style="font-size: 1.8rem;">
-                                    2 . 수정할 정보 입력 후, 우측 하단의 [다음] 버튼을 눌러 저장하세요. “부스 신청 정보가 저장되었습니다“ 와 같은 안내 창이 뜨면 정상적으로 정보가 변경된 것입니다.
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
-            </div>
-            <!-- //section -->
+                <!-- //section -->
 
+            </div>
         </div>
+        <!-- //section -->
+
     </div>
-    <!-- //section -->
 
-</div>
-
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
+    <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 </c:if>
 </body>
 </html>

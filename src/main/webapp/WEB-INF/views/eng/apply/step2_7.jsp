@@ -69,7 +69,7 @@
                         <div class="tabOptSel">
                             <a href="/eng/guide/summary.do">KIBS 2026</a>
                             <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
-                            <a href="/eng/buyer/glance.do">Buyer</a>
+                            <a href="/eng/buyer/glance.do">Buyers</a>
                             <a href="/eng/board/notice.do">News</a>
                         </div>
                     </div>
@@ -95,11 +95,11 @@
             <div class="apply_nav">
                 <div class="apply_nav_list">
                     <ul class="list1">
-                        <li><a href="/eng/apply/step01.do">Basic Information</a></li>
+                        <li><a href="/eng/apply/step01.do">Basic Info</a></li>
                         <li class="active">
-                            <a href="/eng/apply/step2_1.do">Exhibition Req.</a>
+                            <a href="/eng/apply/step2_1.do">Exhibition Info</a>
                             <ul class="list2">
-                                <li><a href="/eng/apply/step2_1.do">Exhibitor Booth</a></li>
+                                <li><a href="/eng/apply/step2_1.do">Booth</a></li>
                                 <li><a href="/eng/apply/step2_2.do">Fascia Board Title</a></li>
                                 <li><a href="/eng/apply/step2_3.do">Utilities</a></li>
                                 <li><a href="/eng/apply/step2_4.do">Exhibitor Pass</a></li>

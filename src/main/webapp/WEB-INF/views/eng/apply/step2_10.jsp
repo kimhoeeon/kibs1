@@ -40,15 +40,6 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
-
-    <span itemscope="" itemtype="http://schema.org/Organization">
-        <link itemprop="url" href="https://kibs.com/">
-        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
-        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
-        <a itemprop="sameAs" href="https://kibs-online.com"></a>
-        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
-        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
-    </span>
 </head>
 
 <body>
@@ -110,11 +101,11 @@
                     <div class="apply_nav_list">
                         <ul class="list1">
                             <li><a>Basic Info</a></li>
-                            <li>
-                                <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_1.do','${info.seq}')">Exhibition Info</a>
+                            <li class="active">
+                                <a>Exhibition Info</a>
                                 <ul class="list2">
                                     <li><a>Booth</a></li>
-                                    <li><a>Yacht/Boat</a></li>
+                                    <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_10.do','${info.seq}')">Yacht/Boat</a></li>
                                     <li><a>Signboard</a></li>
                                     <li><a>Utilities</a></li>
                                     <li><a>Badges</a></li>
@@ -122,40 +113,40 @@
                                     <li><a>Directory</a></li>
                                 </ul>
                             </li>
-                            <li class="active"><a>Complete</a></li>
+                            <li><a>Complete</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="apply_step">
-                    <div class="apply_tit">Application Complete</div>
+                    <div class="apply_tit">해상전시회 신청</div>
                     <div class="apply_step_wrap">
                         <div class="apply_step_box step1">
                             <div class="gubun">
-                                <p>Step 1</p>Basic Info
+                                <p>Step 1</p>기본정보 입력
                             </div>
                             <div class="gauge">
                                 <progress class="gauge_bar" value="100" max="100"></progress>
                             </div>
-                            <div class="txt">Completed</div>
+                            <div class="txt">완료됨</div>
                         </div>
                         <div class="apply_step_box step2">
                             <div class="gubun">
-                                <p>Step 2</p>Exhibition Info
+                                <p>Step 2</p>전시 신청 정보
                             </div>
                             <div class="gauge">
-                                <progress class="gauge_bar" value="100" max="100"></progress>
+                                <progress class="gauge_bar" value="10" max="80"></progress>
                             </div>
-                            <div class="txt">Complete</div>
+                            <div class="txt">진행중...<p>(총 <span>8</span>개 중 <span>1</span> 완료)</p></div>
                         </div>
                         <div class="apply_step_box step3">
                             <div class="gubun">
-                                <p>Step 3</p>Complete
+                                <p>Step 3</p>전시참가 신청 완료
                             </div>
                             <div class="gauge">
-                                <progress class="gauge_bar" value="5" max="100"></progress>
+                                <progress class="gauge_bar" value="0" max="100"></progress>
                             </div>
-                            <div class="txt">진행중..</div>
+                            <div class="txt">진행조건이 충족되지 않음</div>
                         </div>
                     </div>
                 </div>
@@ -164,47 +155,95 @@
                 <div class="apply_form form_s padding_t">
                     <div class="inner">
 
-                        <!-- 안내문구 -->
-                        <div class="form_wrap">
-                            <div class="form_guide_comp">
-                                <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
-                                <div class="form_guide_comp_txt">
-                                    You have completed all required forms for participation in KIBS 2027<br>
-                                    Please click the button below to submit your application for final approval.
+                        <!-- 참가분야 -->
+                        <div class="form_wrap maritime">
+                            <div class="form_tit">
+                                <div class="big">참가 여부</div>
+                            </div>
+                            <ul class="form_box">
+                                <li>
+                                    <div class="item req">
+                                        <p>참가 여부</p>
+                                    </div>
+                                    <div class="input check m_check">
+                                        <label><input type="radio" name="maritimeExhibitionYn" value="Y" <c:if test="${info.maritimeExhibitionYn eq 'Y' or empty info.maritimeExhibitionYn}">checked</c:if> />참가</label>
+                                        <div id="maritimeDetailBox" style="display: none;">
+                                            (
+                                            <label><input type="checkbox" name="maritimeExhibitionSea" value="true" <c:if test="${info.maritimeExhibitionSea}">checked</c:if> /> 해상 전시 (시승체험)</label>
+                                            <label><input type="checkbox" name="maritimeExhibitionLand" value="true" <c:if test="${info.maritimeExhibitionLand}">checked</c:if> /> 육상 전시</label>
+                                            )
+                                        </div>
+                                        <label><input type="radio" name="maritimeExhibitionYn" value="N" <c:if test="${info.maritimeExhibitionYn eq 'N'}">checked</c:if> />미참가</label>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="cmnt">※ 해상전시회 개최 장소인 시흥시는 <span class="txtRed" style="font-weight: 700;">거북섬마리나의 시설 규모 및 계류 여건상, </span>전시 가능한 선박 수에 제한이 있습니다.<br> 이에 따라 <span class="txtRed" style="font-weight: 700;">참가신청 업체 중 선정업체 및 전시 허용 수량은 추후 별도 안내드릴 예정</span>입니다.</div>
+                            <div class="maritime_cont">
+                                <div class="tit">
+                                    <div class="big">
+                                        <span>육상(3월, 킨텍스) - 해상(6월, 시흥 거북섬마리나)</span> 연계형 통합 홍보 프로그램_<span>해상전시회</span>
+                                    </div>
                                 </div>
-                                <a href="javascript:f_apply_comp('03','${info.seq}')" class="form_guide_comp_btn btnSt01">Submit Application</a>
+                                <ul>
+                                    <li>2026년 6월, <span>경기국제보트쇼 해상전시회 @ 시흥 거북섬마리나</span> 개최</li>
+                                    <li>3월 킨텍스 육상전시회와 6월 거북섬마리나 <span>해상전시회를 하나의 연속 프로그램</span>으로 구성</li>
+                                    <li>해상 계류 전시장 내 보트 실물 전시 및 시승체험, 선상투어 등을 통해 <span>해상 체험 중심 프로그램</span> 운영</li>
+                                </ul>
+                                <div class="maritime_img">
+                                    <img src="/img/maritime_img01.jpg" alt="해상전시회 사진">
+                                    <img src="/img/maritime_img02.jpg" alt="해상전시회 사진">
+                                    <img src="/img/maritime_img03.jpg" alt="해상전시회 사진">
+                                </div>
                             </div>
                         </div>
-                        <!-- 안내문구 -->
+
+                        <div class="form_btn">
+                            <a href="javascript:void(0);" onclick="f_page_move('/apply/step2_1.do','${info.seq}')" class="form_btn_prev">
+                                <div class="big">이전</div>
+                                <div class="small">전시부스 신청</div>
+                            </a>
+                            <a href="javascript:void(0);" onclick="f_apply_comp('2_10','${info.seq}')" class="form_btn_next">
+                                <div class="big">다음 / 건너뛰기</div>
+                                <div class="small">요트/보트 출품 정보</div>
+                            </a>
+                        </div>
 
                     </div>
                 </div>
                 <!-- //section -->
             </div>
         </div>
-
     </div>
 
     <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-    <script type="text/javascript">
-        // Meta 전환
-        fbq('track', 'CompleteRegistration');
+    <script>
+        $(function(){
+            // JSP의 info 객체에서 참가업체 SEQ를 가져옵니다. (다음 단계 이동 시 사용)
+            const maritimeRadio = $('input[name="maritimeExhibitionYn"]');
+            const detailBox = $('#maritimeDetailBox');
 
-        // Google 전환
-        gtag('event', 'conversion', {
-            'send_to': 'AW-866426231/bkbKCIjC0OwbEPe6kp0D',
-            'value': 1.0,
-            'currency': 'KRW'
-        });
+            /**
+             * '참가 여부' 라디오 버튼의 현재 선택 상태에 따라
+             * '참가 항목' 체크박스 영역을 보여주거나 숨깁니다.
+             */
+            function toggleDetailBox() {
+                // 현재 체크된 라디오 버튼의 value가 'Y' (참가)인지 확인합니다.
+                if ($('input[name="maritimeExhibitionYn"]:checked').val() === 'Y') {
+                    detailBox.show(); // '참가'이면 상세 항목 박스를 보여줍니다.
+                } else {
+                    detailBox.hide(); // '미참가'이면 상세 항목 박스를 숨깁니다.
+                    // 미참가 선택 시, 기존에 체크되어 있던 상세 항목들을 모두 해제합니다.
+                    detailBox.find('input[type="checkbox"]').prop('checked', false);
+                }
+            }
 
-        // Naver 전환 (Lead 타입)
-        // 공통 스크립트(ad_scripts.jsp)에서 wcslog.js 로드 및 계정 ID(s_3ee90871e561) 설정됨
-        if(window.wcs){
-            var _conv = {};
-            _conv.type = 'lead';
-            wcs.trans(_conv);
-        }
+            // 라디오 버튼의 선택 상태가 변경될 때마다 toggleDetailBox 함수를 실행합니다.
+            maritimeRadio.on('change', toggleDetailBox);
+
+            // --- 페이지 로드 시 초기 상태 설정 ▼▼▼ ---
+            toggleDetailBox();
+        })
     </script>
 
 </body>

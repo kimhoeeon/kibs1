@@ -79,7 +79,6 @@
             </div>
             <!-- //section -->
 
-
             <!-- section -->
             <div class="apply_s padding_tb" id="apply_s">
                 <div class="inner">
@@ -162,19 +161,19 @@
 
                                     <c:if test="${not empty passList}">
                                         <c:forEach var="pass" items="${passList}" begin="0" end="${passList.size()}" step="1" varStatus="status">
-                                        <ul class="formPassBd formTbBd">
-                                            <input type="hidden" name="passSeq" value="${pass.seq}">
-                                            <li class="passNum addNum">${status.index + 1}</li>
-                                            <li class="passNameK"><input type="text" name="pass_name" value="${pass.passName}" placeholder="성명" <%--disabled--%>></li>
-                                            <li class="passNameE">
-                                                <input type="text" name="pass_first_name" class="onlyNumEng w50" value="${pass.passFirstName}" placeholder="이름" <%--disabled--%>>
-                                                <input type="text" name="pass_last_name" class="onlyNumEng w50" value="${pass.passLastName}" placeholder="성" <%--disabled--%>>
-                                            </li>
-                                            <li class="passPosK"><input type="text" name="pass_position_ko" value="${pass.passPositionKo}" placeholder="직책(국문)" <%--disabled--%>></li>
-                                            <li class="passPosE"><input type="text" name="pass_position_en" class="onlyNumEng" value="${pass.passPositionEn}" placeholder="직책(영문)" <%--disabled--%>></li>
-                                            <li class="passNote"><input type="text" name="pass_note" value="${pass.passNote}" placeholder="비고" <%--disabled--%>></li>
-                                            <li class="passDel addDel"><img src="/img/icon_del.png"></li>
-                                        </ul>
+                                            <ul class="formPassBd formTbBd">
+                                                <input type="hidden" name="passSeq" value="${pass.seq}">
+                                                <li class="passNum addNum">${status.index + 1}</li>
+                                                <li class="passNameK"><input type="text" name="pass_name" value="${pass.passName}" placeholder="성명" <%--disabled--%>></li>
+                                                <li class="passNameE">
+                                                    <input type="text" name="pass_first_name" class="onlyNumEng w50" value="${pass.passFirstName}" placeholder="이름" <%--disabled--%>>
+                                                    <input type="text" name="pass_last_name" class="onlyNumEng w50" value="${pass.passLastName}" placeholder="성" <%--disabled--%>>
+                                                </li>
+                                                <li class="passPosK"><input type="text" name="pass_position_ko" value="${pass.passPositionKo}" placeholder="직책(국문)" <%--disabled--%>></li>
+                                                <li class="passPosE"><input type="text" name="pass_position_en" class="onlyNumEng" value="${pass.passPositionEn}" placeholder="직책(영문)" <%--disabled--%>></li>
+                                                <li class="passNote"><input type="text" name="pass_note" value="${pass.passNote}" placeholder="비고" <%--disabled--%>></li>
+                                                <li class="passDel addDel"><img src="/img/icon_del.png"></li>
+                                            </ul>
                                         </c:forEach>
                                     </c:if>
                                     <div class="form_tb_btn form_add_btn">추가</div>

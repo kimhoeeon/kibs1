@@ -147,7 +147,7 @@
                                 <p>Step 2</p>전시 신청 정보
                             </div>
                             <div class="gauge">
-                                <progress class="gauge_bar" value="80" max="80"></progress>
+                                <progress class="gauge_bar" value="100" max="100"></progress>
                             </div>
                             <div class="txt">완료됨</div>
                         </div>

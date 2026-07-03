@@ -70,7 +70,7 @@
                         <div class="tabOptSel">
                             <a class="active" href="/eng/guide/summary.do">KIBS 2026</a>
                             <a href="/eng/exhibitor/categories.do">Exhibitors</a>
-                            <a href="/eng/buyer/glance.do">Buyer</a>
+                            <a href="/eng/buyer/glance.do">Buyers</a>
                             <a href="/eng/board/notice.do">News</a>
                         </div>
                     </div>

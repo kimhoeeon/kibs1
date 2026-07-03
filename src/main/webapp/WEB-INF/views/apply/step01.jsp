@@ -138,7 +138,9 @@
                         <div class="apply_nav">
                             <div class="apply_nav_list">
                                 <ul class="list1">
-                                    <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/apply/step01.do','${info.seq}')">기본정보</a></li>
+                                    <li class="active">
+                                        <a href="javascript:void(0);" onclick="f_page_move('/apply/step01.do','${info.seq}')">기본정보</a>
+                                    </li>
                                     <li>
                                         <a>전시 신청 정보</a>
                                         <ul class="list2">

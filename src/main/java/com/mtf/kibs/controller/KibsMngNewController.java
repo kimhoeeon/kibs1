@@ -68,7 +68,7 @@ public class KibsMngNewController {
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/participant/company/detail.do", method = RequestMethod.GET)
-    public ModelAndView mng_exhibitorNewNew_company_detail(String seq) {
+    public ModelAndView mng_exhibitorNewNew_company_detail(String seq, String lang) {
         //System.out.println("KibsMngController > mng_exhibitorNew_company_detail");
         //System.out.println(seq);
         ModelAndView mv = new ModelAndView();
@@ -127,7 +127,11 @@ public class KibsMngNewController {
             }
 
         }
-        mv.setViewName("/mng/exhibitorNewNew/participant/company/detail");
+        if(lang.equals("EN")){
+            mv.setViewName("/mng/exhibitorNewNew/participant/company/detail_en");
+        }else{
+            mv.setViewName("/mng/exhibitorNewNew/participant/company/detail");
+        }
         return mv;
     }
 

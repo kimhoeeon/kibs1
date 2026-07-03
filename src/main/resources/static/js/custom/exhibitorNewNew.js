@@ -338,10 +338,10 @@ function f_search_condition_init(){
     f_exhibitor_search();
 }
 
-function f_exhibitor_detail(seq){
+function f_exhibitor_detail(seq, lang){
     $('#applyDetailForm').removeAttr('src');
 
-    $('#applyDetailForm').attr('src','/mng/exhibitorNewNew/participant/company/detail.do?seq=' + seq);
+    $('#applyDetailForm').attr('src','/mng/exhibitorNewNew/participant/company/detail.do?seq=' + seq + '&lang=' + lang);
 }
 
 function f_exhibitor_remove(seq){

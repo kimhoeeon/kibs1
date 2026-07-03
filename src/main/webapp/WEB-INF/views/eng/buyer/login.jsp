@@ -50,7 +50,7 @@
         <div class="inner">
             <div class="sub_top_box">
                 <div class="sub_top_nav">
-                    <span>Home</span><span>Buyer</span><span>Login</span>
+                    <span>Home</span><span>Buyers</span><span>Login</span>
                 </div>
                 <div class="sub_top_tit">Login</div>
             </div>
@@ -70,7 +70,17 @@
                     </div>
                     <div class="loginInfo">
                         <p>Mobile</p>
-                        <input type="tel" id="phone" name="phone" class="onlyTel" maxlength="13" placeholder="Please enter only numbers.">
+                        <select id="phoneCode">
+                            <option value="+82" selected>+82 (KOR)</option>
+                            <option value="+1">+1 (USA/CAN)</option>
+                            <option value="+44">+44 (GBR)</option>
+                            <option value="+49">+49 (DEU)</option>
+                            <option value="+61">+61 (AUS)</option>
+                            <option value="+81">+81 (JPN)</option>
+                            <option value="+86">+86 (CHN)</option>
+                            <option value="+91">+91 (IND)</option>
+                        </select>
+                        <input type="tel" id="phone" name="phone" class="onlyTel" maxlength="20" placeholder="Please enter only numbers.">
                     </div>
                     <div class="btnLogin"><a href="javascript:void(0);" onclick="f_en_pre_apply_check_login()" class="btnSt01">Confirm Registration</a></div>
                 </div>

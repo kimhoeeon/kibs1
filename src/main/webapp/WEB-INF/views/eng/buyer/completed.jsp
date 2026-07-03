@@ -38,6 +38,15 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+
+    <span itemscope="" itemtype="http://schema.org/Organization">
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+    </span>
 </head>
 
 <body>
@@ -50,7 +59,7 @@
             <div class="inner">
                 <div class="sub_top_box">
                     <div class="sub_top_nav">
-                        <span>Home</span><span>Buyer</span><span>Pre-registration</span>
+                        <span>Home</span><span>Buyers</span><span>Pre-registration</span>
                     </div>
                     <div class="sub_top_tit">Pre-registration</div>
                 </div>
@@ -65,11 +74,11 @@
                     <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
                     <div class="optionBox">
                         <div class="tabOpt1 tabOption">
-                            <div class="tabOptAct">Buyer</div>
+                            <div class="tabOptAct">Buyers</div>
                             <div class="tabOptSel">
                                 <a href="/eng/guide/summary.do">KIBS 2026</a>
                                 <a href="/eng/exhibitor/categories.do">Exhibitors</a>
-                                <a class="active" href="/eng/buyer/glance.do">Buyer</a>
+                                <a class="active" href="/eng/buyer/glance.do">Buyers</a>
                                 <a href="/eng/board/notice.do">News</a>
                             </div>
                         </div>
@@ -77,7 +86,7 @@
                             <div class="tabOptAct">Pre-registration</div>
                             <div class="tabOptSel">
                                 <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor guide</a>
-                                <a class="active" href="/visitor/apply.do">Pre-registration</a>
+                                <a class="active" href="/eng/buyer/apply.do">Pre-registration</a>
                                 <a href="/eng/buyer/glance.do">Korea at a Glance</a>
                                 <a href="/eng/buyer/marina.do">Marine Industry in korea</a>
                                 <a href="/eng/buyer/match.do">Exhibitor-Buyer Matchmaking Program</a>
@@ -99,8 +108,8 @@
                     <div class="form_guide_comp" style="background: #fff;">
                         <div class="form_guide_comp_img"><img src="/img/logo3_eng.png"></div>
                         <div class="form_guide_comp_txt">
-                            2025 Gyeonggi International Boat Show pre-registration has been completed.<br>
-                            Check the application details on MyPage.
+                            Your pre-registration for the 2027 Korea International Boat Show has been successfully submitted.
+                            <br>You can view your registration details in My Page.
                         </div>
                         <a href="/eng/buyer/login.do" class="form_guide_comp_btn btnSt01">Confirm Application</a>
                     </div>

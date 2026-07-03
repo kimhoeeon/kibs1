@@ -45,7 +45,7 @@ function certificateEmail(el){
     certifyCode = generateRandomCode(5);
     //console.log(certifyCode);
     let jsonObj = {
-        subject: '[ 2027 경기국제보트쇼 ] 참가기업 인증 안내', //제목
+        subject: '[ 2027 KIBS ] Participant Certification Info', //제목
         body: "", //본문
         template: "160", //템플릿 번호
         receiver: [{ email: email , note1: certifyCode }]
@@ -56,7 +56,7 @@ function certificateEmail(el){
 
         $('#certifyBox').show();
 
-        showMessage('', 'info', '[ 참가기업 인증 ]', '선택하신 이메일 주소로<br>인증번호가 발송되었습니다.', '');
+        showMessage('', 'info', '[ Participant Certification ]', 'A verification code has been sent<br>to the selected email address.', '');
 
         let time = 60*5;
         const certifyTimer = function(){
@@ -76,26 +76,26 @@ function certificateEmail(el){
         clearInterval(countdown);
         countdown = setInterval(certifyTimer, 1000);
     }else{
-        showMessage('', 'error', '[ 참가기업 인증 ]', '인증번호 메일 전송에 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+        showMessage('', 'error', '[ Participant Certification ]', 'Failed to send the authentication code email. Please contact the administrator. ' + data.resultMessage, '');
     }
 }
 
 function f_certify_confirm(){
     if(certifyCode === $('#certifyNum').val()){
         if($('#certifyFlag').val() === 'false') {
-            showMessage('', 'info', '[ 참가기업 인증 ]', '인증되었습니다.<br>[ 불러오기 ] 버튼을 눌러 진행해 주세요.', '');
+            showMessage('', 'info', '[ Participant Certification ]', 'Certified.<br>Press the [Confirm] button to proceed.', '');
 
             $('#certifyNum').attr('readonly', true);
             $('#certifyBtn').attr('style','cursor: not-allowed;');
             $('#certifyFlag').val('true');
-            $('#remainMin').text('인증').attr('style','color: #0DA6C0');
+            $('#remainMin').text('SUC').attr('style','color: #0DA6C0');
             $('#colon').text('');
-            $('#remainSec').text('완료').attr('style','color: #0DA6C0');
+            $('#remainSec').text('CESS').attr('style','color: #0DA6C0');
 
             clearInterval(countdown);
         }
     }else{
-        showMessage('', 'error', '[ 참가기업 인증 ]', '[ 인증 실패 ] 인증번호가 다릅니다.', '');
+        showMessage('', 'error', '[ Participant Certification ]', '[ Authentication failure ] The authentication codes are different.', '');
     }
 }
 
@@ -124,11 +124,11 @@ function f_pre_exhibitor_info_call(){
         let transferYear = preExhibitorInfo.transferYear;
         Swal.fire({
             icon: 'info',
-            title: '[ 참가신청 정보 불러오기 ]',
-            html: '<span style="font-size: 1.2em;">' + transferYear + ' 년도 신청정보를 조회하였습니다.<br>입력되지 않은 정보는 직접 입력해 주세요.</span>',
+            title: '[ Import exhibitor information ]',
+            html: '<span style="font-size: 1.2em;">I have checked the ' + transferYear + ' application information.<br>Please enter any information you have not entered directly.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
                 //회사명(국)
@@ -236,7 +236,7 @@ function f_pre_exhibitor_info_call(){
                     if(domainArr.some(i => domain.includes(i))){
                         $('#email_select').val(domain).prop('selected',true).trigger('change');
                     }else{
-                        $('#email_select').val("직접입력").prop('selected',true).trigger('change');
+                        $('#email_select').val("Direct input").prop('selected',true).trigger('change');
                         $('#email2').val(domain);
                     }
                 }
@@ -292,7 +292,7 @@ function f_pre_exhibitor_info_call(){
         })
 
     }else{
-        showMessage('', 'error', '[ 참가기업 인증 ]', '메일로 발송된<br>인증번호를 입력해 주세요.', '');
+        showMessage('', 'error', '[ Participant Certification ]', 'Please enter the verification number sent by email.', '');
     }
 }
 
@@ -405,11 +405,7 @@ function ajaxConnect(url, method, jsonStr){
             result = data;
         })
         .fail(function (xhr, status, errorThrown) {
-            /*$('body').html("오류가 발생했습니다.")
-                .append("<br>오류명: " + errorThrown)
-                .append("<br>상태: " + status);*/
-
-            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+            alert('An error occurred. Please contact the administrator.\nError: ' + errorThrown + '\nStatus: ' + status);
             result = "fail";
         })
     return result;
@@ -424,16 +420,12 @@ function ajaxConnectSimple(url, method, jsonStr){
         data: JSON.stringify(jsonStr),
         contentType: 'application/json; charset=utf-8' //server charset 확인 필요
     })
-    .done(function (data) {
-        result = data;
-    })
-    .fail(function (xhr, status, errorThrown) {
-        /*$('body').html("오류가 발생했습니다.")
-            .append("<br>오류명: " + errorThrown)
-            .append("<br>상태: " + status);*/
-
-        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
-    })
+        .done(function (data) {
+            result = data;
+        })
+        .fail(function (xhr, status, errorThrown) {
+            alert('An error occurred. Please contact the administrator.\nError: ' + errorThrown + '\nStatus: ' + status);
+        })
     return result;
 }
 
@@ -451,15 +443,16 @@ function showMessage(selector, icon, title, msg, confirmButtonColor) {
         title: title,
         html: '<span style="font-size: 1.2em;">' + msg + '</span>',
         allowOutsideClick: false,
-        confirmButtonColor: confirmButtonColor
+        confirmButtonColor: confirmButtonColor,
+        confirmButtonText: 'Confirm'
     })
-    .then(() => {
-        if( selector && selector !== '' ){
-            setTimeout(function() {
-                $(selector).trigger('focus');
-            }, 200);
-        }
-    });
+        .then(() => {
+            if( selector && selector !== '' ){
+                setTimeout(function() {
+                    $(selector).trigger('focus');
+                }, 200);
+            }
+        });
 }
 
 function getCurrentDate() {
@@ -522,7 +515,7 @@ function minCnt(el, cnt){
     let val = $(el).val() || 0;
     if(val < cnt){
         if(val !== 0){
-            alert('독립부스는 2부스부터 신청 가능합니다.');
+            alert('A minimum of 2 space-only booths is required.');
             $(el).val(0);
             calculateTotal('booth');
         }
@@ -552,11 +545,6 @@ const boothPrices = {
     online: 1000000
 };
 const registrationFee = 100000; // 기본 등록비
-
-// 🗑️ 삭제: 새로운 할인 로직에서는 더 이상 사용되지 않는 상수들입니다.
-// const discount3BaseAmount = 500000;
-// const discount3ChangedAmount = 300000;
-// const singleChoiceDiscounts = [ ... ];
 
 // --- 조기신청 할인 기간 설정 ---
 
@@ -625,16 +613,15 @@ function handleDiscountEarly1() {
         let userUnchecked = false;
         discount1Checkbox.off('change.discountControl').on('change.discountControl', async function() {
             if (!$(this).prop('checked')) {
-                if(confirm('1차 조기신청 할인은 자동으로 적용되며,\n한 번 해제하시면 다시 선택할 수 없습니다. 해제하시겠습니까?')){
+                if(confirm('The 1st early bird discount is applied automatically.\nOnce unchecked, it cannot be selected again. Do you want to uncheck it?')){
                     userUnchecked = true;
                 } else {
                     $(this).prop('checked', true);
                 }
             } else if (userUnchecked) {
                 $(this).prop('checked', false);
-                alert('1차 조기신청 할인은 한 번 해제하시면 다시 선택할 수 없습니다.');
+                alert('Once unchecked, the 1st early bird discount cannot be selected again.');
             }
-            // ★ 수정: main.js의 calculateTotal 함수 호출 (API 방식)
             if (typeof calculateTotal === 'function') {
                 await calculateTotal('booth'); // API 호출이므로 await
             }
@@ -646,7 +633,7 @@ function handleDiscountEarly1() {
         discount1Checkbox.prop('disabled', true);
         discount1Item.addClass('disabled');
         discount1Item.off('click.preventCheck').on('click.preventCheck', () => {
-            alert('1차 조기신청 할인은 기간이 종료되어 선택할 수 없습니다.');
+            alert('The 1st early bird discount period has ended and cannot be selected.');
         });
     }
 }
@@ -672,16 +659,15 @@ function handleDiscountEarly2() {
         let userUnchecked = false;
         discount2Checkbox.off('change.discountControl').on('change.discountControl', async function() {
             if (!$(this).prop('checked')) {
-                if(confirm('2차 조기신청 할인은 자동으로 적용되며,\n한 번 해제하시면 다시 선택할 수 없습니다. 해제하시겠습니까?')){
+                if(confirm('The 2nd early bird discount is applied automatically.\nOnce unchecked, it cannot be selected again. Do you want to uncheck it?')){
                     userUnchecked = true;
                 } else {
                     $(this).prop('checked', true);
                 }
             } else if (userUnchecked) {
                 $(this).prop('checked', false);
-                alert('2차 조기신청 할인은 한 번 해제하시면 다시 선택할 수 없습니다.');
+                alert('Once unchecked, the 2nd early bird discount cannot be selected again.');
             }
-            // ★ 수정: main.js의 calculateTotal 함수 호출 (API 방식)
             if (typeof calculateTotal === 'function') {
                 await calculateTotal('booth'); // API 호출이므로 await
             }
@@ -693,7 +679,7 @@ function handleDiscountEarly2() {
         discount2Checkbox.prop('disabled', true);
         discount2Item.addClass('disabled');
         discount2Item.off('click.preventCheck').on('click.preventCheck', () => {
-            alert('2차 조기신청 할인은 현재 신청 기간이 아닙니다.');
+            alert('The 2nd early bird discount period has ended and cannot be selected.');
         });
     }
 }
@@ -818,7 +804,7 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
         });
 
         if (!response.ok) {
-            throw new Error('계산 서버 오류: ' + response.statusText);
+            throw new Error('Server calculation error: ' + response.statusText);
         }
 
         // CalculationResultDTO 객체 받기
@@ -835,7 +821,7 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
             // --- 올해의 제품상 할인 ---
             let discountSpecialFee = (result.boothPrcSum - result.basicDiscountSum) * 0.5;
             $('#discountSpecial1').data('discount', discountSpecialFee);
-            $('#discountSpecial1Note').text(discountSpecialFee.toLocaleString() + '원');
+            $('#discountSpecial1Note').text(discountSpecialFee.toLocaleString() + ' KRW');
 
             // --- 부스 페이지 UI 업데이트 ---
             $('#boothPrcSumDisplay').val(numberToWon(result.boothSubtotal)); // 유틸리티 소계 ※ JSP span 필요
@@ -875,8 +861,8 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
         // $("input[name='developmentFund']").val(result.developmentFund); // DB 컬럼이 있다면
 
     } catch (error) {
-        console.error("금액 계산 중 오류 발생:", error);
-        alert("금액을 계산하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        console.error("Error occurred while calculating amount:", error);
+        alert("An error occurred while calculating the amount. Please try again later.");
         // 에러 시 금액 표시 초기화 (선택 사항)
         $('#boothTotalAmount, #utilityTotalAmount, #prcSum, #prcVat, #prcTotal, #balance').text('-');
     }
@@ -963,7 +949,7 @@ function autoDiscountSum(checkbox){
         let memberCompanyYn_id = $(checkbox).prop('id');
         let memberCompanyYn_flag = $(checkbox).prop('checked');
         if(memberCompanyYn === 'N' && memberCompanyYn_id === 'discountLeisure' && memberCompanyYn_flag){
-            alert("한국해양레저산업협회 회원사 여부 - \'아니오\'\n체크 시 해당 할인은 불가합니다.");
+            alert("This discount is not available if you selected 'No' for KMIA Membership.");
             $(checkbox).prop('checked',false);
             return;
         }
@@ -976,7 +962,7 @@ function autoDiscountSum(checkbox){
         if(discountFirstChecked){
             let discountScale1Checked = $('#discountScale1').is(':checked');
             if(discountScale1Checked){
-                alert("첫 참가할인과 규모할인을 함께 적용할 경우,\n부스당 첫 참가할인 금액은 30만원으로 조정됩니다.");
+                alert("If both the first-time participation discount and the scale discount are applied together,\nthe first-time participation discount per booth will be adjusted to 300,000 KRW.");
             }
         }
     }
@@ -986,7 +972,7 @@ function autoDiscountSum(checkbox){
 
         // 부스 수량 가져오기
         let boothSum = parseInt($('#stand_alone_booth_cnt').val() || 0)
-            + parseInt($('#assembly_booth_cnt').val() || 0)
+                + parseInt($('#assembly_booth_cnt').val() || 0)
             /*+ parseInt($('#online_booth_cnt option:selected').val())*/;
 
         if(boothSum > 0) {
@@ -1012,7 +998,7 @@ function autoDiscountSum(checkbox){
             }
 
         } else {
-            alert("부스 신청 수량을 입력해 주세요.\nPlease enter the booth application quantity.");
+            alert("Please enter the booth application quantity.");
             $(checkbox).prop('checked',false);
         }
     }
@@ -1093,7 +1079,7 @@ function execDaumPostcode(address, addressDetail) {
     }).open({
         left: (window.screen.width / 2) - (width / 2),
         top: (window.screen.height / 2) - (height / 2),
-        popupTitle: '우편번호 검색 팝업', //팝업창 타이틀 설정 (영문,한글,숫자 모두 가능)
+        popupTitle: 'Postcode Search Popup', //팝업창 타이틀 설정 (영문,한글,숫자 모두 가능)
         popupKey: 'popup1' //팝업창 Key값 설정 (영문+숫자 추천)
     });
 }
@@ -1102,7 +1088,7 @@ function f_pw_init(){
     let id = $('#id').val();
 
     if(nvl(id,'') === ''){
-        showMessage('#id', 'error', '[ 회원 정보 ]', 'ID를 입력해 주세요.', '');
+        showMessage('#id', 'error', '[ Member Info ]', 'Please enter your ID.', '');
         return false;
     }
 
@@ -1112,21 +1098,21 @@ function f_pw_init(){
     if(nvl(seq,'') !== ''){
         Swal.fire({
             icon: 'warning',
-            title: '[ 회원 정보 ]',
-            html: '<span style="font-size: 1.2em;">해당 ID [ ' + id + ' ] 의<br>비밀번호 초기화를 요청하시겠습니까?</span>',
+            title: '[ Member Info ]',
+            html: '<span style="font-size: 1.2em;">Would you like to request a password reset<br>for the ID [ ' + id + ' ]?</span>',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '요청하기',
+            confirmButtonText: 'Request',
             cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
+            cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
 
                 let email = ajaxConnectSimple('/getExhibitorNewEmail.do', 'post', jsonStr);
                 if(nvl(email,'') !== ''){
                     let jsonObj = {
-                        subject: '[2027 경기국제보트쇼] 비밀번호 초기화 요청', //제목
+                        subject: '[2027 KIBS] Password Reset Request', //제목
                         body: "", //본문
                         template: "12", //템플릿 번호
                         receiver: [{email: email}]
@@ -1139,45 +1125,45 @@ function f_pw_init(){
                         let jsonStr1 = { seq : seq };
                         let res = ajaxConnect('/updateExhibitorNewPasswordInit.do', 'post', jsonStr1);
                         if(res.resultCode !== "0"){
-                            showMessage('', 'error', '[ 회원 정보 ]', '비밀번호 초기화에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+                            showMessage('', 'error', '[ Member Info ]', 'Failed to reset the password. Please contact the administrator.', '');
                             return false;
                         }else{
                             Swal.fire({
                                 icon: 'info',
-                                title: '[ 회원 정보 ]',
-                                html: '<span style="font-size: 1.2em;">해당 ID의 비밀번호가 초기화되었습니다.<br>초기화 정보는 [ ' + email + ' ] 로 전송되었습니다.<br>로그인하신 후 비밀번호를 변경하여 이용해 주세요.</span>',
+                                title: '[ Member Info ]',
+                                html: '<span style="font-size: 1.2em;">The password for this ID has been reset.<br>The reset information has been sent to [ ' + email + ' ].<br>Please log in and change your password.</span>',
                                 allowOutsideClick: false,
                                 confirmButtonColor: '#00a8ff',
-                                confirmButtonText: '확인'
+                                confirmButtonText: 'Confirm'
                             });
                             return false;
                         }
                     }else{
                         Swal.fire({
                             icon: 'info',
-                            title: '[ 회원 정보 ]',
-                            html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소로 메일 전송이 실패하였습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 031-995-8946/8912</span>',
+                            title: '[ Member Info ]',
+                            html: '<span style="font-size: 1.2em;">Failed to send an email to the registered email address.<br>Please contact the KIBS Secretariat.<br>Tel. +82-31-995-8946/8912</span>',
                             allowOutsideClick: false,
                             confirmButtonColor: '#00a8ff',
-                            confirmButtonText: '확인'
+                            confirmButtonText: 'Confirm'
                         });
                         return false;
                     }
                 }else{
                     Swal.fire({
                         icon: 'info',
-                        title: '[ 회원 정보 ]',
-                        html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소가 없습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 031-995-8946/8912</span>',
+                        title: '[ Member Info ]',
+                        html: '<span style="font-size: 1.2em;">There is no email address registered for this ID.<br>Please contact the KIBS Secretariat.<br>Tel. +82-31-995-8946/8912</span>',
                         allowOutsideClick: false,
                         confirmButtonColor: '#00a8ff',
-                        confirmButtonText: '확인'
+                        confirmButtonText: 'Confirm'
                     });
                     return false;
                 }
             }
         })
     }else{
-        showMessage('', 'error', '[ 회원 정보 ]', '해당 ID로 가입된 업체 정보가 없습니다.', '');
+        showMessage('', 'error', '[ Member Info ]', 'There is no company information registered with this ID.', '');
         return false;
     }
 }
@@ -1235,7 +1221,7 @@ function f_phone_number_valid_check($el) {
     if (pureNum.length > 0) {
         // 1) 010으로 시작하는지 검사
         if (pureNum.substring(0, 3) !== "010") {
-            alert('휴대전화번호는 "010"으로 시작해야 합니다.');
+            alert('The mobile phone number must start with "010".');
             $el.val(''); // 값 초기화
             $el.trigger('focus'); // 다시 입력하도록 포커스 이동
             return false;
@@ -1243,7 +1229,7 @@ function f_phone_number_valid_check($el) {
 
         // 2) 전체 자릿수 검사 (010 국번은 최소 11자리 숫자여야 함)
         if (pureNum.length < 11) {
-            alert('휴대전화번호 형식이 올바르지 않습니다.\n(예: 010-1234-5678)');
+            alert('Invalid mobile phone number format.\n(e.g., 010-1234-5678)');
             $el.trigger('focus');
             return false;
         }
@@ -1256,12 +1242,14 @@ function f_id_license_num_set(input){
 
 function f_id_duplicate_check(el){
     // ID
-    let id = $('#id').val();
+    let id = $('#id').val().trim();
 
     if(nvl(id,'') !== ''){
-        if(id.length < 10){
+
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if(!emailRegex.test(id)) {
             $(el).siblings('.cmnt').css('color', '#AD1D1D');
-            $(el).siblings('.cmnt').html('검사 결과 : 사업자 등록번호 10자리를 입력해 주세요.');
+            $(el).siblings('.cmnt').html('Result : Invalid email format.');
             $('#idCheck').val('false');
             return;
         }
@@ -1271,11 +1259,11 @@ function f_id_duplicate_check(el){
         let checkDuplicateId = ajaxConnect('/checkDuplicateId.do', 'post', jsonStr);
         if(checkDuplicateId !== 0){
             $(el).siblings('.cmnt').css('color', '#AD1D1D');
-            $(el).siblings('.cmnt').html('중복 검사 결과 : 사용할 수 없는 아이디입니다. 해당 아이디로 이미 신청된 업체가 존재합니다.');
+            $(el).siblings('.cmnt').html('Result : This is an ID that cannot be used. There are already companies that have applied under this ID.');
             $('#idCheck').val('false');
         }else{
             $(el).siblings('.cmnt').css('color', '#1D5CAD');
-            $(el).siblings('.cmnt').html('중복 검사 결과 : 사용 가능한 아이디입니다.');
+            $(el).siblings('.cmnt').html('Result : This is an acceptable ID.');
             $('#idCheck').val('true');
         }
     }
@@ -1287,7 +1275,7 @@ function f_pw_status_change(el){
 
     $('#passwordCheck').val('');
     $('#passwordCheck').next('.cmnt').css('color', '#AD1D1D');
-    $('#passwordCheck').next('.cmnt').html('비밀번호를 다시 입력해 주세요.');
+    $('#passwordCheck').next('.cmnt').html('Please enter your password again.');
     $('#pwConfirmCheck').val('false');
 }
 
@@ -1299,35 +1287,35 @@ function f_pw_check(el){
     let reg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
 
     if (pw.length < 8 || pw.length > 17) {
-        $(el).next('.cmnt').next('.cmnt').html('8자리 이상, 16자리 이내로 입력해 주세요.');
+        $(el).next('.cmnt').next('.cmnt').html('Please enter at least 8 characters and no more than 16 characters.');
         $(el).next('.cmnt').next('.cmnt').css('color', '#AD1D1D');
         $('#pwCheck').val('false');
         return false;
     }
 
     if (pw.search(/\s/) !== -1) {
-        $(el).next('.cmnt').next('.cmnt').html('비밀번호는 공백 없이 입력해 주세요.');
+        $(el).next('.cmnt').next('.cmnt').html('Please enter your password without any spaces.');
         $(el).next('.cmnt').next('.cmnt').css('color', '#AD1D1D');
         $('#pwCheck').val('false');
         return false;
     }
 
     if (number < 0 || english < 0 || space < 0) {
-        $(el).next('.cmnt').next('.cmnt').html('영문, 숫자, 특수문자를 혼합하여 입력해 주세요.');
+        $(el).next('.cmnt').next('.cmnt').html('Please enter a mix of English, numbers, and special characters.');
         $(el).next('.cmnt').next('.cmnt').css('color', '#AD1D1D');
         $('#pwCheck').val('false');
         return false;
     }
 
     if ((number < 0 && english < 0) || (english < 0 && space < 0) || (space < 0 && number < 0)) {
-        $(el).next('.cmnt').next('.cmnt').html('영문, 숫자, 특수문자 중 2가지 이상을 혼합하여 입력해 주세요.');
+        $(el).next('.cmnt').next('.cmnt').html('Please enter a mixture of at least two of English, numerical, or special characters.');
         $(el).next('.cmnt').next('.cmnt').css('color', '#AD1D1D');
         $('#pwCheck').val('false');
         return false;
     }
 
     if (/(\w)\1\1\1/.test(pw)) {
-        $(el).next('.cmnt').next('.cmnt').html('같은 문자를 4번 이상 사용하실 수 없습니다.');
+        $(el).next('.cmnt').next('.cmnt').html('You cannot use the same character more than four times.');
         $(el).next('.cmnt').next('.cmnt').css('color', '#AD1D1D');
         $('#pwCheck').val('false');
         return false;
@@ -1340,7 +1328,7 @@ function f_pw_check(el){
         return false;
     }*/
 
-    $(el).next('.cmnt').next('.cmnt').html('비밀번호가 정상적으로 입력되었습니다.');
+    $(el).next('.cmnt').next('.cmnt').html('The password was entered correctly.');
     $(el).next('.cmnt').next('.cmnt').css('color', '#1D5CAD');
     $('#pwCheck').val('true');
 
@@ -1352,11 +1340,11 @@ function f_pw_confirm_check(el){
     let pwCheck = $('#passwordCheck').val();
     if(pw !== '' && pwCheck !== ''){
         if(pw !== pwCheck){
-            $(el).next('.cmnt').html('비밀번호가 일치하지 않습니다.');
+            $(el).next('.cmnt').html('The password does not match.');
             $(el).next('.cmnt').css('color', '#AD1D1D');
             $('#pwConfirmCheck').val('false');
         }else{
-            $(el).next('.cmnt').html('비밀번호가 일치합니다.');
+            $(el).next('.cmnt').html('The password matches.');
             $(el).next('.cmnt').css('color', '#1D5CAD');
             $('#pwConfirmCheck').val('true');
         }
@@ -1373,89 +1361,84 @@ async function step_01_check(exhibitorSeq){
     // 전시회 참가규정
     let agree1 = $('input[type=radio][name=agree1]:checked').val();
     if(nvl(agree1,'') === '' || agree1 === 'N'){
-        showMessage('', 'info', '[ 약관 동의 ]', '전시회 참가규정에 동의해 주세요.', '');
+        showMessage('', 'info', '[ Regulations ]', 'Please agree to the exhibition participation regulations.', '');
         return false;
     }
 
     // 개인정보 취급방침
     let agree2 = $('input[type=radio][name=agree2]:checked').val();
     if(nvl(agree2,'') === '' || agree2 === 'N'){
-        showMessage('', 'info', '[ 약관 동의 ]', '개인정보 취급방침에 동의해 주세요.', '');
+        showMessage('', 'info', '[ Regulations ]', 'Please agree to the Privacy Policy.', '');
         return false;
     }
 
     // ID
     let id = $('#id').val();
     if(nvl(id,'') === ''){
-        showMessage('#id', 'error', '[ 회원 계정 정보 ]', '아이디를 입력해 주세요.', '');
+        showMessage('#id', 'error', '[ Member Info ]', 'Please enter your ID.', '');
         return false;
+    }else{
+        id = id.val(id.val().replace(/\s/g, '')); // 모든 공백 제거
     }
 
     // ID
     let idCheck = $('#idCheck').val();
     if(idCheck === 'false'){
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '아이디 중복 검사를 수행해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Please perform an ID duplication check.', '');
         return false;
     }
 
     // 비밀번호
     let password = $('#password').val();
     if(nvl(password,'') === ''){
-        showMessage('#password', 'error', '[ 회원 계정 정보 ]', '비밀번호를 입력해 주세요.', '');
+        showMessage('#password', 'error', '[ Member Info ]', 'Please enter your password.', '');
         return false;
     }
-    
+
     // 비밀번호 확인
     let passwordCheck = $('#passwordCheck').val();
     if(nvl(passwordCheck,'') === ''){
-        showMessage('#password', 'error', '[ 회원 계정 정보 ]', '비밀번호 확인을 입력해 주세요.', '');
+        showMessage('#password', 'error', '[ Member Info ]', 'Please enter the password confirmation.', '');
         return false;
     }
 
     // 비밀번호 유효성
     let pwCheck = $('#pwCheck').val();
     if(pwCheck === 'false'){
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '비밀번호 유효성 검사를 수행해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Please perform password validation.', '');
         return false;
     }
 
     // 비밀번호 확인 유효성
     let pwConfirmCheck = $('#pwConfirmCheck').val();
     if(pwConfirmCheck === 'false'){
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '비밀번호를 확인해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Please check your password.', '');
         return false;
     }
 
     /******************** 참가업체 정보 ********************/
 
-    // 사업자등록번호
-    let companyLicenseNum = $('#companyLicenseNum').val();
-    if(nvl(companyLicenseNum,'') === ''){
-        showMessage('', 'error', '[ 참가업체 정보 ]', '사업자등록번호를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 회사명
+        // 회사명
     let companyNameKo = $('#companyNameKo').val();
     if(nvl(companyNameKo,'') === ''){
-        showMessage('#companyNameKo', 'error', '[ 참가업체 정보 ]', '회사명(국문)을 입력해 주세요.', '');
+        showMessage('#companyNameKo', 'error', '[ Exhibitor Info ]', 'Please enter the company name (Korean).', '');
         return false;
     }
     let companyNameEn = $('#companyNameEn').val();
     if(nvl(companyNameEn,'') === ''){
-        showMessage('#companyNameEn', 'error', '[ 참가업체 정보 ]', '회사명(영문)을 입력해 주세요.', '');
+        showMessage('#companyNameEn', 'error', '[ Exhibitor Info ]', 'Please enter the company name (English).', '');
         return false;
     }
 
     // 본사 주소
     let companyAddress = $('#companyAddress').val();
     if(nvl(companyAddress,'') === ''){
-        showMessage('#companyAddress', 'error', '[ 참가업체 정보 ]', '본사 주소를 입력해 주세요.', '');
+        showMessage('#companyAddress', 'error', '[ Exhibitor Info ]', 'Please enter the head office address.', '');
         return false;
     }
     let companyAddressDetail = $('#companyAddressDetail').val();
     if(nvl(companyAddressDetail,'') === ''){
-        showMessage('#companyAddressDetail', 'error', '[ 참가업체 정보 ]', '본사 상세 주소를 입력해 주세요.', '');
+        showMessage('#companyAddressDetail', 'error', '[ Exhibitor Info ]', 'Please enter the detailed head office address.', '');
         return false;
     }
 
@@ -1466,15 +1449,17 @@ async function step_01_check(exhibitorSeq){
     // 대표자
     let companyCeo = $('#companyCeo').val();
     if(nvl(companyCeo,'') === ''){
-        showMessage('#companyCeo', 'error', '[ 참가업체 정보 ]', '대표자명을 입력해 주세요.', '');
+        showMessage('#companyCeo', 'error', '[ Exhibitor Info ]', 'Please enter the CEO\'s name.', '');
         return false;
     }
 
     // 전화
     let companyTel = $('#companyTel').val();
     if(nvl(companyTel,'') === ''){
-        showMessage('#companyTel', 'error', '[ 참가업체 정보 ]', '전화번호를 입력해 주세요.', '');
+        showMessage('#companyTel', 'error', '[ Exhibitor Info ]', 'Please enter the phone number.', '');
         return false;
+    }else{
+        companyTel = $('#companyTelCode').val() + ' ' + $('#companyTel').val();
     }
 
     // 홈페이지
@@ -1483,43 +1468,33 @@ async function step_01_check(exhibitorSeq){
         let no_companyHomepage = $('input[type=checkbox][name=noPage]').is(':checked');
         if(no_companyHomepage === false){
             if(!checkUrl(companyHomepage)){
-                showMessage('#companyHomepage', 'error', '[ 참가업체 정보 ]', '홈페이지 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+                showMessage('#companyHomepage', 'error', '[ Exhibitor Info ]', 'Please include http:// or https:// in the website address.', '');
                 return false;
             }
         }
     }else{
         let no_companyHomepage = $('input[type=checkbox][name=noPage]').is(':checked');
         if(no_companyHomepage === false){
-            showMessage('#companyHomepage', 'error', '[ 참가업체 정보 ]', '홈페이지가 없다면 \"홈페이지 없음\" 에 체크해 주세요.', '');
+            showMessage('#companyHomepage', 'error', '[ Exhibitor Info ]', 'If you do not have a website, please check "No website".', '');
             return false;
         }
     }
 
     // Fax
-    let companyFax = $('#companyFax').val();
+    let companyFax = $('#companyFaxCode').val() + '' + $('#companyFax').val();
 
     // 산업분류
     let industryPart = $('#industryPart').val();
     let industryPartEtc = $('#industryPartEtc').val();
     if(nvl(industryPart,'') === ''){
-        showMessage('', 'error', '[ 참가업체 정보 ]', '산업 분류 항목을 선택해 주세요.', '');
+        showMessage('', 'error', '[ Exhibitor Info ]', 'Please select the industry category.', '');
         return false;
     }else{
         if(industryPart.includes('기타')){
             if(industryPartEtc === ''){
-                showMessage('#industryPartEtc', 'error', '[ 참가업체 정보 ]', '산업 분류 기타 선택 시 항목을 입력해 주세요.', '');
+                showMessage('#industryPartEtc', 'error', '[ Exhibitor Info ]', 'Please enter the details if you selected \'Others\' for the industry category.', '');
                 return false;
             }
-        }
-    }
-
-    // 사업자등록증
-    let companyLicenseFile_li = $('.companyLicenseFile_li').length;
-    if(companyLicenseFile_li === 0){
-        let companyLicense = $('#companyLicense').val();
-        if (nvl(companyLicense,'') === '') {
-            showMessage('', 'info', '[ 참가업체 정보 ]', '사업자등록증을 첨부해 주세요.', '');
-            return false;
         }
     }
 
@@ -1528,7 +1503,7 @@ async function step_01_check(exhibitorSeq){
     if(logoFile_li === 0){
         let logo = $('#logo').val();
         if (nvl(logo,'') === '') {
-            showMessage('', 'error', '[ 참가업체 정보 ]', '로고 파일을 업로드해 주세요.', '');
+            showMessage('', 'error', '[ Exhibitor Info ]', 'Please upload the logo file.', '');
             return false;
         }
     }
@@ -1545,7 +1520,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
     }else{
-        showMessage('', 'error', '[ 참가업체 정보 ]', '기참가연도를 선택해 주세요.', '');
+        showMessage('', 'error', '[ Exhibitor Info ]', 'Please select the year(s) of previous participation.', '');
         return false;
     }
 
@@ -1555,17 +1530,17 @@ async function step_01_check(exhibitorSeq){
     /******************** 담당자 정보 ********************/
     /******************** 대표담당자 정보 ********************/
 
-    // 성명
+        // 성명
     let name = $('#name').val();
     if(nvl(name,'') === ''){
-        showMessage('#name', 'error', '[ 담당자 정보 ]', '성명을 입력해 주세요.', '');
+        showMessage('#name', 'error', '[ Contact Info ]', 'Please enter the name.', '');
         return false;
     }
-    
+
     // 직위
     let position = $('#position').val();
     if(nvl(position,'') === ''){
-        showMessage('#position', 'error', '[ 담당자 정보 ]', '직위를 입력해 주세요.', '');
+        showMessage('#position', 'error', '[ Contact Info ]', 'Please enter the position.', '');
         return false;
     }
 
@@ -1575,18 +1550,18 @@ async function step_01_check(exhibitorSeq){
     // 전화번호
     let tel = $('#tel').val();
     if(nvl(tel,'') === ''){
-        showMessage('#tel', 'error', '[ 담당자 정보 ]', '전화번호를 입력해 주세요.', '');
+        showMessage('#tel', 'error', '[ Contact Info ]', 'Please enter the phone number.', '');
         return false;
     }
 
     // 휴대전화
     let phone = $('#phone').val();
     if(nvl(phone,'') === ''){
-        showMessage('#phone', 'error', '[ 담당자 정보 ]', '휴대전화번호를 입력해 주세요.', '');
+        showMessage('#phone', 'error', '[ Contact Info ]', 'Please enter the mobile phone number.', '');
         return false;
     }else{
         if ( !/^010-[0-9]{4}-[0-9]{4}$/.test( phone ) ) {
-            showMessage('#phone', 'error', '[ 담당자 정보 ]', '올바른 휴대전화번호를 입력해 주세요.<br>(앞자리 010 만 가능합니다.)', '');
+            showMessage('#phone', 'error', '[ Contact Info ]', 'Please enter a valid mobile phone number.<br>(Must start with 010.)', '');
             return false;
         }
     }
@@ -1595,106 +1570,37 @@ async function step_01_check(exhibitorSeq){
     let email1 = $('#email1').val();
     let email2 = $('#email2').val();
     if(nvl(email1,'') === ''){
-        showMessage('#email1', 'error', '[ 담당자 정보 ]', '이메일을 입력해 주세요.', '');
+        showMessage('#email1', 'error', '[ Contact Info ]', 'Please enter the email address.', '');
         return false;
     }
     if(nvl(email2,'') === ''){
-        showMessage('', 'error', '[ 담당자 정보 ]', '이메일 도메인을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Contact Info ]', 'Please enter the email domain.', '');
         return false;
     }
 
     /******************** 담당자 정보 ********************/
     /******************** 부담당자 정보 ********************/
 
-    // 담당자 성명
+        // 담당자 성명
     let charge_person_name_el = $('input[type=text][name=chargePersonName]');
-    /*let charge_person_name_flag = true;
-    for(let i=0; i<charge_person_len; i++){
-        if(charge_person_name_el.eq(i).val() === ''){
-            charge_person_name_flag = false;
-        }
-    }
-    if(!charge_person_name_flag){
-        showMessage('', 'error', '[담당자 정보]', '성명을 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 담당자 직위
     let charge_person_position_el = $('input[type=text][name=chargePersonPosition]');
-    /*let charge_person_position_len = charge_person_position_el.length;
-    let charge_person_position_flag = true;
-    for(let i=0; i<charge_person_position_len; i++){
-        if(charge_person_position_el.eq(i).val() === ''){
-            charge_person_position_flag = false;
-        }
-    }
-    if(!charge_person_position_flag){
-        showMessage('', 'error', '[담당자 정보]', '직위를 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 담당자 부서
     let charge_person_depart_el = $('input[type=text][name=chargePersonDepart]');
 
     // 담당자 전화번호
     let charge_person_tel_el = $('input[type=tel][name=chargePersonTel]');
-    /*let charge_person_tel_len = charge_person_tel_el.length;
-    let charge_person_tel_flag = true;
-    for(let i=0; i<charge_person_tel_len; i++){
-        if(charge_person_tel_el.eq(i).val() === ''){
-            charge_person_tel_flag = false;
-        }
-    }
-    if(!charge_person_tel_flag){
-        showMessage('', 'error', '[담당자 정보]', '전화번호를 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 담당자 휴대전화
     let charge_person_phone_el = $('input[type=tel][name=chargePersonPhone]');
-    /*let charge_person_phone_len = charge_person_phone_el.length;
-    let charge_person_phone_flag = true;
-    for(let i=0; i<charge_person_phone_len; i++){
-        if(charge_person_phone_el.eq(i).val() === ''){
-            charge_person_phone_flag = false;
-        }
-
-        if ( charge_person_phone_flag && !/^010-[0-9]{4}-[0-9]{4}$/.test( charge_person_phone_el.eq(i).val() ) ) {
-            charge_person_phone_flag = false;
-        }
-    }
-    if(!charge_person_phone_flag){
-        showMessage('', 'error', '[담당자 정보]', '휴대전화를 입력해 주세요.<br>또는 올바른 휴대전화번호 형식으로 입력해 주세요.(010 만 가능)', '');
-        return false;
-    }*/
 
     // 담당자 이메일
     let charge_person_email_el = $('input[type=email][name=chargePersonEmail]');
-    /*let charge_person_email_len = charge_person_email_el.length;
-    let charge_person_email_flag = true;
-    for(let i=0; i<charge_person_email_len; i++){
-        if(charge_person_email_el.eq(i).val() === ''){
-            charge_person_email_flag = false;
-        }
-    }
-    if(!charge_person_email_flag){
-        showMessage('', 'error', '[담당자 정보]', '이메일을 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 담당자 이메일 도메인
     let charge_person_domain_el = $('input[type=email][name=chargePersonDomain]');
-    /*let charge_person_domain_len = charge_person_domain_el.length;
-    let charge_person_domain_flag = true;
-    for(let i=0; i<charge_person_domain_len; i++){
-        if(charge_person_domain_el.eq(i).val() === ''){
-            charge_person_domain_flag = false;
-        }
-    }
-    if(!charge_person_domain_flag){
-        showMessage('', 'error', '[담당자 정보]', '이메일 도메인을 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 담당자 정보 Json Create
     let chargePersonList_json_arr = [];
@@ -1725,42 +1631,34 @@ async function step_01_check(exhibitorSeq){
 
     /******************** 참가행사 및 분야 ********************/
 
-    // 참가행사 및 분야
+        // 참가행사 및 분야
     let fieldParticipatory = $('input[type=radio][name=fieldParticipatory]:checked').val();
     let fieldParticipatory1 = '';
     let fieldParticipatory2 = '';
     let fieldParticipatory3 = '';
     if(nvl(fieldParticipatory,'') === ''){
-        showMessage('', 'error', '[ 참가행사 및 분야 ]', '참가행사 및 분야를 선택해 주세요.', '');
+        showMessage('', 'error', '[ Event & Category ]', 'Please select the participating event and category.', '');
         return false;
     }else{
         fieldParticipatory1 = $('select[name=fieldParticipatory1]').val();
         if(nvl(fieldParticipatory1,'') === ''){
-            showMessage('', 'error', '[ 참가행사 및 분야 ]', '참가분야 1순위를 선택해 주세요.', '');
+            showMessage('', 'error', '[ Event & Category ]', 'Please select the 1st choice category.', '');
             return false;
         }
 
         fieldParticipatory2 = $('select[name=fieldParticipatory2]').val();
-        /*if(nvl(fieldParticipatory2,'') === ''){
-            showMessage('', 'error', '[ 참가행사 및 분야 ]', '참가분야 2순위를 선택해 주세요.', '');
-            return false;
-        }*/
 
         fieldParticipatory3 = $('select[name=fieldParticipatory3]').val();
-        /*if(nvl(fieldParticipatory3,'') === ''){
-            showMessage('', 'error', '[ 참가행사 및 분야 ]', '참가분야 3순위를 선택해 주세요.', '');
-            return false;
-        }*/
     }
     //console.log(field_part);
 
     /******************** 상세정보 ********************/
 
-    // 회사소개영상
+        // 회사소개영상
     let companyIntroVideo = $('#companyIntroVideo').val();
     if(nvl(companyIntroVideo,'') !== ''){
         if(!checkUrl(companyIntroVideo)){
-            showMessage('#companyIntroVideo', 'error', '[ 상세정보 ]', '영상 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+            showMessage('#companyIntroVideo', 'error', '[ Details ]', 'Please include http:// or https:// in the video URL.', '');
             return false;
         }
     }
@@ -1768,24 +1666,24 @@ async function step_01_check(exhibitorSeq){
     // 회사소개
     let companyIntroKo = $('#companyIntroKo').val();
     if(nvl(companyIntroKo,'') === ''){
-        showMessage('#companyIntroKo', 'error', '[ 상세정보 ]', '회사소개(국문)을 입력해 주세요.', '');
+        showMessage('#companyIntroKo', 'error', '[ Details ]', 'Please enter the company profile (Korean).', '');
         return false;
     }
     let companyIntroEn = $('#companyIntroEn').val();
     if(nvl(companyIntroEn,'') === ''){
-        showMessage('#companyIntroEn', 'error', '[ 상세정보 ]', '회사소개(영문)을 입력해 주세요.', '');
+        showMessage('#companyIntroEn', 'error', '[ Details ]', 'Please enter the company profile (English).', '');
         return false;
     }
 
     // KIBS 참가목적
     let companyPurposeKo = $('#companyPurposeKo').val();
     if(nvl(companyPurposeKo,'') === ''){
-        showMessage('', 'error', '[ 상세정보 ]', 'KIBS 참가목적(국문)을 선택해 주세요.', '');
+        showMessage('', 'error', '[ Details ]', 'Please select the purpose of participation (Korean).', '');
         return false;
     }
     let companyPurposeEn = $('#companyPurposeEn').val();
     if(nvl(companyPurposeEn,'') === ''){
-        showMessage('', 'error', '[ 상세정보 ]', 'KIBS 참가목적(영문)을 선택해 주세요.', '');
+        showMessage('', 'error', '[ Details ]', 'Please select the purpose of participation (English).', '');
         return false;
     }
 
@@ -1824,7 +1722,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
         if(!online_option_big_flag){
-            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 분류 첫 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ Product Info ]', 'Please select the first product category.', '');
             return false;
         }
 
@@ -1841,7 +1739,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
         if(!online_option_small_flag){
-            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 분류 두 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ Product Info ]', 'Please select the second product category.', '');
             return false;
         }
 
@@ -1856,7 +1754,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
         if(!online_name_ko_flag){
-            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품명(국문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ Product Info ]', 'Please enter the product name (Korean).', '');
             return false;
         }
 
@@ -1871,7 +1769,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
         if(!online_name_en_flag){
-            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품명(영문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ Product Info ]', 'Please enter the product name (English).', '');
             return false;
         }
 
@@ -1881,7 +1779,7 @@ async function step_01_check(exhibitorSeq){
             let inputFile = onlinePrdBox.eq(i).find('.upload_name').val();
             let preFileList = $('.onlineInfoBox').eq(i).find('.preValueList').find('li.onlineImageFile_li').length;
             if(nvl(inputFile,"") === "" && preFileList === 0){
-                showMessage('', 'error', '[ 제품 노출 정보 ]', '제품사진을 첨부해 주세요.', '');
+                showMessage('', 'error', '[ Product Info ]', 'Please attach the product photo.', '');
                 return false;
             }
         }
@@ -1896,7 +1794,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
         if(!online_intro_ko_flag){
-            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 설명(국문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ Product Info ]', 'Please enter the product description (Korean).', '');
             return false;
         }
 
@@ -1910,7 +1808,7 @@ async function step_01_check(exhibitorSeq){
             }
         }
         if(!online_intro_en_flag){
-            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 설명(영문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ Product Info ]', 'Please enter the product description (English).', '');
             return false;
         }
 
@@ -1920,7 +1818,7 @@ async function step_01_check(exhibitorSeq){
             let online_link = online_link_el.eq(i).val();
             if(nvl(online_link,'') !== ''){
                 if(!checkUrl(online_link)){
-                    showMessage('', 'error', '[ 제품 노출 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+                    showMessage('', 'error', '[ Product Info ]', 'Please include http:// or https:// in the website address.', '');
                     return false;
                 }
             }
@@ -2002,7 +1900,6 @@ async function step_01_check(exhibitorSeq){
         password: password,
         passwordYn: 'Y',
         /* 참가업체 정보 */
-        companyLicenseNum: companyLicenseNum,
         companyNameKo: companyNameKo,
         companyNameEn: companyNameEn,
         companyAddress: companyAddress,
@@ -2072,8 +1969,8 @@ async function step_01_check(exhibitorSeq){
             /* 파일 업로드 */
             // 로딩바 표시 (업로드 시작 전)
             Swal.fire({
-                title: "정보 및 파일 저장 중",
-                html: "파일을 업로드하고 있습니다.<br>잠시만 기다려 주세요.",
+                title: "Saving information and files",
+                html: "Uploading files.<br>Please wait a moment.",
                 allowOutsideClick: false,
                 didOpen: () => {
                     Swal.showLoading();
@@ -2090,11 +1987,11 @@ async function step_01_check(exhibitorSeq){
                 // 업로드 완료 후 성공 메시지 표시
                 Swal.fire({
                     icon: 'info',
-                    title: '[ 참가업체 정보 ]',
-                    html: '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                    title: '[ Exhibitor Info ]',
+                    html: '<span style="font-size: 1.2em;">Basic info saved.<br>Moving to the next step.</span>',
                     allowOutsideClick: false,
                     confirmButtonColor: '#00a8ff',
-                    confirmButtonText: '확인'
+                    confirmButtonText: 'Confirm'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         /* 온라인 제품 사진 번호 재부여 */
@@ -2107,19 +2004,19 @@ async function step_01_check(exhibitorSeq){
                         if(online_res.resultCode === "0"){
                             isSubmitProceeding = true;
 
-                            f_page_move('/apply/step2_1.do', exhibitorSeq);
+                            f_page_move('/eng/apply/step2_1.do', exhibitorSeq);
                         }
                     }
                 });
             } catch (err) {
                 console.error("File processing error:", err);
-                Swal.fire("오류", "파일 처리 중 오류가 발생했습니다.", "error");
+                Swal.fire("Error", "An error occurred while processing the file.", "error");
             }
         }else{
-            window.location.href = '/apply/step2_1.do';
+            window.location.href = '/eng/apply/step2_1.do';
         }
     }else{
-        showMessage('', 'error', '[ 참가업체 정보 ]', '기본 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Exhibitor Info ]', 'Failed to save basic info. Please contact the administrator.', '');
     }
 }
 
@@ -2128,31 +2025,15 @@ function f_buyer_add(exSeq){
 
     // 회사명
     let buyer_company_name = $('#buyer_company_name').val();
-    /*if(buyer_company_name === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '회사명을 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 국가
     let buyer_country = $('#buyer_country').val();
-    /*if(buyer_country === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '국가를 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 소재지
     let buyer_location = $('#buyer_location').val();
-    /*if(buyer_location === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '소재지를 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 홈페이지
     let buyer_homepage = $('#buyer_homepage').val();
-    /*if(buyer_homepage === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '홈페이지 주소를 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 담당자 성명
     let buyer_charge = $('#buyer_charge').val();
@@ -2173,7 +2054,7 @@ function f_buyer_add(exSeq){
     // 휴대전화
     let buyer_phone = $('#buyer_phone').val();
     if ( nvl(buyer_phone,'') !== '' && !/^010-[0-9]{4}-[0-9]{4}$/.test( buyer_phone ) ) {
-        showMessage('', 'error', '[ 바이어 정보 ]', '올바른 휴대전화번호를 입력해 주세요.<br>(앞자리 010 만 가능합니다.)', '');
+        showMessage('', 'error', '[ Buyer ]', 'Please enter the correct mobile phone number.<br>(Only the prefix 010 is allowed.)', '');
         return false;
     }
 
@@ -2182,27 +2063,15 @@ function f_buyer_add(exSeq){
 
     // 취급품목
     let buyer_item = $('#buyer_item').val();
-    /*if(buyer_item === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '취급품목을 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 초청사유
     let buyer_invite_reason = $('#buyer_invite_reason').val();
-    /*if(buyer_invite_reason === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '초청사유를 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 계약진행 여부
     let buyer_progress_yn = $('#buyer_progress_yn').val();
 
     // 희망사항
     let buyer_hope = $('#buyer_hope').val();
-    /*if(buyer_hope === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '희망사항을 입력해 주세요.', '');
-        return false;
-    }*/
 
     /* json Array 에 push */
 
@@ -2226,7 +2095,6 @@ function f_buyer_add(exSeq){
         buyerCompanyHope: buyer_hope
     };
 
-    //buyer_add_json_arr.push(buyer_add_json_obj);
 
     /* body 에 팝업 데이터를 포함한 Element 생성 */
     let buyer_add_btn = $('#buyer_add_btn');
@@ -2363,12 +2231,12 @@ function f_buyer_add(exSeq){
     modifyFormBuyer.classList.add('modifyFormBuyer');
     modifyFormBuyer.classList.add('modifyFormList');
     modifyFormBuyer.onclick = function(){ f_buyer_modify_modal('create', this); }
-    modifyFormBuyer.innerText = '수정';
+    modifyFormBuyer.innerText = 'Modify';
     let delFormBuyer = document.createElement('div');
     delFormBuyer.classList.add('delFormBuyer');
     delFormBuyer.classList.add('delFormList');
     delFormBuyer.onclick = function(){ f_buyer_remove('create', this, ''); }
-    delFormBuyer.innerText = '삭제';
+    delFormBuyer.innerText = 'Delete';
 
     cont.appendChild(name);
     cont.appendChild(gubun);
@@ -2521,14 +2389,14 @@ function f_buyer_remove(gbn, el, seq){
 
     Swal.fire({
         icon: 'warning',
-        title: '[ 바이어 정보 ]',
-        html: '<span style="font-size: 1.2em;">선택한 바이어 정보를 삭제하시겠습니까?</span>',
+        title: '[ Buyer ]',
+        html: '<span style="font-size: 1.2em;">Are you sure you want to delete the selected buyer info?</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#d33',
-        confirmButtonText: '삭제하기',
+        confirmButtonText: 'Delete',
         cancelButtonColor: '#A1A5B7',
-        cancelButtonText: '취소'
+        cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
 
@@ -2557,7 +2425,7 @@ function check_count(obj){
         }
     }
     if(chkCnt > 3){
-        showMessage('', 'error', '[ 참가분야 ]', '최대 3개까지만 선택할 수 있습니다.', '');
+        showMessage('', 'error', '[ Event & Category ]', 'You can select up to 3 items.', '');
         obj.checked = false;
         return false;
     }
@@ -2620,24 +2488,10 @@ function step_2_1_check(exhibitorSeq){
         discountType = discountType.substring(1);
     }
 
-    // --- 3. 발전기금 계산 (참가자가 보는 화면 계산용) ---
-    /*let developmentFund = 0;
-    const isMember = $('#memberCompanyYn').val() === 'Y';
-    const isLeisureDiscountChecked = $('#discountLeisure').is(':checked');
-    if (isMember || isLeisureDiscountChecked) {
-        developmentFund = Math.floor(boothPrcSum * 0.1);
-    }
-
-    // --- 4. 최종 금액 계산 ---
-    // 공급가액 = ((부스총액 + 발전기금) - 할인총액) + 유틸리티총액
-    const prcSum = ((boothPrcSum + developmentFund) - discountPrcSum) + utilityPrcSum;
-    const prcVat = Math.floor(prcSum * 0.1);
-    const prcTotal = prcSum + prcVat;*/
-
     // --- 5. 유효성 검사 및 서버 전송 데이터 구성 ---
     const totalBooths = standAloneBoothCnt + assemblyBoothCnt/* + onlineBoothCnt*/;
     if (totalBooths === 0) {
-        showMessage('', 'error', '[ 전시부스 신청 ]', '부스(독립, 조립)를 하나 이상 신청해 주세요.', '');
+        showMessage('', 'error', '[ Booth ]', 'Please apply for at least one booth (Space Only or Shell Scheme).', '');
         return;
     }
 
@@ -2652,8 +2506,6 @@ function step_2_1_check(exhibitorSeq){
         standAloneBoothFee: standAloneBoothFee,
         assemblyBoothCnt: assemblyBoothCnt,
         assemblyBoothFee: assemblyBoothFee,
-        /*onlineBoothCnt: onlineBoothCnt,
-        onlineBoothFee: onlineBoothFee,*/
         discountEarly1: $('#discountEarly1').is(':checked'),
         discountEarly2: $('#discountEarly2').is(':checked'),
         discountFirstUnder10: $('#discountFirstUnder10').is(':checked'),
@@ -2679,19 +2531,19 @@ function step_2_1_check(exhibitorSeq){
 
         Swal.fire({
             icon: 'info',
-            title: '[ 전시부스 신청 ]',
-            html: '<span style="font-size: 1.2em;">부스 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            title: '[ Booth ]',
+            html: '<span style="font-size: 1.2em;">Booth application information has been saved.<br>Let\'s move on to the next step.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/apply/step2_9.do', exhibitorSeq);
+                f_page_move('/eng/apply/step2_9.do', exhibitorSeq);
             }
         });
     }else{
-        showMessage('', 'error', '[ 전시부스 신청 ]', '전시부스 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Booth ]', 'Failed to save the booth application information. Please contact the administrator.', '');
     }
 }
 
@@ -2705,14 +2557,14 @@ function step_2_10_check(exhibitorSeq){
 
     Swal.fire({
         icon: 'info',
-        title: '[ 해상전시회 신청 ]',
-        html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
+        title: '[ Maritime Exhibition ]',
+        html: '<br>Click <span style="background-color:#00a8ff; color:#ffffff;">Continue Now</span> to save and proceed to the next page.<br><br>Click <span style="background-color:#A1A5B7; color:#ffffff;">Save for Later</span> to proceed to the next page.<br>You can log in and resume at any time.',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
-        confirmButtonText: '지금 계속하기',
+        confirmButtonText: 'Continue Now',
         cancelButtonColor: '#A1A5B7',
-        cancelButtonText: '나중에 하기',
+        cancelButtonText: 'Save for Later',
         reverseButtons: true
     }).then((result) => {
 
@@ -2728,10 +2580,10 @@ function step_2_10_check(exhibitorSeq){
                 if (!isSeaChecked && !isLandChecked) {
                     Swal.fire({
                         icon: 'error',
-                        title: '[ 해상전시회 신청 ]',
-                        text: '해상전시회 참가를 선택했을 경우, 참가 항목(해상/육상)을 1개 이상 선택해주세요.',
+                        title: '[ Maritime Exhibition ]',
+                        text: 'If you choose to participate in the maritime exhibition, please select at least one exhibition type (Sea/Land).',
                         confirmButtonColor: '#00a8ff',
-                        confirmButtonText: '확인'
+                        confirmButtonText: 'Confirm'
                     });
                     return; // 서버 전송 중단
                 }
@@ -2752,23 +2604,23 @@ function step_2_10_check(exhibitorSeq){
                 /* 등록 성공 시 다음 단계로 이동 */
                 Swal.fire({
                     icon: 'info',
-                    title: '[ 해상전시회 신청 ]',
-                    html: '<span style="font-size: 1.2em;">해상전시회 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                    title: '[ Maritime Exhibition ]',
+                    html: '<span style="font-size: 1.2em;">Maritime exhibition application info has been saved.<br>Moving to the next step.</span>',
                     allowOutsideClick: false,
                     confirmButtonColor: '#00a8ff',
-                    confirmButtonText: '확인'
+                    confirmButtonText: 'Confirm'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         /* 등록 성공 시 다음 단계로 이동 */
-                        f_page_move('/apply/step2_9.do', exhibitorSeq);
+                        f_page_move('/eng/apply/step2_9.do', exhibitorSeq);
                     }
                 });
             }else{
-                showMessage('', 'error', '[ 해상전시회 신청 ]', '해상전시회 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+                showMessage('', 'error', '[ Maritime Exhibition ]', 'Failed to save maritime exhibition application info. Please contact the administrator.', '');
             }
 
         } else if (result.isDismissed) {
-            f_page_move('/apply/step2_9.do', exhibitorSeq);
+            f_page_move('/eng/apply/step2_9.do', exhibitorSeq);
         }
 
     })
@@ -2780,14 +2632,14 @@ function step_2_9_check(exhibitorSeq){
 
     Swal.fire({
         icon: 'info',
-        title: '[ 요트/보트 출품 정보 ]',
-        html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
+        title: '[ Yacht/Boat ]',
+        html: '<span style="font-size: 1.2em;"><br>Click <span style="background-color:#00a8ff; color:#ffffff;">Continue now</span> to save and proceed to the next page.<br><br>Click <span style="background-color:#A1A5B7; color:#ffffff;">Save for Later</span> to proceed to the next page.<br>You can log in and resume at any time.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
-        confirmButtonText: '지금 계속하기',
+        confirmButtonText: 'Continue now',
         cancelButtonColor: '#A1A5B7',
-        cancelButtonText: '나중에 하기',
+        cancelButtonText: 'Save for Later',
         reverseButtons: true
     }).then((result) => {
 
@@ -2798,7 +2650,7 @@ function step_2_9_check(exhibitorSeq){
 
             let boatEntryYn = nvl($('input[type=radio][name=boatEntryYn]:checked').val(),'N');
             if(boatEntryYn === 'Y') {
-                /*showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
+                /*showMessage('', 'error', '[ Yacht/Boat ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
                 return false;*/
 
                 // 제품분류(대)
@@ -2814,7 +2666,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_option_big_flag) {
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Please select the first product category.', '');
                     return false;
                 }
 
@@ -2831,7 +2683,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_option_small_flag) {
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Please select the second product category.', '');
                     return false;
                 }
 
@@ -2846,7 +2698,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_name_ko_flag) {
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품명을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the product name.', '');
                     return false;
                 }
 
@@ -2861,7 +2713,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_qty_flag) {
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '수량을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the quantity.', '');
                     return false;
                 }
 
@@ -2876,7 +2728,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_brand_flag) {
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the manufacturer (brand).', '');
                     return false;
                 }
 
@@ -2891,7 +2743,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_feature_flag) {
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품 특징을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the product features.', '');
                     return false;
                 }
 
@@ -2906,7 +2758,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_length_flag) {
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '길이(cm)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the length (cm).', '');
                     return false;
                 }
 
@@ -2921,7 +2773,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_width_flag) {
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '너비(cm)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the width (cm).', '');
                     return false;
                 }
 
@@ -2936,7 +2788,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_height_flag) {
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '높이(cm)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the height (cm).', '');
                     return false;
                 }
 
@@ -2951,7 +2803,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_weight_flag) {
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '중량(kg)를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the weight (kg).', '');
                     return false;
                 }
 
@@ -2966,7 +2818,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_material_flag) {
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '소재를 입력해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the material.', '');
                     return false;
                 }
 
@@ -2981,7 +2833,7 @@ function step_2_9_check(exhibitorSeq){
                     }
                 }
                 if (!product_year_flag) {
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '연식을 입력해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the year.', '');
                     return false;
                 }
 
@@ -3039,8 +2891,8 @@ function step_2_9_check(exhibitorSeq){
 
                     let timerInterval;
                     Swal.fire({
-                        title: "정보 저장 중",
-                        html: "입력하신 정보를 저장 중입니다.<br><b></b> milliseconds.<br>현재 화면을 유지해 주세요.",
+                        title: "Saving Information",
+                        html: "Saving the entered information.<br><b></b> milliseconds.<br>Please stay on this page.",
                         allowOutsideClick: false,
                         timer: 2500,
                         timerProgressBar: true,
@@ -3059,25 +2911,25 @@ function step_2_9_check(exhibitorSeq){
                         if (result.dismiss === Swal.DismissReason.timer) {
                             Swal.fire({
                                 icon: 'info',
-                                title: '[ 요트/보트 출품 정보 ]',
-                                html: '<span style="font-size: 1.2em;"> 요트/보트 출품 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                                title: '[ Yacht/Boat ]',
+                                html: '<span style="font-size: 1.2em;">Yacht/boat exhibition info has been saved.<br>Moving to the next step.</span>',
                                 allowOutsideClick: false,
                                 confirmButtonColor: '#00a8ff',
-                                confirmButtonText: '확인'
+                                confirmButtonText: 'Confirm'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    f_page_move('/apply/step2_2.do', exhibitorSeq);
+                                    f_page_move('/eng/apply/step2_2.do', exhibitorSeq);
                                 }
                             })
                         }
                     });
                 }else{
-                    showMessage('', 'error', '[ 요트/보트 출품 정보 ]', ' 요트/보트 출품 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+                    showMessage('', 'error', '[ Yacht/Boat ]', 'Failed to save yacht/boat exhibition info. Please contact the administrator.', '');
                 }
             }
 
         } else if (result.isDismissed) {
-            f_page_move('/apply/step2_2.do', exhibitorSeq);
+            f_page_move('/eng/apply/step2_2.do', exhibitorSeq);
         }
 
     })
@@ -3089,14 +2941,14 @@ function step_2_2_check(exhibitorSeq){
 
     Swal.fire({
         icon: 'info',
-        title: '[ 상호간판 신청 ]',
-        html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
+        title: '[ Signboard ]',
+        html: '<span style="font-size: 1.2em;"><br>Click <span style="background-color:#00a8ff; color:#ffffff;">Continue Now</span> to save and proceed to the next page.<br><br>Click <span style="background-color:#A1A5B7; color:#ffffff;">Save for Later</span> to proceed to the next page.<br>You can log in and resume at any time.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
-        confirmButtonText: '지금 계속하기',
+        confirmButtonText: 'Continue Now',
         cancelButtonColor: '#A1A5B7',
-        cancelButtonText: '나중에 하기',
+        cancelButtonText: 'Save for Later',
         reverseButtons: true
     }).then((result) => {
 
@@ -3109,14 +2961,14 @@ function step_2_2_check(exhibitorSeq){
                 // 상호간판 신청 - 상호간판명 (국문)
                 companySignNameKo = $('#companySignNameKo').val();
                 if(nvl(companySignNameKo,'') === ''){
-                    showMessage('#companySignNameKo', 'error', '[ 상호간판 신청 ]', '조립부스 참가업체는 상호간판명(국문)을 필수 입력해 주세요.', '');
+                    showMessage('#companySignNameKo', 'error', '[ Signboard ]', 'Shell scheme booth exhibitors must enter the company signboard name (Korean).', '');
                     return false;
                 }
 
                 // 상호간판 신청 - 상호간판명 (영문)
                 companySignNameEn = $('#companySignNameEn').val();
                 if(nvl(companySignNameEn,'') === ''){
-                    showMessage('#companySignNameEn', 'error', '[ 상호간판 신청 ]', '조립부스 참가업체는 상호간판명(영문)을 필수 입력해 주세요.', '');
+                    showMessage('#companySignNameEn', 'error', '[ Signboard ]', 'Shell scheme booth exhibitors must enter the company signboard name (English).', '');
                     return false;
                 }
             }
@@ -3135,23 +2987,23 @@ function step_2_2_check(exhibitorSeq){
                 /* 등록 성공 시 다음 단계로 이동 */
                 Swal.fire({
                     icon: 'info',
-                    title: '[ 상호간판 신청 ]',
-                    html: '<span style="font-size: 1.2em;">상호간판 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                    title: '[ Signboard ]',
+                    html: '<span style="font-size: 1.2em;">Signboard application info has been saved.<br>Moving to the next step.</span>',
                     allowOutsideClick: false,
                     confirmButtonColor: '#00a8ff',
-                    confirmButtonText: '확인'
+                    confirmButtonText: 'Confirm'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         /* 등록 성공 시 다음 단계로 이동 */
-                        f_page_move('/apply/step2_3.do', exhibitorSeq);
+                        f_page_move('/eng/apply/step2_3.do', exhibitorSeq);
                     }
                 });
             }else{
-                showMessage('', 'error', '[ 상호간판 신청 ]', '상호간판 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+                showMessage('', 'error', '[ Signboard ]', 'Failed to save signboard application info. Please contact the administrator.', '');
             }
 
         } else if (result.isDismissed) {
-            f_page_move('/apply/step2_3.do', exhibitorSeq);
+            f_page_move('/eng/apply/step2_3.do', exhibitorSeq);
         }
 
     })
@@ -3163,14 +3015,14 @@ function step_2_3_check(exhibitorSeq){
 
     Swal.fire({
         icon: 'info',
-        title: '[ 유틸리티 신청 ]',
-        html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
+        title: '[ Utilities ]',
+        html: '<span style="font-size: 1.2em;"><br>Click <span style="background-color:#00a8ff; color:#ffffff;">Continue Now</span> to save and proceed to the next page.<br><br>Click <span style="background-color:#A1A5B7; color:#ffffff;">Save for Later</span> to proceed to the next page.<br>You can log in and resume at any time.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
-        confirmButtonText: '지금 계속하기',
+        confirmButtonText: 'Continue Now',
         cancelButtonColor: '#A1A5B7',
-        cancelButtonText: '나중에 하기',
+        cancelButtonText: 'Save for Later',
         reverseButtons: true
     }).then((result) => {
 
@@ -3221,10 +3073,7 @@ function step_2_3_check(exhibitorSeq){
                 utilityPytexReFee: utility_pytex_re_fee,
                 utilityBarcodeCnt: utility_barcode_cnt,
                 utilityBarcodeFee: utility_barcode_fee,
-                utilityPrcSum: utilityPrcSum/*,
-                prcSum: prcSum,
-                prcVat: prcVat,
-                prcTotal: prcTotal*/
+                utilityPrcSum: utilityPrcSum
             }
 
             let resData = ajaxConnect('/apply/step/updateExhibitorNewUtility.do', 'post', utility_json_obj);
@@ -3235,23 +3084,23 @@ function step_2_3_check(exhibitorSeq){
                 /* 등록 성공 시 다음 단계로 이동 */
                 Swal.fire({
                     icon: 'info',
-                    title: '[ 유틸리티 신청 ]',
-                    html: '<span style="font-size: 1.2em;">유틸리티 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                    title: '[ Utilities ]',
+                    html: '<span style="font-size: 1.2em;">Utilities application info has been saved.<br>Moving to the next step.</span>',
                     allowOutsideClick: false,
                     confirmButtonColor: '#00a8ff',
-                    confirmButtonText: '확인'
+                    confirmButtonText: 'Confirm'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         /* 등록 성공 시 다음 단계로 이동 */
-                        f_page_move('/apply/step2_4.do', exhibitorSeq);
+                        f_page_move('/eng/apply/step2_4.do', exhibitorSeq);
                     }
                 });
             }else{
-                showMessage('', 'error', '[ 유틸리티 신청 ]', '유틸리티 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+                showMessage('', 'error', '[ Utilities ]', 'Failed to save utilities application info. Please contact the administrator.', '');
             }
 
         } else if (result.isDismissed) {
-            f_page_move('/apply/step2_4.do', exhibitorSeq);
+            f_page_move('/eng/apply/step2_4.do', exhibitorSeq);
         }
 
     })
@@ -3265,14 +3114,14 @@ function step_2_4_check(exhibitorSeq){
 
     Swal.fire({
         icon: 'info',
-        title: '[ 출입증 정보 ]',
-        html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
+        title: '[ Giveaways ]',
+        html: '<span style="font-size: 1.2em;"><br>Click <span style="background-color:#00a8ff; color:#ffffff;">Continue Now</span> to save and proceed to the next page.<br><br>Click <span style="background-color:#A1A5B7; color:#ffffff;">Save for Later</span> to proceed to the next page.<br>You can log in and resume at any time.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
-        confirmButtonText: '지금 계속하기',
+        confirmButtonText: 'Continue Now',
         cancelButtonColor: '#A1A5B7',
-        cancelButtonText: '나중에 하기',
+        cancelButtonText: 'Save for Later',
         reverseButtons: true
     }).then((result) => {
 
@@ -3288,7 +3137,7 @@ function step_2_4_check(exhibitorSeq){
                 }
             }
             if(!pass_name_flag){
-                showMessage('', 'error', '[ 출입증 신청 ]', '성명(국문)을 입력해 주세요.', '');
+                showMessage('', 'error', '[ Giveaways ]', 'Please enter the name (Korean).', '');
                 return false;
             }
 
@@ -3302,7 +3151,7 @@ function step_2_4_check(exhibitorSeq){
                 }
             }
             if(!pass_first_name_flag){
-                showMessage('', 'error', '[ 출입증 신청 ]', '성명(영문) 이름을 입력해 주세요.', '');
+                showMessage('', 'error', '[ Giveaways ]', 'Please enter the first name (English).', '');
                 return false;
             }
 
@@ -3316,7 +3165,7 @@ function step_2_4_check(exhibitorSeq){
                 }
             }
             if(!pass_last_name_flag){
-                showMessage('', 'error', '[ 출입증 신청 ]', '성명(영문) 성을 입력해 주세요.', '');
+                showMessage('', 'error', '[ Giveaways ]', 'Please enter the last name (English).', '');
                 return false;
             }
 
@@ -3330,7 +3179,7 @@ function step_2_4_check(exhibitorSeq){
                 }
             }
             if(!pass_position_ko_flag){
-                showMessage('', 'error', '[ 출입증 신청 ]', '직책(국문)을 입력해 주세요.', '');
+                showMessage('', 'error', '[ Giveaways ]', 'Please enter the position (Korean).', '');
                 return false;
             }
 
@@ -3344,7 +3193,7 @@ function step_2_4_check(exhibitorSeq){
                 }
             }
             if(!pass_position_en_flag){
-                showMessage('', 'error', '[ 출입증 신청 ]', '직책(영문)을 입력해 주세요.', '');
+                showMessage('', 'error', '[ Giveaways ]', 'Please enter the position (English).', '');
                 return false;
             }
 
@@ -3381,23 +3230,23 @@ function step_2_4_check(exhibitorSeq){
                 /* 등록 성공 시 다음 단계로 이동 */
                 Swal.fire({
                     icon: 'info',
-                    title: '[ 출입증 신청 ]',
-                    html: '<span style="font-size: 1.2em;">출입증 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                    title: '[ Giveaways ]',
+                    html: '<span style="font-size: 1.2em;">Pass application info has been saved.<br>Moving to the next step.</span>',
                     allowOutsideClick: false,
                     confirmButtonColor: '#00a8ff',
-                    confirmButtonText: '확인'
+                    confirmButtonText: 'Confirm'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         /* 등록 성공 시 다음 단계로 이동 */
-                        f_page_move('/apply/step2_5.do', exhibitorSeq);
+                        f_page_move('/eng/apply/step2_5.do', exhibitorSeq);
                     }
                 });
             }else{
-                showMessage('', 'error', '[ 출입증 신청 ]', '출입증 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+                showMessage('', 'error', '[ Giveaways ]', 'Failed to save pass application info. Please contact the administrator.', '');
             }
 
         } else if (result.isDismissed) {
-            f_page_move('/apply/step2_5.do', exhibitorSeq);
+            f_page_move('/eng/apply/step2_5.do', exhibitorSeq);
         }
 
     })
@@ -3422,13 +3271,13 @@ $(document).on('change', 'input[name="giftApplyYn"]', function() {
         // 기존에 등록된 경품(화면 리스트)이나 방금 추가한 경품(배열)이 있는 경우 경고
         if (gift_add_json_arr.length > 0 || $('.form_chuga_list').length > 0) {
             Swal.fire({
-                title: '미신청으로 변경 시 기존에 작성/등록된 경품 정보가 모두 삭제됩니다.\n변경하시겠습니까?',
+                title: 'Changing to \'Not Applied\' will delete all existing giveaway information.\nDo you want to change it?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
-                confirmButtonText: '변경 및 삭제',
+                confirmButtonText: 'Change and Delete',
                 cancelButtonColor: '#A1A5B7',
-                cancelButtonText: '취소',
+                cancelButtonText: 'Cancel',
                 allowOutsideClick: false
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -3457,20 +3306,20 @@ function step_2_5_check(exhibitorSeq){
 
     // '신청(Y)'인데 등록된 경품이 단 1개도 없는 경우 진행 차단
     if (giftApplyYn === 'Y' && gift_add_json_arr.length === 0 && $('.form_chuga_list').length === 0) {
-        showMessage('', 'error', '[ 경품제공 신청 ]', '신청 시 최소 1개 이상의 경품을 등록해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Please register at least one giveaway when applying.', '');
         return false;
     }
 
     Swal.fire({
         icon: 'info',
-        title: '[ 경품제공 신청 ]',
-        html: '<span style="font-size: 1.2em;"><br><span style="background-color:#00a8ff; color:#ffffff;">지금 계속하기</span> 클릭 시 내용 저장 후<br>다음 페이지로 넘어갑니다.<br><br><span style="background-color:#A1A5B7; color:#ffffff;">나중에 하기</span> 클릭 시 다음 페이지로 넘어가며,<br>언제든 로그인하여 이어서 작성할 수 있습니다.</span>',
+        title: '[ Giveaways ]',
+        html: '<span style="font-size: 1.2em;"><br>Click <span style="background-color:#00a8ff; color:#ffffff;">Continue Now</span> to save and proceed to the next page.<br><br>Click <span style="background-color:#A1A5B7; color:#ffffff;">Save for Later</span> to proceed to the next page.<br>You can log in and resume at any time.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
-        confirmButtonText: '지금 계속하기',
+        confirmButtonText: 'Continue Now',
         cancelButtonColor: '#A1A5B7',
-        cancelButtonText: '나중에 하기',
+        cancelButtonText: 'Save for Later',
         reverseButtons: true
     }).then((result) => {
 
@@ -3493,23 +3342,23 @@ function step_2_5_check(exhibitorSeq){
                 /* 등록 성공 시 다음 단계로 이동 */
                 Swal.fire({
                     icon: 'info',
-                    title: '[ 경품제공 신청 ]',
-                    html: '<span style="font-size: 1.2em;">경품제공 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                    title: '[ Giveaways ]',
+                    html: '<span style="font-size: 1.2em;">Giveaway application info has been saved.<br>Moving to the next step.</span>',
                     allowOutsideClick: false,
                     confirmButtonColor: '#00a8ff',
-                    confirmButtonText: '확인'
+                    confirmButtonText: 'Confirm'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         /* 등록 성공 시 다음 단계로 이동 */
-                        f_page_move('/apply/step2_8.do', exhibitorSeq);
+                        f_page_move('/eng/apply/step2_8.do', exhibitorSeq);
                     }
                 });
             }else{
-                showMessage('', 'error', '[ 경품제공 신청 ]', '경품제공 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+                showMessage('', 'error', '[ Giveaways ]', 'Failed to save giveaway application info. Please contact the administrator.', '');
             }
 
         } else if (result.isDismissed) {
-            f_page_move('/apply/step2_8.do', exhibitorSeq);
+            f_page_move('/eng/apply/step2_8.do', exhibitorSeq);
         }
 
     })
@@ -3524,7 +3373,7 @@ function f_gift_add(exSeq){
     // 수량
     let gift_cnt = $('#gift_cnt').val();
     if(gift_cnt === ''){
-        showMessage('', 'error', '[ 경품제공 신청 ]', '수량을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Please enter the quantity.', '');
         return false;
     }
 
@@ -3534,14 +3383,14 @@ function f_gift_add(exSeq){
     // 품목명
     let gift_name = $('#gift_name').val();
     if(gift_name === ''){
-        showMessage('', 'error', '[ 경품제공 신청 ]', '품목명을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Please enter the item name.', '');
         return false;
     }
 
     // 경품설명
     let gift_content = $('#gift_content').val();
     if(gift_content === ''){
-        showMessage('', 'error', '[ 경품제공 신청 ]', '경품설명을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Please enter the giveaway description.', '');
         return false;
     }
 
@@ -3554,7 +3403,7 @@ function f_gift_add(exSeq){
     // 소비자가
     let gift_price = $('#gift_price').val();
     if(gift_price === ''){
-        showMessage('', 'error', '[ 경품제공 신청 ]', '소비자가를 입력해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Please enter the retail price.', '');
         return false;
     }
 
@@ -3654,13 +3503,13 @@ function f_gift_add(exSeq){
     let modifyFormGift = document.createElement('div');
     modifyFormGift.classList.add('modifyFormGift');
     modifyFormGift.classList.add('modifyFormList');
-    modifyFormGift.innerText = '수정';
+    modifyFormGift.innerText = 'Modify';
     modifyFormGift.onclick = function(){ f_gift_modify_modal('create', this); }
     let delFormGift = document.createElement('div');
     delFormGift.classList.add('delFormGift');
     delFormGift.classList.add('delFormList');
     delFormGift.onclick = function(){ f_gift_remove('create', this); }
-    delFormGift.innerText = '삭제';
+    delFormGift.innerText = 'Delete';
 
     cont.appendChild(name);
     cont.appendChild(gubun);
@@ -3808,14 +3657,14 @@ function f_gift_remove(gbn, el){
     //console.log(gbn, el);
 
     Swal.fire({
-        title: '선택한 경품제공 정보를 삭제하시겠습니까?',
+        title: 'Are you sure you want to delete the selected giveaway info?',
         icon: 'warning',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#d33',
-        confirmButtonText: '삭제하기',
+        confirmButtonText: 'Delete',
         cancelButtonColor: '#A1A5B7',
-        cancelButtonText: '취소'
+        cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
 
@@ -3898,20 +3747,20 @@ function step_2_6_check(){
 
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
-            title: '참가업체 정보',
-            html: '웹배너 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.',
+            title: 'Exhibitor Info',
+            html: 'Web banner application info has been saved.<br>Moving to the next step.',
             icon: 'info',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                window.location.href = '/apply/step2_8.do';
+                window.location.href = '/eng/apply/step2_8.do';
             }
         });
     }else{
-        showMessage('', 'error', '[ 참가업체 정보 ]', '웹배너 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Exhibitor Info ]', 'Failed to save web banner application info. Please contact the administrator.', '');
     }
 }
 
@@ -4011,14 +3860,14 @@ function f_exhibitor_info_call(){
 
                 $('div.file_box').empty(); //비우기
                 let fileBoxStr = '<div class="file_list" style="margin-top: 10px; display: flex; align-items: center;">';
-                    fileBoxStr += '<img src="' + licenseFullFilePath + '" class="mr10" style="border: 1px solid #009ef7; margin: 0 5px 0 0; max-width: 150px;"/>';
-                    /*fileBoxStr += '<a href="/file/download.do?path=exhibitor/company/' + licenseFolderPath + '&fileName=' + licenseFullFileName + '">';*/
-                    fileBoxStr += '<a href="javascript:void(0);" onClick="f_file_download(\'exhibitor/company/' + licenseFolderPath + '\', \'' + licenseFullFileName + '\')">';
-                    fileBoxStr += licenseFileName;
-                    fileBoxStr += '</a>';
-                    /*fileBoxStr += '<button type="button" onClick="f_file_remove(this,\'' + file_resData.id + '\')" style="cursor:pointer; margin-left: 10px;">';
-                    fileBoxStr += 'X';
-                    fileBoxStr += '</button>';*/
+                fileBoxStr += '<img src="' + licenseFullFilePath + '" class="mr10" style="border: 1px solid #009ef7; margin: 0 5px 0 0; max-width: 150px;"/>';
+                /*fileBoxStr += '<a href="/file/download.do?path=exhibitor/company/' + licenseFolderPath + '&fileName=' + licenseFullFileName + '">';*/
+                fileBoxStr += '<a href="javascript:void(0);" onClick="f_file_download(\'exhibitor/company/' + licenseFolderPath + '\', \'' + licenseFullFileName + '\')">';
+                fileBoxStr += licenseFileName;
+                fileBoxStr += '</a>';
+                /*fileBoxStr += '<button type="button" onClick="f_file_remove(this,\'' + file_resData.id + '\')" style="cursor:pointer; margin-left: 10px;">';
+                fileBoxStr += 'X';
+                fileBoxStr += '</button>';*/
                 fileBoxStr += '</div>';
 
                 $('div.file_box').append(fileBoxStr);
@@ -4026,310 +3875,17 @@ function f_exhibitor_info_call(){
         }
     }else{
         Swal.fire({
-            title: '디렉토리 정보',
-            html: '입력정보 불러오기를 실패하였습니다.<br>직접 입력하시거나 , 로그인 후 마이페이지에서 진행해 주세요.',
+            title: 'Directory Info',
+            html: 'Failed to load the entered information.<br>Please enter it manually or proceed from My Page after logging in.',
             icon: 'info',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         });
     }
 }
 
 function step_2_8_check(exhibitorSeq){
-
-    /*// 회사명
-    let company_name_ko = document.querySelector('#company_name_ko').value;
-    if(company_name_ko === ''){
-        showMessage('', 'error', '[ 참가업체 정보 ]', '회사명(국문)을 입력해 주세요.', '');
-        return false;
-    }
-    let company_name_en = document.querySelector('#company_name_en').value;
-    if(company_name_en === ''){
-        showMessage('', 'error', '[ 참가업체 정보 ]', '회사명(영문)을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 주소
-    let company_address = document.querySelector('#company_address').value;
-    if(company_address === ''){
-        showMessage('', 'error', '[ 참가업체 정보 ]', '주소를 입력해 주세요.', '');
-        return false;
-    }
-    let company_address_detail = document.querySelector('#company_address_detail').value;
-    if(company_address_detail === ''){
-        showMessage('', 'error', '[ 참가업체 정보 ]', '상세주소를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 대표자
-    let company_ceo = document.querySelector('#company_ceo').value;
-    if(company_ceo === ''){
-        showMessage('', 'error', '[ 참가업체 정보 ]', '대표자명을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 전화
-    let company_tel = document.querySelector('#company_tel').value;
-    if(company_tel === ''){
-        showMessage('', 'error', '[ 참가업체 정보 ]', '전화번호를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 홈페이지
-    let company_homepage = document.querySelector('#company_homepage').value;
-
-    // Fax
-    let company_fax = document.querySelector('#company_fax').value;
-
-    // 사업자등록증
-    if($('.file_box img').length === 0){
-        showMessage('', 'error', '[ 참가업체 정보 ]', '기본정보 탭에서 사업자등록증을 등록해 주세요.', '');
-        return false;
-    }
-
-    // 사업자등록번호
-    let company_license_num = document.querySelector('#company_license_num').value;
-
-    // 블로그
-    let sns_blog = document.querySelector('#sns_blog').value;
-
-    // 페이스북
-    let sns_facebook = document.querySelector('#sns_facebook').value;
-
-    // 인스타그램
-    let sns_instagram = document.querySelector('#sns_instagram').value;
-
-    // 기타
-    let sns_etc = document.querySelector('#sns_etc').value;
-
-    // 담당자 정보 SEQ
-    let charge_person_seq_el = document.querySelectorAll('input[type=hidden][name=charge_person_seq]');
-
-    // 성명
-    let charge_person_name_el = document.querySelectorAll('input[type=text][name=charge_person_name]');
-    let charge_person_name_len = charge_person_name_el.length;
-    let charge_person_name_flag = true;
-    for(let i=0; i<charge_person_name_len; i++){
-        if(charge_person_name_el[i].value === ''){
-            charge_person_name_flag = false;
-        }
-    }
-    if(!charge_person_name_flag){
-        showMessage('', 'error', '[담당자 정보]', '성명을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 직위
-    let charge_person_position_el = document.querySelectorAll('input[type=text][name=charge_person_position]');
-    let charge_person_position_len = charge_person_position_el.length;
-    let charge_person_position_flag = true;
-    for(let i=0; i<charge_person_position_len; i++){
-        if(charge_person_position_el[i].value === ''){
-            charge_person_position_flag = false;
-        }
-    }
-    if(!charge_person_position_flag){
-        showMessage('', 'error', '[담당자 정보]', '직위를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 부서
-    let charge_person_depart_el = document.querySelectorAll('input[type=text][name=charge_person_depart]');
-
-    // 전화번호
-    let charge_person_tel_el = document.querySelectorAll('input[type=tel][name=charge_person_tel]');
-    let charge_person_tel_len = charge_person_tel_el.length;
-    let charge_person_tel_flag = true;
-    for(let i=0; i<charge_person_tel_len; i++){
-        if(charge_person_tel_el[i].value === ''){
-            charge_person_tel_flag = false;
-        }
-    }
-    if(!charge_person_tel_flag){
-        showMessage('', 'error', '[담당자 정보]', '전화번호를 입력해 주세요.', '');
-        return false;
-    }
-
-    // 휴대전화
-    let charge_person_phone_el = document.querySelectorAll('input[type=tel][name=charge_person_phone]');
-    let charge_person_phone_len = charge_person_phone_el.length;
-    let charge_person_phone_flag = true;
-    for(let i=0; i<charge_person_phone_len; i++){
-        if(charge_person_phone_el[i].value === ''){
-            charge_person_phone_flag = false;
-        }
-        if ( charge_person_phone_flag && !/^010-[0-9]{4}-[0-9]{4}$/.test( charge_person_phone_el[i].value ) ) {
-            charge_person_phone_flag = false;
-        }
-    }
-    if(!charge_person_phone_flag){
-        showMessage('', 'error', '[담당자 정보]', '휴대전화를 입력해 주세요.<br>또는 올바른 휴대전화번호 형식으로 입력해 주세요.(010 만 가능)', '');
-        return false;
-    }
-
-    // 이메일
-    let charge_person_email_input1_el = document.querySelectorAll('input[type=email][name=charge_person_email_input1]');
-    let charge_person_email_input1_len = charge_person_email_input1_el.length;
-    let charge_person_email_input1_flag = true;
-    for(let i=0; i<charge_person_email_input1_len; i++){
-        if(charge_person_email_input1_el[i].value === ''){
-            charge_person_email_input1_flag = false;
-        }
-    }
-    if(!charge_person_email_input1_flag){
-        showMessage('', 'error', '[담당자 정보]', '이메일을 입력해 주세요.', '');
-        return false;
-    }
-
-    let charge_person_email_input2_el = document.querySelectorAll('input[type=email][name=charge_person_email_input2]');
-    let charge_person_email_input2_len = charge_person_email_input2_el.length;
-    let charge_person_email_input2_flag = true;
-    for(let i=0; i<charge_person_email_input2_len; i++){
-        if(charge_person_email_input2_el[i].value === ''){
-            charge_person_email_input2_flag = false;
-        }
-    }
-    if(!charge_person_email_input2_flag){
-        showMessage('', 'error', '[담당자 정보]', '이메일 도메인을 입력해 주세요.', '');
-        return false;
-    }
-
-    //담당자 Json Create
-    let charge_json_arr = [];
-    if(charge_person_name_len > 0){
-        for(let i=0; i<charge_person_name_len; i++){
-            let charge_json_obj = {
-                seq: charge_person_seq_el[i].value,
-                chargePersonName: charge_person_name_el[i].value,
-                chargePersonPosition: charge_person_position_el[i].value,
-                chargePersonDepart: charge_person_depart_el[i].value,
-                chargePersonTel: charge_person_tel_el[i].value,
-                chargePersonPhone: charge_person_phone_el[i].value,
-                chargePersonEmail: charge_person_email_input1_el[i].value + '@' + charge_person_email_input2_el[i].value,
-            };
-            charge_json_arr.push(charge_json_obj);
-        }
-    }
-
-    // 전시 정보 SEQ
-    let display_seq_el = document.querySelectorAll('input[type=hidden][name=display_seq]');
-
-    // 전시품목
-    let display_item_el = document.querySelectorAll('input[type=text][name=display_item]');
-    let display_item_len = display_item_el.length;
-    let display_item_flag = true;
-    for(let i=0; i<display_item_len; i++){
-        if(display_item_el[i].value === ''){
-            display_item_flag = false;
-        }
-    }
-    if(!display_item_flag){
-        showMessage('', 'error', '[전시정보]', '전시품목을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 전시품목 브랜드명
-    let display_brand_el = document.querySelectorAll('input[type=text][name=display_brand]');
-    let display_brand_len = display_brand_el.length;
-    let display_brand_flag = true;
-    for(let i=0; i<display_brand_len; i++){
-        if(display_brand_el[i].value === ''){
-            display_brand_flag = false;
-        }
-    }
-    if(!display_brand_flag){
-        showMessage('', 'error', '[전시정보]', '브랜드명을 입력해 주세요.', '');
-        return false;
-    }
-
-    // 전시품목 실물 보트 수
-    let display_boat_cnt_el = document.querySelectorAll('input[type=text][name=display_boat_cnt]');
-    let display_boat_cnt_len = display_boat_cnt_el.length;
-    let display_boat_cnt_flag = true;
-    for(let i=0; i<display_boat_cnt_len; i++){
-        if(display_boat_cnt_el[i].value === ''){
-            display_boat_cnt_flag = false;
-        }
-    }
-    if(!display_boat_cnt_flag){
-        showMessage('', 'error', '[전시정보]', '실물 보트 수를 입력해 주세요.', '');
-        return false;
-    }
-
-    //전시정보 Json Create
-    let displayList_json_arr = [];
-    if(display_item_len > 0){
-        for(let i=0; i<display_item_len; i++){
-            let displayList_json_obj = {
-                seq: display_seq_el[i].value,
-                displayItem: display_item_el[i].value,
-                displayBrand: display_brand_el[i].value,
-                displayBoatCnt: display_boat_cnt_el[i].value
-            };
-            displayList_json_arr.push(displayList_json_obj);
-        }
-    }
-
-    // 회사소개
-    let company_intro_ko = document.querySelector('#company_intro_ko').value;
-    if(company_intro_ko === ''){
-        showMessage('', 'error', '[상세정보]', '회사소개(국문)을 입력해 주세요.', '');
-        return false;
-    }
-    let company_intro_en = document.querySelector('#company_intro_en').value;
-    if(company_intro_en === ''){
-        showMessage('', 'error', '[상세정보]', '회사소개(영문)을 입력해 주세요.', '');
-        return false;
-    }
-
-    // KIBS 참가목적
-    let company_purpose_ko = document.querySelector('#company_purpose_ko').value;
-    if(company_purpose_ko === ''){
-        showMessage('', 'error', '[상세정보]', 'KIBS 참가목적(국문)을 입력해 주세요.', '');
-        return false;
-    }
-    let company_purpose_en = document.querySelector('#company_purpose_en').value;
-    if(company_purpose_en === ''){
-        showMessage('', 'error', '[상세정보]', 'KIBS 참가목적(영문)을 입력해 주세요.', '');
-        return false;
-    }
-
-    let lang = 'KO';
-    if(document.location.href.includes('eng')){
-        lang = 'EN';
-    }
-
-    let directory_json_obj = {
-        lang: lang,
-        userId: sessionStorage.getItem('id'),
-        transferYear: transferYear,
-        companyNameKo: company_name_ko,
-        companyNameEn: company_name_en,
-        companyAddress: company_address,
-        companyAddressDetail: company_address_detail,
-        companyCeo: company_ceo,
-        companyTel: company_tel,
-        companyHomepage: company_homepage,
-        companyFax: company_fax,
-        companyLicenseNum: company_license_num,
-        snsBlog: sns_blog,
-        snsFacebook: sns_facebook,
-        snsInstagram: sns_instagram,
-        snsEtc: sns_etc,
-        chargeList: charge_json_arr,
-        displayList: displayList_json_arr,
-        companyIntroKo: company_intro_ko,
-        companyIntroEn: company_intro_en,
-        companyPurposeKo: company_purpose_ko,
-        companyPurposeEn: company_purpose_en
-    };
-
-    let resData = ajaxConnect('/apply/step/insertDirectory.do', 'post', directory_json_obj);
-
-    //console.log(resData);
-    if(resData.resultCode === "0") {
-*/
 
     let directory_json_obj = {
         exSeq: exhibitorSeq
@@ -4342,19 +3898,19 @@ function step_2_8_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ 디렉토리 정보 ]',
-            html: '<span style="font-size: 1.2em;">디렉토리 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            title: '[ Directory ]',
+            html: '<span style="font-size: 1.2em;">Directory info has been saved.<br>Moving to the next step.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/apply/step03.do', exhibitorSeq);
+                f_page_move('/eng/apply/step03.do', exhibitorSeq);
             }
         });
     }else{
-        showMessage('', 'error', '[ 디렉토리 정보 ]', '디렉토리 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Directory ]', 'Failed to save directory info. Please contact the administrator.', '');
     }
 }
 
@@ -4378,11 +3934,11 @@ function step_03_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ 참가업체 정보 ]',
-            html: '<span style="font-size: 1.2em;">참가 신청이 정상 완료되었습니다.<br>등록하신 담당자 메일로 신청완료 및 안내 메일이 발송됩니다.</span>',
+            title: '[ Exhibitor Info ]',
+            html: '<span style="font-size: 1.2em;">Your application has been successfully completed.<br>A completion and notification email will be sent to the registered contact\'s email address.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -4394,7 +3950,7 @@ function step_03_check(exhibitorSeq){
                 for(let j=0; j<emailArr.length; j++){
                     let email = emailArr[j];
                     let jsonObj = {
-                        subject: '[2027 경기국제보트쇼] 참가업체 접수 완료', //제목
+                        subject: '[2027 KIBS] Exhibitor Registration Complete', //제목
                         body: "", //본문
                         template: "6", //템플릿 번호
                         receiver: [{email: email}]
@@ -4407,12 +3963,12 @@ function step_03_check(exhibitorSeq){
                 }
                 if (mailResultFlag) {
                     /* 등록 성공 시 다음 단계로 이동 */
-                    home('ko');
+                    home('en');
                 }
             }
         })
     }else{
-        showMessage('', 'error', '[ 참가업체 정보 ]', '참가 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Exhibitor Info ]', 'Failed to save application info. Please contact the administrator.', '');
     }
 }
 
@@ -4466,35 +4022,35 @@ function f_personal_info_save(exhibitorSeq){
     let password = $('#password').val();
     let passwordCheck = $('#passwordCheck').val();
     if(password === ''){
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '비밀번호를 입력해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Please enter your password.', '');
         return false;
     }
 
     // 비밀번호 유효성
     let pwCheck = $('#pwCheck').val();
     if(pwCheck === 'false'){
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '비밀번호 유효성 검사를 수행해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Please perform password validation.', '');
         return false;
     }
 
     // 비밀번호 확인 유효성
     let pwConfirmCheck = $('#pwConfirmCheck').val();
     if(pwConfirmCheck === 'false'){
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '비밀번호 확인을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Please confirm your password.', '');
         return false;
     }
 
     // 성명
     let name = $('#name').val();
     if(name === ''){
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '성명을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Please enter your name.', '');
         return false;
     }
 
     // 직위
     let position = $('#position').val();
     if(position === ''){
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '직위를 입력해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Please enter your position.', '');
         return false;
     }
 
@@ -4504,14 +4060,14 @@ function f_personal_info_save(exhibitorSeq){
     // 전화번호
     let tel = $('#tel').val();
     if(tel === ''){
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '전화번호를 입력해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Please enter your phone number.', '');
         return false;
     }
 
     // 휴대전화
     let phone = $('#phone').val();
     if(phone === ''){
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '휴대전화번호를 입력해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Please enter your mobile phone number.', '');
         return false;
     }
 
@@ -4519,11 +4075,11 @@ function f_personal_info_save(exhibitorSeq){
     let email_input1 = $('#email_input1').val();
     let email_input2 = $('#email_input2').val();
     if(email_input1 === ''){
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '이메일을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Please enter your email.', '');
         return false;
     }
     if(email_input2 === ''){
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '이메일 도메인을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Please enter your email domain.', '');
         return false;
     }
 
@@ -4542,21 +4098,21 @@ function f_personal_info_save(exhibitorSeq){
 
     if(resData.resultCode === "0") {
 
-            Swal.fire({
-                icon: 'info',
-                title: '[ 회원 계정 정보 ]',
-                html: '<span style="font-size: 1.2em;">회원 계정 정보가 저장되었습니다.</span>',
-                allowOutsideClick: false,
-                confirmButtonColor: '#00a8ff',
-                confirmButtonText: '확인'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    f_page_move('/mypage/modify.do', exhibitorSeq);
-                }
-            });
-            
+        Swal.fire({
+            icon: 'info',
+            title: '[ Member Info ]',
+            html: '<span style="font-size: 1.2em;">Member account info has been saved.</span>',
+            allowOutsideClick: false,
+            confirmButtonColor: '#00a8ff',
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                f_page_move('/eng/mypage/modify.do', exhibitorSeq);
+            }
+        });
+
     }else{
-        showMessage('', 'error', '[ 회원 계정 정보 ]', '기본 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Member Info ]', 'Failed to save basic info. Please contact the administrator.', '');
     }
 
 }
@@ -4564,37 +4120,30 @@ function f_personal_info_save(exhibitorSeq){
 async function my_step_01_check(exhibitorSeq){
 
     /******************** 참가업체 정보 ********************/
-    //ID
+        //ID
     let id = $('#id').val();
-
-    // 사업자등록번호
-    let companyLicenseNum = $('#companyLicenseNum').val();
-    if(nvl(companyLicenseNum,'') === ''){
-        showMessage('', 'error', '[ 참가업체 정보 ]', '사업자등록번호를 입력해 주세요.', '');
-        return false;
-    }
 
     // 회사명
     let companyNameKo = $('#companyNameKo').val();
     if(nvl(companyNameKo,'') === ''){
-        showMessage('#companyNameKo', 'error', '[ 참가업체 정보 ]', '회사명(국문)을 입력해 주세요.', '');
+        showMessage('#companyNameKo', 'error', '[ Exhibitor Info ]', 'Please enter the company name (Korean).', '');
         return false;
     }
     let companyNameEn = $('#companyNameEn').val();
     if(nvl(companyNameEn,'') === ''){
-        showMessage('#companyNameEn', 'error', '[ 참가업체 정보 ]', '회사명(영문)을 입력해 주세요.', '');
+        showMessage('#companyNameEn', 'error', '[ Exhibitor Info ]', 'Please enter the company name (English).', '');
         return false;
     }
 
     // 본사 주소
     let companyAddress = $('#companyAddress').val();
     if(nvl(companyAddress,'') === ''){
-        showMessage('#companyAddress', 'error', '[ 참가업체 정보 ]', '본사 주소를 입력해 주세요.', '');
+        showMessage('#companyAddress', 'error', '[ Exhibitor Info ]', 'Please enter the head office address.', '');
         return false;
     }
     let companyAddressDetail = $('#companyAddressDetail').val();
     if(nvl(companyAddressDetail,'') === ''){
-        showMessage('#companyAddressDetail', 'error', '[ 참가업체 정보 ]', '본사 상세 주소를 입력해 주세요.', '');
+        showMessage('#companyAddressDetail', 'error', '[ Exhibitor Info ]', 'Please enter the detailed head office address.', '');
         return false;
     }
 
@@ -4605,15 +4154,17 @@ async function my_step_01_check(exhibitorSeq){
     // 대표자
     let companyCeo = $('#companyCeo').val();
     if(nvl(companyCeo,'') === ''){
-        showMessage('#companyCeo', 'error', '[ 참가업체 정보 ]', '대표자명을 입력해 주세요.', '');
+        showMessage('#companyCeo', 'error', '[ Exhibitor Info ]', 'Please enter the CEO\'s name.', '');
         return false;
     }
 
     // 전화
     let companyTel = $('#companyTel').val();
     if(nvl(companyTel,'') === ''){
-        showMessage('#companyTel', 'error', '[ 참가업체 정보 ]', '전화번호를 입력해 주세요.', '');
+        showMessage('#companyTel', 'error', '[ Exhibitor Info ]', 'Please enter the phone number.', '');
         return false;
+    }else{
+        companyTel = $('#companyTelCode').val() + ' ' + $('#companyTel').val();
     }
 
     // 홈페이지
@@ -4622,43 +4173,33 @@ async function my_step_01_check(exhibitorSeq){
         let no_companyHomepage = $('input[type=checkbox][name=noPage]').is(':checked');
         if(no_companyHomepage === false){
             if(!checkUrl(companyHomepage)){
-                showMessage('#companyHomepage', 'error', '[ 참가업체 정보 ]', '홈페이지 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+                showMessage('#companyHomepage', 'error', '[ Exhibitor Info ]', 'Please include http:// or https:// in the website address.', '');
                 return false;
             }
         }
     }else{
         let no_companyHomepage = $('input[type=checkbox][name=noPage]').is(':checked');
         if(no_companyHomepage === false){
-            showMessage('#companyHomepage', 'error', '[ 참가업체 정보 ]', '홈페이지가 없다면 \"홈페이지 없음\" 에 체크해 주세요.', '');
+            showMessage('#companyHomepage', 'error', '[ Exhibitor Info ]', 'If you do not have a website, please check "No website".', '');
             return false;
         }
     }
 
     // Fax
-    let companyFax = $('#companyFax').val();
+    let companyFax = $('#companyFaxCode').val() + ' ' + $('#companyFax').val();
 
     // 산업분류
     let industryPart = $('#industryPart').val();
     let industryPartEtc = $('#industryPartEtc').val();
     if(nvl(industryPart,'') === ''){
-        showMessage('', 'error', '[ 참가업체 정보 ]', '산업 분류 항목을 선택해 주세요.', '');
+        showMessage('', 'error', '[ Exhibitor Info ]', 'Please select the industry category.', '');
         return false;
     }else{
         if(industryPart.includes('기타')){
             if(industryPartEtc === ''){
-                showMessage('#industryPartEtc', 'error', '[ 참가업체 정보 ]', '산업 분류 기타 선택 시 항목을 입력해 주세요.', '');
+                showMessage('#industryPartEtc', 'error', '[ Exhibitor Info ]', 'Please enter the details if you selected \'Others\' for the industry category.', '');
                 return false;
             }
-        }
-    }
-
-    // 사업자등록증
-    let companyLicenseFile_li = $('.companyLicenseFile_li').length;
-    if(companyLicenseFile_li === 0){
-        let companyLicense = $('#companyLicense').val();
-        if (nvl(companyLicense,'') === '') {
-            showMessage('', 'info', '[ 참가업체 정보 ]', '사업자등록증을 첨부해 주세요.', '');
-            return false;
         }
     }
 
@@ -4667,7 +4208,7 @@ async function my_step_01_check(exhibitorSeq){
     if(logoFile_li === 0){
         let logo = $('#logo').val();
         if (nvl(logo,'') === '') {
-            showMessage('', 'error', '[ 참가업체 정보 ]', '로고 파일을 업로드해 주세요.', '');
+            showMessage('', 'error', '[ Exhibitor Info ]', 'Please upload the logo file.', '');
             return false;
         }
     }
@@ -4684,7 +4225,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
     }else{
-        showMessage('', 'error', '[ 참가업체 정보 ]', '기참가연도를 선택해 주세요.', '');
+        showMessage('', 'error', '[ Exhibitor Info ]', 'Please select the year(s) of previous participation.', '');
         return false;
     }
 
@@ -4694,17 +4235,17 @@ async function my_step_01_check(exhibitorSeq){
     /******************** 담당자 정보 ********************/
     /******************** 대표담당자 정보 ********************/
 
-    // 성명
+        // 성명
     let name = $('#name').val();
     if(nvl(name,'') === ''){
-        showMessage('#name', 'error', '[ 담당자 정보 ]', '성명을 입력해 주세요.', '');
+        showMessage('#name', 'error', '[ Contact Info ]', 'Please enter the name.', '');
         return false;
     }
 
     // 직위
     let position = $('#position').val();
     if(nvl(position,'') === ''){
-        showMessage('#position', 'error', '[ 담당자 정보 ]', '직위를 입력해 주세요.', '');
+        showMessage('#position', 'error', '[ Contact Info ]', 'Please enter the position.', '');
         return false;
     }
 
@@ -4714,18 +4255,18 @@ async function my_step_01_check(exhibitorSeq){
     // 전화번호
     let tel = $('#tel').val();
     if(nvl(tel,'') === ''){
-        showMessage('#tel', 'error', '[ 담당자 정보 ]', '전화번호를 입력해 주세요.', '');
+        showMessage('#tel', 'error', '[ Contact Info ]', 'Please enter the phone number.', '');
         return false;
     }
 
     // 휴대전화
     let phone = $('#phone').val();
     if(nvl(phone,'') === ''){
-        showMessage('#phone', 'error', '[ 담당자 정보 ]', '휴대전화번호를 입력해 주세요.', '');
+        showMessage('#phone', 'error', '[ Contact Info ]', 'Please enter the mobile phone number.', '');
         return false;
     }else{
         if ( !/^010-[0-9]{4}-[0-9]{4}$/.test( phone ) ) {
-            showMessage('#phone', 'error', '[ 담당자 정보 ]', '올바른 휴대전화번호를 입력해 주세요.<br>(앞자리 010 만 가능합니다.)', '');
+            showMessage('#phone', 'error', '[ Contact Info ]', 'Please enter a valid mobile phone number.<br>(Must start with 010.)', '');
             return false;
         }
     }
@@ -4734,11 +4275,11 @@ async function my_step_01_check(exhibitorSeq){
     let email1 = $('#email1').val();
     let email2 = $('#email2').val();
     if(nvl(email1,'') === ''){
-        showMessage('#email1', 'error', '[ 담당자 정보 ]', '이메일을 입력해 주세요.', '');
+        showMessage('#email1', 'error', '[ Contact Info ]', 'Please enter the email address.', '');
         return false;
     }
     if(nvl(email2,'') === ''){
-        showMessage('', 'error', '[ 담당자 정보 ]', '이메일 도메인을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Contact Info ]', 'Please enter the email domain.', '');
         return false;
     }
 
@@ -4747,93 +4288,24 @@ async function my_step_01_check(exhibitorSeq){
 
         // 담당자 성명
     let charge_person_name_el = $('input[type=text][name=chargePersonName]');
-    /*let charge_person_name_flag = true;
-    for(let i=0; i<charge_person_len; i++){
-        if(charge_person_name_el.eq(i).val() === ''){
-            charge_person_name_flag = false;
-        }
-    }
-    if(!charge_person_name_flag){
-        showMessage('', 'error', '[담당자 정보]', '성명을 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 담당자 직위
     let charge_person_position_el = $('input[type=text][name=chargePersonPosition]');
-    /*let charge_person_position_len = charge_person_position_el.length;
-    let charge_person_position_flag = true;
-    for(let i=0; i<charge_person_position_len; i++){
-        if(charge_person_position_el.eq(i).val() === ''){
-            charge_person_position_flag = false;
-        }
-    }
-    if(!charge_person_position_flag){
-        showMessage('', 'error', '[담당자 정보]', '직위를 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 담당자 부서
     let charge_person_depart_el = $('input[type=text][name=chargePersonDepart]');
 
     // 담당자 전화번호
     let charge_person_tel_el = $('input[type=tel][name=chargePersonTel]');
-    /*let charge_person_tel_len = charge_person_tel_el.length;
-    let charge_person_tel_flag = true;
-    for(let i=0; i<charge_person_tel_len; i++){
-        if(charge_person_tel_el.eq(i).val() === ''){
-            charge_person_tel_flag = false;
-        }
-    }
-    if(!charge_person_tel_flag){
-        showMessage('', 'error', '[담당자 정보]', '전화번호를 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 담당자 휴대전화
     let charge_person_phone_el = $('input[type=tel][name=chargePersonPhone]');
-    /*let charge_person_phone_len = charge_person_phone_el.length;
-    let charge_person_phone_flag = true;
-    for(let i=0; i<charge_person_phone_len; i++){
-        if(charge_person_phone_el.eq(i).val() === ''){
-            charge_person_phone_flag = false;
-        }
-
-        if ( charge_person_phone_flag && !/^010-[0-9]{4}-[0-9]{4}$/.test( charge_person_phone_el.eq(i).val() ) ) {
-            charge_person_phone_flag = false;
-        }
-    }
-    if(!charge_person_phone_flag){
-        showMessage('', 'error', '[담당자 정보]', '휴대전화를 입력해 주세요.<br>또는 올바른 휴대전화번호 형식으로 입력해 주세요.(010 만 가능)', '');
-        return false;
-    }*/
 
     // 담당자 이메일
     let charge_person_email_el = $('input[type=email][name=chargePersonEmail]');
-    /*let charge_person_email_len = charge_person_email_el.length;
-    let charge_person_email_flag = true;
-    for(let i=0; i<charge_person_email_len; i++){
-        if(charge_person_email_el.eq(i).val() === ''){
-            charge_person_email_flag = false;
-        }
-    }
-    if(!charge_person_email_flag){
-        showMessage('', 'error', '[담당자 정보]', '이메일을 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 담당자 이메일 도메인
     let charge_person_domain_el = $('input[type=email][name=chargePersonDomain]');
-    /*let charge_person_domain_len = charge_person_domain_el.length;
-    let charge_person_domain_flag = true;
-    for(let i=0; i<charge_person_domain_len; i++){
-        if(charge_person_domain_el.eq(i).val() === ''){
-            charge_person_domain_flag = false;
-        }
-    }
-    if(!charge_person_domain_flag){
-        showMessage('', 'error', '[담당자 정보]', '이메일 도메인을 입력해 주세요.', '');
-        return false;
-    }*/
 
     // 담당자 정보 Json Create
     let chargePersonList_json_arr = [];
@@ -4868,36 +4340,27 @@ async function my_step_01_check(exhibitorSeq){
     let fieldParticipatory2 = '';
     let fieldParticipatory3 = '';
     if(nvl(fieldParticipatory,'') === ''){
-        showMessage('', 'error', '[ 참가행사 및 분야 ]', '참가행사 및 분야를 선택해 주세요.', '');
+        showMessage('', 'error', '[ Event & Category ]', 'Please select the participating event and category.', '');
         return false;
     }else{
         fieldParticipatory1 = $('select[name=fieldParticipatory1]').val();
         if(nvl(fieldParticipatory1,'') === ''){
-            showMessage('', 'error', '[ 참가행사 및 분야 ]', '참가분야 1순위를 선택해 주세요.', '');
+            showMessage('', 'error', '[ Event & Category ]', 'Please select the 1st choice category.', '');
             return false;
         }
 
         fieldParticipatory2 = $('select[name=fieldParticipatory2]').val();
-        /*if(nvl(fieldParticipatory2,'') === ''){
-            showMessage('', 'error', '[ 참가행사 및 분야 ]', '참가분야 2순위를 선택해 주세요.', '');
-            return false;
-        }*/
 
         fieldParticipatory3 = $('select[name=fieldParticipatory3]').val();
-        /*if(nvl(fieldParticipatory3,'') === ''){
-            showMessage('', 'error', '[ 참가행사 및 분야 ]', '참가분야 3순위를 선택해 주세요.', '');
-            return false;
-        }*/
     }
-    //console.log(field_part);
 
     /******************** 상세정보 ********************/
 
-    // 회사소개영상
+        // 회사소개영상
     let companyIntroVideo = $('#companyIntroVideo').val();
     if(nvl(companyIntroVideo,'') !== ''){
         if(!checkUrl(companyIntroVideo)){
-            showMessage('#companyIntroVideo', 'error', '[ 상세정보 ]', '영상 주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+            showMessage('#companyIntroVideo', 'error', '[ Details ]', 'Please include http:// or https:// in the video URL.', '');
             return false;
         }
     }
@@ -4905,24 +4368,24 @@ async function my_step_01_check(exhibitorSeq){
     // 회사소개
     let companyIntroKo = $('#companyIntroKo').val();
     if(nvl(companyIntroKo,'') === ''){
-        showMessage('#companyIntroKo', 'error', '[ 상세정보 ]', '회사소개(국문)을 입력해 주세요.', '');
+        showMessage('#companyIntroKo', 'error', '[ Details ]', 'Please enter the company profile (Korean).', '');
         return false;
     }
     let companyIntroEn = $('#companyIntroEn').val();
     if(nvl(companyIntroEn,'') === ''){
-        showMessage('#companyIntroEn', 'error', '[ 상세정보 ]', '회사소개(영문)을 입력해 주세요.', '');
+        showMessage('#companyIntroEn', 'error', '[ Details ]', 'Please enter the company profile (English).', '');
         return false;
     }
 
     // KIBS 참가목적
     let companyPurposeKo = $('#companyPurposeKo').val();
     if(nvl(companyPurposeKo,'') === ''){
-        showMessage('', 'error', '[ 상세정보 ]', 'KIBS 참가목적(국문)을 선택해 주세요.', '');
+        showMessage('', 'error', '[ Details ]', 'Please select the purpose of participation (Korean).', '');
         return false;
     }
     let companyPurposeEn = $('#companyPurposeEn').val();
     if(nvl(companyPurposeEn,'') === ''){
-        showMessage('', 'error', '[ 상세정보 ]', 'KIBS 참가목적(영문)을 선택해 주세요.', '');
+        showMessage('', 'error', '[ Details ]', 'Please select the purpose of participation (English).', '');
         return false;
     }
 
@@ -4961,7 +4424,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
         if(!online_option_big_flag){
-            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 분류 첫 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ Product Info ]', 'Please select the first product category.', '');
             return false;
         }
 
@@ -4978,7 +4441,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
         if(!online_option_small_flag){
-            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 분류 두 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ Product Info ]', 'Please select the second product category.', '');
             return false;
         }
 
@@ -4993,7 +4456,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
         if(!online_name_ko_flag){
-            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품명(국문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ Product Info ]', 'Please enter the product name (Korean).', '');
             return false;
         }
 
@@ -5008,7 +4471,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
         if(!online_name_en_flag){
-            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품명(영문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ Product Info ]', 'Please enter the product name (English).', '');
             return false;
         }
 
@@ -5018,7 +4481,7 @@ async function my_step_01_check(exhibitorSeq){
             let inputFile = onlinePrdBox.eq(i).find('.upload_name').val();
             let preFileList = $('.onlineInfoBox').eq(i).find('.preValueList').find('li.onlineImageFile_li').length;
             if(nvl(inputFile,"") === "" && preFileList === 0){
-                showMessage('', 'error', '[ 제품 노출 정보 ]', '제품사진을 첨부해 주세요.', '');
+                showMessage('', 'error', '[ Product Info ]', 'Please attach the product photo.', '');
                 return false;
             }
         }
@@ -5033,7 +4496,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
         if(!online_intro_ko_flag){
-            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 설명(국문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ Product Info ]', 'Please enter the product description (Korean).', '');
             return false;
         }
 
@@ -5047,7 +4510,7 @@ async function my_step_01_check(exhibitorSeq){
             }
         }
         if(!online_intro_en_flag){
-            showMessage('', 'error', '[ 제품 노출 정보 ]', '제품 설명(영문)을 입력해 주세요.', '');
+            showMessage('', 'error', '[ Product Info ]', 'Please enter the product description (English).', '');
             return false;
         }
 
@@ -5057,7 +4520,7 @@ async function my_step_01_check(exhibitorSeq){
             let online_link = online_link_el.eq(i).val();
             if(nvl(online_link,'') !== ''){
                 if(!checkUrl(online_link)){
-                    showMessage('', 'error', '[ 제품 노출 정보 ]', '주소는 http:// 나 https:// 를 포함하여 입력해 주세요.', '');
+                    showMessage('', 'error', '[ Product Info ]', 'Please include http:// or https:// in the website address.', '');
                     return false;
                 }
             }
@@ -5163,7 +4626,6 @@ async function my_step_01_check(exhibitorSeq){
         passwordYn: 'N',
         /* 참가업체 정보 */
         boothNum: $('#boothNum').val(),
-        companyLicenseNum: companyLicenseNum,
         companyNameKo: companyNameKo,
         companyNameEn: companyNameEn,
         companyAddress: companyAddress,
@@ -5223,8 +4685,8 @@ async function my_step_01_check(exhibitorSeq){
             /* 파일 업로드 */
             // 로딩바 표시 (업로드 시작 전)
             Swal.fire({
-                title: "정보 및 파일 저장 중",
-                html: "파일을 업로드하고 있습니다.<br>잠시만 기다려 주세요.",
+                title: "Saving information and files",
+                html: "Uploading files.<br>Please wait a moment.",
                 allowOutsideClick: false,
                 didOpen: () => {
                     Swal.showLoading();
@@ -5256,9 +4718,9 @@ async function my_step_01_check(exhibitorSeq){
                 // ★★★ [핵심 수정] 기존 로딩창 강제 종료 ★★★
                 Swal.close();
 
-                let swal_html = '<span style="font-size: 1.2em;">기본 정보가 저장되었습니다.';
+                let swal_html = '<span style="font-size: 1.2em;">Basic info saved.';
                 if(!isAdmin){
-                    swal_html += '<br>다음 단계로 이동합니다.</span>';
+                    swal_html += '<br>Moving to the next step.</span>';
                 } else {
                     swal_html += '</span>';
                 }
@@ -5267,11 +4729,11 @@ async function my_step_01_check(exhibitorSeq){
                 setTimeout(function() {
                     Swal.fire({
                         icon: 'info',
-                        title: '[ 참가업체 정보 ]',
+                        title: '[ Exhibitor Info ]',
                         html: swal_html,
                         allowOutsideClick: false,
                         confirmButtonColor: '#00a8ff',
-                        confirmButtonText: '확인'
+                        confirmButtonText: 'Confirm'
                     }).then((result) => {
                         if (result.isConfirmed) {
 
@@ -5288,14 +4750,14 @@ async function my_step_01_check(exhibitorSeq){
 
                                 if (!isAdmin) {
                                     // 일반 사용자: 다음 단계 이동
-                                    f_page_move('/mypage/step2_1.do', exhibitorSeq);
+                                    f_page_move('/eng/mypage/step2_1.do', exhibitorSeq);
                                 } else {
                                     console.log(">> [DEBUG] 7. [관리자] 페이지 새로고침(재진입)");
                                     // 관리자 모드: 현재 페이지 주소로 다시 이동 (새로고침 효과)
                                     // window.location.pathname은 현재 페이지의 주소(예: /mypage/modify.do)를 가져옵니다.
                                     //f_page_move(window.location.pathname, exhibitorSeq);
                                     parent.window.location.reload();
-                                    window.location.href='/mng/exhibitorNewNew/participant/company/detail.do?seq=' + exhibitorSeq + '&lang=KO';
+                                    window.location.href='/mng/exhibitorNewNew/participant/company/detail.do?seq=' + exhibitorSeq + '&lang=EN';
                                 }
                             }
                         }
@@ -5303,27 +4765,25 @@ async function my_step_01_check(exhibitorSeq){
                 }, 200); // 0.2초 딜레이
             } catch (err) {
                 console.error(">> [DEBUG] CRITICAL ERROR catch block:", err);
-                Swal.fire("오류", "처리 중 치명적인 오류가 발생했습니다.<br>" + err, "error");
+                Swal.fire("Error", "A critical error occurred during processing.<br>" + err, "error");
             }
 
         }else{
-            window.location.href = '/mypage/step2_1.do';
+            window.location.href = '/eng/mypage/step2_1.do';
         }
     }else{
-        showMessage('', 'error', '[ 참가업체 정보 ]', '기본 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Exhibitor Info ]', 'Failed to save basic info. Please contact the administrator.', '');
     }
 }
 
 function my_step_2_9_check(exhibitorSeq){
 
     /******************** 요트/보트 출품 정보 ********************/
-    //전시품정보 Json Create
+        //전시품정보 Json Create
     let productList_json_arr = [];
 
     let boatEntryYn = nvl($('input[type=radio][name=boatEntryYn]:checked').val(),'N');
     if(boatEntryYn === 'Y'){
-        /*showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '요트/보트 출품 여부 항목을 선택해 주세요.', '');
-        return false;*/
 
         // 제품분류(대)
         let product_option_big_el = $('select[name=productOptionBig]');
@@ -5338,10 +4798,10 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_option_big_flag){
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품 분류(품목) 첫 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Please select the first product category.', '');
             return false;
         }
-    
+
         // 제품분류(소)
         let product_option_small_el = $('select[name=productOptionSmall]');
         let product_option_small_len = product_option_small_el.length;
@@ -5355,10 +4815,10 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_option_small_flag){
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품 분류(품목) 두 번째 항목을 선택해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Please select the second product category.', '');
             return false;
         }
-    
+
         // 제품명(국문)
         let product_name_ko_el = $('input[type=text][name=productNameKo]');
         let product_name_ko_len = product_name_ko_el.length;
@@ -5370,10 +4830,10 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_name_ko_flag){
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품명을 입력해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the product name.', '');
             return false;
         }
-    
+
         // 수량
         let product_qty_el = $('input[type=text][name=productQty]');
         let product_qty_len = product_qty_el.length;
@@ -5385,10 +4845,10 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_qty_flag){
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '수량을 입력해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the quantity.', '');
             return false;
         }
-    
+
         // 제조사(브랜드)
         let product_brand_el = $('input[type=text][name=productBrand]');
         let product_brand_len = product_brand_el.length;
@@ -5400,7 +4860,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_brand_flag){
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제조사(브랜드)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the manufacturer (brand).', '');
             return false;
         }
 
@@ -5415,10 +4875,10 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if (!product_feature_flag) {
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '제품 특징을 입력해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the product features.', '');
             return false;
         }
-    
+
         // 길이
         let product_length_el = $('input[type=text][name=productLength]');
         let product_length_len = product_length_el.length;
@@ -5430,10 +4890,10 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_length_flag){
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '길이(cm)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the length (cm).', '');
             return false;
         }
-    
+
         // 너비
         let product_width_el = $('input[type=text][name=productWidth]');
         let product_width_len = product_width_el.length;
@@ -5445,10 +4905,10 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_width_flag){
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '너비(cm)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the width (cm).', '');
             return false;
         }
-    
+
         // 높이
         let product_height_el = $('input[type=text][name=productHeight]');
         let product_height_len = product_height_el.length;
@@ -5460,10 +4920,10 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_height_flag){
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '높이(cm)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the height (cm).', '');
             return false;
         }
-    
+
         // 중량
         let product_weight_el = $('input[type=text][name=productWeight]');
         let product_weight_len = product_weight_el.length;
@@ -5475,10 +4935,10 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_weight_flag){
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '중량(kg)를 입력해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the weight (kg).', '');
             return false;
         }
-    
+
         // 소재
         let product_material_el = $('input[type=text][name=productMaterial]');
         let product_material_len = product_material_el.length;
@@ -5490,10 +4950,10 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_material_flag){
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '소재를 입력해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the material.', '');
             return false;
         }
-    
+
         // 연식
         let product_year_el = $('input[type=text][name=productYear]');
         let product_year_len = product_year_el.length;
@@ -5505,7 +4965,7 @@ function my_step_2_9_check(exhibitorSeq){
             }
         }
         if(!product_year_flag){
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', '연식을 입력해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Please enter the year.', '');
             return false;
         }
 
@@ -5548,7 +5008,7 @@ function my_step_2_9_check(exhibitorSeq){
     }else{
         productList_json_arr = [];
     }
-    
+
     if(nvl(exhibitorSeq,'') !== ''){
 
         let exhibitor_json_obj = {
@@ -5562,8 +5022,8 @@ function my_step_2_9_check(exhibitorSeq){
 
             let timerInterval;
             Swal.fire({
-                title: "정보 저장 중",
-                html: "입력하신 정보를 저장 중입니다.<br><b></b> milliseconds.<br>현재 화면을 유지해 주세요.",
+                title: "Saving Information",
+                html: "Saving the entered information.<br><b></b> milliseconds.<br>Please stay on this page.",
                 allowOutsideClick: false,
                 timer: 2500,
                 timerProgressBar: true,
@@ -5582,20 +5042,20 @@ function my_step_2_9_check(exhibitorSeq){
                 if (result.dismiss === Swal.DismissReason.timer) {
                     Swal.fire({
                         icon: 'info',
-                        title: '[ 요트/보트 출품 정보 ]',
-                        html: '<span style="font-size: 1.2em;"> 요트/보트 출품 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+                        title: '[ Yacht/Boat ]',
+                        html: '<span style="font-size: 1.2em;">Yacht/boat exhibition info has been saved.<br>Moving to the next step.</span>',
                         allowOutsideClick: false,
                         confirmButtonColor: '#00a8ff',
-                        confirmButtonText: '확인'
+                        confirmButtonText: 'Confirm'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            f_page_move('/mypage/step2_2.do', exhibitorSeq);
+                            f_page_move('/eng/mypage/step2_2.do', exhibitorSeq);
                         }
                     })
                 }
             });
         }else{
-            showMessage('', 'error', '[ 요트/보트 출품 정보 ]', ' 요트/보트 출품 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+            showMessage('', 'error', '[ Yacht/Boat ]', 'Failed to save yacht/boat exhibition info. Please contact the administrator.', '');
         }
     }
 }
@@ -5606,7 +5066,7 @@ function my_step_2_1_check(exhibitorSeq){
     /*f_page_move('/mypage/step2_2.do', exhibitorSeq);*/
 
     let utilityPrcSum = parseInt($('#utilityPrcSum').val()) || 0;
-    
+
     // --- 1. 부스 정보 수집 ---
     const registrationCnt = 1;
     const registrationFee = 100000;
@@ -5674,7 +5134,7 @@ function my_step_2_1_check(exhibitorSeq){
     // --- 5. 유효성 검사 및 서버 전송 데이터 구성 ---
     const totalBooths = standAloneBoothCnt + assemblyBoothCnt/* + onlineBoothCnt*/;
     if (totalBooths === 0) {
-        showMessage('', 'error', '[ 전시부스 신청 ]', '부스(독립, 조립, 온라인)를 하나 이상 신청해 주세요.', '');
+        showMessage('', 'error', '[ Booth ]', 'Please apply for at least one booth (Space Only or Shell Scheme).', '');
         return;
     }
 
@@ -5716,19 +5176,19 @@ function my_step_2_1_check(exhibitorSeq){
 
         Swal.fire({
             icon: 'info',
-            title: '[ 전시부스 신청 ]',
-            html: '<span style="font-size: 1.2em;">부스 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            title: '[ Booth ]',
+            html: '<span style="font-size: 1.2em;">Booth application info has been saved.<br>Moving to the next step.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/mypage/step2_9.do', exhibitorSeq);
+                f_page_move('/eng/mypage/step2_9.do', exhibitorSeq);
             }
         });
     }else{
-        showMessage('', 'error', '[ 전시부스 신청 ]', '전시부스 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Booth ]', 'Failed to save the booth application info. Please contact the administrator.', '');
     }
 }
 
@@ -5747,10 +5207,10 @@ function my_step_2_10_check(exhibitorSeq){
         if (!isSeaChecked && !isLandChecked) {
             Swal.fire({
                 icon: 'error',
-                title: '[ 해상전시회 신청 ]',
-                text: '해상전시회 참가를 선택했을 경우, 참가 항목(해상/육상)을 1개 이상 선택해주세요.',
+                title: '[ Maritime Exhibition ]',
+                text: 'If you choose to participate in the maritime exhibition, please select at least one exhibition type (Sea/Land).',
                 confirmButtonColor: '#00a8ff',
-                confirmButtonText: '확인'
+                confirmButtonText: 'Confirm'
             });
             return; // 서버 전송 중단
         }
@@ -5771,19 +5231,19 @@ function my_step_2_10_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ 해상전시회 신청 ]',
-            html: '<span style="font-size: 1.2em;">해상전시회 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            title: '[ Maritime Exhibition ]',
+            html: '<span style="font-size: 1.2em;">Maritime exhibition application info has been saved.<br>Moving to the next step.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/mypage/step2_9.do', exhibitorSeq);
+                f_page_move('/eng/mypage/step2_9.do', exhibitorSeq);
             }
         });
     }else{
-        showMessage('', 'error', '[ 해상전시회 신청 ]', '해상전시회 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Maritime Exhibition ]', 'Failed to save maritime exhibition application info. Please contact the administrator.', '');
     }
 }
 
@@ -5799,14 +5259,14 @@ function my_step_2_2_check(exhibitorSeq){
         // 상호간판 신청 - 상호간판명 (국문)
         companySignNameKo = $('#companySignNameKo').val();
         if(nvl(companySignNameKo,'') === ''){
-            showMessage('#companySignNameKo', 'error', '[ 상호간판 신청 ]', '조립부스 참가업체는 상호간판명(국문)을 필수 입력해 주세요.', '');
+            showMessage('#companySignNameKo', 'error', '[ Signboard ]', 'Shell scheme booth exhibitors must enter the company signboard name (Korean).', '');
             return false;
         }
 
         // 상호간판 신청 - 상호간판명 (영문)
         companySignNameEn = $('#companySignNameEn').val();
         if(nvl(companySignNameEn,'') === ''){
-            showMessage('#companySignNameEn', 'error', '[ 상호간판 신청 ]', '조립부스 참가업체는 상호간판명(영문)을 필수 입력해 주세요.', '');
+            showMessage('#companySignNameEn', 'error', '[ Signboard ]', 'Shell scheme booth exhibitors must enter the company signboard name (English).', '');
             return false;
         }
     }
@@ -5840,19 +5300,19 @@ function my_step_2_2_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ 상호간판 신청 ]',
-            html: '<span style="font-size: 1.2em;">상호간판 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            title: '[ Signboard ]',
+            html: '<span style="font-size: 1.2em;">Signboard application info has been saved.<br>Moving to the next step.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/mypage/step2_3.do', exhibitorSeq);
+                f_page_move('/eng/mypage/step2_3.do', exhibitorSeq);
             }
         });
     }else{
-        showMessage('', 'error', '[ 상호간판 신청 ]', '상호간판 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Signboard ]', 'Failed to save signboard application info. Please contact the administrator.', '');
     }
 }
 
@@ -5920,19 +5380,19 @@ function my_step_2_3_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ 유틸리티 신청 ]',
-            html: '<span style="font-size: 1.2em;">유틸리티 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            title: '[ Utilities ]',
+            html: '<span style="font-size: 1.2em;">Utilities application info has been saved.<br>Moving to the next step.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/mypage/step2_4.do', exhibitorSeq);
+                f_page_move('/eng/mypage/step2_4.do', exhibitorSeq);
             }
         });
     }else{
-        showMessage('', 'error', '[ 유틸리티 신청 ]', '유틸리티 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Utilities ]', 'Failed to save utilities application info. Please contact the administrator.', '');
     }
 }
 
@@ -5951,7 +5411,7 @@ function my_step_2_4_check(exhibitorSeq){
         }
     }
     if(!pass_name_flag){
-        showMessage('', 'error', '[ 출입증 신청 ]', '성명(국문)을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Please enter the name (Korean).', '');
         return false;
     }
 
@@ -5965,7 +5425,7 @@ function my_step_2_4_check(exhibitorSeq){
         }
     }
     if(!pass_first_name_flag){
-        showMessage('', 'error', '[ 출입증 신청 ]', '성명(영문) 이름을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Please enter the first name (English).', '');
         return false;
     }
 
@@ -5979,7 +5439,7 @@ function my_step_2_4_check(exhibitorSeq){
         }
     }
     if(!pass_last_name_flag){
-        showMessage('', 'error', '[ 출입증 신청 ]', '성명(영문) 성을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Please enter the last name (English).', '');
         return false;
     }
 
@@ -5993,7 +5453,7 @@ function my_step_2_4_check(exhibitorSeq){
         }
     }
     if(!pass_position_ko_flag){
-        showMessage('', 'error', '[ 출입증 신청 ]', '직책(국문)을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Please enter the position (Korean).', '');
         return false;
     }
 
@@ -6007,7 +5467,7 @@ function my_step_2_4_check(exhibitorSeq){
         }
     }
     if(!pass_position_en_flag){
-        showMessage('', 'error', '[ 출입증 신청 ]', '직책(영문)을 입력해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Please enter the position (English).', '');
         return false;
     }
 
@@ -6044,19 +5504,19 @@ function my_step_2_4_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ 출입증 신청 ]',
-            html: '<span style="font-size: 1.2em;">출입증 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            title: '[ Giveaways ]',
+            html: '<span style="font-size: 1.2em;">Pass application info has been saved.<br>Moving to the next step.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/mypage/step2_5.do', exhibitorSeq);
+                f_page_move('/eng/mypage/step2_5.do', exhibitorSeq);
             }
         });
     }else{
-        showMessage('', 'error', '[ 출입증 신청 ]', '출입증 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Failed to save pass application info. Please contact the administrator.', '');
     }
 
 }
@@ -6070,7 +5530,7 @@ function my_step_2_5_check(exhibitorSeq){
 
     // '신청(Y)'인데 등록된 경품이 단 1개도 없는 경우 진행 차단
     if (giftApplyYn === 'Y' && gift_add_json_arr.length === 0 && $('.form_chuga_list').length === 0) {
-        showMessage('', 'error', '[ 경품제공 신청 ]', '신청 시 최소 1개 이상의 경품을 등록해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Please register at least one giveaway when applying.', '');
         return false;
     }
 
@@ -6090,19 +5550,19 @@ function my_step_2_5_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ 경품제공 신청 ]',
-            html: '<span style="font-size: 1.2em;">경품제공 신청 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            title: '[ Giveaways ]',
+            html: '<span style="font-size: 1.2em;">Giveaway application info has been saved.<br>Moving to the next step.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/mypage/step2_8.do', exhibitorSeq);
+                f_page_move('/eng/mypage/step2_8.do', exhibitorSeq);
             }
         });
     }else{
-        showMessage('', 'error', '[ 경품제공 신청 ]', '경품제공 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Giveaways ]', 'Failed to save giveaway application info. Please contact the administrator.', '');
     }
 }
 
@@ -6123,19 +5583,19 @@ function my_step_2_8_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ 디렉토리 정보 ]',
-            html: '<span style="font-size: 1.2em;">디렉토리 정보가 저장되었습니다.<br>다음 단계로 이동합니다.</span>',
+            title: '[ Directory ]',
+            html: '<span style="font-size: 1.2em;">Directory info has been saved.<br>Moving to the next step.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
                 /* 등록 성공 시 다음 단계로 이동 */
-                f_page_move('/mypage/step03.do', exhibitorSeq);
+                f_page_move('/eng/mypage/step03.do', exhibitorSeq);
             }
         });
     }else{
-        showMessage('', 'error', '[ 디렉토리 정보 ]', '디렉토리 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Directory ]', 'Failed to save directory info. Please contact the administrator.', '');
     }
 }
 
@@ -6154,11 +5614,11 @@ function my_step_03_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ 참가업체 정보 ]',
-            html: '<span style="font-size: 1.2em;">참가 신청이 정상 완료되었습니다.<br>등록하신 담당자 메일로 신청완료 및 안내 메일이 발송됩니다.</span>',
+            title: '[ Exhibitor Info ]',
+            html: '<span style="font-size: 1.2em;">Your application has been successfully completed.<br>A completion and notification email will be sent to the registered contact\'s email address.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
-            confirmButtonText: '확인'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -6170,7 +5630,7 @@ function my_step_03_check(exhibitorSeq){
                 for(let j=0; j<emailArr.length; j++){
                     let email = emailArr[j];
                     let jsonObj = {
-                        subject: '[2027 경기국제보트쇼] 참가업체 접수 완료', //제목
+                        subject: '[2027 KIBS] Exhibitor Registration Complete', //제목
                         body: "", //본문
                         template: "6", //템플릿 번호
                         receiver: [{email: email}]
@@ -6183,12 +5643,12 @@ function my_step_03_check(exhibitorSeq){
                 }
                 if (mailResultFlag) {
                     /* 등록 성공 시 다음 단계로 이동 */
-                    home('ko');
+                    home('en');
                 }
             }
         })
     }else{
-        showMessage('', 'error', '[ 참가업체 정보 ]', '참가 신청 정보 저장에 실패하였습니다. 관리자에게 문의해 주세요.', '');
+        showMessage('', 'error', '[ Exhibitor Info ]', 'Failed to save application info. Please contact the administrator.', '');
     }
 }
 
@@ -6199,7 +5659,7 @@ function exibitLoginFormSubmit() {
     let password = $("#exhibitPw").val();
 
     if (nvl(id,'') === "" || nvl(password,'') === "") {
-        showMessage('', 'info', '입력 정보 확인', '아이디와 비밀번호를 입력해 주세요.', '');
+        showMessage('', 'info', '[ Login ]', 'Please enter your ID and password.', '');
         return false;
     }
 
@@ -6228,14 +5688,14 @@ function exibitLoginFormSubmit() {
 
                 form.submit(); // /mypage/index.do
             } else {
-                showMessage('', 'info', '[ 로그인 실패 ]', '아이디와 비밀번호를 확인해 주세요.', '');
+                showMessage('', 'info', '[ Login ]', 'Please check your ID and password.', '');
             }
         })
         .fail(function (xhr, status, errorThrown) {
             /*$('body').html("오류가 발생했습니다.")
                 .append("<br>오류명: " + errorThrown)
                 .append("<br>상태: " + status);*/
-            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+            alert('An error has occurred. Please contact the administrator.\nERROR : ' + errorThrown + "\nSTATUS : " + status);
         })
 
 }
@@ -6248,9 +5708,9 @@ function f_pre_apply_check_login(){
     if (nvl(name, '') === '') {
         setTimeout(function() {
             Swal.fire({
-                icon: 'info', title: '입력 정보 확인',
-                html: '<span style="font-size: 1.2em;">이름을 입력해 주세요.</span>',
-                confirmButtonColor: '#00a8ff', confirmButtonText: '확인',
+                icon: 'info', title: 'Confirm Input',
+                html: '<span style="font-size: 1.2em;">Please enter your name.</span>',
+                confirmButtonColor: '#00a8ff', confirmButtonText: 'Confirm',
                 allowOutsideClick: false, allowEscapeKey: false,
                 returnFocus: false // 닫힐 때 이전 포커스로 돌아가지 않음
             }).then((result) => {
@@ -6269,9 +5729,9 @@ function f_pre_apply_check_login(){
     if (pureNum.length === 0) {
         setTimeout(function() {
             Swal.fire({
-                icon: 'warning', title: '입력 정보 확인',
-                html: '<span style="font-size: 1.2em;">휴대전화번호를 입력해 주세요.</span>',
-                confirmButtonColor: '#00a8ff', confirmButtonText: '확인',
+                icon: 'warning', title: 'Confirm Input',
+                html: '<span style="font-size: 1.2em;">Please enter your mobile phone number.</span>',
+                confirmButtonColor: '#00a8ff', confirmButtonText: 'Confirm',
                 allowOutsideClick: false, allowEscapeKey: false,
                 returnFocus: false // 닫힐 때 이전 포커스로 돌아가지 않음
             }).then((result) => {
@@ -6286,9 +5746,9 @@ function f_pre_apply_check_login(){
     if (pureNum.substring(0, 3) !== "010") {
         setTimeout(function() {
             Swal.fire({
-                icon: 'warning', title: '입력 정보 확인',
-                html: '<span style="font-size: 1.2em;">휴대전화번호는 "010"으로 시작해야 합니다.</span>',
-                confirmButtonColor: '#00a8ff', confirmButtonText: '확인',
+                icon: 'warning', title: 'Confirm Input',
+                html: '<span style="font-size: 1.2em;">The mobile phone number must start with "010".</span>',
+                confirmButtonColor: '#00a8ff', confirmButtonText: 'Confirm',
                 allowOutsideClick: false, allowEscapeKey: false,
                 returnFocus: false // 닫힐 때 이전 포커스로 돌아가지 않음
             }).then((result) => {
@@ -6305,9 +5765,9 @@ function f_pre_apply_check_login(){
     if (pureNum.length !== 11) {
         setTimeout(function() {
             Swal.fire({
-                icon: 'warning', title: '입력 정보 확인',
-                html: '<span style="font-size: 1.2em;">휴대전화번호 형식이 올바르지 않습니다.<br>(010-0000-0000)</span>',
-                confirmButtonColor: '#00a8ff', confirmButtonText: '확인',
+                icon: 'warning', title: 'Confirm Input',
+                html: '<span style="font-size: 1.2em;">Invalid mobile phone number format.<br>(e.g., 010-0000-0000)</span>',
+                confirmButtonColor: '#00a8ff', confirmButtonText: 'Confirm',
                 allowOutsideClick: false, allowEscapeKey: false,
                 returnFocus: false // 닫힐 때 이전 포커스로 돌아가지 않음
             }).then((result) => {
@@ -6332,10 +5792,10 @@ function f_pre_apply_check_login(){
         if(nvl(resData,'') !== ''){
             // [CASE 1: 데이터 있음]
             Swal.fire({
-                icon: 'info', title: '[ 참관 신청 확인 ]',
-                html: '<span style="font-size: 1.2em;">참관 신청 확인 되었습니다.<br>참관신청확인페이지로 이동합니다.</span>',
+                icon: 'info', title: '[ Confirm Application ]',
+                html: '<span style="font-size: 1.2em;">Your application has been confirmed.<br>Moving to the confirmation page.</span>',
                 allowOutsideClick: false, allowEscapeKey: false,
-                confirmButtonColor: '#00a8ff', confirmButtonText: '확인',
+                confirmButtonColor: '#00a8ff', confirmButtonText: 'Confirm',
                 returnFocus: false // 닫힐 때 이전 포커스로 돌아가지 않음
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -6347,12 +5807,12 @@ function f_pre_apply_check_login(){
         } else {
             // [CASE 2: 데이터 없음]
             Swal.fire({
-                icon: 'info', title: '[ 참관 신청 확인 ]',
-                html: '<span style="font-size: 1.2em;">참관 신청 정보가 없습니다.<br>사전등록페이지로 이동하시겠습니까?</span>',
+                icon: 'info', title: '[ Confirm Application ]',
+                html: '<span style="font-size: 1.2em;">No application info found.<br>Would you like to move to the pre-registration page?</span>',
                 allowOutsideClick: false, allowEscapeKey: false,
                 showCancelButton: true,
-                confirmButtonColor: '#00a8ff', confirmButtonText: '사전등록하기',
-                cancelButtonColor: '#D33', cancelButtonText: '취소',
+                confirmButtonColor: '#00a8ff', confirmButtonText: 'Pre-register',
+                cancelButtonColor: '#D33', cancelButtonText: 'Cancel',
                 returnFocus: false // 닫힐 때 이전 포커스로 돌아가지 않음
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -6372,10 +5832,11 @@ function f_en_pre_apply_check_login(){
     if(nvl(name,'') === ''){ showMessage('', 'info', '[Confirm]', 'Please enter your name.', ''); return false; }
     let phone = $('#phone').val();
     if(nvl(phone,'') === ''){ showMessage('', 'info', '[Confirm]', 'Please enter your phone number.', ''); return false; }
+    let phoneCode = $('#phoneCode').val();
 
     let jsonObj = {
         name: name,
-        phone: phone,
+        phone: phoneCode + ' ' + phone,
         joinYear: transferYear
     };
 
@@ -6413,7 +5874,7 @@ function f_company_search(){
     let companyName = $('#search_companyName').val();
 
     if(nvl(companyName,'') === ''){
-        alert('직장명을 입력해주세요.');
+        alert('Please enter the workplace name.');
         return;
     }
 
@@ -6473,7 +5934,7 @@ function f_company_search(){
             }
         },
         error: function(xhr, status, error) {
-            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.');
+            alert('An error occurred. Please contact the administrator.');
             console.error(error);
         },
         complete: function() {
@@ -6538,15 +5999,15 @@ function f_visitor_apply(gbn){
 
     if(validCheck){
 
-        let showMsg = '입력된 정보로 사전등록하시겠습니까?';
-        let showBtn = '사전등록하기';
+        let showMsg = 'Do you want to pre-register with the entered info?';
+        let showBtn = 'Pre-register';
         if(gbn === 'U'){
-            showMsg = '입력된 정보로 수정하시겠습니까?'
-            showBtn = '수정하기';
+            showMsg = 'Do you want to modify with the entered info?'
+            showBtn = 'Modify';
         }
 
         Swal.fire({
-            title: '[ 사전등록 ]',
+            title: '[ Pre-registration ]',
             html: showMsg,
             icon: 'info',
             allowOutsideClick: false,
@@ -6554,7 +6015,7 @@ function f_visitor_apply(gbn){
             confirmButtonColor: '#00a8ff',
             confirmButtonText: showBtn,
             cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
+            cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
 
@@ -6573,11 +6034,11 @@ function f_visitor_apply(gbn){
 
                             if(gbn === 'I'){
                                 /* 참관객 완료 메일 전송 */
-                                let subject = '2027 경기국제보트쇼 <1차 사전등록(무료)> 신청 완료';
+                                let subject = '2027 KIBS <1st Pre-registration (Free)> Application Complete';
                                 let template = '178';
                                 let timeGbn = data.timeGbn;
                                 if(timeGbn === '2차'){
-                                    subject = '2027 경기국제보트쇼 <2차 사전등록> 신청 완료';
+                                    subject = '2027 KIBS <2nd Pre-registration> Application Complete';
                                     template = '181';
                                 }
                                 let email = data.email + '@' + data.domain;
@@ -6590,32 +6051,32 @@ function f_visitor_apply(gbn){
                                 }
                                 let resData = ajaxConnect('/mail/send.do', 'post', jsonObj);
                                 if (resData.resultCode === "0") {
-                                    window.location.href = '/visitor/completed.do';
+                                    window.location.href = '/eng/buyer/completed.do';
                                 }else{
-                                    showMessage('', 'warning', '부분 오류 발생', '참관객 사전 등록은 정상 완료되었으나,<br>참관객 안내 메일 전송에 실패하였습니다.<br>관리자에게 문의해 주세요.', '');
+                                    showMessage('', 'warning', 'Partial Error', 'Pre-registration was successful, but<br>failed to send the confirmation email.<br>Please contact the administrator.', '');
                                 }
                             }else{
                                 Swal.fire({
                                     icon: 'info',
-                                    title: '[사전등록정보]',
-                                    html: '<span style="font-size: 1.2em;">' + '참관객 사전 등록 정보가 수정되었습니다.' + '</span>',
+                                    title: '[ Pre-registration Info ]',
+                                    html: '<span style="font-size: 1.2em;">Visitor pre-registration info has been modified.</span>',
                                     allowOutsideClick: false,
                                     confirmButtonColor: '#00a8ff',
-                                    confirmButtonText: '확인'
+                                    confirmButtonText: 'Confirm'
                                 }).then((rst) => {
                                     if (rst.isConfirmed) {
                                         let visitorSeq = result.customValue; //visitorSeq return 값
-                                        window.location.href = '/visitor/mypage.do?seq=' + visitorSeq;
+                                        window.location.href = '/eng/buyer/mypage.do?seq=' + visitorSeq;
                                     }
                                 });
                             }
 
                         } else {
-                            showMessage('', 'error', '에러 발생', '참관객 사전 등록 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + result.resultMessage, '');
+                            showMessage('', 'error', 'Error', 'Failed to save pre-registration. Please contact the administrator. ' + result.resultMessage, '');
                         }
                     },
                     error: function (xhr, status) {
-                        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                        alert('An error occurred. Please contact the administrator.\nError: ' + xhr + '\nStatus: ' + status);
                     }
                 })
 
@@ -6631,54 +6092,56 @@ function f_visitor_form_valid_check(gbn){
     if(gbn === 'I'){
         let agree1 = $('input[type=radio][name=agree1]:checked').val();
         if(nvl(agree1,'') === '' || agree1 === 'N'){
-            showMessage('', 'info', '[ 약관 동의 ]', '개인정보수집 및 이용안내 항목에 동의해 주세요.', '');
+            showMessage('', 'info', '[ Agreement ]', 'Please agree to the collection and use of personal info.', '');
             return false;
         }
 
         let agree2 = $('input[type=radio][name=agree2]:checked').val();
         if(nvl(agree2,'') === '' || agree2 === 'N'){
-            showMessage('', 'info', '[ 약관 동의 ]', '개인정보 제3자 제공에 대한 별도 동의 항목에 동의해 주세요.', '');
+            showMessage('', 'info', '[ Agreement ]', 'Please agree to the third-party provision of personal info.', '');
             return false;
         }
 
         let agree3 = $('input[type=radio][name=agree3]:checked').val();
         if(nvl(agree3,'') === '' || agree3 === 'N'){
-            showMessage('', 'info', '[ 약관 동의 ]', '안전 준수 동의 항목에 동의해 주세요.', '');
+            showMessage('', 'info', '[ Agreement ]', 'Please agree to the safety compliance.', '');
             return false;
         }
 
         let partGbn = $('input[type=radio][name=partGbn]:checked').val();
         if(nvl(partGbn,'') === ''){
-            showMessage('', 'info', '[참관 구분]', '참관 구분 항목을 선택해 주세요.', '');
+            showMessage('', 'info', '[ Visitor Type ]', 'Please select a visitor type.', '');
             return false;
         }
 
         let name = $('#name').val();
         if (nvl(name,'') === '') {
-            showMessage('', 'info', '[ 참관객 정보 ]', '성명을 입력해 주세요.', '');
+            showMessage('', 'info', '[ Visitor Info ]', 'Please enter your name.', '');
             return false;
         }
 
         let phone = $('#phone').val();
         if (nvl(phone,'') === '') {
-            showMessage('', 'info', '[ 참관객 정보 ]', '휴대전화를 입력해 주세요.', '');
+            showMessage('', 'info', '[ Visitor Info ]', 'Please enter your mobile phone number.', '');
             return false;
+        }else{
+            phone = $('#phoneCode').val() + '' + $('#phone').val();
         }
 
         if(!strCheck(name,"name")){
-            showMessage('#name', 'info', '[ 참관객 정보 ]', '올바른 이름을 입력해 주세요. (특수문자 제외)', '');
+            showMessage('#name', 'info', '[ Visitor Info ]', 'Please enter a valid name. (No special characters)', '');
             return false;
         }else{
             let json = { joinYear: transferYear, phone: phone };
             let resData = ajaxConnectSimple('/visitor/preApplyCheck.do', 'post', json);
             if(nvl(resData,'') !== ''){
                 Swal.fire({
-                    title: '[기존 정보 존재]',
-                    html: '이미 사전 등록된 휴대전화번호 입니다.<br>참관신청확인페이지에서 정보를 확인해 주세요.',
+                    title: '[ Existing Info ]',
+                    html: 'This mobile number is already pre-registered.<br>Please check the info on the confirmation page.',
                     icon: 'info',
                     allowOutsideClick: false,
                     confirmButtonColor: '#00a8ff',
-                    confirmButtonText: '확인'
+                    confirmButtonText: 'Confirm'
                 });
                 return false;
             }
@@ -6688,31 +6151,31 @@ function f_visitor_form_valid_check(gbn){
 
     let email = $('#email').val();
     if (nvl(email,'') === '') {
-        showMessage('', 'info', '[ 참관객 정보 ]', '이메일을 입력해 주세요.', '');
+        showMessage('', 'info', '[ Visitor Info ]', 'Please enter your email.', '');
         return false;
     }else{
         if(email.includes('@')){
-            showMessage('', 'info', '[ 참관객 정보 ]', '포함될 수 없는 특수문자(@)가 있습니다.<br>이메일과 도메인을 따로 입력해 주세요.', '');
+            showMessage('', 'info', '[ Visitor Info ]', 'Contains an invalid character (@).<br>Please enter the email and domain separately.', '');
             return false;
         }
     }
 
     let domain = $('#domain').val();
     if (nvl(domain,'') === '') {
-        showMessage('', 'info', '[ 참관객 정보 ]', '이메일 도메인을 입력해 주세요.', '');
+        showMessage('', 'info', '[ Visitor Info ]', 'Please enter the email domain.', '');
         return false;
     }
 
     if(nvl($('input[type=radio][name=partGbn]:checked').val(),'') === '바이어'){
         let companyName = $('#companyName').val();
         if (nvl(companyName,'') === '') {
-            showMessage('#companyName', 'info', '[ 참관객 정보 ]', '참관 구분>바이어 선택 시 직장명을 필수 입력해 주세요.', '');
+            showMessage('#companyName', 'info', '[ Visitor Info ]', 'If you select Buyer, workplace name is required.', '');
             return false;
         }
 
         let companyAddress = $('#companyAddress').val();
         if (nvl(companyAddress,'') === '') {
-            showMessage('#companyAddress', 'info', '[ 참관객 정보 ]', '참관 구분>바이어 선택 시 직장 주소를 필수 입력해 주세요.', '');
+            showMessage('#companyAddress', 'info', '[ Visitor Info ]', 'If you select Buyer, workplace address is required.', '');
             return false;
         }
     }
@@ -6720,7 +6183,7 @@ function f_visitor_form_valid_check(gbn){
     /* 행사 구분 유효성 검사 추가 */
     let eventGbn = $('input[type=radio][name=eventGbn]:checked').val();
     if(nvl(eventGbn,'') === ''){
-        showMessage('', 'info', '[ 참관객 정보 ]', '행사 구분 항목을 선택해 주세요.', '');
+        showMessage('', 'info', '[ Visitor Info ]', 'Please select the event.', '');
         return false;
     }
 
@@ -6730,7 +6193,7 @@ function f_visitor_form_valid_check(gbn){
         for(let i=0; i<partnerNameList.length; i++){
             let partnerName = partnerNameList.eq(i).val();
             if (nvl(partnerName,'') === '') {
-                showMessage('', 'info', '[ 참관객 정보 ]', '동반자가 있을 경우 동반자 이름을 입력해 주세요.', '');
+                showMessage('', 'info', '[ Visitor Info ]', 'If you have a companion, please enter their name.', '');
                 return false;
             }
         }
@@ -6739,11 +6202,11 @@ function f_visitor_form_valid_check(gbn){
         for(let i=0; i<partnerAgeList.length; i++){
             let partnerAge = partnerAgeList.eq(i).val();
             if (nvl(partnerAge,'') === '') {
-                showMessage('', 'info', '[ 참관객 정보 ]', '동반자가 있을 경우 동반자 나이를 입력해 주세요.', '');
+                showMessage('', 'info', '[ Visitor Info ]', 'If you have a companion, please enter their age.', '');
                 return false;
             }else{
                 if(partnerAge > 18){
-                    showMessage('', 'info', '[ 참관객 정보 ]', '동반자는 만 0~18세 사이만 등록 가능합니다.', '');
+                    showMessage('', 'info', '[ Visitor Info ]', 'Companions must be between 0 and 18 years old.', '');
                     return false;
                 }
             }
@@ -6752,7 +6215,7 @@ function f_visitor_form_valid_check(gbn){
 
     let sex = $('input[type=radio][name=sex]:checked').val();
     if(nvl(sex,'') === ''){
-        showMessage('', 'info', '[ 설문항목 ]', '성별을 선택해 주세요.', '');
+        showMessage('', 'info', '[ Survey ]', 'Please select a gender.', '');
         return false;
     }
 
@@ -6760,14 +6223,14 @@ function f_visitor_form_valid_check(gbn){
     for(let i=0; i<sidoList.length; i++){
         let sido = sidoList.eq(i).val();
         if (nvl(sido,'시/도 선택') === '시/도 선택') {
-            showMessage('', 'info', '[ 설문항목 ]', '지역 시/도를 선택해 주세요.', '');
+            showMessage('', 'info', '[ Survey ]', 'Please select a city/province.', '');
             return false;
         }
     }
 
     let ageGroup = $('input[type=radio][name=ageGroup]:checked').val();
     if(nvl(ageGroup,'') === ''){
-        showMessage('', 'info', '[ 설문항목 ]', '연령대를 선택해 주세요.', '');
+        showMessage('', 'info', '[ Survey ]', 'Please select an age group.', '');
         return false;
     }
 
@@ -6775,26 +6238,26 @@ function f_visitor_form_valid_check(gbn){
     if(nvl(partGbn,'') === '일반관람') {
         let observationGbn = $('input[type=checkbox][name=observationGbn]').is(':checked');
         if (!observationGbn) {
-            showMessage('', 'info', '[ 설문항목 ]', '관람 구분을 하나 이상 체크해 주세요.', '');
+            showMessage('', 'info', '[ Survey ]', 'Please check at least one viewing category.', '');
             return false;
         }
     }
 
     let visitPurpose = $('input[type=checkbox][name=visitPurpose]').is(':checked');
     if (!visitPurpose) {
-        showMessage('', 'info', '[ 설문항목 ]', '보트쇼 방문 목적을 하나 이상 체크해 주세요.', '');
+        showMessage('', 'info', '[ Survey ]', 'Please check at least one purpose of visit.', '');
         return false;
     }
 
     let interestItem = $('input[type=checkbox][name=interestItem]').is(':checked');
     if (!interestItem) {
-        showMessage('', 'info', '[ 설문항목 ]', '관심품목을 하나 이상 체크해 주세요.', '');
+        showMessage('', 'info', '[ Survey ]', 'Please check at least one item of interest.', '');
         return false;
     }
 
     let recognizePath = $('input[type=checkbox][name=recognizePath]').is(':checked');
     if (!recognizePath) {
-        showMessage('', 'info', '[ 설문항목 ]', '인지경로를 하나 이상 체크해 주세요.', '');
+        showMessage('', 'info', '[ Survey ]', 'Please check at least one cognitive pathway.', '');
         return false;
     }
 
@@ -6802,7 +6265,7 @@ function f_visitor_form_valid_check(gbn){
     if (eventGbn === '경기국제보트쇼') {
         let preObservationGbn = $('input[type=checkbox][name=preObservationGbn]').is(':checked');
         if (!preObservationGbn) {
-            showMessage('', 'info', '[ 설문항목 ]', '지난 전시회 참관 여부를 하나 이상 체크해 주세요.', '');
+            showMessage('', 'info', '[ Survey ]', 'Please check at least one past exhibition visit.', '');
             return false;
         }
     }
@@ -6827,6 +6290,9 @@ function f_visitor_form_data_setting(){
     }
 
     joinForm.domain = $('#domain').val();
+
+    joinForm.tel = $('#telCode').val() + ' ' + $('#tel').val();
+    joinForm.phone = $('#phoneCode').val() + ' ' + $('#phone').val();
 
     joinForm.regionSi = joinForm.sido;
     joinForm.regionGu = nvl(joinForm.gugun,'-');
@@ -6921,7 +6387,7 @@ function f_en_visitor_apply(gbn){
 
     if(gbn === 'I'){
 
-        let json = { joinYear: transferYear, name : $('#name').val() , phone: $('#phone').val() };
+        let json = { joinYear: transferYear, name : $('#name').val() , phone: $('#phoneCode').val() + ' ' + $('#phone').val() };
         let resData = ajaxConnectSimple('/visitor/preApplyCheck.do', 'post', json);
         if(nvl(resData,'') !== ''){
             Swal.fire({
@@ -6986,7 +6452,7 @@ function f_en_visitor_apply(gbn){
                                 html: '참관객 사전등록이 완료되었습니다.',
                                 icon: 'info',
                                 confirmButtonColor: '#00a8ff',
-                                confirmButtonText: '확인'
+                                confirmButtonText: 'Confirm'
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                 }
@@ -7151,6 +6617,9 @@ function f_en_visitor_form_data_setting(){
 
     joinForm.domain = $('#domain').val();
 
+    joinForm.tel = $('#telCode').val() + ' ' + $('#tel').val();
+    joinForm.phone = $('#phoneCode').val() + ' ' + $('#phone').val();
+
     joinForm.regionSi = '';
     joinForm.regionGu = '';
 
@@ -7239,35 +6708,35 @@ function f_en_visitor_form_data_setting(){
 function f_ask_request(companyName, id){
     let name = $('#askName').val();
     if(nvl(name,'') === ''){
-        showMessage('', 'info', '문의하기', '문의자 이름을 작성해 주세요.', '');
+        showMessage('', 'info', 'Inquiry', 'Please enter your name.', '');
         return false;
     }
 
     let phone = $('#askPhone').val();
     if(nvl(phone,'') === ''){
-        showMessage('', 'info', '문의하기', '문의자 연락처를 작성해 주세요.', '');
+        showMessage('', 'info', 'Inquiry', 'Please enter your contact number.', '');
         return false;
     }
     if (!/^010-[0-9]{4}-[0-9]{4}$/.test(phone)) {
-        showMessage('', 'info', '문의하기', '올바른 휴대전화번호를 입력해 주세요.<br>(앞자리 010 만 가능합니다.)', '');
+        showMessage('', 'info', 'Inquiry', 'Please enter a valid mobile number.<br>(Must start with 010)', '');
         return false;
     }
 
     let content = $('#askContent').val();
     if(nvl(content,'') === ''){
-        showMessage('', 'info', '문의하기', '상담요청내용을 작성해 주세요.', '');
+        showMessage('', 'info', 'Inquiry', 'Please enter the inquiry details.', '');
         return false;
     }
 
     Swal.fire({
         icon: 'info',
-        title: '입력된 정보로 문의하시겠습니까?',
+        title: 'Submit the inquiry with the entered info?',
         allowOutsideClick: false,
         showCancelButton: true,
         confirmButtonColor: '#00a8ff',
-        confirmButtonText: '문의하기',
+        confirmButtonText: 'Submit',
         cancelButtonColor: '#A1A5B7',
-        cancelButtonText: '취소'
+        cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
 
@@ -7276,9 +6745,8 @@ function f_ask_request(companyName, id){
             let response = ajaxConnectSimple('/exhibitor/company/selectChargeEmail.do', 'post', jsonStr);
             if (nvl(response, '') !== '') {
 
-                let smsMsg = '[ ' + companyName + ' ]님, 온라인전시관에서 [ ' + name + ' ](' + phone + ')님이 문의를 남기셨습니다.\n' +
-                    '문의내용은 다음과 같습니다.\n' +
-                    '[ 문의내용 ]\n' +
+                let smsMsg = 'To ' + companyName + ',\nAn inquiry has been left by ' + name + ' (' + phone + ') in the Online Exhibition.\n' +
+                    '[ Inquiry Details ]\n' +
                     content;
 
                 //foreach
@@ -7302,11 +6770,11 @@ function f_ask_request(companyName, id){
 
                     Swal.fire({
                         icon: 'info',
-                        title: '문의하기',
-                        html: '작성하신 내용으로 문의가 정상 접수되었습니다.<br>접수하신 연락처로 문의 답변 예정입니다.<br>감사합니다.',
+                        title: 'Inquiry',
+                        html: 'Your inquiry has been successfully submitted.<br>We will respond to the contact number provided.<br>Thank you.',
                         allowOutsideClick: false,
                         confirmButtonColor: '#00a8ff',
-                        confirmButtonText: '확인'
+                        confirmButtonText: 'Confirm'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             f_ask_popup_close();
@@ -7314,11 +6782,11 @@ function f_ask_request(companyName, id){
                     });
 
                 } else {
-                    showMessage('', 'info', '문의하기', '해당 업체에 등록된 담당자 정보가 올바르지 않습니다.<br>문의사항은 사무국으로 문의해 주세요.', '');
+                    showMessage('', 'info', 'Inquiry', 'The contact info registered for this company is incorrect.<br>Please contact the Secretariat for inquiries.', '');
                     return false;
                 }
             } else {
-                showMessage('', 'info', '문의하기', '해당 업체에 등록된 담당자 정보가 올바르지 않습니다.<br>문의사항은 사무국으로 문의해 주세요.', '');
+                showMessage('', 'info', 'Inquiry', 'The contact info registered for this company is incorrect.<br>Please contact the Secretariat for inquiries.', '');
                 return false;
             }
         }
@@ -7336,7 +6804,7 @@ function f_ask_popup_close(){
     $('#askPhone').val('');
     $('#askContent').val('');
     $('#smsRemain').text('90');
-    
+
     //팝업닫기
     $('.popup').removeClass('on');
     $('body').removeClass('lock_scroll');
@@ -7352,7 +6820,7 @@ function smsByteChk(content){
         if(window.location.href.includes('/eng/')){
             alert("Content cannot exceed " + 90 + " bytes.");
         }else{
-            alert("상담요청내용은 " + 90 + " Byte 를 초과할 수 없습니다.");
+            alert("The inquiry details cannot exceed " + 90 + " bytes.");
         }
 
         while(remain.innerText < 0) {
@@ -7394,25 +6862,6 @@ function getByte(str){
 async function f_company_uploadFile_call(id, path) {
 
     const uploadPromises = []; // 프로미스 배열
-
-    /* 사업자 등록증 */
-    let companyLicenseFile = $('#companyLicense').val();
-    if (nvl(companyLicenseFile, '') !== '') {
-
-        let fileId = ($('.companyLicenseFile_li input[type=hidden][name=companyLicenseUploadFile]').attr('id'));
-        if(nvl(fileId,'') !== ''){
-            f_file_n_update({ id: fileId });
-        }
-
-        let fileName = companyLicenseFile;
-        let fileDot = fileName.lastIndexOf('.');
-        let fileType = fileName.substring(fileDot+1, fileName.length).toLocaleLowerCase();
-        if(fileType === 'pdf'){
-            uploadPromises.push(f_company_file_upload_pdf(id, 'exhibitor_apply_form', 'companyLicenseFile', 'exhibitor/company/' + path));
-        }else{
-            uploadPromises.push(f_company_uploadFile(id, 'exhibitor_apply_form', 'companyLicenseFile', 'exhibitor/company/' + path));
-        }
-    }
 
     /* 로고 */
     let logoFile = $('#logo').val();
@@ -7756,7 +7205,7 @@ function f_file_n_update(json){
         data: JSON.stringify(json),
         contentType: 'application/json; charset=utf-8' //server charset 확인 필요
     }).fail(function (xhr, status, errorThrown) {
-        alert('파일 정보 업데이트 오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+        alert('An error occurred while updating file info. Please contact the administrator.\nError: ' + errorThrown + '\nStatus: ' + status);
     })
 }
 
@@ -7834,7 +7283,7 @@ function makeJsonFormat(data){
     });
 
     returnJsonObj = {
-        subject: '[2027 경기국제보트쇼] 참가업체 접수 완료', //제목
+        subject: '[2027 KIBS] Exhibitor Registration Complete', //제목
         body: "", //본문
         template: "6", //템플릿 번호
         receiver: receiverArr
@@ -7868,7 +7317,7 @@ function f_page_move(url, param){
     form.setAttribute('action', url);
 
     let paramJson ;
-    if(url === '/mypage/index.do'){
+    if(url === '/eng/mypage/index.do'){
         paramJson = param;
     }else{
         paramJson = {

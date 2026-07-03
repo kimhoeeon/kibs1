@@ -38,6 +38,15 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+
+    <span itemscope="" itemtype="http://schema.org/Organization">
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+    </span>
 </head>
 
 <body>
@@ -63,18 +72,29 @@
         <div class="inner">
             <div class="member_box">
                 <div class="box">
-                    <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8946/8912');<%--TODO : 참가신청 기간에 오픈 /eng/exhibitor/login.do--%>">
-                        <div class="icon"><img src="/img/icon_login02.png" class="off"><img src="/img/icon_login02_on.png" class="on"></div>
+                    <a href="/eng/exhibitor/login.do">
+                        <div class="icon">
+                            <img src="/img/icon_login02.png" class="off">
+                            <img src="/img/icon_login02_on.png" class="on">
+                        </div>
                         <div class="txt">Exhibitors</div>
                     </a>
                 </div>
                 <div class="box">
                     <a href="/eng/buyer/login.do">
-                        <div class="icon"><img src="/img/icon_login01.png" class="off"><img src="/img/icon_login01_on.png" class="on"></div>
+                        <div class="icon">
+                            <img src="/img/icon_login01.png" class="off">
+                            <img src="/img/icon_login01_on.png" class="on">
+                        </div>
                         <div class="txt">Visitors</div>
                     </a>
                 </div>
             </div>
+            <%--<div style="margin-top: 20px; text-align: center; width:49%">
+                <div class="box">
+                    <a href="http://kibs2026.micehub-gov.com/" target="_blank" class="btnSt01" style="padding: 15px 0;">수출상담회 신청하기</a>
+                </div>
+            </div>--%>
         </div>
     </div>
     <!-- section -->

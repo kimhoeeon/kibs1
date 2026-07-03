@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
@@ -38,134 +40,200 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+
+    <span itemscope="" itemtype="http://schema.org/Organization">
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+    </span>
 </head>
 
 <body>
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-<div id="container">
+<c:if test="${sessionScope.get('status') ne 'logon'}">
+    <script>
+        alert("Please log in.");
+        location.href = '/eng/login.do';
+    </script>
+</c:if>
 
-    <!-- section -->
-    <div class="sub_top">
-        <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>Home</span><span>Exhibitors</span><span>My Page</span>
+<c:if test="${sessionScope.get('status') eq 'logon'}">
+
+    <c:import url="../header.jsp" charEncoding="UTF-8"/>
+
+    <div id="container">
+
+        <!-- section -->
+        <div class="sub_top">
+            <div class="inner">
+                <div class="sub_top_box">
+                    <div class="sub_top_nav">
+                        <span>Home</span><span>Exhibitors</span><span>Mypage</span>
+                    </div>
+                    <div class="sub_top_tit">Mypage</div>
                 </div>
-                <div class="sub_top_tit">My Page</div>
             </div>
         </div>
-    </div>
-    <!-- //section -->
+        <!-- //section -->
 
-    <!-- section -->
-    <div class="apply_s padding_tb" id="apply_s">
-        <div class="inner">
+        <!-- section -->
+        <div class="apply_s padding_tb" id="apply_s">
+            <div class="inner">
 
-            <div class="apply_nav">
-                <div class="apply_nav_txt">
-                    <div class="txt">Welcome, Meetingfan!</div>
-                    <div class="btn"><a href="/eng/mypage/modify.do" class="btnSt01">Member Info</a></div>
-                </div>
-                <div class="apply_nav_list">
-                    <ul class="list1">
-                        <li><a href="/eng/mypage/step01.do">Basic Information</a></li>
-                        <li>
-                            <a href="/eng/mypage/step2_1.do">Exhibition req.</a>
-                            <ul class="list2">
-                                <li><a href="/eng/mypage/step2_1.do">Exhibitor Booth</a></li>
-                                <li><a href="/eng/mypage/step2_2.do">Fascia Board Title</a></li>
-                                <li><a href="/eng/mypage/step2_3.do">Utilities</a></li>
-                                <li><a href="/eng/mypage/step2_4.do">Exhibitor Pass</a></li>
-                                <li><a href="/eng/mypage/step2_5.do">Prize & Giveaway</a></li>
-                                <li><a href="/eng/mypage/step2_6.do">Web Banner</a></li>
-                                <%--<li><a href="/eng/mypage/step2_7.do">Online Exhibition</a></li>--%>
-                                <li><a href="/eng/mypage/step2_8.do">Directory</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/eng/mypage/step03.do">Complete Registration</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- section -->
-            <div class="my_main my_form form_s">
-                <div class="inner">
-                    <div class="form_wrap">
-                        <div class="form_tit">
-                            <div class="big">Payment Status : <span class="txtRed">Unpaid</span></div>
+                <div class="apply_nav">
+                    <div class="apply_nav_txt">
+                        <div class="txt">Welcome, ${info.companyNameKo}</div>
+                        <div class="btn">
+                            <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/modify.do','${info.seq}')" class="btnSt01">Member Info</a>
+                            <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/index.do', {seq: `${info.seq}`})" class="btnSt01">MYPAGE</a>
                         </div>
-                        <div class="my_main_pay">
-                            <ul class="payList">
-                                <li>
-                                    <div class="cont_box">
-                                        <div class="icon"><img src="/img/icon_my01.png"></div>
-                                        <div class="txt_box">
-                                            <div class="gubun">Booth Price</div>
-                                            <div class="txt">￦ 3,700,000</div>
+                    </div>
+                    <div class="apply_nav_list">
+                        <ul class="list1">
+                            <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step01.do','${info.seq}')">Basic Info</a></li>
+                            <li>
+                                <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_1.do','${info.seq}')">Exhibition Info</a>
+                                <ul class="list2">
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_1.do','${info.seq}')">Booth</a></li>
+                                    <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_9.do','${info.seq}')">Yacht/Boat</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_2.do','${info.seq}')">Signboard</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_3.do','${info.seq}')">Utilities</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_4.do','${info.seq}')">Badges</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_5.do','${info.seq}')">Giveaways</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_8.do','${info.seq}')">Directory</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step03.do','${info.seq}')">Complete</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- section -->
+                <div class="my_main my_form form_s">
+                    <div class="inner">
+                        <div class="form_wrap">
+                            <div class="form_tit">
+                                <div class="big">Participation Fee Payment Status :
+                                    <c:if test="${info.prcYn eq '0'}"><span class="txtRed">NON PAYMENT</span></c:if>
+                                    <c:if test="${info.prcYn eq '1'}"><span class="txtBlue">Free booth</span></c:if>
+                                    <c:if test="${info.prcYn eq '2'}"><span class="txtBlue">Participation Fee (50%) Payment</span></c:if>
+                                    <c:if test="${info.prcYn eq '3'}"><span class="txtBlue">Participation Fee (100%) Payment</span></c:if>
+                                    <c:if test="${info.prcYn eq '4'}"><span class="txtBlue">Full payment (participation fee/facility fees)</span></c:if>
+                                </div>
+                            </div>
+                            <div class="my_main_pay">
+                                <ul class="payList">
+                                    <li>
+                                        <div class="cont_box">
+                                            <div class="icon"><img src="/img/icon_my01.png"></div>
+                                            <div class="txt_box">
+                                                <div class="gubun">Booth Participation Fee</div>
+                                                <div class="txt">
+                                                    <c:set var="specialDicountTotal" value="0"/>
+                                                    <c:choose>
+                                                        <c:when test="${info.memberCompanyYn eq 'Y'}">
+                                                            <c:set var="baseSpecialAmount" value="${info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum}"/>
+                                                            <c:if test="${info.discountSpecial1Yn}">
+                                                                <c:set var="specialDicountTotal" value="${baseSpecialAmount * 0.5}"/>
+                                                            </c:if>
+                                                            <c:if test="${info.discountSpecial2Yn}">
+                                                                <c:set var="specialDicountTotal" value="${specialDicountTotal + info.discountSpecial2Amount}"/>
+                                                            </c:if>
+                                                            <c:if test="${info.discountSpecial3Yn}">
+                                                                <c:set var="specialDicountTotal" value="${specialDicountTotal + info.discountSpecial3Amount}"/>
+                                                            </c:if>
+                                                            ￦ <fmt:formatNumber value="${info.boothPrcSum + ((info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum - specialDicountTotal) * 0.1)}" pattern="#,###"/>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ￦ <fmt:formatNumber value="${info.boothPrcSum}" pattern="#,###"/>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <a class="btn" href="/eng/mypage/stpe2_1.do">┼</a>
-                                </li>
-                                <li>
-                                    <div class="cont_box">
-                                        <div class="icon"><img src="/img/icon_my02.png"></div>
-                                        <div class="txt_box">
-                                            <div class="gubun">Utilities</div>
-                                            <div class="txt">￦ 220,000</div>
+                                        <a class="btn" href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_1.do','${info.seq}')">┼</a>
+                                    </li>
+                                    <li>
+                                        <div class="cont_box">
+                                            <div class="icon"><img src="/img/icon_my02.png"></div>
+                                            <div class="txt_box">
+                                                <div class="gubun">Utilities</div>
+                                                <div class="txt">￦ <fmt:formatNumber value="${info.utilityPrcSum}" pattern="#,###"/></div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <a class="btn" href="/eng/mypage/step2_3.do">┼</a>
-                                </li>
-                                <li>
-                                    <div class="cont_box">
-                                        <div class="icon"><img src="/img/icon_my03.png"></div>
-                                        <div class="txt_box">
-                                            <div class="gubun">ETC</div>
-                                            <div class="txt">0 USD</div>
+                                        <a class="btn" href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_3.do','${info.seq}')">┼</a>
+                                    </li>
+                                    <li>
+                                        <div class="cont_box">
+                                            <div class="icon"><img src="/img/icon_my04.png"></div>
+                                            <div class="txt_box">
+                                                <div class="gubun">Discount</div>
+                                                <div class="txt">
+                                                    <c:set var="baseTotal" value="${info.boothPrcSum - info.discountPrcSum}"/>
+                                                    <c:set var="baseSpecialDiscount" value="0"/>
+                                                    <c:if test="${info.discountSpecial1Yn}">
+                                                        <c:set var="baseSpecialDiscount" value="${baseTotal * 0.5}"/>
+                                                    </c:if>
+                                                    <c:if test="${info.discountSpecial2Yn}">
+                                                        <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial2Amount}"/>
+                                                    </c:if>
+                                                    <c:if test="${info.discountSpecial3Yn}">
+                                                        <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial3Amount}"/>
+                                                    </c:if>
+                                                    ￦ <fmt:formatNumber value="${info.discountPrcSum + baseSpecialDiscount}" pattern="#,###"/>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <a class="btn" href="">┼</a>
-                                </li>
-                                <li>
-                                    <div class="cont_box">
-                                        <div class="icon"><img src="/img/icon_my04.png"></div>
-                                        <div class="txt_box">
-                                            <div class="gubun">Discounts</div>
-                                            <div class="txt">￦ 400,000</div>
+                                        <a class="btn" href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_1.do','${info.seq}')">┼</a>
+                                    </li>
+                                    <li>
+                                        <div class="cont_box">
+                                            <div class="icon"><img src="/img/icon_my05.png"></div>
+                                            <div class="txt_box">
+                                                <div class="gubun">Total (Excl. VAT)</div>
+                                                <div class="txt">￦ <fmt:formatNumber value="${info.prcSum}" pattern="#,###"/></div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <a class="btn" href="/eng/mypage/step2_1.do">┼</a>
-                                </li>
-                                <li>
-                                    <div class="cont_box">
-                                        <div class="icon"><img src="/img/icon_my05.png"></div>
-                                        <div class="txt_box">
-                                            <div class="gubun">Total<br>(VAT not Included)</div>
-                                            <div class="txt">￦ 3,520,000</div>
-                                        </div>
-                                    </div>
-                                    <a class="btn" href="/eng/mypage/total.do">┼</a>
-                                </li>
-                            </ul>
-                            <div class="payTotal">
-                                <span class="amount">￦ 3,520,000</span>
-                                <span class="vat">￦ 352,000(VAT)</span>
-                                <span class="total">Total ￦ 3,872,000</span>
+                                        <a class="btn" href="javascript:void(0);" onclick="f_page_move('/eng/mypage/total.do','${info.seq}')">┼</a>
+                                    </li>
+                                </ul>
+                                <div class="payTotal">
+                                    <span class="amount">￦ <fmt:formatNumber value="${info.prcSum}" pattern="#,###"/></span>
+                                    <span class="vat">VAT ￦ <fmt:formatNumber value="${info.prcVat}" pattern="#,###"/></span>
+                                    <span class="total">TOTALS ￦ <fmt:formatNumber value="${info.prcTotal}" pattern="#,###"/></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form_wrap">
+                            <div class="form_tit">
+                                <div class="big">Application Form <span class="txtRed">How to Fix It</span></div>
+                            </div>
+                            <div>
+                                <ul>
+                                    <li style="margin-bottom: 15px; font-size: 1.8rem;">
+                                        1 . In the left tab of My Page, click the tab you want to edit and enter the information you want to modify.
+                                    </li>
+                                    <li style="font-size: 1.8rem;">
+                                        2 . After entering the information you want to edit, click the [Next] button at the bottom right to save. If a notification window like "Booth application information has been saved" appears, the information has been properly updated.
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- //section -->
+
             </div>
-            <!-- //section -->
-
         </div>
+        <!-- //section -->
+
     </div>
-    <!-- //section -->
 
-</div>
-
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
-
+    <c:import url="../footer.jsp" charEncoding="UTF-8"/>
+</c:if>
 </body>
 </html>

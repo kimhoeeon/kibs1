@@ -10,6 +10,7 @@ import lombok.ToString;
 public class MngProductDTO {
     Integer rownum; //순번
     String seq; //SEQ
+    String lang;
     String transferYear;
     String companyNameKo; //회사명(국문)
     String companyNameEn; //회사명(영문)

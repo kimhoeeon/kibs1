@@ -191,11 +191,20 @@ let KTAppExhibitorNewNewMng = function () {
     }
 
     function renderCompanyNameCell(data, type, row){
+        let lang = row.lang;
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        let renderHTML = '';
+        let renderHTML = '<div style="display: flex; justify-content: center; gap: 5px;">';
+        if(lang === 'KO'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += '국';
+        }else{
+            renderHTML += '<div class="badge badge-light-info fw-bold">';
+            renderHTML += '영';
+        }
+        renderHTML += '</div>';
         renderHTML += '<span class="fw-bold">';
-        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + row.seq + '\'' + ')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_new_detail_info">';
+        renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + row.seq + '\',\'' + lang + '\')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_new_detail_info">';
         if(nvl(companyNameEn,'') !== ''){
             renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
             /*if(companyNameKo === '오션테크'){
@@ -213,6 +222,7 @@ let KTAppExhibitorNewNewMng = function () {
         }
         renderHTML += '</a>';
         renderHTML += '</span>';
+        renderHTML += '</div>';
         return renderHTML;
     }
 
@@ -1424,12 +1434,24 @@ let KTAppExhibitorNewNewApplicationBooth = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        let renderHTML = '<span class="fw-bold">';
+        let lang = row.lang;
+
+        let renderHTML = '<div style="display: flex; justify-content: center; gap: 5px;">';
+        if(lang === 'KO'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += '국';
+        }else{
+            renderHTML += '<div class="badge badge-light-info fw-bold">';
+            renderHTML += '영';
+        }
+        renderHTML += '</div>';
+        renderHTML += '<span class="fw-bold">';
         renderHTML += '<a href="/mng/exhibitorNewNew/application/booth/detail.do?seq=' + row.seq + '"';
         renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
         renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
         renderHTML += '</a>';
         renderHTML += '</span>';
+        renderHTML += '</div>';
         return renderHTML;
     }
 
@@ -2347,7 +2369,22 @@ let KTAppExhibitorNewNewApplicationSign = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        let lang = row.lang;
+
+        let renderHTML = '<div style="display: flex; justify-content: center; gap: 5px;">';
+        if(lang === 'KO'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += '국';
+        }else{
+            renderHTML += '<div class="badge badge-light-info fw-bold">';
+            renderHTML += '영';
+        }
+        renderHTML += '</div>';
+        renderHTML += '<span class="fw-bold">';
+        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        renderHTML += '</span>';
+        renderHTML += '</div>';
+        return renderHTML;
     }
 
     function renderCompanySignNameKoCell(data, type, row){
@@ -2731,12 +2768,24 @@ let KTAppExhibitorNewNewApplicationUtility = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        let renderHTML = '<span class="fw-bold">';
+        let lang = row.lang;
+
+        let renderHTML = '<div style="display: flex; justify-content: center; gap: 5px;">';
+        if(lang === 'KO'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += '국';
+        }else{
+            renderHTML += '<div class="badge badge-light-info fw-bold">';
+            renderHTML += '영';
+        }
+        renderHTML += '</div>';
+        renderHTML += '<span class="fw-bold">';
         renderHTML += '<a href="/mng/exhibitorNewNew/application/utility/detail.do?seq=' + row.seq + '"';
         renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
         renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
         renderHTML += '</a>';
         renderHTML += '</span>';
+        renderHTML += '</div>';
         return renderHTML;
     }
 
@@ -3278,7 +3327,22 @@ let KTAppExhibitorNewNewApplicationPass = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        let lang = row.lang;
+
+        let renderHTML = '<div style="display: flex; justify-content: center; gap: 5px;">';
+        if(lang === 'KO'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += '국';
+        }else{
+            renderHTML += '<div class="badge badge-light-info fw-bold">';
+            renderHTML += '영';
+        }
+        renderHTML += '</div>';
+        renderHTML += '<span class="fw-bold">';
+        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        renderHTML += '</span>';
+        renderHTML += '</div>';
+        return renderHTML;
     }
 
     function renderActionsCell(data, type, row){
@@ -3733,7 +3797,22 @@ let KTAppExhibitorNewNewApplicationBuyer = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        let lang = row.lang;
+
+        let renderHTML = '<div style="display: flex; justify-content: center; gap: 5px;">';
+        if(lang === 'KO'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += '국';
+        }else{
+            renderHTML += '<div class="badge badge-light-info fw-bold">';
+            renderHTML += '영';
+        }
+        renderHTML += '</div>';
+        renderHTML += '<span class="fw-bold">';
+        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        renderHTML += '</span>';
+        renderHTML += '</div>';
+        return renderHTML;
     }
 
     function renderCountryCell(data, type, row){
@@ -4293,7 +4372,22 @@ let KTAppExhibitorNewNewApplicationGift = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        let lang = row.lang;
+
+        let renderHTML = '<div style="display: flex; justify-content: center; gap: 5px;">';
+        if(lang === 'KO'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += '국';
+        }else{
+            renderHTML += '<div class="badge badge-light-info fw-bold">';
+            renderHTML += '영';
+        }
+        renderHTML += '</div>';
+        renderHTML += '<span class="fw-bold">';
+        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        renderHTML += '</span>';
+        renderHTML += '</div>';
+        return renderHTML;
     }
 
     function renderPriceCell(data, type, row){
@@ -4816,7 +4910,22 @@ let KTAppExhibitorNewNewApplicationOnline = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        let lang = row.lang;
+
+        let renderHTML = '<div style="display: flex; justify-content: center; gap: 5px;">';
+        if(lang === 'KO'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += '국';
+        }else{
+            renderHTML += '<div class="badge badge-light-info fw-bold">';
+            renderHTML += '영';
+        }
+        renderHTML += '</div>';
+        renderHTML += '<span class="fw-bold">';
+        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        renderHTML += '</span>';
+        renderHTML += '</div>';
+        return renderHTML;
     }
 
     function renderActionsCell(data, type, row){
@@ -5341,7 +5450,22 @@ let KTAppExhibitorNewNewApplicationProduct = function () {
     function renderCompanyNameCell(data, type, row){
         let companyNameKo = row.companyNameKo;
         let companyNameEn = row.companyNameEn;
-        return f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        let lang = row.lang;
+
+        let renderHTML = '<div style="display: flex; justify-content: center; gap: 5px;">';
+        if(lang === 'KO'){
+            renderHTML += '<div class="badge badge-light-primary fw-bold">';
+            renderHTML += '국';
+        }else{
+            renderHTML += '<div class="badge badge-light-info fw-bold">';
+            renderHTML += '영';
+        }
+        renderHTML += '</div>';
+        renderHTML += '<span class="fw-bold">';
+        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        renderHTML += '</span>';
+        renderHTML += '</div>';
+        return renderHTML;
     }
 
     function renderActionsCell(data, type, row){
@@ -8157,6 +8281,47 @@ let DTRequestManagementList = function () {
     };
 }();
 
+function f_exhibitor_name_gbn(companyName){
+    let returnCompanyName = companyName;
+    if(companyName === '웨이브파크'
+        || companyName === '오션블리스'
+        || companyName === '주식회사 웨이브힐'
+        || companyName === '라인 디'
+        || companyName === '엉클스톤'
+        || companyName === '주식회사 썸머유니버스'
+        || companyName === '와이케이서프'
+        || companyName === '바이미야'
+        || companyName === '사단법인비추온안전협회'
+        || companyName === '네이키드서프클럽'
+        || companyName === '(주)케이에이치트렌드'
+        || companyName === '양양청년협동조합'
+        || companyName === '라인업그룹'
+        || companyName === '바다이브'
+        || companyName === '지프로'
+        || companyName === '쓰리세컨즈'
+        || companyName === '서프랩'
+        || companyName === '서프잇'
+        || companyName === '오션차일드'
+        || companyName === '주식회사 익스트림모션'
+        || companyName === '에스클라세'
+        || companyName === '한국 보드라이더스 클럽 주식회사'
+        || companyName === '포인트 브레이크'
+    ){
+        returnCompanyName += '(W)';
+    }
+
+    switch(companyName){
+        case '오션테크':
+            returnCompanyName += '(덕영엔지니어링)';
+            break;
+        case '엑스웨이브 CF MOTO Korea':
+            returnCompanyName += '(진일엔지니어링)';
+            break;
+    }
+
+    return returnCompanyName;
+}
+
 // On document ready
 KTUtil.onDOMContentLoaded(function () {
 
@@ -8171,14 +8336,14 @@ KTUtil.onDOMContentLoaded(function () {
     // 전시회>참가신청서 관리 (2027~)
     KTAppExhibitorNewNewMng.init(); // /mng/exhibitorNewNew/participant/company.do
     KTAppExhibitorNewNewApplicationBooth.init(); // /mng/exhibitorNewNew/application/booth.do
+    KTAppExhibitorNewNewApplicationProduct.init(); // /mng/exhibitorNewNew/application/product.do
     KTAppExhibitorNewNewApplicationSign.init(); // /mng/exhibitorNewNew/application/sign.do
     KTAppExhibitorNewNewApplicationUtility.init(); // /mng/exhibitorNewNew/application/utility.do
     KTAppExhibitorNewNewApplicationPass.init(); // /mng/exhibitorNewNew/application/pass.do
     KTAppExhibitorNewNewApplicationBuyer.init(); // /mng/exhibitorNewNew/application/buyer.do
     KTAppExhibitorNewNewApplicationGift.init(); // /mng/exhibitorNewNew/application/gift.do
     KTAppExhibitorNewNewApplicationOnline.init(); // /mng/exhibitorNewNew/application/online.do
-    KTAppExhibitorNewNewApplicationProduct.init(); // /mng/exhibitorNewNew/application/product.do
-    
+
     // 전시회>참가신청서 관리 (2026)
     KTAppExhibitorNewMng.init(); // /mng/exhibitorNew/participant/company.do
     KTAppExhibitorNewApplicationBooth.init(); // /mng/exhibitorNew/application/booth.do
@@ -8240,44 +8405,3 @@ KTUtil.onDOMContentLoaded(function () {
     DTRequestManagementList.init(); // /mng/request/management/list.do
 
 });
-
-function f_exhibitor_name_gbn(companyName){
-    let returnCompanyName = companyName;
-    if(companyName === '웨이브파크'
-        || companyName === '오션블리스'
-        || companyName === '주식회사 웨이브힐'
-        || companyName === '라인 디'
-        || companyName === '엉클스톤'
-        || companyName === '주식회사 썸머유니버스'
-        || companyName === '와이케이서프'
-        || companyName === '바이미야'
-        || companyName === '사단법인비추온안전협회'
-        || companyName === '네이키드서프클럽'
-        || companyName === '(주)케이에이치트렌드'
-        || companyName === '양양청년협동조합'
-        || companyName === '라인업그룹'
-        || companyName === '바다이브'
-        || companyName === '지프로'
-        || companyName === '쓰리세컨즈'
-        || companyName === '서프랩'
-        || companyName === '서프잇'
-        || companyName === '오션차일드'
-        || companyName === '주식회사 익스트림모션'
-        || companyName === '에스클라세'
-        || companyName === '한국 보드라이더스 클럽 주식회사'
-        || companyName === '포인트 브레이크'
-    ){
-        returnCompanyName += '(W)';
-    }
-
-    switch(companyName){
-        case '오션테크':
-            returnCompanyName += '(덕영엔지니어링)';
-            break;
-        case '엑스웨이브 CF MOTO Korea':
-            returnCompanyName += '(진일엔지니어링)';
-            break;
-    }
-
-    return returnCompanyName;
-}

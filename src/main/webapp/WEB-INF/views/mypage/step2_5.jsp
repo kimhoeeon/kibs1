@@ -79,7 +79,6 @@
             </div>
             <!-- //section -->
 
-
             <!-- section -->
             <div class="apply_s padding_tb" id="apply_s">
                 <div class="inner">
@@ -210,8 +209,6 @@
                 </div>
                 <!-- //section -->
             </div>
-        </div>
-
         </div>
 
         <!-- 경품등록팝업 -->

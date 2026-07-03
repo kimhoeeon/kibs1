@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
@@ -38,304 +40,447 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+
+    <span itemscope="" itemtype="http://schema.org/Organization">
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+    </span>
 </head>
 
 <body>
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-<div id="container">
+    <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-    <!-- section -->
-    <div class="sub_top">
-        <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>Home</span><span>Exhibitors</span><span>Exhibitor Registration</span>
-                </div>
-                <div class="sub_top_tit">Exhibitor Registration</div>
-            </div>
-        </div>
-    </div>
-    <!-- //section -->
+    <div id="container">
 
-    <!-- section -->
-    <div class="sub_tab">
-        <div class="inner">
-            <div class="sub_tab_box">
-                <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
-                <div class="optionBox">
-                    <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">Exhibitors</div>
-                        <div class="tabOptSel">
-                            <a href="/eng/guide/summary.do">KIBS 2026</a>
-                            <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
-                            <a href="/eng/buyer/glance.do">Buyer</a>
-                            <a href="/eng/board/notice.do">News</a>
-                        </div>
+        <!-- section -->
+        <div class="sub_top">
+            <div class="inner">
+                <div class="sub_top_box">
+                    <div class="sub_top_nav">
+                        <span>Home</span><span>Exhibitors</span><span>Exhibitor Registration</span>
                     </div>
-                    <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">Exhibitors Registration</div>
-                        <div class="tabOptSel">
-                            <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
-                            <a href="/eng/online/company.do">Exhibitor List</a>
-                            <a class="active" href="/apply/step01.do">Exhibitor Registration</a>
-                            <a href="/eng/exhibitor/qna.do">FAQ</a>
-                        </div>
-                    </div>
+                    <div class="sub_top_tit">Exhibitor Registration</div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- section -->
+        <!-- //section -->
 
-    <!-- section -->
-    <div class="apply_s padding_tb" id="apply_s">
-        <div class="inner">
-
-            <div class="apply_nav">
-                <div class="apply_nav_list">
-                    <ul class="list1">
-                        <li><a href="/eng/apply/step01.do">Basic Information</a></li>
-                        <li class="active">
-                            <a href="/eng/apply/step2_1.do">Exhibition Req.</a>
-                            <ul class="list2">
-                                <li><a href="/eng/apply/step2_1.do">Exhibitor Booth</a></li>
-                                <li><a href="/eng/apply/step2_2.do">Fascia Board Title</a></li>
-                                <li class="active"><a href="/eng/apply/step2_3.do">Utilities</a></li>
-                                <li><a href="/eng/apply/step2_4.do">Exhibitor Pass</a></li>
-                                <li><a href="/eng/apply/step2_5.do">Prize & Giveaway</a></li>
-                                <li><a href="/eng/apply/step2_6.do">Web Banner</a></li>
-                                <%--<li><a href="/eng/apply/step2_7.do">Online Exhibition</a></li>--%>
-                                <li><a href="/eng/apply/step2_8.do">Directory</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/eng/apply/step03.do">Complete Registration</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="apply_step">
-                <div class="apply_tit">Utilities</div>
-                <div class="apply_step_wrap">
-                    <div class="apply_step_box step1">
-                        <div class="gubun">
-                            <p>Step 1</p>Basic Information
+        <!-- section -->
+        <div class="sub_tab">
+            <div class="inner">
+                <div class="sub_tab_box">
+                    <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
+                    <div class="optionBox">
+                        <div class="tabOpt1 tabOption">
+                            <div class="tabOptAct">Exhibitors</div>
+                            <div class="tabOptSel">
+                                <a href="/eng/guide/summary.do">KIBS 2026</a>
+                                <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
+                                <a href="/eng/buyer/glance.do">Buyers</a>
+                                <a href="/eng/board/notice.do">News</a>
+                            </div>
                         </div>
-                        <div class="gauge">
-                            <progress class="gauge_bar" value="100" max="100"></progress>
+                        <div class="tabOpt2 tabOption">
+                            <div class="tabOptAct">Exhibitor Registration</div>
+                            <div class="tabOptSel">
+                                <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                                <a class="active" href="/eng/apply/step01.do">Exhibitor Registration</a>
+                                <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
+                                <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                                <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
+                                <a href="/eng/online/company.do">Exhibitor List</a>
+                                <a href="/eng/exhibitor/qna.do">FAQ</a>
+                            </div>
                         </div>
-                        <div class="txt">Complete</div>
-                    </div>
-                    <div class="apply_step_box step2">
-                        <div class="gubun">
-                            <p>Step 2</p>Exhibition Req.
-                        </div>
-                        <div class="gauge">
-                            <progress class="gauge_bar" value="20" max="80"></progress>
-                        </div>
-                        <div class="txt">Proceeding...(2/7)</div>
-                    </div>
-                    <div class="apply_step_box step3">
-                        <div class="gubun">
-                            <p>Step 3</p>Complete Registration
-                        </div>
-                        <div class="gauge">
-                            <progress class="gauge_bar" value="0" max="100"></progress>
-                        </div>
-                        <div class="txt">Condition Not Met</div>
                     </div>
                 </div>
             </div>
+        </div>
+        <!-- section -->
 
+        <!-- section -->
+        <div class="apply_s padding_tb" id="apply_s">
+            <div class="inner">
 
-            <!-- section -->
-            <div class="apply_form form_s padding_t">
-                <div class="inner">
-
-                    <div class="form_wrap">
-                        <ul class="form_guide">
-                            <li>Participating companies that have applied only for the exhibition area must identify the
-                                power required for lighting or equipment before applying.
-                                In particular, please identify the power required for the equipment and fill it out. In
-                                addition, electricity construction is not allowed in the exhibition hall except for the
-                                company selected by the organizer.
+                <div class="apply_nav">
+                    <div class="apply_nav_list">
+                        <ul class="list1">
+                            <li><a>Basic Info</a></li>
+                            <li class="active">
+                                <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_1.do','${info.seq}')">Exhibition Info</a>
+                                <ul class="list2">
+                                    <li><a>Booth</a></li>
+                                    <li><a>Yacht/Boat</a></li>
+                                    <li><a>Signboard</a></li>
+                                    <li class="active"><a>Utilities</a></li>
+                                    <li><a>Badges</a></li>
+                                    <li><a>Giveaways</a></li>
+                                    <li><a>Directory</a></li>
+                                </ul>
                             </li>
-                            <li>The requested electricity will only be constructed up to your booth distribution box,
-                                and from the booth distribution box to the equipment must be constructed directly by the
-                                participating companies.
-                            </li>
+                            <li><a>Complete</a></li>
                         </ul>
                     </div>
+                </div>
 
-                    <!-- 유틸리티 신청정보 -->
-                    <div class="form_wrap">
-                        <div class="form_tit">
-                            <div class="big">Utility Application Information</div>
-                        </div>
-                        <div class="form_util form_ptag">
-                            <div class="form_ptag_box">
-                                <ul class="form_ptag_list">
-                                    <li class="form_ptag_hd">
-                                        <div class="cate">Item</div>
-                                        <div class="cost">Unit Price</div>
-                                        <div class="quantity">Quantity</div>
-                                        <div class="amount">Amount</div>
-                                        <div class="note">Note</div>
-                                    </li>
-                                    <li>
-                                        <div class="cate">220v For Day Use</div>
-                                        <div class="cost">￦ 100,000/1kw</div>
-                                        <div class="quantity">
-                                            <p class="j_num">
-                                                <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_jugan_cnt">
-                                            </p>
-                                        </div>
-                                        <div class="amount">
-                                            <p class="price">
-                                                <input type="text" class="num_sum" id="utility_jugan_fee" value="￦ 0" disabled>
-                                            </p>
-                                        </div>
-                                        <div class="note">Available during the event (3 days)</div>
-                                    </li>
-                                    <li>
-                                        <div class="cate">220v For 24 Hours</div>
-                                        <div class="cost">￦ 150,000/1kw</div>
-                                        <div class="quantity">
-                                            <p class="j_num">
-                                                <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_day_cnt">
-                                            </p>
-                                        </div>
-                                        <div class="amount">
-                                            <p class="price">
-                                                <input type="text" class="num_sum" id="utility_day_fee" value="￦ 0" disabled>
-                                            </p>
-                                        </div>
-                                        <div class="note">Available during the event (3 days)</div>
-                                    </li>
-                                    <li>
-                                        <div class="cate">Compressed Air Basic Type</div>
-                                        <div class="cost">￦ 250,000</div>
-                                        <div class="quantity">
-                                            <p class="j_num">
-                                                <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_compressed_air_cnt">
-                                            </p>
-                                        </div>
-                                        <div class="amount">
-                                            <p class="price">
-                                                <input type="text" class="num_sum" id="utility_compressed_air_fee" value="￦ 0" disabled>
-                                            </p>
-                                        </div>
-                                        <div class="note">Installation and usage fees</div>
-                                    </li>
-                                    <li>
-                                        <div class="cate">Multiplication Basic Type</div>
-                                        <div class="cost">￦ 250,000</div>
-                                        <div class="quantity">
-                                            <p class="j_num">
-                                                <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_water_basic_cnt">
-                                            </p>
-                                        </div>
-                                        <div class="amount">
-                                            <p class="price">
-                                                <input type="text" class="num_sum" id="utility_water_basic_fee" value="￦ 0" disabled>
-                                            </p>
-                                        </div>
-                                        <div class="note">Installation and usage fees</div>
-                                    </li>
-                                    <li>
-                                        <div class="cate">Internet</div>
-                                        <div class="cost">￦ 250,000</div>
-                                        <div class="quantity">
-                                            <p class="j_num">
-                                                <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_internet_cnt">
-                                            </p>
-                                        </div>
-                                        <div class="amount">
-                                            <p class="price">
-                                                <input type="text" class="num_sum" id="utility_internet_fee" value="￦ 0" disabled>
-                                            </p>
-                                        </div>
-                                        <div class="note">Per line</div>
-                                    </li>
-                                    <li>
-                                        <div class="cate">Pytex (New product)</div>
-                                        <div class="cost">￦ 100,000</div>
-                                        <div class="quantity">
-                                            <p class="j_num">
-                                                <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_pytex_new_cnt">
-                                            </p>
-                                        </div>
-                                        <div class="amount">
-                                            <p class="price">
-                                                <input type="text" class="num_sum" id="utility_pytex_new_fee" value="￦ 0" disabled>
-                                            </p>
-                                        </div>
-                                        <div class="note">Unit price per booth</div>
-                                    </li>
-                                    <li>
-                                        <div class="cate">Pytex (Reuse)</div>
-                                        <div class="cost">￦ 50,000</div>
-                                        <div class="quantity">
-                                            <p class="j_num">
-                                                <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_pytex_re_cnt">
-                                            </p>
-                                        </div>
-                                        <div class="amount">
-                                            <p class="price">
-                                                <input type="text" class="num_sum" id="utility_pytex_re_fee" value="￦ 0" disabled>
-                                            </p>
-                                        </div>
-                                        <div class="note">Unit price per booth</div>
-                                    </li>
-                                    <li>
-                                        <div class="cate">Visitor/Buyer Barcode Reader</div>
-                                        <div class="cost">￦ 250,000</div>
-                                        <div class="quantity">
-                                            <p class="j_num">
-                                                <input type="text" placeholder="Enter" class="num_sum onlyNum" id="utility_barcode_cnt">
-                                            </p>
-                                        </div>
-                                        <div class="amount">
-                                            <p class="price">
-                                                <input type="text" class="num_sum" id="utility_barcode_fee" value="￦ 0" disabled>
-                                            </p>
-                                        </div>
-                                        <div class="note">Available during the event (3 days)</div>
-                                    </li>
-                                </ul>
+                <div class="apply_step">
+                    <div class="apply_tit">Utility Info</div>
+                    <div class="apply_step_wrap">
+                        <div class="apply_step_box step1">
+                            <div class="gubun">
+                                <p>Step 1</p>Basic Info
                             </div>
-                            <div class="form_ptag_sum">
-                                <div class="cate2">Sum amount (VAT Excluded)</div>
-                                <div class="amount2">
-                                    <p class="price">
-                                        <input type="text" class="num_sum" id="form_add_total" value="￦ 0" disabled>
-                                    </p>
+                            <div class="gauge">
+                                <progress class="gauge_bar" value="100" max="100"></progress>
+                            </div>
+                            <div class="txt">Completed</div>
+                        </div>
+                        <div class="apply_step_box step2">
+                            <div class="gubun">
+                                <p>Step 2</p>Exhibition Info
+                            </div>
+                            <div class="gauge">
+                                <progress class="gauge_bar" value="50" max="100"></progress>
+                            </div>
+                            <div class="txt">In Progress <p>(<span>7</span> of <span>3</span> completed)</p></div>
+                        </div>
+                        <div class="apply_step_box step3">
+                            <div class="gubun">
+                                <p>Step 3</p>Complete
+                            </div>
+                            <div class="gauge">
+                                <progress class="gauge_bar" value="0" max="100"></progress>
+                            </div>
+                            <div class="txt">Requirement Not Met</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- section -->
+                <div class="apply_form form_s padding_t">
+                    <div class="inner">
+
+                        <div class="form_wrap">
+                            <ul class="form_guide">
+                                <li>Space-only exhibitors must apply for the power required for lighting and equipment. (Please specify the required power accurately. <br />Electrical work may only be performed by the official contractor designated by the organizer.)</li>
+                                <li>Power will be supplied to the booth distribution panel only. Wiring from the panel to your equipment is the exhibitor’s responsibility.</li>
+                            </ul>
+                        </div>
+
+                        <%-- 1. 부스 정보 --%>
+                        <input type="hidden" id="registrationCnt" value="1"/> <%-- 등록비 포함 여부 (보통 1) --%>
+                        <input type="hidden" id="hiddenStandAloneCnt" value="${info.standAloneBoothCnt}"/> <%-- 독립부스 수 --%>
+                        <input type="hidden" id="hiddenAssemblyCnt" value="${info.assemblyBoothCnt}"/> <%-- 조립부스 수 --%>
+                        <%--<input type="hidden" id="hiddenOnlineCnt" value="${info.onlineBoothCnt}"/>--%> <%-- 온라인부스 수 --%>
+
+                        <%-- 2. 기본 할인 적용 여부 --%>
+                        <input type="hidden" id="discountEarly1Checked" value="${info.discountEarly1}"/>
+                        <input type="hidden" id="discountEarly2Checked" value="${info.discountEarly2}"/>
+                        <input type="hidden" id="discountFirstUnder10Checked" value="${info.discountFirstUnder10}"/>
+                        <input type="hidden" id="discountFirstOver10Checked" value="${info.discountFirstOver10}"/>
+                        <input type="hidden" id="discountReChecked" value="${info.discountRe}"/>
+                        <input type="hidden" id="discountScale1Checked" value="${info.discountScale1}"/>
+                        <input type="hidden" id="discountScale2Checked" value="${info.discountScale2}"/>
+                        <input type="hidden" id="discountScale3Checked" value="${info.discountScale3}"/>
+                        <input type="hidden" id="discountScale4Checked" value="${info.discountScale4}"/>
+                        <input type="hidden" id="discountScale5Checked" value="${info.discountScale5}"/>
+                        <input type="hidden" id="discountScale6Checked" value="${info.discountScale6}"/>
+                        <input type="hidden" id="discountLeisureChecked" value="${info.discountLeisure}"/> <%-- 협회 할인 여부 --%>
+
+                        <%-- 3. 특별 할인 정보 --%>
+                        <input type="hidden" id="discountSpecial1Yn" value="${info.discountSpecial1Yn}"/>
+                        <input type="hidden" id="discountSpecial2Yn" value="${info.discountSpecial2Yn}"/>
+                        <input type="hidden" id="discountSpecial2Amount" value="${info.discountSpecial2Amount}"/>
+                        <input type="hidden" id="discountSpecial3Yn" value="${info.discountSpecial3Yn}"/>
+                        <input type="hidden" id="discountSpecial3Amount" value="${info.discountSpecial3Amount}"/>
+
+                        <%-- 4. 발전기금 계산용 --%>
+                        <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}"/>
+
+                        <%-- 5. 선납금 --%>
+                        <input type="hidden" id="deposit" value="${info.deposit}"/>
+
+                        <%-- 6. 참가업체 고유번호 --%>
+                        <input type="hidden" name="seq" value="${info.seq}"/>
+
+                        <input type="hidden" name="utilityPrcSum" value=""/>
+                        <input type="hidden" name="prcSum" value=""/>
+                        <input type="hidden" name="prcVat" value=""/>
+                        <input type="hidden" name="prcTotal" value=""/>
+                        <input type="hidden" name="boothPrcSum" value="${info.boothPrcSum}"/>
+                        <input type="hidden" name="discountPrcSum" value="${info.discountPrcSum}"/>
+
+                        <!-- 유틸리티 신청정보 -->
+                        <div class="form_wrap">
+                            <div class="form_tit">
+                                <div class="big">Utility Info</div>
+                            </div>
+                            <div class="form_util form_ptag">
+                                <div class="form_ptag_box">
+                                    <ul class="form_ptag_list">
+                                        <li class="form_ptag_hd">
+                                            <div class="cate">Item</div>
+                                            <div class="cost">Unit Price</div>
+                                            <div class="quantity">Qty</div>
+                                            <div class="amount">Amount (KRW)</div>
+                                            <div class="note">Remarks</div>
+                                        </li>
+                                        <li>
+                                            <div class="cate">220V (Daytime)</div>
+                                            <div class="cost">￦ 100,000/1kw</div>
+                                            <div class="quantity">
+                                                <p class="j_num">
+                                                    <input type="text" id="utility_jugan_cnt" class="num_sum onlyNum" value="${info.utilityJuganCnt}" placeholder="Qty">
+                                                </p>
+                                            </div>
+                                            <div class="amount">
+                                                <p class="price">
+                                                    <input type="text" id="utility_jugan_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityJuganFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                </p>
+                                            </div>
+                                            <div class="note">Available during the show (3 days)</div>
+                                        </li>
+                                        <li>
+                                            <div class="cate">220V (24 Hours)</div>
+                                            <div class="cost">￦ 150,000/1kw</div>
+                                            <div class="quantity">
+                                                <p class="j_num">
+                                                    <input type="text" id="utility_day_cnt" class="num_sum onlyNum" value="${info.utilityDayCnt}" placeholder="Qty">
+                                                </p>
+                                            </div>
+                                            <div class="amount">
+                                                <p class="price">
+                                                    <input type="text" id="utility_day_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                </p>
+                                            </div>
+                                            <div class="note">Available during Move-in (3 days)</div>
+                                        </li>
+                                        <li>
+                                            <div class="cate">Installation Power</div>
+                                            <div class="cost">￦ 100,000/1kw</div>
+                                            <div class="quantity">
+                                                <p class="j_num">
+                                                    <input type="text" id="utility_work_cnt" class="num_sum onlyNum" value="${info.utilityWorkCnt}" placeholder="Qty">
+                                                </p>
+                                            </div>
+                                            <div class="amount">
+                                                <p class="price">
+                                                    <input type="text" id="utility_work_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityWorkFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                </p>
+                                            </div>
+                                            <div class="note">Available during the show (3 days)</div>
+                                        </li>
+                                        <li>
+                                            <div class="cate">Compressed Air</div>
+                                            <div class="cost">￦ 250,000</div>
+                                            <div class="quantity">
+                                                <p class="j_num">
+                                                    <input type="text" id="utility_compressed_air_cnt" class="num_sum onlyNum" value="${info.utilityCompressedAirCnt}" placeholder="Qty">
+                                                </p>
+                                            </div>
+                                            <div class="amount">
+                                                <p class="price">
+                                                    <input type="text" id="utility_compressed_air_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityCompressedAirFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                </p>
+                                            </div>
+                                            <div class="note">Installation & Usage Fee</div>
+                                        </li>
+                                        <li>
+                                            <div class="cate">Water Supply & Drainage</div>
+                                            <div class="cost">￦ 250,000</div>
+                                            <div class="quantity">
+                                                <p class="j_num">
+                                                    <input type="text" id="utility_water_basic_cnt" class="num_sum onlyNum" value="${info.utilityWaterBasicCnt}" placeholder="Qty">
+                                                </p>
+                                            </div>
+                                            <div class="amount">
+                                                <p class="price">
+                                                    <input type="text" id="utility_water_basic_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityWaterBasicFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                </p>
+                                            </div>
+                                            <div class="note">Installation & Usage Fee</div>
+                                        </li>
+                                        <li>
+                                            <div class="cate">Internet</div>
+                                            <div class="cost">￦ 250,000</div>
+                                            <div class="quantity">
+                                                <p class="j_num">
+                                                    <input type="text" id="utility_internet_cnt" class="num_sum onlyNum" value="${info.utilityInternetCnt}" placeholder="Qty">
+                                                </p>
+                                            </div>
+                                            <div class="amount">
+                                                <p class="price">
+                                                    <input type="text" id="utility_internet_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityInternetFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                </p>
+                                            </div>
+                                            <div class="note">Per Line</div>
+                                        </li>
+                                        <li>
+                                            <div class="cate">Pytex (New)</div>
+                                            <div class="cost">￦ 100,000</div>
+                                            <div class="quantity">
+                                                <p class="j_num">
+                                                    <input type="text" id="utility_pytex_new_cnt" class="num_sum onlyNum" value="${info.utilityPytexNewCnt}" placeholder="Qty">
+                                                </p>
+                                            </div>
+                                            <div class="amount">
+                                                <p class="price">
+                                                    <input type="text" id="utility_pytex_new_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityPytexNewFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                </p>
+                                            </div>
+                                            <div class="note">Per Booth</div>
+                                        </li>
+                                        <li>
+                                            <div class="cate">Pytex (Reuse)</div>
+                                            <div class="cost">￦ 50,000</div>
+                                            <div class="quantity">
+                                                <p class="j_num">
+                                                    <input type="text" id="utility_pytex_re_cnt" class="num_sum onlyNum" value="${info.utilityPytexReCnt}" placeholder="Qty">
+                                                </p>
+                                            </div>
+                                            <div class="amount">
+                                                <p class="price">
+                                                    <input type="text" id="utility_pytex_re_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityPytexReFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                </p>
+                                            </div>
+                                            <div class="note">Per Booth</div>
+                                        </li>
+                                        <li>
+                                            <div class="cate">Barcode Scanner</div>
+                                            <div class="cost">￦ 250,000</div>
+                                            <div class="quantity">
+                                                <p class="j_num">
+                                                    <input type="text" id="utility_barcode_cnt" class="num_sum onlyNum" value="${info.utilityBarcodeCnt}" placeholder="Qty">
+                                                </p>
+                                            </div>
+                                            <div class="amount">
+                                                <p class="price">
+                                                    <input type="text" id="utility_barcode_fee" class="num_sum" value="<fmt:formatNumber value="${info.utilityBarcodeFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                </p>
+                                            </div>
+                                            <div class="note">Available during Move-in (3 days)</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="form_ptag_sum">
+                                    <div class="cate2">Total (Excl. VAT)</div>
+                                    <div class="amount2">
+                                        <p class="price">
+                                            <input type="text" id="utilityPrcSumDisplay" class="num_sum" value="" disabled>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- //유틸리티 신청정보 -->
+                        <!-- //유틸리티 신청정보 -->
 
-                    <div class="form_btn">
-                        <a href="/eng/apply/step2_2.do#apply_s" class="form_btn_prev">
-                            <div class="big">PREV</div>
-                            <div class="small">Fascia Board Title</div>
-                        </a>
-                        <a href="/eng/apply/step2_4.do#apply_s" class="form_btn_next">
-                            <div class="big">NEXT</div>
-                            <div class="small">Exhibitor Pass</div>
-                        </a>
-                    </div>
+                        <div class="form_btn">
+                            <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_2.do','${info.seq}')" class="form_btn_prev">
+                                <div class="big">PREV</div>
+                                <div class="small">Signboard</div>
+                            </a>
+                            <a href="javascript:void(0);" onclick="f_apply_comp('2_3','${info.seq}')" class="form_btn_next">
+                                <div class="big">NEXT / SKIP</div>
+                                <div class="small">Badges</div>
+                            </a>
+                        </div>
 
+                    </div>
                 </div>
+                <!-- //section -->
             </div>
-            <!-- //section -->
         </div>
+
     </div>
 
-</div>
+    <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
+    <script type="text/javascript">
+        /**
+         * 화면의 유틸리티 항목별 금액 합계를 계산하여 반환하는 헬퍼 함수
+         * (이 함수는 main.js의 calculateTotal 내부에서 호출됩니다)
+         */
+        function calculateCurrentUtilitySum() {
+            let utilityPrcSum = 0;
+            utilityPrcSum += parseInt(uncomma($('#utility_jugan_fee').val())) || 0;
+            utilityPrcSum += parseInt(uncomma($('#utility_day_fee').val())) || 0;
+            utilityPrcSum += parseInt(uncomma($('#utility_work_fee').val())) || 0;
+            utilityPrcSum += parseInt(uncomma($('#utility_compressed_air_fee').val())) || 0;
+            utilityPrcSum += parseInt(uncomma($('#utility_water_basic_fee').val())) || 0;
+            utilityPrcSum += parseInt(uncomma($('#utility_internet_fee').val())) || 0;
+            utilityPrcSum += parseInt(uncomma($('#utility_pytex_new_fee').val())) || 0;
+            utilityPrcSum += parseInt(uncomma($('#utility_pytex_re_fee').val())) || 0;
+            utilityPrcSum += parseInt(uncomma($('#utility_barcode_fee').val())) || 0;
 
+            // 화면의 유틸리티 소계 표시 업데이트
+            //$('#utilityPrcSumDisplay').val(numberToWon(utilityPrcSum)); // ※ JSP span 필요
+
+            return utilityPrcSum;
+        }
+
+        $(function(){
+            // --- 유틸리티 항목별 금액 자동 계산 로직 (기존 로직 활용) ---
+            function autoUtilitySum(elementId, pricePerUnit) {
+                const qty = parseInt($('#' + elementId + '_cnt').val()) || 0;
+                const totalFee = qty * pricePerUnit;
+                $('#' + elementId + '_fee').val(numberToWon(totalFee));
+
+                // ★★★ 항목 변경 시 main.js의 calculateTotal 호출 ('utility' 타입 전달) ★★★
+                if (typeof calculateTotal === 'function') {
+                    calculateTotal('utility');
+                } else {
+                    console.error("main.js의 calculateTotal 함수를 찾을 수 없습니다.");
+                }
+            }
+
+            // 각 유틸리티 항목 수량 변경 시 autoUtilitySum 호출
+            // ※※※ 단가 확인 필수 ※※※ (CommConstants 값과 일치해야 함)
+            const UTILITY_JUGAN_PRICE = 100000;
+            const UTILITY_DAY_PRICE = 150000;
+            const UTILITY_WORK_PRICE = 100000;
+            const UTILITY_COMPRESSED_AIR_PRICE = 250000;
+            const UTILITY_WATER_BASIC_PRICE = 250000;
+            const UTILITY_INTERNET_PRICE = 250000;
+            const UTILITY_PYTEX_NEW_PRICE = 100000;
+            const UTILITY_PYTEX_RE_PRICE = 50000;
+            const UTILITY_BARCODE_PRICE = 250000;
+
+            $('#utility_jugan_cnt').on('input change', function() { autoUtilitySum('utility_jugan', UTILITY_JUGAN_PRICE); });
+            $('#utility_day_cnt').on('input change', function() { autoUtilitySum('utility_day', UTILITY_DAY_PRICE); });
+            $('#utility_work_cnt').on('input change', function() { autoUtilitySum('utility_work', UTILITY_WORK_PRICE); });
+            $('#utility_compressed_air_cnt').on('input change', function() { autoUtilitySum('utility_compressed_air', UTILITY_COMPRESSED_AIR_PRICE); });
+            $('#utility_water_basic_cnt').on('input change', function() { autoUtilitySum('utility_water_basic', UTILITY_WATER_BASIC_PRICE); });
+            $('#utility_internet_cnt').on('input change', function() { autoUtilitySum('utility_internet', UTILITY_INTERNET_PRICE); });
+            $('#utility_pytex_new_cnt').on('input change', function() { autoUtilitySum('utility_pytex_new', UTILITY_PYTEX_NEW_PRICE); });
+            $('#utility_pytex_re_cnt').on('input change', function() { autoUtilitySum('utility_pytex_re', UTILITY_PYTEX_RE_PRICE); });
+            $('#utility_barcode_cnt').on('input change', function() { autoUtilitySum('utility_barcode', UTILITY_BARCODE_PRICE); });
+            // --- ▲▲▲ ---
+
+            // 페이지 로드 시 초기 계산 ('utility' 타입 전달)
+            if (typeof calculateTotal === 'function') {
+                calculateTotal('utility'); // ★★★ 페이지 타입 전달 ★★★
+            } else {
+                console.error("main.js의 calculateTotal 함수를 찾을 수 없습니다.");
+            }
+
+            /*Swal.fire({
+                icon: 'warning',
+                title: '[ 유틸리티 신청 ]',
+                html: '<span style="font-size: 1.2em;">참가업체 유틸리티 신청은 마감되었습니다.<br>이후 신청 건은 사무국으로 문의 바랍니다.</span>',
+                allowOutsideClick: false,
+                confirmButtonColor: '#00a8ff',
+                confirmButtonText: '확인'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+
+                }
+            });*/
+        });
+    </script>
 </body>
 </html>

@@ -1757,19 +1757,20 @@
 
     <select id="selectListExhibitorNew" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectListExhibitorNew */
-        SELECT en.seq
-        , en.approval_status
-        , en.booth_type
-        , en.booth_num
-        , en.company_name_ko
-        , en.company_name_en
-        , en.field_participatory
-        , en.id
-        , IFNULL(en.prc_total, 0) AS prc_total
-        , IFNULL((SELECT SUM(amount) FROM deposit_history dh WHERE dh.exhibitor_seq = en.seq), 0) AS deposit
-        , (IFNULL(en.prc_total, 0) - IFNULL((SELECT SUM(amount) FROM deposit_history dh WHERE dh.exhibitor_seq = en.seq), 0)) AS balance
-        , en.prc_yn
-        , en.final_regi_dttm
+        SELECT en.lang
+             , en.seq
+             , en.approval_status
+             , en.booth_type
+             , en.booth_num
+             , en.company_name_ko
+             , en.company_name_en
+             , en.field_participatory
+             , en.id
+             , IFNULL(en.prc_total, 0) AS prc_total
+             , IFNULL((SELECT SUM(amount) FROM deposit_history dh WHERE dh.exhibitor_seq = en.seq), 0) AS deposit
+             , (IFNULL(en.prc_total, 0) - IFNULL((SELECT SUM(amount) FROM deposit_history dh WHERE dh.exhibitor_seq = en.seq), 0)) AS balance
+             , en.prc_yn
+             , en.final_regi_dttm
         FROM exhibitor_new en
         WHERE 1=1
         <if test='searchText != null and searchText != ""'>
@@ -3424,6 +3425,7 @@
     <select id="selectExhibitorNewBoothList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewBoothList */
         SELECT en.seq
+             , en.lang
              , en.company_name_ko
              , en.company_name_en
              , en.booth_type
@@ -3998,6 +4000,7 @@
     <select id="selectExhibitorNewSignList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewSignList */
         SELECT seq
+             , lang
              , company_name_ko
              , company_name_en
              , name
@@ -4157,6 +4160,7 @@
     <select id="selectExhibitorNewUtilityList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewUtilityList */
         SELECT en.seq
+             , en.lang
              , en.company_name_ko
              , en.company_name_en
              , en.booth_type
@@ -4444,6 +4448,7 @@
     <select id="selectExhibitorNewPassList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.MngPassDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewPassList */
         SELECT e.seq
+             , e.lang
              , e.company_name_ko
              , e.company_name_en
              , e.name
@@ -4703,6 +4708,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewBuyerList */
         SELECT e.seq
              , b.seq AS id
+             , e.lang
              , e.company_name_ko
              , e.company_name_en
              , b.buyer_company_country
@@ -4921,6 +4927,7 @@
     <select id="selectMngOnlineNewList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectMngOnlineNewList */
         SELECT e.seq
+             , e.lang
              , e.transfer_year
              , e.company_name_ko
              , e.company_name_en
@@ -4954,6 +4961,7 @@
     <select id="selectMngProductNewList" parameterType="com.mtf.kibs.dto.SearchDTO" resultType="com.mtf.kibs.dto.MngProductDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.selectMngProductNewList */
         SELECT e.seq
+             , e.lang
              , e.boat_entry_yn
              , e.company_name_ko
              , e.company_name_en
@@ -5096,6 +5104,7 @@
         /* com.mtf.kibs.mapper.kibsMngMapper.selectExhibitorNewGiftList */
         SELECT e.seq
              , g.seq as id
+             , e.lang
              , e.company_name_ko
              , e.company_name_en
              , g.gift_gbn

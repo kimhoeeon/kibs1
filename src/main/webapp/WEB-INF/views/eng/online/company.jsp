@@ -70,7 +70,7 @@
                             <div class="tabOptSel">
                                 <a href="/eng/guide/summary.do">KIBS 2026</a>
                                 <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
-                                <a href="/eng/buyer/glance.do">Buyer</a>
+                                <a href="/eng/buyer/glance.do">Buyers</a>
                                 <a href="/eng/board/notice.do">News</a>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
         <!-- section -->
 
         <!-- section -->
-        <script src="/js/product.js"></script>
+        <script src="/js/product_en.js"></script>
         <div class="exh_search">
             <div class="inner">
                 <div class="sec_box">

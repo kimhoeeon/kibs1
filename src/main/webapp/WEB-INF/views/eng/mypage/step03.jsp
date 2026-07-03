@@ -50,9 +50,9 @@
         <div class="inner">
             <div class="sub_top_box">
                 <div class="sub_top_nav">
-                    <span>Home</span><span>Exhibitors</span><span>My Page</span>
+                    <span>Home</span><span>Exhibitors</span><span>Mypage</span>
                 </div>
-                <div class="sub_top_tit">My Page</div>
+                <div class="sub_top_tit">Mypage</div>
             </div>
         </div>
     </div>
@@ -69,15 +69,15 @@
                         <div class="txt">Welcome, Meetingfan!</div>
                         <div class="btn">
                             <a href="/eng/mypage/modify.do" class="btnSt01">Member Info</a>
-                            <a href="/eng/mypage/index.do" class="btnSt01">My Page</a>
+                            <a href="/eng/mypage/index.do" class="btnSt01">Mypage</a>
                         </div>
                     </div>
                     <ul class="list1">
-                        <li><a href="/eng/mypage/step01.do">Basic Information</a></li>
+                        <li><a href="/eng/mypage/step01.do">Basic Info</a></li>
                         <li>
-                            <a href="/eng/mypage/step2_1.do">Exhibition Req.</a>
+                            <a href="/eng/mypage/step2_1.do">Exhibition Info</a>
                             <ul class="list2">
-                                <li><a href="/eng/mypage/step2_1.do">Exhibitor Booth</a></li>
+                                <li><a href="/eng/mypage/step2_1.do">Booth</a></li>
                                 <li><a href="/eng/mypage/step2_2.do">Fascia Board Title</a></li>
                                 <li><a href="/eng/mypage/step2_3.do">Utilities</a></li>
                                 <li><a href="/eng/mypage/step2_4.do">Exhibitor Pass</a></li>

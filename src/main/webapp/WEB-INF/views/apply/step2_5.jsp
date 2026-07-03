@@ -147,9 +147,9 @@
                             <p>Step 2</p>전시 신청 정보
                         </div>
                         <div class="gauge">
-                            <progress class="gauge_bar" value="60" max="80"></progress>
+                            <progress class="gauge_bar" value="75" max="100"></progress>
                         </div>
-                        <div class="txt">진행중...<p>(총 <span>8</span>개 중 <span>6</span> 완료)</p></div>
+                        <div class="txt">진행중...<p>(총 <span>7</span>개 중 <span>5</span> 완료)</p></div>
                     </div>
                     <div class="apply_step_box step3">
                         <div class="gubun">
@@ -248,11 +248,10 @@
                 </div>
 
             </div>
+            <!-- section -->
         </div>
         <!-- //section -->
     </div>
-</div>
-
 </div>
 
 <!-- 경품등록팝업 -->

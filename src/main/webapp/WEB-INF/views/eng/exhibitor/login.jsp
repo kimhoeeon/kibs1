@@ -38,6 +38,15 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+
+    <span itemscope="" itemtype="http://schema.org/Organization">
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+    </span>
 </head>
 
 <body>
@@ -59,6 +68,39 @@
     <!-- //section -->
 
     <!-- section -->
+    <div class="sub_tab">
+        <div class="inner">
+            <div class="sub_tab_box">
+                <a href="javascript:void(0);" onclick="home('en');" class="iconHome"><img src="/img/icon_home.png"></a>
+                <div class="optionBox">
+                    <div class="tabOpt1 tabOption">
+                        <div class="tabOptAct">Exhibitors</div>
+                        <div class="tabOptSel">
+                            <a href="/eng/guide/summary.do">KIBS 2026</a>
+                            <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
+                            <a href="/eng/buyer/glance.do">Buyers</a>
+                            <a href="/eng/board/notice.do">News</a>
+                        </div>
+                    </div>
+                    <div class="tabOpt2 tabOption">
+                        <div class="tabOptAct">Exhibitor Registration</div>
+                        <div class="tabOptSel">
+                            <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                            <a class="active" href="/eng/apply/step01.do">Exhibitor Registration</a>
+                            <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
+                            <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                            <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
+                            <a href="/eng/online/company.do">Exhibitor List</a>
+                            <a href="/eng/exhibitor/qna.do">FAQ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- section -->
+
+    <!-- section -->
     <div class="login_s padding_tb">
         <div class="inner">
             <div class="login_top_txt">
@@ -68,22 +110,24 @@
             </div>
             <div class="login_box">
                 <div class="login_form">
-                    <div class="loginInfo">
-                        <p>ID</p>
-                        <input type="text" placeholder="ID">
-                    </div>
-                    <div class="loginInfo">
-                        <p>password</p>
-                        <input type="password" placeholder="password">
-                    </div>
-                    <div class="loginInfo">
-                        <label><input type="checkbox">Save login status</label>
-                    </div>
-                    <div class="btnLogin"><a href="/eng/mypage/index.do" class="btnSt01">Login</a></div>
-                    <div class="btnJoin"><a href="/eng/apply/step01.do" class="btnSt02">Create an Account</a></div>
-                    <div class="findPw">
-                        Forgot your Password? <a href="/eng/exhibitor/findpw.do">Find Password</a>
-                    </div>
+                    <form id="login_form" name="login_form" action="/eng/mypage/index.do" method="post" onsubmit="return false;">
+                        <div class="loginInfo">
+                            <p>ID</p>
+                            <input type="text" id="exhibitId" placeholder="Please enter your ID.">
+                        </div>
+                        <div class="loginInfo">
+                            <p>Password</p>
+                            <input type="password" id="exhibitPw" placeholder="Please enter your password.">
+                        </div>
+                        <div class="loginInfo">
+                            <label><input type="checkbox">Stay logged in</label>
+                        </div>
+                        <div class="btnLogin"><a href="javascript:void(0);" onclick="exibitLoginFormSubmit();" class="btnSt01">Login</a></div>
+                        <div class="btnJoin"><a href="/eng/apply/step01.do" class="btnSt02">Sign Up</a></div>
+                        <div class="findPw">
+                            I can't remember the password. <a href="/eng/exhibitor/findpw.do">Find your password</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -91,6 +135,16 @@
     <!-- //section -->
 
 </div>
+
+<script>
+    document.addEventListener("keyup", function(event) {
+        if (event.key === 'Enter') {
+            if(!Swal.isVisible()) {
+                exibitLoginFormSubmit();
+            }
+        }
+    });
+</script>
 
 <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 

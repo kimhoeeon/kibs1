@@ -59,7 +59,7 @@
         <div class="inner">
             <div class="sub_top_box">
                 <div class="sub_top_nav">
-                    <span>Home</span><span>Buyer</span><span>Confirm Application</span>
+                    <span>Home</span><span>Buyers</span><span>Confirm Application</span>
                 </div>
                 <div class="sub_top_tit">Confirm Application</div>
             </div>
@@ -96,6 +96,16 @@
                                 <p>Tel</p>
                             </div>
                             <div class="input">
+                                <select id="telCode">
+                                    <option value="+82" selected>+82 (KOR)</option>
+                                    <option value="+1">+1 (USA/CAN)</option>
+                                    <option value="+44">+44 (GBR)</option>
+                                    <option value="+49">+49 (DEU)</option>
+                                    <option value="+61">+61 (AUS)</option>
+                                    <option value="+81">+81 (JPN)</option>
+                                    <option value="+86">+86 (CHN)</option>
+                                    <option value="+91">+91 (IND)</option>
+                                </select>
                                 <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyGeneralTel" maxlength="14" placeholder="Please enter only numbers.">
                             </div>
                         </li>
@@ -104,6 +114,16 @@
                                 <p>Mobile</p>
                             </div>
                             <div class="input">
+                                <select id="phoneCode">
+                                    <option value="+82" selected>+82 (KOR)</option>
+                                    <option value="+1">+1 (USA/CAN)</option>
+                                    <option value="+44">+44 (GBR)</option>
+                                    <option value="+49">+49 (DEU)</option>
+                                    <option value="+61">+61 (AUS)</option>
+                                    <option value="+81">+81 (JPN)</option>
+                                    <option value="+86">+86 (CHN)</option>
+                                    <option value="+91">+91 (IND)</option>
+                                </select>
                                 <input type="tel" id="phone" name="phone" value="${info.phone}" class="onlyTel" maxlength="13" placeholder="Please enter only numbers." readonly>
                             </div>
                         </li>

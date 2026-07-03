@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
@@ -38,6 +40,15 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+
+    <span itemscope="" itemtype="http://schema.org/Organization">
+        <link itemprop="url" href="https://kibs.com/">
+        <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
+        <a itemprop="sameAs" href="https://koreaboatshow.re.kr/"></a>
+        <a itemprop="sameAs" href="https://kibs-online.com"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
+        <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
+    </span>
 </head>
 
 <body>
@@ -69,16 +80,19 @@
                         <div class="tabOptSel">
                             <a href="/eng/guide/summary.do">KIBS 2026</a>
                             <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
-                            <a href="/eng/buyer/glance.do">Buyer</a>
+                            <a href="/eng/buyer/glance.do">Buyers</a>
                             <a href="/eng/board/notice.do">News</a>
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">Exhibitors Registration</div>
+                        <div class="tabOptAct">Exhibitor Registration</div>
                         <div class="tabOptSel">
                             <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                            <a class="active" href="/eng/apply/step01.do">Exhibitor Registration</a>
+                            <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
+                            <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                            <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
                             <a href="/eng/online/company.do">Exhibitor List</a>
-                            <a class="active" href="/apply/step01.do">Exhibitor Registration</a>
                             <a href="/eng/exhibitor/qna.do">FAQ</a>
                         </div>
                     </div>
@@ -95,67 +109,64 @@
             <div class="apply_nav">
                 <div class="apply_nav_list">
                     <ul class="list1">
-                        <li><a href="/eng/apply/step01.do">Basic Information</a></li>
+                        <li><a>Basic Info</a></li>
                         <li class="active">
-                            <a href="/eng/apply/step2_1.do">Exhibition Req.</a>
+                            <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_1.do','${info.seq}')">Exhibition Info</a>
                             <ul class="list2">
-                                <li><a href="/eng/apply/step2_1.do">Exhibitor Booth</a></li>
-                                <li><a href="/eng/apply/step2_2.do">Fascia Board Title</a></li>
-                                <li><a href="/eng/apply/step2_3.do">Utilities</a></li>
-                                <li><a href="/eng/apply/step2_4.do">Exhibitor Pass</a></li>
-                                <li class="active"><a href="/eng/apply/step2_5.do">Prize & Giveaway</a></li>
-                                <li><a href="/eng/apply/step2_6.do">Web Banner</a></li>
-                                <%--<li><a href="/eng/apply/step2_7.do">Online Exhibition</a></li>--%>
-                                <li><a href="/eng/apply/step2_8.do">Directory</a></li>
+                                <li><a>Booth</a></li>
+                                <li><a>Yacht/Boat</a></li>
+                                <li><a>Signboard</a></li>
+                                <li><a>Utilities</a></li>
+                                <li><a>Badges</a></li>
+                                <li class="active"><a>Giveaways</a></li>
+                                <li><a>Directory</a></li>
                             </ul>
                         </li>
-                        <li><a href="/eng/apply/step03.do">Complete Registration</a></li>
+                        <li><a>Complete</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="apply_step">
-                <div class="apply_tit">Prize & Giveaway</div>
+                <div class="apply_tit">Giveaway Info</div>
                 <div class="apply_step_wrap">
                     <div class="apply_step_box step1">
                         <div class="gubun">
-                            <p>Step 1</p>Basic Information
+                            <p>Step 1</p>Basic Info
                         </div>
                         <div class="gauge">
                             <progress class="gauge_bar" value="100" max="100"></progress>
                         </div>
-                        <div class="txt">Complete</div>
+                        <div class="txt">Completed</div>
                     </div>
                     <div class="apply_step_box step2">
                         <div class="gubun">
-                            <p>Step 2</p>Exhibition Req.
+                            <p>Step 2</p>Exhibition Info
                         </div>
                         <div class="gauge">
-                            <progress class="gauge_bar" value="40" max="80"></progress>
+                            <progress class="gauge_bar" value="75" max="100"></progress>
                         </div>
-                        <div class="txt">Proceeding...(4/7)</div>
+                        <div class="txt">In Progress <p>(<span>7</span> of <span>5</span> completed)</p></div>
                     </div>
                     <div class="apply_step_box step3">
                         <div class="gubun">
-                            <p>Step 3</p>Complete Registration
+                            <p>Step 3</p>Complete
                         </div>
                         <div class="gauge">
                             <progress class="gauge_bar" value="0" max="100"></progress>
                         </div>
-                        <div class="txt">Condition Not Met</div>
+                        <div class="txt">Requirement Not Met</div>
                     </div>
                 </div>
             </div>
 
-
             <!-- section -->
-            <div class="apply_form form_s padding_t">
+            <div class="apply_form my_form form_s">
                 <div class="inner">
-
                     <!-- 경품 관련 안내사항 -->
                     <div class="form_wrap">
                         <div class="form_tit">
-                            <div class="big">A Prize Announcement</div>
+                            <div class="big">Giveaway Info</div>
                         </div>
                         <div class="form_guide_table table_box">
                             <table>
@@ -166,23 +177,21 @@
                                 </colgroup>
                                 <thead>
                                 <tr>
-                                    <th>Sortation</th>
-                                    <th>Content</th>
-                                    <th>Activity Details</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Usage</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>An Event Prize</td>
+                                    <td>Promotional Giveaway</td>
                                     <td>
-                                        <p>3/12~3/14 For prize draw during the boat show event</p>
+                                        <p>3/6~3/8 For prize drawings during boat show </p>
                                     </td>
                                     <td>
-                                        <p>Insert the company logo of the prize sponsor into the application box and the
-                                            application ticket distributed to all visitors</p>
-                                        <p>Exposing the history of giving prizes to various media/media</p>
-                                        <p>Considering the exhibition period of 3 days, I would like to sponsor with 3
-                                            times the number of prizes</p>
+                                        <p>Sponsor logo displayed on giveaway entry tickets.</p>
+                                        <p>Giveaway sponsorship featured in promotional media.</p>
+                                        <p>Please provide giveaway quantities in multiples of 3 for the 3-day event.</p>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -193,47 +202,53 @@
                     <!-- 경품제공 신청 -->
                     <div class="form_wrap">
                         <div class="form_tit">
-                            <div class="big">An Application For A Prize</div>
+                            <div class="big">Giveaway Registration</div>
                         </div>
                         <div class="form_chuga">
-                            <div class="form_chuga_list">
-                                <div class="cont">
-                                    <div class="name">품목명</div>
-                                    <div class="gubun">행사용 / 20개</div>
+                            <input type="hidden" name="exhibitorSeq" value="${info.seq}">
+                            <c:set var="giftApplyYn" value="${not empty giftList ? 'Y' : 'N'}"/>
+
+                            <div class="input flex mb-20">
+                                <div class="flex_item">
+                                    <label><input type="radio" name="giftApplyYn" value="Y" <c:if test="${giftApplyYn eq 'Y'}">checked</c:if>>Yes</label>
                                 </div>
-                                <div href="#" class="modifyFormGift modifyFormList">수정</div>
-                                <div href="#" class="delFormGift delFormList">삭제</div>
+                                <label><input type="radio" name="giftApplyYn" value="N" <c:if test="${giftApplyYn eq 'N'}">checked</c:if>>No</label>
                             </div>
-                            <div class="form_chuga_list">
-                                <div class="cont">
-                                    <div class="name">품목명</div>
-                                    <div class="gubun">행사용 / 20개</div>
-                                </div>
-                                <div href="#" class="modifyFormGift modifyFormList">수정</div>
-                                <div href="#" class="delFormGift delFormList">삭제</div>
-                            </div>
-                            <a href="#" class="addFormGift addFormList btnSt01">Click here to register your prize</a>
+
+                            <c:if test="${not empty giftList}">
+                                <c:forEach var="gift" items="${giftList}" begin="0" end="${giftList.size()}" step="1" varStatus="status">
+                                    <div class="form_chuga_list">
+                                        <input type="hidden" name="giftSeq" value="${gift.seq}">
+                                        <div class="cont">
+                                            <div class="name">${gift.giftName}</div>
+                                            <div class="gubun">${gift.giftGbn} / ${gift.giftCnt} 개</div>
+                                        </div>
+                                        <div onclick="f_gift_modify_modal('select', '${gift.seq}');" class="modifyFormGift modifyFormList" style="cursor: pointer;">Modify</div>
+                                        <div onclick="f_gift_remove('select', '${gift.seq}');" class="delFormGift delFormList" style="cursor: pointer;">Delete</div>
+                                    </div>
+                                </c:forEach>
+                            </c:if>
+                            <a id="gift_add_btn" class="addFormGift addFormList btnSt01" style="cursor: pointer">Click here to add giveaways</a>
                         </div>
                     </div>
                 </div>
 
                 <div class="form_btn">
-                    <a href="/eng/apply/step2_4.do#apply_s" class="form_btn_prev">
+                    <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_4.do','${info.seq}')" class="form_btn_prev">
                         <div class="big">PREV</div>
-                        <div class="small">Exhibitor Pass</div>
+                        <div class="small">Badges</div>
                     </a>
-                    <a href="/eng/apply/step2_6.do#apply_s" class="form_btn_next">
-                        <div class="big">NEXT</div>
-                        <div class="small">Web Banner</div>
+                    <a href="javascript:void(0);" onclick="f_apply_comp('2_5','${info.seq}')" class="form_btn_next">
+                        <div class="big">NEXT / SKIP</div>
+                        <div class="small">Directory</div>
                     </a>
                 </div>
 
             </div>
+            <!-- section -->
         </div>
         <!-- //section -->
     </div>
-</div>
-
 </div>
 
 <!-- 경품등록팝업 -->
@@ -241,109 +256,113 @@
     <div class="popup_inner">
         <div class="popup_wrap">
             <div class="pop_tit">
-                <div class="tit">Register/Modify Your Application For A Prize</div>
-                <a class="close" href="#close"><img src="../../img/close_w.png"></a>
+                <div class="tit">Add/Edit Giveaway</div>
+                <a class="close" href="javascript:f_gift_init();" style="cursor: pointer"><img src="/img/close_w.png"></a>
             </div>
             <div class="pop_box">
-                <div class="pop_cont">
-                    <!-- 폼박스 -->
-                    <div class="form_s">
-                        <!-- 회원계정정보 -->
-                        <div class="form_wrap">
-                            <div class="form_tit">
-                                <div class="big">An Application For A Prize</div>
+                <form id="giftForm" name="giftForm" method="post" onsubmit="return false;">
+                    <div class="pop_cont">
+                        <!-- 폼박스 -->
+                        <div class="form_s">
+                            <!-- 회원계정정보 -->
+                            <div class="form_wrap">
+                                <div class="form_tit">
+                                    <div class="big">Giveaway Form</div>
+                                </div>
+                                <ul class="form_box">
+                                    <li>
+                                        <div class="item req">
+                                            <p>Type</p>
+                                        </div>
+                                        <div class="input">
+                                            <label><input type="radio" id="gift_gbn" value="행사용" checked>Event</label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item req">
+                                            <p>Quantity</p>
+                                        </div>
+                                        <div class="input">
+                                            <input type="text" id="gift_cnt" value="0" class="onlyNum">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>Category</p>
+                                        </div>
+                                        <div class="input">
+                                            <input type="text" id="gift_classify">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item req">
+                                            <p>Item Name</p>
+                                        </div>
+                                        <div class="input">
+                                            <input type="text" id="gift_name">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item req">
+                                            <p>Description</p>
+                                        </div>
+                                        <div class="input">
+                                            <textarea id="gift_content"></textarea>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>Giveaway Image</p>
+                                        </div>
+                                        <div class="input file_box">
+                                            <input type="text" id="gift_photo" class="upload_name" value="" disabled="disabled">
+                                            <input type="file" name="giftPhotoFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                            <label>Browse</label>
+                                            <span class="giftPhotoBox"></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>Company Logo</p>
+                                        </div>
+                                        <div class="input file_box">
+                                            <input type="text" id="gift_company_logo" class="upload_name" value="" disabled="disabled">
+                                            <input type="file" name="giftCompanyLogoFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                            <label>Browse</label>
+                                            <span class="giftCompanyLogoBox"></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item req">
+                                            <p>Retail Price</p>
+                                        </div>
+                                        <div class="input">
+                                            <input type="text" id="gift_price" value="0" class="onlyNum">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>Sponsored Price</p>
+                                        </div>
+                                        <div class="input">
+                                            <input type="text" id="gift_sponsor_price" value="0" class="onlyNum">
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <p>Remarks</p>
+                                        </div>
+                                        <div class="input">
+                                            <textarea id="gift_note"></textarea>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <a class="btnSave" onclick="f_gift_add('${info.seq}')">Save</a>
                             </div>
-                            <ul class="form_box">
-                                <li>
-                                    <div class="item req">
-                                        <p>Sortation</p>
-                                    </div>
-                                    <div class="input">
-                                        <label><input type="radio" checked>For use in events</label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item req">
-                                        <p>Quantity</p>
-                                    </div>
-                                    <div class="input">
-                                        <input type="text" class="onlyNum">
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item">
-                                        <p>Classification</p>
-                                    </div>
-                                    <div class="input">
-                                        <input type="text">
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item req">
-                                        <p>Item</p>
-                                    </div>
-                                    <div class="input">
-                                        <input type="text">
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item req">
-                                        <p>Description</p>
-                                    </div>
-                                    <div class="input">
-                                        <textarea></textarea>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item">
-                                        <p>A Prize Photo</p>
-                                    </div>
-                                    <div class="input file_box">
-                                        <input type="text" class="upload_name" value="" disabled="disabled">
-                                        <input type="file" class="upload_hidden">
-                                        <label for="img_file">Upload</label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item">
-                                        <p>Company Logo</p>
-                                    </div>
-                                    <div class="input file_box">
-                                        <input type="text" class="upload_name" value="" disabled="disabled">
-                                        <input type="file" id="img_file" class="upload_hidden">
-                                        <label for="img_file">Upload</label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item req">
-                                        <p>Retail Price</p>
-                                    </div>
-                                    <div class="input">
-                                        <input type="text">
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item">
-                                        <p>Sponsored Price</p>
-                                    </div>
-                                    <div class="input">
-                                        <input type="text">
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item">
-                                        <p>Note</p>
-                                    </div>
-                                    <div class="input">
-                                        <textarea></textarea>
-                                    </div>
-                                </li>
-                            </ul>
-                            <a class="btnSave" href="#">Registration/Modification</a>
                         </div>
+                        <!-- //폼박스 -->
                     </div>
-                    <!-- //폼박스 -->
-                </div>
+                </form>
             </div>
         </div>
     </div>

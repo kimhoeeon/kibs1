@@ -14,10 +14,10 @@
     <!-- swiper 외부 라이브러리 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    <link href="/css/reset.css" rel="stylesheet">
-    <link href="/css/font.css" rel="stylesheet">
+    <link href="/css/reset.css?ver=20260630" rel="stylesheet">
+    <link href="/css/font.css?ver=20260630" rel="stylesheet">
     <link href="/css/style.css?ver=20260630" rel="stylesheet">
-    <link href="/css/responsive.css" rel="stylesheet">
+    <link href="/css/responsive.css?ver=20260630" rel="stylesheet">
 
 </head>
 <body>
@@ -52,10 +52,16 @@
                     </a>
                 </h1>
                 <div class="hd_top_right">
-                    <%--<a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8946/8912');" class="login">LOGIN</a>--%>
-                    <a href="javascript:void(0);" onclick="home('ko');" class="language">KOR</a>
+                    <c:if test="${empty sessionScope.get('status')}">
+                        <a href="<c:url value="/eng/login.do"/>" class="login">LOGIN</a>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.get('status')}">
+                        <a href="/logout.do" class="logout">LOGOUT</a>
+                        <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/index.do',{ id: `${sessionScope.get('id')}` , transferYear: '2026' })" class="mypage">MYPAGE</a>
+                    </c:if>
+                    <a href="javascript:void(0);" onclick="home('KO')" class="language">KOR</a>
                     <a href="#a" class="m_menu">
-                        <span>Menu</span>
+                        <span>MENU</span>
                     </a>
                 </div>
             </div>
@@ -82,7 +88,7 @@
                             <a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors</span></a>
                             <ul class="dept2">
                                 <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors Categories</span></a></li>
-                                <li><a href="javascript:void(0);" onclick="alert('Exhibitor applications for the 2026 Gyeonggi International Boat Show are closed.');"><span>Exhibitor Registration</span></a></li>
+                                <li><a href="<c:url value="/eng/apply/step01.do"/>"><span>Exhibitor Registration</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/glance.do"/>"><span>Korea at a Glance</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
@@ -94,7 +100,7 @@
                             <a href="<c:url value="/eng/buyer/glance.do"/>"><span>Buyers</span></a>
                             <ul class="dept2">
                                 <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Visitor guide</span></a></li>
-                                <li><a href="<c:url value="/visitor/apply.do"/>"><span>Pre-registration</span></a></li>
+                                <li><a href="<c:url value="/eng/buyer/apply.do"/>"><span>Pre-registration</span></a></li>
                                 <li><a href="<c:url value="/eng/buyer/glance.do"/>"><span>Korea at a Glance</span></a></li>
                                 <li><a href="<c:url value="/eng/buyer/marina.do"/>"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="<c:url value="/eng/buyer/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
@@ -122,8 +128,14 @@
             <div class="site_map_box">
                 <div class="site_map_top">
                     <div class="site_map_top_btn">
-                        <a href="javascript:alert('Contact Us\nEmail : kibs@kintex.com\nTel : +82 031-995-8946/8912');" class="login">LOGIN</a>
-                        <a href="<c:url value="/"/>" class="language">KOR</a>
+                        <c:if test="${empty sessionScope.get('status')}">
+                            <a href="<c:url value="/eng/login.do"/>" class="login">LOGIN</a>
+                            <a href="<c:url value="/"/>" class="language">KOR</a>
+                        </c:if>
+                        <c:if test="${not empty sessionScope.get('status')}">
+                            <a href="/logout.do" class="logout">LOGOUT</a>
+                            <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/index.do',{ id: `${sessionScope.get('id')}` , transferYear: '2026' })" class="mypage">MYPAGE</a>
+                        </c:if>
                     </div>
                     <div class="site_map_top_sns">
                         <%--<a href="/eng/board/newsletter.do" class="hd_top_sns"><img src="/img/top_sns_n.png"></a>--%>
@@ -160,7 +172,7 @@
                             <a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors</span></a>
                             <ul class="dept2">
                                 <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors Categories</span></a></li>
-                                <li><a href="/apply/step01.do"><span>Exhibitor Registration</span></a></li>
+                                <li><a href="<c:url value="/eng/apply/step01.do"/>"><span>Exhibitor Registration</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/glance.do"/>"><span>Korea at a Glance</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="<c:url value="/eng/exhibitor/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
@@ -172,7 +184,7 @@
                             <a href="<c:url value="/eng/buyer/glance.do"/>"><span>Buyers</span></a>
                             <ul class="dept2">
                                 <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Visitor guide</span></a></li>
-                                <li><a href="<c:url value="/visitor/apply.do"/>"><span>Pre-registration</span></a></li>
+                                <li><a href="<c:url value="/eng/buyer/apply.do"/>"><span>Pre-registration</span></a></li>
                                 <li><a href="<c:url value="/eng/buyer/glance.do"/>"><span>Korea at a Glance</span></a></li>
                                 <li><a href="<c:url value="/eng/buyer/marina.do"/>"><span>Marine Industry in korea</span></a></li>
                                 <li><a href="<c:url value="/eng/buyer/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
@@ -213,7 +225,7 @@
     <script src="/js/resize/compressor.js"></script>
     <script src="/js/script.js?ver=20260630"></script>
     <script src="/js/swiper.js"></script>
-    <script src="/js/main.js?ver=20260630"></script>
+    <script src="/js/main_en.js?ver=20260630"></script>
 
 </body>
 </html>
