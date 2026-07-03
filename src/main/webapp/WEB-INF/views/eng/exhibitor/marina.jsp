@@ -77,7 +77,7 @@
                         <div class="tabOptAct">Marine Industry in korea</div>
                         <div class="tabOptSel">
                             <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
-                            <a href="/apply/step01.do">Exhibitor Registration</a>
+                            <a href="/eng/apply/step01.do">Exhibitor Registration</a>
                             <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
                             <a class="active" href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
                             <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>

@@ -78,7 +78,7 @@
                         <div class="tabOptSel">
                             <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
                             <a href="/eng/online/company.do">Exhibitor List</a>
-                            <a class="active" href="/apply/step01.do">Exhibitor Registration</a>
+                            <a class="active" href="/eng/apply/step01.do">Exhibitor Registration</a>
                             <a href="/eng/exhibitor/qna.do">FAQ</a>
                         </div>
                     </div>

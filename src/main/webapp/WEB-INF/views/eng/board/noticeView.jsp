@@ -116,11 +116,11 @@
                 </div>
                 <div class="board_view_btn">
                     <c:if test="${noticeInfo.prevId ne null and noticeInfo.prevId ne ''}">
-                        <a href="/guide/noticeView.do?id=${noticeInfo.prevId}" class="prevBtn">이전글</a>
+                        <a href="/eng/board/noticeView.do?id=${noticeInfo.prevId}" class="prevBtn">PREV</a>
                     </c:if>
-                    <a href="/guide/notice.do" class="listBtn">목록</a>
+                    <a href="/eng/board/notice.do" class="listBtn">LIST</a>
                     <c:if test="${noticeInfo.nextId ne null and noticeInfo.nextId ne ''}">
-                        <a href="/guide/noticeView.do?id=${noticeInfo.nextId}" class="nextBtn">다음글</a>
+                        <a href="/eng/board/noticeView.do?id=${noticeInfo.nextId}" class="nextBtn">NEXT</a>
                     </c:if>
                 </div>
             </div>
