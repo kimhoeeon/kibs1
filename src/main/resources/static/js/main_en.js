@@ -6308,7 +6308,7 @@ function f_visitor_form_data_setting(){
 
     let joinForm = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
 
-    joinForm.lang = 'KO';
+    joinForm.lang = 'EN';
     joinForm.joinYear = transferYear;
     joinForm.joinYn = 'Y';
     joinForm.visitorGbn = '개인';
@@ -6322,8 +6322,27 @@ function f_visitor_form_data_setting(){
 
     joinForm.domain = $('#domain').val();
 
-    joinForm.tel = $('#telCode').val() + ' ' + $('#tel').val();
-    joinForm.phone = $('#phoneCode').val() + ' ' + $('#phone').val();
+    let tel = $('#tel').val() ? $('#tel').val().trim() : '';
+    let telCode = $('#telCode').val() || '';
+    if(nvl(tel,'') !== ''){
+        if (tel.startsWith(telCode)) {
+            tel = tel.substring(telCode.length).trim();
+        }
+        // 셀렉트박스의 국가 코드와 입력창의 번호를 공백 하나를 두고 결합합니다.
+        tel = telCode + ' ' + tel;
+    }
+    joinForm.tel = tel;
+
+    let phone = $('#phone').val() ? $('#phone').val().trim() : '';
+    let phoneCode = $('#phoneCode').val() || '';
+    if(nvl(phone,'') !== ''){
+        if (phone.startsWith(phoneCode)) {
+            phone = phone.substring(phoneCode.length).trim();
+        }
+        // 셀렉트박스의 국가 코드와 입력창의 번호를 공백 하나를 두고 결합합니다.
+        phone = phoneCode + ' ' + phone;
+    }
+    joinForm.phone = phone;
 
     joinForm.regionSi = joinForm.sido;
     joinForm.regionGu = nvl(joinForm.gugun,'-');

@@ -239,7 +239,7 @@
                             * You have the right to refuse consent to the collection and use of personal information and the provision of personal information to third parties. However, if you refuse to provide consent, certain services may be restricted.
                         </div>
                         <div class="form_pri_agree">
-                            <label><input type="radio" name="agree1" value="Y">Agree</label>
+                            <label><input type="radio" name="agree1" value="Y" checked>Agree</label>
                             <label><input type="radio" name="agree1" value="N">Disagree</label>
                         </div>
                     </div>
@@ -260,7 +260,7 @@
                             ⑤ You have the right to refuse consent to the provision of your personal information. However, if you refuse to provide consent, the “Consultation Reservation Service” may not be available or may not function properly.
                         </div>
                         <div class="form_pri_agree">
-                            <label><input type="radio" name="agree2" value="Y">Agree</label>
+                            <label><input type="radio" name="agree2" value="Y" checked>Agree</label>
                             <label><input type="radio" name="agree2" value="N">Disagree</label>
                         </div>
                     </div>
@@ -279,7 +279,7 @@
                             I have read and understood the above safety precautions. The Organizer shall not be held responsible for any accidents or damages resulting from failure to comply with these guidelines.
                         </div>
                         <div class="form_pri_agree">
-                            <label><input type="radio" name="agree3" value="Y">Agree</label>
+                            <label><input type="radio" name="agree3" value="Y" checked>Agree</label>
                             <label><input type="radio" name="agree3" value="N">Disagree</label>
                         </div>
                     </div>
@@ -307,6 +307,7 @@
 
                 <!--begin::Form-->
                 <form id="joinForm" name="joinForm" method="post" onsubmit="return false;">
+                    <input type="hidden" id="seq" name="seq" value="${info.seq}">
 
                     <!-- 참관 구분 -->
                     <div class="form_wrap">
@@ -316,8 +317,8 @@
                         <ul class="form_box">
                             <li>
                                 <div class="input check w-100">
-                                    <label><input type="radio" name="partGbn" value="바이어">Buyers</label>
-                                    <label><input type="radio" name="partGbn" value="일반관람">General Visitor</label>
+                                    <label><input type="radio" name="partGbn" value="바이어" <c:if test="${info.partGbn eq '바이어'}">checked</c:if>>Buyers</label>
+                                    <label><input type="radio" name="partGbn" value="일반관람" <c:if test="${info.partGbn eq '일반관람'}">checked</c:if>>General Visitor</label>
                                     <div class="cmnt">Visitor type cannot be changed after registration.</div>
                                 </div>
                             </li>
@@ -332,9 +333,9 @@
                         <ul class="form_box">
                             <li>
                                 <div class="input check w-100">
-                                    <label><input type="radio" name="eventGbn" value="경기국제보트쇼">Korea International Boat Show(KIBS)·Korea International Fishing Show(KOFISH)</label>
-                                    <label><input type="radio" name="eventGbn" value="코리아서프쇼">Korea International Surf Show(KISS)</label>
-                                    <label><input type="radio" name="eventGbn" value="해양관광전">Korea Marine Travel Show(KMTS)</label>
+                                    <label><input type="radio" name="eventGbn" value="경기국제보트쇼" <c:if test="${info.eventGbn eq '경기국제보트쇼'}">checked</c:if>>Korea International Boat Show(KIBS)·Korea International Fishing Show(KOFISH)</label>
+                                    <label><input type="radio" name="eventGbn" value="코리아서프쇼" <c:if test="${info.eventGbn eq '코리아서프쇼'}">checked</c:if>>Korea International Surf Show(KISS)</label>
+                                    <label><input type="radio" name="eventGbn" value="해양관광전" <c:if test="${info.eventGbn eq '해양관광전'}">checked</c:if>>Korea Marine Travel Show(KMTS)</label>
                                     <div class="cmnt">Please select the event you will attend.</div>
                                 </div>
                             </li>
@@ -352,7 +353,7 @@
                                     <p>Name</p>
                                 </div>
                                 <div class="input">
-                                    <input type="text" id="name" name="name" placeholder="Please enter your name.">
+                                    <input type="text" id="name" name="name" placeholder="Please enter your name." value="${info.name}">
                                 </div>
                             </li>
                             <li class="w50">
@@ -361,16 +362,16 @@
                                 </div>
                                 <div class="input">
                                     <select id="telCode">
-                                        <option value="+82" selected>+82 (KOR)</option>
-                                        <option value="+1">+1 (USA/CAN)</option>
-                                        <option value="+44">+44 (GBR)</option>
-                                        <option value="+49">+49 (DEU)</option>
-                                        <option value="+61">+61 (AUS)</option>
-                                        <option value="+81">+81 (JPN)</option>
-                                        <option value="+86">+86 (CHN)</option>
-                                        <option value="+91">+91 (IND)</option>
+                                        <option value="+82" <c:if test="${fn:startsWith(info.tel,'+82')}">selected</c:if> >+82 (KOR)</option>
+                                        <option value="+1" <c:if test="${fn:startsWith(info.tel,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
+                                        <option value="+44" <c:if test="${fn:startsWith(info.tel,'+44')}">selected</c:if> >+44 (GBR)</option>
+                                        <option value="+49" <c:if test="${fn:startsWith(info.tel,'+49')}">selected</c:if> >+49 (DEU)</option>
+                                        <option value="+61" <c:if test="${fn:startsWith(info.tel,'+61')}">selected</c:if> >+61 (AUS)</option>
+                                        <option value="+81" <c:if test="${fn:startsWith(info.tel,'+81')}">selected</c:if> >+81 (JPN)</option>
+                                        <option value="+86" <c:if test="${fn:startsWith(info.tel,'+86')}">selected</c:if> >+86 (CHN)</option>
+                                        <option value="+91" <c:if test="${fn:startsWith(info.tel,'+91')}">selected</c:if> >+91 (IND)</option>
                                     </select>
-                                    <input type="tel" id="tel" name="tel" class="onlyGeneralTel" maxlength="14" placeholder="Numbers only. Hyphens are added automatically.">
+                                    <input type="tel" id="tel" name="tel" class="onlyGeneralTel" placeholder="Numbers only. Hyphens are added automatically." value="${info.tel}">
                                 </div>
                             </li>
                             <li class="w50">
@@ -379,18 +380,18 @@
                                 </div>
                                 <div class="input">
                                     <select id="phoneCode">
-                                        <option value="+82" selected>+82 (KOR)</option>
-                                        <option value="+1">+1 (USA/CAN)</option>
-                                        <option value="+44">+44 (GBR)</option>
-                                        <option value="+49">+49 (DEU)</option>
-                                        <option value="+61">+61 (AUS)</option>
-                                        <option value="+81">+81 (JPN)</option>
-                                        <option value="+86">+86 (CHN)</option>
-                                        <option value="+91">+91 (IND)</option>
+                                        <option value="+82" <c:if test="${fn:startsWith(info.phone,'+82')}">selected</c:if> >+82 (KOR)</option>
+                                        <option value="+1" <c:if test="${fn:startsWith(info.phone,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
+                                        <option value="+44" <c:if test="${fn:startsWith(info.phone,'+44')}">selected</c:if> >+44 (GBR)</option>
+                                        <option value="+49" <c:if test="${fn:startsWith(info.phone,'+49')}">selected</c:if> >+49 (DEU)</option>
+                                        <option value="+61" <c:if test="${fn:startsWith(info.phone,'+61')}">selected</c:if> >+61 (AUS)</option>
+                                        <option value="+81" <c:if test="${fn:startsWith(info.phone,'+81')}">selected</c:if> >+81 (JPN)</option>
+                                        <option value="+86" <c:if test="${fn:startsWith(info.phone,'+86')}">selected</c:if> >+86 (CHN)</option>
+                                        <option value="+91" <c:if test="${fn:startsWith(info.phone,'+91')}">selected</c:if> >+91 (IND)</option>
                                     </select>
                                     <input type="tel" id="phone" name="phone" class="onlyTel" inputmode="numeric"
                                            pattern="[0-9]*"
-                                           autocomplete="off" placeholder="Numbers only. Hyphens are added automatically.">
+                                           autocomplete="off" placeholder="Numbers only. Hyphens are added automatically." value="${info.phone}">
                                 </div>
                             </li>
                             <li>
@@ -398,9 +399,9 @@
                                     <p>E-mail</p>
                                 </div>
                                 <div class="input email">
-                                    <input type="text" id="email" name="email" placeholder="E-mail" class="email_input1">
+                                    <input type="text" id="email" name="email" placeholder="E-mail" class="email_input1" value="${info.email}">
                                     <span>@</span>
-                                    <input type="text" id="domain" name="domain" placeholder="Domain" class="email_input2">
+                                    <input type="text" id="domain" name="domain" placeholder="Domain" class="email_input2" value="${info.domain}">
                                     <select id="email_select">
                                         <option selected>Direct Input</option>
                                         <option value="daum.net">daum.net</option>
@@ -414,7 +415,6 @@
                                         <option value="hanmir.com">hanmir.com</option>
                                         <option value="dreamwiz.com">dreamwiz.com</option>
                                         <option value="orgio.net">orgio.net</option>
-                                        <option value="korea.com">korea.com</option>
                                         <option value="hitel.net">hitel.net</option>
                                     </select>
                                 </div>
@@ -424,9 +424,9 @@
                                     <p>Company Name</p>
                                 </div>
                                 <div class="input companyNameBox" style="flex-wrap: wrap">
-                                    <input class="companyNameInput" type="text" id="companyName" name="companyName" placeholder="Company Name">
+                                    <input class="companyNameInput" type="text" id="companyName" name="companyName" placeholder="Company Name" value="${info.companyName}">
                                     <input class="companyNameSh" type="button" value="Search">
-                                    <input type="text" id="companyAddress" name="companyAddress" placeholder="Company Address">
+                                    <input type="text" id="companyAddress" name="companyAddress" placeholder="Company Address" value="${info.companyAddress}">
                                     <div class="cmnt">If no result is found, please enter the information manually.</div>
                                     <div class="cmnt">Enter the exact company name for better search results.</div>
                                     <div class="cmnt">Company information is provided via the data.go.kr Open API.</div>
@@ -437,36 +437,69 @@
                                     <p>Accompanying Minor</p>
                                 </div>
                                 <div class="input check">
-                                    <label><input type="radio" name="partnerYn" id="Y" value="Y">Yes</label>
-                                    <label><input type="radio" name="partnerYn" id="N" value="N" checked>No</label>
+                                    <label><input type="radio" name="partnerYn" id="Y" value="Y" <c:if test="${info.partnerYn eq 'Y'}">checked</c:if>>Yes</label>
+                                    <label><input type="radio" name="partnerYn" id="N" value="N" <c:if test="${info.partnerYn ne 'Y'}">checked</c:if>>No</label>
                                     <div class="cmnt">Only accompanying minors (aged 0-18) may be registered.</div>
                                 </div>
                             </li>
                         </ul>
 
-                        <ul class="form_box visitPartnerBox" style="border-top:0;">
-                            <li class="form_in_tit">
-                                Companion #<span class="visitPartnerNum">1</span>
-                                <span class="del_btn visitPartnerDel">Delete</span>
-                            </li>
-                            <li class="w50">
-                                <div class="item req">
-                                    <p>Name</p>
-                                </div>
-                                <div class="input">
-                                    <input type="text" name="partnerName">
-                                </div>
-                            </li>
-                            <li class="w50">
-                                <div class="item req">
-                                    <p>Age</p>
-                                </div>
-                                <div class="input">
-                                    <input type="text" name="partnerAge" class="onlyChildAge" maxlength="2" placeholder="Age (0~18 years old)">
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="formAddBtn"><span class="visitPartnerAdd">Add</span></div>
+                        <c:choose>
+                            <c:when test="${fn:length(partnerList) > 0}">
+                                <c:forEach var="partner" items="${partnerList}" varStatus="status">
+                                    <ul class="form_box visitPartnerBox" style="border-top:0; <c:if test="${info.partnerYn ne 'Y'}">display:none;</c:if>">
+                                        <li class="form_in_tit">
+                                            Companion #<span class="visitPartnerNum">${status.count}</span>
+                                            <span class="del_btn visitPartnerDel" <c:if test="${status.first}">style="display:none;"</c:if>>Delete</span>
+                                            <input type="hidden" name="partnerSeq" value="${partner.seq}">
+                                        </li>
+                                        <li class="w50">
+                                            <div class="item req">
+                                                <p>Name</p>
+                                            </div>
+                                            <div class="input">
+                                                <input type="text" name="partnerName" value="${partner.name}">
+                                            </div>
+                                        </li>
+                                        <li class="w50">
+                                            <div class="item req">
+                                                <p>Age</p>
+                                            </div>
+                                            <div class="input">
+                                                <input type="text" name="partnerAge" class="onlyChildAge" maxlength="2" placeholder="Age (0~18 years old)" value="${partner.partnerAge}">
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <ul class="form_box visitPartnerBox" style="border-top:0; <c:if test="${info.partnerYn ne 'Y'}">display:none;</c:if>">
+                                    <li class="form_in_tit">
+                                        Companion #<span class="visitPartnerNum">1</span>
+                                        <span class="del_btn visitPartnerDel" style="display:none;">Delete</span>
+                                        <input type="hidden" name="partnerSeq" value="">
+                                    </li>
+                                    <li class="w50">
+                                        <div class="item req">
+                                            <p>Name</p>
+                                        </div>
+                                        <div class="input">
+                                            <input type="text" name="partnerName">
+                                        </div>
+                                    </li>
+                                    <li class="w50">
+                                        <div class="item req">
+                                            <p>Age</p>
+                                        </div>
+                                        <div class="input">
+                                            <input type="text" name="partnerAge" class="onlyChildAge" maxlength="2" placeholder="Age (0~18 years old)">
+                                        </div>
+                                    </li>
+                                </ul>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <div class="formAddBtn"><span class="visitPartnerAdd" <c:if test="${info.partnerYn ne 'Y'}">style="display:none;"</c:if>>Add</span></div>
                     </div>
                     <!-- //참관객 정보 -->
 
@@ -481,8 +514,8 @@
                                     <p>Gender</p>
                                 </div>
                                 <div class="input check">
-                                    <label><input type="radio" name="sex" value="남자">Male</label>
-                                    <label><input type="radio" name="sex" value="여자">Female</label>
+                                    <label><input type="radio" name="sex" value="남자" <c:if test="${info.sex eq '남자'}">checked</c:if>>Male</label>
+                                    <label><input type="radio" name="sex" value="여자" <c:if test="${info.sex eq '여자'}">checked</c:if>>Female</label>
                                 </div>
                             </li>
                             <li>
@@ -501,12 +534,12 @@
                                     <p>Age Group</p>
                                 </div>
                                 <div class="input check">
-                                    <label><input type="radio" name="ageGroup" value="10">Teenager</label>
-                                    <label><input type="radio" name="ageGroup" value="20">20s</label>
-                                    <label><input type="radio" name="ageGroup" value="30">30s</label>
-                                    <label><input type="radio" name="ageGroup" value="40">40s</label>
-                                    <label><input type="radio" name="ageGroup" value="50">50s</label>
-                                    <label><input type="radio" name="ageGroup" value="60">60+</label>
+                                    <label><input type="radio" name="ageGroup" value="10" <c:if test="${info.ageGroup eq '10'}">checked</c:if>>Teenager</label>
+                                    <label><input type="radio" name="ageGroup" value="20" <c:if test="${info.ageGroup eq '20'}">checked</c:if>>20s</label>
+                                    <label><input type="radio" name="ageGroup" value="30" <c:if test="${info.ageGroup eq '30'}">checked</c:if>>30s</label>
+                                    <label><input type="radio" name="ageGroup" value="40" <c:if test="${info.ageGroup eq '40'}">checked</c:if>>40s</label>
+                                    <label><input type="radio" name="ageGroup" value="50" <c:if test="${info.ageGroup eq '50'}">checked</c:if>>50s</label>
+                                    <label><input type="radio" name="ageGroup" value="60" <c:if test="${info.ageGroup eq '60'}">checked</c:if>>60+</label>
                                 </div>
                             </li>
                             <li id="observationGbnDiv">
@@ -546,8 +579,8 @@
                 </form>
 
                 <div class="form_btn_visitor">
-                    <a href="javascript:void(0);" onclick="f_visitor_apply('I')" class="btnSt01">
-                        <div class="big">Pre-register</div>
+                    <a href="javascript:void(0);" onclick="f_visitor_apply('U')" class="btnSt01">
+                        <div class="big">Modify</div>
                     </a>
                 </div>
 
@@ -570,28 +603,19 @@
                 <div class="pop_box">
                     <div class="pop_cont">
                         <div class="searchBox">
-                                <span class="search">
-                                    <input type="text" id="search_companyName" placeholder="Enter workplace name">
-                                    <button type="button" onclick="f_company_search()">
-                                        <img src="/img/icon_search.png">
-                                    </button>
-                                </span>
+                            <span class="search">
+                                <input type="text" id="search_companyName" placeholder="Enter workplace name">
+                                <button type="button" onclick="f_company_search()">
+                                    <img src="/img/icon_search.png">
+                                </button>
+                            </span>
                         </div>
                         <div class="directBox">
                             <div class="txt">If you do not have a registered workplace name<br>Please enter it yourself.</div>
                             <div class="btn btnSt01 directCompanyName">Direct Input</div>
                         </div>
                         <ul class="companyList">
-                            <%--<li>
-                                <a href="">
-                                    <div class="name">미팅팬2</div>
-                                    <div class="address">경기도 부천시 원미구</div>
-                                </a>
-                            </li>--%>
                         </ul>
-                        <!-- <div class="companyNot">
-                            검색결과가 없습니다.
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -599,9 +623,9 @@
 
         <div id="spinner">
             <div>
-                <span>
-                    <img src="https://cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif">
-                </span>
+                    <span>
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif">
+                    </span>
             </div>
         </div>
 
@@ -662,20 +686,24 @@
             // 1. 행사 구분 변경 이벤트
             $('input[name=eventGbn]').on('change', function() {
                 if(typeof renderSurveyItems === 'function'){
-                    renderSurveyItems($(this).val(), null);
+                    // DB에서 불러온 기존 설문 데이터 파라미터 전달
+                    let savedSurveyData = {
+                        observationGbn: "${info.observationGbn}",
+                        visitPurpose: "${info.visitPurpose}",
+                        interestItem: "${info.interestItem}",
+                        recognizePath: "${info.recognizePath}",
+                        preObservationGbn: "${info.preObservationGbn}"
+                    };
+                    renderSurveyItems($(this).val(), savedSurveyData);
                 }
             });
 
-            // 2. 초기 로딩 시: 행사 구분 기본값 설정 (경기국제보트쇼)
+            // 2. 초기 로딩 시: DB 행사 데이터 트리거 (없으면 경기국제보트쇼)
             let initialEvent = $('input[name=eventGbn]:checked').val();
             if (!initialEvent) {
-                initialEvent = '경기국제보트쇼';
-                $('input[name=eventGbn][value="경기국제보트쇼"]').prop('checked', true);
-            }
-
-            // 설문 항목 렌더링
-            if(typeof renderSurveyItems === 'function') {
-                renderSurveyItems(initialEvent, null);
+                $('input[name=eventGbn][value="경기국제보트쇼"]').prop('checked', true).trigger('change');
+            } else {
+                $('input[name=eventGbn][value="' + initialEvent + '"]').trigger('change');
             }
 
             // 3. 참관 구분 변경 이벤트
@@ -690,15 +718,55 @@
                 }
             });
 
-            // 4. [요청사항 적용] 참관 구분 기본값 설정 (바이어)
+            // 4. 참관 구분 기본값 설정 및 이벤트 트리거
             let currentPartGbn = $('input[name=partGbn]:checked').val();
             if(!currentPartGbn) {
-                // 바이어를 기본으로 선택하고 change 이벤트 트리거 (UI 동기화)
                 $('input[name=partGbn][value="바이어"]').prop('checked', true).trigger('change');
             } else {
-                // 이미 선택된 값이 있다면 해당 값으로 UI 동기화
                 $('input[name=partGbn][value="' + currentPartGbn + '"]').trigger('change');
             }
+
+            // 5. 시/도, 구/군 동적 세팅 (sido.js 로드 시간 고려)
+            setTimeout(function() {
+                let savedSido = "${info.regionSi}";
+                let savedGugun = "${info.regionGu}";
+                if (savedSido) {
+                    $('select[name="sido"]').val(savedSido).trigger('change');
+                    if (savedGugun) {
+                        $('select[name="gugun"]').val(savedGugun);
+                    }
+                }
+            }, 300);
+
+            let initialTel = $('#tel').val() ? $('#tel').val().trim() : '';
+            let initialTelCode = $('#telCode').val() || '';
+            if (initialTelCode && initialTel.startsWith(initialTelCode)) {
+                $('#tel').val(initialTel.substring(initialTelCode.length).trim());
+            }
+
+            let initialPhone = $('#phone').val() ? $('#phone').val().trim() : '';
+            let initialPhoneCode = $('#phoneCode').val() || '';
+            if (initialPhoneCode && initialPhone.startsWith(initialPhoneCode)) {
+                $('#phone').val(initialPhone.substring(initialPhoneCode.length).trim());
+            }
+
+            // 6. 이메일 도메인 Select Box 세팅
+            var emailDomain = "${info.domain}";
+            if (emailDomain) {
+                var exists = false;
+                $('#email_select option').each(function(){
+                    if ($(this).val() == emailDomain) {
+                        exists = true;
+                        $(this).prop('selected', true);
+                    }
+                });
+                if (!exists) {
+                    $('#email_select').val('Direct Input');
+                }
+            }
+
+            // 7. 동반자 여부 UI 초기화 트리거
+            $('input[name="partnerYn"]:checked').trigger('change');
         });
     </script>
 
