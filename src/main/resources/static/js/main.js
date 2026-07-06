@@ -1226,7 +1226,10 @@ function f_apply_comp(step, seq){
 
 /* //////////////////////////////// begin:step_01 ////////////////////////////////// */
 
-function f_phone_number_valid_check($el) {
+function f_phone_number_valid_check(el) {
+    // 순수 DOM 요소를 jQuery 객체로 변환하여 $el 변수에 할당합니다.
+    let $el = $(el);
+
     let phoneNum = $el.val();
     // 하이픈 제거 후 순수 숫자만 추출
     let pureNum = phoneNum.replace(/-/g, "");
@@ -1244,7 +1247,7 @@ function f_phone_number_valid_check($el) {
         // 2) 전체 자릿수 검사 (010 국번은 최소 11자리 숫자여야 함)
         if (pureNum.length < 11) {
             alert('휴대전화번호 형식이 올바르지 않습니다.\n(예: 010-1234-5678)');
-            $el.trigger('focus');
+            $el.trigger('focus'); // 다시 입력하도록 포커스 이동
             return false;
         }
     }
