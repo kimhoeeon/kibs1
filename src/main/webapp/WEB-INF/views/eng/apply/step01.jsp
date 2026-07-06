@@ -574,16 +574,16 @@
                                             </div>
                                             <div class="input">
                                                 <select id="companyTelCode">
-                                                    <option value="+82" <c:if test="${fn:contains(info.companyTel,'+82')}">selected</c:if> >+82 (KOR)</option>
-                                                    <option value="+1" <c:if test="${fn:contains(info.companyTel,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
-                                                    <option value="+44" <c:if test="${fn:contains(info.companyTel,'+44')}">selected</c:if> >+44 (GBR)</option>
-                                                    <option value="+49" <c:if test="${fn:contains(info.companyTel,'+49')}">selected</c:if> >+49 (DEU)</option>
-                                                    <option value="+61" <c:if test="${fn:contains(info.companyTel,'+61')}">selected</c:if> >+61 (AUS)</option>
-                                                    <option value="+81" <c:if test="${fn:contains(info.companyTel,'+81')}">selected</c:if> >+81 (JPN)</option>
-                                                    <option value="+86" <c:if test="${fn:contains(info.companyTel,'+86')}">selected</c:if> >+86 (CHN)</option>
-                                                    <option value="+91" <c:if test="${fn:contains(info.companyTel,'+91')}">selected</c:if> >+91 (IND)</option>
+                                                    <option value="+82" <c:if test="${fn:startsWith(info.companyTel,'+82')}">selected</c:if> >+82 (KOR)</option>
+                                                    <option value="+1" <c:if test="${fn:startsWith(info.companyTel,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
+                                                    <option value="+44" <c:if test="${fn:startsWith(info.companyTel,'+44')}">selected</c:if> >+44 (GBR)</option>
+                                                    <option value="+49" <c:if test="${fn:startsWith(info.companyTel,'+49')}">selected</c:if> >+49 (DEU)</option>
+                                                    <option value="+61" <c:if test="${fn:startsWith(info.companyTel,'+61')}">selected</c:if> >+61 (AUS)</option>
+                                                    <option value="+81" <c:if test="${fn:startsWith(info.companyTel,'+81')}">selected</c:if> >+81 (JPN)</option>
+                                                    <option value="+86" <c:if test="${fn:startsWith(info.companyTel,'+86')}">selected</c:if> >+86 (CHN)</option>
+                                                    <option value="+91" <c:if test="${fn:startsWith(info.companyTel,'+91')}">selected</c:if> >+91 (IND)</option>
                                                 </select>
-                                                <input type="tel" id="companyTel" name="companyTel" value="${info.companyTel}" class="onlyGeneralTel" placeholder="Please enter only the numbers.">
+                                                <input type="tel" id="companyTel" name="companyTel" value="${info.companyTel}" class="onlyGeneralTel" maxlength="20" placeholder="Please enter only the numbers.">
                                             </div>
                                         </li>
                                         <li class="w50">
@@ -601,14 +601,14 @@
                                             </div>
                                             <div class="input">
                                                 <select id="companyFaxCode">
-                                                    <option value="+82" <c:if test="${fn:contains(info.companyFax,'+82')}">selected</c:if> >+82 (KOR)</option>
-                                                    <option value="+1" <c:if test="${fn:contains(info.companyFax,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
-                                                    <option value="+44" <c:if test="${fn:contains(info.companyFax,'+44')}">selected</c:if> >+44 (GBR)</option>
-                                                    <option value="+49" <c:if test="${fn:contains(info.companyFax,'+49')}">selected</c:if> >+49 (DEU)</option>
-                                                    <option value="+61" <c:if test="${fn:contains(info.companyFax,'+61')}">selected</c:if> >+61 (AUS)</option>
-                                                    <option value="+81" <c:if test="${fn:contains(info.companyFax,'+81')}">selected</c:if> >+81 (JPN)</option>
-                                                    <option value="+86" <c:if test="${fn:contains(info.companyFax,'+86')}">selected</c:if> >+86 (CHN)</option>
-                                                    <option value="+91" <c:if test="${fn:contains(info.companyFax,'+91')}">selected</c:if> >+91 (IND)</option>
+                                                    <option value="+82" <c:if test="${fn:startsWith(info.companyFax,'+82')}">selected</c:if> >+82 (KOR)</option>
+                                                    <option value="+1" <c:if test="${fn:startsWith(info.companyFax,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
+                                                    <option value="+44" <c:if test="${fn:startsWith(info.companyFax,'+44')}">selected</c:if> >+44 (GBR)</option>
+                                                    <option value="+49" <c:if test="${fn:startsWith(info.companyFax,'+49')}">selected</c:if> >+49 (DEU)</option>
+                                                    <option value="+61" <c:if test="${fn:startsWith(info.companyFax,'+61')}">selected</c:if> >+61 (AUS)</option>
+                                                    <option value="+81" <c:if test="${fn:startsWith(info.companyFax,'+81')}">selected</c:if> >+81 (JPN)</option>
+                                                    <option value="+86" <c:if test="${fn:startsWith(info.companyFax,'+86')}">selected</c:if> >+86 (CHN)</option>
+                                                    <option value="+91" <c:if test="${fn:startsWith(info.companyFax,'+91')}">selected</c:if> >+91 (IND)</option>
                                                 </select>
                                                 <input type="tel" id="companyFax" name="companyFax" value="${info.companyFax}" class="onlyNumh" maxlength="25" placeholder="Please enter only the numbers.">
                                             </div>
@@ -1655,6 +1655,19 @@
                             e.returnValue = '';
                         }
                     });
+
+                    // 전화번호 및 팩스번호 초기화 (국가코드 중복 노출 방지)
+                    let initialTel = $('#companyTel').val() ? $('#companyTel').val().trim() : '';
+                    let initialTelCode = $('#companyTelCode').val() || '';
+                    if (initialTelCode && initialTel.startsWith(initialTelCode)) {
+                        $('#companyTel').val(initialTel.substring(initialTelCode.length).trim());
+                    }
+
+                    let initialFax = $('#companyFax').val() ? $('#companyFax').val().trim() : '';
+                    let initialFaxCode = $('#companyFaxCode').val() || '';
+                    if (initialFaxCode && initialFax.startsWith(initialFaxCode)) {
+                        $('#companyFax').val(initialFax.substring(initialFaxCode.length).trim());
+                    }
 
                     let companyHomepage = '${info.companyHomepage}';
                     if(nvl(companyHomepage,'') === ''){

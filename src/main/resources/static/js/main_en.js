@@ -1461,12 +1461,17 @@ async function step_01_check(exhibitorSeq){
     }
 
     // 전화
-    let companyTel = $('#companyTel').val();
+    let companyTel = $('#companyTel').val() ? $('#companyTel').val().trim() : '';
+    let companyTelCode = $('#companyTelCode').val() || '';
     if(nvl(companyTel,'') === ''){
         showMessage('#companyTel', 'error', '[ Exhibitor Info ]', 'Please enter the phone number.', '');
         return false;
     }else{
-        companyTel = $('#companyTelCode').val() + ' ' + $('#companyTel').val();
+        if (companyTel.startsWith(companyTelCode)) {
+            companyTel = companyTel.substring(companyTelCode.length).trim();
+        }
+        // 셀렉트박스의 국가 코드와 입력창의 번호를 공백 하나를 두고 결합합니다.
+        companyTel = companyTelCode + ' ' + companyTel;
     }
 
     // 홈페이지
@@ -1488,7 +1493,14 @@ async function step_01_check(exhibitorSeq){
     }
 
     // Fax
-    let companyFax = $('#companyFaxCode').val() + '' + $('#companyFax').val();
+    let companyFax = $('#companyFax').val() ? $('#companyFax').val().trim() : '';
+    let companyFaxCode = $('#companyFaxCode').val() || '';
+    if(nvl(companyFax, '') !== ''){
+        if (companyFax.startsWith(companyFaxCode)) {
+            companyFax = companyFax.substring(companyFaxCode.length).trim();
+        }
+        companyFax = companyFaxCode + ' ' + companyFax;
+    }
 
     // 산업분류
     let industryPart = $('#industryPart').val();
@@ -4166,12 +4178,17 @@ async function my_step_01_check(exhibitorSeq){
     }
 
     // 전화
-    let companyTel = $('#companyTel').val();
+    let companyTel = $('#companyTel').val() ? $('#companyTel').val().trim() : '';
+    let companyTelCode = $('#companyTelCode').val() || '';
     if(nvl(companyTel,'') === ''){
         showMessage('#companyTel', 'error', '[ Exhibitor Info ]', 'Please enter the phone number.', '');
         return false;
     }else{
-        companyTel = $('#companyTelCode').val() + ' ' + $('#companyTel').val();
+        if (companyTel.startsWith(companyTelCode)) {
+            companyTel = companyTel.substring(companyTelCode.length).trim();
+        }
+        // 셀렉트박스의 국가 코드와 입력창의 번호를 공백 하나를 두고 결합합니다.
+        companyTel = companyTelCode + ' ' + companyTel;
     }
 
     // 홈페이지
@@ -4193,7 +4210,14 @@ async function my_step_01_check(exhibitorSeq){
     }
 
     // Fax
-    let companyFax = $('#companyFaxCode').val() + ' ' + $('#companyFax').val();
+    let companyFax = $('#companyFax').val() ? $('#companyFax').val().trim() : '';
+    let companyFaxCode = $('#companyFaxCode').val() || '';
+    if(nvl(companyFax, '') !== ''){
+        if (companyFax.startsWith(companyFaxCode)) {
+            companyFax = companyFax.substring(companyFaxCode.length).trim();
+        }
+        companyFax = companyFaxCode + ' ' + companyFax;
+    }
 
     // 산업분류
     let industryPart = $('#industryPart').val();

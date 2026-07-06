@@ -225,7 +225,7 @@
     <script src="/js/resize/compressor.js"></script>
     <script src="/js/script.js?ver=20260630"></script>
     <script src="/js/swiper.js"></script>
-    <script src="/js/main_en.js?ver=20260630"></script>
+    <script src="/js/main_en.js?ver=20260706"></script>
 
 </body>
 </html>

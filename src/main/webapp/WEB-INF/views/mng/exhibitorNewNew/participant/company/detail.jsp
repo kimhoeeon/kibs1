@@ -248,7 +248,7 @@
                                         <p>전화</p>
                                     </div>
                                     <div class="input">
-                                        <input type="tel" id="companyTel" name="companyTel" value="${info.companyTel}" class="onlyGeneralTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
+                                        <input type="tel" id="companyTel" name="companyTel" value="${info.companyTel}" class="onlyGeneralTel" maxlength="20" placeholder="숫자만 입력해 주세요.">
                                     </div>
                                 </li>
                                 <li class="w50">
