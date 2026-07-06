@@ -726,17 +726,30 @@
                 $('input[name=partGbn][value="' + currentPartGbn + '"]').trigger('change');
             }
 
-            // 5. 시/도, 구/군 동적 세팅 (sido.js 로드 시간 고려)
-            setTimeout(function() {
-                let savedSido = "${info.regionSi}";
-                let savedGugun = "${info.regionGu}";
-                if (savedSido) {
-                    $('select[name="sido"]').val(savedSido).trigger('change');
-                    if (savedGugun) {
-                        $('select[name="gugun"]').val(savedGugun);
+            // 5. 시/도, 구/군 동적 세팅 (sido.js 로드 시간 고려 - 폴링 방식 적용)
+            let savedSido = "${info.regionSi}";
+            let savedGugun = "${info.regionGu}";
+
+            if (savedSido) {
+                let checkInterval = setInterval(function() {
+                    // sido 셀렉트 박스에 옵션이 1개 이상 생성되었는지 확인 (보통 초기화 시 length > 1)
+                    if ($('select[name="sido"] option').length > 1) {
+                        clearInterval(checkInterval); // 체크 중지
+
+                        $('select[name="sido"]').val(savedSido).trigger('change');
+
+                        // change 이벤트로 인해 gugun 옵션이 생성될 시간을 약간 확보
+                        setTimeout(function() {
+                            if (savedGugun) {
+                                $('select[name="gugun"]').val(savedGugun);
+                            }
+                        }, 100);
                     }
-                }
-            }, 300);
+                }, 100); // 0.1초마다 체크
+
+                // 무한 루프 방지 (최대 5초 대기)
+                setTimeout(function(){ clearInterval(checkInterval); }, 5000);
+            }
 
             let initialTel = $('#tel').val() ? $('#tel').val().trim() : '';
             let initialTelCode = $('#telCode').val() || '';

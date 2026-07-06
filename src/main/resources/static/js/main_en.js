@@ -6156,7 +6156,7 @@ function f_visitor_form_valid_check(gbn){
             showMessage('', 'info', '[ Visitor Info ]', 'Please enter your mobile phone number.', '');
             return false;
         }else{
-            phone = $('#phoneCode').val() + '' + $('#phone').val();
+            phone = $('#phoneCode').val() + ' ' + $('#phone').val().trim();
         }
 
         if(!strCheck(name,"name")){
