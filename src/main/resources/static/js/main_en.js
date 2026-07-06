@@ -6253,7 +6253,7 @@ function f_visitor_form_valid_check(gbn){
     let sidoList = $('select[name=sido]');
     for(let i=0; i<sidoList.length; i++){
         let sido = sidoList.eq(i).val();
-        if (nvl(sido,'시/도 선택') === '시/도 선택') {
+        if (nvl(sido,'Select') === 'Select') {
             showMessage('', 'info', '[ Survey ]', 'Please select a city/province.', '');
             return false;
         }

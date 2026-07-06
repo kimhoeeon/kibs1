@@ -120,12 +120,17 @@ $(document).ready(function () {
 
     // 팝업 폼
     $('[data-pop]').on('click', function () {
+        let lang = f_lang_get();
         let onFlag = true;
         var pop_id = $(this).attr('data-pop');
         if(pop_id === 'popFormInfoLoad'){ // 참가신청 정보 불러오기
             let id = $('#id').val();
             if(nvl(id,'') === ''){
-                showMessage('', 'info', '[ 참가신청 정보 불러오기 ]', '아이디(사업자등록번호)를 입력해 주세요.', '');
+                if(lang === 'E'){
+                    showMessage('', 'info', '[ Load Registration Information ]', 'Please enter your ID.', '');
+                }else{
+                    showMessage('', 'info', '[ 참가신청 정보 불러오기 ]', '아이디(사업자등록번호)를 입력해 주세요.', '');
+                }
                 onFlag = false;
             }else{
                 let paramObj = {
@@ -140,7 +145,11 @@ $(document).ready(function () {
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         if (nvl(data,'') === '') {
-                            showMessage('', 'info', '[ 참가신청 정보 불러오기 ]', '해당 아이디(사업자등록번호)로<br>등록된 정보가 없습니다.', '');
+                            if(lang === 'E') {
+                                showMessage('', 'info', '[ Load Registration Information ]', 'There is no information registered under this ID.', '');
+                            }else{
+                                showMessage('', 'info', '[ 참가신청 정보 불러오기 ]', '해당 아이디(사업자등록번호)로<br>등록된 정보가 없습니다.', '');
+                            }
                             onFlag = false;
                         } else {
                             let emailList_length = 0;
@@ -150,10 +159,10 @@ $(document).ready(function () {
                                 let email = data[i];
                                 if(emailCheck(email)){
                                     emailList_html = '<div class="item">';
-                                        emailList_html += '<div class="mail">';
-                                            emailList_html += maskingEmail(email);
-                                        emailList_html += '</div>';
-                                        emailList_html += '<input type="button" id="' + email + '" onclick="certificateEmail(this);" value="발송">';
+                                    emailList_html += '<div class="mail">';
+                                    emailList_html += maskingEmail(email);
+                                    emailList_html += '</div>';
+                                    emailList_html += '<input type="button" id="' + email + '" onclick="certificateEmail(this);" value="발송">';
                                     emailList_html += '</div>';
                                     emailList_length++;
                                 }
@@ -162,13 +171,21 @@ $(document).ready(function () {
                             if(emailList_length > 0){
                                 emailList_form.html(emailList_html);
                             }else{
-                                showMessage('', 'info', '[ 참가신청 정보 불러오기 ]', '해당 아이디(사업자등록번호)로<br>등록된 정보가 없습니다.', '');
+                                if(lang === 'E') {
+                                    showMessage('', 'info', '[ Load Registration Information ]', 'There is no information registered under this ID.', '');
+                                }else{
+                                    showMessage('', 'info', '[ 참가신청 정보 불러오기 ]', '해당 아이디(사업자등록번호)로<br>등록된 정보가 없습니다.', '');
+                                }
                                 onFlag = false;
                             }
                         }
                     },
                     error: function (xhr, status) {
-                        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                        if(lang === 'E') {
+                            alert('An error occurred. Please contact the administrator.\nError: ' + xhr + '\nStatus: ' + status);
+                        }else{
+                            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
+                        }
                         onFlag = false;
                     }
                 })//ajax
@@ -260,7 +277,7 @@ $(document).ready(function () {
         $.each(slideImgList , function(i) {
             let slideImgPath = slideImgList[i].value.toString().replace('/usr/local/tomcat/webapps', '');
             str += '<li class="swiper-slide thumb75 thumbBox">';
-                str += '<img class="thumbImg" src="' + slideImgPath + '">';
+            str += '<img class="thumbImg" src="' + slideImgPath + '">';
             str += '</li>';
         });
 
@@ -275,6 +292,7 @@ $(document).ready(function () {
     // 파일 입력 변경에 대한 이벤트 핸들러 추가
     $('.upload_hidden').on('change', function () {
 
+        let lang = f_lang_get();
         const _self = $(this); // $(this)를 변수에 저장하여 반복 사용 방지
         const fileInput = this;
         const fileNameInput = _self.siblings('.upload_name');
@@ -299,7 +317,11 @@ $(document).ready(function () {
             const extension = pureFileName.slice(pureFileName.lastIndexOf(".") + 1).toLowerCase();
             const allowedExtensions = acceptAttr.toString().replaceAll('.', '').split(', ');
             if (!allowedExtensions.includes(extension)) {
-                alert(`파일 첨부는 ${acceptAttr} 파일만 가능합니다.`);
+                if(lang === 'E') {
+                    alert(`Only ${acceptAttr} files can be attached.`);
+                } else {
+                    alert(`파일 첨부는 ${acceptAttr} 파일만 가능합니다.`);
+                }
                 _self.val('');
                 fileNameInput.val('');
                 return;
@@ -312,7 +334,11 @@ $(document).ready(function () {
         const pattern = /[^ㄱ-힣a-zA-Z0-9-_.()\s]/; // 허용: 한글,영문,숫자,-,_,.,(),공백
 
         if (pattern.test(fileNameWithoutExt)) {
-            alert('파일명에 허용되지 않는 특수문자가 포함되어 있습니다.\n(허용 문자: 한글,영문,숫자,-,_,.,(),공백)');
+            if(lang === 'E') {
+                alert('The file name contains unsupported special characters.\n(Allowed: English, Korean, numbers, -, _, ., (), space)');
+            } else {
+                alert('파일명에 허용되지 않는 특수문자가 포함되어 있습니다.\n(허용 문자: 한글,영문,숫자,-,_,.,(),공백)');
+            }
             _self.val('');
             fileNameInput.val('');
             return;
@@ -321,7 +347,11 @@ $(document).ready(function () {
         // 4. 파일 크기 검사
         const maxSize = 10 * 1024 * 1024; // 10MB
         if (file.size > maxSize) {
-            alert("파일 첨부는 10MB 이내 파일만 가능합니다.");
+            if(lang === 'E') {
+                alert("File size must be less than 10MB.");
+            } else {
+                alert("파일 첨부는 10MB 이내 파일만 가능합니다.");
+            }
             _self.val('');
             fileNameInput.val('');
             return;
@@ -334,6 +364,7 @@ $(document).ready(function () {
 
     /* 나이 제한 스크립트 (0~18세) */
     $(document).on('input keyup', '.onlyChildAge', function () {
+        let lang = f_lang_get();
         // 1. 숫자 이외의 문자 제거
         let val = $(this).val().replace(/[^0-9]/g, "");
 
@@ -343,7 +374,11 @@ $(document).ready(function () {
 
             // 18세 초과 체크
             if (age > 18) {
-                alert("동반자는 만 0~18세 사이만 등록 가능합니다.");
+                if(lang === 'E') {
+                    alert("Companions can only be registered between 0 and 18 years old.");
+                } else {
+                    alert("동반자는 만 0~18세 사이만 등록 가능합니다.");
+                }
                 $(this).val("");
                 return;
             }
@@ -399,6 +434,7 @@ $(document).ready(function () {
 
     // 2. 유효성 검사 (입력이 끝나고 포커스가 나갈 때 동작)
     $('.onlyTel').on('blur', function () {
+        let lang = f_lang_get();
         let $this = $(this);
         let pureNum = $this.val().replace(/-/g, "");
 
@@ -406,14 +442,22 @@ $(document).ready(function () {
 
         // 010 체크
         if (pureNum.substring(0, 3) !== "010") {
-            alert('휴대전화번호는 "010"으로 시작해야 합니다.');
+            if(lang === 'E') {
+                alert('Mobile phone numbers must start with "010".');
+            } else {
+                alert('휴대전화번호는 "010"으로 시작해야 합니다.');
+            }
             resetInput($this);
             return;
         }
 
         // 길이 체크
         if (pureNum.length !== 11) {
-            alert('휴대전화번호 형식이 올바르지 않습니다.\n(010-0000-0000 형식이어야 합니다)');
+            if(lang === 'E') {
+                alert('The mobile phone number format is incorrect.\n(It should be formatted as 010-0000-0000)');
+            } else {
+                alert('휴대전화번호 형식이 올바르지 않습니다.\n(010-0000-0000 형식이어야 합니다)');
+            }
             setTimeout(function(){ $this.focus(); }, 10);
             return;
         }
@@ -559,21 +603,38 @@ $(document).ready(function () {
 
             updatePassNum(); // .addNum 값 업데이트
         }else{
-            showMessage('', 'info', '[ 출입증 신청 ]', '출입증은 최대 50명까지만 등록 가능합니다.', '');
+            let lang = f_lang_get();
+            if(lang === 'E') {
+                showMessage('', 'info', '[ Badges ]', 'Badges can be registered for up to 50 people.', '');
+            }else{
+                showMessage('', 'info', '[ 출입증 신청 ]', '출입증은 최대 50명까지만 등록 가능합니다.', '');
+            }
         }
     });
 
     $('.addDel').on('click', function () {
+        let title = '[ 출입증 신청 ]';
+        let html = '<span style="font-size: 1.2em;">해당 출입증 신청 정보를 삭제하시겠습니까?</span>';
+        let confirmButtonText = '삭제';
+        let cancelButtonText = '취소';
+        let lang = f_lang_get();
+        if(lang === 'E') {
+            title = '[ Badges ]';
+            html = '<span style="font-size: 1.2em;">Are you sure you want to delete this badge application?</span>;'
+            confirmButtonText = 'Delete';
+            cancelButtonText = 'Cancel';
+        }
+
         Swal.fire({
             icon: 'warning',
-            title: '[ 출입증 신청 ]',
-            html: '<span style="font-size: 1.2em;">해당 출입증 신청 정보를 삭제하시겠습니까?</span>',
+            title: title,
+            html: html,
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            confirmButtonText: '삭제',
+            confirmButtonText: confirmButtonText,
             cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
+            cancelButtonText: cancelButtonText
         }).then((result) => {
             if (result.isConfirmed) {
                 let seq = $(this).siblings('input[type=hidden]').val();
@@ -583,7 +644,11 @@ $(document).ready(function () {
                     };
                     let resData = ajaxConnect('/mypage/step/deletePassNew.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '출입증 신청 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                        if(lang === 'E') {
+                            showMessage('', 'error', 'Error', 'Failed to delete the access card application information. Please contact the administrator. ' + resData.resultMessage, '');
+                        }else{
+                            showMessage('', 'error', '에러 발생', '출입증 신청 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                        }
                     }
                 }
 
@@ -743,22 +808,39 @@ $(document).ready(function () {
             $('.managerInfoBox:last').after(newManagerInfoBox);
             updateManagerInfoNum();
         }else{
-            showMessage('', 'error', '[ 담당자 정보 ]', '최대 3명까지만 등록 가능합니다.', '');
+            let lang = f_lang_get();
+            if(lang === 'E') {
+                showMessage('', 'error', '[ Primary Contact ]', 'Registration is limited to a maximum of 3 people.', '');
+            }else{
+                showMessage('', 'error', '[ 담당자 정보 ]', '최대 3명까지만 등록 가능합니다.', '');
+            }
         }
     });
 
     // .managerInfoBox를 삭제하는 이벤트 핸들러
     function deleteManagerInfoBox(el) {
+        let title = '[ 부담당자 ]';
+        let html = '<span style="font-size: 1.2em;">해당 담당자 정보를 삭제하시겠습니까?</span>';
+        let confirmButtonText = '삭제';
+        let cancelButtonText = '취소';
+        let lang = f_lang_get();
+        if(lang === 'E') {
+            title = '[ Contact ]';
+            html = '<span style="font-size: 1.2em;">Are you sure you want to delete this contact?</span>;'
+            confirmButtonText = 'Delete';
+            cancelButtonText = 'Cancel';
+        }
+
         Swal.fire({
             icon: 'warning',
-            title: '[ 부담당자 ]',
-            html: '<span style="font-size: 1.2em;">해당 담당자 정보를 삭제하시겠습니까?</span>',
+            title: title,
+            html: html,
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            confirmButtonText: '삭제',
+            confirmButtonText: confirmButtonText,
             cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
+            cancelButtonText: cancelButtonText
         }).then((result) => {
             if (result.isConfirmed) {
                 let seq = $(el).siblings('input[type=hidden]').val();
@@ -768,7 +850,11 @@ $(document).ready(function () {
                     };
                     let resData = ajaxConnect('/mypage/step/deleteChargeNew.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '담당자 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                        if(lang === 'E') {
+                            showMessage('', 'error', 'Error', 'Failed to delete the person in Contact information. Please contact the administrator. ' + resData.resultMessage, '');
+                        }else{
+                            showMessage('', 'error', '에러 발생', '담당자 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                        }
                     }
                 }
 
@@ -868,22 +954,40 @@ $(document).ready(function () {
 
             //updateExhiInfoNum(this);
         }else{
-            showMessage('', 'info', '[ 요트/보트 출품 정보 ]', '전시정보는 최대 20개까지만 등록 가능합니다.', '');
+            let lang = f_lang_get();
+            if(lang === 'E') {
+                showMessage('', 'info', '[ Yacht&Boat ]', 'You may register up to 20 exhibit items.', '');
+            }else{
+                showMessage('', 'info', '[ 요트/보트 출품 정보 ]', '전시정보는 최대 20개까지만 등록 가능합니다.', '');
+            }
         }
     });
 
     // .exhiInfoBox를 삭제하는 이벤트 핸들러
     function deleteExhiInfoBox(el) {
+        let lang = f_lang_get();
+        let title = '[ 요트/보트 출품 정보 ]';
+        let html = '<span style="font-size: 1.2em;">해당 요트/보트 출품 정보를 삭제하시겠습니까?</span>';
+        let confirmBtn = '삭제';
+        let cancelBtn = '취소';
+
+        if(lang === 'E') {
+            title = '[ Yacht&Boat ]';
+            html = '<span style="font-size: 1.2em;">Are you sure you want to delete this yacht/boat information?</span>';
+            confirmBtn = 'Delete';
+            cancelBtn = 'Cancel';
+        }
+
         Swal.fire({
             icon: 'warning',
-            title: '[ 요트/보트 출품 정보 ]',
-            html: '<span style="font-size: 1.2em;">해당 요트/보트 출품 정보를 삭제하시겠습니까?</span>',
+            title: title,
+            html: html,
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            confirmButtonText: '삭제',
+            confirmButtonText: confirmBtn,
             cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
+            cancelButtonText: cancelBtn
         }).then((result) => {
             if (result.isConfirmed) {
                 let seq = $(el).siblings('input[type=hidden]').val();
@@ -893,7 +997,11 @@ $(document).ready(function () {
                     };
                     let resData = ajaxConnect('/mypage/step/deleteProductNew.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', ' 요트/보트 출품 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                        if(lang === 'E') {
+                            showMessage('', 'error', 'Error', 'Failed to delete the yacht/boat information. Please contact the administrator. ' + resData.resultMessage, '');
+                        } else {
+                            showMessage('', 'error', '에러 발생', ' 요트/보트 출품 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                        }
                     }
 
                     /*let fileList = $(el).parent().parent().find('.preValueList').find('.file_box ul .productImageFile_li').find('input[type=hidden][name=productImageUploadFile]');
@@ -906,7 +1014,11 @@ $(document).ready(function () {
                                 };
                                 let resData = ajaxConnect('/mypage/step/deleteFile.do','post',file_jsonObj);
                                 if(resData.resultCode !== "0"){
-                                    showMessage('', 'error', '에러 발생', '파일 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                                    if(lang === 'E') {
+                                        showMessage('', 'error', 'Error', 'Failed to delete the file information. Please contact the administrator. ' + resData.resultMessage, '');
+                                    } else {
+                                        showMessage('', 'error', '에러 발생', '파일 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                                    }
                                 }
                             }
                         }
@@ -983,7 +1095,12 @@ $(document).ready(function () {
             // 업데이트 후 최대 5개까지 보이도록 제한
             updateExhiPrdBox();
         }else{
-            showMessage('', 'info', '[ 요트/보트 출품 정보 ]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
+            let lang = f_lang_get();
+            if(lang === 'E') {
+                showMessage('', 'info', '[ Yacht&Boat ]', 'You can upload up to 5 photos per product.', '');
+            } else {
+                showMessage('', 'info', '[ 요트/보트 출품 정보 ]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
+            }
         }
 
     });
@@ -1107,22 +1224,40 @@ $(document).ready(function () {
             $('.onlineInfoBox:last').after(newOnlineInfoBox);
             updateOnlineInfoNum(this);
         }else{
-            showMessage('', 'info', '[ 제품 노출 정보 ]', '제품 정보는 최대 40개까지만 등록 가능합니다.', '');
+            let lang = f_lang_get();
+            if(lang === 'E') {
+                showMessage('', 'info', '[ Product Exposure Information ]', 'Product information can be registered up to 40 items.', '');
+            } else {
+                showMessage('', 'info', '[ 제품 노출 정보 ]', '제품 정보는 최대 40개까지만 등록 가능합니다.', '');
+            }
         }
     });
 
     // .onlineInfoBox를 삭제하는 이벤트 핸들러
     function deleteOnlineInfoBox(el) {
+        let lang = f_lang_get();
+        let title = '[ 제품 노출 정보 ]';
+        let html = '<span style="font-size: 1.2em;">해당 제품 정보를 삭제하시겠습니까?</span>';
+        let confirmBtn = '삭제';
+        let cancelBtn = '취소';
+
+        if(lang === 'E') {
+            title = '[ Product Exposure Information ]';
+            html = '<span style="font-size: 1.2em;">Are you sure you want to delete this product information?</span>';
+            confirmBtn = 'Delete';
+            cancelBtn = 'Cancel';
+        }
+
         Swal.fire({
             icon: 'warning',
-            title: '[ 제품 노출 정보 ]',
-            html: '<span style="font-size: 1.2em;">해당 제품 정보를 삭제하시겠습니까?</span>',
+            title: title,
+            html: html,
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            confirmButtonText: '삭제',
+            confirmButtonText: confirmBtn,
             cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
+            cancelButtonText: cancelBtn
         }).then((result) => {
             if (result.isConfirmed) {
                 let seq = $(el).siblings('input').val();
@@ -1132,7 +1267,11 @@ $(document).ready(function () {
                     };
                     let resData = ajaxConnect('/mypage/step/deleteOnlineNew.do','post',jsonObj);
                     if(resData.resultCode !== "0"){
-                        showMessage('', 'error', '에러 발생', '제품 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                        if(lang === 'E') {
+                            showMessage('', 'error', 'Error', 'Failed to delete the product information. Please contact the administrator. ' + resData.resultMessage, '');
+                        } else {
+                            showMessage('', 'error', '에러 발생', '제품 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                        }
                     }
 
                     let fileList = $(el).parent().parent().find('.preValueList').find('.file_box ul .onlineImageFile_li').find('input[type=hidden][name=onlineImageUploadFile]');
@@ -1145,7 +1284,11 @@ $(document).ready(function () {
                                 };
                                 let resData = ajaxConnect('/mypage/step/deleteFile.do','post',file_jsonObj);
                                 if(resData.resultCode !== "0"){
-                                    showMessage('', 'error', '에러 발생', '파일 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                                    if(lang === 'E') {
+                                        showMessage('', 'error', 'Error', 'Failed to delete the file information. Please contact the administrator. ' + resData.resultMessage, '');
+                                    } else {
+                                        showMessage('', 'error', '에러 발생', '파일 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                                    }
                                 }
                             }
                         }
@@ -1218,7 +1361,12 @@ $(document).ready(function () {
             // 업데이트 후 최대 5개까지 보이도록 제한
             updateOnlinePrdBox();
         }else{
-            showMessage('', 'info', '[제품 노출 정보]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
+            let lang = f_lang_get();
+            if(lang === 'E'){
+                showMessage('', 'info', '[Product]', 'You can upload up to 5 photos per product.', '');
+            }else{
+                showMessage('', 'info', '[제품 노출 정보]', '제품 사진은 제품당 최대 5장까지만 추가 가능합니다.', '');
+            }
         }
 
     });
@@ -1284,22 +1432,40 @@ $(document).ready(function () {
             $('.visitPartnerBox:last').after(newVisitPartner);
             updateVisitPartnerNum();
         }else{
-            alert('동반자는 최대 3명까지 등록 가능합니다.\nUp to 3 people can register');
+            let lang = f_lang_get();
+            if(lang === 'E') {
+                alert('Up to 3 people can register.');
+            } else {
+                alert('동반자는 최대 3명까지 등록 가능합니다.');
+            }
         }
     });
 
     // .visitPartnerBox를 삭제하는 이벤트 핸들러
     function deleteVisitPartner(el) {
+        let lang = f_lang_get();
+        let title = '[ 동반자 삭제 ]';
+        let html = '해당 동반자 정보를 삭제하시겠습니까?';
+        let confirmBtn = '삭제';
+        let cancelBtn = '취소';
+
+        if(lang === 'E') {
+            title = '[ Delete Companion ]';
+            html = 'Are you sure you want to delete this companion?';
+            confirmBtn = 'Delete';
+            cancelBtn = 'Cancel';
+        }
+
         Swal.fire({
-            title: '[ 동반자 삭제 ]',
-            html: '해당 동반자 정보를 삭제하시겠습니까?',
+            title: title,
+            html: html,
             icon: 'warning',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            confirmButtonText: '삭제',
+            confirmButtonText: confirmBtn,
             cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
+            cancelButtonText: cancelBtn
         }).then((result) => {
             if (result.isConfirmed) {
                 let seq = $(el).siblings('input[type=hidden]').val();
@@ -1309,7 +1475,11 @@ $(document).ready(function () {
                     };
                     let resData = ajaxConnect('/visitor/mypage/deletePartner.do','post',jsonObj);
                     if(resData.resultCode !== '0'){
-                        showMessage('', 'error', '에러 발생', '전시 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                        if(lang === 'E') {
+                            showMessage('', 'error', 'Error', 'Failed to delete the companion information. Please contact the administrator. ' + resData.resultMessage, '');
+                        } else {
+                            showMessage('', 'error', '에러 발생', '전시 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
+                        }
                     }
                 }
 
@@ -1419,6 +1589,14 @@ $(document).ready(function () {
     });
 
 });
+
+function f_lang_get(){
+    let lang = 'K';
+    if(window.location.href.includes('eng')){
+        lang = 'E';
+    }
+    return lang;
+}
 
 function nullToEmpty(nullStr){
     let convertStr;

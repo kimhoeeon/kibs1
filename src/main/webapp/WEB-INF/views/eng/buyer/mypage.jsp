@@ -50,133 +50,400 @@
 </head>
 
 <body>
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
+    <c:import url="../header.jsp" charEncoding="UTF-8"/>
+    <script src="/js/custom/visitor_en.js?ver=20260630"></script>
 
-<div id="container">
+    <div id="container">
 
-    <!-- section -->
-    <div class="sub_top">
-        <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>Home</span><span>Buyers</span><span>Confirm Application</span>
+        <!-- section -->
+        <div class="sub_top">
+            <div class="inner">
+                <div class="sub_top_box">
+                    <div class="sub_top_nav">
+                        <span>Home</span><span>Buyers</span><span>Confirm Application</span>
+                    </div>
+                    <div class="sub_top_tit">Confirm Application</div>
                 </div>
-                <div class="sub_top_tit">Confirm Application</div>
             </div>
         </div>
-    </div>
-    <!-- //section -->
+        <!-- //section -->
 
-    <!-- section -->
-    <div class="form_s padding_tb">
-        <div class="inner">
-
-            <!--begin::Form-->
-            <form id="joinForm" name="joinForm" method="post" onsubmit="return false;">
-
-                <input type="hidden" name="seq" value="${info.seq}">
-                <input type="hidden" name="visitorSeq" value="${info.seq}">
-
-                <!-- 참관객 정보 -->
+        <!-- section -->
+        <div class="form_s padding_tb">
+            <div class="inner">
+                <!-- 약관 -->
                 <div class="form_wrap">
                     <div class="form_tit">
-                        <div class="big">Visitor Information</div>
+                        <div class="big">Privacy Policy & Consent</div>
                     </div>
-                    <ul class="form_box">
-                        <li>
-                            <div class="item req">
-                                <p>Name</p>
-                            </div>
-                            <div class="input">
-                                <input type="text" id="name" name="name" value="${info.name}" placeholder="Name" readonly>
-                            </div>
-                        </li>
-                        <li class="w50">
-                            <div class="item">
-                                <p>Tel</p>
-                            </div>
-                            <div class="input">
-                                <select id="telCode">
-                                    <option value="+82" selected>+82 (KOR)</option>
-                                    <option value="+1">+1 (USA/CAN)</option>
-                                    <option value="+44">+44 (GBR)</option>
-                                    <option value="+49">+49 (DEU)</option>
-                                    <option value="+61">+61 (AUS)</option>
-                                    <option value="+81">+81 (JPN)</option>
-                                    <option value="+86">+86 (CHN)</option>
-                                    <option value="+91">+91 (IND)</option>
-                                </select>
-                                <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyGeneralTel" maxlength="14" placeholder="Please enter only numbers.">
-                            </div>
-                        </li>
-                        <li class="w50">
-                            <div class="item req">
-                                <p>Mobile</p>
-                            </div>
-                            <div class="input">
-                                <select id="phoneCode">
-                                    <option value="+82" selected>+82 (KOR)</option>
-                                    <option value="+1">+1 (USA/CAN)</option>
-                                    <option value="+44">+44 (GBR)</option>
-                                    <option value="+49">+49 (DEU)</option>
-                                    <option value="+61">+61 (AUS)</option>
-                                    <option value="+81">+81 (JPN)</option>
-                                    <option value="+86">+86 (CHN)</option>
-                                    <option value="+91">+91 (IND)</option>
-                                </select>
-                                <input type="tel" id="phone" name="phone" value="${info.phone}" class="onlyTel" maxlength="13" placeholder="Please enter only numbers." readonly>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item req">
-                                <p>E-mail</p>
-                            </div>
-                            <div class="input email">
-                                <input type="text" id="email" name="email" value="${info.email}" placeholder="email" class="email_input1">
-                                <span>@</span>
-                                <input type="text" id="domain" name="domain" value="${info.domain}" placeholder="domain" class="email_input2">
-                                <select id="email_select">
-                                    <option selected disabled>Direct Input</option>
-                                    <option value="daum.net" <c:if test="${info.domain eq 'daum.net'}">selected</c:if> disabled>daum.net</option>
-                                    <option value="nate.com" <c:if test="${info.domain eq 'nate.com'}">selected</c:if> disabled>nate.com</option>
-                                    <option value="hanmail.net" <c:if test="${info.domain eq 'hanmail.net'}">selected</c:if> disabled>hanmail.net</option>
-                                    <option value="naver.com" <c:if test="${info.domain eq 'naver.com'}">selected</c:if> disabled>naver.com</option>
-                                    <option value="gmail.com" <c:if test="${info.domain eq 'gmail.com'}">selected</c:if> disabled>gmail.com</option>
-                                    <option value="hotmail.com" <c:if test="${info.domain eq 'hotmail.com'}">selected</c:if> disabled>hotmail.com</option>
-                                    <option value="yahoo.co.kr" <c:if test="${info.domain eq 'yahoo.co.kr'}">selected</c:if> disabled>yahoo.co.kr</option>
-                                    <option value="empal.com" <c:if test="${info.domain eq 'empal.com'}">selected</c:if> disabled>empal.com</option>
-                                    <option value="korea.com" <c:if test="${info.domain eq 'korea.com'}">selected</c:if> disabled>korea.com</option>
-                                    <option value="hanmir.com" <c:if test="${info.domain eq 'hanmir.com'}">selected</c:if> disabled>hanmir.com</option>
-                                    <option value="dreamwiz.com" <c:if test="${info.domain eq 'dreamwiz.com'}">selected</c:if> disabled>dreamwiz.com</option>
-                                    <option value="orgio.net" <c:if test="${info.domain eq 'orgio.net'}">selected</c:if> disabled>orgio.net</option>
-                                    <option value="korea.com" <c:if test="${info.domain eq 'korea.com'}">selected</c:if> disabled>korea.com</option>
-                                    <option value="hitel.net" <c:if test="${info.domain eq 'hitel.net'}">selected</c:if> disabled>hitel.net</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item">
-                                <p>Company Name</p>
-                            </div>
-                            <div class="input companyNameBox" style="flex-wrap: wrap">
-                                <input class="companyNameInput" type="text" id="companyName" name="companyName" value="${info.companyName}" placeholder="Company Name">
-                                <%--<input class="companyNameSh" type="button" value="Search">--%>
-                                <input type="text" id="companyAddress" name="companyAddress" value="${info.companyAddress}" placeholder="Company Address">
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item">
-                                <p>Companion attendance</p>
-                            </div>
-                            <div class="input check">
-                                <label><input type="radio" name="partnerYn" id="Y" value="Y" <c:if test="${info.partnerYn eq 'Y'}">checked</c:if> >Yes</label>
-                                <label><input type="radio" name="partnerYn" id="N" value="N" <c:if test="${info.partnerYn eq 'N' or info.partnerYn eq null}">checked</c:if> >None</label>
-                                <div class="cmnt">Please select only in cases such as children(under the age of ten) and elderly who are difficult to apply individual observation.</div>
-                            </div>
-                        </li>
-                    </ul>
+                    <div class="form_pri">
+                        <div class="form_pri_box">
+                            <div class="form_pri_titt">KINTEX Privacy Policy</div>
+                            KINTEX (hereinafter referred to as the “Company”) establishes and discloses the following Privacy Policy in accordance with Article 30 of the Personal Information Protection Act in order to protect the personal information of data subjects and to promptly and effectively address related grievances.<br><br>
 
-                    <c:if test="${empty partnerList}">
+                            <div class="form_pri_titt">Article 1 (Purpose of Processing Personal Information)</div>
+                            The Company processes personal information for the following purposes. The personal information being processed will not be used for any purpose other than those specified below. If the purpose of use changes, the Company will take necessary measures, including obtaining separate consent, in accordance with Article 18 of the Personal Information Protection Act.<br>
+                            1. Website Membership Registration and Management<br>
+                            The Company processes personal information for purposes including confirmation of membership registration intent, identification and authentication for member services, maintenance and management of membership status, identity verification under the limited verification system, prevention of unauthorized use of services, verification of parental consent when processing personal information of children under the age of 14, notifications and announcements, and complaint handling.<br>
+
+                            2. Provision of Goods or Services<br>
+                            The Company processes personal information for purposes including the provision of exhibition and convention services (such as booth participation and exhibition admission), content provision, customized services, identity verification, age verification, payment processing, and settlement.<br>
+
+                            3. Complaint Handling<br>
+                            The Company processes personal information for purposes including verification of the complainant’s identity, confirmation of complaint details, communication and notification for fact-finding investigations, and notification of processing results.
+                            <br>
+                            4. Marketing and Advertising<br>
+                            The Company processes personal information for purposes including providing new and customized services, delivering event and promotional information, offering opportunities to participate in events, and providing services and advertisements based on demographic characteristics.<br>
+                            The Company may also contact data subjects using such personal information for promotional activities or solicitation related to goods or services.<br>
+                            5. Categories and Status of Personal Information Collected<br>
+                            - Personal Information Collected: Login ID, name, telephone number, email address, password, age, gender, year of birth, region, company/organization name, survey results, and address<br>
+                            - Collection Methods: Website, KINTEX App, pre-registration through organizer exhibition websites, written forms, online and offline events<br>
+                            - Basis for Retention: Consent to the Privacy Policy upon membership registration (personal information for marketing purposes retained for five years)<br><br>
+
+                            <div class="form_pri_titt">Article 2 (Processing and Retention Period of Personal Information)</div>
+                            1. The Company processes and retains personal information within the retention and usage period prescribed by applicable laws or agreed to by the data subject at the time of collection.<br>
+                            2. The retention periods for each category of personal information are as follows:<br>
+                            1) Website Membership Registration and Management: Until membership withdrawal<br>
+                            However, personal information may be retained until the relevant matter is resolved in the following cases:<br>
+                            - Where investigations or inquiries related to violations of applicable laws are ongoing, until such investigations or inquiries are completed<br>
+                            2) Provision of Goods or Services: Until the supply of goods or services and payment settlement have been completed<br>
+                            However, personal information may be retained until the applicable retention period expires in the following cases:<br>
+                            -  Records relating to labeling, advertising, contract details, and performance of contracts under the Act on Consumer Protection in Electronic Commerce, etc.<br>
+                            • Records on labeling and advertising: 6 months<br>
+                            • Records on contracts, subscription withdrawals, payment processing, and supply of goods: 5 years<br>
+                            • Records on consumer complaints and dispute resolution: 3 years<br><br>
+
+                            <div class="form_pri_titt">Article 3 (Provision of Personal Information to Third Parties)</div>
+                            1. The Company processes personal information only within the scope specified in Article 1 (Purpose of Processing Personal Information). Personal information may be provided to third parties only with the consent of the data subject or where permitted under Article 17 of the Personal Information Protection Act and other applicable laws.
+                            <br>
+                            2. The Company may provide personal information to third parties as follows:<br>
+                            - Recipient: Organizers of exhibitions and convention events using the free or paid services of the KINTEX App<br>
+                            • Purpose of Use: Provision of free exhibition/convention services, paid payment services, joint event hosting, marketing, advertising, and related activities<br>
+                            • Information Provided: User ID, name, mobile phone number, region classification, gender, year of birth, company/organization name, referrer (ID or name), and survey information related to each exhibition/convention event
+                            <br><br>
+
+                            - Recipient: Association of Korean Exhibition Industry (AKEI)<br>
+                            • Purpose of Use: Provision of information for exhibition certification by the Association of Korean Exhibition Industry<br>
+                            • Information Provided: User ID, name, mobile phone number, region classification, gender, year of birth, company/organization name, referrer (ID or name), and survey information related to each exhibition/convention event<br><br>
+
+                            <div class="form_pri_titt">Article 4 (Entrustment of Personal Information Processing)</div>
+                            1. The Company entrusts the following personal information processing tasks for efficient management of personal information.<br>
+                            - Entrusting Party: KINTEX<br>
+                            - Entrusted Party: SVM Planet<br>
+                            - Scope of Entrusted Work: Management and operation of the Korea International Boat Show website<br>
+                            - Entrustment Period: Until termination of the entrustment agreement<br>
+                            2. When entering into an entrustment agreement, the Company specifies matters concerning responsibilities such as prohibition of personal information processing beyond the purpose of the entrusted work, technical and administrative safeguards, restrictions on re-entrustment, supervision and management of the entrusted party, and liability for damages in accordance with the Personal Information Protection Act. The Company also supervises whether the entrusted party processes personal information safely.<br>
+                            3. If the details of the entrusted work or the entrusted party change, the Company will disclose such changes without delay through this Privacy Policy.<br><br>
+
+                            <div class="form_pri_titt">Article 5 (Rights and Obligations of Data Subjects and Methods of Exercise)</div>
+                            1. Data subjects may exercise the following rights related to personal information protection at any time:<br>
+                            - Request access to personal information<br>
+                            - Request correction of inaccurate information<br>
+                            - Request deletion of personal information<br>
+                            - Request suspension of processing 요구<br>
+                            2. These rights may be exercised through written requests, telephone, email, fax, or other methods, and the Company will take action without delay.<br>
+                            3. If a data subject requests correction or deletion of personal information, the Company shall not use or provide the relevant personal information until such correction or deletion has been completed.<br>
+                            4. The rights under Paragraph 1 may also be exercised through a legal representative or authorized agent. In such cases, a power of attorney in the form prescribed by the Enforcement Rules of the Personal Information Protection Act must be submitted.<br>
+                            5. Data subjects shall not infringe upon their own or others’ personal information and privacy by violating the Personal Information Protection Act or other applicable laws.<br><br>
+
+                            <div class="form_pri_titt">Article 6 (Categories of Personal Information Processed)</div>
+                            The Company processes the following categories of personal information:<br>
+                            1. Website/App Membership Registration and Management<br>
+                            - Required Information: User ID, name, mobile phone number, region classification, gender, year of birth<br>
+                            - Optional Information: Company/organization affiliation, referrer (ID or name), survey responses<br>
+                            2. Provision of Services<br>
+                            - Required Information: User ID, name, mobile phone number, region classification, gender, year of birth<br>
+                            - Optional Information: Company/organization affiliation, referrer (ID or name), survey responses, previous purchase history<br>
+                            3. During the use of Internet services, the following information may be automatically generated and collected:<br>
+                            - IP address, cookies, MAC address, service usage records, visit history, records of improper use, and similar information<br><br>
+
+                            <div class="form_pri_titt">Article 7 (Destruction of Personal Information)</div>
+                            1. The Company shall promptly destroy personal information when it becomes unnecessary, such as upon expiration of the retention period or achievement of the purpose of processing.<br>
+                            2. If personal information must be retained in accordance with other applicable laws even after the retention period agreed upon by the data subject has expired or the purpose of processing has been achieved, such personal information shall be transferred to a separate database (DB) or stored in a different location.<br>
+                            3. The procedures and methods for destroying personal information are as follows:<br>
+                            - Destruction Procedure: The Company shall immediately destroy personal information when grounds for destruction arise.<br>
+                            - Destruction Method: Personal information stored in electronic file form shall be destroyed using methods such as deletion of database records to prevent recovery. Personal information recorded or stored in paper documents shall be destroyed by shredding or incineration.<br><br>
+
+                            <div class="form_pri_titt">Article 8 (Measures to Ensure the Security of Personal Information)</div>
+                            The Company takes the following measures to ensure the security of personal information:<br>
+                            1. Administrative Measures: Establishment and implementation of internal management plans, regular employee training, etc.<br>
+                            2. Technical Measures: Management of access rights to personal information processing systems, access control, encryption of unique identification information, installation of security software, etc.<br>
+                            3. Physical Measures: Access control to computer rooms, document storage rooms, and other restricted areas.<br><br>
+
+                            <div class="form_pri_titt">Article 9 (Installation, Operation, and Refusal of Automatic Personal Information Collection Devices)</div>
+                            1. The Company may use “cookies” to store and retrieve user information in order to provide customized services.<br>
+                            2. Cookies are small amounts of information sent by the website server (HTTP) to the user's web browser and may be stored on the hard drive of the user's computer.<br>
+                            - Purpose of Cookie Use: Cookies are used to analyze visit patterns, service usage, popular search terms, security access status, and other information regarding services and websites visited by users in order to provide optimized information.<br>
+                            - Installation, Operation, and Refusal of Cookies: Users may refuse the storage of cookies by adjusting the settings under Tools > Internet Options > Privacy in their web browser.<br>
+                            - Refusing the storage of cookies may result in difficulties in using customized services.<br><br>
+
+                            <div class="form_pri_titt">Article 10 (Chief Privacy Officer)</div>
+                            1. The Company designates the following personnel as responsible for overseeing personal information processing and handling complaints and remedies related to personal information protection.<br>
+                            ▶ Chief Privacy Officer: Executive Vice President, Business Division<br>
+                            ▶ Personal Information Protection Manager<br>
+                            Department: Exhibition Business Team 3<br>
+                            Manager: Ki-Hoon Koo, Team Leader<br>
+                            Contact: +82-31-995-8771 / ghkoo@kintex.com<br><br>
+
+                            ▶ Personal Information Protection Officer<br>
+                            Department: Exhibition Business Team 3<br>
+                            Officer: Byung-Hoon Oh, Deputy General Manager<br>
+                            Contact: +82-31-995-8777 / sky@kintex.com<br><br>
+
+                            2. Data subjects may contact the department responsible for personal information protection regarding any inquiries, complaints, or requests for remedies arising from the use of the Company's services or business activities. The Company will respond and process such inquiries without delay.<br><br>
+
+                            <div class="form_pri_titt">Article 11 (Request for Access to Personal Information)</div>
+                            Data subjects may request access to their personal information pursuant to Article 35 of the Personal Information Protection Act through the department listed below. The Company will make every effort to ensure that such requests are processed promptly.<br>
+                            ▶ Department Responsible for Receiving and Processing Requests for Access to Personal Information: Exhibition Business Team 2<br><br>
+
+                            <div class="form_pri_titt">Article 12 (Remedies for Infringement of Rights and Interests)</div>
+                            Data subjects may contact the following organizations for consultation, dispute resolution, or remedies related to personal information infringement.<br>
+                            (The organizations listed below are independent of the Company. If you are not satisfied with the Company's handling of personal information complaints or remedies, or if you require further assistance, please contact the relevant organization directly.)<br><br>
+
+                            ▶ Personal Information Infringement Report Center (operated by the Korea Internet & Security Agency, KISA)<br>
+                            - Responsibilities: Reporting personal information infringements and requesting consultation<br>
+                            - Website: privacy.kisa.or.kr<br>
+                            - Phone: 118 (without area code)<br>
+                            - Address: Personal Information Infringement Report Center, 3rd Floor, 9 Jinheung-gil, Naju-si, Jeollanam-do 58324, Republic of Korea<br><br>
+
+                            ▶ Personal Information Dispute Mediation Committee<br>
+                            - Responsibilities: Personal information dispute mediation and collective dispute mediation (civil resolution)<br>
+                            - Website: www.kopico.go.kr<br>
+                            - Phone: 1833-6972 (without area code)<br>
+                            - Address: 4th Floor, Government Complex-Seoul, 209 Sejong-daero, Jongno-gu, Seoul 03171, Republic of Korea<br><br>
+
+                            ▶ Cyber Crime Investigation Division, Supreme Prosecutors’ Office: 02-3480-3573 (www.spo.go.kr)<br><br>
+
+                            ▶ Cyber Bureau, National Police Agency: 182 (http://cyberbureau.police.go.kr)<br><br>
+
+                            <div class="form_pri_titt">Article 13 (Installation and Operation of Video Information Processing Devices)</div>
+                            1. KINTEX installs and operates video information processing devices as follows:<br>
+                            - Purpose of Installation and Operation: Facility security and fire prevention at KINTEX<br>
+                            - Number of Devices, Installation Locations, and Recording Scope: Installed in major facilities such as exhibition hall lobbies and exhibition halls, recording all areas of major facilities<br>
+                            - Responsible Department and Authorized Personnel with Access to Video Information: Facility Operations Team<br>
+                            - Recording Hours, Retention Period, Storage Location, and Processing Method<br>
+                            • Recording Hours: 24-hour continuous recording<br>
+                            • Storage Location and Processing Method: Stored and managed in the video information control room<br>
+                            - Method and Location for Accessing Video Information: Facility Operations Team<br>
+                            - Procedures for Requests to Access Video Information: Requests must be submitted using a Personal Video Information Access/Existence Confirmation Request Form. Access is granted only when the data subject appears in the footage or when access is clearly necessary to protect the life, body, or property interests of the data subject.<br>
+                            - Technical, Administrative, and Physical Measures for Protecting Video Information: Establishment of internal management plans, access control and restrictions, secure storage and transmission technologies, maintenance of processing records and prevention of forgery or alteration, provision of secure storage facilities and locking devices, etc.<br><br>
+
+                            <div class="form_pri_titt">Article 14 (Consent to Photography and Video Recording)</div>
+                            1) Photography and video recording may take place at the exhibition venue.<br>
+                            2) Purpose of Recording<br>
+                            ① Promotion of this event and future exhibitions and conferences<br>
+                            ② Inclusion in exhibition-related press releases and official documents<br>
+                            ③ Use in promotional materials for the Korea International Boat Show<br>
+                            3) Recorded materials will not be used for any purpose other than those specified above.<br><br>
+
+                            * You have the right to refuse consent to the collection and use of personal information and the provision of personal information to third parties. However, if you refuse to provide consent, certain services may be restricted.
+                        </div>
+                        <div class="form_pri_agree">
+                            <label><input type="radio" name="agree1" value="Y">Agree</label>
+                            <label><input type="radio" name="agree1" value="N">Disagree</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- //약관 -->
+
+                <!-- 약관 -->
+                <div class="form_wrap">
+                    <div class="form_tit">
+                        <div class="big">Third-Party Information Sharing Consent</div>
+                    </div>
+                    <div class="form_pri">
+                        <div class="form_pri_box">
+                            ① Recipient of Personal Information: Participating Companies in the 2026 Korea International Boat Show Online Exhibition Hall <br>
+                            ② Purpose of Use by the Recipient: Customer management and consultation services, marketing and sales activities, and customer profile analysis (including gender, age, and areas of interest) <br>
+                            ③ Personal Information Provided: Name, telephone number, e-mail address, company/organization name, region, gender, age group, product interests, website usage records, cookies, and related information <br>
+                            ④ Retention and Use Period by the Recipient: Two (2) years from the date of provision <br>
+                            ⑤ You have the right to refuse consent to the provision of your personal information. However, if you refuse to provide consent, the “Consultation Reservation Service” may not be available or may not function properly.
+                        </div>
+                        <div class="form_pri_agree">
+                            <label><input type="radio" name="agree2" value="Y">Agree</label>
+                            <label><input type="radio" name="agree2" value="N">Disagree</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- //약관 -->
+
+                <!-- 약관 -->
+                <div class="form_wrap">
+                    <div class="form_tit">
+                        <div class="big">Safety Compliance Agreement</div>
+                    </div>
+                    <div class="form_pri">
+                        <div class="form_pri_box">
+                            1. Do not lean on, apply force to, or otherwise impact any structures, installations, exhibits, or products within the exhibition venue or exhibitor booths.<br>
+                            2. When using any structures, installations, exhibits, or products within the exhibition venue or exhibitor booths, participants shall exercise caution to prevent accidents, follow the instructions of event staff, and comply with all safety guidelines.<br><br>
+                            I have read and understood the above safety precautions. The Organizer shall not be held responsible for any accidents or damages resulting from failure to comply with these guidelines.
+                        </div>
+                        <div class="form_pri_agree">
+                            <label><input type="radio" name="agree3" value="Y">Agree</label>
+                            <label><input type="radio" name="agree3" value="N">Disagree</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- //약관 -->
+
+                <!-- 안내문구 -->
+                <div class="form_wrap">
+                    <div class="form_pri">
+                        <div class="form_pri_item">
+                            &lt;Early Registration (Round 1)&gt;<br>
+                            - Period : 2026. 1 .1 ~ 2026. 2. 15<br>
+                            - Fee : Free<br><br>
+                            &lt;Early Registration (Round 2)&gt;<br>
+                            - Period : 2026. 2. 16 ~ 2026. 3. 3<br>
+                            - Fee : KRW 5,000 (50% discount) * Payment required on-site.<br>
+
+                            <br>
+                            ※ A confirmation email will be sent after registration. Please enter your information accurately.<br>
+                            ※ Pre-registration is valid for one day only during the event period.
+                        </div>
+                    </div>
+                </div>
+                <!-- //안내문구 -->
+
+                <!--begin::Form-->
+                <form id="joinForm" name="joinForm" method="post" onsubmit="return false;">
+
+                    <!-- 참관 구분 -->
+                    <div class="form_wrap">
+                        <div class="form_tit">
+                            <div class="big">Visitor Type</div>
+                        </div>
+                        <ul class="form_box">
+                            <li>
+                                <div class="input check w-100">
+                                    <label><input type="radio" name="partGbn" value="바이어">Buyers</label>
+                                    <label><input type="radio" name="partGbn" value="일반관람">General Visitor</label>
+                                    <div class="cmnt">Visitor type cannot be changed after registration.</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 행사 구분 -->
+                    <div class="form_wrap">
+                        <div class="form_tit">
+                            <div class="big">Event</div>
+                        </div>
+                        <ul class="form_box">
+                            <li>
+                                <div class="input check w-100">
+                                    <label><input type="radio" name="eventGbn" value="경기국제보트쇼">Korea International Boat Show(KIBS)·Korea International Fishing Show(KOFISH)</label>
+                                    <label><input type="radio" name="eventGbn" value="코리아서프쇼">Korea International Surf Show(KISS)</label>
+                                    <label><input type="radio" name="eventGbn" value="해양관광전">Korea Marine Travel Show(KMTS)</label>
+                                    <div class="cmnt">Please select the event you will attend.</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 참관객 정보 -->
+                    <div class="form_wrap">
+                        <div class="form_tit">
+                            <div class="big">Event Selection</div>
+                        </div>
+                        <ul class="form_box">
+                            <li>
+                                <div class="item req">
+                                    <p>Name</p>
+                                </div>
+                                <div class="input">
+                                    <input type="text" id="name" name="name" placeholder="Please enter your name.">
+                                </div>
+                            </li>
+                            <li class="w50">
+                                <div class="item">
+                                    <p>Tel</p>
+                                </div>
+                                <div class="input">
+                                    <select id="telCode">
+                                        <option value="+82" selected>+82 (KOR)</option>
+                                        <option value="+1">+1 (USA/CAN)</option>
+                                        <option value="+44">+44 (GBR)</option>
+                                        <option value="+49">+49 (DEU)</option>
+                                        <option value="+61">+61 (AUS)</option>
+                                        <option value="+81">+81 (JPN)</option>
+                                        <option value="+86">+86 (CHN)</option>
+                                        <option value="+91">+91 (IND)</option>
+                                    </select>
+                                    <input type="tel" id="tel" name="tel" class="onlyGeneralTel" maxlength="14" placeholder="Numbers only. Hyphens are added automatically.">
+                                </div>
+                            </li>
+                            <li class="w50">
+                                <div class="item req">
+                                    <p>Phone</p>
+                                </div>
+                                <div class="input">
+                                    <select id="phoneCode">
+                                        <option value="+82" selected>+82 (KOR)</option>
+                                        <option value="+1">+1 (USA/CAN)</option>
+                                        <option value="+44">+44 (GBR)</option>
+                                        <option value="+49">+49 (DEU)</option>
+                                        <option value="+61">+61 (AUS)</option>
+                                        <option value="+81">+81 (JPN)</option>
+                                        <option value="+86">+86 (CHN)</option>
+                                        <option value="+91">+91 (IND)</option>
+                                    </select>
+                                    <input type="tel" id="phone" name="phone" class="onlyTel" inputmode="numeric"
+                                           pattern="[0-9]*"
+                                           autocomplete="off" placeholder="Numbers only. Hyphens are added automatically.">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item req">
+                                    <p>E-mail</p>
+                                </div>
+                                <div class="input email">
+                                    <input type="text" id="email" name="email" placeholder="E-mail" class="email_input1">
+                                    <span>@</span>
+                                    <input type="text" id="domain" name="domain" placeholder="Domain" class="email_input2">
+                                    <select id="email_select">
+                                        <option selected>Direct Input</option>
+                                        <option value="daum.net">daum.net</option>
+                                        <option value="nate.com">nate.com</option>
+                                        <option value="hanmail.net">hanmail.net</option>
+                                        <option value="naver.com">naver.com</option>
+                                        <option value="hotmail.com">hotmail.com</option>
+                                        <option value="yahoo.co.kr">yahoo.co.kr</option>
+                                        <option value="empal.com">empal.com</option>
+                                        <option value="korea.com">korea.com</option>
+                                        <option value="hanmir.com">hanmir.com</option>
+                                        <option value="dreamwiz.com">dreamwiz.com</option>
+                                        <option value="orgio.net">orgio.net</option>
+                                        <option value="korea.com">korea.com</option>
+                                        <option value="hitel.net">hitel.net</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item req" id="companyNameDiv">
+                                    <p>Company Name</p>
+                                </div>
+                                <div class="input companyNameBox" style="flex-wrap: wrap">
+                                    <input class="companyNameInput" type="text" id="companyName" name="companyName" placeholder="Company Name">
+                                    <input class="companyNameSh" type="button" value="Search">
+                                    <input type="text" id="companyAddress" name="companyAddress" placeholder="Company Address">
+                                    <div class="cmnt">If no result is found, please enter the information manually.</div>
+                                    <div class="cmnt">Enter the exact company name for better search results.</div>
+                                    <div class="cmnt">Company information is provided via the data.go.kr Open API.</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item">
+                                    <p>Accompanying Minor</p>
+                                </div>
+                                <div class="input check">
+                                    <label><input type="radio" name="partnerYn" id="Y" value="Y">Yes</label>
+                                    <label><input type="radio" name="partnerYn" id="N" value="N" checked>No</label>
+                                    <div class="cmnt">Only accompanying minors (aged 0-18) may be registered.</div>
+                                </div>
+                            </li>
+                        </ul>
+
                         <ul class="form_box visitPartnerBox" style="border-top:0;">
                             <li class="form_in_tit">
                                 Companion #<span class="visitPartnerNum">1</span>
@@ -195,200 +462,107 @@
                                     <p>Age</p>
                                 </div>
                                 <div class="input">
-                                    <input type="text" name="partnerAge" class="onlyNum" maxlength="2">
+                                    <input type="text" name="partnerAge" class="onlyChildAge" maxlength="2" placeholder="Age (0~18 years old)">
                                 </div>
                             </li>
                         </ul>
-                    </c:if>
-
-                    <c:if test="${not empty partnerList}">
-                    <c:forEach var="partner" items="${partnerList}" begin="0" end="${partnerList.size()}" step="1" varStatus="status">
-                        <ul class="form_box visitPartnerBox" style="border-top:0;">
-                            <li class="form_in_tit">
-                                Companion #<span class="visitPartnerNum">${status.index + 1}</span>
-                                <span class="del_btn visitPartnerDel">Delete</span>
-                                <input type="hidden" name="partnerSeq" value="${partner.seq}">
-                            </li>
-                            <li class="w50">
-                                <div class="item req">
-                                    <p>Name</p>
-                                </div>
-                                <div class="input">
-                                    <input type="text" name="partnerName" value="${partner.partnerName}">
-                                </div>
-                            </li>
-                            <li class="w50">
-                                <div class="item req">
-                                    <p>Age</p>
-                                </div>
-                                <div class="input">
-                                    <input type="text" name="partnerAge" value="${partner.partnerAge}" class="onlyNum" maxlength="2">
-                                </div>
-                            </li>
-                        </ul>
-                    </c:forEach>
-                    </c:if>
-
-                    <div class="formAddBtn"><span class="visitPartnerAdd">Add</span></div>
-                </div>
-                <!-- //참관객 정보 -->
-
-                <!-- 설문항목 -->
-                <div class="form_wrap">
-                    <div class="form_tit">
-                        <div class="big">Visitor Survey</div>
+                        <div class="formAddBtn"><span class="visitPartnerAdd">Add</span></div>
                     </div>
-                    <ul class="form_box">
-                        <li class="w50">
-                            <div class="item req">
-                                <p>Gender</p>
-                            </div>
-                            <div class="input check">
-                                <label><input type="radio" name="sex" value="남자" <c:if test="${info.sex eq '남자'}">checked</c:if> >Male</label>
-                                <label><input type="radio" name="sex" value="여자" <c:if test="${info.sex eq '여자'}">checked</c:if> >Female</label>
-                            </div>
-                        </li>
-                        <li class="w50">
-                            <div class="item req">
-                                <p>Country</p>
-                            </div>
-                            <div class="input">
-                                <script src="/js/country.js"></script>
-                                <select id="country" name="country">
-                                </select>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item req">
-                                <p>Age</p>
-                            </div>
-                            <div class="input check">
-                                <label><input type="radio" name="ageGroup" value="10" <c:if test="${info.ageGroup eq '10' or info.ageGroup eq null}">checked</c:if> >10s</label>
-                                <label><input type="radio" name="ageGroup" value="20" <c:if test="${info.ageGroup eq '20'}">checked</c:if> >20s</label>
-                                <label><input type="radio" name="ageGroup" value="30" <c:if test="${info.ageGroup eq '30'}">checked</c:if> >30s</label>
-                                <label><input type="radio" name="ageGroup" value="40" <c:if test="${info.ageGroup eq '40'}">checked</c:if> >40s</label>
-                                <label><input type="radio" name="ageGroup" value="50" <c:if test="${info.ageGroup eq '50'}">checked</c:if> >50s</label>
-                                <label><input type="radio" name="ageGroup" value="60" <c:if test="${info.ageGroup eq '60'}">checked</c:if> >Over 60s</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item req">
-                                <p>Classification</p>
-                            </div>
-                            <div class="input check">
-                                <label><input type="checkbox" name="observationGbn" value="조종면허 보유자" <c:if test="${fn:contains(info.observationGbn, '조종면허 보유자')}">checked</c:if> >Boat driver’s license holder</label>
-                                <label><input type="checkbox" name="observationGbn" value="보트 소유자" <c:if test="${fn:contains(info.observationGbn, '보트 소유자')}">checked</c:if> >Boat owner</label>
-                                <label><input type="checkbox" name="observationGbn" value="보트 구매 예정자" <c:if test="${fn:contains(info.observationGbn, '보트 구매 예정자')}">checked</c:if> >Potential boat buyer</label>
-                                <label><input type="checkbox" name="observationGbn" value="관련 업종 종사자" <c:if test="${fn:contains(info.observationGbn, '관련 업종 종사자')}">checked</c:if> >Marine industry employee</label>
-                                <label><input type="checkbox" name="observationGbn" value="낚시 매니아" <c:if test="${fn:contains(info.observationGbn, '낚시 매니아')}">checked</c:if> >Fishing maniac</label>
-                                <label><input type="checkbox" name="observationGbn" value="다이빙 매니아" <c:if test="${fn:contains(info.observationGbn, '다이빙 매니아')}">checked</c:if> >Diving maniac</label>
-                                <label><input type="checkbox" name="observationGbn" value="캠핑카 매니아" <c:if test="${fn:contains(info.observationGbn, '캠핑카 매니아')}">checked</c:if> >Outdoor/Caravan maniac</label>
-                                <label><input type="checkbox" name="observationGbn" value="학생" <c:if test="${fn:contains(info.observationGbn, '학생')}">checked</c:if> >Students</label>
-                                <label><input type="checkbox" name="observationGbn" value="일반관람" <c:if test="${fn:contains(info.observationGbn, '일반관람')}">checked</c:if> >Leisure visitor</label>
-                                <label><input type="checkbox" name="observationGbn" value="기타" <c:if test="${fn:contains(info.observationGbn, '기타')}">checked</c:if> >Others</label>
-                                <div class="cmnt">Multiple choice available</div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item req">
-                                <p>Purpose of visit</p>
-                            </div>
-                            <div class="input check">
-                                <label><input type="checkbox" name="visitPurpose" value="업계동향 파악 및 정보수집" <c:if test="${fn:contains(info.visitPurpose, '업계동향 파악 및 정보수집')}">checked</c:if> >Market research</label>
-                                <label><input type="checkbox" name="visitPurpose" value="제품구매 및 기술도입 상담" <c:if test="${fn:contains(info.visitPurpose, '제품구매 및 기술도입 상담')}">checked</c:if> >Product / Technology purchasing consultation</label>
-                                <label><input type="checkbox" name="visitPurpose" value="기존 거래업체 방문" <c:if test="${fn:contains(info.visitPurpose, '기존 거래업체 방문')}">checked</c:if> >Visit supplier company / clients</label>
-                                <label><input type="checkbox" name="visitPurpose" value="차기 전시회 참가여부 파악" <c:if test="${fn:contains(info.visitPurpose, '차기 전시회 참가여부 파악')}">checked</c:if> >Survey on intention of participation to other exhibitions</label>
-                                <label><input type="checkbox" name="visitPurpose" value="일반관람" <c:if test="${fn:contains(info.visitPurpose, '일반관람')}">checked</c:if> >General visit/sightseeing</label>
-                                <label><input type="checkbox" name="visitPurpose" value="기타" <c:if test="${fn:contains(info.visitPurpose, '기타')}">checked</c:if> >Others</label>
-                                <div class="cmnt">Multiple choice available</div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item req">
-                                <p>Area of interest</p>
-                            </div>
-                            <div class="input check">
-                                <label><input type="checkbox" name="interestItem" value="요트/보트" <c:if test="${fn:contains(info.interestItem, '요트/보트')}">checked</c:if> >Yacht&Boat</label>
-                                <label><input type="checkbox" name="interestItem" value="워크보트" <c:if test="${fn:contains(info.interestItem, '워크보트')}">checked</c:if> >Work boats</label>
-                                <label><input type="checkbox" name="interestItem" value="낚시" <c:if test="${fn:contains(info.interestItem, '낚시')}">checked</c:if> >Fishing</label>
-                                <label><input type="checkbox" name="interestItem" value="다이빙" <c:if test="${fn:contains(info.interestItem, '다이빙')}">checked</c:if> >Diving</label>
-                                <label><input type="checkbox" name="interestItem" value="카누/카약/무동력" <c:if test="${fn:contains(info.interestItem, '카누/카약/무동력')}">checked</c:if> >Canoe / Kayak / Row boats</label>
-                                <label><input type="checkbox" name="interestItem" value="워터스포츠" <c:if test="${fn:contains(info.interestItem, '워터스포츠')}">checked</c:if> >Watersports</label>
-                                <label><input type="checkbox" name="interestItem" value="해양부품" <c:if test="${fn:contains(info.interestItem, '해양부품')}">checked</c:if> >Marine Equipment</label>
-                                <label><input type="checkbox" name="interestItem" value="캠핑" <c:if test="${fn:contains(info.interestItem, '캠핑')}">checked</c:if> >Camping</label>
-                                <label><input type="checkbox" name="interestItem" value="친환경" <c:if test="${fn:contains(info.interestItem, '친환경')}">checked</c:if> >Eco Friendly Marine</label>
-                                <label><input type="checkbox" name="interestItem" value="해양관광" <c:if test="${fn:contains(info.interestItem, '해양관광')}">checked</c:if> >Marine Tourism</label>
-                                <label><input type="checkbox" name="interestItem" value="기타" <c:if test="${fn:contains(info.interestItem, '기타')}">checked</c:if> >Others</label>
-                                <div class="cmnt">Multiple choice available</div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item req">
-                                <p>Where did you find us?</p>
-                            </div>
-                            <div class="input check">
-                                <label><input type="checkbox" name="recognizePath" value="뉴스레터" <c:if test="${fn:contains(info.recognizePath, '뉴스레터')}">checked</c:if> >E-mail newsletter</label>
-                                <label><input type="checkbox" name="recognizePath" value="옥외광고물" <c:if test="${fn:contains(info.recognizePath, '옥외광고물')}">checked</c:if> >Outdoor advertisement</label>
-                                <label><input type="checkbox" name="recognizePath" value="홈페이지" <c:if test="${fn:contains(info.recognizePath, '홈페이지')}">checked</c:if> >Website</label>
-                                <label><input type="checkbox" name="recognizePath" value="전문지" <c:if test="${fn:contains(info.recognizePath, '전문지')}">checked</c:if> >Specialized Magazine</label>
-                                <label><input type="checkbox" name="recognizePath" value="온라인 커뮤니티" <c:if test="${fn:contains(info.recognizePath, '온라인 커뮤니티')}">checked</c:if> >Blog, etc.</label>
-                                <label><input type="checkbox" name="recognizePath" value="오프라인매장" <c:if test="${fn:contains(info.recognizePath, '오프라인매장')}">checked</c:if> >Offline partner shop</label>
-                                <label><input type="checkbox" name="recognizePath" value="소셜 네트워크" <c:if test="${fn:contains(info.recognizePath, '소셜 네트워크')}">checked</c:if> >SNS</label>
-                                <label><input type="checkbox" name="recognizePath" value="초청장" <c:if test="${fn:contains(info.recognizePath, '초청장')}">checked</c:if> >Invitation letter</label>
-                                <label><input type="checkbox" name="recognizePath" value="방송광고" <c:if test="${fn:contains(info.recognizePath, '방송광고')}">checked</c:if> >TV advertisement</label>
-                                <label><input type="checkbox" name="recognizePath" value="KIBS 참석" <c:if test="${fn:contains(info.recognizePath, 'KIBS 참석')}">checked</c:if> >Participants to KIBS 2024</label>
-                                <label><input type="checkbox" name="recognizePath" value="낚시박람회" <c:if test="${fn:contains(info.recognizePath, '낚시박람회')}">checked</c:if> >Fishing Fair</label>
-                                <label><input type="checkbox" name="recognizePath" value="기타" <c:if test="${fn:contains(info.recognizePath, '기타')}">checked</c:if> >Others</label>
-                                <div class="cmnt">Multiple choice available</div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item">
-                                <p>Whether you attended the last exhibition</p>
-                            </div>
-                            <div class="input check">
-                                <label><input type="checkbox" name="preObservationGbn" value="first" <c:if test="${fn:contains(info.preObservationGbn, 'first')}">checked</c:if> >One's first visit </label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2008" <c:if test="${fn:contains(info.preObservationGbn, '2008')}">checked</c:if> >2008</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2009" <c:if test="${fn:contains(info.preObservationGbn, '2009')}">checked</c:if> >2009</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2010" <c:if test="${fn:contains(info.preObservationGbn, '2010')}">checked</c:if> >2010</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2011" <c:if test="${fn:contains(info.preObservationGbn, '2011')}">checked</c:if> >2011</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2012" <c:if test="${fn:contains(info.preObservationGbn, '2012')}">checked</c:if> >2012</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2013" <c:if test="${fn:contains(info.preObservationGbn, '2013')}">checked</c:if> >2013</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2014" <c:if test="${fn:contains(info.preObservationGbn, '2014')}">checked</c:if> >2014</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2015" <c:if test="${fn:contains(info.preObservationGbn, '2015')}">checked</c:if> >2015</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2016" <c:if test="${fn:contains(info.preObservationGbn, '2016')}">checked</c:if> >2016</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2017" <c:if test="${fn:contains(info.preObservationGbn, '2017')}">checked</c:if> >2017</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2018" <c:if test="${fn:contains(info.preObservationGbn, '2018')}">checked</c:if> >2018</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2019" <c:if test="${fn:contains(info.preObservationGbn, '2019')}">checked</c:if> >2019</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2020" <c:if test="${fn:contains(info.preObservationGbn, '2020')}">checked</c:if> >2020</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2021" <c:if test="${fn:contains(info.preObservationGbn, '2021')}">checked</c:if> >2021</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2022" <c:if test="${fn:contains(info.preObservationGbn, '2022')}">checked</c:if> >2022</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2023" <c:if test="${fn:contains(info.preObservationGbn, '2023')}">checked</c:if> >2023</label>
-                                <label><input type="checkbox" name="preObservationGbn" value="2024" <c:if test="${fn:contains(info.preObservationGbn, '2024')}">checked</c:if> >2024</label>
-                            </div>
-                        </li>
-                    </ul>
+                    <!-- //참관객 정보 -->
+
+                    <!-- 설문항목 -->
+                    <div class="form_wrap">
+                        <div class="form_tit">
+                            <div class="big">Survey</div>
+                        </div>
+                        <ul class="form_box">
+                            <li>
+                                <div class="item req">
+                                    <p>Gender</p>
+                                </div>
+                                <div class="input check">
+                                    <label><input type="radio" name="sex" value="남자">Male</label>
+                                    <label><input type="radio" name="sex" value="여자">Female</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item req">
+                                    <p>Region</p>
+                                </div>
+                                <div class="input">
+                                    <script src="/js/sido_en.js?ver=20260630"></script>
+                                    <select name="sido" class="w50" style="line-height: 1;"></select>
+                                    <select name="gugun" class="w50"></select>
+                                    <div class="cmnt">Please select “Foreigner” as your region if you are a foreign participant.</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item req">
+                                    <p>Age Group</p>
+                                </div>
+                                <div class="input check">
+                                    <label><input type="radio" name="ageGroup" value="10">Teenager</label>
+                                    <label><input type="radio" name="ageGroup" value="20">20s</label>
+                                    <label><input type="radio" name="ageGroup" value="30">30s</label>
+                                    <label><input type="radio" name="ageGroup" value="40">40s</label>
+                                    <label><input type="radio" name="ageGroup" value="50">50s</label>
+                                    <label><input type="radio" name="ageGroup" value="60">60+</label>
+                                </div>
+                            </li>
+                            <li id="observationGbnDiv">
+                                <div class="item req">
+                                    <p>Viewing Categories</p>
+                                </div>
+                                <div class="input check" id="ul_observationGbn"></div>
+                            </li>
+                            <li>
+                                <div class="item req">
+                                    <p id="visitPurposeTitle">Purpose of Visit</p>
+                                </div>
+                                <div class="input check" id="ul_visitPurpose"></div>
+                            </li>
+                            <li>
+                                <div class="item req">
+                                    <p>Items of interest</p>
+                                </div>
+                                <div class="input check" id="ul_interestItem"></div>
+                            </li>
+                            <li>
+                                <div class="item req">
+                                    <p>Cognitive Pathways</p>
+                                </div>
+                                <div class="input check" id="ul_recognizePath"></div>
+                            </li>
+                            <li id="preObservationGbnLi" style="display:none;">
+                                <div class="item">
+                                    <p>Visiting Past Exhibitions</p>
+                                </div>
+                                <div class="input check" id="ul_preObservationGbn"></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- //설문항목 -->
+
+                </form>
+
+                <div class="form_btn_visitor">
+                    <a href="javascript:void(0);" onclick="f_visitor_apply('I')" class="btnSt01">
+                        <div class="big">Pre-register</div>
+                    </a>
                 </div>
-                <!-- //설문항목 -->
 
-            </form>
-
-            <div class="form_btn_visitor">
-                <a href="javascript:void(0);" onclick="f_en_visitor_apply('U')" class="btnSt01">
-                    <div class="big">Modify</div>
-                </a>
             </div>
-
         </div>
+        <!-- //section -->
     </div>
-    <!-- //section -->
 
     <!-- 직장명 검색 팝업 -->
     <div class="popCompanyName popForm popup">
+
         <div class="popup_inner">
             <div class="popup_wrap">
                 <div class="pop_tit">
-                    <div class="tit">Company name search</div>
+                    <div class="tit">Search by workplace name</div>
                     <a class="close" href="#close">
                         <img src="/img/close_w.png">
                     </a>
@@ -397,26 +571,26 @@
                     <div class="pop_cont">
                         <div class="searchBox">
                                 <span class="search">
-                                    <input type="text" id="search_companyName" placeholder="Company name">
+                                    <input type="text" id="search_companyName" placeholder="Enter workplace name">
                                     <button type="button" onclick="f_company_search()">
                                         <img src="/img/icon_search.png">
                                     </button>
                                 </span>
                         </div>
                         <div class="directBox">
-                            <div class="txt">If the registered company is not a business, enter it directly.</div>
-                            <div class="btn btnSt01 directCompanyName">Enter</div>
+                            <div class="txt">If you do not have a registered workplace name<br>Please enter it yourself.</div>
+                            <div class="btn btnSt01 directCompanyName">Direct Input</div>
                         </div>
                         <ul class="companyList">
                             <%--<li>
                                 <a href="">
-                                    <div class="name">미팅팬</div>
-                                    <div class="address">서울특별시 금천구</div>
+                                    <div class="name">미팅팬2</div>
+                                    <div class="address">경기도 부천시 원미구</div>
                                 </a>
                             </li>--%>
                         </ul>
                         <!-- <div class="companyNot">
-                            No results were found for your search.
+                            검색결과가 없습니다.
                         </div> -->
                     </div>
                 </div>
@@ -439,7 +613,7 @@
         <div class="popup_inner">
             <div class="popup_wrap">
                 <div class="pop_tit">
-                    <div class="tit">Enter the company directly</div>
+                    <div class="tit">Enter your workplace name directly</div>
                     <a class="close" href="#close">
                         <img src="/img/close_w.png">
                     </a>
@@ -453,7 +627,7 @@
                                         <p>Company Name</p>
                                     </div>
                                     <div class="input">
-                                        <input type="text" id="pop_companyName" placeholder="Company Name">
+                                        <input type="text" id="pop_companyName" placeholder="Enter company name">
                                     </div>
                                 </li>
                                 <li>
@@ -462,18 +636,17 @@
                                     </div>
                                     <div class="input address">
                                         <div class="address_box">
-                                            <input type="text" id="pop_address" placeholder="Address">
+                                            <input type="text" id="pop_address" placeholder="Enter address">
                                             <input type="button" onclick="execDaumPostcode('pop_address','pop_addressDetail')" value="Search"><br>
-                                            <div id="map" style="width:300px;height:300px;margin-top:10px;display:none">
-                                            </div>
+                                            <div id="map1" style="width:300px;height:300px;margin-top:10px;display:none"></div>
                                         </div>
                                         <div class="address_box" style="margin-top: 10px;">
-                                            <input type="text" id="pop_addressDetail" placeholder="Detailed Address">
+                                            <input type="text" id="pop_addressDetail" placeholder="Enter detailed address">
                                         </div>
                                     </div>
                                 </li>
                             </ul>
-                            <a class="btnSave" onclick="f_company_info_direct_add()">Registration</a>
+                            <a class="btnSave" onclick="f_company_info_direct_add()">Add</a>
                         </div>
                     </div>
                 </div>
@@ -481,22 +654,53 @@
         </div>
     </div>
     <!-- //직장명 직접 입력 팝업 -->
-</div>
 
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
+    <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-<c:if test="${info ne null}">
-    <c:if test="${info.partnerYn eq 'Y'}">
-        <script> $(function(){ $('.visitPartnerBox, .visitPartnerAdd').show(); }); </script>
-    </c:if>
-    <c:if test="${info.partnerYn eq 'N'}">
-        <script> $(function(){ $('.visitPartnerBox, .visitPartnerAdd').hide(); }); </script>
-    </c:if>
+    <script>
+        $(function(){
+            // 1. 행사 구분 변경 이벤트
+            $('input[name=eventGbn]').on('change', function() {
+                if(typeof renderSurveyItems === 'function'){
+                    renderSurveyItems($(this).val(), null);
+                }
+            });
 
-    <c:if test="${info.country ne null and info.country ne ''}">
-        <script> $(function(){ $('#country').val('${info.country}'); $('#country').change(); });</script>
-    </c:if>
-</c:if>
+            // 2. 초기 로딩 시: 행사 구분 기본값 설정 (경기국제보트쇼)
+            let initialEvent = $('input[name=eventGbn]:checked').val();
+            if (!initialEvent) {
+                initialEvent = '경기국제보트쇼';
+                $('input[name=eventGbn][value="경기국제보트쇼"]').prop('checked', true);
+            }
+
+            // 설문 항목 렌더링
+            if(typeof renderSurveyItems === 'function') {
+                renderSurveyItems(initialEvent, null);
+            }
+
+            // 3. 참관 구분 변경 이벤트
+            $('input[type=radio][name=partGbn]').on('change', function(){
+                let partGbn = $(this).val();
+                if(partGbn === '바이어'){
+                    $('#observationGbnDiv').hide();
+                    $('#companyNameDiv').addClass('req');
+                }else{
+                    $('#observationGbnDiv').show();
+                    $('#companyNameDiv').removeClass('req');
+                }
+            });
+
+            // 4. [요청사항 적용] 참관 구분 기본값 설정 (바이어)
+            let currentPartGbn = $('input[name=partGbn]:checked').val();
+            if(!currentPartGbn) {
+                // 바이어를 기본으로 선택하고 change 이벤트 트리거 (UI 동기화)
+                $('input[name=partGbn][value="바이어"]').prop('checked', true).trigger('change');
+            } else {
+                // 이미 선택된 값이 있다면 해당 값으로 UI 동기화
+                $('input[name=partGbn][value="' + currentPartGbn + '"]').trigger('change');
+            }
+        });
+    </script>
 
 </body>
 </html>

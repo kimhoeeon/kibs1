@@ -548,7 +548,7 @@
                                         <p>Region</p>
                                     </div>
                                     <div class="input">
-                                        <script src="/js/sido.js?ver=20260630"></script>
+                                        <script src="/js/sido_en.js?ver=20260630"></script>
                                         <select name="sido" class="w50" style="line-height: 1;"></select>
                                         <select name="gugun" class="w50"></select>
                                         <div class="cmnt">Please select “Foreigner” as your region if you are a foreign participant.</div>

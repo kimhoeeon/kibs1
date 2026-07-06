@@ -137,14 +137,6 @@
                                     <div class="big">Exhibitor Info</div>
                                 </div>
                                 <ul class="form_box">
-                                    <li>
-                                        <div class="item">
-                                            <p>Business No.</p>
-                                        </div>
-                                        <div class="input" style="display: flex; align-items: center;">
-                                            ${info.companyLicenseNum}
-                                        </div>
-                                    </li>
                                     <li class="w50">
                                         <div class="item">
                                             <p>Company Name (Korean)</p>
@@ -218,24 +210,34 @@
                                             <p>Category</p>
                                         </div>
                                         <div class="input">
-                                            ${info.industryPart}
+                                            <c:choose>
+                                                <c:when test="${info.industryPart eq '요트/보트 제조'}">Yacht/Boat Manufacturing</c:when>
+                                                <c:when test="${info.industryPart eq '요트/보트 유통(수입 판매)'}">Yacht/Boat Distribution</c:when>
+                                                <c:when test="${info.industryPart eq '해양 부품(엔진 및 구성품) 제조'}">Marine Parts Manufacturing</c:when>
+                                                <c:when test="${info.industryPart eq '해양 부품(엔진 및 구성품) 판매'}">Marine Parts Sales</c:when>
+                                                <c:when test="${info.industryPart eq '해양 관련 기자재 제조 및 판매'}">Marine Equipment</c:when>
+                                                <c:when test="${info.industryPart eq '수상레저 용품 제조 및 판매'}">Water Leisure Products</c:when>
+                                                <c:when test="${info.industryPart eq '수중레저 용품 제조 및 판매'}">Diving Products</c:when>
+                                                <c:when test="${info.industryPart eq '아웃도어 용품 제조 및 판매'}">Outdoor Products</c:when>
+                                                <c:when test="${info.industryPart eq '마리나 산업'}">Marina Industry</c:when>
+                                                <c:when test="${info.industryPart eq '교육/면허'}">Training & Licensing</c:when>
+                                                <c:when test="${info.industryPart eq '수리'}">Repair</c:when>
+                                                <c:when test="${info.industryPart eq '기타(경기국제보트쇼)'}">Other(KIBS)</c:when>
+                                                <c:when test="${info.industryPart eq '서핑장비'}">Surf Equipment</c:when>
+                                                <c:when test="${info.industryPart eq '의류&패션'}">Apparel & Fashion</c:when>
+                                                <c:when test="${info.industryPart eq '체험&교육프로그램'}">Programs & Training</c:when>
+                                                <c:when test="${info.industryPart eq '라이프스타일'}">Lifestyle</c:when>
+                                                <c:when test="${info.industryPart eq '기타(코리아서프쇼)'}">Other(KISS)</c:when>
+                                                <c:when test="${info.industryPart eq '해양레저 관광상품'}">Marine Tourism</c:when>
+                                                <c:when test="${info.industryPart eq '지역관광콘텐츠'}">Local Tourism</c:when>
+                                                <c:when test="${info.industryPart eq '치유&생태관광'}">Wellness & Ecotourism</c:when>
+                                                <c:when test="${info.industryPart eq '체험 콘텐츠'}">Experience Programs</c:when>
+                                                <c:when test="${info.industryPart eq '기타(해양관광전)'}">Other(KMTS)</c:when>
+                                                <c:otherwise>${info.industryPart}</c:otherwise>
+                                            </c:choose>
                                             <c:if test="${info.industryPart eq '기타'}">
                                                 ( ${info.industryPartEtc} )
                                             </c:if>
-                                        </div>
-                                    </li>
-                                    <li class="w50">
-                                        <div class="item">
-                                            <p>Business License</p>
-                                        </div>
-                                        <div class="input file_box">
-                                            <c:set var="companyLicenseFileSrc" value="${fn:replace(companyLicenseFile.fullFilePath, '/usr/local/tomcat/webapps', '')}" />
-                                            <c:if test="${not fn:contains(companyLicenseFileSrc, '.ai') and not fn:contains(companyLicenseFileSrc, '.pdf')}">
-                                                <img src="${companyLicenseFileSrc}" style="border: 1px solid #009ef7; max-width: 100px; margin-right: 10px;"/>
-                                            </c:if>
-                                            <%--<a href="/file/download.do?path=exhibitor/company/${companyLicenseFile.folderPath}&fileName=${companyLicenseFile.fullFileName}">${companyLicenseFile.fileName}</a>--%>
-                                            <a href="javascript:void(0);" onclick="f_file_download('exhibitor/company/${companyLicenseFile.folderPath}', '${companyLicenseFile.fullFileName}')">${companyLicenseFile.fileName}</a>
-                                            <input type="hidden" name="companyLicenseUploadFile" id="${companyLicenseFile.id}" value="${companyLicenseFile.fullFilePath}">
                                         </div>
                                     </li>
                                     <li class="w50">
@@ -386,7 +388,7 @@
                                             ${info.companyIntroVideo}
                                         </div>
                                     </li>
-                                    <li class="w50">
+                                    <li>
                                         <div class="item">
                                             <p>Company Profile (Korean)</p>
                                         </div>
@@ -394,7 +396,7 @@
                                             ${fn:replace(fn:replace(fn:escapeXml(info.companyIntroKo), CRLF, '<br/>'), LF, '<br/>')}
                                         </div>
                                     </li>
-                                    <li class="w50">
+                                    <li>
                                         <div class="item">
                                             <p>Company Profile (English)</p>
                                         </div>
@@ -402,7 +404,7 @@
                                             ${fn:replace(fn:replace(fn:escapeXml(info.companyIntroEn), CRLF, '<br/>'), LF, '<br/>')}
                                         </div>
                                     </li>
-                                    <li class="w50">
+                                    <li>
                                         <div class="item">
                                             <p>Purpose of KIBS Participation (Korean)</p>
                                         </div>
@@ -410,7 +412,7 @@
                                             ${info.companyPurposeKo}
                                         </div>
                                     </li>
-                                    <li class="w50">
+                                    <li>
                                         <div class="item">
                                             <p>Purpose of KIBS Participation (English)</p>
                                         </div>
@@ -418,7 +420,7 @@
                                             ${info.companyPurposeEn}
                                         </div>
                                     </li>
-                                    <li class="w50">
+                                    <li>
                                         <div class="item">
                                             <p>New Product Info (Korean)</p>
                                         </div>
@@ -426,7 +428,7 @@
                                             ${fn:replace(fn:replace(fn:escapeXml(info.newItemIntroKo), CRLF, '<br/>'), LF, '<br/>')}
                                         </div>
                                     </li>
-                                    <li class="w50">
+                                    <li>
                                         <div class="item">
                                             <p>New Product Info (English)</p>
                                         </div>
