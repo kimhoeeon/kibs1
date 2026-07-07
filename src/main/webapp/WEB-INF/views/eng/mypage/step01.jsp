@@ -945,7 +945,7 @@
                                 </div>
 
                                 <!-- 제품 노출 정보 -->
-                                <script src="/js/online.js"></script>
+                                <script src="/js/online_en.js"></script>
                                 <div class="form_wrap">
                                     <div class="form_tit">
                                         <div class="big">Product Info</div>
