@@ -3,10 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <jsp:include page="../../inc/ad_scripts.jsp" flush="true"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,6 +39,10 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+
+    <jsp:include page="../../inc/common_css.jsp" flush="true"/>
+    <jsp:include page="../../inc/common_js_en.jsp" flush="true"/>
+    <jsp:include page="../../inc/ad_scripts.jsp" flush="true"/>
 
     <style>
         #spinner { width: 100%; height: 100%; top: 0; left: 0; opacity: .6; background: silver; position: absolute; z-index: 9999; display: none;}
@@ -253,7 +256,7 @@
                     </div>
                     <div class="form_pri">
                         <div class="form_pri_box">
-                            ① Recipient of Personal Information: Participating Companies in the 2026 Korea International Boat Show Online Exhibition Hall <br>
+                            ① Recipient of Personal Information: Participating Companies in the 2027 Korea International Boat Show Online Exhibition Hall <br>
                             ② Purpose of Use by the Recipient: Customer management and consultation services, marketing and sales activities, and customer profile analysis (including gender, age, and areas of interest) <br>
                             ③ Personal Information Provided: Name, telephone number, e-mail address, company/organization name, region, gender, age group, product interests, website usage records, cookies, and related information <br>
                             ④ Retention and Use Period by the Recipient: Two (2) years from the date of provision <br>

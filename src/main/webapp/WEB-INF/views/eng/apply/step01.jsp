@@ -3,10 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <jsp:include page="../../inc/ad_scripts.jsp" flush="true"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,6 +39,10 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+
+    <jsp:include page="../../inc/common_css.jsp" flush="true"/>
+    <jsp:include page="../../inc/common_js_en.jsp" flush="true"/>
+    <jsp:include page="../../inc/ad_scripts.jsp" flush="true"/>
 
     <span itemscope="" itemtype="http://schema.org/Organization">
         <link itemprop="url" href="https://kibs.com/">
@@ -102,7 +105,7 @@
                             <div class="tabOpt1 tabOption">
                                 <div class="tabOptAct">Exhibitors</div>
                                 <div class="tabOptSel">
-                                    <a href="/eng/guide/summary.do">KIBS 2026</a>
+                                    <a href="/eng/guide/summary.do">KIBS 2027</a>
                                     <a class="active" href="/eng/exhibitor/categories.do">Exhibitors</a>
                                     <a href="/eng/buyer/glance.do">Buyers</a>
                                     <a href="/eng/board/notice.do">News</a>
@@ -202,7 +205,7 @@
                                     <div class="form_pri_box">
 
                                         <div class="form_pri_titt">Article 1 (Definitions)</div>
-                                        1. The “Exhibition” refers to the “2026 Korea International Boat Show (KIBS 2026)”.<br>
+                                        1. The “Exhibition” refers to the “2027 Korea International Boat Show (KIBS 2027)”.<br>
                                         2. The “Organizers” refer to Gyeonggi Province and the co-hosting organizations.<br>
                                         3. The “Organizer” refers to KINTEX Co., Ltd., which manages and operates the Exhibition.<br>
                                         4. The “Exhibitor” refers to any company, association, organization, or individual that has applied to participate in the Exhibition and paid the required deposit or participation fee.<br><br>

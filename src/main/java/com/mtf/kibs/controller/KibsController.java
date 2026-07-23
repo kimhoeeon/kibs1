@@ -124,7 +124,7 @@ public class KibsController {
         }
 
         // 참가업체 보기
-        String transferYear = "2026";
+        String transferYear = "2027";
         List<MainOnlineDTO> mainOnlineList = kibsService.processSelectOnlineList(transferYear);
         mv.addObject("mainOnlineList", mainOnlineList);
 
@@ -139,7 +139,7 @@ public class KibsController {
         mv.addObject("popupList", popupList);
 
         // 브로슈어
-        String currentYear = "2026"; // 현재 대상 연도
+        String currentYear = "2027"; // 현재 대상 연도
         BrochureDTO brochureData = kibsService.getBrochureInfo(currentYear);
 
         if (brochureData == null) {
@@ -264,7 +264,7 @@ public class KibsController {
         ModelAndView mv = new ModelAndView();
 
         // 브로슈어
-        String currentYear = "2026"; // 현재 대상 연도
+        String currentYear = "2027"; // 현재 대상 연도
         BrochureDTO brochureData = kibsService.getBrochureInfo(currentYear);
 
         if (brochureData == null) {
@@ -291,7 +291,7 @@ public class KibsController {
         ModelAndView mv = new ModelAndView();
 
         // 브로슈어
-        String currentYear = "2026"; // 현재 대상 연도
+        String currentYear = "2027"; // 현재 대상 연도
         BrochureDTO brochureData = kibsService.getBrochureInfo(currentYear);
 
         if (brochureData == null) {
@@ -310,7 +310,7 @@ public class KibsController {
         ModelAndView mv = new ModelAndView();
 
         // 브로슈어
-        String currentYear = "2026"; // 현재 대상 연도
+        String currentYear = "2027"; // 현재 대상 연도
         BrochureDTO brochureData = kibsService.getBrochureInfo(currentYear);
 
         if (brochureData == null) {

@@ -49,12 +49,7 @@
         <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
-    <link href="/css/reset.css?ver=20260630" rel="stylesheet">
-    <link href="/css/font.css?ver=20260630" rel="stylesheet">
-    <link href="/css/style.css?ver=20260630" rel="stylesheet">
-    <link href="/css/responsive.css?ver=20260630" rel="stylesheet">
+    <jsp:include page="../../../../inc/common_css.jsp" flush="true"/>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

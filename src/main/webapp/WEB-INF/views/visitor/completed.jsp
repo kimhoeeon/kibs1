@@ -4,7 +4,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
 <head>
-    <jsp:include page="../inc/ad_scripts.jsp" flush="true"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,6 +37,10 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+
+    <jsp:include page="../inc/common_css.jsp" flush="true"/>
+    <jsp:include page="../inc/common_js_ko.jsp" flush="true"/>
+    <jsp:include page="../inc/ad_scripts.jsp" flush="true"/>
 
     <span itemscope="" itemtype="http://schema.org/Organization">
         <link itemprop="url" href="https://kibs.com/">
@@ -110,7 +113,7 @@
                     <div class="form_guide_comp" style="background: #fff;">
                         <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
                         <div class="form_guide_comp_txt">
-                            2026 경기국제보트쇼 사전등록 신청이 완료되었습니다.<br>
+                            2027 경기국제보트쇼 사전등록 신청이 완료되었습니다.<br>
                             신청내역은 마이페이지에서 확인하실 수 있습니다.
                         </div>
                         <a href="/visitor/login.do" class="form_guide_comp_btn btnSt01">신청확인하기</a>

@@ -248,8 +248,8 @@ if (document.documentElement) {
                                                     <select id="mngYear" name="mngYear" class="form-select form-select-solid" data-control="select2" aria-label="- 관리년도 -" data-placeholder="- 관리년도 -" data-hide-search="true">
                                                         <option></option>
                                                         <option value="" disabled>- 관리년도 -</option>
-                                                        <c:forEach var="i" begin="0" end="${2026 - 2008}">
-                                                            <c:set var="year" value="${2026 - i}" />
+                                                        <c:forEach var="i" begin="0" end="${2027 - 2008}">
+                                                            <c:set var="year" value="${2027 - i}" />
                                                             <option value="${year}" <c:if test="${targetYear eq year}">selected</c:if>>${year}</option>
                                                         </c:forEach>
                                                     </select>

@@ -49,12 +49,7 @@
         <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
-    <link href="/css/reset.css?ver=20260630" rel="stylesheet">
-    <link href="/css/font.css?ver=20260630" rel="stylesheet">
-    <link href="/css/style.css?ver=20260630" rel="stylesheet">
-    <link href="/css/responsive.css?ver=20260630" rel="stylesheet">
+    <jsp:include page="../../../../inc/common_css.jsp" flush="true"/>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -1021,7 +1016,7 @@
                         <div class="form_wrap">
                             <div class="form_tit">
                                 <div class="big">수출상담회</div>
-                                <div class="small">2026 경기국제보트쇼에서는 국내외바이어 초청 및 1:1 수출상담회를 진행합니다.</div>
+                                <div class="small">2027 경기국제보트쇼에서는 국내외바이어 초청 및 1:1 수출상담회를 진행합니다.</div>
                             </div>
                             <ul class="form_box">
                                 <li>

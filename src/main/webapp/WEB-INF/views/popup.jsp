@@ -6,7 +6,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 
 <head>
-    <jsp:include page="inc/ad_scripts.jsp" flush="true"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -41,6 +40,9 @@
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 
+    <jsp:include page="inc/common_css.jsp" flush="true"/>
+    <jsp:include page="inc/ad_scripts.jsp" flush="true"/>
+
     <span itemscope="" itemtype="http://schema.org/Organization">
         <link itemprop="url" href="https://kibs.com/">
         <a itemprop="sameAs" href="https://koreaboatshow.or.kr/"></a>
@@ -49,11 +51,6 @@
         <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
         <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>    <%-- Naver SEO --%>
-
-    <link href="/css/reset.css?ver=20260630" rel="stylesheet">
-    <link href="/css/font.css?ver=20260630" rel="stylesheet">
-    <link href="/css/style.css?ver=20260630" rel="stylesheet">
-    <link href="/css/responsive.css?ver=20260630" rel="stylesheet">
 
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/jquery-migrate-3.3.0.js"></script>

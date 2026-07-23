@@ -1,15 +1,5 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: slhge
-  Date: 2023-05-30
-  Time: 오전 10:38
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="ko">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<body>
 <div id="footer">
     <div class="ft_logo">
         <div class="inner">
@@ -121,11 +111,8 @@
                     </p>
                     <p class="address"><span>KINTEX, 217-60 Kintex-ro, Ilsanseo-gu, Goyang, Gyeonggi Province, 10390 Republic of Korea</span></p>
                 </div>
-                <p class="copyright">Copyright(c) KIBS 2026. All rights reserved</p>
+                <p class="copyright">Copyright(c) KIBS 2027. All rights reserved</p>
             </div>
         </div>
     </div>
 </div>
-
-</body>
-</html>

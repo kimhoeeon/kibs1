@@ -94,7 +94,7 @@ public class KibsMngController {
         LocalDate now = LocalDate.now();
 
         // 연도, 월(문자열, 숫자), 일, 일(year 기준), 요일(문자열, 숫자)
-        String fullYear = "2026";
+        String fullYear = "2027";
 
         /* 참가기업 (취소) */
         StatisticsDTO companyReq = new StatisticsDTO();
@@ -2804,7 +2804,7 @@ public class KibsMngController {
      */
     @GetMapping("/mng/center/board/brochure/detail.do")
     public String brochureManagementPage(Model model) {
-        String currentYear = "2026"; // 예시 연도 (세션 등에서 가져오도록 수정 가능)
+        String currentYear = "2027"; // 예시 연도 (세션 등에서 가져오도록 수정 가능)
 
         // DB에서 현재 연도의 브로슈어 정보를 조회
         BrochureDTO brochureInfo = kibsMngService.getBrochureInfo(currentYear);
@@ -2884,7 +2884,7 @@ public class KibsMngController {
 
 
             // 5. DB에 최종 정보 업데이트
-            formData.setTransferYear("2026");
+            formData.setTransferYear("2027");
             kibsMngService.saveOrUpdateBrochureInfo(formData);
 
             redirectAttributes.addFlashAttribute("message", "브로슈어 정보가 성공적으로 저장되었습니다.");

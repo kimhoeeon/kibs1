@@ -3,10 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <jsp:include page="../../inc/ad_scripts.jsp" flush="true"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,6 +39,11 @@
     <%-- favicon --%>
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="16X16" />
+
+    <jsp:include page="../../inc/common_css.jsp" flush="true"/>
+    <jsp:include page="../../inc/common_js_en.jsp" flush="true"/>
+    <jsp:include page="../../inc/ad_scripts.jsp" flush="true"/>
+
 </head>
 
 <body>
@@ -69,7 +73,7 @@
                     <div class="tabOpt1 tabOption">
                         <div class="tabOptAct">News</div>
                         <div class="tabOptSel">
-                            <a href="/eng/guide/summary.do">KIBS 2026</a>
+                            <a href="/eng/guide/summary.do">KIBS 2027</a>
                             <a href="/eng/exhibitor/categories.do">Exhibitors</a>
                             <a href="/eng/buyer/glance.do">Buyers</a>
                             <a class="active" href="/eng/board/notice.do">News</a>
@@ -95,25 +99,25 @@
     <div class="year_tab padding_t">
         <div class="inner">
             <div class="year_tab_box">
-                <a class="cate active" data-value="전체" onclick="f_gallery_category_search(this, '전체')" style="cursor: pointer">ALL</a>
-                <a class="cate" data-value="2026" onclick="f_gallery_category_search(this, '2026')" style="cursor: pointer">2026</a>
-                <a class="cate" data-value="2025" onclick="f_gallery_category_search(this, '2025')" style="cursor: pointer">2025</a>
-                <a class="cate" data-value="2024" onclick="f_gallery_category_search(this, '2024')" style="cursor: pointer">2024</a>
-                <a class="cate" data-value="2023" onclick="f_gallery_category_search(this, '2023')" style="cursor: pointer">2023</a>
-                <a class="cate" data-value="2022" onclick="f_gallery_category_search(this, '2022')" style="cursor: pointer">2022</a>
-                <a class="cate" data-value="2021" onclick="f_gallery_category_search(this, '2021')" style="cursor: pointer">2021</a>
-                <a class="cate" data-value="2019" onclick="f_gallery_category_search(this, '2019')" style="cursor: pointer">2019</a>
-                <a class="cate" data-value="2018" onclick="f_gallery_category_search(this, '2018')" style="cursor: pointer">2018</a>
-                <a class="cate" data-value="2017" onclick="f_gallery_category_search(this, '2017')" style="cursor: pointer">2017</a>
-                <a class="cate" data-value="2016" onclick="f_gallery_category_search(this, '2016')" style="cursor: pointer">2016</a>
-                <a class="cate" data-value="2015" onclick="f_gallery_category_search(this, '2015')" style="cursor: pointer">2015</a>
-                <a class="cate" data-value="2014" onclick="f_gallery_category_search(this, '2014')" style="cursor: pointer">2014</a>
-                <a class="cate" data-value="2013" onclick="f_gallery_category_search(this, '2013')" style="cursor: pointer">2013</a>
-                <a class="cate" data-value="2012" onclick="f_gallery_category_search(this, '2012')" style="cursor: pointer">2012</a>
-                <a class="cate" data-value="2011" onclick="f_gallery_category_search(this, '2011')" style="cursor: pointer">2011</a>
-                <a class="cate" data-value="2010" onclick="f_gallery_category_search(this, '2010')" style="cursor: pointer">2010</a>
-                <a class="cate" data-value="2009" onclick="f_gallery_category_search(this, '2009')" style="cursor: pointer">2009</a>
-                <a class="cate" data-value="2008" onclick="f_gallery_category_search(this, '2008')" style="cursor: pointer">2008</a>
+                <a class="cate active" data-value="전체" style="cursor: pointer">ALL</a>
+                <a class="cate" data-value="2026" style="cursor: pointer">2026</a>
+                <a class="cate" data-value="2025" style="cursor: pointer">2025</a>
+                <a class="cate" data-value="2024" style="cursor: pointer">2024</a>
+                <a class="cate" data-value="2023" style="cursor: pointer">2023</a>
+                <a class="cate" data-value="2022" style="cursor: pointer">2022</a>
+                <a class="cate" data-value="2021" style="cursor: pointer">2021</a>
+                <a class="cate" data-value="2019" style="cursor: pointer">2019</a>
+                <a class="cate" data-value="2018" style="cursor: pointer">2018</a>
+                <a class="cate" data-value="2017" style="cursor: pointer">2017</a>
+                <a class="cate" data-value="2016" style="cursor: pointer">2016</a>
+                <a class="cate" data-value="2015" style="cursor: pointer">2015</a>
+                <a class="cate" data-value="2014" style="cursor: pointer">2014</a>
+                <a class="cate" data-value="2013" style="cursor: pointer">2013</a>
+                <a class="cate" data-value="2012" style="cursor: pointer">2012</a>
+                <a class="cate" data-value="2011" style="cursor: pointer">2011</a>
+                <a class="cate" data-value="2010" style="cursor: pointer">2010</a>
+                <a class="cate" data-value="2009" style="cursor: pointer">2009</a>
+                <a class="cate" data-value="2008" style="cursor: pointer">2008</a>
             </div>
         </div>
     </div>

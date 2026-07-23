@@ -107,7 +107,7 @@ public class KibsEnController {
         }
 
         // 브로슈어
-        String currentYear = "2026"; // 현재 대상 연도
+        String currentYear = "2027"; // 현재 대상 연도
         BrochureDTO brochureData = kibsService.getBrochureInfo(currentYear);
 
         if (brochureData == null) {
@@ -138,7 +138,7 @@ public class KibsEnController {
         ModelAndView mv = new ModelAndView();
 
         // 브로슈어
-        String currentYear = "2026"; // 현재 대상 연도
+        String currentYear = "2027"; // 현재 대상 연도
         BrochureDTO brochureData = kibsService.getBrochureInfo(currentYear);
 
         if (brochureData == null) {
