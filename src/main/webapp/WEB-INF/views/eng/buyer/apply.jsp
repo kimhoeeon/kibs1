@@ -115,10 +115,10 @@
                             <div class="tabOpt2 tabOption">
                                 <div class="tabOptAct">Pre-registration</div>
                                 <div class="tabOptSel">
-                                    <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor guide</a>
+                                    <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor Guide</a>
                                     <a class="active" href="/eng/buyer/apply.do">Pre-registration</a>
                                     <a href="/eng/buyer/glance.do">Korea at a Glance</a>
-                                    <a href="/eng/buyer/marina.do">Marine Industry in korea</a>
+                                    <a href="/eng/buyer/marina.do">Marine Industry in Korea</a>
                                     <a href="/eng/buyer/match.do">Exhibitor-Buyer Matchmaking Program</a>
                                     <a href="/eng/buyer/qna.do">FAQ</a>
                                 </div>
@@ -314,7 +314,7 @@
                         </div>
                         <div class="form_pri">
                             <div class="form_pri_box">
-                                ① Recipient of Personal Information: Participating Companies in the 2026 Korea International Boat Show Online Exhibition Hall <br>
+                                ① Recipient of Personal Information: Participating Companies in the 2027 Korea International Boat Show Online Exhibition Hall <br>
                                 ② Purpose of Use by the Recipient: Customer management and consultation services, marketing and sales activities, and customer profile analysis (including gender, age, and areas of interest) <br>
                                 ③ Personal Information Provided: Name, telephone number, e-mail address, company/organization name, region, gender, age group, product interests, website usage records, cookies, and related information <br>
                                 ④ Retention and Use Period by the Recipient: Two (2) years from the date of provision <br>

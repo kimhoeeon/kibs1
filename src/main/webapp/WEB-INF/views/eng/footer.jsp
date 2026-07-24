@@ -8,17 +8,17 @@
                     <li>
                         <div class="gubun">Hosted by</div>
                         <div class="img">
-                            <img src="/img/footer/host01_eng.png" alt="해양수산부">
-                            <img src="/img/footer/host02_eng.png" alt="경기도">
+                            <img src="/img/footer/host01_eng.png" alt="Ministry of Oceans and Fisheries">
+                            <img src="/img/footer/host02_eng.png" alt="Gyeonggi-do">
                         </div>
                     </li>
                     <li>
                         <div class="gubun">Organized by</div>
                         <div class="img">
-                            <img src="/img/footer/orgarniz01.png" alt="킨텍스">
+                            <img src="/img/footer/orgarniz01.png" alt="KINTEX">
                             <img src="/img/footer/orgarniz05_eng.png" alt="KOTRA">
-                            <img src="/img/footer/orgarniz04_eng.png" alt="한국해양레저산업협회">
-                            <img src="/img/footer/orgarniz03_eng.png" alt="한국마리나협회">
+                            <img src="/img/footer/orgarniz04_eng.png" alt="Korea Marine Industry Association">
+                            <img src="/img/footer/orgarniz03_eng.png" alt="Korea Marina Association">
                         </div>
                     </li>
                     <li>
@@ -30,7 +30,7 @@
                 </ul>
                 <ul>
                     <li>
-                        <div class="gubun">Certificated by</div>
+                        <div class="gubun">Certified by</div>
                         <div class="img">
                             <img src="/img/footer/cert01.png" alt="IFBSO">
                             <img src="/img/footer/cert02.png" alt="UFI Approved Event">
@@ -52,20 +52,20 @@
                 </ul>
                 <ul>
                     <li>
-                        <div class="gubun">Sponsor</div>
+                        <div class="gubun">Sponsored by</div>
                         <div class="img">
-                            <img src="/img/footer/spon39.png" alt="산업통상부">
-                            <img src="/img/footer/spon12.png" alt="한국낚시협회">
-                            <img src="/img/footer/spon06.png" alt="대한민국해양연맹">
-                            <img src="/img/footer/spon11.png" alt="중소조선연구원">
-                            <img src="/img/footer/spon38.png" alt="한국수상레저안전협회">
-                            <img src="/img/footer/spon14.jpg" alt="한국수상레저안전연합회">
+                            <img src="/img/footer/spon39.png" alt="Ministry of Trade, Industry and Resources">
+                            <img src="/img/footer/spon12.png" alt="Korea Fishing Association">
+                            <img src="/img/footer/spon06.png" alt="ROK SeaPower League">
+                            <img src="/img/footer/spon11.png" alt="Research Institute of Medium & Small Shipbuilding (RIMS)">
+                            <img src="/img/footer/spon38.png" alt="Korea Aqua leisure Safety Association">
+                            <img src="/img/footer/spon14.jpg" alt="Korea Water Leisure Safety Federation">
                             <br>
-                            <img src="/img/footer/spon18.png" alt="한국조선해양기자재연구원">
-                            <img src="/img/footer/spon16.png" alt="한국조선공업협동조합">
-                            <img src="/img/footer/spon24.png" alt="한국해양소년단연맹">
-                            <img src="/img/footer/spon27.png" alt="한국해양재단">
-                            <img src="/img/footer/spon30.png" alt="한서해양스포츠교육원">
+                            <img src="/img/footer/spon18.png" alt="Korea Marine Equipment Research Institute">
+                            <img src="/img/footer/spon16.png" alt="Korea Shipbuilding Industry Cooperative">
+                            <img src="/img/footer/spon24.png" alt="Sea Explorers of Korea">
+                            <img src="/img/footer/spon27.png" alt="Korea Ocean Foundation">
+                            <img src="/img/footer/spon30.png" alt="Hanseo University">
                         </div>
                     </li>
                 </ul>

@@ -114,10 +114,10 @@
                             <div class="tabOpt2 tabOption">
                                 <div class="tabOptAct">Exhibitor Registration</div>
                                 <div class="tabOptSel">
-                                    <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                                    <a href="/eng/exhibitor/categories.do">Exhibitor Categories</a>
                                     <a class="active" href="/eng/apply/step01.do">Exhibitor Registration</a>
                                     <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
-                                    <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                                    <a href="/eng/exhibitor/marina.do">Marine Industry in Korea</a>
                                     <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
                                     <a href="/eng/online/company.do">Exhibitor List</a>
                                     <a href="/eng/exhibitor/qna.do">FAQ</a>
@@ -159,7 +159,7 @@
                     <div class="apply_step">
                         <div class="apply_top">
                             <div class="nti">Exhibitor Registration Form</div>
-                            <a href="/eng/buyer/apply.do" class="btn">Visitor Registration</a>
+                            <a href="/eng/buyer/apply.do" class="btn">Visitor Pre-registration</a>
                         </div>
                         <div class="apply_tit">Basic Info</div>
                         <div class="apply_step_wrap">
@@ -213,14 +213,18 @@
                                         <div class="form_pri_titt">Article 2 (Application and Contract)</div>
                                         1. An exhibitor wishing to participate in the Exhibition shall complete the online booth application and pay the full participation fee according to the invoice issued by the Organizer. The application shall be considered complete upon such payment.<br>
                                         2. If the application is not completed in accordance with Paragraph 1 of this Article, the applicant shall not be permitted to participate in any Exhibition-related activities.<br>
-                                        3. Participation fees are KRW 1,800,000 per booth for a raw space booth and KRW 2,100,000 per booth for a shell scheme booth. (VAT excluded / cash payment / discounts applied separately) Raw space booths require a minimum application of two (2) booths.<br>
-                                        4. Utility services shall be applied for separately according to the exhibitor’s needs after full payment of the participation fee. The Organizer shall provide the requested services upon receipt of the full service fee according to the invoice issued by the Organizer.<br>
-                                        5. Utility services and shell scheme booth construction shall be provided by the Organizer upon request. Any changes to the application or utility service request must be immediately reported to the Organizer by email.<br> The exhibitor shall be responsible for any disadvantages resulting from failure to provide such notice.<br>
-                                        6. Any changes to the information provided in the application form must be immediately reported in writing to the Organizer. The exhibitor shall be responsible for any disadvantages resulting from failure to provide such notice.<br>
-                                        7. The Organizer reserves the right to reject an application if exhibition space is fully booked or if the proposed exhibits are deemed unsuitable for the Exhibition.<br><br>
+                                        3. Participation fees are USD 3,000 per booth for a raw space booth and USD 3,300 per booth for a shell scheme booth. Raw space booths require a minimum application of two (2) booths.
+                                        4. After the exhibitor’s application has been reviewed and approved by the Secretariat, an invoice will be issued accordingly. The exhibitor shall pay 100% of the participation fee within seven (7) days from the date of invoice issuance.
+                                        5. All overseas bank transfer fees, including intermediary and receiving bank charges, shall be borne by the exhibitor. The full invoiced participation fee must be received by the Organizer.
+                                        6. VAT may vary depending on the exhibitor’s country and the applicable Korean tax regulations. Exhibitors shall refer to the invoice issued by the Secretariat for the final payable amount.
+                                        7. Submission of the application form does not constitute final confirmation of participation. Participation shall be confirmed only after the application has been reviewed and approved by the Secretariat and the required payment has been completed.
+                                        8. Utility services shall be applied for separately according to the exhibitor’s needs after full payment of the participation fee. The Organizer shall provide the requested services upon receipt of the full service fee according to the invoice issued by the Organizer.
+                                        9. Utility services and shell scheme booth construction shall be provided by the Organizer upon request. Any changes to the application or utility service request must be immediately reported to the Organizer by email. The exhibitor shall be responsible for any disadvantages resulting from failure to provide such notice.
+                                        10. Any changes to the information provided in the application form must be immediately reported in writing to the Organizer. The exhibitor shall be responsible for any disadvantages resulting from failure to provide such notice.
+                                        11. The Organizer reserves the right to reject an application if exhibition space is fully booked or if the proposed exhibits are deemed unsuitable for the Exhibition.
 
                                         <div class="form_pri_titt">Article 3 (Payment Terms)</div>
-                                        1. The exhibitor shall pay the full participation fee within fourteen (14) days of submitting the application form. However, applications submitted on or after January 5, 2026, must be accompanied by full payment at the time of application.<br>
+                                        1. The exhibitor shall pay the full participation fee within fourteen (14) days of submitting the application form. However, applications submitted on or after February 1, 2027, must be accompanied by full payment at the time of application.<br>
                                         2. If the exhibitor fails to pay the balance by the designated deadline, the Organizer may terminate the participation agreement. In such cases, any participation fees already paid shall not be refundable. <br><br>
 
                                         <div class="form_pri_titt">Article 4 (Allocation of Exhibition Space and Booth Location)</div>
@@ -247,9 +251,9 @@
                                         1. If an exhibitor refuses to use all or part of the allocated booth space or fails to pay the participation fee within the specified deadline, the Organizer may unilaterally terminate the participation agreement. In such cases, any participation fees already paid shall not be refunded. Participation fees shall also not be refunded if the exhibitor withdraws without the Organizer's approval.<br>
                                         2. If an exhibitor wishes to cancel participation after submitting the application, a written cancellation request (official document) must be submitted to the Organizer. The exhibitor shall pay the cancellation penalty specified below within seven (7) days of cancellation.<br>
                                         Provided that any participation fee already paid shall be deducted from the penalty amount. If the penalty exceeds the amount paid, the exhibitor shall pay the difference; if the amount paid exceeds the penalty, the balance shall be refunded.<br>
-                                        - Cancellation by December 31, 2025: 50% of the total participation fee shall be paid as a cancellation penalty.<br>
-                                        - Cancellation from January 1, 2026 to January 18, 2026: 80% of the total participation fee shall be paid as a cancellation penalty.<br>
-                                        - Cancellation on or after January 19, 2026: 100% of the total participation fee shall be paid as a cancellation penalty.<br><br>
+                                        - Cancellation by December 31, 2026: 50% of the total participation fee shall be paid as a cancellation penalty.<br>
+                                        - Cancellation from January 1, 2027 to January 31, 2027: 80% of the total participation fee shall be paid as a cancellation penalty.<br>
+                                        - Cancellation on or after February 1, 2027: 100% of the total participation fee shall be paid as a cancellation penalty.<br><br>
 
                                         <div class="form_pri_titt">Article 9 (Cancellation or Modification of the Exhibition)</div>
                                         1. If the Organizer cancels the Exhibition due to an administrative order or other internal reasons, the full participation fee already paid shall be refunded to the exhibitor.<br>
@@ -477,7 +481,7 @@
                                             </div>
                                             <div class="input">
                                                 <input type="text" id="id" name="id" value="${info.id}" placeholder="Enter the entire email" class="w50" autocomplete="false">
-                                                <input type="button" onclick="f_id_duplicate_check(this)" style="margin-left: 10px;" value="Duplicate test">
+                                                <input type="button" onclick="f_id_duplicate_check(this)" style="margin-left: 10px;" value="Check Availability">
                                                 <c:if test="${not empty info}"><input type="hidden" id="idCheck" value="true"></c:if>
                                                 <c:if test="${empty info}">
                                                     <div class="cmnt" style="color: #AD1D1D;">Please click the ID duplication check button.</div>
@@ -622,7 +626,7 @@
                                             </div>
                                             <div class="input">
                                                 <select name="industryPart" id="industryPart">
-                                                    <option value="" <c:if test="${empty info.industryPart}">selected</c:if>>Choice</option>
+                                                    <option value="" <c:if test="${empty info.industryPart}">selected</c:if>>Select</option>
 
                                                     <optgroup label="---- Korea International Boat Show(KIBS) ----">
                                                         <option value="요트/보트 제조" <c:if test="${info.industryPart eq '요트/보트 제조'}">selected</c:if>>Yacht/Boat Manufacturing</option>
@@ -1040,7 +1044,7 @@
                                             <div class="input">
                                                 <textarea id="promotionPlan" name="promotionPlan" placeholder="-Please describe any discounts or events planned during the exhibition.&#10;-This information may be used for newsletters and social media promotions.">${info.promotionPlan}</textarea>
                                                 <div class="cmnt">Please notify the organizer of any booth events in advance.</div>
-                                                <div class="cmnt">Submissions after ?. ?, 2027 may not be included in promotions.</div>
+                                                <div class="cmnt">Submissions after February 1, 2027 may not be included in promotions.</div>
                                             </div>
                                         </li>
                                     </ul>

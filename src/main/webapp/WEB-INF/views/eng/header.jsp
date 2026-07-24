@@ -58,19 +58,19 @@
                             <li><a href="<c:url value="/eng/guide/program.do"/>"><span>Program</span></a></li>
                             <li><a href="<c:url value="/eng/guide/bi.do"/>"><span>KIBS BI</span></a></li>
                             <li><a href="<c:url value="/eng/guide/venue.do"/>"><span>Venue</span></a></li>
-                            <li><a href="<c:url value="/eng/guide/contact.do"/>"><span>Contact us</span></a></li>
+                            <li><a href="<c:url value="/eng/guide/contact.do"/>"><span>Contact Us</span></a></li>
                             <%--<li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>--%>
-                            <li><a href="https://www.kofish.kr/eng/main/main.php" class="outLink" target="_blank"><span>Concurrently event<br>[KOFISH]</span></a></li>
+                            <li><a href="https://www.kofish.kr/eng/main/main.php" class="outLink" target="_blank"><span>Co-located Events</span></a></li>
                             <li><a href="https://www.campingfair.co.kr/eng" class="outLink" target="_blank"><span>[Caravan&Camping]</span></a></li>
                         </ul>
                     </li>
                     <li>
                         <a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors</span></a>
                         <ul class="dept2">
-                            <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors Categories</span></a></li>
+                            <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitor Categories</span></a></li>
                             <li><a href="<c:url value="/eng/apply/step01.do"/>"><span>Exhibitor Registration</span></a></li>
                             <li><a href="<c:url value="/eng/exhibitor/glance.do"/>"><span>Korea at a Glance</span></a></li>
-                            <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in korea</span></a></li>
+                            <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in Korea</span></a></li>
                             <li><a href="<c:url value="/eng/exhibitor/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
                             <li><a href="<c:url value="/eng/online/company.do"/>"><span>Exhibitor List</span></a></li>
                             <li><a href="<c:url value="/eng/exhibitor/qna.do"/>"><span>FAQ</span></a></li>
@@ -79,10 +79,10 @@
                     <li>
                         <a href="<c:url value="/eng/buyer/glance.do"/>"><span>Buyers</span></a>
                         <ul class="dept2">
-                            <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Visitor guide</span></a></li>
+                            <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Visitor Guide</span></a></li>
                             <li><a href="<c:url value="/eng/buyer/apply.do"/>"><span>Pre-registration</span></a></li>
                             <li><a href="<c:url value="/eng/buyer/glance.do"/>"><span>Korea at a Glance</span></a></li>
-                            <li><a href="<c:url value="/eng/buyer/marina.do"/>"><span>Marine Industry in korea</span></a></li>
+                            <li><a href="<c:url value="/eng/buyer/marina.do"/>"><span>Marine Industry in Korea</span></a></li>
                             <li><a href="<c:url value="/eng/buyer/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
                             <li><a href="<c:url value="/eng/buyer/qna.do"/>"><span>FAQ</span></a></li>
                         </ul>
@@ -142,19 +142,19 @@
                                     <%--<li><a href="/eng/guide/to_ara.do"><span>To ARA Marina</span></a></li>--%>
                                 </ul>
                             </li>
-                            <li><a href="<c:url value="/eng/guide/contact.do"/>"><span>Contact us</span></a></li>
+                            <li><a href="<c:url value="/eng/guide/contact.do"/>"><span>Contact Us</span></a></li>
                             <%--<li><a href="/eng/guide/brochure.do"><span>E-Brochure</span></a></li>--%>
-                            <li><a href="https://www.kofish.kr/eng/main/main.php" class="outLink" target="_blank"><span>Concurrently event<br>[KOFISH]</span></a></li>
+                            <li><a href="https://www.kofish.kr/eng/main/main.php" class="outLink" target="_blank"><span>Co-located Events</span></a></li>
                             <li><a href="https://www.campingfair.co.kr/eng" class="outLink" target="_blank"><span>[Caravan&Camping]</span></a></li>
                         </ul>
                     </li>
                     <li>
                         <a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors</span></a>
                         <ul class="dept2">
-                            <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitors Categories</span></a></li>
+                            <li><a href="<c:url value="/eng/exhibitor/categories.do"/>"><span>Exhibitor Categories</span></a></li>
                             <li><a href="<c:url value="/eng/apply/step01.do"/>"><span>Exhibitor Registration</span></a></li>
                             <li><a href="<c:url value="/eng/exhibitor/glance.do"/>"><span>Korea at a Glance</span></a></li>
-                            <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in korea</span></a></li>
+                            <li><a href="<c:url value="/eng/exhibitor/marina.do"/>"><span>Marine Industry in Korea</span></a></li>
                             <li><a href="<c:url value="/eng/exhibitor/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
                             <li><a href="<c:url value="/eng/online/company.do"/>"><span>Exhibitor List</span></a></li>
                             <li><a href="<c:url value="/eng/exhibitor/qna.do"/>"><span>FAQ</span></a></li>
@@ -163,10 +163,10 @@
                     <li>
                         <a href="<c:url value="/eng/buyer/glance.do"/>"><span>Buyers</span></a>
                         <ul class="dept2">
-                            <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Visitor guide</span></a></li>
+                            <li><a href="https://www.investkorea.org/ik-en/index.do" target="_blank"><span>Visitor Guide</span></a></li>
                             <li><a href="<c:url value="/eng/buyer/apply.do"/>"><span>Pre-registration</span></a></li>
                             <li><a href="<c:url value="/eng/buyer/glance.do"/>"><span>Korea at a Glance</span></a></li>
-                            <li><a href="<c:url value="/eng/buyer/marina.do"/>"><span>Marine Industry in korea</span></a></li>
+                            <li><a href="<c:url value="/eng/buyer/marina.do"/>"><span>Marine Industry in Korea</span></a></li>
                             <li><a href="<c:url value="/eng/buyer/match.do"/>"><span>Exhibitor-Buyer Matchmaking Program</span></a></li>
                             <li><a href="<c:url value="/eng/buyer/qna.do"/>"><span>FAQ</span></a></li>
                         </ul>

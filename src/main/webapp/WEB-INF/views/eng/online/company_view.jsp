@@ -80,10 +80,10 @@
                     <div class="tabOpt2 tabOption">
                         <div class="tabOptAct">Exhibitor List</div>
                         <div class="tabOptSel">
-                            <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                            <a href="/eng/exhibitor/categories.do">Exhibitor Categories</a>
                             <a href="/eng/apply/step01.do">Exhibitor Registration</a>
                             <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
-                            <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                            <a href="/eng/exhibitor/marina.do">Marine Industry in Korea</a>
                             <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
                             <a class="active" href="/eng/online/company.do">Exhibitor List</a>
                             <a href="/eng/exhibitor/qna.do">FAQ</a>
@@ -207,7 +207,7 @@
                     <div class="btn">
                         <div class="btnCs">
                             <a href="javascript:void(0);" onclick="f_ask_popup_open()">
-                                <img src="/img/icon_exh_cs.png">Contact us
+                                <img src="/img/icon_exh_cs.png">Contact Us
                             </a>
                         </div>
                         <%--<div class="btnLike">
@@ -398,7 +398,7 @@
     <div class="popup_inner">
         <div class="popup_wrap">
             <div class="pop_tit">
-                <div class="tit">Contact us</div>
+                <div class="tit">Contact Us</div>
                 <a class="close" href="javascript:void(0);" onclick="f_ask_popup_close()"><img src="/img/close_w.png"></a>
             </div>
             <div class="pop_box">

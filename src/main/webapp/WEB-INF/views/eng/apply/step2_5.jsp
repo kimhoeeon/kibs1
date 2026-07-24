@@ -90,10 +90,10 @@
                     <div class="tabOpt2 tabOption">
                         <div class="tabOptAct">Exhibitor Registration</div>
                         <div class="tabOptSel">
-                            <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                            <a href="/eng/exhibitor/categories.do">Exhibitor Categories</a>
                             <a class="active" href="/eng/apply/step01.do">Exhibitor Registration</a>
                             <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
-                            <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                            <a href="/eng/exhibitor/marina.do">Marine Industry in Korea</a>
                             <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
                             <a href="/eng/online/company.do">Exhibitor List</a>
                             <a href="/eng/exhibitor/qna.do">FAQ</a>
@@ -149,7 +149,7 @@
                         <div class="gauge">
                             <progress class="gauge_bar" value="75" max="100"></progress>
                         </div>
-                        <div class="txt">In Progress <p>(<span>7</span> of <span>5</span> completed)</p></div>
+                        <div class="txt">In Progress <p>(<span>5</span> of <span>7</span> completed)</p></div>
                     </div>
                     <div class="apply_step_box step3">
                         <div class="gubun">

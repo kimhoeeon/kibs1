@@ -54,9 +54,9 @@
         <div class="inner">
             <div class="sub_top_box">
                 <div class="sub_top_nav">
-                    <span>Home</span><span>Buyers</span><span>Marine Industry in korea</span>
+                    <span>Home</span><span>Buyers</span><span>Marine Industry in Korea</span>
                 </div>
-                <div class="sub_top_tit">Marine Industry in korea</div>
+                <div class="sub_top_tit">Marine Industry in Korea</div>
             </div>
         </div>
     </div>
@@ -78,12 +78,12 @@
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">Marine Industry in korea</div>
+                        <div class="tabOptAct">Marine Industry in Korea</div>
                         <div class="tabOptSel">
-                            <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor guide</a>
+                            <a href="https://www.investkorea.org/ik-en/index.do" target="_blank">Visitor Guide</a>
                             <a href="/eng/buyer/apply.do">Pre-registration</a>
                             <a href="/eng/buyer/glance.do">Korea at a Glance</a>
-                            <a class="active" href="/eng/buyer/marina.do">Marine Industry in korea</a>
+                            <a class="active" href="/eng/buyer/marina.do">Marine Industry in Korea</a>
                             <a href="/eng/buyer/match.do">Exhibitor-Buyer Matchmaking Program</a>
                             <a href="/eng/buyer/qna.do">FAQ</a>
                         </div>

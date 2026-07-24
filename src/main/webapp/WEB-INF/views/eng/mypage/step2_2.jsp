@@ -118,30 +118,31 @@
                     <!-- section -->
                     <div class="my_form form_s">
                         <div class="inner">
-                            <div class="apply_tit">Signboard Title</div>
+                            <div class="apply_tit">Signboard Application</div>
                             <div class="form_wrap">
                                 <ul class="form_guide">
-                                    <li>Please mark Korean and English respectively</li>
-                                    <li>Maximum number of characters: Korean (64), English (64)</li>
-                                    <li>Please write the punctuation marks such as commas and periods and the trade name including 'CO., LTD.’</li>
+                                    <li>Please enter the company name to be displayed on your booth signboard.</li>
+                                    <li>The English signboard name is required. The Korean signboard name is optional for overseas exhibitors.</li>
+                                    <li>Each field may contain up to 64 characters.</li>
+                                    <li>Please enter the company name exactly as it should appear on the booth signboard, including punctuation, spacing, and company designations such as “Co., Ltd.” or “Inc.”</li>
                                 </ul>
                             </div>
 
                             <!-- 부스신청 -->
                             <div class="form_wrap">
                                 <div class="form_tit">
-                                    <div class="big">Signboard</div>
-                                    <div class="assist">(Assembly booth exhibitors must be filled in)</div>
+                                    <div class="big">Signboard Application</div>
+                                    <div class="assist">(Required for exhibitors applying for a Shell Scheme Booth)</div>
                                 </div>
                                 <ul class="form_box">
                                     <li>
                                         <div class="item req">
-                                            <p>Signboard Title</p>
+                                            <p>Company Signboard Name</p>
                                         </div>
                                         <div class="input">
                                             <input type="hidden" id="assemblyBoothCnt" value="${info.assemblyBoothCnt}">
-                                            <input type="text" id="companySignNameKo" value="${info.companySignNameKo}" placeholder="Korean">
-                                            <input type="text" id="companySignNameEn" value="${info.companySignNameEn}" placeholder="English" class="onlyNumEng">
+                                            <input type="text" id="companySignNameKo" value="${info.companySignNameKo}" placeholder="Korean Signboard Name (Optional)">
+                                            <input type="text" id="companySignNameEn" value="${info.companySignNameEn}" placeholder="English Signboard Name" class="onlyNumEng">
                                         </div>
                                     </li>
                                 </ul>
@@ -150,11 +151,11 @@
                             <div class="form_btn">
                                 <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_9.do','${info.seq}')" class="form_btn_prev">
                                     <div class="big">PREV</div>
-                                    <div class="small">Yacht/Boat</div>
+                                    <div class="small">Yacht/Boat Exhibit Information</div>
                                 </a>
                                 <a href="javascript:void(0);" onclick="f_mypage_comp('2_2','${info.seq}')" class="form_btn_next">
                                     <div class="big">NEXT</div>
-                                    <div class="small">Utilities</div>
+                                    <div class="small">Utility Services</div>
                                 </a>
                             </div>
 

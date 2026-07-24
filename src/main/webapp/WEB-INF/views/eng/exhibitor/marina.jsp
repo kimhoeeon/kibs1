@@ -54,9 +54,9 @@
         <div class="inner">
             <div class="sub_top_box">
                 <div class="sub_top_nav">
-                    <span>Home</span><span>Exhibitors</span><span>Marine Industry in korea</span>
+                    <span>Home</span><span>Exhibitors</span><span>Marine Industry in Korea</span>
                 </div>
-                <div class="sub_top_tit">Marine Industry in korea</div>
+                <div class="sub_top_tit">Marine Industry in Korea</div>
             </div>
         </div>
     </div>
@@ -78,12 +78,12 @@
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">Marine Industry in korea</div>
+                        <div class="tabOptAct">Marine Industry in Korea</div>
                         <div class="tabOptSel">
-                            <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                            <a href="/eng/exhibitor/categories.do">Exhibitor Categories</a>
                             <a href="/eng/apply/step01.do">Exhibitor Registration</a>
                             <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
-                            <a class="active" href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                            <a class="active" href="/eng/exhibitor/marina.do">Marine Industry in Korea</a>
                             <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
                             <a href="/eng/online/company.do">Exhibitor List</a>
                             <a href="/eng/exhibitor/qna.do">FAQ</a>

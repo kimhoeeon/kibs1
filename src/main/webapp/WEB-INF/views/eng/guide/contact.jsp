@@ -54,9 +54,9 @@
         <div class="inner">
             <div class="sub_top_box">
                 <div class="sub_top_nav">
-                    <span>Home</span><span>KIBS 2027</span><span>Contact us</span>
+                    <span>Home</span><span>KIBS 2027</span><span>Contact Us</span>
                 </div>
-                <div class="sub_top_tit">Contact us</div>
+                <div class="sub_top_tit">Contact Us</div>
             </div>
         </div>
     </div>
@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">Contact us</div>
+                        <div class="tabOptAct">Contact Us</div>
                         <div class="tabOptSel">
                             <a href="/eng/guide/summary.do">Overview</a>
                             <a href="/eng/guide/certify.do">International Certification & Awards</a>
@@ -86,7 +86,7 @@
                             <a href="/eng/guide/program.do">Program</a>
                             <a href="/eng/guide/bi.do">KIBS BI</a>
                             <a href="/eng/guide/venue.do">Venue</a>
-                            <a class="active" href="/eng/guide/contact.do">Contact us</a>
+                            <a class="active" href="/eng/guide/contact.do">Contact Us</a>
                             <%--<a href="/eng/guide/brochure.do">E-Brochure</a>--%>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
     <!-- section -->
     <div class="contact_s padding_tb">
         <div class="inner">
-            <div class="sub_cont_tit"><div class="big">CONTACT US</div></div>
+            <div class="sub_cont_tit"><div class="big">Contact Us</div></div>
             <div class="contact_box">
                 <div class="tit_box">
                     <div class="img"><img src="/img/logo_kintex.png"></div>

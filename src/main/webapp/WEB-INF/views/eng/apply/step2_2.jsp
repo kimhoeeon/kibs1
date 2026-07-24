@@ -82,10 +82,10 @@
                     <div class="tabOpt2 tabOption">
                         <div class="tabOptAct">Exhibitor Registration</div>
                         <div class="tabOptSel">
-                            <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                            <a href="/eng/exhibitor/categories.do">Exhibitor Categories</a>
                             <a class="active" href="/eng/apply/step01.do">Exhibitor Registration</a>
                             <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
-                            <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                            <a href="/eng/exhibitor/marina.do">Marine Industry in Korea</a>
                             <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
                             <a href="/eng/online/company.do">Exhibitor List</a>
                             <a href="/eng/exhibitor/qna.do">FAQ</a>
@@ -123,7 +123,7 @@
             </div>
 
             <div class="apply_step">
-                <div class="apply_tit">Signboard Info</div>
+                <div class="apply_tit">Signboard Application</div>
                 <div class="apply_step_wrap">
                     <div class="apply_step_box step1">
                         <div class="gubun">
@@ -141,7 +141,7 @@
                         <div class="gauge">
                             <progress class="gauge_bar" value="37.5" max="100"></progress>
                         </div>
-                        <div class="txt">In Progress <p>(<span>7</span> of <span>2</span> completed)</p></div>
+                        <div class="txt">In Progress <p>(<span>2</span> of <span>7</span> completed)</p></div>
                     </div>
                     <div class="apply_step_box step3">
                         <div class="gubun">
@@ -161,27 +161,28 @@
 
                     <div class="form_wrap">
                         <ul class="form_guide">
-                            <li>Please Enter Korean and English separately.</li>
-                            <li>Maximum 64 characters for each language.</li>
-                            <li>Please enter the company name exactly as registered, including punctuation and company designation.</li>
+                            <li>Please enter the company name to be displayed on your booth signboard.</li>
+                            <li>The English signboard name is required. The Korean signboard name is optional for overseas exhibitors.</li>
+                            <li>Each field may contain up to 64 characters.</li>
+                            <li>Please enter the company name exactly as it should appear on the booth signboard, including punctuation, spacing, and company designations such as “Co., Ltd.” or “Inc.”</li>
                         </ul>
                     </div>
 
                     <!-- 부스신청 -->
                     <div class="form_wrap">
                         <div class="form_tit flex">
-                            <div class="big">Signboard Info</div>
-                            <div class="assist">(Assembly booth exhibitors must be required)</div>
+                            <div class="big">Signboard Application</div>
+                            <div class="assist">(Required for exhibitors applying for a Shell Scheme Booth)</div>
                         </div>
                         <ul class="form_box">
                             <li>
                                 <div class="item <c:if test="${info.assemblyBoothCnt > 0}">req</c:if>">
-                                    <p>Signboard Text</p>
+                                    <p>Company Signboard Name</p>
                                 </div>
                                 <div class="input">
                                     <input type="hidden" id="assemblyBoothCnt" value="${info.assemblyBoothCnt}">
-                                    <input type="text" id="companySignNameKo" value="${info.companySignNameKo}" placeholder="Korean">
-                                    <input type="text" id="companySignNameEn" value="${info.companySignNameEn}" placeholder="English" class="onlyNumEng">
+                                    <input type="text" id="companySignNameKo" value="${info.companySignNameKo}" placeholder="Korean Signboard Name (Optional)">
+                                    <input type="text" id="companySignNameEn" value="${info.companySignNameEn}" placeholder="English Signboard Name" class="onlyNumEng">
                                 </div>
                             </li>
                         </ul>
@@ -190,11 +191,11 @@
                     <div class="form_btn">
                         <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_9.do','${info.seq}')" class="form_btn_prev">
                             <div class="big">PREV</div>
-                            <div class="small">Yacht/Boat</div>
+                            <div class="small">Yacht/Boat Exhibit Information</div>
                         </a>
                         <a href="javascript:void(0);" onclick="f_apply_comp('2_2','${info.seq}')" class="form_btn_next">
                             <div class="big">NEXT / SKIP</div>
-                            <div class="small">Utilities</div>
+                            <div class="small">Utility Services</div>
                         </a>
                     </div>
 

@@ -1425,7 +1425,7 @@ async function step_01_check(exhibitorSeq){
 
     /******************** 참가업체 정보 ********************/
 
-        // 회사명
+    // 회사명
     let companyNameKo = $('#companyNameKo').val();
     if(nvl(companyNameKo,'') === ''){
         showMessage('#companyNameKo', 'error', '[ Exhibitor Info ]', 'Please enter the company name (Korean).', '');

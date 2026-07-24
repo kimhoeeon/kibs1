@@ -100,10 +100,10 @@
                         <div class="tabOpt2 tabOption">
                             <div class="tabOptAct">Exhibitor Registration</div>
                             <div class="tabOptSel">
-                                <a href="/eng/exhibitor/categories.do">Exhibitors Categories</a>
+                                <a href="/eng/exhibitor/categories.do">Exhibitor Categories</a>
                                 <a class="active" href="/eng/apply/step01.do">Exhibitor Registration</a>
                                 <a href="/eng/exhibitor/glance.do">Korea at a Glance</a>
-                                <a href="/eng/exhibitor/marina.do">Marine Industry in korea</a>
+                                <a href="/eng/exhibitor/marina.do">Marine Industry in Korea</a>
                                 <a href="/eng/exhibitor/match.do">Exhibitor-Buyer Matchmaking Program</a>
                                 <a href="/eng/online/company.do">Exhibitor List</a>
                                 <a href="/eng/exhibitor/qna.do">FAQ</a>
@@ -159,7 +159,7 @@
                             <div class="gauge">
                                 <progress class="gauge_bar" value="12.5" max="100"></progress>
                             </div>
-                            <div class="txt">In Progress <p>(<span>7</span> of <span>0</span> completed)</p></div>
+                            <div class="txt">In Progress <p>(<span>0</span> of <span>7</span> completed)</p></div>
                         </div>
                         <div class="apply_step_box step3">
                             <div class="gubun">
@@ -179,15 +179,13 @@
 
                         <div class="form_wrap">
                             <ul class="form_guide">
-                                <li>The standard booth size is 3m × 3m (9㎡). The minimum application size is 2 space-only booths (18㎡) or 1 shell scheme booth (9㎡).
+                                <li>The standard booth size is 3m × 3m (9㎡). The minimum application size is two (2) Raw Space Booths (18㎡) or one (1) Shell Scheme Booth (9㎡).</li>
+                                <li>Shell Scheme Booth Package Includes: 9㎡ floor space, company signboard, lighting, carpet, information desk, folding chair, meeting table, three chairs, waste bin, and 1KW power supply (220V outlet).
+                                    <span class="em"> Package specifications are subject to change.</span>
                                 </li>
-                                <li>Shell Scheme Booth Includes (per booth): 9㎡ floor space, company signboard (Korean/English), lighting, carpet, information desk, folding chair, meeting table, 3 chairs, waste bin, and 1KW power supply (220V outlet)
-                                    <span class="em"> (Shell scheme booth specifications are subject to change.)</span>
-                                </li>
-                                <li>Your application will be confirmed upon full payment within 7 days of invoice issuance.</li>
-                                <li>
-                                    For detailed participation rules and contract terms, <a onclick="window.open('/eng/exhibitor/privacy.do','pop','menubar=no,status=no,scrollbars=no,resizable=no,width=500,height=300,top=50,left=50');" class="em">click here.</a>
-                                </li>
+                                <li>An invoice will be issued after the application has been reviewed and approved by the Secretariat. Participation will be confirmed only after 100% of the participation fee is paid within seven (7) days from the date of invoice issuance.</li>
+                                <li>All booth fees for overseas exhibitors are charged in USD. VAT may vary depending on the exhibitor’s country and applicable Korean tax regulations. Please refer to the invoice issued by the Secretariat for the final payable amount. All overseas bank transfer fees, including intermediary and receiving bank charges, shall be borne by the exhibitor, and the full invoiced amount must be received by the Organizer.</li>
+                                <li>Please <a onclick="window.open('/eng/exhibitor/privacy.do','pop','menubar=no,status=no,scrollbars=no,resizable=no,width=500,height=300,top=50,left=50');" class="em">click here</a> to view the detailed participation rules and contract terms.</li>
                             </ul>
                         </div>
 

@@ -124,19 +124,21 @@
                                 <!-- 요트/보트 출품 정보 -->
                                 <div class="form_wrap">
                                     <div class="form_tit">
-                                        <div class="big">Yacht/Boat Info</div>
+                                        <div class="big">Yacht/Boat Exhibit Information</div>
                                         <div class="small">
-                                            At least one yacht/boat entry is required.<br><br>
+                                            At least one yacht/boat exhibit is required.<br><br>
                                             Please select exhibits considering the setup and dismantling schedule.<br><br>
-                                            ○ Booth Construction & Exhibit Move-in: March 4 (Wed) – March 5 (Thu), 2026, 08:00–20:00 (2 days)<br>
-                                            ○ Exhibition Period: March 6 (Fri) – March 8 (Sun), 2026 (3 days)<br>
-                                            ○ Booth Dismantling & Exhibit Move-out: March 8 (Sun), 2026, 08:00–20:00 (Same-day dismantling required)
+                                            If you select “Yes” for yacht/boat exhibition, at least one yacht/boat exhibit must be registered.<br><br>
+                                            Please select your exhibits after reviewing the move-in, exhibition, and move-out schedule below.<br><br>
+                                            ○ Booth Construction & Exhibit Move-in: March 10 (Wed) – March 11 (Thu), 2027, 08:00–20:00 (2 days)<br>
+                                            ○ Exhibition Period: March 12 (Fri) – March 14 (Sun), 2027 (3 days)<br>
+                                            ○ Booth Dismantling & Exhibit Move-out: March 14 (Sun), 2027, 17:00–20:00 (same-day dismantling required)
                                         </div>
                                     </div>
                                     <ul class="form_box">
                                         <li>
                                             <div class="item req">
-                                                <p>Yacht/Boat Exhibit</p>
+                                                <p>Will you exhibit a yacht/boat?</p>
                                             </div>
                                             <div class="input check">
                                                 <label>
@@ -394,11 +396,11 @@
                                 <div class="form_btn">
                                     <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_1.do','${info.seq}')" class="form_btn_prev">
                                         <div class="big">PREV</div>
-                                        <div class="small">Booth</div>
+                                        <div class="small">Booth Application</div>
                                     </a>
                                     <a href="javascript:void(0);" onclick="f_apply_comp('2_9','${info.seq}')" class="form_btn_next">
                                         <div class="big">NEXT / SKIP</div>
-                                        <div class="small">Signboard</div>
+                                        <div class="small">Signboard Application</div>
                                     </a>
                                 </div>
                             </div>
@@ -448,14 +450,14 @@
                         if (flag) {
                             Swal.fire({
                                 icon: 'warning',
-                                title: '[ Yacht/Boat Entry ]',
-                                html: '<span style="font-size: 1.2em;">요트/보트 출품 여부 \'미신청\' 으로 변경 시<br>등록한  요트/보트 출품 정보가 모두 삭제됩니다.<br>변경하시겠습니까?</span>',
+                                title: '[ Yacht/Boat Exhibit Information ]',
+                                html: '<span style="font-size: 1.2em;">If you change yacht/boat exhibition to \'No\',<br>all registered yacht/boat exhibit information will be deleted.<br> Do you want to continue?</span>',
                                 allowOutsideClick: false,
                                 showCancelButton: true,
                                 confirmButtonColor: '#00a8ff',
-                                confirmButtonText: '변경',
+                                confirmButtonText: 'Confirm',
                                 cancelButtonColor: '#A1A5B7',
-                                cancelButtonText: '취소'
+                                cancelButtonText: 'Cancel'
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     // '변경'을 누르면 필드를 초기화하고, 이전 값을 현재 값으로 업데이트

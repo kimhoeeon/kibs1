@@ -86,7 +86,7 @@
                             <a href="/eng/guide/program.do">Program</a>
                             <a href="/eng/guide/bi.do">KIBS BI</a>
                             <a href="/eng/guide/venue.do">Venue</a>
-                            <a href="/eng/guide/contact.do">Contact us</a>
+                            <a href="/eng/guide/contact.do">Contact Us</a>
                             <%--<a href="/eng/guide/brochure.do">E-Brochure</a>--%>
                         </div>
                     </div>
@@ -166,7 +166,7 @@
                                         Seoul". The provincial capital of Gyeonggi-do is Suwon. Seoul is South Korea's
                                         largest city and national capital. It is in the heart of the Province but has
                                         been separately administered as a provincial-level special city since 1946.
-                                        Incheon is South Korea's third largest city, is on the coast of the Province and
+                                        Incheon is South Korea's third-largest city, is on the coast of the Province and
                                         has been similarly administered as a provincial-level metropolitan city since
                                         1981. The three jurisdictions collectively cover 11,730 km2, with a combined
                                         population of 25.6 million amounting to over half of the entire population of

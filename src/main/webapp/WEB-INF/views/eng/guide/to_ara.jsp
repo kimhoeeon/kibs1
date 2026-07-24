@@ -85,7 +85,7 @@
                             <a href="/eng/guide/bi.do">KIBS BI</a>
                             <a href="/eng/guide/brochure.do">E-Brochure</a>
                             <a href="/eng/guide/certify.do">International Certification & Awards</a>
-                            <a href="/eng/guide/contact.do">Contact us</a>
+                            <a href="/eng/guide/contact.do">Contact Us</a>
                             <a href="/eng/guide/program.do">Program</a>
                         </div>
                     </div>
