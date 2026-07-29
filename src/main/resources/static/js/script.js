@@ -531,6 +531,13 @@ $(document).ready(function () {
         $(this).val($(this).val().replaceAll(exp, ''));
     });
 
+    // 영문 회사명 입력 (영문, 숫자, 특수기호, 공백, Co., Ltd., ㈜, (주), (유) 등 허용)
+    $('.onlyEngCompany').on("blur keyup", function () {
+        // 기존 정규식의 예외 허용 목록([^...]) 끝에 '㈜주유합사재단' 을 추가합니다.
+        let exp = /[^A-Za-z0-9_\`\~\!\@\#\$\%\^\&\*\(\)\-\=\+\\\{\}\[\]\'\"\;\:\<\,\>\.\?\/\s㈜주유합사재단]/gm;
+        $(this).val($(this).val().replaceAll(exp, ''));
+    });
+
     // 숫자, 소수점 입력
     $('.onlyNumDec').on("blur keyup", function () {
         var sanitizedValue = $(this).val().replace(/[^0-9.]/g, ''); // 숫자와 소수점 이외의 문자 제거

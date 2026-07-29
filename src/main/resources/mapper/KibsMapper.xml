@@ -168,6 +168,10 @@
         , company_license_num
         , company_name_ko
         , company_name_en
+        , company_country
+        , company_state
+        , company_city
+        , company_zipcode
         , company_address
         , company_address_detail
         , factory_address
@@ -225,6 +229,10 @@
                , #{companyLicenseNum}
                , <![CDATA[#{companyNameKo}]]>
                , <![CDATA[#{companyNameEn}]]>
+               , #{companyCountry}
+               , #{companyState}
+               , #{companyCity}
+               , #{companyZipcode}
                , #{companyAddress}
                , <![CDATA[#{companyAddressDetail}]]>
                , #{factoryAddress}
@@ -487,6 +495,10 @@
           , company_license_num = #{companyLicenseNum}
           , company_name_ko =  <![CDATA[#{companyNameKo}]]>
           , company_name_en =  <![CDATA[#{companyNameEn}]]>
+          , company_country = #{companyCountry}
+          , company_state = #{companyState}
+          , company_city = #{companyCity}
+          , company_zipcode = #{companyZipcode}
           , company_address = #{companyAddress}
           , company_address_detail = <![CDATA[#{companyAddressDetail}]]>
           , factory_address = #{factoryAddress}

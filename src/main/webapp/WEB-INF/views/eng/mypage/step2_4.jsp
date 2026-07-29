@@ -118,49 +118,39 @@
                     <!-- section -->
                     <div class="my_form form_s">
                         <div class="inner">
-                            <div class="apply_tit">Badges</div>
+                            <div class="apply_tit">Badge Application</div>
                             <!-- 안내문구 -->
                             <div class="form_wrap">
                                 <ul class="form_guide">
-                                    <li>Please submit the name and position of your resident agent who will reside in the
-                                        exhibition hall. During the construction period and the exhibition period, a badge that
-                                        allows visitors to enter the exhibition hall will be made and distributed at the
-                                        entrance of the exhibition hall or at the organizer's office. (This form is applicable
-                                        to all companies participating in the exhibition.)
-                                    </li>
-                                    <li>Those who do not wear a badge are restricted from entering the exhibition hall, so
-                                        please check and submit it in advance.
-                                    </li>
+                                    <li>Please provide the names and positions of all personnel who will stay at your booth during the move-in, construction, and exhibition periods.</li>
+                                    <li>Badges will be issued for access to the exhibition hall and distributed at the exhibition hall entrance or the Organizer’s office during the move-in period.</li>
+                                    <li>Personnel without badges may be restricted from entering the exhibition hall. Please make sure to enter the information accurately.</li>
                                 </ul>
                             </div>
 
                             <!-- 출입증 신청 -->
                             <div class="form_wrap">
                                 <div class="form_tit">
-                                    <div class="big">Badges Application</div>
-                                    <div class="small">Company Name : ${exhibitorInfo.companyNameKo} (${exhibitorInfo.companyNameEn})</div>
+                                    <div class="big">Badge Application</div>
+                                    <div class="small">Company Name : ${exhibitorInfo.companyNameEn}<c:if test="${exhibitorInfo.companyNameKo ne exhibitorInfo.companyNameEn}"> (${exhibitorInfo.companyNameKo})</c:if></div>
                                 </div>
-                                <div class="form_tb form_pass form_add form_pass_eng">
+                                <div class="form_tb form_pass_eng form_add">
                                     <ul class="formPassHd formTbHd">
-                                        <li class="passNum"><p>Number</p></li>
-                                        <li class="passNameK req"><p>Name (Kor.)</p></li>
-                                        <li class="passNameE req"><p>Name (Eng.)</p></li>
-                                        <li class="passPosK req"><p>Position (Kor.)</p></li>
-                                        <li class="passPosE req"><p>Position (Eng.)</p></li>
-                                        <li class="passNote"><p>Note</p></li>
+                                        <li class="passNum"><p>No</p></li>
+                                        <li class="passNameE req"><p>First Name</p></li>
+                                        <li class="passNameE req"><p>Last Name</p></li>
+                                        <li class="passPosE req"><p>Position</p></li>
+                                        <li class="passNote"><p>Remarks</p></li>
+                                        <li class="passDel"><p>Delete</p></li>
                                     </ul>
                                     <c:if test="${empty passList}">
                                         <ul class="formPassBd formTbBd">
                                             <input type="hidden" name="passSeq" value="">
                                             <li class="passNum addNum">1</li>
-                                            <li class="passNameK"><input type="text" name="pass_name" placeholder="Name (Kor.)" <%--disabled--%>></li>
-                                            <li class="passNameE">
-                                                <input type="text" name="pass_first_name" class="onlyNumEng w50" placeholder="First Name" <%--disabled--%>>
-                                                <input type="text" name="pass_last_name" class="onlyNumEng w50" placeholder="Last Name" <%--disabled--%>>
-                                            </li>
-                                            <li class="passPosK"><input type="text" name="pass_position_ko" placeholder="Position (Kor.)" <%--disabled--%>></li>
-                                            <li class="passPosE"><input type="text" name="pass_position_en" class="onlyNumEng" placeholder="Position (Eng.)" <%--disabled--%>></li>
-                                            <li class="passNote"><input type="text" name="pass_note" placeholder="Note" <%--disabled--%>></li>
+                                            <li class="passNameE"><input type="text" name="pass_first_name" class="onlyEngCompany" placeholder="First Name" <%--disabled--%>></li>
+                                            <li class="passNameE"><input type="text" name="pass_last_name" class="onlyEngCompany" placeholder="Last Name" <%--disabled--%>></li>
+                                            <li class="passPosE"><input type="text" name="pass_position_en" class="onlyEngCompany" placeholder="Position" <%--disabled--%>></li>
+                                            <li class="passNote"><input type="text" name="pass_note" placeholder="Remarks" <%--disabled--%>></li>
                                             <li class="passDel addDel"><img src="/img/icon_del.png"></li>
                                         </ul>
                                     </c:if>
@@ -170,14 +160,10 @@
                                             <ul class="formPassBd formTbBd">
                                                 <input type="hidden" name="passSeq" value="${pass.seq}">
                                                 <li class="passNum addNum">${status.index + 1}</li>
-                                                <li class="passNameK"><input type="text" name="pass_name" value="${pass.passName}" placeholder="Name (Kor.)" <%--disabled--%>></li>
-                                                <li class="passNameE">
-                                                    <input type="text" name="pass_first_name" class="onlyNumEng w50" value="${pass.passFirstName}" placeholder="First Name" <%--disabled--%>>
-                                                    <input type="text" name="pass_last_name" class="onlyNumEng w50" value="${pass.passLastName}" placeholder="Last Name" <%--disabled--%>>
-                                                </li>
-                                                <li class="passPosK"><input type="text" name="pass_position_ko" value="${pass.passPositionKo}" placeholder="Position (Kor.)" <%--disabled--%>></li>
-                                                <li class="passPosE"><input type="text" name="pass_position_en" class="onlyNumEng" value="${pass.passPositionEn}" placeholder="Position (Eng.)" <%--disabled--%>></li>
-                                                <li class="passNote"><input type="text" name="pass_note" value="${pass.passNote}" placeholder="Note" <%--disabled--%>></li>
+                                                <li class="passNameE"><input type="text" name="pass_first_name" class="onlyEngCompany" value="${pass.passFirstName}" placeholder="First Name" <%--disabled--%>></li>
+                                                <li class="passNameE"><input type="text" name="pass_last_name" class="onlyEngCompany" value="${pass.passLastName}" placeholder="Last Name" <%--disabled--%>></li>
+                                                <li class="passPosE"><input type="text" name="pass_position_en" class="onlyEngCompany" value="${pass.passPositionEn}" placeholder="Position" <%--disabled--%>></li>
+                                                <li class="passNote"><input type="text" name="pass_note" value="${pass.passNote}" placeholder="Remarks" <%--disabled--%>></li>
                                                 <li class="passDel addDel"><img src="/img/icon_del.png"></li>
                                             </ul>
                                         </c:forEach>
@@ -190,11 +176,11 @@
                             <div class="form_btn">
                                 <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_3.do','${info.seq}')" class="form_btn_prev">
                                     <div class="big">PREV</div>
-                                    <div class="small">Utilities</div>
+                                    <div class="small">Utility Services</div>
                                 </a>
                                 <a href="javascript:void(0);" onclick="f_mypage_comp('2_4','${info.seq}')" class="form_btn_next">
                                     <div class="big">NEXT</div>
-                                    <div class="small">Giveaways</div>
+                                    <div class="small">Giveaway Application</div>
                                 </a>
                             </div>
 
@@ -207,6 +193,39 @@
         </div>
 
         <c:import url="../footer.jsp" charEncoding="UTF-8"/>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                // 출입증 신청 기간 마감 체크
+                // 마감일시: 2027-07-24 06:05:00 (한국 시간 기준)
+                var deadline = new Date("2027-07-24T06:05:00+09:00");
+                var now = new Date();
+
+                if (now > deadline) {
+                    // 마감 시간이 지났을 경우 Swal 팝업 노출
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '[ Badge Application ]',
+                        html: '<span style="font-size: 1.2em;">Badge applications are now closed.<br>For additional requests, please contact the Secretariat.</span>',
+                        allowOutsideClick: false,    // 배경 클릭으로 닫기 방지
+                        allowEscapeKey: false,       // ESC 키로 닫기 방지
+                        showConfirmButton: true,
+                        confirmButtonColor: '#00a8ff',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // 확인 버튼 클릭 시 이전 페이지나 지정된 페이지로 강제 이동
+                            // (필요 시 /eng/index.do 또는 마이페이지 메인으로 URL 수정 가능)
+                            window.location.href = '/eng/mypage/index.do';
+                        }
+                    });
+
+                    // 마감되었으므로 폼 내부 모든 input 비활성화 처리 (추가 안전장치)
+                    $('.form_pass_eng input').prop('disabled', true);
+                    $('.form_add_btn').hide(); // Add 버튼 숨김
+                }
+            });
+        </script>
 
     </c:if>
 

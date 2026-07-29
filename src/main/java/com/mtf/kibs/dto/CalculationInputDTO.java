@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class CalculationInputDTO {
 
+    private String lang;
+
     // 1. 부스 정보 (JSP의 input[name=...] 또는 hidden 값)
     private int registrationCnt;        // 등록비 카운트 (1 또는 0)
     private int standAloneBoothCnt;     // 독립부스 수

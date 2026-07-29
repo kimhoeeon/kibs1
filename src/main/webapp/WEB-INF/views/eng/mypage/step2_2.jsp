@@ -141,8 +141,8 @@
                                         </div>
                                         <div class="input">
                                             <input type="hidden" id="assemblyBoothCnt" value="${info.assemblyBoothCnt}">
-                                            <input type="text" id="companySignNameKo" value="${info.companySignNameKo}" placeholder="Korean Signboard Name (Optional)">
-                                            <input type="text" id="companySignNameEn" value="${info.companySignNameEn}" placeholder="English Signboard Name" class="onlyNumEng">
+                                            <input type="text" id="companySignNameKo" value="${info.companySignNameKo}" maxlength="64" placeholder="Korean Signboard Name (Optional)">
+                                            <input type="text" id="companySignNameEn" value="${info.companySignNameEn}" maxlength="64" placeholder="English Signboard Name" class="onlyEngCompany">
                                         </div>
                                     </li>
                                 </ul>

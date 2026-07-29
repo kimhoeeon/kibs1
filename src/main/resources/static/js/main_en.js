@@ -131,11 +131,6 @@ function f_pre_exhibitor_info_call(){
             confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
-                //회사명(국)
-                let companyNameKo = preExhibitorInfo.companyNameKo;
-                if(nvl(companyNameKo,'') !== ''){
-                    $('#companyNameKo').val(companyNameKo);
-                }
                 //회사명(영)
                 let companyNameEn = preExhibitorInfo.companyNameEn;
                 if(nvl(companyNameEn,'') !== ''){
@@ -227,18 +222,9 @@ function f_pre_exhibitor_info_call(){
                 //이메일
                 let fullEmail = preExhibitorInfo.email;
                 if(nvl(fullEmail,'') !== ''){
-                    let domainArr = ['naver.com','daum.net','nate.com','hanmail.net','gmail.com'];
                     let emailArr = fullEmail.toString().split('@');
-                    let email = emailArr[0];
-                    $('#email1').val(email);
-
-                    let domain = emailArr[1];
-                    if(domainArr.some(i => domain.includes(i))){
-                        $('#email_select').val(domain).prop('selected',true).trigger('change');
-                    }else{
-                        $('#email_select').val("Direct input").prop('selected',true).trigger('change');
-                        $('#email2').val(domain);
-                    }
+                    $('#email1').val(emailArr[0]);
+                    $('#email2').val(emailArr[1]);
                 }
                 //회사소개영상
                 let companyIntroVideo = preExhibitorInfo.companyIntroVideo;
@@ -540,11 +526,11 @@ function checkBooth(){
 // --- 전역 상수 설정 ---
 
 const boothPrices = {
-    standAlone: 1800000,
-    assembly: 2100000,
-    online: 1000000
+    standAlone: 3000,
+    assembly: 3300,
+    online: 1000
 };
-const registrationFee = 100000; // 기본 등록비
+const registrationFee = 0; // 기본 등록비
 
 // --- 조기신청 할인 기간 설정 ---
 
@@ -710,8 +696,9 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
 
     // 1. 계산에 필요한 모든 입력값을 DOM에서 수집
     const inputData = {
+        lang: 'EN',
+
         // 부스 정보 (hidden input 또는 화면 input에서 가져오기)
-        registrationCnt: 1,
         standAloneBoothCnt: parseInt($('#standAloneBoothCnt').val()) || parseInt($('#hiddenStandAloneCnt').val()) || 0,
         assemblyBoothCnt: parseInt($('#assemblyBoothCnt').val()) || parseInt($('#hiddenAssemblyCnt').val()) || 0,
         //onlineBoothCnt: parseInt($('#onlineBoothCnt').val()) || parseInt($('#hiddenOnlineCnt').val()) || 0,
@@ -719,29 +706,33 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
         // 유틸리티 정보 (hidden input 또는 화면 input에서 계산)
         utilityPrcSum: (pageType === 'utility') ? calculateCurrentUtilitySum() : (parseInt($('#utilityPrcSum').val()) || 0),
 
-        // 기본 할인 정보 (hidden input 또는 화면 체크박스에서 가져오기)
-        discountEarly1: $('#discountEarly1').is(':checked') || $('#discountEarly1Checked').val() === 'true',
-        discountEarly2: $('#discountEarly2').is(':checked') || $('#discountEarly2Checked').val() === 'true',
-        discountFirstUnder10: $('#discountFirstUnder10').is(':checked') || $('#discountFirstUnder10Checked').val() === 'true',
-        discountFirstOver10: $('#discountFirstOver10').is(':checked') || $('#discountFirstOver10Checked').val() === 'true',
-        discountRe: $('#discountRe').is(':checked') || $('#discountReChecked').val() === 'true',
-        discountScale1: $('#discountScale1').is(':checked') || $('#discountScale1Checked').val() === 'true',
-        discountScale2: $('#discountScale2').is(':checked') || $('#discountScale2Checked').val() === 'true',
-        discountScale3: $('#discountScale3').is(':checked') || $('#discountScale3Checked').val() === 'true',
-        discountScale4: $('#discountScale4').is(':checked') || $('#discountScale4Checked').val() === 'true',
-        discountScale5: $('#discountScale5').is(':checked') || $('#discountScale5Checked').val() === 'true',
-        discountScale6: $('#discountScale6').is(':checked') || $('#discountScale6Checked').val() === 'true',
-        discountLeisure: $('#discountLeisure').is(':checked') || $('#discountLeisureChecked').val() === 'true',
+        // 등록비 강제 0
+        registrationCnt: 0,
+        registrationFee: 0,
 
-        // 특별 할인 정보 (hidden input 등에서 가져오기)
-        discountSpecial1Yn: $('#discountSpecial1Yn').val() === 'true',
-        discountSpecial2Yn: $('#discountSpecial2Yn').val() === 'true',
-        discountSpecial2Amount: parseInt($('#discountSpecial2Amount').val()) || 0,
-        discountSpecial3Yn: $('#discountSpecial3Yn').val() === 'true',
-        discountSpecial3Amount: parseInt($('#discountSpecial3Amount').val()) || 0,
+        // 할인 모두 강제 false
+        discountEarly1: false,
+        discountEarly2: false,
+        discountFirstUnder10: false,
+        discountFirstOver10: false,
+        discountRe: false,
+        discountScale1: false,
+        discountScale2: false,
+        discountScale3: false,
+        discountScale4: false,
+        discountScale5: false,
+        discountScale6: false,
+        discountLeisure: false,
 
-        // 발전 기금용 정보
-        memberCompanyYn: $("#memberCompanyYn").val(), // JSP hidden input 값
+        // 특별 할인 모두 0 / false 고정
+        discountSpecial1Yn: false,
+        discountSpecial2Yn: false,
+        discountSpecial2Amount: 0,
+        discountSpecial3Yn: false,
+        discountSpecial3Amount: 0,
+
+        // 발전기금 산정 방지를 위해 N으로 강제 고정
+        memberCompanyYn: 'N',
 
         // 선금
         deposit: parseInt(uncomma($('#depositText').text())) || parseInt($('#deposit').val()) || 0 // JSP span 또는 hidden input 값
@@ -756,39 +747,9 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
         let assemblyFee = assemblyQty * boothPrices.assembly;
         //let onlineFee = onlineQty * boothPrices.online;
 
-        $('#standAloneBoothFee').val(numberToWon(standAloneFee));
-        $('#assemblyBoothFee').val(numberToWon(assemblyFee));
-        //$('#onlineBoothFee').val(numberToWon(onlineFee));
-
-        // 오프라인 부스 총 수량 계산
-        let physicalBooths = standAloneQty + assemblyQty;
-        // 부스 수량에 따라 규모 할인 자동 업데이트 (main.js 함수)
-        updateScaleDiscountState(physicalBooths);
-        // 첫 참가 할인 자동 업데이트 (main.js 함수 - firstUnder10 요소에 data-db-val 확인 필요)
-        const firstUnder10 = $('#discountFirstUnder10');
-        if (firstUnder10.data('db-val') === 'first') {
-            const firstOver10 = $('#discountFirstOver10');
-            if (physicalBooths > 0 && physicalBooths < 10) {
-                firstUnder10.prop('checked', true); firstOver10.prop('checked', false);
-            } else if (physicalBooths >= 10) {
-                firstUnder10.prop('checked', false); firstOver10.prop('checked', true);
-            } else {
-                firstUnder10.prop('checked', false); firstOver10.prop('checked', false);
-            }
-            // inputData 업데이트
-            inputData.discountFirstUnder10 = firstUnder10.is(':checked');
-            inputData.discountFirstOver10 = firstOver10.is(':checked');
-        }
-        // 재참가 할인 상태 업데이트 (main.js 함수) 및 inputData 반영
-        updateReParticipantDiscountState();
-        inputData.discountRe = $('#discountRe').is(':checked');
-        // 규모 할인 상태 inputData 반영
-        inputData.discountScale1 = $('#discountScale1').is(':checked');
-        inputData.discountScale2 = $('#discountScale2').is(':checked');
-        inputData.discountScale3 = $('#discountScale3').is(':checked');
-        inputData.discountScale4 = $('#discountScale4').is(':checked');
-        inputData.discountScale5 = $('#discountScale5').is(':checked');
-        inputData.discountScale6 = $('#discountScale6').is(':checked');
+        $('#standAloneBoothFee').val(numberToUsd(standAloneFee));
+        $('#assemblyBoothFee').val(numberToUsd(assemblyFee));
+        //$('#onlineBoothFee').val(numberToUsd(onlineFee));
     }
     // --- ▲▲▲ 부스 페이지 UI 업데이트 종료 ▲▲▲ ---
 
@@ -813,21 +774,7 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
         // 3. 계산된 결과를 페이지 타입에 맞게 UI에 반영
         if (pageType === 'booth') {
             // --- 부스 페이지 UI 업데이트 ---
-            $('#boothPrcSum').text($.number(result.boothPrcSum));
-            $('#discountPrcSum').text($.number(result.basicDiscountSum));
-            $('#specialDiscountTotal_display').text($.number(result.specialDiscountTotal)); // ※ JSP span 필요
-            $('#developmentFund').text(numberToWon(result.developmentFund)); // ※ JSP span 필요
-
-            // --- 올해의 제품상 할인 ---
-            let discountSpecialFee = (result.boothPrcSum - result.basicDiscountSum) * 0.5;
-            $('#discountSpecial1').data('discount', discountSpecialFee);
-            $('#discountSpecial1Note').text(discountSpecialFee.toLocaleString() + ' KRW');
-
-            // --- 부스 페이지 UI 업데이트 ---
-            $('#boothPrcSumDisplay').val(numberToWon(result.boothSubtotal)); // 유틸리티 소계 ※ JSP span 필요
-
-            // ★ 부스 총액 (VAT 포함) 표시 ★
-            $('#boothTotalAmount').val(numberToWon(result.boothTotal)); // ※ JSP span 필요
+            $('#boothPrcSumDisplay').val(numberToUsd(result.boothSubtotal)); // 유틸리티 소계 ※ JSP span 필요
 
             // --- 참고용 최종 총계 표시 ---
             $('#prcSum').text($.number(result.prcSum));
@@ -839,9 +786,6 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
             // --- 유틸리티 페이지 UI 업데이트 ---
             $('#utilityPrcSumDisplay').val(numberToWon(result.utilityPrcSum)); // 유틸리티 소계 ※ JSP span 필요
 
-            // ★ 유틸리티 총액 (VAT 포함) 표시 ★
-            $('#utilityTotalAmount').val(numberToWon(result.utilityTotal)); // ※ JSP span 필요
-
             // --- 참고용 최종 총계 표시 ---
             $('#prcSum').text($.number(result.prcSum));
             $('#prcVat').text($.number(result.prcVat));
@@ -852,13 +796,11 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
         // 4. 서버 전송용 hidden input 값 업데이트 (공통)
         // (저장 시에는 항상 최종 총계 기준 값을 보냅니다)
         $("input[name='boothPrcSum']").val(result.boothPrcSum);
-        $("input[name='discountPrcSum']").val(result.basicDiscountSum);
-        // 유틸리티 페이지가 아니어도 utilitySubtotal 값을 hidden에 넣어줘야 할 수 있음 (저장 로직 확인 필요)
+        $("input[name='discountPrcSum']").val(0);
         $("input[name='utilityPrcSum']").val(result.utilitySubtotal);
         $("input[name='prcSum']").val(result.prcSum);
         $("input[name='prcVat']").val(result.prcVat);
         $("input[name='prcTotal']").val(result.prcTotal);
-        // $("input[name='developmentFund']").val(result.developmentFund); // DB 컬럼이 있다면
 
     } catch (error) {
         console.error("Error occurred while calculating amount:", error);
@@ -875,13 +817,20 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
 /**
  * 콤마 제거 유틸리티 함수 (main.js에도 있어야 함)
  */
+// 통화 포맷 함수
+function numberToUsd(number) {
+    if (isNaN(number)) return "USD 0";
+    return "USD " + Number(number).toLocaleString('en-US');
+}
+
+// uncomma 함수 수정 (USD 도 제거하도록)
 function uncomma(str) {
     if (typeof str === 'number') {
         return str;
     }
     str = String(str);
-    // "￦ " 기호와 "," 콤마를 모두 제거
-    return parseInt(str.replace(/￦\s*|,/g, ''), 10) || 0;
+    // "￦ ", "USD ", "," 콤마 모두 제거
+    return parseInt(str.replace(/￦\s*|USD\s*|,/gi, ''), 10) || 0;
 }
 
 function autoSum(index){
@@ -1426,11 +1375,6 @@ async function step_01_check(exhibitorSeq){
     /******************** 참가업체 정보 ********************/
 
     // 회사명
-    let companyNameKo = $('#companyNameKo').val();
-    if(nvl(companyNameKo,'') === ''){
-        showMessage('#companyNameKo', 'error', '[ Exhibitor Info ]', 'Please enter the company name (Korean).', '');
-        return false;
-    }
     let companyNameEn = $('#companyNameEn').val();
     if(nvl(companyNameEn,'') === ''){
         showMessage('#companyNameEn', 'error', '[ Exhibitor Info ]', 'Please enter the company name (English).', '');
@@ -1438,20 +1382,32 @@ async function step_01_check(exhibitorSeq){
     }
 
     // 본사 주소
+    let companyCountry = $('#companyCountry').val();
+    if(nvl(companyCountry,'') === ''){
+        showMessage('#companyCountry', 'error', '[ Exhibitor Info ]', 'Please select a country.', '');
+        return false;
+    }
+    let companyState = $('#companyState').val();
+    if(nvl(companyState,'') === ''){
+        showMessage('#companyState', 'error', '[ Exhibitor Info ]', 'Please enter the state / province.', '');
+        return false;
+    }
+    let companyCity = $('#companyCity').val();
+    if(nvl(companyCity,'') === ''){
+        showMessage('#companyCity', 'error', '[ Exhibitor Info ]', 'Please enter the city.', '');
+        return false;
+    }
+    let companyZipcode = $('#companyZipcode').val();
+    if(nvl(companyZipcode,'') === ''){
+        showMessage('#companyZipcode', 'error', '[ Exhibitor Info ]', 'Please enter the postal code.', '');
+        return false;
+    }
     let companyAddress = $('#companyAddress').val();
     if(nvl(companyAddress,'') === ''){
-        showMessage('#companyAddress', 'error', '[ Exhibitor Info ]', 'Please enter the head office address.', '');
+        showMessage('#companyAddress', 'error', '[ Exhibitor Info ]', 'Please enter the address line 1.', '');
         return false;
     }
     let companyAddressDetail = $('#companyAddressDetail').val();
-    if(nvl(companyAddressDetail,'') === ''){
-        showMessage('#companyAddressDetail', 'error', '[ Exhibitor Info ]', 'Please enter the detailed head office address.', '');
-        return false;
-    }
-
-    // 공장 주소
-    let factoryAddress = $('#factoryAddress').val();
-    let factoryAddressDetail = $('#factoryAddressDetail').val();
 
     // 대표자
     let companyCeo = $('#companyCeo').val();
@@ -1462,7 +1418,12 @@ async function step_01_check(exhibitorSeq){
 
     // 전화
     let companyTel = $('#companyTel').val() ? $('#companyTel').val().trim() : '';
-    let companyTelCode = $('#companyTelCode').val() || '';
+    let companyTelCode = $('#companyTelCode').val(); // 기본값이 없으므로 null일 수 있음
+
+    if(nvl(companyTelCode,'') === ''){
+        showMessage('#companyTelCode', 'error', '[ Exhibitor Info ]', 'Please select a country code for the phone number.', '');
+        return false;
+    }
     if(nvl(companyTel,'') === ''){
         showMessage('#companyTel', 'error', '[ Exhibitor Info ]', 'Please enter the phone number.', '');
         return false;
@@ -1494,8 +1455,13 @@ async function step_01_check(exhibitorSeq){
 
     // Fax
     let companyFax = $('#companyFax').val() ? $('#companyFax').val().trim() : '';
-    let companyFaxCode = $('#companyFaxCode').val() || '';
+    let companyFaxCode = $('#companyFaxCode').val();
+
     if(nvl(companyFax, '') !== ''){
+        if(nvl(companyFaxCode,'') === ''){
+            showMessage('#companyFaxCode', 'error', '[ Exhibitor Info ]', 'Please select a country code for the fax number.', '');
+            return false;
+        }
         if (companyFax.startsWith(companyFaxCode)) {
             companyFax = companyFax.substring(companyFaxCode.length).trim();
         }
@@ -1549,7 +1515,7 @@ async function step_01_check(exhibitorSeq){
     /******************** 담당자 정보 ********************/
     /******************** 대표담당자 정보 ********************/
 
-        // 성명
+    // 성명
     let name = $('#name').val();
     if(nvl(name,'') === ''){
         showMessage('#name', 'error', '[ Contact Info ]', 'Please enter the name.', '');
@@ -1566,23 +1532,33 @@ async function step_01_check(exhibitorSeq){
     // 부서
     let depart = $('#depart').val();
 
-    // 전화번호
-    let tel = $('#tel').val();
+    // 대표 담당자 전화번호
+    let tel = $('#tel').val() ? $('#tel').val().trim() : '';
+    let telCode = $('#telCode').val();
+    if(nvl(telCode,'') === ''){
+        showMessage('#telCode', 'error', '[ Contact Info ]', 'Please select a country code for the phone number.', '');
+        return false;
+    }
     if(nvl(tel,'') === ''){
         showMessage('#tel', 'error', '[ Contact Info ]', 'Please enter the phone number.', '');
         return false;
+    }else{
+        tel = telCode + ' ' + tel;
     }
 
-    // 휴대전화
-    let phone = $('#phone').val();
+    // 대표 담당자 휴대전화
+    let phone = $('#phone').val() ? $('#phone').val().trim() : '';
+    let phoneCode = $('#phoneCode').val();
+    if(nvl(phoneCode,'') === ''){
+        showMessage('#phoneCode', 'error', '[ Contact Info ]', 'Please select a country code for the mobile phone number.', '');
+        return false;
+    }
     if(nvl(phone,'') === ''){
         showMessage('#phone', 'error', '[ Contact Info ]', 'Please enter the mobile phone number.', '');
         return false;
     }else{
-        if ( !/^010-[0-9]{4}-[0-9]{4}$/.test( phone ) ) {
-            showMessage('#phone', 'error', '[ Contact Info ]', 'Please enter a valid mobile phone number.<br>(Must start with 010.)', '');
-            return false;
-        }
+        // 010 룰 검사는 제거하거나 필요 시 KOR일 때만 적용하도록 우회
+        phone = phoneCode + ' ' + phone;
     }
 
     // 이메일
@@ -1600,7 +1576,7 @@ async function step_01_check(exhibitorSeq){
     /******************** 담당자 정보 ********************/
     /******************** 부담당자 정보 ********************/
 
-        // 담당자 성명
+    // 담당자 성명
     let charge_person_name_el = $('input[type=text][name=chargePersonName]');
 
     // 담당자 직위
@@ -1610,9 +1586,11 @@ async function step_01_check(exhibitorSeq){
     let charge_person_depart_el = $('input[type=text][name=chargePersonDepart]');
 
     // 담당자 전화번호
+    let charge_person_tel_code_el = $('select[name=chargePersonTelCode]');
     let charge_person_tel_el = $('input[type=tel][name=chargePersonTel]');
 
     // 담당자 휴대전화
+    let charge_person_phone_code_el = $('select[name=chargePersonPhoneCode]');
     let charge_person_phone_el = $('input[type=tel][name=chargePersonPhone]');
 
     // 담당자 이메일
@@ -1628,6 +1606,14 @@ async function step_01_check(exhibitorSeq){
         for(let i=0; i<chargePersonCnt; i++){
             let chargePersonName = charge_person_name_el.eq(i).val();
             if(nvl(chargePersonName,'') !== ''){
+                let cTel = charge_person_tel_el.eq(i).val() ? charge_person_tel_el.eq(i).val().trim() : '';
+                let cTelCode = charge_person_tel_code_el.eq(i).val() || '';
+                if (cTel !== '' && cTelCode !== '') cTel = cTelCode + ' ' + cTel;
+
+                let cPhone = charge_person_phone_el.eq(i).val() ? charge_person_phone_el.eq(i).val().trim() : '';
+                let cPhoneCode = charge_person_phone_code_el.eq(i).val() || '';
+                if (cPhone !== '' && cPhoneCode !== '') cPhone = cPhoneCode + ' ' + cPhone;
+
                 let chargePersonEmail_val = charge_person_email_el.eq(i).val();
                 let chargePersonEmail = '';
                 if(nvl(chargePersonEmail_val,'') !== ''){
@@ -1639,8 +1625,8 @@ async function step_01_check(exhibitorSeq){
                     chargePersonName: chargePersonName,
                     chargePersonPosition: charge_person_position_el.eq(i).val(),
                     chargePersonDepart: charge_person_depart_el.eq(i).val(),
-                    chargePersonTel: charge_person_tel_el.eq(i).val(),
-                    chargePersonPhone: charge_person_phone_el.eq(i).val(),
+                    chargePersonTel: cTel,
+                    chargePersonPhone: cPhone,
                     chargePersonEmail: chargePersonEmail,
                 };
                 chargePersonList_json_arr.push(chargePersonList_json_obj);
@@ -1650,7 +1636,7 @@ async function step_01_check(exhibitorSeq){
 
     /******************** 참가행사 및 분야 ********************/
 
-        // 참가행사 및 분야
+    // 참가행사 및 분야
     let fieldParticipatory = $('input[type=radio][name=fieldParticipatory]:checked').val();
     let fieldParticipatory1 = '';
     let fieldParticipatory2 = '';
@@ -1919,12 +1905,13 @@ async function step_01_check(exhibitorSeq){
         password: password,
         passwordYn: 'Y',
         /* 참가업체 정보 */
-        companyNameKo: companyNameKo,
+        companyCountry: companyCountry,
+        companyState: companyState,
+        companyCity: companyCity,
+        companyZipcode: companyZipcode,
         companyNameEn: companyNameEn,
         companyAddress: companyAddress,
         companyAddressDetail: companyAddressDetail,
-        factoryAddress: factoryAddress,
-        factoryAddressDetail: factoryAddressDetail,
         companyCeo: companyCeo,
         companyTel: companyTel,
         companyHomepage: companyHomepage,
@@ -2068,14 +2055,14 @@ function f_buyer_add(exSeq){
     let buyer_email_input2 = $('#buyer_email_input2').val();
 
     // 전화번호
-    let buyer_tel = $('#buyer_tel').val();
+    let bTel = $('#buyer_tel').val() ? $('#buyer_tel').val().trim() : '';
+    let bTelCode = $('#buyer_tel_code').val() || '';
+    let buyer_tel = (bTel !== '' && bTelCode !== '') ? (bTelCode + ' ' + bTel) : bTel;
 
     // 휴대전화
-    let buyer_phone = $('#buyer_phone').val();
-    if ( nvl(buyer_phone,'') !== '' && !/^010-[0-9]{4}-[0-9]{4}$/.test( buyer_phone ) ) {
-        showMessage('', 'error', '[ Buyer ]', 'Please enter the correct mobile phone number.<br>(Only the prefix 010 is allowed.)', '');
-        return false;
-    }
+    let bPhone = $('#buyer_phone').val() ? $('#buyer_phone').val().trim() : '';
+    let bPhoneCode = $('#buyer_phone_code').val() || '';
+    let buyer_phone = (bPhone !== '' && bPhoneCode !== '') ? (bPhoneCode + ' ' + bPhone) : bPhone;
 
     // 팩스
     let buyer_fax = $('#buyer_fax').val();
@@ -2308,13 +2295,11 @@ function f_buyer_init(){
     // 이메일
     document.querySelector('#buyer_email_input1').value = null;
     document.querySelector('#buyer_email_input2').value = null;
-    if(document.querySelector('#buyer_email_input2').disabled){
-        document.querySelector('#buyer_email_input2').disabled = false;
-    }
-    document.querySelector('#buyer_email_select').selectedIndex = 0;
     // 전화번호
+    document.querySelector('#buyer_tel_code').selectedIndex = 0;
     document.querySelector('#buyer_tel').value = null;
     // 휴대전화
+    document.querySelector('#buyer_phone_code').selectedIndex = 0;
     document.querySelector('#buyer_phone').value = null;
     // 팩스
     document.querySelector('#buyer_fax').value = null;
@@ -2378,24 +2363,26 @@ function f_buyer_modal_set(jsonObj){
     $('#buyer_popup #buyer_email_input1').val(jsonObj.buyerCompanyEmail.split('@')[0]);
     $('#buyer_popup #buyer_email_input2').val(jsonObj.buyerCompanyEmail.split('@')[1]);
 
-    let optionExists = false;
-    $('#buyer_popup #buyer_email_select option').each(
-        function(){
-            if (this.value === jsonObj.buyerCompanyEmail.split('@')[1]) {
-                optionExists = true;
-                return false;
-            }
-        }
-    );
-
-    if(optionExists){
-        $('#buyer_popup #buyer_email_select').val(jsonObj.buyerCompanyEmail.split('@')[1]).prop("selected",true);
-    }else{
-        $('#buyer_popup #buyer_email_select option').eq(0).prop('selected',true);
+    let modalTel = jsonObj.buyerCompanyTel || '';
+    if(modalTel.includes(' ')) {
+        let tParts = modalTel.split(' ');
+        $('#buyer_popup #buyer_tel_code').val(tParts[0]).prop('selected', true);
+        $('#buyer_popup #buyer_tel').val(tParts[1]);
+    } else {
+        $('#buyer_popup #buyer_tel_code').prop('selectedIndex', 0);
+        $('#buyer_popup #buyer_tel').val(modalTel);
     }
 
-    $('#buyer_popup #buyer_tel').val(jsonObj.buyerCompanyTel);
-    $('#buyer_popup #buyer_phone').val(jsonObj.buyerCompanyPhone);
+    let modalPhone = jsonObj.buyerCompanyPhone || '';
+    if(modalPhone.includes(' ')) {
+        let pParts = modalPhone.split(' ');
+        $('#buyer_popup #buyer_phone_code').val(pParts[0]).prop('selected', true);
+        $('#buyer_popup #buyer_phone').val(pParts[1]);
+    } else {
+        $('#buyer_popup #buyer_phone_code').prop('selectedIndex', 0);
+        $('#buyer_popup #buyer_phone').val(modalPhone);
+    }
+
     $('#buyer_popup #buyer_fax').val(jsonObj.buyerCompanyFax);
     $('#buyer_popup #buyer_item').val(jsonObj.buyerCompanyItem);
     $('#buyer_popup #buyer_invite_reason').val(jsonObj.buyerCompanyInviteReason);
@@ -2458,8 +2445,8 @@ function step_2_1_check(exhibitorSeq){
     let utilityPrcSum = parseInt($('#utilityPrcSum').val()) || 0;
 
     // --- 1. 부스 정보 수집 ---
-    const registrationCnt = 1;
-    const registrationFee = 100000;
+    const registrationCnt = 0;
+    const registrationFee = 0;
     const standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val()) || 0;
     const assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val()) || 0;
     //const onlineBoothCnt = parseInt($('#onlineBoothCnt').val()) || 0;
@@ -2472,40 +2459,18 @@ function step_2_1_check(exhibitorSeq){
     // 부스 관련 총액 (등록비 포함)
     const boothPrcSum = registrationFee + standAloneBoothFee + assemblyBoothFee/* + onlineBoothFee*/;
 
-    let boothType = '등록비';
-    if (standAloneBoothCnt > 0) boothType += ',독립부스';
-    if (assemblyBoothCnt > 0) boothType += ',조립부스';
+    let boothType = '';
+    if (standAloneBoothCnt > 0) boothType += '독립부스,';
+    if (assemblyBoothCnt > 0) boothType += '조립부스,';
     //if (onlineBoothCnt > 0) boothType += ',온라인부스';
+
+    // 마지막 콤마 제거
+    if(boothType.endsWith(',')) {
+        boothType = boothType.slice(0, -1);
+    }
 
     // --- 2. 할인 정보 수집 및 계산 (전면 수정) ---
     let discountType = '';
-    let discountPrcSum = 0;
-    // 체크된 모든 할인을 순회하며 할인 총액과 할인 타입을 동적으로 생성합니다.
-    $('input[name="discount"]:checked').each(function() {
-        const id = $(this).attr('id');
-        const discountAmount = parseInt($(this).data('discount')) || 0;
-        discountPrcSum += (physicalBooths * discountAmount);
-
-        // discountType 문자열을 ID 기반으로 생성
-        switch(id) {
-            case 'discountEarly1': discountType += ',(1차)조기신청'; break;
-            case 'discountEarly2': discountType += ',(2차)조기신청'; break;
-            case 'discountScale1': discountType += ',규모할인(10+)'; break;
-            case 'discountScale2': discountType += ',규모할인(20+)'; break;
-            case 'discountScale3': discountType += ',규모할인(30+)'; break;
-            case 'discountScale4': discountType += ',규모할인(40+)'; break;
-            case 'discountScale5': discountType += ',규모할인(50+)'; break;
-            case 'discountScale6': discountType += ',규모할인(100+)'; break;
-            case 'discountRe': discountType += ',재참가'; break;
-            case 'discountFirstUnder10': discountType += ',첫참가(10미만)'; break;
-            case 'discountFirstOver10': discountType += ',첫참가(10이상)'; break;
-            case 'discountLeisure': discountType += ',해양레저산업협회'; break;
-        }
-    });
-
-    if (discountType.startsWith(',')) {
-        discountType = discountType.substring(1);
-    }
 
     // --- 5. 유효성 검사 및 서버 전송 데이터 구성 ---
     const totalBooths = standAloneBoothCnt + assemblyBoothCnt/* + onlineBoothCnt*/;
@@ -2525,21 +2490,21 @@ function step_2_1_check(exhibitorSeq){
         standAloneBoothFee: standAloneBoothFee,
         assemblyBoothCnt: assemblyBoothCnt,
         assemblyBoothFee: assemblyBoothFee,
-        discountEarly1: $('#discountEarly1').is(':checked'),
-        discountEarly2: $('#discountEarly2').is(':checked'),
-        discountFirstUnder10: $('#discountFirstUnder10').is(':checked'),
-        discountFirstOver10: $('#discountFirstOver10').is(':checked'),
-        discountRe: $('#discountRe').is(':checked'),
-        discountScale1: $('#discountScale1').is(':checked'),
-        discountScale2: $('#discountScale2').is(':checked'),
-        discountScale3: $('#discountScale3').is(':checked'),
-        discountScale4: $('#discountScale4').is(':checked'),
-        discountScale5: $('#discountScale5').is(':checked'),
-        discountScale6: $('#discountScale6').is(':checked'),
-        discountLeisure: $('#discountLeisure').is(':checked'),
-        discountYn: (discountType !== '') ? 'Y' : 'N',
+        discountEarly1: false,
+        discountEarly2: false,
+        discountFirstUnder10: false,
+        discountFirstOver10: false,
+        discountRe: false,
+        discountScale1: false,
+        discountScale2: false,
+        discountScale3: false,
+        discountScale4: false,
+        discountScale5: false,
+        discountScale6: false,
+        discountLeisure: false,
+        discountYn: 'N',
         boothPrcSum: boothPrcSum,
-        discountPrcSum: discountPrcSum,
+        discountPrcSum: 0,
         prcSum: parseInt($("input[name='prcSum']").val()) || 0,
         prcVat: parseInt($("input[name='prcVat']").val()) || 0,
         prcTotal: parseInt($("input[name='prcTotal']").val()) || 0
@@ -2977,13 +2942,6 @@ function step_2_2_check(exhibitorSeq){
             let companySignNameEn = '';
             let assemblyBoothCnt = $('#assemblyBoothCnt').val();
             if(assemblyBoothCnt > 0){
-                // 상호간판 신청 - 상호간판명 (국문)
-                companySignNameKo = $('#companySignNameKo').val();
-                if(nvl(companySignNameKo,'') === ''){
-                    showMessage('#companySignNameKo', 'error', '[ Signboard ]', 'Shell scheme booth exhibitors must enter the company signboard name (Korean).', '');
-                    return false;
-                }
-
                 // 상호간판 신청 - 상호간판명 (영문)
                 companySignNameEn = $('#companySignNameEn').val();
                 if(nvl(companySignNameEn,'') === ''){
@@ -3049,23 +3007,23 @@ function step_2_3_check(exhibitorSeq){
 
             // --- 1. 유틸리티 신청정보 수집 ---
             let utility_jugan_cnt = parseInt($('#utility_jugan_cnt').val()) || 0;
-            let utility_jugan_fee = parseInt(wonToInt($('#utility_jugan_fee').val())) || 0;
+            let utility_jugan_fee = parseInt(uncomma($('#utility_jugan_fee').val())) || 0;
             let utility_day_cnt = parseInt($('#utility_day_cnt').val()) || 0;
-            let utility_day_fee = parseInt(wonToInt($('#utility_day_fee').val())) || 0;
+            let utility_day_fee = parseInt(uncomma($('#utility_day_fee').val())) || 0;
             let utility_work_cnt = parseInt($('#utility_work_cnt').val()) || 0;
-            let utility_work_fee = parseInt(wonToInt($('#utility_work_fee').val())) || 0;
+            let utility_work_fee = parseInt(uncomma($('#utility_work_fee').val())) || 0;
             let utility_compressed_air_cnt = parseInt($('#utility_compressed_air_cnt').val()) || 0;
-            let utility_compressed_air_fee = parseInt(wonToInt($('#utility_compressed_air_fee').val())) || 0;
+            let utility_compressed_air_fee = parseInt(uncomma($('#utility_compressed_air_fee').val())) || 0;
             let utility_water_basic_cnt = parseInt($('#utility_water_basic_cnt').val()) || 0;
-            let utility_water_basic_fee = parseInt(wonToInt($('#utility_water_basic_fee').val())) || 0;
+            let utility_water_basic_fee = parseInt(uncomma($('#utility_water_basic_fee').val())) || 0;
             let utility_internet_cnt = parseInt($('#utility_internet_cnt').val()) || 0;
-            let utility_internet_fee = parseInt(wonToInt($('#utility_internet_fee').val())) || 0;
+            let utility_internet_fee = parseInt(uncomma($('#utility_internet_fee').val())) || 0;
             let utility_pytex_new_cnt = parseInt($('#utility_pytex_new_cnt').val()) || 0;
-            let utility_pytex_new_fee = parseInt(wonToInt($('#utility_pytex_new_fee').val())) || 0;
+            let utility_pytex_new_fee = parseInt(uncomma($('#utility_pytex_new_fee').val())) || 0;
             let utility_pytex_re_cnt = parseInt($('#utility_pytex_re_cnt').val()) || 0;
-            let utility_pytex_re_fee = parseInt(wonToInt($('#utility_pytex_re_fee').val())) || 0;
+            let utility_pytex_re_fee = parseInt(uncomma($('#utility_pytex_re_fee').val())) || 0;
             let utility_barcode_cnt = parseInt($('#utility_barcode_cnt').val()) || 0;
-            let utility_barcode_fee = parseInt(wonToInt($('#utility_barcode_fee').val())) || 0;
+            let utility_barcode_fee = parseInt(uncomma($('#utility_barcode_fee').val())) || 0;
 
             // 유틸리티 총액을 화면이 아닌, 각 항목의 합계로 직접 계산
             const utilityPrcSum = utility_jugan_fee + utility_day_fee + utility_work_fee + utility_compressed_air_fee +
@@ -3133,7 +3091,7 @@ function step_2_4_check(exhibitorSeq){
 
     Swal.fire({
         icon: 'info',
-        title: '[ Giveaways ]',
+        title: '[ Badge ]',
         html: '<span style="font-size: 1.2em;"><br>Click <span style="background-color:#00a8ff; color:#ffffff;">Continue Now</span> to save and proceed to the next page.<br><br>Click <span style="background-color:#A1A5B7; color:#ffffff;">Save for Later</span> to proceed to the next page.<br>You can log in and resume at any time.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
@@ -3146,21 +3104,7 @@ function step_2_4_check(exhibitorSeq){
 
         if (result.isConfirmed) {
 
-            // 성명(국문)
-            let pass_name_el = document.querySelectorAll('input[type=text][name=pass_name]');
-            let pass_name_len = pass_name_el.length;
-            let pass_name_flag = true;
-            for(let i=0; i<pass_name_len; i++){
-                if(pass_name_el[i].value === ''){
-                    pass_name_flag = false;
-                }
-            }
-            if(!pass_name_flag){
-                showMessage('', 'error', '[ Giveaways ]', 'Please enter the name (Korean).', '');
-                return false;
-            }
-
-            // 출입증이름(영문)
+            // 출입증이름(영문 - First Name)
             let pass_first_name_el = document.querySelectorAll('input[type=text][name=pass_first_name]');
             let pass_first_name_len = pass_first_name_el.length;
             let pass_first_name_flag = true;
@@ -3170,11 +3114,11 @@ function step_2_4_check(exhibitorSeq){
                 }
             }
             if(!pass_first_name_flag){
-                showMessage('', 'error', '[ Giveaways ]', 'Please enter the first name (English).', '');
+                showMessage('', 'error', '[ Badge ]', 'Please enter the first name (English).', '');
                 return false;
             }
 
-            // 출입증성(영문)
+            // 출입증성(영문 - Last Name)
             let pass_last_name_el = document.querySelectorAll('input[type=text][name=pass_last_name]');
             let pass_last_name_len = pass_last_name_el.length;
             let pass_last_name_flag = true;
@@ -3184,21 +3128,7 @@ function step_2_4_check(exhibitorSeq){
                 }
             }
             if(!pass_last_name_flag){
-                showMessage('', 'error', '[ Giveaways ]', 'Please enter the last name (English).', '');
-                return false;
-            }
-
-            // 직책(국문)
-            let pass_position_ko_el = document.querySelectorAll('input[type=text][name=pass_position_ko]');
-            let pass_position_ko_len = pass_position_ko_el.length;
-            let pass_position_ko_flag = true;
-            for(let i=0; i<pass_position_ko_len; i++){
-                if(pass_position_ko_el[i].value === ''){
-                    pass_position_ko_flag = false;
-                }
-            }
-            if(!pass_position_ko_flag){
-                showMessage('', 'error', '[ Giveaways ]', 'Please enter the position (Korean).', '');
+                showMessage('', 'error', '[ Badge ]', 'Please enter the last name (English).', '');
                 return false;
             }
 
@@ -3212,7 +3142,7 @@ function step_2_4_check(exhibitorSeq){
                 }
             }
             if(!pass_position_en_flag){
-                showMessage('', 'error', '[ Giveaways ]', 'Please enter the position (English).', '');
+                showMessage('', 'error', '[ Badge ]', 'Please enter the position (English).', '');
                 return false;
             }
 
@@ -3220,15 +3150,13 @@ function step_2_4_check(exhibitorSeq){
             let pass_note_el = document.querySelectorAll('input[type=text][name=pass_note]');
 
             let pass_json_arr = [];
-            if(pass_name_len > 0){
-                for(let i=0; i<pass_name_len; i++){
+            if(pass_first_name_len > 0){
+                for(let i=0; i<pass_first_name_len; i++){
                     let pass_json_obj = {
                         seq: $('input[type=hidden][name=passSeq]').eq(i).val(),
                         exSeq: exhibitorSeq,
-                        passName: pass_name_el[i].value,
                         passFirstName: pass_first_name_el[i].value,
                         passLastName: pass_last_name_el[i].value,
-                        passPositionKo: pass_position_ko_el[i].value,
                         passPositionEn: pass_position_en_el[i].value,
                         passNote: pass_note_el[i].value
                     };
@@ -3249,7 +3177,7 @@ function step_2_4_check(exhibitorSeq){
                 /* 등록 성공 시 다음 단계로 이동 */
                 Swal.fire({
                     icon: 'info',
-                    title: '[ Giveaways ]',
+                    title: '[ Badge ]',
                     html: '<span style="font-size: 1.2em;">Pass application info has been saved.<br>Moving to the next step.</span>',
                     allowOutsideClick: false,
                     confirmButtonColor: '#00a8ff',
@@ -3261,7 +3189,7 @@ function step_2_4_check(exhibitorSeq){
                     }
                 });
             }else{
-                showMessage('', 'error', '[ Giveaways ]', 'Failed to save pass application info. Please contact the administrator.', '');
+                showMessage('', 'error', '[ Badge ]', 'Failed to save Badge application info. Please contact the administrator.', '');
             }
 
         } else if (result.isDismissed) {
@@ -3836,10 +3764,8 @@ function f_exhibitor_info_call(){
                 $('#charge_person_tel').val(charge_resData[i].chargePersonTel);
                 $('#charge_person_phone').val(charge_resData[i].chargePersonPhone);
                 let chargePersonEmail = charge_resData[i].chargePersonEmail.split('@');
-                let email = chargePersonEmail[0];
-                let domain = chargePersonEmail[1];
-                $('#charge_person_email_input1').val(email);
-                $('#charge_person_email_input2').val(domain);
+                $('#charge_person_email_input1').val(chargePersonEmail[0]);
+                $('#charge_person_email_input2').val(chargePersonEmail[1]);
                 $('#charge_person_email_select').val(domain);
             }
         });
@@ -4143,11 +4069,6 @@ async function my_step_01_check(exhibitorSeq){
     let id = $('#id').val();
 
     // 회사명
-    let companyNameKo = $('#companyNameKo').val();
-    if(nvl(companyNameKo,'') === ''){
-        showMessage('#companyNameKo', 'error', '[ Exhibitor Info ]', 'Please enter the company name (Korean).', '');
-        return false;
-    }
     let companyNameEn = $('#companyNameEn').val();
     if(nvl(companyNameEn,'') === ''){
         showMessage('#companyNameEn', 'error', '[ Exhibitor Info ]', 'Please enter the company name (English).', '');
@@ -4155,20 +4076,32 @@ async function my_step_01_check(exhibitorSeq){
     }
 
     // 본사 주소
+    let companyCountry = $('#companyCountry').val();
+    if(nvl(companyCountry,'') === ''){
+        showMessage('#companyCountry', 'error', '[ Exhibitor Info ]', 'Please select a country.', '');
+        return false;
+    }
+    let companyState = $('#companyState').val();
+    if(nvl(companyState,'') === ''){
+        showMessage('#companyState', 'error', '[ Exhibitor Info ]', 'Please enter the state / province.', '');
+        return false;
+    }
+    let companyCity = $('#companyCity').val();
+    if(nvl(companyCity,'') === ''){
+        showMessage('#companyCity', 'error', '[ Exhibitor Info ]', 'Please enter the city.', '');
+        return false;
+    }
+    let companyZipcode = $('#companyZipcode').val();
+    if(nvl(companyZipcode,'') === ''){
+        showMessage('#companyZipcode', 'error', '[ Exhibitor Info ]', 'Please enter the postal code.', '');
+        return false;
+    }
     let companyAddress = $('#companyAddress').val();
     if(nvl(companyAddress,'') === ''){
-        showMessage('#companyAddress', 'error', '[ Exhibitor Info ]', 'Please enter the head office address.', '');
+        showMessage('#companyAddress', 'error', '[ Exhibitor Info ]', 'Please enter the address line 1.', '');
         return false;
     }
     let companyAddressDetail = $('#companyAddressDetail').val();
-    if(nvl(companyAddressDetail,'') === ''){
-        showMessage('#companyAddressDetail', 'error', '[ Exhibitor Info ]', 'Please enter the detailed head office address.', '');
-        return false;
-    }
-
-    // 공장 주소
-    let factoryAddress = $('#factoryAddress').val();
-    let factoryAddressDetail = $('#factoryAddressDetail').val();
 
     // 대표자
     let companyCeo = $('#companyCeo').val();
@@ -4179,7 +4112,12 @@ async function my_step_01_check(exhibitorSeq){
 
     // 전화
     let companyTel = $('#companyTel').val() ? $('#companyTel').val().trim() : '';
-    let companyTelCode = $('#companyTelCode').val() || '';
+    let companyTelCode = $('#companyTelCode').val(); // 기본값이 없으므로 null일 수 있음
+
+    if(nvl(companyTelCode,'') === ''){
+        showMessage('#companyTelCode', 'error', '[ Exhibitor Info ]', 'Please select a country code for the phone number.', '');
+        return false;
+    }
     if(nvl(companyTel,'') === ''){
         showMessage('#companyTel', 'error', '[ Exhibitor Info ]', 'Please enter the phone number.', '');
         return false;
@@ -4211,8 +4149,13 @@ async function my_step_01_check(exhibitorSeq){
 
     // Fax
     let companyFax = $('#companyFax').val() ? $('#companyFax').val().trim() : '';
-    let companyFaxCode = $('#companyFaxCode').val() || '';
+    let companyFaxCode = $('#companyFaxCode').val();
+
     if(nvl(companyFax, '') !== ''){
+        if(nvl(companyFaxCode,'') === ''){
+            showMessage('#companyFaxCode', 'error', '[ Exhibitor Info ]', 'Please select a country code for the fax number.', '');
+            return false;
+        }
         if (companyFax.startsWith(companyFaxCode)) {
             companyFax = companyFax.substring(companyFaxCode.length).trim();
         }
@@ -4283,23 +4226,33 @@ async function my_step_01_check(exhibitorSeq){
     // 부서
     let depart = $('#depart').val();
 
-    // 전화번호
-    let tel = $('#tel').val();
+    // 대표 담당자 전화번호
+    let tel = $('#tel').val() ? $('#tel').val().trim() : '';
+    let telCode = $('#telCode').val();
+    if(nvl(telCode,'') === ''){
+        showMessage('#telCode', 'error', '[ Contact Info ]', 'Please select a country code for the phone number.', '');
+        return false;
+    }
     if(nvl(tel,'') === ''){
         showMessage('#tel', 'error', '[ Contact Info ]', 'Please enter the phone number.', '');
         return false;
+    }else{
+        tel = telCode + ' ' + tel;
     }
 
-    // 휴대전화
-    let phone = $('#phone').val();
+    // 대표 담당자 휴대전화
+    let phone = $('#phone').val() ? $('#phone').val().trim() : '';
+    let phoneCode = $('#phoneCode').val();
+    if(nvl(phoneCode,'') === ''){
+        showMessage('#phoneCode', 'error', '[ Contact Info ]', 'Please select a country code for the mobile phone number.', '');
+        return false;
+    }
     if(nvl(phone,'') === ''){
         showMessage('#phone', 'error', '[ Contact Info ]', 'Please enter the mobile phone number.', '');
         return false;
     }else{
-        if ( !/^010-[0-9]{4}-[0-9]{4}$/.test( phone ) ) {
-            showMessage('#phone', 'error', '[ Contact Info ]', 'Please enter a valid mobile phone number.<br>(Must start with 010.)', '');
-            return false;
-        }
+        // 010 룰 검사는 제거하거나 필요 시 KOR일 때만 적용하도록 우회
+        phone = phoneCode + ' ' + phone;
     }
 
     // 이메일
@@ -4317,7 +4270,7 @@ async function my_step_01_check(exhibitorSeq){
     /******************** 담당자 정보 ********************/
     /******************** 부담당자 정보 ********************/
 
-        // 담당자 성명
+    // 담당자 성명
     let charge_person_name_el = $('input[type=text][name=chargePersonName]');
 
     // 담당자 직위
@@ -4327,9 +4280,11 @@ async function my_step_01_check(exhibitorSeq){
     let charge_person_depart_el = $('input[type=text][name=chargePersonDepart]');
 
     // 담당자 전화번호
+    let charge_person_tel_code_el = $('select[name=chargePersonTelCode]');
     let charge_person_tel_el = $('input[type=tel][name=chargePersonTel]');
 
     // 담당자 휴대전화
+    let charge_person_phone_code_el = $('select[name=chargePersonPhoneCode]');
     let charge_person_phone_el = $('input[type=tel][name=chargePersonPhone]');
 
     // 담당자 이메일
@@ -4345,6 +4300,14 @@ async function my_step_01_check(exhibitorSeq){
         for(let i=0; i<chargePersonCnt; i++){
             let chargePersonName = charge_person_name_el.eq(i).val();
             if(nvl(chargePersonName,'') !== '') {
+                let cTel = charge_person_tel_el.eq(i).val() ? charge_person_tel_el.eq(i).val().trim() : '';
+                let cTelCode = charge_person_tel_code_el.eq(i).val() || '';
+                if (cTel !== '' && cTelCode !== '') cTel = cTelCode + ' ' + cTel;
+
+                let cPhone = charge_person_phone_el.eq(i).val() ? charge_person_phone_el.eq(i).val().trim() : '';
+                let cPhoneCode = charge_person_phone_code_el.eq(i).val() || '';
+                if (cPhone !== '' && cPhoneCode !== '') cPhone = cPhoneCode + ' ' + cPhone;
+
                 let chargePersonEmail_val = charge_person_email_el.eq(i).val();
                 let chargePersonEmail = '';
                 if (nvl(chargePersonEmail_val, '') !== '') {
@@ -4356,8 +4319,8 @@ async function my_step_01_check(exhibitorSeq){
                     chargePersonName: chargePersonName,
                     chargePersonPosition: charge_person_position_el.eq(i).val(),
                     chargePersonDepart: charge_person_depart_el.eq(i).val(),
-                    chargePersonTel: charge_person_tel_el.eq(i).val(),
-                    chargePersonPhone: charge_person_phone_el.eq(i).val(),
+                    chargePersonTel: cTel,
+                    chargePersonPhone: cPhone,
                     chargePersonEmail: chargePersonEmail,
                 };
                 chargePersonList_json_arr.push(chargePersonList_json_obj);
@@ -4657,12 +4620,13 @@ async function my_step_01_check(exhibitorSeq){
         passwordYn: 'N',
         /* 참가업체 정보 */
         boothNum: $('#boothNum').val(),
-        companyNameKo: companyNameKo,
+        companyCountry: companyCountry,
+        companyState: companyState,
+        companyCity: companyCity,
+        companyZipcode: companyZipcode,
         companyNameEn: companyNameEn,
         companyAddress: companyAddress,
         companyAddressDetail: companyAddressDetail,
-        factoryAddress: factoryAddress,
-        factoryAddressDetail: factoryAddressDetail,
         companyCeo: companyCeo,
         companyTel: companyTel,
         companyHomepage: companyHomepage,
@@ -5099,8 +5063,8 @@ function my_step_2_1_check(exhibitorSeq){
     let utilityPrcSum = parseInt($('#utilityPrcSum').val()) || 0;
 
     // --- 1. 부스 정보 수집 ---
-    const registrationCnt = 1;
-    const registrationFee = 100000;
+    const registrationCnt = 0;
+    const registrationFee = 0;
     const standAloneBoothCnt = parseInt($('#standAloneBoothCnt').val()) || 0;
     const assemblyBoothCnt = parseInt($('#assemblyBoothCnt').val()) || 0;
     //const onlineBoothCnt = parseInt($('#onlineBoothCnt').val()) || 0;
@@ -5113,40 +5077,19 @@ function my_step_2_1_check(exhibitorSeq){
     // 부스 관련 총액 (등록비 포함)
     const boothPrcSum = registrationFee + standAloneBoothFee + assemblyBoothFee/* + onlineBoothFee*/;
 
-    let boothType = '등록비';
-    if (standAloneBoothCnt > 0) boothType += ',독립부스';
-    if (assemblyBoothCnt > 0) boothType += ',조립부스';
+    let boothType = '';
+    if (standAloneBoothCnt > 0) boothType += '독립부스,';
+    if (assemblyBoothCnt > 0) boothType += '조립부스,';
     //if (onlineBoothCnt > 0) boothType += ',온라인부스';
+
+    // 마지막 콤마 제거
+    if(boothType.endsWith(',')) {
+        boothType = boothType.slice(0, -1);
+    }
 
     // --- 2. 할인 정보 수집 및 계산 (전면 수정) ---
     let discountType = '';
     let discountPrcSum = 0;
-    // 체크된 모든 할인을 순회하며 할인 총액과 할인 타입을 동적으로 생성합니다.
-    $('input[name="discount"]:checked').each(function() {
-        const id = $(this).attr('id');
-        const discountAmount = parseInt($(this).data('discount')) || 0;
-        discountPrcSum += (physicalBooths * discountAmount);
-
-        // discountType 문자열을 ID 기반으로 생성
-        switch(id) {
-            case 'discountEarly1': discountType += ',(1차)조기신청'; break;
-            case 'discountEarly2': discountType += ',(2차)조기신청'; break;
-            case 'discountScale1': discountType += ',규모할인(10+)'; break;
-            case 'discountScale2': discountType += ',규모할인(20+)'; break;
-            case 'discountScale3': discountType += ',규모할인(30+)'; break;
-            case 'discountScale4': discountType += ',규모할인(40+)'; break;
-            case 'discountScale5': discountType += ',규모할인(50+)'; break;
-            case 'discountScale6': discountType += ',규모할인(100+)'; break;
-            case 'discountRe': discountType += ',재참가'; break;
-            case 'discountFirstUnder10': discountType += ',첫참가(10미만)'; break;
-            case 'discountFirstOver10': discountType += ',첫참가(10이상)'; break;
-            case 'discountLeisure': discountType += ',해양레저산업협회'; break;
-        }
-    });
-
-    if (discountType.startsWith(',')) {
-        discountType = discountType.substring(1);
-    }
 
     // --- 3. 발전기금 계산 (참가자가 보는 화면 계산용) ---
     /*let developmentFund = 0;
@@ -5182,21 +5125,21 @@ function my_step_2_1_check(exhibitorSeq){
         assemblyBoothFee: assemblyBoothFee,
         /*onlineBoothCnt: onlineBoothCnt,
         onlineBoothFee: onlineBoothFee,*/
-        discountEarly1: $('#discountEarly1').is(':checked'),
-        discountEarly2: $('#discountEarly2').is(':checked'),
-        discountFirstUnder10: $('#discountFirstUnder10').is(':checked'),
-        discountFirstOver10: $('#discountFirstOver10').is(':checked'),
-        discountRe: $('#discountRe').is(':checked'),
-        discountScale1: $('#discountScale1').is(':checked'),
-        discountScale2: $('#discountScale2').is(':checked'),
-        discountScale3: $('#discountScale3').is(':checked'),
-        discountScale4: $('#discountScale4').is(':checked'),
-        discountScale5: $('#discountScale5').is(':checked'),
-        discountScale6: $('#discountScale6').is(':checked'),
-        discountLeisure: $('#discountLeisure').is(':checked'),
-        discountYn: (discountType !== '') ? 'Y' : 'N',
+        discountEarly1: false,
+        discountEarly2: false,
+        discountFirstUnder10: false,
+        discountFirstOver10: false,
+        discountRe: false,
+        discountScale1: false,
+        discountScale2: false,
+        discountScale3: false,
+        discountScale4: false,
+        discountScale5: false,
+        discountScale6: false,
+        discountLeisure: false,
+        discountYn: 'N',
         boothPrcSum: boothPrcSum,
-        discountPrcSum: discountPrcSum/*,
+        discountPrcSum: 0/*,
         prcSum: prcSum,
         prcVat: prcVat,
         prcTotal: prcTotal*/
@@ -5287,13 +5230,6 @@ function my_step_2_2_check(exhibitorSeq){
     let companySignNameEn = '';
     let assemblyBoothCnt = $('#assemblyBoothCnt').val();
     if(assemblyBoothCnt > 0){
-        // 상호간판 신청 - 상호간판명 (국문)
-        companySignNameKo = $('#companySignNameKo').val();
-        if(nvl(companySignNameKo,'') === ''){
-            showMessage('#companySignNameKo', 'error', '[ Signboard ]', 'Shell scheme booth exhibitors must enter the company signboard name (Korean).', '');
-            return false;
-        }
-
         // 상호간판 신청 - 상호간판명 (영문)
         companySignNameEn = $('#companySignNameEn').val();
         if(nvl(companySignNameEn,'') === ''){
@@ -5354,23 +5290,23 @@ function my_step_2_3_check(exhibitorSeq){
 
     // --- 1. 유틸리티 신청정보 수집 ---
     let utility_jugan_cnt = parseInt($('#utility_jugan_cnt').val()) || 0;
-    let utility_jugan_fee = parseInt(wonToInt($('#utility_jugan_fee').val())) || 0;
+    let utility_jugan_fee = parseInt(uncomma($('#utility_jugan_fee').val())) || 0;
     let utility_day_cnt = parseInt($('#utility_day_cnt').val()) || 0;
-    let utility_day_fee = parseInt(wonToInt($('#utility_day_fee').val())) || 0;
+    let utility_day_fee = parseInt(uncomma($('#utility_day_fee').val())) || 0;
     let utility_work_cnt = parseInt($('#utility_work_cnt').val()) || 0;
-    let utility_work_fee = parseInt(wonToInt($('#utility_work_fee').val())) || 0;
+    let utility_work_fee = parseInt(uncomma($('#utility_work_fee').val())) || 0;
     let utility_compressed_air_cnt = parseInt($('#utility_compressed_air_cnt').val()) || 0;
-    let utility_compressed_air_fee = parseInt(wonToInt($('#utility_compressed_air_fee').val())) || 0;
+    let utility_compressed_air_fee = parseInt(uncomma($('#utility_compressed_air_fee').val())) || 0;
     let utility_water_basic_cnt = parseInt($('#utility_water_basic_cnt').val()) || 0;
-    let utility_water_basic_fee = parseInt(wonToInt($('#utility_water_basic_fee').val())) || 0;
+    let utility_water_basic_fee = parseInt(uncomma($('#utility_water_basic_fee').val())) || 0;
     let utility_internet_cnt = parseInt($('#utility_internet_cnt').val()) || 0;
-    let utility_internet_fee = parseInt(wonToInt($('#utility_internet_fee').val())) || 0;
+    let utility_internet_fee = parseInt(uncomma($('#utility_internet_fee').val())) || 0;
     let utility_pytex_new_cnt = parseInt($('#utility_pytex_new_cnt').val()) || 0;
-    let utility_pytex_new_fee = parseInt(wonToInt($('#utility_pytex_new_fee').val())) || 0;
+    let utility_pytex_new_fee = parseInt(uncomma($('#utility_pytex_new_fee').val())) || 0;
     let utility_pytex_re_cnt = parseInt($('#utility_pytex_re_cnt').val()) || 0;
-    let utility_pytex_re_fee = parseInt(wonToInt($('#utility_pytex_re_fee').val())) || 0;
+    let utility_pytex_re_fee = parseInt(uncomma($('#utility_pytex_re_fee').val())) || 0;
     let utility_barcode_cnt = parseInt($('#utility_barcode_cnt').val()) || 0;
-    let utility_barcode_fee = parseInt(wonToInt($('#utility_barcode_fee').val())) || 0;
+    let utility_barcode_fee = parseInt(uncomma($('#utility_barcode_fee').val())) || 0;
 
     // 유틸리티 총액을 화면이 아닌, 각 항목의 합계로 직접 계산
     const utilityPrcSum = utility_jugan_fee + utility_day_fee + utility_work_fee + utility_compressed_air_fee +
@@ -5397,10 +5333,7 @@ function my_step_2_3_check(exhibitorSeq){
         utilityPytexReFee: utility_pytex_re_fee,
         utilityBarcodeCnt: utility_barcode_cnt,
         utilityBarcodeFee: utility_barcode_fee,
-        utilityPrcSum: utilityPrcSum/*,
-        prcSum: prcSum,
-        prcVat: prcVat,
-        prcTotal: prcTotal*/
+        utilityPrcSum: utilityPrcSum
     }
 
     let resData = ajaxConnect('/apply/step/updateExhibitorNewUtility.do', 'post', utility_json_obj);
@@ -5432,21 +5365,7 @@ function my_step_2_4_check(exhibitorSeq){
     /* 24.03.05 2024 보트쇼 종료로 인하여 바로 페이지 이동 */
     /*f_page_move('/mypage/step2_5.do', exhibitorSeq);*/
 
-    // 성명(국문)
-    let pass_name_el = document.querySelectorAll('input[type=text][name=pass_name]');
-    let pass_name_len = pass_name_el.length;
-    let pass_name_flag = true;
-    for(let i=0; i<pass_name_len; i++){
-        if(pass_name_el[i].value === ''){
-            pass_name_flag = false;
-        }
-    }
-    if(!pass_name_flag){
-        showMessage('', 'error', '[ Giveaways ]', 'Please enter the name (Korean).', '');
-        return false;
-    }
-
-    // 출입증이름(영문)
+    // 출입증이름(영문 - First Name)
     let pass_first_name_el = document.querySelectorAll('input[type=text][name=pass_first_name]');
     let pass_first_name_len = pass_first_name_el.length;
     let pass_first_name_flag = true;
@@ -5456,11 +5375,11 @@ function my_step_2_4_check(exhibitorSeq){
         }
     }
     if(!pass_first_name_flag){
-        showMessage('', 'error', '[ Giveaways ]', 'Please enter the first name (English).', '');
+        showMessage('', 'error', '[ Badge ]', 'Please enter the first name (English).', '');
         return false;
     }
 
-    // 출입증성(영문)
+    // 출입증성(영문 - Last Name)
     let pass_last_name_el = document.querySelectorAll('input[type=text][name=pass_last_name]');
     let pass_last_name_len = pass_last_name_el.length;
     let pass_last_name_flag = true;
@@ -5470,21 +5389,7 @@ function my_step_2_4_check(exhibitorSeq){
         }
     }
     if(!pass_last_name_flag){
-        showMessage('', 'error', '[ Giveaways ]', 'Please enter the last name (English).', '');
-        return false;
-    }
-
-    // 직책(국문)
-    let pass_position_ko_el = document.querySelectorAll('input[type=text][name=pass_position_ko]');
-    let pass_position_ko_len = pass_position_ko_el.length;
-    let pass_position_ko_flag = true;
-    for(let i=0; i<pass_position_ko_len; i++){
-        if(pass_position_ko_el[i].value === ''){
-            pass_position_ko_flag = false;
-        }
-    }
-    if(!pass_position_ko_flag){
-        showMessage('', 'error', '[ Giveaways ]', 'Please enter the position (Korean).', '');
+        showMessage('', 'error', '[ Badge ]', 'Please enter the last name (English).', '');
         return false;
     }
 
@@ -5498,7 +5403,7 @@ function my_step_2_4_check(exhibitorSeq){
         }
     }
     if(!pass_position_en_flag){
-        showMessage('', 'error', '[ Giveaways ]', 'Please enter the position (English).', '');
+        showMessage('', 'error', '[ Badge ]', 'Please enter the position (English).', '');
         return false;
     }
 
@@ -5506,15 +5411,13 @@ function my_step_2_4_check(exhibitorSeq){
     let pass_note_el = document.querySelectorAll('input[type=text][name=pass_note]');
 
     let pass_json_arr = [];
-    if(pass_name_len > 0){
-        for(let i=0; i<pass_name_len; i++){
+    if(pass_first_name_len > 0){
+        for(let i=0; i<pass_first_name_len; i++){
             let pass_json_obj = {
                 seq: $('input[type=hidden][name=passSeq]').eq(i).val(),
                 exSeq: exhibitorSeq,
-                passName: pass_name_el[i].value,
                 passFirstName: pass_first_name_el[i].value,
                 passLastName: pass_last_name_el[i].value,
-                passPositionKo: pass_position_ko_el[i].value,
                 passPositionEn: pass_position_en_el[i].value,
                 passNote: pass_note_el[i].value
             };
@@ -5535,7 +5438,7 @@ function my_step_2_4_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ Giveaways ]',
+            title: '[ Badge ]',
             html: '<span style="font-size: 1.2em;">Pass application info has been saved.<br>Moving to the next step.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
@@ -5547,7 +5450,7 @@ function my_step_2_4_check(exhibitorSeq){
             }
         });
     }else{
-        showMessage('', 'error', '[ Giveaways ]', 'Failed to save pass application info. Please contact the administrator.', '');
+        showMessage('', 'error', '[ Badge ]', 'Failed to save Badge application info. Please contact the administrator.', '');
     }
 
 }

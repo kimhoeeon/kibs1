@@ -52,6 +52,10 @@ public class ExhibitorNewDTO {
     String companyLicenseNum; //사업자등록번호
     String companyNameKo; //회사명(국문)
     String companyNameEn; //회사명(영문)
+    String companyCountry;
+    String companyState;
+    String companyCity;
+    String companyZipcode;
     String companyAddress; //주소
     String companyAddressDetail; //상세주소
     String factoryAddress; //공장주소

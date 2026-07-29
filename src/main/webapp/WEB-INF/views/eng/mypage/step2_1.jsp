@@ -155,37 +155,6 @@
                             <input type="hidden" id="prcVat" name="prcVat" value="">
                             <input type="hidden" id="prcTotal" name="prcTotal" value="${info.prcTotal}">
 
-                            <!-- 등록비 -->
-                            <div class="form_wrap">
-                                <div class="form_tit">
-                                    <div class="big">Registration Fee</div>
-                                </div>
-                                <div class="form_booth form_ptag">
-                                    <div class="form_ptag_box">
-                                        <ul class="form_ptag_list">
-                                            <li class="form_ptag_hd">
-                                                <div class="cate">Category</div>
-                                                <div class="amount">Amount (KRW)</div>
-                                                <div class="note">Remarks</div>
-                                            </li>
-                                            <li>
-                                                <div class="cate">Registration Fee</div>
-                                                <div class="amount">
-                                                    <p class="price">
-                                                        <input type="text" id="registrationFee" value="￦ 100,000" disabled>
-                                                    </p>
-                                                </div>
-                                                <div class="note">
-                                                    Since 2019, a registration fee has been charged to support exhibitor promotion. <br />
-                                                    The registration fee will be used for online and external promotional activities.
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- //등록비-->
-
                             <!-- 부스 신청 -->
                             <div class="form_wrap">
                                 <div class="form_tit">
@@ -198,12 +167,12 @@
                                                 <div class="cate">Category</div>
                                                 <div class="cost">Unit Price</div>
                                                 <div class="quantity">Qty</div>
-                                                <div class="amount">Amount (KRW)</div>
+                                                <div class="amount">Amount (USD)</div>
                                                 <div class="note">Remarks</div>
                                             </li>
                                             <li>
-                                                <div class="cate">Space-only Booth</div>
-                                                <div class="cost">￦ 1,800,000</div>
+                                                <div class="cate">Raw Space Booth</div>
+                                                <div class="cost">USD 3,000</div>
                                                 <div class="quantity">
                                                     <p class="j_num">
                                                         <input type="number" id="standAloneBoothCnt" placeholder="Qty" min="0" value="${info.standAloneBoothCnt eq null ? 0 : info.standAloneBoothCnt}" onblur="minCnt(this,2);" onkeyup="checkBooth();">
@@ -211,14 +180,14 @@
                                                 </div>
                                                 <div class="amount">
                                                     <p class="price">
-                                                        <input type="text" id="standAloneBoothFee" value="<fmt:formatNumber value="${info.standAloneBoothFee eq null ? 0 : info.standAloneBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                        <input type="text" id="standAloneBoothFee" value="<fmt:formatNumber value="${info.standAloneBoothFee eq null ? 0 : info.standAloneBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="USD "/>" disabled>
                                                     </p>
                                                 </div>
                                                 <div class="note">Minimum order: 2 booths</div>
                                             </li>
                                             <li>
                                                 <div class="cate">Shell Scheme Booth</div>
-                                                <div class="cost">￦ 2,100,000</div>
+                                                <div class="cost">USD 3,300</div>
                                                 <div class="quantity">
                                                     <p class="j_num">
                                                         <input type="number" id="assemblyBoothCnt" placeholder="Qty" min="0" value="${info.assemblyBoothCnt eq null ? 0 : info.assemblyBoothCnt}" onkeyup="checkBooth();">
@@ -226,7 +195,7 @@
                                                 </div>
                                                 <div class="amount">
                                                     <p class="price">
-                                                        <input type="text" id="assemblyBoothFee" value="<fmt:formatNumber value="${info.assemblyBoothFee eq null ? 0 : info.assemblyBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" disabled>
+                                                        <input type="text" id="assemblyBoothFee" value="<fmt:formatNumber value="${info.assemblyBoothFee eq null ? 0 : info.assemblyBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="USD "/>" disabled>
                                                     </p>
                                                 </div>
                                                 <div class="note"></div>
@@ -257,12 +226,12 @@
 
                             <!-- 할인적용 선택 -->
                             <div class="form_wrap">
-                                <div class="form_tit">
+                                <%--<div class="form_tit">
                                     <div class="big">Discount Selection</div>
                                     <div class="small">* Applied automatically based on your application and booth selection</div>
-                                </div>
+                                </div>--%>
                                 <div class="form_disc form_ptag">
-                                    <div class="form_ptag_box">
+                                    <%--<div class="form_ptag_box">
                                         <ul class="form_ptag_list form_grid">
                                             <li class="form_ptag_hd">
                                                 <div class="select">Select</div>
@@ -273,16 +242,16 @@
                                             <li class="form_span">
                                                 <div class="select">
                                                     <label class="discount-item" id="discountItem1">
-                                                        <input type="checkbox" id="discountEarly1" name="discount" data-discount="300000" onchange="calculateTotal();" <c:if test="${info.discountEarly1}">checked</c:if> <%--disabled--%>>
+                                                        <input type="checkbox" id="discountEarly1" name="discount" data-discount="300000" onchange="calculateTotal();" <c:if test="${info.discountEarly1}">checked</c:if> &lt;%&ndash;disabled&ndash;%&gt;>
                                                     </label>
                                                 </div>
-                                                <div class="cate rowspan-2">Early Bird Discount<%-- (종료)--%></div>
+                                                <div class="cate rowspan-2">Early Bird Discount&lt;%&ndash; (종료)&ndash;%&gt;</div>
                                                 <div class="note">￦ 300,000</div>
                                                 <div class="discount">1st Early Bird (by ~2025.11.14)</div>
 
                                                 <div class="select">
                                                     <label class="discount-item" id="discountItem2">
-                                                        <input type="checkbox" id="discountEarly2" name="discount" data-discount="200000" onchange="calculateTotal();" <c:if test="${info.discountEarly2}">checked</c:if> <%--disabled--%>>
+                                                        <input type="checkbox" id="discountEarly2" name="discount" data-discount="200000" onchange="calculateTotal();" <c:if test="${info.discountEarly2}">checked</c:if> &lt;%&ndash;disabled&ndash;%&gt;>
                                                     </label>
                                                 </div>
                                                 <div class="note">￦ 200,000</div>
@@ -398,10 +367,10 @@
                                             </div>
                                         </div>
                                         <!-- //한국해양레저산업협회 발전기금-->
+                                    </div>--%>
 
-                                    </div>
                                     <div class="form_ptag_sum">
-                                        <div class="cate2">Total (Excl. VAT, KMIA Development Fund)</div>
+                                        <div class="cate2">Estimated Total Booth Fee (Excl. VAT)</div>
                                         <div class="amount2">
                                             <p class="price">
                                                 <input type="text" id="boothPrcSumDisplay" value="" disabled>
@@ -415,11 +384,11 @@
                             <div class="form_btn">
                                 <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step01.do','${info.seq}')" class="form_btn_prev">
                                     <div class="big">PREV</div>
-                                    <div class="small">Exhibition Info</div>
+                                    <div class="small">Basic Info</div>
                                 </a>
                                 <a href="javascript:void(0);" onclick="f_mypage_comp('2_1','${info.seq}')" class="form_btn_next">
                                     <div class="big">NEXT</div>
-                                    <div class="small">Yacht/Boat</div>
+                                    <div class="small">Yacht/Boat Information</div>
                                 </a>
                             </div>
 
@@ -434,89 +403,6 @@
 
         <script type="text/javascript">
             $(function(){
-
-                // --- 1. 날짜 및 마감일 정의 (KST: UTC+9) ---
-                const today = new Date(); // 사용자의 현재 시간
-                const deadline1 = new Date('2025-11-14T23:59:59+09:00'); // 1차 마감: 11월 14일 23:59:59
-                const deadline2 = new Date('2025-12-12T23:59:59+09:00'); // 2차 마감: 12월 12일 23:59:59
-
-                // --- 2. 체크박스 및 라벨 요소 ---
-                const $check1 = $('#discountEarly1');
-                const $label1 = $check1.closest('label.discount-item');
-                const $check2 = $('#discountEarly2');
-                const $label2 = $check2.closest('label.discount-item');
-
-                // --- 3. DB에서 로드된 초기 상태 (1차, 2차 모두 확인) ---
-                const isEarly1_DB = $check1.is(':checked');
-                const isEarly2_DB = $check2.is(':checked'); // 2차 신청자 확인용
-
-                // --- 4. 조기신청 마감일 로직 (규칙 1, 2, 3 적용) ---
-
-                // [경우 A] 1차 마감일(14일) 이전
-                if (today <= deadline1) {
-                    // 1차 활성화, 2차 비활성화 (1차 기간이므로)
-                    $check1.prop('disabled', false);
-                    $label1.removeClass('disabled');
-                    $check2.prop('disabled', true).prop('checked', false);
-                    $label2.addClass('disabled');
-
-                    // 1차 기간인데 1차가 체크 안되어있으면 (신규) 자동 체크
-                    if (!isEarly1_DB) {
-                        $check1.prop('checked', true);
-                    }
-                }
-                // [경우 B] 1차 마감(14일) 이후 ~ 2차 마감(12월 12일) 이전
-                else if (today > deadline1 && today <= deadline2) {
-
-                    // 1차는 무조건 비활성화
-                    $check1.prop('disabled', true);
-                    $label1.addClass('disabled');
-
-                    if (isEarly1_DB) {
-                        // [규칙 2, 3] 1차에 이미 신청했던 사람
-                        // 1차는 (checked, disabled) 상태 유지
-                        // 2차는 (unchecked, disabled) (중복 선택 불가)
-                        $check2.prop('disabled', true).prop('checked', false);
-                        $label2.addClass('disabled');
-
-                    } else {
-                        // [규칙 1] 14일 이후 최초 신청자 (1차를 놓친 사람)
-                        // 1차는 (unchecked, disabled)
-                        $check1.prop('checked', false);
-
-                        // 2차는 (checked, enabled) - 2차 할인을 자동 적용
-                        // (단, 2차가 이미 체크된 상태가 아니라면)
-                        if (!isEarly2_DB) {
-                            $check2.prop('checked', true);
-                        }
-                        $check2.prop('disabled', false);
-                        $label2.removeClass('disabled');
-                    }
-                }
-                // [경우 C] 2차 마감일(12월 12일) 이후
-                else {
-                    // 모든 조기신청 마감 (기존 신청자는 체크된 채로 비활성화)
-                    $check1.prop('disabled', true);
-                    $label1.addClass('disabled');
-                    $check2.prop('disabled', true);
-                    $label2.addClass('disabled');
-
-                    // 1차 신청자도 아니고, 2차 신청자도 아니었던 경우에만 2차 체크 해제
-                    if (!isEarly1_DB && !isEarly2_DB) {
-                        $check2.prop('checked', false);
-                    }
-                }
-
-                // (기존 할인 체크박스 차단 로직은 그대로 둡니다)
-                $(document).on('mousedown', 'input[name=\"discount\"]', function() {
-                    $(this).data('waschecked', this.checked);
-                });
-                $(document).on('click', 'input[name=\"discount\"]', function(e) {
-                    if ($(this).data('waschecked') !== this.checked) {
-                        e.preventDefault();
-                        alert('참가신청 및 부스 신청 정보에 따라 자동 반영되므로, 임의 체크 불가합니다.');
-                    }
-                });
 
                 // --- 모든 자동 계산을 시작하는 핵심 트리거 ---
                 // 부스 수량 변경 시 main.js의 calculateTotal 호출 ('booth' 타입 전달)

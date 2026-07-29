@@ -158,19 +158,19 @@
                                 <script src="/js/product_en.js"></script>
                                 <div class="form_wrap productInfoWrap" style="display: none;">
                                     <div class="form_tit">
-                                        <div class="big">Yacht/Boat Entry Info</div>
+                                        <div class="big">Yacht/Boat Exhibit Details</div>
                                     </div>
 
                                     <c:if test="${empty productList}">
                                         <ul class="form_box exhiInfoBox">
                                             <li class="form_in_tit">
                                                 <input type="hidden" name="productSeq" value="">
-                                                Yacht/Boat Entry #<span class="exhiInfoNum">1</span>
+                                                Yacht/Boat Exhibit #<span class="exhiInfoNum">1</span>
                                                 <span class="del_btn exhiInfoDel">Delete</span>
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>Category</p>
+                                                    <p>Product Category</p>
                                                 </div>
                                                 <div class="input">
                                                     <select id="productOptionBig_1" name="productOptionBig" class="w50"></select>
@@ -179,10 +179,10 @@
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>Name</p>
+                                                    <p>Product / Model Name</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="productNameKo" placeholder="Enter product name.">
+                                                    <input type="text" name="productNameKo" placeholder="Enter Product / Model Name.">
                                                 </div>
                                             </li>
                                             <li>
@@ -195,15 +195,15 @@
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>Manufacturer</p>
+                                                    <p>Manufacturer / Brand</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" name="productBrand" placeholder="Enter manufacturer (brand).">
+                                                    <input type="text" name="productBrand" placeholder="Enter Manufacturer / Brand.">
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>Features</p>
+                                                    <p>Product Features</p>
                                                 </div>
                                                 <div class="input">
                                                     <textarea name="productFeature" placeholder="Describe the product and its features."></textarea>
@@ -251,7 +251,7 @@
                                             </li>
                                             <li class="w50">
                                                 <div class="item req">
-                                                    <p>Year</p>
+                                                    <p>Model Year</p>
                                                 </div>
                                                 <div class="input">
                                                     <input type="text" name="productYear" class="onlyNum" maxlength="4" placeholder="Numbers only.">
@@ -259,7 +259,7 @@
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>New Product</p>
+                                                    <p>Is this a new product?</p>
                                                 </div>
                                                 <div class="input check">
                                                     <label><input type="radio" name="productIsNew_1" value="Y">Yes</label>
@@ -274,12 +274,12 @@
                                             <ul class="form_box exhiInfoBox">
                                                 <li class="form_in_tit">
                                                     <input type="hidden" name="productSeq" value="${product.seq}">
-                                                    Yacht/Boat Entry #<span class="exhiInfoNum">${status.index + 1}</span>
+                                                    Yacht/Boat Exhibit #<span class="exhiInfoNum">${status.index + 1}</span>
                                                     <span class="del_btn exhiInfoDel">Delete</span>
                                                 </li>
                                                 <li>
                                                     <div class="item req">
-                                                        <p>Category</p>
+                                                        <p>Product Category</p>
                                                     </div>
                                                     <div class="input">
                                                         <select id="productOptionBig_${status.index + 1}" name="productOptionBig" class="w50"></select>
@@ -294,10 +294,10 @@
                                                 </li>
                                                 <li>
                                                     <div class="item req">
-                                                        <p>Name</p>
+                                                        <p>Product / Model Name</p>
                                                     </div>
                                                     <div class="input">
-                                                        <input type="text" name="productNameKo" value="${product.productNameKo}" placeholder="Enter product name.">
+                                                        <input type="text" name="productNameKo" value="${product.productNameKo}" placeholder="Enter Product / Model Name.">
                                                     </div>
                                                 </li>
                                                 <li>
@@ -310,15 +310,15 @@
                                                 </li>
                                                 <li>
                                                     <div class="item req">
-                                                        <p>Manufacturer</p>
+                                                        <p>Manufacturer / Brand</p>
                                                     </div>
                                                     <div class="input">
-                                                        <input type="text" name="productBrand" value="${product.productBrand}" placeholder="Enter manufacturer (brand).">
+                                                        <input type="text" name="productBrand" value="${product.productBrand}" placeholder="Enter Manufacturer / Brand.">
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div class="item req">
-                                                        <p>Features</p>
+                                                        <p>Product Features</p>
                                                     </div>
                                                     <div class="input">
                                                         <textarea name="productFeature" placeholder="Describe the product and its features.">${product.productFeature}</textarea>
@@ -366,7 +366,7 @@
                                                 </li>
                                                 <li class="w50">
                                                     <div class="item req">
-                                                        <p>Year</p>
+                                                        <p>Model Year</p>
                                                     </div>
                                                     <div class="input">
                                                         <input type="text" name="productYear" value="${product.productYear}" class="onlyNum" maxlength="4" placeholder="Numbers only.">
@@ -374,7 +374,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="item req">
-                                                        <p>New Product</p>
+                                                        <p>Is this a new product?</p>
                                                     </div>
                                                     <div class="input check">
                                                         <label>
@@ -389,7 +389,7 @@
                                         </c:forEach>
                                     </c:if>
                                     <div class="formAddBtn">
-                                        <span class="exhiInfoAdd">Add</span>
+                                        <span class="exhiInfoAdd">Add Exhibit</span>
                                     </div>
                                 </div>
 

@@ -537,34 +537,59 @@
                                                 <p>Company Name</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" id="companyNameKo" name="companyNameKo" value="${info.companyNameKo}" placeholder="Korean Name" class="w50">
-                                                <input type="text" id="companyNameEn" name="companyNameEn" value="${info.companyNameEn}" placeholder="English Name" class="w50 onlyNumEng">
+                                                <input type="text" id="companyNameEn" name="companyNameEn" value="${info.companyNameEn}" placeholder="English" class="onlyEngCompany">
                                             </div>
                                         </li>
                                         <li>
                                             <div class="item req">
                                                 <p>Address</p>
                                             </div>
-                                            <div class="input address">
-                                                <div class="address_box">
-                                                    <input type="text" id="companyAddress" name="companyAddress" value="${info.companyAddress}" class="w50" style="margin-right: 10px;" placeholder="Address">
+                                            <div class="input address" style="flex-wrap: wrap;">
+
+                                                <!-- Country -->
+                                                <div class="address_box" style="margin-bottom: 15px; width: 100%; display: flex; flex-direction: column; gap: 5px;">
+                                                    <p style="font-size: 1.4rem; font-weight: 700;">Country <span class="txtRed">*</span></p>
+                                                    <select id="companyCountry" name="companyCountry" style="width: 100%; max-width: 100%;">
+                                                        <option value="" disabled selected hidden>Please select a country.</option>
+                                                        <!-- 국가 옵션 추가 필요 -->
+                                                        <option value="US" <c:if test="${info.companyCountry eq 'US'}">selected</c:if>>United States</option>
+                                                        <option value="KR" <c:if test="${info.companyCountry eq 'KR'}">selected</c:if>>South Korea</option>
+                                                        <option value="JP" <c:if test="${info.companyCountry eq 'JP'}">selected</c:if>>Japan</option>
+                                                        <option value="CN" <c:if test="${info.companyCountry eq 'CN'}">selected</c:if>>China</option>
+                                                    </select>
                                                 </div>
-                                                <div class="address_box" style="margin-top: 10px;">
-                                                    <input type="text" id="companyAddressDetail" name="companyAddressDetail" value="${info.companyAddressDetail}" placeholder="Address Line 2" class="w50">
+
+                                                <!-- State/Province & City (나란히 배치) -->
+                                                <div class="address_box" style="margin-bottom: 15px; width: 100%; display: flex; gap: 20px;">
+                                                    <div style="flex: 1; display: flex; flex-direction: column; gap: 5px;">
+                                                        <p style="font-size: 1.4rem; font-weight: 700;">State / Province <span class="txtRed">*</span></p>
+                                                        <input type="text" id="companyState" name="companyState" value="${info.companyState}" placeholder="Please enter state / province." style="width: 100%;">
+                                                    </div>
+                                                    <div style="flex: 1; display: flex; flex-direction: column; gap: 5px;">
+                                                        <p style="font-size: 1.4rem; font-weight: 700;">City <span class="txtRed">*</span></p>
+                                                        <input type="text" id="companyCity" name="companyCity" value="${info.companyCity}" placeholder="Please enter city." style="width: 100%;">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="item">
-                                                <p>Factory Address</p>
-                                            </div>
-                                            <div class="input address">
-                                                <div class="address_box">
-                                                    <input type="text" id="factoryAddress" name="factoryAddress" value="${info.factoryAddress}" class="w50" style="margin-right: 10px;" placeholder="Factory Address">
+
+                                                <!-- Postal Code -->
+                                                <div class="address_box" style="margin-bottom: 15px; width: 100%; display: flex; flex-direction: column; gap: 5px;">
+                                                    <p style="font-size: 1.4rem; font-weight: 700;">Postal Code <span class="txtRed">*</span></p>
+                                                    <!-- width: 50% 정도(w50 클래스 역할)로 맞추거나 기존 레이아웃처럼 100% 사용 가능 -->
+                                                    <input type="text" id="companyZipcode" name="companyZipcode" value="${info.companyZipcode}" placeholder="Please enter postal code." style="width: calc(50% - 10px);">
                                                 </div>
-                                                <div class="address_box" style="margin-top: 10px;">
-                                                    <input type="text" id="factoryAddressDetail" name="factoryAddressDetail" value="${info.factoryAddressDetail}" placeholder="Factory Address Line 2" class="w50">
+
+                                                <!-- Address Line 1 -->
+                                                <div class="address_box" style="margin-bottom: 15px; width: 100%; display: flex; flex-direction: column; gap: 5px;">
+                                                    <p style="font-size: 1.4rem; font-weight: 700;">Address Line 1 <span class="txtRed">*</span></p>
+                                                    <input type="text" id="companyAddress" name="companyAddress" value="${info.companyAddress}" placeholder="Please enter address line 1." style="width: 100%;">
                                                 </div>
+
+                                                <!-- Address Line 2 -->
+                                                <div class="address_box" style="width: 100%; display: flex; flex-direction: column; gap: 5px;">
+                                                    <p style="font-size: 1.4rem; font-weight: 700;">Address Line 2</p>
+                                                    <input type="text" id="companyAddressDetail" name="companyAddressDetail" value="${info.companyAddressDetail}" placeholder="Please enter address line 2." style="width: 100%;">
+                                                </div>
+
                                             </div>
                                         </li>
                                         <li class="w50">
@@ -581,6 +606,7 @@
                                             </div>
                                             <div class="input">
                                                 <select id="companyTelCode">
+                                                    <option value="" <c:if test="${empty info.companyTel}">selected</c:if> disabled hidden>Select</option>
                                                     <option value="+82" <c:if test="${fn:startsWith(info.companyTel,'+82')}">selected</c:if> >+82 (KOR)</option>
                                                     <option value="+1" <c:if test="${fn:startsWith(info.companyTel,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
                                                     <option value="+44" <c:if test="${fn:startsWith(info.companyTel,'+44')}">selected</c:if> >+44 (GBR)</option>
@@ -608,6 +634,7 @@
                                             </div>
                                             <div class="input">
                                                 <select id="companyFaxCode">
+                                                    <option value="" <c:if test="${empty info.companyFax}">selected</c:if> disabled hidden>Select</option>
                                                     <option value="+82" <c:if test="${fn:startsWith(info.companyFax,'+82')}">selected</c:if> >+82 (KOR)</option>
                                                     <option value="+1" <c:if test="${fn:startsWith(info.companyFax,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
                                                     <option value="+44" <c:if test="${fn:startsWith(info.companyFax,'+44')}">selected</c:if> >+44 (GBR)</option>
@@ -716,8 +743,11 @@
                                             </div>
                                         </li>
                                         <li>
-                                            <div class="item req">
-                                                <p>KMIA Membership</p>
+                                            <div class="item">
+                                                <p style="line-height: 1.4;">
+                                                    KMIA Membership<span style="color: var(--mainColor1); margin-left: 3px;">*</span><br>
+                                                    <span style="font-size: 1.2rem; font-weight: normal; color: #555;">Korea Marine Industry Association</span>
+                                                </p>
                                             </div>
                                             <div class="input check">
                                                 <label><input type="radio" name="memberCompanyYn" value="Y" <c:if test="${info.memberCompanyYn eq 'Y'}">checked</c:if> />Yes</label>
@@ -764,7 +794,18 @@
                                                 <p>Tel</p>
                                             </div>
                                             <div class="input">
-                                                <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyGeneralTel" maxlength="13" placeholder="Please enter only the numbers.">
+                                                <select id="telCode">
+                                                    <option value="" <c:if test="${empty info.tel}">selected</c:if> disabled hidden>Select</option>
+                                                    <option value="+82" <c:if test="${fn:startsWith(info.tel,'+82')}">selected</c:if> >+82 (KOR)</option>
+                                                    <option value="+1" <c:if test="${fn:startsWith(info.tel,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
+                                                    <option value="+44" <c:if test="${fn:startsWith(info.tel,'+44')}">selected</c:if> >+44 (GBR)</option>
+                                                    <option value="+49" <c:if test="${fn:startsWith(info.tel,'+49')}">selected</c:if> >+49 (DEU)</option>
+                                                    <option value="+61" <c:if test="${fn:startsWith(info.tel,'+61')}">selected</c:if> >+61 (AUS)</option>
+                                                    <option value="+81" <c:if test="${fn:startsWith(info.tel,'+81')}">selected</c:if> >+81 (JPN)</option>
+                                                    <option value="+86" <c:if test="${fn:startsWith(info.tel,'+86')}">selected</c:if> >+86 (CHN)</option>
+                                                    <option value="+91" <c:if test="${fn:startsWith(info.tel,'+91')}">selected</c:if> >+91 (IND)</option>
+                                                </select>
+                                                <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyGeneralTel" maxlength="20" placeholder="Please enter only the numbers.">
                                             </div>
                                         </li>
                                         <li class="w50">
@@ -772,7 +813,18 @@
                                                 <p>Mobile</p>
                                             </div>
                                             <div class="input">
-                                                <input type="tel" id="phone" name="phone" value="${info.phone}" class="onlyTel" maxlength="13" onblur="f_phone_number_valid_check(this)" placeholder="Please enter only the numbers.">
+                                                <select id="phoneCode">
+                                                    <option value="" <c:if test="${empty info.phone}">selected</c:if> disabled hidden>Select</option>
+                                                    <option value="+82" <c:if test="${fn:startsWith(info.phone,'+82')}">selected</c:if> >+82 (KOR)</option>
+                                                    <option value="+1" <c:if test="${fn:startsWith(info.phone,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
+                                                    <option value="+44" <c:if test="${fn:startsWith(info.phone,'+44')}">selected</c:if> >+44 (GBR)</option>
+                                                    <option value="+49" <c:if test="${fn:startsWith(info.phone,'+49')}">selected</c:if> >+49 (DEU)</option>
+                                                    <option value="+61" <c:if test="${fn:startsWith(info.phone,'+61')}">selected</c:if> >+61 (AUS)</option>
+                                                    <option value="+81" <c:if test="${fn:startsWith(info.phone,'+81')}">selected</c:if> >+81 (JPN)</option>
+                                                    <option value="+86" <c:if test="${fn:startsWith(info.phone,'+86')}">selected</c:if> >+86 (CHN)</option>
+                                                    <option value="+91" <c:if test="${fn:startsWith(info.phone,'+91')}">selected</c:if> >+91 (IND)</option>
+                                                </select>
+                                                <input type="tel" id="phone" name="phone" value="${info.phone}" class="onlyTel" maxlength="20" placeholder="Please enter only the numbers.">
                                             </div>
                                         </li>
                                         <li>
@@ -783,15 +835,6 @@
                                                 <input type="email" id="email1" name="email1" value="${fn:split(info.email,'@')[0]}" placeholder="E-mail" class="email_input1">
                                                 <span>@</span>
                                                 <input type="email" id="email2" name="email2" value="${fn:split(info.email,'@')[1]}" class="email_input2" placeholder="Direct input">
-                                                <select id="email_select">
-                                                    <c:set var="domain" value="${fn:split(info.email,'@')[1]}"/>
-                                                    <option value="직접입력" selected>Direct Input</option>
-                                                    <option value="naver.com" <c:if test="${domain eq 'naver.com'}">selected</c:if> >naver.com</option>
-                                                    <option value="daum.net" <c:if test="${domain eq 'daum.net'}">selected</c:if> >daum.net</option>
-                                                    <option value="nate.com" <c:if test="${domain eq 'nate.com'}">selected</c:if> >nate.com</option>
-                                                    <option value="hanmail.net" <c:if test="${domain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
-                                                    <option value="gmail.com" <c:if test="${domain eq 'gmail.com'}">selected</c:if> >gmail.com</option>
-                                                </select>
                                             </div>
                                         </li>
                                     </ul>
@@ -831,7 +874,18 @@
                                                     <p>Tel</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="tel" name="chargePersonTel" class="onlyGeneralTel" maxlength="13" placeholder="Please enter only the numbers.">
+                                                    <select name="chargePersonTelCode">
+                                                        <option value="" selected disabled hidden>Select</option>
+                                                        <option value="+82">+82 (KOR)</option>
+                                                        <option value="+1">+1 (USA/CAN)</option>
+                                                        <option value="+44">+44 (GBR)</option>
+                                                        <option value="+49">+49 (DEU)</option>
+                                                        <option value="+61">+61 (AUS)</option>
+                                                        <option value="+81">+81 (JPN)</option>
+                                                        <option value="+86">+86 (CHN)</option>
+                                                        <option value="+91">+91 (IND)</option>
+                                                    </select>
+                                                    <input type="tel" name="chargePersonTel" class="onlyGeneralTel" maxlength="20" placeholder="Please enter only the numbers.">
                                                 </div>
                                             </li>
                                             <li class="w50">
@@ -839,7 +893,18 @@
                                                     <p>Mobile</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="tel" name="chargePersonPhone" class="onlyTel" maxlength="13" onblur="f_phone_number_valid_check(this)" placeholder="Please enter only the numbers.">
+                                                    <select name="chargePersonPhoneCode">
+                                                        <option value="" selected disabled hidden>Select</option>
+                                                        <option value="+82">+82 (KOR)</option>
+                                                        <option value="+1">+1 (USA/CAN)</option>
+                                                        <option value="+44">+44 (GBR)</option>
+                                                        <option value="+49">+49 (DEU)</option>
+                                                        <option value="+61">+61 (AUS)</option>
+                                                        <option value="+81">+81 (JPN)</option>
+                                                        <option value="+86">+86 (CHN)</option>
+                                                        <option value="+91">+91 (IND)</option>
+                                                    </select>
+                                                    <input type="tel" name="chargePersonPhone" class="onlyTel" maxlength="13" placeholder="Please enter only the numbers.">
                                                 </div>
                                             </li>
                                             <li>
@@ -850,14 +915,6 @@
                                                     <input type="email" name="chargePersonEmail" placeholder="E-mail" class="email_input1">
                                                     <span>@</span>
                                                     <input type="email" name="chargePersonDomain" placeholder="Direct input" class="email_input2">
-                                                    <select name="chargePersonEmail_sel">
-                                                        <option value="직접입력" selected>Direct Input</option>
-                                                        <option value="naver.com">naver.com</option>
-                                                        <option value="daum.net">daum.net</option>
-                                                        <option value="nate.com">nate.com</option>
-                                                        <option value="hanmail.net">hanmail.net</option>
-                                                        <option value="gmail.com">gmail.com</option>
-                                                    </select>
                                                 </div>
                                             </li>
                                         </ul>
@@ -900,7 +957,18 @@
                                                         <p>Tel</p>
                                                     </div>
                                                     <div class="input">
-                                                        <input type="tel" name="chargePersonTel" value="${charge.chargePersonTel}" class="onlyGeneralTel" maxlength="13" placeholder="Please enter only the numbers.">
+                                                        <select name="chargePersonTelCode">
+                                                            <option value="" <c:if test="${empty charge.chargePersonTel}">selected</c:if> disabled hidden>Select</option>
+                                                            <option value="+82" <c:if test="${fn:startsWith(charge.chargePersonTel,'+82')}">selected</c:if> >+82 (KOR)</option>
+                                                            <option value="+1" <c:if test="${fn:startsWith(charge.chargePersonTel,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
+                                                            <option value="+44" <c:if test="${fn:startsWith(charge.chargePersonTel,'+44')}">selected</c:if> >+44 (GBR)</option>
+                                                            <option value="+49" <c:if test="${fn:startsWith(charge.chargePersonTel,'+49')}">selected</c:if> >+49 (DEU)</option>
+                                                            <option value="+61" <c:if test="${fn:startsWith(charge.chargePersonTel,'+61')}">selected</c:if> >+61 (AUS)</option>
+                                                            <option value="+81" <c:if test="${fn:startsWith(charge.chargePersonTel,'+81')}">selected</c:if> >+81 (JPN)</option>
+                                                            <option value="+86" <c:if test="${fn:startsWith(charge.chargePersonTel,'+86')}">selected</c:if> >+86 (CHN)</option>
+                                                            <option value="+91" <c:if test="${fn:startsWith(charge.chargePersonTel,'+91')}">selected</c:if> >+91 (IND)</option>
+                                                        </select>
+                                                        <input type="tel" name="chargePersonTel" value="${charge.chargePersonTel}" class="onlyGeneralTel" maxlength="20" placeholder="Please enter only the numbers.">
                                                     </div>
                                                 </li>
                                                 <li class="w50">
@@ -908,7 +976,18 @@
                                                         <p>Mobile</p>
                                                     </div>
                                                     <div class="input">
-                                                        <input type="tel" name="chargePersonPhone" value="${charge.chargePersonPhone}" class="onlyTel" maxlength="13" onblur="f_phone_number_valid_check(this)" placeholder="Please enter only the numbers.">
+                                                        <select name="chargePersonPhoneCode">
+                                                            <option value="" <c:if test="${empty charge.chargePersonPhone}">selected</c:if> disabled hidden>Select</option>
+                                                            <option value="+82" <c:if test="${fn:startsWith(charge.chargePersonPhone,'+82')}">selected</c:if> >+82 (KOR)</option>
+                                                            <option value="+1" <c:if test="${fn:startsWith(charge.chargePersonPhone,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
+                                                            <option value="+44" <c:if test="${fn:startsWith(charge.chargePersonPhone,'+44')}">selected</c:if> >+44 (GBR)</option>
+                                                            <option value="+49" <c:if test="${fn:startsWith(charge.chargePersonPhone,'+49')}">selected</c:if> >+49 (DEU)</option>
+                                                            <option value="+61" <c:if test="${fn:startsWith(charge.chargePersonPhone,'+61')}">selected</c:if> >+61 (AUS)</option>
+                                                            <option value="+81" <c:if test="${fn:startsWith(charge.chargePersonPhone,'+81')}">selected</c:if> >+81 (JPN)</option>
+                                                            <option value="+86" <c:if test="${fn:startsWith(charge.chargePersonPhone,'+86')}">selected</c:if> >+86 (CHN)</option>
+                                                            <option value="+91" <c:if test="${fn:startsWith(charge.chargePersonPhone,'+91')}">selected</c:if> >+91 (IND)</option>
+                                                        </select>
+                                                        <input type="tel" name="chargePersonPhone" value="${charge.chargePersonPhone}" class="onlyTel" maxlength="20" placeholder="Please enter only the numbers.">
                                                     </div>
                                                 </li>
                                                 <li>
@@ -919,15 +998,6 @@
                                                         <input type="email" name="chargePersonEmail" value="${fn:split(charge.chargePersonEmail,'@')[0]}" placeholder="E-mail" class="email_input1">
                                                         <span>@</span>
                                                         <input type="email" name="chargePersonDomain" value="${fn:split(charge.chargePersonEmail,'@')[1]}" class="email_input2" placeholder="Direct input">
-                                                        <select name="chargePersonEmail_sel">
-                                                            <c:set var="chargePersonDomain" value="${fn:split(charge.chargePersonEmail,'@')[1]}"/>
-                                                            <option selected>Direct Input</option>
-                                                            <option value="naver.com" <c:if test="${chargePersonDomain eq 'naver.com'}">selected</c:if> >naver.com</option>
-                                                            <option value="daum.net" <c:if test="${chargePersonDomain eq 'daum.net'}">selected</c:if> >daum.net</option>
-                                                            <option value="nate.com" <c:if test="${chargePersonDomain eq 'nate.com'}">selected</c:if> >nate.com</option>
-                                                            <option value="hanmail.net" <c:if test="${chargePersonDomain eq 'hanmail.net'}">selected</c:if> >hanmail.net</option>
-                                                            <option value="gmail.com" <c:if test="${chargePersonDomain eq 'gmail.com'}">selected</c:if> >gmail.com</option>
-                                                        </select>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -1510,14 +1580,6 @@
                                                 <input type="text" id="buyer_email_input1" name="buyerCompanyEmail" class="email_input1" placeholder="E-mail"/>
                                                 <span>@</span>
                                                 <input type="text" id="buyer_email_input2" name="buyerCompanyDomain" class="email_input2" placeholder="Direct input"/>
-                                                <select id="buyer_email_select" style="margin: 0 !important;">
-                                                    <option selected>Direct Input</option>
-                                                    <option value="naver.com">naver.com</option>
-                                                    <option value="daum.net">daum.net</option>
-                                                    <option value="nate.com">nate.com</option>
-                                                    <option value="hanmail.net">hanmail.net</option>
-                                                    <option value="gmail.com">gmail.com</option>
-                                                </select>
                                             </div>
                                         </li>
                                         <li>
@@ -1525,7 +1587,18 @@
                                                 <p>Tel</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" id="buyer_tel" name="buyerCompanyTel" class="onlyGeneralTel" maxlength="13" placeholder="Include hyphens (-)."/>
+                                                <select id="buyer_tel_code" style="width: 30%; max-width: 150px;">
+                                                    <option value="" selected disabled hidden>Select</option>
+                                                    <option value="+82">+82 (KOR)</option>
+                                                    <option value="+1">+1 (USA/CAN)</option>
+                                                    <option value="+44">+44 (GBR)</option>
+                                                    <option value="+49">+49 (DEU)</option>
+                                                    <option value="+61">+61 (AUS)</option>
+                                                    <option value="+81">+81 (JPN)</option>
+                                                    <option value="+86">+86 (CHN)</option>
+                                                    <option value="+91">+91 (IND)</option>
+                                                </select>
+                                                <input type="text" id="buyer_tel" name="buyerCompanyTel" class="onlyGeneralTel" maxlength="20" placeholder="Include hyphens (-)." style="width: calc(70% - 10px);">
                                             </div>
                                         </li>
                                         <li>
@@ -1533,7 +1606,18 @@
                                                 <p>Mobile</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" id="buyer_phone" name="buyerCompanyPhone" class="onlyTel" maxlength="13" onblur="f_phone_number_valid_check(this)" placeholder="Include hyphens (-)."/>
+                                                <select id="buyer_phone_code" style="width: 30%; max-width: 150px;">
+                                                    <option value="" selected disabled hidden>Select</option>
+                                                    <option value="+82">+82 (KOR)</option>
+                                                    <option value="+1">+1 (USA/CAN)</option>
+                                                    <option value="+44">+44 (GBR)</option>
+                                                    <option value="+49">+49 (DEU)</option>
+                                                    <option value="+61">+61 (AUS)</option>
+                                                    <option value="+81">+81 (JPN)</option>
+                                                    <option value="+86">+86 (CHN)</option>
+                                                    <option value="+91">+91 (IND)</option>
+                                                </select>
+                                                <input type="tel" id="buyer_phone" name="buyerCompanyPhone" class="onlyTel" maxlength="20" placeholder="Include hyphens (-)." style="width: calc(70% - 10px);">
                                             </div>
                                         </li>
                                         <li>
@@ -1675,6 +1759,40 @@
                     if (initialFaxCode && initialFax.startsWith(initialFaxCode)) {
                         $('#companyFax').val(initialFax.substring(initialFaxCode.length).trim());
                     }
+
+                    // 대표 담당자 전화번호 초기화
+                    let initialPersonTel = $('#tel').val() ? $('#tel').val().trim() : '';
+                    let initialPersonTelCode = $('#telCode').val() || '';
+                    if (initialPersonTelCode && initialPersonTel.startsWith(initialPersonTelCode)) {
+                        $('#tel').val(initialPersonTel.substring(initialPersonTelCode.length).trim());
+                    }
+
+                    let initialPersonPhone = $('#phone').val() ? $('#phone').val().trim() : '';
+                    let initialPersonPhoneCode = $('#phoneCode').val() || '';
+                    if (initialPersonPhoneCode && initialPersonPhone.startsWith(initialPersonPhoneCode)) {
+                        $('#phone').val(initialPersonPhone.substring(initialPersonPhoneCode.length).trim());
+                    }
+
+                    // 부 담당자 전화번호 초기화 (반복문 처리)
+                    $('input[name="chargePersonTel"]').each(function() {
+                        let $telInput = $(this);
+                        let $codeSelect = $telInput.siblings('select[name="chargePersonTelCode"]');
+                        let telVal = $telInput.val() ? $telInput.val().trim() : '';
+                        let codeVal = $codeSelect.val() || '';
+                        if (codeVal && telVal.startsWith(codeVal)) {
+                            $telInput.val(telVal.substring(codeVal.length).trim());
+                        }
+                    });
+
+                    $('input[name="chargePersonPhone"]').each(function() {
+                        let $phoneInput = $(this);
+                        let $codeSelect = $phoneInput.siblings('select[name="chargePersonPhoneCode"]');
+                        let phoneVal = $phoneInput.val() ? $phoneInput.val().trim() : '';
+                        let codeVal = $codeSelect.val() || '';
+                        if (codeVal && phoneVal.startsWith(codeVal)) {
+                            $phoneInput.val(phoneVal.substring(codeVal.length).trim());
+                        }
+                    });
 
                     let companyHomepage = '${info.companyHomepage}';
                     if(nvl(companyHomepage,'') === ''){

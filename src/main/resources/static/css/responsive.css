@@ -1509,12 +1509,12 @@
 
 
     .form_pass_eng .passPosE:before {
-        content: "Job title (Eng.)";
+        content: "Position (Eng.)";
 
     }
 
     .form_pass_eng .passNote:before {
-        content: "Note";
+        content: "Remarks";
     }
 
     .form_tb .form_tb_btn {

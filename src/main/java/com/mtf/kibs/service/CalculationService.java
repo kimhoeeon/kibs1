@@ -11,11 +11,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class CalculationService {
 
-    // (참고) 실제로는 이 단가들을 CommConstants 또는 DB에서 관리해야 합니다.
+    // --- 국문 (KRW) 단가 ---
     private static final int REGISTRATION_FEE = 100000;
     private static final int STAND_ALONE_BOOTH_FEE = 1800000;
     private static final int ASSEMBLY_BOOTH_FEE = 2100000;
     private static final int ONLINE_BOOTH_FEE = 1000000; // 온라인 부스비 (필요시 수정)
+
+    // --- 영문 (USD) 단가 ---
+    private static final int EN_REGISTRATION_FEE = 0;
+    private static final int EN_STAND_ALONE_BOOTH_FEE = 3000;
+    private static final int EN_ASSEMBLY_BOOTH_FEE = 3300;
+    private static final int EN_ONLINE_BOOTH_FEE = 0;
 
     // --- 기본 할인액 (CommConstants 또는 DB 값 사용 권장) ---
     private static final int DISCOUNT_EARLY_1_AMOUNT = 300000;
@@ -57,78 +63,89 @@ public class CalculationService {
     public CalculationResultDTO calculate2027Invoice(CalculationInputDTO input) {
         CalculationResultDTO result = new CalculationResultDTO();
 
+        // 0. 언어 체크 (EN 여부)
+        boolean isEnglish = "EN".equalsIgnoreCase(input.getLang());
+
+        int registrationFee = isEnglish ? EN_REGISTRATION_FEE : REGISTRATION_FEE;
+        int standAloneFeeUnit = isEnglish ? EN_STAND_ALONE_BOOTH_FEE : STAND_ALONE_BOOTH_FEE;
+        int assemblyFeeUnit = isEnglish ? EN_ASSEMBLY_BOOTH_FEE : ASSEMBLY_BOOTH_FEE;
+        int onlineFeeUnit = isEnglish ? EN_ONLINE_BOOTH_FEE : ONLINE_BOOTH_FEE;
+
         // --- 1. 부스 총액 계산 (등록비 포함) ---
-        int boothPrcSum = REGISTRATION_FEE
-                + (input.getStandAloneBoothCnt() * STAND_ALONE_BOOTH_FEE)
-                + (input.getAssemblyBoothCnt() * ASSEMBLY_BOOTH_FEE)
-                /*+ (input.getOnlineBoothCnt() * ONLINE_BOOTH_FEE)*/;
+        int boothPrcSum = registrationFee
+                + (input.getStandAloneBoothCnt() * standAloneFeeUnit)
+                + (input.getAssemblyBoothCnt() * assemblyFeeUnit)
+                /*+ (input.getOnlineBoothCnt() * onlineFeeUnit)*/;
         result.setBoothPrcSum(boothPrcSum);
 
         // --- 2. 기본 할인 총액 계산 ---
         int basicDiscountSum = 0;
         int physicalBooths = input.getStandAloneBoothCnt() + input.getAssemblyBoothCnt();
 
-        // --- 조기 신청 할인 (중복 가능) ---
-        if (input.isDiscountEarly1()) basicDiscountSum += physicalBooths * DISCOUNT_EARLY_1_AMOUNT;
-        if (input.isDiscountEarly2()) basicDiscountSum += physicalBooths * DISCOUNT_EARLY_2_AMOUNT;
+        if (!isEnglish) {
+            // --- 조기 신청 할인 (중복 가능) ---
+            if (input.isDiscountEarly1()) basicDiscountSum += physicalBooths * DISCOUNT_EARLY_1_AMOUNT;
+            if (input.isDiscountEarly2()) basicDiscountSum += physicalBooths * DISCOUNT_EARLY_2_AMOUNT;
 
-        // --- 첫 참가 / 재참가 할인 (택 1) ---
-        int participationDiscount = 0;
-        if (input.isDiscountFirstUnder10() && physicalBooths < 10) {
-            participationDiscount = physicalBooths * DISCOUNT_FIRST_UNDER_10_AMOUNT;
-        } else if (input.isDiscountFirstOver10() && physicalBooths >= 10) {
-            participationDiscount = physicalBooths * DISCOUNT_FIRST_OVER_10_AMOUNT;
-        } else if (input.isDiscountRe()) { // 첫 참가가 아닐 때만 재참가 적용
-            participationDiscount = physicalBooths * DISCOUNT_RE_AMOUNT;
+            // --- 첫 참가 / 재참가 할인 (택 1) ---
+            int participationDiscount = 0;
+            if (input.isDiscountFirstUnder10() && physicalBooths < 10) {
+                participationDiscount = physicalBooths * DISCOUNT_FIRST_UNDER_10_AMOUNT;
+            } else if (input.isDiscountFirstOver10() && physicalBooths >= 10) {
+                participationDiscount = physicalBooths * DISCOUNT_FIRST_OVER_10_AMOUNT;
+            } else if (input.isDiscountRe()) { // 첫 참가가 아닐 때만 재참가 적용
+                participationDiscount = physicalBooths * DISCOUNT_RE_AMOUNT;
+            }
+            basicDiscountSum += participationDiscount;
+
+            // --- 규모 할인 (택 1, 위와 중복 가능) ---
+            int scaleDiscount = 0;
+            if (physicalBooths >= 100 && input.isDiscountScale6()) {
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_6_AMOUNT;
+            } else if (physicalBooths >= 50 && input.isDiscountScale5()) {
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_5_AMOUNT;
+            } else if (physicalBooths >= 40 && input.isDiscountScale4()) {
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_4_AMOUNT;
+            } else if (physicalBooths >= 30 && input.isDiscountScale3()) {
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_3_AMOUNT;
+            } else if (physicalBooths >= 20 && input.isDiscountScale2()) {
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_2_AMOUNT;
+            } else if (physicalBooths >= 10 && input.isDiscountScale1()) {
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_1_AMOUNT;
+            }
+            basicDiscountSum += scaleDiscount;
+
+            // --- 협회 할인 (중복 가능) ---
+            if (input.isDiscountLeisure()) basicDiscountSum += physicalBooths * DISCOUNT_LEISURE_AMOUNT;
         }
-        basicDiscountSum += participationDiscount; // 첫 참가 또는 재참가 중 하나만 더함
-
-        // --- 규모 할인 (택 1, 위와 중복 가능) ---
-        int scaleDiscount = 0;
-        // 가장 큰 구간부터 확인하여 하나만 적용
-        if (physicalBooths >= 100 && input.isDiscountScale6()) {
-            scaleDiscount = physicalBooths * DISCOUNT_SCALE_6_AMOUNT;
-        } else if (physicalBooths >= 50 && input.isDiscountScale5()) {
-            scaleDiscount = physicalBooths * DISCOUNT_SCALE_5_AMOUNT;
-        } else if (physicalBooths >= 40 && input.isDiscountScale4()) {
-            scaleDiscount = physicalBooths * DISCOUNT_SCALE_4_AMOUNT;
-        } else if (physicalBooths >= 30 && input.isDiscountScale3()) {
-            scaleDiscount = physicalBooths * DISCOUNT_SCALE_3_AMOUNT;
-        } else if (physicalBooths >= 20 && input.isDiscountScale2()) {
-            scaleDiscount = physicalBooths * DISCOUNT_SCALE_2_AMOUNT;
-        } else if (physicalBooths >= 10 && input.isDiscountScale1()) {
-            scaleDiscount = physicalBooths * DISCOUNT_SCALE_1_AMOUNT;
-        }
-        basicDiscountSum += scaleDiscount; // 규모 할인 더함 (첫/재참가와 중복됨)
-
-        // --- 협회 할인 (중복 가능) ---
-        if (input.isDiscountLeisure()) basicDiscountSum += physicalBooths * DISCOUNT_LEISURE_AMOUNT;
         result.setBasicDiscountSum(basicDiscountSum);
 
         // --- 3. 특별 할인 총액 계산 ---
         int specialDiscountTotal = 0;
-        // 특별 할인 기준액 = 부스비 - 기본할인액
         int baseAmountForSpecial = boothPrcSum - basicDiscountSum;
-        if (baseAmountForSpecial < 0) baseAmountForSpecial = 0; // 음수 방지
+        if (baseAmountForSpecial < 0) baseAmountForSpecial = 0;
 
-        if (input.isDiscountSpecial1Yn()) {
-            specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5); // 50% 할인
-        }
-        if (input.isDiscountSpecial2Yn()) {
-            specialDiscountTotal += input.getDiscountSpecial2Amount();
-        }
-        if (input.isDiscountSpecial3Yn()) {
-            specialDiscountTotal += input.getDiscountSpecial3Amount();
+        if (!isEnglish) {
+            if (input.isDiscountSpecial1Yn()) {
+                specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
+            }
+            if (input.isDiscountSpecial2Yn()) {
+                specialDiscountTotal += input.getDiscountSpecial2Amount();
+            }
+            if (input.isDiscountSpecial3Yn()) {
+                specialDiscountTotal += input.getDiscountSpecial3Amount();
+            }
         }
         result.setSpecialDiscountTotal(specialDiscountTotal);
 
-        // --- 4. 발전 기금 계산 (요청하신 최종 로직) ---
+        // --- 4. 발전 기금 계산 ---
         int developmentFund = 0;
-        if ("Y".equals(input.getMemberCompanyYn()) || input.isDiscountLeisure()) {
-            // 기준액 = (부스비 총액 - (기본 할인 + 특별 할인))
-            int baseAmountForFund = boothPrcSum - (basicDiscountSum + specialDiscountTotal);
-            if (baseAmountForFund < 0) baseAmountForFund = 0; // 음수 방지
-            developmentFund = (int) Math.floor(baseAmountForFund * 0.1); // 10%
+        if (!isEnglish) {
+            if ("Y".equals(input.getMemberCompanyYn()) || input.isDiscountLeisure()) {
+                int baseAmountForFund = boothPrcSum - (basicDiscountSum + specialDiscountTotal);
+                if (baseAmountForFund < 0) baseAmountForFund = 0;
+                developmentFund = (int) Math.floor(baseAmountForFund * 0.1);
+            }
         }
         result.setDevelopmentFund(developmentFund);
 
@@ -136,7 +153,7 @@ public class CalculationService {
 
         // 5-1. 유틸리티 계산서
         int utilSubtotal = input.getUtilityPrcSum();
-        int utilVat = (int) Math.floor(utilSubtotal * 0.1);
+        int utilVat = isEnglish ? 0 : (int) Math.floor(utilSubtotal * 0.1);
         int utilTotal = utilSubtotal + utilVat;
 
         result.setUtilityPrcSum(utilSubtotal);
@@ -144,9 +161,8 @@ public class CalculationService {
         result.setUtilityTotal(utilTotal);
 
         // 5-2. 부스 계산서
-        // (부스비 총액 + 발전기금) - (기본 할인 + 특별 할인)
         int boothSubtotal = (boothPrcSum + developmentFund) - (basicDiscountSum + specialDiscountTotal);
-        int boothVat = (int) Math.floor(boothSubtotal * 0.1);
+        int boothVat = isEnglish ? 0 : (int) Math.floor(boothSubtotal * 0.1);
         int boothTotal = boothSubtotal + boothVat;
 
         result.setBoothSubtotal(boothSubtotal);
@@ -154,20 +170,20 @@ public class CalculationService {
         result.setBoothTotal(boothTotal);
 
         // 5-3. 최종 총계 (DB 저장용)
-        // (부가세 오차 방지를 위해, 합산 후 다시 계산)
         int prcSum = boothSubtotal + utilSubtotal;
-        int prcVat = (int) Math.floor(prcSum * 0.1); // ★★★ 부가세는 합계(prcSum) 기준으로 계산
+        int prcVat = isEnglish ? 0 : (int) Math.floor(prcSum * 0.1);
         int prcTotal = prcSum + prcVat;
         int balance = prcTotal - input.getDeposit();
 
-        // (JSP 표기 오차 보정)
-        // 만약 개별 부가세의 합이 전체 부가세와 다르면, 차액을 부스 부가세에 더한다.
-        int vatGap = prcVat - (boothVat + utilVat);
-        if (vatGap != 0) {
-            boothVat += vatGap; // 부스 부가세에 차액 보정
-            boothTotal += vatGap; // 부스 합계에도 차액 보정
-            result.setBoothVat(boothVat);
-            result.setBoothTotal(boothTotal);
+        // (JSP 표기 오차 보정 - 영문은 부가세가 0이므로 제외)
+        if (!isEnglish) {
+            int vatGap = prcVat - (boothVat + utilVat);
+            if (vatGap != 0) {
+                boothVat += vatGap;
+                boothTotal += vatGap;
+                result.setBoothVat(boothVat);
+                result.setBoothTotal(boothTotal);
+            }
         }
 
         result.setPrcSum(prcSum);
@@ -206,117 +222,117 @@ public class CalculationService {
     public CalculationResultDTO calculate2026Invoice(CalculationInputDTO input) {
         CalculationResultDTO result = new CalculationResultDTO();
 
+        boolean isEnglish = "EN".equalsIgnoreCase(input.getLang());
+
+        int registrationFee = isEnglish ? EN_REGISTRATION_FEE : REGISTRATION_FEE;
+        int standAloneFeeUnit = isEnglish ? EN_STAND_ALONE_BOOTH_FEE : STAND_ALONE_BOOTH_FEE;
+        int assemblyFeeUnit = isEnglish ? EN_ASSEMBLY_BOOTH_FEE : ASSEMBLY_BOOTH_FEE;
+        int onlineFeeUnit = isEnglish ? EN_ONLINE_BOOTH_FEE : ONLINE_BOOTH_FEE;
+
         // --- 1. 부스 총액 계산 (등록비 포함) ---
-        int boothPrcSum = REGISTRATION_FEE
-                + (input.getStandAloneBoothCnt() * STAND_ALONE_BOOTH_FEE)
-                + (input.getAssemblyBoothCnt() * ASSEMBLY_BOOTH_FEE)
-                + (input.getOnlineBoothCnt() * ONLINE_BOOTH_FEE);
+        int boothPrcSum = registrationFee
+                + (input.getStandAloneBoothCnt() * standAloneFeeUnit)
+                + (input.getAssemblyBoothCnt() * assemblyFeeUnit)
+                + (input.getOnlineBoothCnt() * onlineFeeUnit);
         result.setBoothPrcSum(boothPrcSum);
 
         // --- 2. 기본 할인 총액 계산 ---
         int basicDiscountSum = 0;
         int physicalBooths = input.getStandAloneBoothCnt() + input.getAssemblyBoothCnt();
 
-        // --- 조기 신청 할인 (중복 가능) ---
-        if (input.isDiscountEarly1()) basicDiscountSum += physicalBooths * DISCOUNT_EARLY_1_AMOUNT;
-        if (input.isDiscountEarly2()) basicDiscountSum += physicalBooths * DISCOUNT_EARLY_2_AMOUNT;
+        if (!isEnglish) {
+            if (input.isDiscountEarly1()) basicDiscountSum += physicalBooths * DISCOUNT_EARLY_1_AMOUNT;
+            if (input.isDiscountEarly2()) basicDiscountSum += physicalBooths * DISCOUNT_EARLY_2_AMOUNT;
 
-        // --- 첫 참가 / 재참가 할인 (택 1) ---
-        int participationDiscount = 0;
-        if (input.isDiscountFirstUnder10() && physicalBooths < 10) {
-            participationDiscount = physicalBooths * DISCOUNT_FIRST_UNDER_10_AMOUNT;
-        } else if (input.isDiscountFirstOver10() && physicalBooths >= 10) {
-            participationDiscount = physicalBooths * DISCOUNT_FIRST_OVER_10_AMOUNT;
-        } else if (input.isDiscountRe()) { // 첫 참가가 아닐 때만 재참가 적용
-            participationDiscount = physicalBooths * DISCOUNT_RE_AMOUNT;
+            int participationDiscount = 0;
+            if (input.isDiscountFirstUnder10() && physicalBooths < 10) {
+                participationDiscount = physicalBooths * DISCOUNT_FIRST_UNDER_10_AMOUNT;
+            } else if (input.isDiscountFirstOver10() && physicalBooths >= 10) {
+                participationDiscount = physicalBooths * DISCOUNT_FIRST_OVER_10_AMOUNT;
+            } else if (input.isDiscountRe()) {
+                participationDiscount = physicalBooths * DISCOUNT_RE_AMOUNT;
+            }
+            basicDiscountSum += participationDiscount;
+
+            int scaleDiscount = 0;
+            if (physicalBooths >= 100 && input.isDiscountScale6()) {
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_6_AMOUNT;
+            } else if (physicalBooths >= 50 && input.isDiscountScale5()) {
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_5_AMOUNT;
+            } else if (physicalBooths >= 40 && input.isDiscountScale4()) {
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_4_AMOUNT;
+            } else if (physicalBooths >= 30 && input.isDiscountScale3()) {
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_3_AMOUNT;
+            } else if (physicalBooths >= 20 && input.isDiscountScale2()) {
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_2_AMOUNT;
+            } else if (physicalBooths >= 10 && input.isDiscountScale1()) {
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_1_AMOUNT;
+            }
+            basicDiscountSum += scaleDiscount;
+
+            if (input.isDiscountLeisure()) basicDiscountSum += physicalBooths * DISCOUNT_LEISURE_AMOUNT;
         }
-        basicDiscountSum += participationDiscount; // 첫 참가 또는 재참가 중 하나만 더함
-
-        // --- 규모 할인 (택 1, 위와 중복 가능) ---
-        int scaleDiscount = 0;
-        // 가장 큰 구간부터 확인하여 하나만 적용
-        if (physicalBooths >= 100 && input.isDiscountScale6()) {
-            scaleDiscount = physicalBooths * DISCOUNT_SCALE_6_AMOUNT;
-        } else if (physicalBooths >= 50 && input.isDiscountScale5()) {
-            scaleDiscount = physicalBooths * DISCOUNT_SCALE_5_AMOUNT;
-        } else if (physicalBooths >= 40 && input.isDiscountScale4()) {
-            scaleDiscount = physicalBooths * DISCOUNT_SCALE_4_AMOUNT;
-        } else if (physicalBooths >= 30 && input.isDiscountScale3()) {
-            scaleDiscount = physicalBooths * DISCOUNT_SCALE_3_AMOUNT;
-        } else if (physicalBooths >= 20 && input.isDiscountScale2()) {
-            scaleDiscount = physicalBooths * DISCOUNT_SCALE_2_AMOUNT;
-        } else if (physicalBooths >= 10 && input.isDiscountScale1()) {
-            scaleDiscount = physicalBooths * DISCOUNT_SCALE_1_AMOUNT;
-        }
-        basicDiscountSum += scaleDiscount; // 규모 할인 더함 (첫/재참가와 중복됨)
-
-        // --- 협회 할인 (중복 가능) ---
-        if (input.isDiscountLeisure()) basicDiscountSum += physicalBooths * DISCOUNT_LEISURE_AMOUNT;
         result.setBasicDiscountSum(basicDiscountSum);
 
         // --- 3. 특별 할인 총액 계산 ---
         int specialDiscountTotal = 0;
-        // 특별 할인 기준액 = 부스비 - 기본할인액
         int baseAmountForSpecial = boothPrcSum - basicDiscountSum;
-        if (baseAmountForSpecial < 0) baseAmountForSpecial = 0; // 음수 방지
+        if (baseAmountForSpecial < 0) baseAmountForSpecial = 0;
 
-        if (input.isDiscountSpecial1Yn()) {
-            specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5); // 50% 할인
-        }
-        if (input.isDiscountSpecial2Yn()) {
-            specialDiscountTotal += input.getDiscountSpecial2Amount();
-        }
-        if (input.isDiscountSpecial3Yn()) {
-            specialDiscountTotal += input.getDiscountSpecial3Amount();
+        if (!isEnglish) {
+            if (input.isDiscountSpecial1Yn()) {
+                specialDiscountTotal += Math.floor(baseAmountForSpecial * 0.5);
+            }
+            if (input.isDiscountSpecial2Yn()) {
+                specialDiscountTotal += input.getDiscountSpecial2Amount();
+            }
+            if (input.isDiscountSpecial3Yn()) {
+                specialDiscountTotal += input.getDiscountSpecial3Amount();
+            }
         }
         result.setSpecialDiscountTotal(specialDiscountTotal);
 
-        // --- 4. 발전 기금 계산 (요청하신 최종 로직) ---
+        // --- 4. 발전 기금 계산 ---
         int developmentFund = 0;
-        if ("Y".equals(input.getMemberCompanyYn()) || input.isDiscountLeisure()) {
-            // 기준액 = (부스비 총액 - (기본 할인 + 특별 할인))
-            int baseAmountForFund = boothPrcSum - (basicDiscountSum + specialDiscountTotal);
-            if (baseAmountForFund < 0) baseAmountForFund = 0; // 음수 방지
-            developmentFund = (int) Math.floor(baseAmountForFund * 0.1); // 10%
+        if (!isEnglish) {
+            if ("Y".equals(input.getMemberCompanyYn()) || input.isDiscountLeisure()) {
+                int baseAmountForFund = boothPrcSum - (basicDiscountSum + specialDiscountTotal);
+                if (baseAmountForFund < 0) baseAmountForFund = 0;
+                developmentFund = (int) Math.floor(baseAmountForFund * 0.1);
+            }
         }
         result.setDevelopmentFund(developmentFund);
 
         // --- 5. 최종 금액 계산 (분리 및 합산) ---
-
-        // 5-1. 유틸리티 계산서
         int utilSubtotal = input.getUtilityPrcSum();
-        int utilVat = (int) Math.floor(utilSubtotal * 0.1);
+        int utilVat = isEnglish ? 0 : (int) Math.floor(utilSubtotal * 0.1);
         int utilTotal = utilSubtotal + utilVat;
 
         result.setUtilityPrcSum(utilSubtotal);
         result.setUtilityVat(utilVat);
         result.setUtilityTotal(utilTotal);
 
-        // 5-2. 부스 계산서
-        // (부스비 총액 + 발전기금) - (기본 할인 + 특별 할인)
         int boothSubtotal = (boothPrcSum + developmentFund) - (basicDiscountSum + specialDiscountTotal);
-        int boothVat = (int) Math.floor(boothSubtotal * 0.1);
+        int boothVat = isEnglish ? 0 : (int) Math.floor(boothSubtotal * 0.1);
         int boothTotal = boothSubtotal + boothVat;
 
         result.setBoothSubtotal(boothSubtotal);
         result.setBoothVat(boothVat);
         result.setBoothTotal(boothTotal);
 
-        // 5-3. 최종 총계 (DB 저장용)
-        // (부가세 오차 방지를 위해, 합산 후 다시 계산)
         int prcSum = boothSubtotal + utilSubtotal;
-        int prcVat = (int) Math.floor(prcSum * 0.1); // ★★★ 부가세는 합계(prcSum) 기준으로 계산
+        int prcVat = isEnglish ? 0 : (int) Math.floor(prcSum * 0.1);
         int prcTotal = prcSum + prcVat;
         int balance = prcTotal - input.getDeposit();
 
-        // (JSP 표기 오차 보정)
-        // 만약 개별 부가세의 합이 전체 부가세와 다르면, 차액을 부스 부가세에 더한다.
-        int vatGap = prcVat - (boothVat + utilVat);
-        if (vatGap != 0) {
-            boothVat += vatGap; // 부스 부가세에 차액 보정
-            boothTotal += vatGap; // 부스 합계에도 차액 보정
-            result.setBoothVat(boothVat);
-            result.setBoothTotal(boothTotal);
+        if (!isEnglish) {
+            int vatGap = prcVat - (boothVat + utilVat);
+            if (vatGap != 0) {
+                boothVat += vatGap;
+                boothTotal += vatGap;
+                result.setBoothVat(boothVat);
+                result.setBoothTotal(boothTotal);
+            }
         }
 
         result.setPrcSum(prcSum);
