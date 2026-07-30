@@ -45,85 +45,103 @@
 </head>
 
 <body>
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
+    <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-<div id="container">
+    <div id="container">
 
-    <!-- section -->
-    <div class="sub_top">
-        <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>Home</span><span>Exhibitors</span><span>Mypage</span>
+        <!-- section -->
+        <div class="sub_top">
+            <div class="inner">
+                <div class="sub_top_box">
+                    <div class="sub_top_nav">
+                        <span>Home</span><span>Exhibitors</span><span>Mypage</span>
+                    </div>
+                    <div class="sub_top_tit">Mypage</div>
                 </div>
-                <div class="sub_top_tit">Mypage</div>
             </div>
         </div>
-    </div>
-    <!-- //section -->
+        <!-- //section -->
 
 
-    <!-- section -->
-    <div class="apply_s padding_tb" id="apply_s">
-        <div class="inner">
+        <!-- section -->
+        <div class="apply_s padding_tb" id="apply_s">
+            <div class="inner">
 
-            <div class="apply_nav">
-                <div class="apply_nav_list">
+                <div class="apply_nav">
                     <div class="apply_nav_txt">
-                        <div class="txt">Welcome, Meetingfan!</div>
+                        <div class="txt">Welcome, ${info.companyNameEn}</div>
                         <div class="btn">
-                            <a href="/eng/mypage/modify.do" class="btnSt01">Member Info</a>
-                            <a href="/eng/mypage/index.do" class="btnSt01">Mypage</a>
+                            <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/modify.do','${info.seq}')" class="btnSt01">Member Info</a>
+                            <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/index.do', {seq: `${info.seq}`})" class="btnSt01">MYPAGE</a>
                         </div>
                     </div>
-                    <ul class="list1">
-                        <li><a href="/eng/mypage/step01.do">Basic Info</a></li>
-                        <li>
-                            <a href="/eng/mypage/step2_1.do">Exhibition Info</a>
-                            <ul class="list2">
-                                <li><a href="/eng/mypage/step2_1.do">Booth</a></li>
-                                <li><a href="/eng/mypage/step2_2.do">Fascia Board Title</a></li>
-                                <li><a href="/eng/mypage/step2_3.do">Utilities</a></li>
-                                <li><a href="/eng/mypage/step2_4.do">Exhibitor Pass</a></li>
-                                <li><a href="/eng/mypage/step2_5.do">Prize & Giveaway</a></li>
-                                <li><a href="/eng/mypage/step2_6.do">Web Banner</a></li>
-                                <%--<li><a href="/eng/mypage/step2_7.do">Online Exhibition</a></li>--%>
-                                <li><a href="/eng/mypage/step2_8.do">Directory</a></li>
-                            </ul>
-                        </li>
-                        <li class="active"><a href="/eng/mypage/step03.do">Complete Registration</a></li>
-                    </ul>
+                    <div class="apply_nav_list">
+                        <ul class="list1">
+                            <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step01.do','${info.seq}')">Basic Info</a></li>
+                            <li>
+                                <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_1.do','${info.seq}')">Exhibition Info</a>
+                                <ul class="list2">
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_1.do','${info.seq}')">Booth</a></li>
+                                    <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_9.do','${info.seq}')">Yacht/Boat</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_2.do','${info.seq}')">Signboard</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_3.do','${info.seq}')">Utilities</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_4.do','${info.seq}')">Badges</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_5.do','${info.seq}')">Giveaways</a></li>
+                                    <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_8.do','${info.seq}')">Directory</a></li>
+                                </ul>
+                            </li>
+                            <li class="active"><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step03.do','${info.seq}')">Complete</a></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
+                <!-- section -->
+                <div class="my_form form_s">
+                    <div class="inner">
 
-            <!-- section -->
-            <div class="my_form form_s">
-                <div class="inner">
-
-                    <!-- 안내문구 -->
-                    <div class="form_wrap">
-                        <div class="form_guide_comp">
-                            <div class="form_guide_comp_img"><img src="/img/logo3_eng.png"></div>
-                            <div class="form_guide_comp_txt">
-                                You have entered all the required documents to participate in the 2024 Gyeonggi
-                                International Boat Show.<br>
-                                Finally, press the application button below to ask the person in charge of the event for
-                                approval.
+                        <!-- 안내문구 -->
+                        <div class="form_wrap">
+                            <div class="form_guide_comp">
+                                <div class="form_guide_comp_img"><img src="/img/logo3_eng.png"></div>
+                                <div class="form_guide_comp_txt">
+                                    You have completed all required forms for participation in KIBS 2027.<br>
+                                    Please click the button below to submit your application for review and approval by the Secretariat.<br>
+                                    Submission of this application does not constitute final confirmation of participation.<br>
+                                    Participation will be confirmed only after the Secretariat’s approval and completion of the required payment according to the invoice issued by the Secretariat.
+                                </div>
+                                <a href="javascript:f_apply_comp('03','${info.seq}')" class="form_guide_comp_btn btnSt01">Submit Application for Approval</a>
                             </div>
-                            <a href="javascript:alert('This is not the application period.');<%--TODO : 참가신청 기간에 오픈 /eng/exhibitor/login.do--%>" <%--onclick="alert('Your application for participation has been completed.')"--%>
-                               class="form_guide_comp_btn btnSt01">Application For Participation</a>
                         </div>
                     </div>
                 </div>
+                <!-- //section -->
             </div>
-            <!-- //section -->
         </div>
+
     </div>
 
-</div>
+    <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
+    <script type="text/javascript">
+        // Meta 전환
+        fbq('track', 'CompleteRegistration');
+
+        // Google 전환
+        gtag('event', 'conversion', {
+            'send_to': 'AW-866426231/bkbKCIjC0OwbEPe6kp0D',
+            'value': 1.0,
+            'currency': 'KRW'
+        });
+
+        // Naver 전환 (Lead 타입)
+        // 공통 스크립트(ad_scripts.jsp)에서 wcslog.js 로드 및 계정 ID(s_3ee90871e561) 설정됨
+        if(window.wcs){
+            var _conv = {};
+            _conv.type = 'lead';
+            wcs.trans(_conv);
+        }
+    </script>
 
 </body>
 </html>

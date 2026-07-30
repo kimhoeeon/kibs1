@@ -131,7 +131,7 @@
             </div>
 
             <div class="apply_step">
-                <div class="apply_tit">Giveaway Info</div>
+                <div class="apply_tit">Giveaway Application</div>
                 <div class="apply_step_wrap">
                     <div class="apply_step_box step1">
                         <div class="gubun">
@@ -169,7 +169,7 @@
                     <!-- 경품 관련 안내사항 -->
                     <div class="form_wrap">
                         <div class="form_tit">
-                            <div class="big">Giveaway Info</div>
+                            <div class="big">Giveaway Information</div>
                         </div>
                         <div class="form_guide_table table_box">
                             <table>
@@ -189,12 +189,12 @@
                                 <tr>
                                     <td>Promotional Giveaway</td>
                                     <td>
-                                        <p>3/6~3/8 For prize drawings during boat show </p>
+                                        <p>For prize drawings during KIBS 2027 (March 12–14)</p>
                                     </td>
                                     <td>
-                                        <p>Sponsor logo displayed on giveaway entry tickets.</p>
-                                        <p>Giveaway sponsorship featured in promotional media.</p>
-                                        <p>Please provide giveaway quantities in multiples of 3 for the 3-day event.</p>
+                                        <p>The sponsor’s logo will be displayed on giveaway entry tickets.</p>
+                                        <p>Giveaway sponsorship details may be featured in promotional media.</p>
+                                        <p>Please provide giveaway quantities in multiples of three, considering the three-day exhibition period.</p>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -205,7 +205,7 @@
                     <!-- 경품제공 신청 -->
                     <div class="form_wrap">
                         <div class="form_tit">
-                            <div class="big">Giveaway Registration</div>
+                            <div class="big">Giveaway Application</div>
                         </div>
                         <div class="form_chuga">
                             <input type="hidden" name="exhibitorSeq" value="${info.seq}">
@@ -224,14 +224,14 @@
                                         <input type="hidden" name="giftSeq" value="${gift.seq}">
                                         <div class="cont">
                                             <div class="name">${gift.giftName}</div>
-                                            <div class="gubun">${gift.giftGbn} / ${gift.giftCnt} 개</div>
+                                            <div class="gubun">${gift.giftGbn} / ${gift.giftCnt}</div>
                                         </div>
                                         <div onclick="f_gift_modify_modal('select', '${gift.seq}');" class="modifyFormGift modifyFormList" style="cursor: pointer;">Modify</div>
                                         <div onclick="f_gift_remove('select', '${gift.seq}');" class="delFormGift delFormList" style="cursor: pointer;">Delete</div>
                                     </div>
                                 </c:forEach>
                             </c:if>
-                            <a id="gift_add_btn" class="addFormGift addFormList btnSt01" style="cursor: pointer">Click here to add giveaways</a>
+                            <a id="gift_add_btn" class="addFormGift addFormList btnSt01" style="cursor: pointer">Add Giveaway</a>
                         </div>
                     </div>
                 </div>
@@ -239,11 +239,11 @@
                 <div class="form_btn">
                     <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_4.do','${info.seq}')" class="form_btn_prev">
                         <div class="big">PREV</div>
-                        <div class="small">Badges</div>
+                        <div class="small">Badge Application</div>
                     </a>
                     <a href="javascript:void(0);" onclick="f_apply_comp('2_5','${info.seq}')" class="form_btn_next">
                         <div class="big">NEXT / SKIP</div>
-                        <div class="small">Directory</div>
+                        <div class="small">Directory Information</div>
                     </a>
                 </div>
 
@@ -270,7 +270,7 @@
                             <!-- 회원계정정보 -->
                             <div class="form_wrap">
                                 <div class="form_tit">
-                                    <div class="big">Giveaway Form</div>
+                                    <div class="big">Giveaway Details</div>
                                 </div>
                                 <ul class="form_box">
                                     <li>
@@ -307,7 +307,7 @@
                                     </li>
                                     <li>
                                         <div class="item req">
-                                            <p>Description</p>
+                                            <p>Giveaway Description</p>
                                         </div>
                                         <div class="input">
                                             <textarea id="gift_content"></textarea>
@@ -322,6 +322,10 @@
                                             <input type="file" name="giftPhotoFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
                                             <label>Browse</label>
                                             <span class="giftPhotoBox"></span>
+                                            <div style="font-size: 0.7em; color: #666;">
+                                                * Accepted file formats: JPG, JPEG, PNG<br>
+                                                * Maximum file size: 10MB
+                                            </div>
                                         </div>
                                     </li>
                                     <li>
@@ -333,22 +337,32 @@
                                             <input type="file" name="giftCompanyLogoFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
                                             <label>Browse</label>
                                             <span class="giftCompanyLogoBox"></span>
+                                            <div style="font-size: 0.7em; color: #666;">
+                                                * Accepted file formats: JPG, JPEG, PNG<br>
+                                                * Maximum file size: 10MB
+                                            </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="item req">
-                                            <p>Retail Price</p>
+                                            <p>Retail Price (USD)</p>
                                         </div>
                                         <div class="input">
-                                            <input type="text" id="gift_price" value="0" class="onlyNum">
+                                            <input type="text" id="gift_price" value="0" class="onlyNum" placeholder="Enter amount in USD">
+                                            <div style="font-size: 0.7em; color: #666;">
+                                                * For overseas exhibitors, retail price and sponsored price must be entered in USD.
+                                            </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="item">
-                                            <p>Sponsored Price</p>
+                                            <p>Sponsored Price (USD)</p>
                                         </div>
                                         <div class="input">
-                                            <input type="text" id="gift_sponsor_price" value="0" class="onlyNum">
+                                            <input type="text" id="gift_sponsor_price" value="0" class="onlyNum" placeholder="Enter amount in USD">
+                                            <div style="font-size: 0.7em; color: #666;">
+                                                * For overseas exhibitors, retail price and sponsored price must be entered in USD.
+                                            </div>
                                         </div>
                                     </li>
                                     <li>

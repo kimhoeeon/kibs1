@@ -87,7 +87,7 @@
 
                 <div class="apply_nav">
                     <div class="apply_nav_txt">
-                        <div class="txt">Welcome, ${info.companyNameKo}</div>
+                        <div class="txt">Welcome, ${info.companyNameEn}</div>
                         <div class="btn">
                             <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/modify.do','${info.seq}')" class="btnSt01">Member Info</a>
                             <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/index.do', {seq: `${info.seq}`})" class="btnSt01">MYPAGE</a>

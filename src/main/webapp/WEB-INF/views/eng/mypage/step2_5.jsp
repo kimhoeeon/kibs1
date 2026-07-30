@@ -88,7 +88,7 @@
 
                     <div class="apply_nav">
                         <div class="apply_nav_txt">
-                            <div class="txt">Welcome, ${info.companyNameKo}</div>
+                            <div class="txt">Welcome, ${info.companyNameEn}</div>
                             <div class="btn">
                                 <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/modify.do','${info.seq}')" class="btnSt01">Member Info</a>
                                 <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/index.do', {seq: `${info.seq}`})" class="btnSt01">MYPAGE</a>
@@ -101,7 +101,7 @@
                                     <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_1.do','${info.seq}')">Exhibition Info</a>
                                     <ul class="list2">
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_1.do','${info.seq}')">Booth</a></li>
-                                            <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
+                                        <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_9.do','${info.seq}')">Yacht/Boat</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_2.do','${info.seq}')">Signboard</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_3.do','${info.seq}')">Utilities</a></li>
@@ -118,7 +118,7 @@
                     <!-- section -->
                     <div class="my_form form_s">
                         <div class="inner">
-                            <div class="apply_tit">Giveaway</div>
+                            <div class="apply_tit">Giveaway Application</div>
                             <!-- 안내문구 -->
                             <div class="form_wrap">
                                 <ul class="form_guide">
@@ -129,7 +129,7 @@
                             <!-- 경품 관련 안내사항 -->
                             <div class="form_wrap">
                                 <div class="form_tit">
-                                    <div class="big">A Prize Announcement</div>
+                                    <div class="big">Giveaway Information</div>
                                 </div>
                                 <div class="form_guide_table table_box">
                                     <table>
@@ -140,23 +140,21 @@
                                         </colgroup>
                                         <thead>
                                         <tr>
-                                            <th>Sortation</th>
-                                            <th>Content</th>
-                                            <th>Activity Details</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                            <th>Usage</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>An Event Prize</td>
+                                            <td>Promotional Giveaway</td>
                                             <td>
-                                                <p>3/12~3/14 For prize draw during the boat show event</p>
+                                                <p>For prize drawings during KIBS 2027 (March 12–14)</p>
                                             </td>
                                             <td>
-                                                <p>Insert the company logo of the prize sponsor into the application box and the
-                                                    application ticket distributed to all visitors</p>
-                                                <p>Exposing the history of giving prizes to various media/media</p>
-                                                <p>Considering the exhibition period of 3 days, I would like to sponsor with 3
-                                                    times the number of prizes</p>
+                                                <p>The sponsor’s logo will be displayed on giveaway entry tickets.</p>
+                                                <p>Giveaway sponsorship details may be featured in promotional media.</p>
+                                                <p>Please provide giveaway quantities in multiples of three, considering the three-day exhibition period.</p>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -167,7 +165,7 @@
                             <!-- 경품제공 신청 -->
                             <div class="form_wrap">
                                 <div class="form_tit">
-                                    <div class="big">An Application For A Prize</div>
+                                    <div class="big">Giveaway Application</div>
                                 </div>
                                 <div class="form_chuga">
                                     <input type="hidden" name="exhibitorSeq" value="${info.seq}">
@@ -193,7 +191,7 @@
                                             </div>
                                         </c:forEach>
                                     </c:if>
-                                    <a id="gift_add_btn" class="addFormGift addFormList btnSt01" style="cursor: pointer">Click here to register for the giveaway</a>
+                                    <a id="gift_add_btn" class="addFormGift addFormList btnSt01" style="cursor: pointer">Add Giveaway</a>
                                 </div>
                             </div>
                         </div>
@@ -201,11 +199,11 @@
                         <div class="form_btn">
                             <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_4.do','${info.seq}')" class="form_btn_prev">
                                 <div class="big">PREV</div>
-                                <div class="small">Badges</div>
+                                <div class="small">Badge Application</div>
                             </a>
                             <a href="javascript:void(0);" onclick="f_mypage_comp('2_5','${info.seq}')" class="form_btn_next">
                                 <div class="big">NEXT</div>
-                                <div class="small">Directory</div>
+                                <div class="small">Directory Information</div>
                             </a>
                         </div>
 
@@ -220,7 +218,7 @@
             <div class="popup_inner">
                 <div class="popup_wrap">
                     <div class="pop_tit">
-                        <div class="tit">Giveaways Registration/Modification</div>
+                        <div class="tit">Add/Edit Giveaway</div>
                         <a class="close" href="javascript:f_gift_init();" style="cursor: pointer"><img src="/img/close_w.png"></a>
                     </div>
                     <div class="pop_box">
@@ -231,12 +229,12 @@
                                     <!-- 회원계정정보 -->
                                     <div class="form_wrap">
                                         <div class="form_tit">
-                                            <div class="big">Giveaways Application Form</div>
+                                            <div class="big">Giveaway Details</div>
                                         </div>
                                         <ul class="form_box">
                                             <li>
                                                 <div class="item req">
-                                                    <p>Category</p>
+                                                    <p>Type</p>
                                                 </div>
                                                 <div class="input">
                                                     <label><input type="radio" id="gift_gbn" value="행사용" checked>Event</label>
@@ -252,7 +250,7 @@
                                             </li>
                                             <li>
                                                 <div class="item">
-                                                    <p>Classification</p>
+                                                    <p>Category</p>
                                                 </div>
                                                 <div class="input">
                                                     <input type="text" id="gift_classify">
@@ -268,7 +266,7 @@
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>description</p>
+                                                    <p>Giveaway Description</p>
                                                 </div>
                                                 <div class="input">
                                                     <textarea id="gift_content"></textarea>
@@ -276,13 +274,17 @@
                                             </li>
                                             <li>
                                                 <div class="item">
-                                                    <p>Giveaways Photo</p>
+                                                    <p>Giveaway Image</p>
                                                 </div>
                                                 <div class="input file_box">
                                                     <input type="text" id="gift_photo" class="upload_name" value="" disabled="disabled">
                                                     <input type="file" name="giftPhotoFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
                                                     <label>Browse</label>
                                                     <span class="giftPhotoBox"></span>
+                                                    <div style="font-size: 0.7em; color: #666;">
+                                                        * Accepted file formats: JPG, JPEG, PNG<br>
+                                                        * Maximum file size: 10MB
+                                                    </div>
                                                 </div>
                                             </li>
                                             <li>
@@ -294,22 +296,32 @@
                                                     <input type="file" name="giftCompanyLogoFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
                                                     <label>Browse</label>
                                                     <span class="giftCompanyLogoBox"></span>
+                                                    <div style="font-size: 0.7em; color: #666;">
+                                                        * Accepted file formats: JPG, JPEG, PNG<br>
+                                                        * Maximum file size: 10MB
+                                                    </div>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="item req">
-                                                    <p>Giveaways Price</p>
+                                                    <p>Retail Price (USD)</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" id="gift_price" value="0" class="onlyNum">
+                                                    <input type="text" id="gift_price" value="0" class="onlyNum" placeholder="Enter amount in USD">
+                                                    <div style="font-size: 0.7em; color: #666;">
+                                                        * For overseas exhibitors, retail price and sponsored price must be entered in USD.
+                                                    </div>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="item">
-                                                    <p>Sponsorship Price</p>
+                                                    <p>Sponsored Price (USD)</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" id="gift_sponsor_price" value="0" class="onlyNum">
+                                                    <input type="text" id="gift_sponsor_price" value="0" class="onlyNum" placeholder="Enter amount in USD">
+                                                    <div style="font-size: 0.7em; color: #666;">
+                                                        * For overseas exhibitors, retail price and sponsored price must be entered in USD.
+                                                    </div>
                                                 </div>
                                             </li>
                                             <li>

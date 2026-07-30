@@ -149,7 +149,7 @@
                             <div class="gauge">
                                 <progress class="gauge_bar" value="100" max="100"></progress>
                             </div>
-                            <div class="txt">Complete</div>
+                            <div class="txt">Completed</div>
                         </div>
                         <div class="apply_step_box step3">
                             <div class="gubun">
@@ -158,7 +158,7 @@
                             <div class="gauge">
                                 <progress class="gauge_bar" value="5" max="100"></progress>
                             </div>
-                            <div class="txt">진행중..</div>
+                            <div class="txt">Ready to Submit</div>
                         </div>
                     </div>
                 </div>
@@ -172,10 +172,12 @@
                             <div class="form_guide_comp">
                                 <div class="form_guide_comp_img"><img src="/img/logo3.png"></div>
                                 <div class="form_guide_comp_txt">
-                                    You have completed all required forms for participation in KIBS 2027<br>
-                                    Please click the button below to submit your application for final approval.
+                                    You have completed all required forms for participation in KIBS 2027.<br>
+                                    Please click the button below to submit your application for review and approval by the Secretariat.<br>
+                                    Submission of this application does not constitute final confirmation of participation.<br>
+                                    Participation will be confirmed only after the Secretariat’s approval and completion of the required payment according to the invoice issued by the Secretariat.
                                 </div>
-                                <a href="javascript:f_apply_comp('03','${info.seq}')" class="form_guide_comp_btn btnSt01">Submit Application</a>
+                                <a href="javascript:f_apply_comp('03','${info.seq}')" class="form_guide_comp_btn btnSt01">Submit Application for Approval</a>
                             </div>
                         </div>
                         <!-- 안내문구 -->

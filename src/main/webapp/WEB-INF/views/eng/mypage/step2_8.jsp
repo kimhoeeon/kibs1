@@ -90,7 +90,7 @@
 
                     <div class="apply_nav">
                         <div class="apply_nav_txt">
-                            <div class="txt">Welcome, ${info.companyNameKo}</div>
+                            <div class="txt">Welcome, ${info.companyNameEn}</div>
                             <div class="btn">
                                 <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/modify.do','${info.seq}')" class="btnSt01">Member Info</a>
                                 <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/index.do', {seq: `${info.seq}`})" class="btnSt01">MYPAGE</a>
@@ -103,7 +103,7 @@
                                     <a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_1.do','${info.seq}')">Exhibition Info</a>
                                     <ul class="list2">
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_1.do','${info.seq}')">Booth</a></li>
-                                            <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
+                                        <%--<li><a href="javascript:void(0);" onclick="f_page_move('/mypage/step2_10.do','${info.seq}')">해상전시회 신청</a></li>--%>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_9.do','${info.seq}')">Yacht/Boat</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_2.do','${info.seq}')">Signboard</a></li>
                                         <li><a href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_3.do','${info.seq}')">Utilities</a></li>
@@ -120,13 +120,13 @@
                     <!-- section -->
                     <div class="my_form form_s">
                         <div class="inner">
-                            <div class="apply_tit">Directory</div>
+                            <div class="apply_tit">Directory Info</div>
                             <div class="form_wrap">
                                 <ul class="form_guide">
                                     <li>This form is required for all exhibitors and is free of charge.</li>
-                                    <li>Please complete all information below, as it may be used for promotional materials.</li>
-                                    <li>Information entered in previous sections will be used. Please update it in the previous section or My Page if needed.</li>
-                                    <li>Click “Next” at the bottom right to complete your submission.</li>
+                                    <li>The information below may be used for promotional materials. Please review all information carefully before final submission.</li>
+                                    <li>Information entered in previous sections will be displayed here. If any changes are needed, please update the relevant previous section or My Page before submitting.</li>
+                                    <li>Click the “Next” button at the bottom right to complete your exhibitor registration.</li>
                                 </ul>
                             </div>
 
@@ -140,17 +140,9 @@
                                     <div class="big">Exhibitor Info</div>
                                 </div>
                                 <ul class="form_box">
-                                    <li class="w50">
+                                    <li>
                                         <div class="item">
-                                            <p>Company Name (Korean)</p>
-                                        </div>
-                                        <div class="input">
-                                            ${info.companyNameKo}
-                                        </div>
-                                    </li>
-                                    <li class="w50">
-                                        <div class="item">
-                                            <p>Company Name (English)</p>
+                                            <p>Company Name</p>
                                         </div>
                                         <div class="input">
                                             ${info.companyNameEn}
@@ -393,15 +385,7 @@
                                     </li>
                                     <li>
                                         <div class="item">
-                                            <p>Company Profile (Korean)</p>
-                                        </div>
-                                        <div class="input">
-                                            ${fn:replace(fn:replace(fn:escapeXml(info.companyIntroKo), CRLF, '<br/>'), LF, '<br/>')}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="item">
-                                            <p>Company Profile (English)</p>
+                                            <p>Company Profile</p>
                                         </div>
                                         <div class="input">
                                             ${fn:replace(fn:replace(fn:escapeXml(info.companyIntroEn), CRLF, '<br/>'), LF, '<br/>')}
@@ -409,15 +393,7 @@
                                     </li>
                                     <li>
                                         <div class="item">
-                                            <p>Purpose of KIBS Participation (Korean)</p>
-                                        </div>
-                                        <div class="input">
-                                            ${info.companyPurposeKo}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="item">
-                                            <p>Purpose of KIBS Participation (English)</p>
+                                            <p>Purpose of KIBS Participation</p>
                                         </div>
                                         <div class="input">
                                             ${info.companyPurposeEn}
@@ -425,15 +401,7 @@
                                     </li>
                                     <li>
                                         <div class="item">
-                                            <p>New Product Info (Korean)</p>
-                                        </div>
-                                        <div class="input">
-                                            ${fn:replace(fn:replace(fn:escapeXml(info.newItemIntroKo), CRLF, '<br/>'), LF, '<br/>')}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="item">
-                                            <p>New Product Info (English)</p>
+                                            <p>New Product Info</p>
                                         </div>
                                         <div class="input">
                                             ${fn:replace(fn:replace(fn:escapeXml(info.newItemIntroEn), CRLF, '<br/>'), LF, '<br/>')}
@@ -454,11 +422,11 @@
                             <div class="form_btn">
                                 <a href="javascript:void(0);" onclick="f_page_move('/eng/apply/step2_5.do','${info.seq}')" class="form_btn_prev">
                                     <div class="big">PREV</div>
-                                    <div class="small">Giveaways</div>
+                                    <div class="small">Giveaway Application</div>
                                 </a>
                                 <a href="javascript:void(0);" onclick="f_apply_comp('2_8','${info.seq}')" class="form_btn_next">
                                     <div class="big">NEXT</div>
-                                    <div class="small">Complete</div>
+                                    <div class="small">Complete Registration</div>
                                 </a>
                             </div>
 

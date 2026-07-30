@@ -1461,18 +1461,71 @@ public class KibsEnController {
         return mv;
     }
 
-    @RequestMapping(value = "/eng/mypage/step03.do", method = RequestMethod.GET)
-    public ModelAndView eng_mypage_step03() {
-        //System.out.println("KibsController > eng_mypage_step03");
+    @RequestMapping(value = "/eng/mypage/step03.do", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView eng_mypage_step03(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        //System.out.println("KibsController > mypage_step03");
         ModelAndView mv = new ModelAndView();
+
+        /* 기본정보 - 참가업체 정보 */
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(getSessionTransferYear(session));
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
+        }else{
+            String id = String.valueOf(session.getAttribute("id"));
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
+            reqDTO.setId(id);
+            reqDTO.setTransferYear(getSessionTransferYear(session));
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
+            if(exInfo != null){
+                exhibitor_new_seq = exInfo.getSeq();
+            }
+        }
+
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            mv.addObject("info", exInfo);
+        }else{
+            session.invalidate(); //세션 초기화
+        }
+
         mv.setViewName("/eng/mypage/step03");
         return mv;
     }
 
-    @RequestMapping(value = "/eng/mypage/total.do", method = RequestMethod.GET)
-    public ModelAndView eng_mypage_total() {
-        //System.out.println("KibsController > eng_mypage_total");
+    @RequestMapping(value = "/eng/mypage/total.do", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView eng_mypage_total(ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+        //System.out.println("KibsController > mypage_total");
         ModelAndView mv = new ModelAndView();
+
+        /* 기본정보 - 참가업체 정보 */
+        ExhibitorNewDTO exInfo = null;
+        String exhibitor_new_seq = exhibitorNewDTO.getSeq();
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            exhibitorNewDTO.setTransferYear(getSessionTransferYear(session));
+            exInfo = kibsService.processSelectExhibitorNewSingle(exhibitorNewDTO);
+        }else{
+            String id = String.valueOf(session.getAttribute("id"));
+            ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
+            reqDTO.setId(id);
+            reqDTO.setTransferYear(getSessionTransferYear(session));
+            exInfo = kibsService.processSelectExhibitorNewSingle(reqDTO);
+            if(exInfo != null){
+                exhibitor_new_seq = exInfo.getSeq();
+            }
+        }
+
+        if(exhibitor_new_seq != null && !exhibitor_new_seq.equals("null") && !exhibitor_new_seq.isEmpty()){
+            mv.addObject("info", exInfo);
+
+            /*BuyerDTO buyerDTO = new BuyerDTO();
+            buyerDTO.setId(exhibitor_seq);
+            List<BuyerDTO> buyerList = kibsService.processSelectBuyerListSeq(buyerDTO);
+            mv.addObject("buyerList", buyerList);*/
+        }else{
+            session.invalidate(); //세션 초기화
+        }
+
         mv.setViewName("/eng/mypage/total");
         return mv;
     }

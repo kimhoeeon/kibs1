@@ -2947,12 +2947,9 @@ label:last-child {
 }
 
 .form_s .form_box li .item p {
-    position: absolute;
-    top: 50%;
-    left: 50%;
     width: 100%;
-    transform: translate(-50%, -50%);
     padding: 0 15px;
+    word-break: keep-all;
 }
 
 .form_s .form_box li .item {
@@ -2960,6 +2957,8 @@ label:last-child {
     font-weight: 500;
     background: #f5f5f5;
     width: 180px;
+    display: flex;
+    align-items: center;
 }
 
 .form_s .req p:after {

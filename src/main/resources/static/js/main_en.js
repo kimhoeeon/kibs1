@@ -3879,8 +3879,8 @@ function step_03_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ Exhibitor Info ]',
-            html: '<span style="font-size: 1.2em;">Your application has been successfully completed.<br>A completion and notification email will be sent to the registered contact\'s email address.</span>',
+            title: '[ Application Submitted ]',
+            html: '<span style="font-size: 1.2em;">Your application has been submitted successfully and will be reviewed by the Secretariat. An invoice will be issued after approval. Participation will be confirmed upon completion of the required payment.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
             confirmButtonText: 'Confirm'
@@ -3895,9 +3895,9 @@ function step_03_check(exhibitorSeq){
                 for(let j=0; j<emailArr.length; j++){
                     let email = emailArr[j];
                     let jsonObj = {
-                        subject: '[2027 KIBS] Exhibitor Registration Complete', //제목
+                        subject: '[2027 Korea International Boat Show] Exhibitor Application Received', //제목
                         body: "", //본문
-                        template: "6", //템플릿 번호
+                        template: "184", //템플릿 번호
                         receiver: [{email: email}]
                     }
                     ajaxConnect('/mail/send.do', 'post', jsonObj);
@@ -3913,7 +3913,7 @@ function step_03_check(exhibitorSeq){
             }
         })
     }else{
-        showMessage('', 'error', '[ Exhibitor Info ]', 'Failed to save application info. Please contact the administrator.', '');
+        showMessage('', 'error', '[ Application Submitted ]', 'Failed to save application info. Please contact the administrator.', '');
     }
 }
 
@@ -5548,8 +5548,8 @@ function my_step_03_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ Exhibitor Info ]',
-            html: '<span style="font-size: 1.2em;">Your application has been successfully completed.<br>A completion and notification email will be sent to the registered contact\'s email address.</span>',
+            title: '[ Application Submitted ]',
+            html: '<span style="font-size: 1.2em;">Your application has been submitted successfully and will be reviewed by the Secretariat. An invoice will be issued after approval. Participation will be confirmed upon completion of the required payment.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
             confirmButtonText: 'Confirm'
@@ -5564,9 +5564,9 @@ function my_step_03_check(exhibitorSeq){
                 for(let j=0; j<emailArr.length; j++){
                     let email = emailArr[j];
                     let jsonObj = {
-                        subject: '[2027 KIBS] Exhibitor Registration Complete', //제목
+                        subject: '[2027 Korea International Boat Show] Exhibitor Application Received', //제목
                         body: "", //본문
-                        template: "6", //템플릿 번호
+                        template: "184", //템플릿 번호
                         receiver: [{email: email}]
                     }
                     ajaxConnect('/mail/send.do', 'post', jsonObj);
@@ -5582,7 +5582,7 @@ function my_step_03_check(exhibitorSeq){
             }
         })
     }else{
-        showMessage('', 'error', '[ Exhibitor Info ]', 'Failed to save application info. Please contact the administrator.', '');
+        showMessage('', 'error', '[ Application Submitted ]', 'Failed to save application info. Please contact the administrator.', '');
     }
 }
 
@@ -7222,27 +7222,6 @@ function f_main_exhibitor_preview_search(e){
 
         }
     }
-}
-
-function makeJsonFormat(data){
-    let returnJsonObj;
-    let receiverArr = [];
-
-    $.each(data , function(i){
-        let receiverObj = {
-            email: data[i].chargePersonEmail //받는이 메일주소
-        }
-        receiverArr.push(receiverObj);
-    });
-
-    returnJsonObj = {
-        subject: '[2027 KIBS] Exhibitor Registration Complete', //제목
-        body: "", //본문
-        template: "6", //템플릿 번호
-        receiver: receiverArr
-    }
-
-    return returnJsonObj;
 }
 
 /**
