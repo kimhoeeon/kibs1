@@ -5968,12 +5968,12 @@ function f_visitor_apply(gbn){
 
                             if(gbn === 'I'){
                                 /* 참관객 완료 메일 전송 */
-                                let subject = '2027 KIBS <1st Pre-registration (Free)> Application Complete';
-                                let template = '178';
+                                let subject = '[2027 Korea International Boat Show] Round 1 Visitor Pre-registration Completed';
+                                let template = '187';
                                 let timeGbn = data.timeGbn;
                                 if(timeGbn === '2차'){
-                                    subject = '2027 KIBS <2nd Pre-registration> Application Complete';
-                                    template = '181';
+                                    subject = '[2027 Korea International Boat Show] Round 2 Visitor Pre-registration Completed';
+                                    template = '190';
                                 }
                                 let email = data.email + '@' + data.domain;
 
@@ -6153,13 +6153,16 @@ function f_visitor_form_valid_check(gbn){
         return false;
     }
 
-    let sidoList = $('select[name=sido]');
-    for(let i=0; i<sidoList.length; i++){
-        let sido = sidoList.eq(i).val();
-        if (nvl(sido,'Select') === 'Select') {
-            showMessage('', 'info', '[ Survey ]', 'Please select a city/province.', '');
-            return false;
-        }
+    let country = $('select[name=country]').val();
+    if (!country) {
+        showMessage('', 'info', '[ Survey ]', 'Please select your country.', '');
+        return false;
+    }
+
+    let sido = $('input[name=sido]').val();
+    if (nvl(sido, '') === '') {
+        showMessage('', 'info', '[ Survey ]', 'Please enter your state/province/region.', '');
+        return false;
     }
 
     let ageGroup = $('input[type=radio][name=ageGroup]:checked').val();
@@ -6217,7 +6220,7 @@ function f_visitor_form_data_setting(){
     joinForm.visitorGbn = '개인';
 
     let nowTime = getCurrentDate(); //yyyymmddhhmmss
-    if(nowTime < '20260216000000'){ // 1차 사전등록
+    if(nowTime < '20270216000000'){ // 1차 사전등록
         joinForm.timeGbn = '1차';
     }else{ // 2차 사전등록
         joinForm.timeGbn = '2차';
@@ -6248,8 +6251,7 @@ function f_visitor_form_data_setting(){
     joinForm.phone = phone;
 
     joinForm.regionSi = joinForm.sido;
-    joinForm.regionGu = nvl(joinForm.gugun,'-');
-    joinForm.country = '';
+    joinForm.regionGu = '-';
 
     let partnerInfoArr = [];
     if(joinForm.partnerYn === 'Y'){
@@ -6264,7 +6266,7 @@ function f_visitor_form_data_setting(){
                     visitorSeq: $('input[type=hidden][name=visitorSeq]').val(),
                     // 신청자 본인 정보 (부모값)
                     name: $('#name').val(),
-                    phone: $('#phone').val(),
+                    phone: phone,
                     // 동반자 정보 (현재 row 값)
                     partnerName: pName,
                     partnerAge: $(this).find('input[name=partnerAge]').val()
@@ -6334,328 +6336,6 @@ function f_visitor_form_data_setting(){
     joinForm.preObservationGbn = preObservationGbn;
 
     return joinForm;
-}
-
-function f_en_visitor_apply(gbn){
-
-    if(gbn === 'I'){
-
-        let json = { joinYear: transferYear, name : $('#name').val() , phone: $('#phoneCode').val() + ' ' + $('#phone').val() };
-        let resData = ajaxConnectSimple('/visitor/preApplyCheck.do', 'post', json);
-        if(nvl(resData,'') !== ''){
-            Swal.fire({
-                title: '[Already applied]',
-                html: 'This is a pre-registered name, mobile number.<br>Please login and check the information.',
-                icon: 'info',
-                allowOutsideClick: false,
-                confirmButtonColor: '#00a8ff',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
-
-    }
-
-    let showMsg = 'Do you want to pre-register with the information entered?';
-    if(gbn === 'U'){
-        showMsg = 'Are you sure you want to modify the information you entered?'
-    }
-
-    Swal.fire({
-        title: '[Pre-registration]',
-        html: showMsg,
-        icon: 'info',
-        allowOutsideClick: false,
-        showCancelButton: true,
-        confirmButtonColor: '#00a8ff',
-        confirmButtonText: 'OK',
-        cancelButtonColor: '#A1A5B7',
-        cancelButtonText: 'Cancel'
-    }).then((result) => {
-        if (result.isConfirmed) {
-
-            /* 유효성 검사 */
-            let validCheck = f_en_visitor_form_valid_check(gbn);
-
-            if(validCheck){
-
-                /* form data setting */
-                let data = f_en_visitor_form_data_setting();
-
-                $.ajax({
-                    url: '/visitor/save.do',
-                    method: 'POST',
-                    async: false,
-                    data: data,
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (data) {
-                        if (data.resultCode === "0") {
-
-                            let visitorSeq = data.customValue; //visitorSeq return 값
-
-                            let returnUrl = '/eng/buyer/completed.do';
-                            if(gbn === 'U'){
-                                returnUrl = '/eng/buyer/mypage.do?seq=' + visitorSeq;
-                            }
-                            window.location.href = returnUrl;
-
-                            /*Swal.fire({
-                                title: '[사전등록하기]',
-                                html: '참관객 사전등록이 완료되었습니다.',
-                                icon: 'info',
-                                confirmButtonColor: '#00a8ff',
-                                confirmButtonText: 'Confirm'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                }
-                            });*/
-
-                        } else {
-                            showMessage('', 'error', '에러 발생', '참관객 사전 등록 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
-                        }
-                    },
-                    error: function (xhr, status) {
-                        alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + xhr + "\n상태 : " + status);
-                    }
-                })
-
-            }//validCheck
-        }//isConfirmed
-    })//then
-
-}
-
-function f_en_visitor_form_valid_check(gbn){
-
-    if(gbn === 'I'){
-        let agree1 = $('input[type=radio][name=agree1]:checked').val();
-        if(nvl(agree1,'') === '' || agree1 === 'N'){
-            showMessage('', 'info', '[Agreement]', '개인정보수집 및 이용안내 항목에 동의해 주세요.', '');
-            return false;
-        }
-
-        let agree2 = $('input[type=radio][name=agree2]:checked').val();
-        if(nvl(agree2,'') === '' || agree2 === 'N'){
-            showMessage('', 'info', '[Agreement]', '개인정보 제3자 제공에 대한 별도 동의 항목에 동의해 주세요.', '');
-            return false;
-        }
-
-        let agree3 = $('input[type=radio][name=agree3]:checked').val();
-        if(nvl(agree3,'') === '' || agree3 === 'N'){
-            showMessage('', 'info', '[Agreement]', '안전 준수 동의 항목에 동의해 주세요.', '');
-            return false;
-        }
-
-        let name = $('#name').val();
-        if (nvl(name,'') === '') {
-            showMessage('', 'info', '[Visitor Information]', 'Please enter your name.', '');
-            return false;
-        }
-
-        let phone = $('#phone').val();
-        if (nvl(phone,'') === '') {
-            showMessage('', 'info', '[Visitor Information]', 'Please enter your mobile phone number.', '');
-            return false;
-        }
-    }
-
-    let email = $('#email').val();
-    if (nvl(email,'') === '') {
-        showMessage('', 'info', '[Visitor Information]', 'Please enter your email.', '');
-        return false;
-    }else{
-        if(email.includes('@')){
-            showMessage('', 'info', '[Visitor Information]', 'Please enter the email and domain separately.', '');
-            return false;
-        }
-    }
-
-    let domain = $('#domain').val();
-    if (nvl(domain,'') === '') {
-        showMessage('', 'info', '[Visitor Information]', 'Please enter your email domain.', '');
-        return false;
-    }
-
-    let partnerYn = $('input[type=radio][name=partnerYn]:checked').val();
-    if(partnerYn === "Y"){
-        let partnerNameList = $('input[type=text][name=partnerName]');
-        for(let i=0; i<partnerNameList.length; i++){
-            let partnerName = partnerNameList.eq(i).val();
-            if (nvl(partnerName,'') === '') {
-                showMessage('', 'info', '[Visitor Information]', 'If you have a companion, please enter your companion name.', '');
-                return false;
-            }
-        }
-
-        let partnerAgeList = $('input[type=text][name=partnerAge]');
-        for(let i=0; i<partnerAgeList.length; i++){
-            let partnerAge = partnerAgeList.eq(i).val();
-            if (nvl(partnerAge,'') === '') {
-                showMessage('', 'info', '[Visitor Information]', 'If you have a companion, please enter your companion age.', '');
-                return false;
-            }
-        }
-    }
-
-    let sex = $('input[type=radio][name=sex]:checked').val();
-    if(nvl(sex,'') === ''){
-        showMessage('', 'info', '[Visitor Survey]', 'Please choose a gender.', '');
-        return false;
-    }
-
-    let countryList = $('select[name=country]');
-    for(let i=0; i<countryList.length; i++){
-        let country = countryList.eq(i).val();
-        if (nvl(country,'select') === 'select') {
-            showMessage('', 'info', '[Visitor Survey]', 'Please select a country.', '');
-            return false;
-        }
-    }
-
-    let ageGroup = $('input[type=radio][name=ageGroup]:checked').val();
-    if(nvl(ageGroup,'') === ''){
-        showMessage('', 'info', '[Visitor Survey]', 'Please select an age.', '');
-        return false;
-    }
-
-    let observationGbn = $('input[type=checkbox][name=observationGbn]').is(':checked');
-    if (!observationGbn) {
-        showMessage('', 'info', '[Visitor Survey]', 'Please check at least one classification.', '');
-        return false;
-    }
-
-    let visitPurpose = $('input[type=checkbox][name=visitPurpose]').is(':checked');
-    if (!visitPurpose) {
-        showMessage('', 'info', '[Visitor Survey]', 'Please check at least one purpose of visit.', '');
-        return false;
-    }
-
-    let interestItem = $('input[type=checkbox][name=interestItem]').is(':checked');
-    if (!interestItem) {
-        showMessage('', 'info', '[Visitor Survey]', 'Please check at least one area of interest.', '');
-        return false;
-    }
-
-    let recognizePath = $('input[type=checkbox][name=recognizePath]').is(':checked');
-    if (!recognizePath) {
-        showMessage('', 'info', '[Visitor Survey]', 'Please check at least one cognitive path.', '');
-        return false;
-    }
-
-    let preObservationGbn = $('input[type=checkbox][name=preObservationGbn]').is(':checked');
-    if (!preObservationGbn) {
-        showMessage('', 'info', '[Visitor Survey]', 'Please check at least one visit to the last exhibition.', '');
-        return false;
-    }
-
-    return true;
-}
-
-function f_en_visitor_form_data_setting(){
-
-    let joinForm = JSON.parse(JSON.stringify($('#joinForm').serializeObject()));
-
-    joinForm.lang = 'EN';
-    joinForm.joinYear = transferYear;
-    joinForm.joinYn = 'Y';
-    joinForm.visitorGbn = '개인';
-
-    let nowTime = getCurrentDate(); //yyyymmddhhmmss
-    if(nowTime < '20260216000000'){ // 1차 사전등록
-        joinForm.timeGbn = '1차';
-    }else{ // 2차 사전등록
-        joinForm.timeGbn = '2차';
-    }
-
-    joinForm.domain = $('#domain').val();
-
-    joinForm.tel = $('#telCode').val() + ' ' + $('#tel').val();
-    joinForm.phone = $('#phoneCode').val() + ' ' + $('#phone').val();
-
-    joinForm.regionSi = '';
-    joinForm.regionGu = '';
-
-    let partnerInfoArr = [];
-    if(joinForm.partnerYn === 'Y'){
-        $('.visitPartnerBox').each(function(index, element) {
-            // 첫 번째 박스가 템플릿(빈 값) 역할인지, 실제 입력값인지 확인 필요
-            // 여기서는 이름이 입력된 경우만 수집하도록 처리
-            let pName = $(this).find('input[name=partnerName]').val();
-
-            if (nvl(pName, '') !== '') {
-                let visitPartnerObj = {
-                    seq: $(this).find('input[type=hidden][name=partnerSeq]').val(),
-                    visitorSeq: $('input[type=hidden][name=visitorSeq]').val(),
-                    // 신청자 본인 정보 (부모값)
-                    name: $('#name').val(),
-                    phone: $('#phone').val(),
-                    // 동반자 정보 (현재 row 값)
-                    partnerName: pName,
-                    partnerAge: $(this).find('input[name=partnerAge]').val()
-                };
-                partnerInfoArr.push(visitPartnerObj);
-            }
-        });
-    }
-    joinForm.partner = partnerInfoArr;
-
-    // 참관 구분
-    let observationGbnList = $('input[type=checkbox][name=observationGbn]:checked');
-    let observationGbn = '';
-    for(let i=0; i<observationGbnList.length; i++){
-        observationGbn += observationGbnList.eq(i).val();
-        if((i+1) !== observationGbnList.length){
-            observationGbn += ',';
-        }
-    }
-    joinForm.observationGbn = observationGbn;
-
-    // 보트쇼 방문 목적
-    let visitPurposeList = $('input[type=checkbox][name=visitPurpose]:checked');
-    let visitPurpose = '';
-    for(let i=0; i<visitPurposeList.length; i++){
-        visitPurpose += visitPurposeList.eq(i).val();
-        if((i+1) !== visitPurposeList.length){
-            visitPurpose += ',';
-        }
-    }
-    joinForm.visitPurpose = visitPurpose;
-
-    // 관심품목
-    let interestItemList = $('input[type=checkbox][name=interestItem]:checked');
-    let interestItem = '';
-    for(let i=0; i<interestItemList.length; i++){
-        interestItem += interestItemList.eq(i).val();
-        if((i+1) !== interestItemList.length){
-            interestItem += ',';
-        }
-    }
-    joinForm.interestItem = interestItem;
-
-    // 인지경로
-    let recognizePathList = $('input[type=checkbox][name=recognizePath]:checked');
-    let recognizePath = '';
-    for(let i=0; i<recognizePathList.length; i++){
-        recognizePath += recognizePathList.eq(i).val();
-        if((i+1) !== recognizePathList.length){
-            recognizePath += ',';
-        }
-    }
-    joinForm.recognizePath = recognizePath;
-
-    // 지난 전시회 참관 여부
-    let preObservationGbnList = $('input[type=checkbox][name=preObservationGbn]:checked');
-    let preObservationGbn = '';
-    for(let i=0; i<preObservationGbnList.length; i++){
-        preObservationGbn += preObservationGbnList.eq(i).val();
-        if((i+1) !== preObservationGbnList.length){
-            preObservationGbn += ',';
-        }
-    }
-    joinForm.preObservationGbn = preObservationGbn;
-
-    return JSON.stringify(joinForm);
 }
 
 function f_ask_request(companyName, id){

@@ -99,7 +99,7 @@
                             The Company processes personal information for purposes including providing new and customized services, delivering event and promotional information, offering opportunities to participate in events, and providing services and advertisements based on demographic characteristics.<br>
                             The Company may also contact data subjects using such personal information for promotional activities or solicitation related to goods or services.<br>
                             5. Categories and Status of Personal Information Collected<br>
-                            - Personal Information Collected: Login ID, name, telephone number, email address, password, age, gender, year of birth, region, company/organization name, survey results, and address<br>
+                            - Personal Information Collected: Login ID, name, telephone number, email address, password, age, gender, age group, region, company/organization name, survey results, and address<br>
                             - Collection Methods: Website, KINTEX App, pre-registration through organizer exhibition websites, written forms, online and offline events<br>
                             - Basis for Retention: Consent to the Privacy Policy upon membership registration (personal information for marketing purposes retained for five years)<br><br>
 
@@ -122,12 +122,12 @@
                             2. The Company may provide personal information to third parties as follows:<br>
                             - Recipient: Organizers of exhibitions and convention events using the free or paid services of the KINTEX App<br>
                             • Purpose of Use: Provision of free exhibition/convention services, paid payment services, joint event hosting, marketing, advertising, and related activities<br>
-                            • Information Provided: User ID, name, mobile phone number, region classification, gender, year of birth, company/organization name, referrer (ID or name), and survey information related to each exhibition/convention event
+                            • Information Provided: User ID, name, mobile phone number, country/region, gender, age group, company/organization name, referrer (ID or name), and survey information related to each exhibition/convention event
                             <br><br>
 
                             - Recipient: Association of Korean Exhibition Industry (AKEI)<br>
                             • Purpose of Use: Provision of information for exhibition certification by the Association of Korean Exhibition Industry<br>
-                            • Information Provided: User ID, name, mobile phone number, region classification, gender, year of birth, company/organization name, referrer (ID or name), and survey information related to each exhibition/convention event<br><br>
+                            • Information Provided: User ID, name, mobile phone number, country/region, gender, age group, company/organization name, referrer (ID or name), and survey information related to each exhibition/convention event<br><br>
 
                             <div class="form_pri_titt">Article 4 (Entrustment of Personal Information Processing)</div>
                             1. The Company entrusts the following personal information processing tasks for efficient management of personal information.<br>
@@ -143,7 +143,7 @@
                             - Request access to personal information<br>
                             - Request correction of inaccurate information<br>
                             - Request deletion of personal information<br>
-                            - Request suspension of processing 요구<br>
+                            - Request suspension of processing<br>
                             2. These rights may be exercised through written requests, telephone, email, fax, or other methods, and the Company will take action without delay.<br>
                             3. If a data subject requests correction or deletion of personal information, the Company shall not use or provide the relevant personal information until such correction or deletion has been completed.<br>
                             4. The rights under Paragraph 1 may also be exercised through a legal representative or authorized agent. In such cases, a power of attorney in the form prescribed by the Enforcement Rules of the Personal Information Protection Act must be submitted.<br>
@@ -152,10 +152,10 @@
                             <div class="form_pri_titt">Article 6 (Categories of Personal Information Processed)</div>
                             The Company processes the following categories of personal information:<br>
                             1. Website/App Membership Registration and Management<br>
-                            - Required Information: User ID, name, mobile phone number, region classification, gender, year of birth<br>
+                            - Required Information: User ID, name, mobile phone number, country/region, gender, age group<br>
                             - Optional Information: Company/organization affiliation, referrer (ID or name), survey responses<br>
                             2. Provision of Services<br>
-                            - Required Information: User ID, name, mobile phone number, region classification, gender, year of birth<br>
+                            - Required Information: User ID, name, mobile phone number, country/region, gender, age group<br>
                             - Optional Information: Company/organization affiliation, referrer (ID or name), survey responses, previous purchase history<br>
                             3. During the use of Internet services, the following information may be automatically generated and collected:<br>
                             - IP address, cookies, MAC address, service usage records, visit history, records of improper use, and similar information<br><br>
@@ -256,11 +256,11 @@
                     </div>
                     <div class="form_pri">
                         <div class="form_pri_box">
-                            ① Recipient of Personal Information: Participating Companies in the 2027 Korea International Boat Show Online Exhibition Hall <br>
-                            ② Purpose of Use by the Recipient: Customer management and consultation services, marketing and sales activities, and customer profile analysis (including gender, age, and areas of interest) <br>
-                            ③ Personal Information Provided: Name, telephone number, e-mail address, company/organization name, region, gender, age group, product interests, website usage records, cookies, and related information <br>
-                            ④ Retention and Use Period by the Recipient: Two (2) years from the date of provision <br>
-                            ⑤ You have the right to refuse consent to the provision of your personal information. However, if you refuse to provide consent, the “Consultation Reservation Service” may not be available or may not function properly.
+                            ① Recipient of Personal Information: Participating companies of the 2027 Korea International Boat Show<br>
+                            ② Purpose of Use by the Recipient: Visitor consultation, customer management, marketing and sales activities, and analysis of visitor interests<br>
+                            ③ Personal Information Provided: Name, phone number, email address, company/organization name, country/region, gender, age group, items of interest, and survey responses<br>
+                            ④ Retention and Use Period by the Recipient: Two (2) years from the date of provision<br>
+                            ⑤ You have the right to refuse consent to the provision of your personal information to third parties. However, if you refuse to provide consent, certain consultation or business matching services may be limited.
                         </div>
                         <div class="form_pri_agree">
                             <label><input type="radio" name="agree2" value="Y" checked>Agree</label>
@@ -277,9 +277,9 @@
                     </div>
                     <div class="form_pri">
                         <div class="form_pri_box">
-                            1. Do not lean on, apply force to, or otherwise impact any structures, installations, exhibits, or products within the exhibition venue or exhibitor booths.<br>
-                            2. When using any structures, installations, exhibits, or products within the exhibition venue or exhibitor booths, participants shall exercise caution to prevent accidents, follow the instructions of event staff, and comply with all safety guidelines.<br><br>
-                            I have read and understood the above safety precautions. The Organizer shall not be held responsible for any accidents or damages resulting from failure to comply with these guidelines.
+                            1. Visitors must not lean on, apply force to, or damage any structures, installations, exhibits, or products within the exhibition venue or exhibitor booths.<br>
+                            2. When viewing or using any structures, installations, exhibits, or products within the exhibition venue or exhibitor booths, visitors must take due care to prevent accidents, follow the instructions of event staff, and comply with all safety guidelines.<br><br>
+                            I have read and understood the above safety guidelines. The Organizer shall not be held responsible for any accidents, injuries, or damages resulting from failure to comply with these guidelines.
                         </div>
                         <div class="form_pri_agree">
                             <label><input type="radio" name="agree3" value="Y" checked>Agree</label>
@@ -294,15 +294,15 @@
                     <div class="form_pri">
                         <div class="form_pri_item">
                             &lt;Early Registration (Round 1)&gt;<br>
-                            - Period : 2026. 1 .1 ~ 2026. 2. 15<br>
+                            - Period : January 1, 2026 – February 14, 2027<br>
                             - Fee : Free<br><br>
                             &lt;Early Registration (Round 2)&gt;<br>
-                            - Period : 2026. 2. 16 ~ 2026. 3. 3<br>
-                            - Fee : KRW 5,000 (50% discount) * Payment required on-site.<br>
+                            - Period : February 15 – March 9, 2027<br>
+                            - Fee : KRW 5,000 (50% discount) * Payment must be made on-site.<br>
 
                             <br>
                             ※ A confirmation email will be sent after registration. Please enter your information accurately.<br>
-                            ※ Pre-registration is valid for one day only during the event period.
+                            ※ Pre-registration is valid for one admission day during March 12–14, 2027.
                         </div>
                     </div>
                 </div>
@@ -320,7 +320,7 @@
                         <ul class="form_box">
                             <li>
                                 <div class="input check w-100">
-                                    <label><input type="radio" name="partGbn" value="바이어" <c:if test="${info.partGbn eq '바이어'}">checked</c:if>>Buyers</label>
+                                    <label><input type="radio" name="partGbn" value="바이어" <c:if test="${info.partGbn eq '바이어'}">checked</c:if>>Buyer</label>
                                     <label><input type="radio" name="partGbn" value="일반관람" <c:if test="${info.partGbn eq '일반관람'}">checked</c:if>>General Visitor</label>
                                     <div class="cmnt">Visitor type cannot be changed after registration.</div>
                                 </div>
@@ -348,7 +348,7 @@
                     <!-- 참관객 정보 -->
                     <div class="form_wrap">
                         <div class="form_tit">
-                            <div class="big">Event Selection</div>
+                            <div class="big">Visitor Information</div>
                         </div>
                         <ul class="form_box">
                             <li>
@@ -365,6 +365,7 @@
                                 </div>
                                 <div class="input">
                                     <select id="telCode">
+                                        <option value="" <c:if test="${empty info.tel}">selected</c:if> disabled hidden>Select</option>
                                         <option value="+82" <c:if test="${fn:startsWith(info.tel,'+82')}">selected</c:if> >+82 (KOR)</option>
                                         <option value="+1" <c:if test="${fn:startsWith(info.tel,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
                                         <option value="+44" <c:if test="${fn:startsWith(info.tel,'+44')}">selected</c:if> >+44 (GBR)</option>
@@ -383,6 +384,7 @@
                                 </div>
                                 <div class="input">
                                     <select id="phoneCode">
+                                        <option value="" <c:if test="${empty info.phone}">selected</c:if> disabled hidden>Select</option>
                                         <option value="+82" <c:if test="${fn:startsWith(info.phone,'+82')}">selected</c:if> >+82 (KOR)</option>
                                         <option value="+1" <c:if test="${fn:startsWith(info.phone,'+1')}">selected</c:if> >+1 (USA/CAN)</option>
                                         <option value="+44" <c:if test="${fn:startsWith(info.phone,'+44')}">selected</c:if> >+44 (GBR)</option>
@@ -405,34 +407,15 @@
                                     <input type="text" id="email" name="email" placeholder="E-mail" class="email_input1" value="${info.email}">
                                     <span>@</span>
                                     <input type="text" id="domain" name="domain" placeholder="Domain" class="email_input2" value="${info.domain}">
-                                    <select id="email_select">
-                                        <option selected>Direct Input</option>
-                                        <option value="daum.net">daum.net</option>
-                                        <option value="nate.com">nate.com</option>
-                                        <option value="hanmail.net">hanmail.net</option>
-                                        <option value="naver.com">naver.com</option>
-                                        <option value="hotmail.com">hotmail.com</option>
-                                        <option value="yahoo.co.kr">yahoo.co.kr</option>
-                                        <option value="empal.com">empal.com</option>
-                                        <option value="korea.com">korea.com</option>
-                                        <option value="hanmir.com">hanmir.com</option>
-                                        <option value="dreamwiz.com">dreamwiz.com</option>
-                                        <option value="orgio.net">orgio.net</option>
-                                        <option value="hitel.net">hitel.net</option>
-                                    </select>
                                 </div>
                             </li>
                             <li>
                                 <div class="item req" id="companyNameDiv">
-                                    <p>Company Name</p>
+                                    <p>Company/Organization Name</p>
                                 </div>
                                 <div class="input companyNameBox" style="flex-wrap: wrap">
-                                    <input class="companyNameInput" type="text" id="companyName" name="companyName" placeholder="Company Name" value="${info.companyName}">
-                                    <input class="companyNameSh" type="button" value="Search">
-                                    <input type="text" id="companyAddress" name="companyAddress" placeholder="Company Address" value="${info.companyAddress}">
-                                    <div class="cmnt">If no result is found, please enter the information manually.</div>
-                                    <div class="cmnt">Enter the exact company name for better search results.</div>
-                                    <div class="cmnt">Company information is provided via the data.go.kr Open API.</div>
+                                    <input class="companyNameInput" type="text" id="companyName" name="companyName" value="${info.companyName}" placeholder="Enter your company or organization name">
+                                    <input type="text" id="companyAddress" name="companyAddress" value="${info.companyAddress}" placeholder="Enter your company address">
                                 </div>
                             </li>
                             <li>
@@ -523,13 +506,24 @@
                             </li>
                             <li>
                                 <div class="item req">
-                                    <p>Region</p>
+                                    <p>Country / Region</p>
                                 </div>
                                 <div class="input">
-                                    <script src="/js/sido_en.js?ver=20260630"></script>
-                                    <select name="sido" class="w50" style="line-height: 1;"></select>
-                                    <select name="gugun" class="w50"></select>
-                                    <div class="cmnt">Please select “Foreigner” as your region if you are a foreign participant.</div>
+                                    <!-- 국가 선택 -->
+                                    <select name="country" class="w50" style="line-height: 1;">
+                                        <option value="" disabled selected hidden>Select Country</option>
+                                        <option value="United States" <c:if test="${info.country eq 'United States'}">selected</c:if>>United States</option>
+                                        <option value="United Kingdom" <c:if test="${info.country eq 'United Kingdom'}">selected</c:if>>United Kingdom</option>
+                                        <option value="Australia" <c:if test="${info.country eq 'Australia'}">selected</c:if>>Australia</option>
+                                        <option value="China" <c:if test="${info.country eq 'China'}">selected</c:if>>China</option>
+                                        <option value="Japan" <c:if test="${info.country eq 'Japan'}">selected</c:if>>Japan</option>
+                                        <option value="South Korea" <c:if test="${info.country eq 'South Korea'}">selected</c:if>>South Korea</option>
+                                        <!-- 필요에 따라 주요 국가 옵션 추가 -->
+                                        <option value="Other" <c:if test="${info.country eq 'Other'}">selected</c:if>>Other</option>
+                                    </select>
+
+                                    <!-- 주/지역 텍스트 입력 (기존 region_si 컬럼 활용) -->
+                                    <input type="text" name="sido" class="w50" placeholder="State / Province / Region" value="${info.regionSi}">
                                 </div>
                             </li>
                             <li>
@@ -565,13 +559,13 @@
                             </li>
                             <li>
                                 <div class="item req">
-                                    <p>Cognitive Pathways</p>
+                                    <p>How did you hear about KIBS?</p>
                                 </div>
                                 <div class="input check" id="ul_recognizePath"></div>
                             </li>
                             <li id="preObservationGbnLi" style="display:none;">
                                 <div class="item">
-                                    <p>Visiting Past Exhibitions</p>
+                                    <p>Have you visited KIBS before?</p>
                                 </div>
                                 <div class="input check" id="ul_preObservationGbn"></div>
                             </li>
@@ -727,31 +721,6 @@
                 $('input[name=partGbn][value="바이어"]').prop('checked', true).trigger('change');
             } else {
                 $('input[name=partGbn][value="' + currentPartGbn + '"]').trigger('change');
-            }
-
-            // 5. 시/도, 구/군 동적 세팅 (sido.js 로드 시간 고려 - 폴링 방식 적용)
-            let savedSido = "${info.regionSi}";
-            let savedGugun = "${info.regionGu}";
-
-            if (savedSido) {
-                let checkInterval = setInterval(function() {
-                    // sido 셀렉트 박스에 옵션이 1개 이상 생성되었는지 확인 (보통 초기화 시 length > 1)
-                    if ($('select[name="sido"] option').length > 1) {
-                        clearInterval(checkInterval); // 체크 중지
-
-                        $('select[name="sido"]').val(savedSido).trigger('change');
-
-                        // change 이벤트로 인해 gugun 옵션이 생성될 시간을 약간 확보
-                        setTimeout(function() {
-                            if (savedGugun) {
-                                $('select[name="gugun"]').val(savedGugun);
-                            }
-                        }, 100);
-                    }
-                }, 100); // 0.1초마다 체크
-
-                // 무한 루프 방지 (최대 5초 대기)
-                setTimeout(function(){ clearInterval(checkInterval); }, 5000);
             }
 
             let initialTel = $('#tel').val() ? $('#tel').val().trim() : '';

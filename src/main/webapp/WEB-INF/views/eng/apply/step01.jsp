@@ -374,10 +374,10 @@
                                         <div class="form_pri_titt">Article 6 (Categories of Personal Information Processed)</div>
                                         The Company processes the following categories of personal information:<br>
                                         1. Website/App Membership Registration and Management<br>
-                                        - Required Information: User ID, name, mobile phone number, region classification, gender, birth year<br>
+                                        - Required Information: User ID, name, mobile phone number, country/region, gender, birth year<br>
                                         - Optional Information: Company/organization affiliation, referrer (ID or name), survey responses<br>
                                         2. Provision of Services<br>
-                                        - Required Information: User ID, name, mobile phone number, region classification, gender, birth year<br>
+                                        - Required Information: User ID, name, mobile phone number, country/region, gender, birth year<br>
                                         - Optional Information: Company/organization affiliation, referrer (ID or name), survey responses, previous purchase history<br>
                                         3. During the use of Internet services, the following information may be automatically generated and collected:<br>
                                         - IP address, cookies, MAC address, service usage records, visit history, records of improper use, and similar information<br><br>

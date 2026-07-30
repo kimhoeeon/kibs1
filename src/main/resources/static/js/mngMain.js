@@ -43,55 +43,51 @@ $(function(){
         $(this).val($(this).val().replaceAll(/[^0-9]/g, '').replace(/(\..*)\./g, '$1'));
     });
 
-    // 연락처 입력 시 자동으로 - 삽입과 숫자만 입력
-    $('.onlyTel').on('input', function (e) {
-        let $this = $(this);
-        let val = $this.val();
-
-        // 입력된 값에서 숫자만 추출
-        let number = val.replace(/[^0-9]/g, "");
-        let tel = "";
-
-        // 포맷팅 로직
-        if (number.length < 4) {
-            tel = number;
-        } else if (number.length < 8) {
-            tel = number.substr(0, 3) + "-" + number.substr(3);
-        } else {
-            tel = number.substr(0, 3) + "-" + number.substr(3, 4) + "-" + number.substr(7);
-        }
-
-        // 길이 제한 (13자리)
-        if (tel.length > 13) {
-            tel = tel.substr(0, 13);
-        }
-
-        // 모바일 커서 튐 방지 및 무한 루프 방지
-        // 기존 값과 포맷팅된 값이 다를 때만 값을 변경
-        if ($this.val() !== tel) {
-            $this.val(tel);
-        }
-    });
-
-    // 2. 유효성 검사 (입력이 끝나고 포커스가 나갈 때 동작)
+    // 유효성 검사 (입력이 끝나고 포커스가 나갈 때 동작)
     $('.onlyTel').on('blur', function () {
+        let lang = f_lang_get();
         let $this = $(this);
         let pureNum = $this.val().replace(/-/g, "");
 
         if (pureNum.length === 0) return;
 
-        // 010 체크
-        if (pureNum.substring(0, 3) !== "010") {
-            alert('휴대전화번호는 "010"으로 시작해야 합니다.');
-            resetInput($this);
-            return;
-        }
+        let countryCode = $(this).siblings('select').val() || "";
 
-        // 길이 체크
-        if (pureNum.length !== 11) {
-            alert('휴대전화번호 형식이 올바르지 않습니다.\n(010-0000-0000 형식이어야 합니다)');
-            setTimeout(function(){ $this.focus(); }, 10);
-            return;
+        // 국가코드가 한국(+82)이거나 없는 경우에만 010 및 11자리 유효성 검사 수행
+        if (countryCode === '+82' || countryCode === "" || pureNum.startsWith('0')) {
+            // 010 체크
+            if (pureNum.substring(0, 3) !== "010") {
+                if(lang === 'E') {
+                    alert('Mobile phone numbers must start with "010".');
+                } else {
+                    alert('휴대전화번호는 "010"으로 시작해야 합니다.');
+                }
+                $this.val('');
+                setTimeout(function(){ $this.focus(); }, 10);
+                return;
+            }
+
+            // 길이 체크
+            if (pureNum.length !== 11) {
+                if(lang === 'E') {
+                    alert('The mobile phone number format is incorrect.\n(It should be formatted as 010-0000-0000)');
+                } else {
+                    alert('휴대전화번호 형식이 올바르지 않습니다.\n(010-0000-0000 형식이어야 합니다)');
+                }
+                setTimeout(function(){ $this.focus(); }, 10);
+                return;
+            }
+        } else {
+            // 해외 번호의 경우 최소 자릿수(예: 7자리 이상) 정도만 가볍게 체크
+            if (pureNum.length < 7) {
+                if(lang === 'E') {
+                    alert('The mobile phone number is too short.');
+                } else {
+                    alert('전화번호가 너무 짧습니다.');
+                }
+                setTimeout(function(){ $this.focus(); }, 10);
+                return;
+            }
         }
     });
 
@@ -101,57 +97,63 @@ $(function(){
         setTimeout(function(){ $el.focus(); }, 10);
     }
 
-    $(document).on('input keyup', '.onlyGeneralTel', function () {
+    // 일반 전화번호 및 휴대폰 번호 하이픈 자동 완성 (국내/해외 호환)
+    $(document).on('input keyup', '.onlyGeneralTel, .onlyTel', function () {
         // 1. 숫자만 남기기
         $(this).val($(this).val().replace(/[^0-9]/g, ""));
 
         let number = $(this).val();
         let phone = "";
 
-        // 2. 하이픈(-) 처리 로직
+        // 2. 4자리 미만은 하이픈 없이 그대로 반환
         if (number.length < 4) {
             return number;
         }
 
-        // 서울 (02) 인 경우
-        if(number.substring(0, 2) === "02") {
-            if (number.length < 10) {
-                // 02-123-4567 (9자리)
-                phone += number.substr(0, 2);
-                phone += "-";
-                phone += number.substr(2, 3);
-                phone += "-";
-                phone += number.substr(5);
-            } else {
-                // 02-1234-5678 (10자리)
-                phone += number.substr(0, 2);
-                phone += "-";
-                phone += number.substr(2, 4);
-                phone += "-";
-                phone += number.substr(6);
+        // 형제 요소 중 select(국가코드) 값을 확인 (영문 페이지의 telCode, phoneCode 지원)
+        let countryCode = $(this).siblings('select').val() || "";
+
+        // 3. 한국(+82)이거나 국가코드가 없는 경우(국문 페이지), 또는 번호가 '0'으로 시작하는 경우 기존 국내 로직 적용
+        if (countryCode === '+82' || countryCode === "" || number.startsWith('0')) {
+            // 서울 (02) 인 경우
+            if(number.substring(0, 2) === "02") {
+                if (number.length < 10) {
+                    phone += number.substr(0, 2) + "-" + number.substr(2, 3) + "-" + number.substr(5);
+                } else {
+                    phone += number.substr(0, 2) + "-" + number.substr(2, 4) + "-" + number.substr(6);
+                }
+            }
+            // 그 외 지역번호/휴대폰/인터넷전화
+            else {
+                if (number.length < 11) {
+                    phone += number.substr(0, 3) + "-" + number.substr(3, 3) + "-" + number.substr(6);
+                } else {
+                    phone += number.substr(0, 3) + "-" + number.substr(3, 4) + "-" + number.substr(7);
+                }
             }
         }
-        // 그 외 지역번호/인터넷전화 (031, 070, 010 등 3자리 국번)
+        // 4. 해외 번호 처리 로직
         else {
-            if (number.length < 11) {
-                // 031-123-4567 (10자리)
-                phone += number.substr(0, 3);
-                phone += "-";
-                phone += number.substr(3, 3);
-                phone += "-";
-                phone += number.substr(6);
+            if (number.length < 8) {
+                phone += number.substr(0, 3) + "-" + number.substr(3);
+            } else if (number.length === 8) {
+                phone += number.substr(0, 4) + "-" + number.substr(4);
+            } else if (number.length === 9) {
+                phone += number.substr(0, 3) + "-" + number.substr(3, 3) + "-" + number.substr(6);
+            } else if (number.length === 10) {
+                phone += number.substr(0, 3) + "-" + number.substr(3, 3) + "-" + number.substr(6);
+            } else if (number.length === 11) {
+                phone += number.substr(0, 3) + "-" + number.substr(3, 4) + "-" + number.substr(7);
             } else {
-                // 031-1234-5678 (11자리)
-                phone += number.substr(0, 3);
-                phone += "-";
-                phone += number.substr(3, 4);
-                phone += "-";
-                phone += number.substr(7);
+                phone += number.substr(0, 3) + "-" + number.substr(3, 4) + "-" + number.substr(7, 4);
+                if (number.length > 11) {
+                    phone += "-" + number.substr(11);
+                }
             }
         }
 
-        // 3. 마지막 하이픈 뒤의 값이 비어있을 경우 처리 (지울 때 자연스럽게)
-        if(number.length > 2){
+        // 5. 마지막 하이픈 뒤의 값이 비어있을 경우 처리 (지울 때 자연스럽게)
+        if(phone.length > 0){
             $(this).val(phone);
         }
     });

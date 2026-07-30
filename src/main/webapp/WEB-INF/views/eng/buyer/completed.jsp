@@ -9,19 +9,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Kibs 2027">
     <meta name="format-detection" content="telephone=no"/>
-    <meta name="title" content="경기국제보트쇼">
-    <meta property="og:title" content="경기국제보트쇼">
+    <meta name="title" content="KIBS 2027 Pre-registration Complete">
+    <meta property="og:title" content="KIBS 2027 Pre-registration Complete">
     <meta property="og:image" content="/img/og_img.jpg">
     <meta name="color-scheme" content="light only">
     <meta name="supported-color-schemes" content="light">
-    <meta itemprop="name" content="경기국제보트쇼">
+    <meta itemprop="name" content="KIBS 2027">
     <meta itemprop="url" content="https://kibs.com/">
     <link rel="canonical" id="canonical" href="https://kibs.com/">
-    <meta name="description" content="아시아 3대 보트쇼, 대한민국 해양레저산업의 채널, '경기국제보트쇼'">
-    <meta name="twitter:description" content="아시아 3대 보트쇼, 대한민국 해양레저산업의 채널, '경기국제보트쇼'">
-    <meta property="og:description" content="아시아 3대 보트쇼, 대한민국 해양레저산업의 채널, '경기국제보트쇼'">
-    <meta itemprop="description" content="아시아 3대 보트쇼, 대한민국 해양레저산업의 채널, '경기국제보트쇼'">
-    <meta property="nate:description" content="아시아 3대 보트쇼, 대한민국 해양레저산업의 채널, '경기국제보트쇼'">
+    <meta name="description" content="Your pre-registration for Korea International Boat Show 2027 has been successfully submitted.'">
+    <meta name="twitter:description" content="Your pre-registration for Korea International Boat Show 2027 has been successfully submitted.'">
+    <meta property="og:description" content="Your pre-registration for Korea International Boat Show 2027 has been successfully submitted.'">
+    <meta itemprop="description" content="Your pre-registration for Korea International Boat Show 2027 has been successfully submitted.'">
+    <meta property="nate:description" content="Your pre-registration for Korea International Boat Show 2027 has been successfully submitted.'">
     <meta property="og:keywords"
           content="경기국제보트쇼, KIBS, kibs, 김포 아라마리나, 요트&amp;보트, 해상전시, 워터스포츠, 무동력보트, 스포츠피싱쇼, 한국다이빙엑스포, 아웃도어, 캠핑카, 렛츠고 보트피싱, 비즈니스 상담, 전시참가, 사전등록, 참관객">
     <meta name="keywords"
@@ -111,10 +111,11 @@
                     <div class="form_guide_comp" style="background: #fff;">
                         <div class="form_guide_comp_img"><img src="/img/logo3_eng.png"></div>
                         <div class="form_guide_comp_txt">
-                            Your pre-registration for the 2027 Korea International Boat Show has been successfully submitted.
-                            <br>You can view your registration details in My Page.
+                            Thank you for pre-registering for the 2027 Korea International Boat Show.<br>
+                            Your registration has been successfully submitted.<br>
+                            You can check your registration details on the Registration Confirmation page.
                         </div>
-                        <a href="/eng/buyer/login.do" class="form_guide_comp_btn btnSt01">Confirm Application</a>
+                        <a href="/eng/buyer/login.do" class="form_guide_comp_btn btnSt01">View Registration Details</a>
                     </div>
                 </div>
             </div>
