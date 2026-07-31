@@ -152,7 +152,7 @@ if (document.documentElement) {
                                                 <span class="card-label fw-bold fs-3 mb-1">안내사항</span>
                                                 <span class="text-muted fw-semibold fs-7">Information</span>
                                             </h3>
-                                            <div class="mt-5 mb-2">※ 현황 통계는 <span class="text-primary fw-bold">'2026'년 데이터</span>만 나타냅니다.</div>
+                                            <div class="mt-5 mb-2">※ 현황 통계는 <span class="text-primary fw-bold">'2027'년 데이터</span>만 나타냅니다.</div>
                                             <div class="mb-2">※ 통계(<span class="text-primary fw-bold">'전체'</span>) 항목은 {(참가기업수-참가취소)+(참관객수-참관취소)} 의 값입니다.</div>
                                             <div class="mb-2">※ 그래프(<span class="text-primary fw-bold">'홈페이지 방문 현황'</span>) 항목은 메인페이지 접속 시에 +1 되어 도출된 값입니다.</div>
                                             <div class="mb-2">※ 그래프(<span class="text-primary fw-bold">'참가 신청 현황'</span>) 항목은 참가기업(취소제외), 참관객(취소제외) 수 현황입니다.</div>

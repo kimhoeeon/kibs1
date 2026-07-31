@@ -159,17 +159,32 @@ let KTAppExhibitorNewNewMng = function () {
 
     function renderBalanceCell(data, type, row){
         let renderHTML = Number(row.balance);
-        return renderHTML.toLocaleString();
+        let lang = row.lang;
+        let prefix = '￦ ';
+        if(lang === 'EN'){
+            prefix = '$ ';
+        }
+        return prefix + renderHTML.toLocaleString();
     }
 
     function renderDepositCell(data, type, row){
         let renderHTML = Number(row.deposit);
-        return renderHTML.toLocaleString();
+        let lang = row.lang;
+        let prefix = '￦ ';
+        if(lang === 'EN'){
+            prefix = '$ ';
+        }
+        return prefix + renderHTML.toLocaleString();
     }
 
     function renderPrcTotalCell(data, type, row){
         let renderHTML = Number(row.prcTotal);
-        return renderHTML.toLocaleString();
+        let lang = row.lang;
+        let prefix = '￦ ';
+        if(lang === 'EN'){
+            prefix = '$ ';
+        }
+        return prefix + renderHTML.toLocaleString();
     }
 
     function renderApprovalStatusCell(data, type, row){
@@ -1452,7 +1467,11 @@ let KTAppExhibitorNewNewApplicationBooth = function () {
         renderHTML += '<span class="fw-bold">';
         renderHTML += '<a href="/mng/exhibitorNewNew/application/booth/detail.do?seq=' + row.seq + '"';
         renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
-        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        if(nvl(companyNameKo,'') !== ''){
+            renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        }else{
+            renderHTML += companyNameEn;
+        }
         renderHTML += '</a>';
         renderHTML += '</span>';
         renderHTML += '</div>';
@@ -1510,14 +1529,19 @@ let KTAppExhibitorNewNewApplicationBooth = function () {
     }
 
     function renderBoothCntCell(data, type, row){
-        return (parseInt(row.standAloneBoothCnt) + parseInt(row.assemblyBoothCnt) + parseInt(row.onlineBoothCnt)).toString();
+        return (parseInt(row.standAloneBoothCnt) + parseInt(row.assemblyBoothCnt)).toString();
     }
 
     function renderBoothPrcCell(data, type, row){
         const boothPriceSum = Number(row.boothPrcSum);
         const registrationFee = Number(row.registrationFee);
         const newPrice = boothPriceSum - registrationFee;
-        return newPrice.toLocaleString();
+        let lang = row.lang;
+        let prefix = '￦ ';
+        if(lang === 'EN'){
+            prefix = '$ ';
+        }
+        return prefix + newPrice.toLocaleString();
     }
 
     function renderDiscountTypeCell(data, type, row){
@@ -1575,8 +1599,12 @@ let KTAppExhibitorNewNewApplicationBooth = function () {
 
         // 4. 최종 총 할인액
         const totalDiscount = basicDiscount + specialDiscountTotal;
-
-        return totalDiscount.toLocaleString();
+        let lang = row.lang;
+        let prefix = '￦ ';
+        if(lang === 'EN'){
+            prefix = '$ ';
+        }
+        return prefix + totalDiscount.toLocaleString();
     }
 
     function renderBoothPrcSumCell(data, type, row){
@@ -1610,8 +1638,12 @@ let KTAppExhibitorNewNewApplicationBooth = function () {
         // --- 3. 최종 총액(VAT미포함) 재계산 ---
         // (부스총액 + 발전기금) - 총 할인액
         const recalculatedPrcSum = (boothPrcSum + developmentFund) - totalDiscount;
-
-        return recalculatedPrcSum.toLocaleString();
+        let lang = row.lang;
+        let prefix = '￦ ';
+        if(lang === 'EN'){
+            prefix = '$ ';
+        }
+        return prefix + recalculatedPrcSum.toLocaleString();
     }
 
     function renderActionsCell(data, type, row){
@@ -2824,7 +2856,12 @@ let KTAppExhibitorNewNewApplicationUtility = function () {
 
     function renderUtilityPrcSumCell(data, type, row){
         let renderHTML = Number(row.utilityPrcSum);
-        return renderHTML.toLocaleString();
+        let lang = row.lang;
+        let prefix = '￦ ';
+        if(lang === 'EN'){
+            prefix = '$ ';
+        }
+        return prefix + renderHTML.toLocaleString();
     }
 
     function renderUtilityGbnCell(data, type, row){

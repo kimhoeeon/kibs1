@@ -431,9 +431,9 @@ if (document.documentElement) {
                                                     <th class="text-center min-w-85px">부스번호</th>
                                                     <th>회사명(국문)</th>
                                                     <th>회사명(영문)</th>
-                                                    <th class="text-center min-w-200px">회사명</th>
+                                                    <th class="text-center min-w-175px">회사명</th>
                                                     <th class="text-center min-w-150px">참가행사</th>
-                                                    <th class="text-center min-w-75px">ID(사업자등록번호)</th>
+                                                    <th class="text-center min-w-75px">ID(사업자번호)</th>
                                                     <th class="text-center min-w-100px">참가비(총액)</th>
                                                     <th class="text-center min-w-100px">납부금</th>
                                                     <th class="text-center min-w-100px">잔액</th>

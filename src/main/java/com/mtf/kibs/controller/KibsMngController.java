@@ -59,6 +59,8 @@ public class KibsMngController {
 
     private final CommService commService;
 
+    private final String transferYear = "2027";
+
     /**
      * Instantiates a new Kibs controller.
      *
@@ -130,7 +132,7 @@ public class KibsMngController {
         //System.out.println("KibsMngController > mng_main_statistics_accessor_day");
         //System.out.println(searchDTO.toString());
 
-        String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
+        String transferYear = String.valueOf(LocalDateTime.now().getYear());
         StatisticsDTO reqDto = new StatisticsDTO();
         reqDto.setGbn("Accessor");
         reqDto.setTransferYear(transferYear);
@@ -145,7 +147,7 @@ public class KibsMngController {
         //System.out.println("KibsMngController > mng_main_statistics_accessor_month");
         //System.out.println(searchDTO.toString());
 
-        String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
+        String transferYear = String.valueOf(LocalDateTime.now().getYear());
         StatisticsDTO reqDto = new StatisticsDTO();
         reqDto.setGbn("Accessor");
         List<StatisticsDTO> responseList = kibsMngService.processSelectStatisticsAccessorMonth(reqDto);
@@ -159,7 +161,7 @@ public class KibsMngController {
         //System.out.println("KibsMngController > mng_main_statistics_accessor_week");
         //System.out.println(searchDTO.toString());
 
-        String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
+        String transferYear = String.valueOf(LocalDateTime.now().getYear());
         StatisticsDTO reqDto = new StatisticsDTO();
         reqDto.setGbn("Accessor");
         List<StatisticsDTO> responseList = kibsMngService.processSelectStatisticsAccessorWeek(reqDto);
@@ -173,7 +175,6 @@ public class KibsMngController {
         //System.out.println("KibsMngController > mng_main_statistics_participant_day");
         //System.out.println(searchDTO.toString());
 
-        String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
         StatisticsDTO reqDto = new StatisticsDTO();
         reqDto.setTransferYear(transferYear);
 
@@ -234,7 +235,6 @@ public class KibsMngController {
         //System.out.println("KibsMngController > mng_main_statistics_participant_month");
         //System.out.println(searchDTO.toString());
 
-        String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
         StatisticsDTO reqDto = new StatisticsDTO();
         reqDto.setTransferYear(transferYear);
 
@@ -295,7 +295,6 @@ public class KibsMngController {
         //System.out.println("KibsMngController > mng_main_statistics_participant_week");
         //System.out.println(searchDTO.toString());
 
-        String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
         StatisticsDTO reqDto = new StatisticsDTO();
         reqDto.setTransferYear(transferYear);
 
@@ -356,7 +355,6 @@ public class KibsMngController {
         //System.out.println("KibsMngController > mng_main_statistics_company_booth");
         //System.out.println(searchDTO.toString());
 
-        String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
         StatisticsDTO reqDto = new StatisticsDTO();
         reqDto.setTransferYear(transferYear);
         StatisticsDTO boothInfo = kibsMngService.processSelectStatisticsCompanyBooth(reqDto);
@@ -384,7 +382,6 @@ public class KibsMngController {
         //System.out.println("KibsMngController > mng_main_statistics_company_fieldPart");
         //System.out.println(searchDTO.toString());
 
-        String transferYear = String.valueOf(LocalDateTime.now().getYear()); //2025
         StatisticsDTO reqDto = new StatisticsDTO();
         reqDto.setTransferYear(transferYear);
         StatisticsDTO fieldPartInfo = kibsMngService.processSelectStatisticsCompanyFieldPart(reqDto);
