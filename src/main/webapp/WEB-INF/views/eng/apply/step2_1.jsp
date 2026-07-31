@@ -436,7 +436,7 @@
                             </a>
                             <a href="javascript:void(0);" onclick="f_apply_comp('2_1','${info.seq}')" class="form_btn_next">
                                 <div class="big">NEXT</div>
-                                <div class="small">Yacht/Boat Infomation</div>
+                                <div class="small">Yacht/Boat Information</div>
                             </a>
                         </div>
 

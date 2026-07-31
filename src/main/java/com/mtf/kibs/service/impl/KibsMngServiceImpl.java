@@ -3394,6 +3394,8 @@ public class KibsMngServiceImpl implements KibsMngService {
         // 2. CalculationInputDTO 조립 (DB 조회 정보 + 관리자 입력)
         CalculationInputDTO input = new CalculationInputDTO();
 
+        input.setLang(currentData.getLang() != null ? currentData.getLang() : "KO");
+
         // [부스 정보] - DB 조회 (currentData)
         input.setRegistrationCnt(exhibitorNewDTO.getRegistrationCnt() != null ? exhibitorNewDTO.getRegistrationCnt() : 0);
         input.setStandAloneBoothCnt(exhibitorNewDTO.getStandAloneBoothCnt() != null ? exhibitorNewDTO.getStandAloneBoothCnt() : 0);
@@ -3680,11 +3682,14 @@ public class KibsMngServiceImpl implements KibsMngService {
 
         // 2. *** CalculationInputDTO 조립 (현재 DB 정보 기준) ***
         CalculationInputDTO input = new CalculationInputDTO();
+
+        input.setLang(currentExhibitorInfo.getLang() != null ? currentExhibitorInfo.getLang() : "KO");
+
         input.setRegistrationCnt(currentExhibitorInfo.getRegistrationCnt());
         input.setStandAloneBoothCnt(currentExhibitorInfo.getStandAloneBoothCnt());
         input.setAssemblyBoothCnt(currentExhibitorInfo.getAssemblyBoothCnt());
         input.setOnlineBoothCnt(currentExhibitorInfo.getOnlineBoothCnt());
-        input.setUtilityPrcSum(currentExhibitorInfo.getUtilityPrcSum()); // 현재 유틸리티 금액
+        input.setUtilityPrcSum(currentExhibitorInfo.getUtilityPrcSum());
         input.setDiscountEarly1(currentExhibitorInfo.getDiscountEarly1());
         input.setDiscountEarly2(currentExhibitorInfo.getDiscountEarly2());
         input.setDiscountFirstUnder10(currentExhibitorInfo.getDiscountFirstUnder10());
@@ -3814,14 +3819,25 @@ public class KibsMngServiceImpl implements KibsMngService {
         newInvoice.setUtilityBarcodeFee(currentInfo.getUtilityBarcodeFee());
         newInvoice.setUtilityPrcSum(currentInfo.getUtilityPrcSum());
 
+        // ★★★ 영문 여부 체크 ★★★
+        boolean isEnglish = "EN".equalsIgnoreCase(currentInfo.getLang());
+
         // 유틸리티 금액 기준으로 최종 합계 계산
-        int prcSum = currentInfo.getUtilityPrcSum();
-        int prcVat = (int) Math.floor(prcSum * 0.1);
+        int prcSum = currentInfo.getUtilityPrcSum() != null ? currentInfo.getUtilityPrcSum() : 0;
+
+        // ★★★ 영문이면 부가세 0, 국문이면 10% 계산 ★★★
+        int prcVat = isEnglish ? 0 : (int) Math.floor(prcSum * 0.1);
         int prcTotal = prcSum + prcVat;
 
         newInvoice.setPrcSum(prcSum);
         newInvoice.setPrcVat(prcVat);
         newInvoice.setPrcTotal(prcTotal);
+
+        // 납부기한 세팅 (Booth 인보이스와 통일성 유지, 필요시 주석 제거 또는 수정)
+        newInvoice.setEndDttm(String.valueOf(LocalDate.now().plusDays(14)));
+        newInvoice.setSendStatus("미발송");
+        newInvoice.setDelYn("N");
+        newInvoice.setFinalRegiPic("admin");
 
         kibsMngMapper.insertInvoiceUtility(newInvoice);
 
