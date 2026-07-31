@@ -206,7 +206,11 @@ let KTAppExhibitorNewNewMng = function () {
         renderHTML += '<span class="fw-bold">';
         renderHTML += '<a onclick="f_exhibitor_detail(' + '\'' + row.seq + '\',\'' + lang + '\')" class="text-gray-800 text-hover-primary fs-5 fw-bold text-decoration-none cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal_exhibitor_new_new_detail_info">';
         if(nvl(companyNameEn,'') !== ''){
-            renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+            if(lang === 'KO') {
+                renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+            }else{
+                renderHTML += companyNameEn;
+            }
             /*if(companyNameKo === '오션테크'){
                 renderHTML += f_exhibitor_name_gbn(companyNameKo) + '(덕영엔지니어링)' + '<br>' + companyNameEn;
             }else{

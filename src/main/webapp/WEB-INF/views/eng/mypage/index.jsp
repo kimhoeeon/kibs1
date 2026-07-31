@@ -135,25 +135,7 @@
                                             <div class="txt_box">
                                                 <div class="gubun">Booth Participation Fee</div>
                                                 <div class="txt">
-                                                    <c:set var="specialDicountTotal" value="0"/>
-                                                    <c:choose>
-                                                        <c:when test="${info.memberCompanyYn eq 'Y'}">
-                                                            <c:set var="baseSpecialAmount" value="${info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum}"/>
-                                                            <c:if test="${info.discountSpecial1Yn}">
-                                                                <c:set var="specialDicountTotal" value="${baseSpecialAmount * 0.5}"/>
-                                                            </c:if>
-                                                            <c:if test="${info.discountSpecial2Yn}">
-                                                                <c:set var="specialDicountTotal" value="${specialDicountTotal + info.discountSpecial2Amount}"/>
-                                                            </c:if>
-                                                            <c:if test="${info.discountSpecial3Yn}">
-                                                                <c:set var="specialDicountTotal" value="${specialDicountTotal + info.discountSpecial3Amount}"/>
-                                                            </c:if>
-                                                            ￦ <fmt:formatNumber value="${info.boothPrcSum + ((info.boothPrcSum + info.utilityPrcSum - info.discountPrcSum - specialDicountTotal) * 0.1)}" pattern="#,###"/>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            ￦ <fmt:formatNumber value="${info.boothPrcSum}" pattern="#,###"/>
-                                                        </c:otherwise>
-                                                    </c:choose>
+                                                    USD <fmt:formatNumber value="${info.boothPrcSum}" pattern="#,###"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -164,7 +146,7 @@
                                             <div class="icon"><img src="/img/icon_my02.png"></div>
                                             <div class="txt_box">
                                                 <div class="gubun">Utilities</div>
-                                                <div class="txt">￦ <fmt:formatNumber value="${info.utilityPrcSum}" pattern="#,###"/></div>
+                                                <div class="txt">USD <fmt:formatNumber value="${info.utilityPrcSum}" pattern="#,###"/></div>
                                             </div>
                                         </div>
                                         <a class="btn" href="javascript:void(0);" onclick="f_page_move('/eng/mypage/step2_3.do','${info.seq}')">┼</a>
@@ -186,7 +168,7 @@
                                                     <c:if test="${info.discountSpecial3Yn}">
                                                         <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial3Amount}"/>
                                                     </c:if>
-                                                    ￦ <fmt:formatNumber value="${info.discountPrcSum + baseSpecialDiscount}" pattern="#,###"/>
+                                                    USD <fmt:formatNumber value="${info.discountPrcSum + baseSpecialDiscount}" pattern="#,###"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -197,16 +179,15 @@
                                             <div class="icon"><img src="/img/icon_my05.png"></div>
                                             <div class="txt_box">
                                                 <div class="gubun">Total (Excl. VAT)</div>
-                                                <div class="txt">￦ <fmt:formatNumber value="${info.prcSum}" pattern="#,###"/></div>
+                                                <div class="txt">USD <fmt:formatNumber value="${info.prcSum}" pattern="#,###"/></div>
                                             </div>
                                         </div>
                                         <a class="btn" href="javascript:void(0);" onclick="f_page_move('/eng/mypage/total.do','${info.seq}')">┼</a>
                                     </li>
                                 </ul>
                                 <div class="payTotal">
-                                    <span class="amount">￦ <fmt:formatNumber value="${info.prcSum}" pattern="#,###"/></span>
-                                    <span class="vat">VAT ￦ <fmt:formatNumber value="${info.prcVat}" pattern="#,###"/></span>
-                                    <span class="total">TOTALS ￦ <fmt:formatNumber value="${info.prcTotal}" pattern="#,###"/></span>
+                                    <span class="amount">USD <fmt:formatNumber value="${info.prcSum}" pattern="#,###"/></span>
+                                    <span class="total">TOTALS USD <fmt:formatNumber value="${info.prcTotal}" pattern="#,###"/></span>
                                 </div>
                             </div>
                         </div>

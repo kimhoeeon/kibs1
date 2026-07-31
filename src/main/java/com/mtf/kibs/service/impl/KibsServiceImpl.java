@@ -220,15 +220,27 @@ public class KibsServiceImpl implements KibsService {
                 String exhibitorNewSeq = kibsMapper.getExhibitorNewSeq();
                 exhibitorNewDTO.setSeq(exhibitorNewSeq);
 
-                exhibitorNewDTO.setBoothType("등록비");
-                exhibitorNewDTO.setDeposit("0");
-                exhibitorNewDTO.setBalance("110000");
-                exhibitorNewDTO.setRegistrationCnt(1);
-                exhibitorNewDTO.setRegistrationFee(100000);
-                exhibitorNewDTO.setBoothPrcSum(100000);
-                exhibitorNewDTO.setPrcSum(100000);
-                exhibitorNewDTO.setPrcVat(10000);
-                exhibitorNewDTO.setPrcTotal(110000);
+                if("KO".equals(exhibitorNewDTO.getLang())){
+                    exhibitorNewDTO.setBoothType("등록비");
+                    exhibitorNewDTO.setDeposit("0");
+                    exhibitorNewDTO.setBalance("110000");
+                    exhibitorNewDTO.setRegistrationCnt(1);
+                    exhibitorNewDTO.setRegistrationFee(100000);
+                    exhibitorNewDTO.setBoothPrcSum(100000);
+                    exhibitorNewDTO.setPrcSum(100000);
+                    exhibitorNewDTO.setPrcVat(10000);
+                    exhibitorNewDTO.setPrcTotal(110000);
+                }else{
+                    exhibitorNewDTO.setBoothType("");
+                    exhibitorNewDTO.setDeposit("0");
+                    exhibitorNewDTO.setBalance("");
+                    exhibitorNewDTO.setRegistrationCnt(0);
+                    exhibitorNewDTO.setRegistrationFee(0);
+                    exhibitorNewDTO.setBoothPrcSum(0);
+                    exhibitorNewDTO.setPrcSum(0);
+                    exhibitorNewDTO.setPrcVat(0);
+                    exhibitorNewDTO.setPrcTotal(0);
+                }
 
                 //salt값 생성
                 String salt = Salt();
