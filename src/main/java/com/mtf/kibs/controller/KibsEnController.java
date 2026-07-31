@@ -413,8 +413,8 @@ public class KibsEnController {
         }else {
             DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
             String today = dateFormat.format(new Date());
-            if (Long.parseLong(today) > Long.parseLong("202510200859")) {
-                if (Long.parseLong(today) > Long.parseLong("202602272359")) {
+            if (Long.parseLong(today) > Long.parseLong("202609010859")) {
+                if (Long.parseLong(today) > Long.parseLong("202612312359")) {
                     mv.addObject("mode", "close");
                 } else {
                     mv.addObject("mode", "open");
@@ -856,8 +856,8 @@ public class KibsEnController {
         }else {
             DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
             String today = dateFormat.format(new Date());
-            if (Long.parseLong(today) > Long.parseLong("202601010859")) {
-                if (Long.parseLong(today) > Long.parseLong("202603032359")) {
+            if (Long.parseLong(today) > Long.parseLong("202701010859")) {
+                if (Long.parseLong(today) > Long.parseLong("202703312359")) {
                     mv.addObject("mode", "close");
                 }else{
                     mv.addObject("mode", "open");
