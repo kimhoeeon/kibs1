@@ -307,7 +307,7 @@
                                                     <p>Retail Price (USD)</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" id="gift_price" value="0" class="onlyNum" placeholder="Enter amount in USD">
+                                                    <input type="text" id="gift_price" class="onlyNum" placeholder="Enter amount in USD">
                                                     <div style="font-size: 0.7em; color: #666;">
                                                         * For overseas exhibitors, retail price and sponsored price must be entered in USD.
                                                     </div>
@@ -318,7 +318,7 @@
                                                     <p>Sponsored Price (USD)</p>
                                                 </div>
                                                 <div class="input">
-                                                    <input type="text" id="gift_sponsor_price" value="0" class="onlyNum" placeholder="Enter amount in USD">
+                                                    <input type="text" id="gift_sponsor_price" class="onlyNum" placeholder="Enter amount in USD">
                                                     <div style="font-size: 0.7em; color: #666;">
                                                         * For overseas exhibitors, retail price and sponsored price must be entered in USD.
                                                     </div>

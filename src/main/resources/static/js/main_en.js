@@ -784,7 +784,7 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
 
         } else if (pageType === 'utility') {
             // --- 유틸리티 페이지 UI 업데이트 ---
-            $('#utilityPrcSumDisplay').val(numberToWon(result.utilityPrcSum)); // 유틸리티 소계 ※ JSP span 필요
+            $('#utilityPrcSumDisplay').val(numberToUsd(result.utilityPrcSum)); // 유틸리티 소계 ※ JSP span 필요
 
             // --- 참고용 최종 총계 표시 ---
             $('#prcSum').text($.number(result.prcSum));
@@ -3253,13 +3253,13 @@ function step_2_5_check(exhibitorSeq){
 
     // '신청(Y)'인데 등록된 경품이 단 1개도 없는 경우 진행 차단
     if (giftApplyYn === 'Y' && gift_add_json_arr.length === 0 && $('.form_chuga_list').length === 0) {
-        showMessage('', 'error', '[ Giveaways ]', 'Please register at least one giveaway when applying.', '');
+        showMessage('', 'error', '[ Giveaway ]', 'Please register at least one giveaway when applying.', '');
         return false;
     }
 
     Swal.fire({
         icon: 'info',
-        title: '[ Giveaways ]',
+        title: '[ Giveaway ]',
         html: '<span style="font-size: 1.2em;"><br>Click <span style="background-color:#00a8ff; color:#ffffff;">Continue Now</span> to save and proceed to the next page.<br><br>Click <span style="background-color:#A1A5B7; color:#ffffff;">Save for Later</span> to proceed to the next page.<br>You can log in and resume at any time.</span>',
         allowOutsideClick: false,
         showCancelButton: true,
@@ -3289,7 +3289,7 @@ function step_2_5_check(exhibitorSeq){
                 /* 등록 성공 시 다음 단계로 이동 */
                 Swal.fire({
                     icon: 'info',
-                    title: '[ Giveaways ]',
+                    title: '[ Giveaway ]',
                     html: '<span style="font-size: 1.2em;">Giveaway application info has been saved.<br>Moving to the next step.</span>',
                     allowOutsideClick: false,
                     confirmButtonColor: '#00a8ff',
@@ -3301,7 +3301,7 @@ function step_2_5_check(exhibitorSeq){
                     }
                 });
             }else{
-                showMessage('', 'error', '[ Giveaways ]', 'Failed to save giveaway application info. Please contact the administrator.', '');
+                showMessage('', 'error', '[ Giveaway ]', 'Failed to save giveaway application info. Please contact the administrator.', '');
             }
 
         } else if (result.isDismissed) {
@@ -3320,7 +3320,7 @@ function f_gift_add(exSeq){
     // 수량
     let gift_cnt = $('#gift_cnt').val();
     if(gift_cnt === ''){
-        showMessage('', 'error', '[ Giveaways ]', 'Please enter the quantity.', '');
+        showMessage('', 'error', '[ Giveaway ]', 'Please enter the quantity.', '');
         return false;
     }
 
@@ -3330,14 +3330,14 @@ function f_gift_add(exSeq){
     // 품목명
     let gift_name = $('#gift_name').val();
     if(gift_name === ''){
-        showMessage('', 'error', '[ Giveaways ]', 'Please enter the item name.', '');
+        showMessage('', 'error', '[ Giveaway ]', 'Please enter the item name.', '');
         return false;
     }
 
     // 경품설명
     let gift_content = $('#gift_content').val();
     if(gift_content === ''){
-        showMessage('', 'error', '[ Giveaways ]', 'Please enter the giveaway description.', '');
+        showMessage('', 'error', '[ Giveaway ]', 'Please enter the giveaway description.', '');
         return false;
     }
 
@@ -3350,7 +3350,7 @@ function f_gift_add(exSeq){
     // 소비자가
     let gift_price = $('#gift_price').val();
     if(gift_price === ''){
-        showMessage('', 'error', '[ Giveaways ]', 'Please enter the retail price.', '');
+        showMessage('', 'error', '[ Giveaway ]', 'Please enter the retail price(USD).', '');
         return false;
     }
 
@@ -5464,7 +5464,7 @@ function my_step_2_5_check(exhibitorSeq){
 
     // '신청(Y)'인데 등록된 경품이 단 1개도 없는 경우 진행 차단
     if (giftApplyYn === 'Y' && gift_add_json_arr.length === 0 && $('.form_chuga_list').length === 0) {
-        showMessage('', 'error', '[ Giveaways ]', 'Please register at least one giveaway when applying.', '');
+        showMessage('', 'error', '[ Giveaway ]', 'Please register at least one giveaway when applying.', '');
         return false;
     }
 
@@ -5484,7 +5484,7 @@ function my_step_2_5_check(exhibitorSeq){
         /* 등록 성공 시 다음 단계로 이동 */
         Swal.fire({
             icon: 'info',
-            title: '[ Giveaways ]',
+            title: '[ Giveaway ]',
             html: '<span style="font-size: 1.2em;">Giveaway application info has been saved.<br>Moving to the next step.</span>',
             allowOutsideClick: false,
             confirmButtonColor: '#00a8ff',
@@ -5496,7 +5496,7 @@ function my_step_2_5_check(exhibitorSeq){
             }
         });
     }else{
-        showMessage('', 'error', '[ Giveaways ]', 'Failed to save giveaway application info. Please contact the administrator.', '');
+        showMessage('', 'error', '[ Giveaway ]', 'Failed to save giveaway application info. Please contact the administrator.', '');
     }
 }
 

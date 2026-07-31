@@ -1190,7 +1190,7 @@
                                             <p>전화번호</p>
                                         </div>
                                         <div class="input">
-                                            <input type="text" id="buyer_tel" name="buyerCompanyTel" class="onlyGeneralTel" maxlength="13" placeholder="하이픈(-)을 포함하여 입력해 주세요."/>
+                                            <input type="text" id="buyer_tel" name="buyerCompanyTel" class="onlyGeneralTel" maxlength="13" placeholder="숫자만 입력해 주세요."/>
                                         </div>
                                     </li>
                                     <li>
@@ -1198,7 +1198,7 @@
                                             <p>휴대전화</p>
                                         </div>
                                         <div class="input">
-                                            <input type="text" id="buyer_phone" name="buyerCompanyPhone" class="onlyTel" maxlength="13" onblur="f_phone_number_valid_check(this)" placeholder="하이픈(-)을 포함하여 입력해 주세요."/>
+                                            <input type="text" id="buyer_phone" name="buyerCompanyPhone" class="onlyTel" maxlength="13" onblur="f_phone_number_valid_check(this)" placeholder="숫자만 입력해 주세요."/>
                                         </div>
                                     </li>
                                     <li>
@@ -1206,7 +1206,7 @@
                                             <p>팩스</p>
                                         </div>
                                         <div class="input">
-                                            <input type="text" id="buyer_fax" name="buyerCompanyFax" class="onlyNumh" placeholder="하이픈(-)을 포함하여 입력해 주세요."/>
+                                            <input type="text" id="buyer_fax" name="buyerCompanyFax" class="onlyNumh" placeholder="숫자만 입력해 주세요."/>
                                         </div>
                                     </li>
                                     <li>

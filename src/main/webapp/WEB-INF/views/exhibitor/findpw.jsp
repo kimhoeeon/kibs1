@@ -117,7 +117,7 @@
                         <p>아이디</p>
                         <input type="text" id="id" maxlength="10" class="onlyNum" placeholder="ID를 입력해 주세요.">
                         <div style="margin-top: 15px; color: #8c8c8c; font-weight: bold; font-size: 0.875em;">
-                            ※ 2025년 10월 이후 가입된 기업회원만 비밀번호 초기화 요청이 가능합니다.
+                            ※ 2026년 8월 이후 가입된 기업회원만 비밀번호 초기화 요청이 가능합니다.
                         </div>
                     </div>
                     <div class="btnLogin">

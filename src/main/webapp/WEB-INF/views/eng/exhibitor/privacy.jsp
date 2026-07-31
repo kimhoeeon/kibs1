@@ -54,9 +54,9 @@
         <div class="inner">
             <div class="sub_top_box">
                 <div class="sub_top_nav">
-                    <span>홈</span><span>참가기업</span><span>전시참가규정 및 개인정보취급방침</span>
+                    <span>Home</span><span>Exhibitors</span><span>Exhibition Participation Regulations</span>
                 </div>
-                <div class="sub_top_tit">전시참가규정 및 개인정보취급방침</div>
+                <div class="sub_top_tit">Exhibition Participation Regulations</div>
             </div>
         </div>
     </div>
@@ -68,99 +68,101 @@
             <!-- 약관 -->
             <div class="form_wrap">
                 <div class="form_tit">
-                    <div class="big">전시회 참가규정</div>
+                    <div class="big">Exhibition Participation Regulations</div>
                 </div>
                 <div class="form_pri">
-
                     <div class="form_pri_box">
 
-                        <div class="form_pri_titt">제1조 (용어의 정의)</div>
-                        1. “전시회”라 함은 “2027 경기국제보트쇼(KIBS 2027)"를 말한다.<br>
-                        2. ‘주최자’라 함은 경기도 및 공동주최기관을 말한다.<br>
-                        3. “주관자”라 함은 전시회를 주관하는 ㈜킨텍스를 말한다.<br>
-                        4. “전시자”라 함은 전시회 참가를 위해 참가신청서 제출과 함께 계약금을 납부한 회사·조합· 단체 및 개인 등의 전시 참가자를 말한다.<br><br>
+                        <div class="form_pri_titt">Article 1 (Definitions)</div>
+                        1. The “Exhibition” refers to the “2027 Korea International Boat Show (KIBS 2027)”.<br>
+                        2. The “Organizers” refer to Gyeonggi Province and the co-hosting organizations.<br>
+                        3. The “Organizer” refers to KINTEX Co., Ltd., which manages and operates the Exhibition.<br>
+                        4. The “Exhibitor” refers to any company, association, organization, or individual that has applied to participate in the Exhibition and paid the required deposit or participation fee.<br><br>
 
-                        <div class="form_pri_titt">제 2 조 (참가신청 및 계약)</div>
-                        1. 전시회 참가신청을 하고자 하는 전시자는 온라인을 통한 부스 참가신청을 완료하고, 주관자가 발급하는 청구 서류에 따라 참가비 전액을 납입함으로써 참가신청이 완료된다.<br>
-                        2. 2조 1항에 따라 참가 신청이 완료되지 않은 경우, 전시회의 어떠한 행사에도 참가할 수 없다.<br>
-                        3. 참가비는 독립부스 1,800,000원/부스, 조립부스 2,100,000원/부스이다. (부가가치세 별도 / 현금납부 / 할인 사항 별도 적용) 단, 독립부스의 경우 최소 2부스 이상부터 신청이 가능하다.<br>
-                        4. 유틸리티 서비스는 참가비 전액 납입 완료 후 전시자의 필요에 따라 별도로 신청하며, 주관자가 발급하는 청구 서류에 따라 기술지원 서비스 사용료 전액을 납입한 경우 상응하는 서비스를 제공한다.<br>
-                        5. 유틸리티 서비스 및 조립부스 장치공사는 전시자의 신청에 따라 주관자가 제공하며, 참가신청 및 유틸리티 서비스 신청 내용에 변동사항이 발생할 경우 즉시 주관자에게 이를 전자메일로 알려야 한다.<br> 미통보로 인한 불이익에 대해서는 전시자가 책임을 진다.<br>
-                        6. 전시자는 참가신청 상의 내용에 변동사항이 발생할 경우 즉시 주관자에게 이를 서면으로 통보하여야 하며, 미통보로 인한 불이익에 대해서는 전시자가 책임을 진다.<br>
-                        7. 전시장 면적이 소진된 경우와 출품 품목이 전시회에 적합하지 않다고 판단할 경우 주관자는 참가신청 접수를 거부할 수 있다.<br><br>
+                        <div class="form_pri_titt">Article 2 (Application and Contract)</div>
+                        1. An exhibitor wishing to participate in the Exhibition shall complete the online booth application and pay the full participation fee according to the invoice issued by the Organizer. The application shall be considered complete upon such payment.<br>
+                        2. If the application is not completed in accordance with Paragraph 1 of this Article, the applicant shall not be permitted to participate in any Exhibition-related activities.<br>
+                        3. Participation fees are USD 3,000 per booth for a raw space booth and USD 3,300 per booth for a shell scheme booth. Raw space booths require a minimum application of two (2) booths.<br>
+                        4. After the exhibitor’s application has been reviewed and approved by the Secretariat, an invoice will be issued accordingly. The exhibitor shall pay 100% of the participation fee within seven (7) days from the date of invoice issuance.<br>
+                        5. All overseas bank transfer fees, including intermediary and receiving bank charges, shall be borne by the exhibitor. The full invoiced participation fee must be received by the Organizer.<br>
+                        6. VAT may vary depending on the exhibitor’s country and the applicable Korean tax regulations. Exhibitors shall refer to the invoice issued by the Secretariat for the final payable amount.<br>
+                        7. Submission of the application form does not constitute final confirmation of participation. Participation shall be confirmed only after the application has been reviewed and approved by the Secretariat and the required payment has been completed.<br>
+                        8. Utility services shall be applied for separately according to the exhibitor’s needs after full payment of the participation fee. The Organizer shall provide the requested services upon receipt of the full service fee according to the invoice issued by the Organizer.<br>
+                        9. Utility services and shell scheme booth construction shall be provided by the Organizer upon request. Any changes to the application or utility service request must be immediately reported to the Organizer by email. The exhibitor shall be responsible for any disadvantages resulting from failure to provide such notice.<br>
+                        10. Any changes to the information provided in the application form must be immediately reported in writing to the Organizer. The exhibitor shall be responsible for any disadvantages resulting from failure to provide such notice.<br>
+                        11. The Organizer reserves the right to reject an application if exhibition space is fully booked or if the proposed exhibits are deemed unsuitable for the Exhibition.<br><br>
 
-                        <div class="form_pri_titt">제 3 조 (납입조건)</div>
-                        1. 전시자는 참가비 전액을 신청서 제출 후 14일 이내 납입해야 한다. 단, 2026년 1월 5일 이후 참가 신청 시에는 신청과 동시에 참가비를 100% 완납하여야 한다.<br>
-                        2. 전시자가 잔금을 지정된 기한 내 납부하지 않을 경우 주관자는 참가 계약을 해지할 수 있으며, 이 경우 전시자는 이미 납입한 참가비에 대하여 반환을 청구할 수 없다. <br><br>
+                        <div class="form_pri_titt">Article 3 (Payment Terms)</div>
+                        1. The exhibitor shall pay the full participation fee within fourteen (14) days of submitting the application form. However, applications submitted on or after February 1, 2027, must be accompanied by full payment at the time of application.<br>
+                        2. If the exhibitor fails to pay the balance by the designated deadline, the Organizer may terminate the participation agreement. In such cases, any participation fees already paid shall not be refundable.<br><br>
 
-                        <div class="form_pri_titt">제 4 조 (전시면적 및 위치 배정)</div>
-                        1. 주관자는 참가신청 접수 순서, 전시품목의 특성, 신청 면적 및 기타 합리적인 기준에 의거하여 전시 위치를 배정하며, 전시자는 이에 이의를 제기할 수 없다.<br>
-                        2. 주관자는 효율적인 전시관 구성을 위해서 기배정된 부스의 위치, 규모 등을 변경할 수 있으며, 전시자는 불가항력적인 경우를 제외하고 주관자의 요구에 협조하여야 한다.<br>
-                        3. 전시자는 주관자의 사전 승낙 없이 배정받은 전시 면적의 일부 또는 전부를 타 전시자에게 일체 전대 또는 교환할 수 없다.<br><br>
+                        <div class="form_pri_titt">Article 4 (Allocation of Exhibition Space and Booth Location)</div>
+                        1. Booth locations shall be assigned by the Organizer based on the order of application, characteristics of the exhibits, requested booth size, and other reasonable criteria. Exhibitors shall not raise objections to such assignments.<br>
+                        2. The Organizer may change booth locations, sizes, or arrangements as necessary for efficient exhibition management. Exhibitors shall cooperate with such changes except in cases of force majeure.<br>
+                        3. Without prior written approval from the Organizer, exhibitors may not sublease, transfer, exchange, or otherwise assign all or part of their allocated exhibition space to another exhibitor.<br><br>
 
-                        <div class="form_pri_titt">제 5 조 (장치 및 전시품 진열)</div>
-                        1. 전시자는 배정된 전시 면적 안에서 지정 기간 내에 장치 및 전시품 반입, 진열을 완료하여야 한다. 사용 시간 외 추가 작업이 필요한 때에는 시간 외 사용료(임대료)를 납부하여야 한다. (시간당 1백만 원, VAT 별도)<br>
-                        2. 모든 장치공사는 KINTEX에 등록된 장치업체 중에서 선정하여야 한다.<br><br>
+                        <div class="form_pri_titt">Article 5 (Booth Installation and Exhibit Display)</div>
+                        1. Exhibitors shall complete booth installation, exhibit setup, and display arrangements within the designated period and within the allocated exhibition space. Additional work outside official working hours shall be subject to overtime charges (rental fee). (KRW 1,000,000 per hour, VAT excluded)<br>
+                        2. All booth construction work shall be carried out by contractors officially registered with KINTEX.<br><br>
 
-                        <div class="form_pri_titt">제 6 조 (전시품 및 장치물 반출)</div>
-                        1. 전시자는 지정 기간 내에 모든 전시품 및 장치물을 반출하여야 하며, 반출을 지연할 경우 주관자가 부담하게 될 제반 비용을 부담하여야 한다.<br>
-                        2. 반입ㆍ반출 기간에는 상하차 작업 외에는 전시품 상하차 지역 및 반입ㆍ반출 지역에 주ㆍ정차를 할 수 없으며 물품 운송이 끝난 즉시 이동하여 통행 흐름을 방해하지 않도록 해야 한다.<br>
-                        3. 전시품 반입ㆍ반출 기간에 승용차 및 승합차는 화물주차장에 진입할 수 없다.<br><br>
+                        <div class="form_pri_titt">Article 6 (Removal of Exhibits and Booth Structures)</div>
+                        1. Exhibitors shall remove all exhibits and booth structures within the designated period. Any costs incurred by the Organizer due to delayed removal shall be borne by the exhibitor.<br>
+                        2. During move-in and move-out periods, vehicles may not stop or park in loading/unloading areas except for loading and unloading operations. Vehicles must leave immediately after cargo handling is completed to avoid obstructing traffic flow.<br>
+                        3. Passenger cars and vans are not permitted to enter the freight parking area during move-in and move-out periods.<br><br>
 
-                        <div class="form_pri_titt">제 7 조 전시실 관리</div>
-                        1. 전시자는 참가신청서에 명시한 전시품을 전시하고 상주 요원을 배치하여 자사 부스(Booth) 관리에 만전을 기하여야 한다. 전시자의 사유로 인해 전시품 전시 및 상주 요원 배치가 불가능한 경우 주관자에게 서면으로 통보하며, 주관자는 배정된 부스 신청을 취소할 수 있다. 이 경우 참가비는 반환되지 않는다.<br>
-                        2. 전시자가 참가신청서에 명시한 전시품과 상이한 물품을 전시하거나 전시회 성격에 부합되지 않는 물품을 전시할 경우, 또는 주관자의 허가 없이 현장 직매 행위를 하는 경우 주관자는 즉시 전시 중지, 철거 또는 반출을 명할 수 있다. 이 경우 참가비는 반환되지 아니하며, 전시자는 이에 따른 배상을 청구할 수 없다.<br>
-                        3. 주관자는 필요한 경우, 특정인의 전시장 출입을 제한할 수 있다.<br>
-                        4. 전시자는 전시실의 바닥, 천장, 기둥, 벽면 등에 페인트칠, 못질 등의 원상 변경을 할 수 없으며, 전시실의 손상에 대하여 원상 복구 등 주관자의 손해를 배상하여야 한다.<br><br>
+                        <div class="form_pri_titt">Article 7 (Exhibition Hall Management)</div>
+                        1. Exhibitors shall display the exhibits specified in their application and assign on-site staff to properly manage their booth. If, due to the exhibitor's circumstances, the exhibits cannot be displayed or on-site staff cannot be assigned, the exhibitor shall notify the Organizer in writing. In such cases, the Organizer may cancel the allocated booth, and the participation fee shall not be refunded.<br>
+                        2. If an exhibitor displays items different from those specified in the application, exhibits items deemed unsuitable for the Exhibition, or conducts direct sales activities without the Organizer's approval, the Organizer may immediately order suspension, removal, or withdrawal of the exhibits. In such cases, the participation fee shall not be refunded, and the exhibitor shall not be entitled to any compensation.<br>
+                        3. The Organizer may restrict access to the Exhibition Hall by specific individuals if deemed necessary.<br>
+                        4. Exhibitors shall not alter the original condition of the exhibition hall, including painting, nailing, or modifying floors, ceilings, pillars, or walls. Any damage caused to the exhibition hall shall be restored at the exhibitor's expense, and the exhibitor shall compensate the Organizer for any resulting losses.<br><br>
 
-                        <div class="form_pri_titt">제 8 조 (계약해지)</div>
-                        1. 전시자가 배정된 전시 부스의 전부 또는 일부의 사용을 거부하거나 참가비를 기한 내 납부하지 않을 경우 주관자는 일방적으로 계약을 해지할 수 있으며, 이 경우 기납부된 참가비는 반환하지 않는다. 전시자가 주최자의 승인 없이 참가를 포기할 경우에도 참가비를 반환하지 않는다.<br>
-                        2. 전시자가 참가신청 후 참가를 취소하고자 할 경우 반드시 주관자에게 서면(공문)으로 취소 신청을 하여야 하며, 이 경우 다음에 정한 위약금 전액을 참가 취소 후 7일 이내에 주관자에게 지불하여야 한다. <br>단, 기납입된 참가비는 동 위약금으로 차감하며, 부족 시 추가 납입하여야 하고 잉여 시 반환한다.<br>
-                        - ~2025.12.31. 취소 시: 총 참가비의 50%를 위약금으로 주관자에게 납부<br>
-                        - 2026.1.1.~2026.1.18. 취소 시: 총 참가비의 80%를 위약금으로 주관자에게 납부<br>
-                        - 2026.1.19.~ 취소 시: 총 참가비의 100%를 위약금으로 주관자에게 납부<br><br>
+                        <div class="form_pri_titt">Article 8 (Termination of Contract)</div>
+                        1. If an exhibitor refuses to use all or part of the allocated booth space or fails to pay the participation fee within the specified deadline, the Organizer may unilaterally terminate the participation agreement. In such cases, any participation fees already paid shall not be refunded. Participation fees shall also not be refunded if the exhibitor withdraws without the Organizer's approval.<br>
+                        2. If an exhibitor wishes to cancel participation after submitting the application, a written cancellation request (official document) must be submitted to the Organizer. The exhibitor shall pay the cancellation penalty specified below within seven (7) days of cancellation.<br>
+                        Provided that any participation fee already paid shall be deducted from the penalty amount. If the penalty exceeds the amount paid, the exhibitor shall pay the difference; if the amount paid exceeds the penalty, the balance shall be refunded.<br>
+                        - Cancellation by December 31, 2026: 50% of the total participation fee shall be paid as a cancellation penalty.<br>
+                        - Cancellation from January 1, 2027 to January 31, 2027: 80% of the total participation fee shall be paid as a cancellation penalty.<br>
+                        - Cancellation on or after February 1, 2027: 100% of the total participation fee shall be paid as a cancellation penalty.<br><br>
 
-                        <div class="form_pri_titt">제 9 조 (전시회 취소 또는 변경)</div>
-                        1. 주관자가 행정명령 또는 기타 내부적인 사유로 전시회 개최를 취소하는 경우 이미 납입된 참가비 전액을 전시자에게 반환한다.<br>
-                        2. 전시 기간 중 행정명령에 의해 전시장이 폐쇄될 경우, 전시회를 개최할 수 없게 됨에 따라 전시일(3일)에 대한 참가비를 일할 계산하여 환불한다.<br>
-                        3. 다만, 1항의 경우를 제외한 불가항력이나 주관사의 귀책 사유가 아닌 특별한 사정으로 전시회의 취소, 개최일의 변경 또는 축소의 경우에는 이를 반환하지 않는다. 이 경우 전시자는 주관자에게 보상을 청구할 수 없다.<br><br>
+                        <div class="form_pri_titt">Article 9 (Cancellation or Modification of the Exhibition)</div>
+                        1. If the Organizer cancels the Exhibition due to an administrative order or other internal reasons, the full participation fee already paid shall be refunded to the exhibitor.<br>
+                        2. If the exhibition venue is closed by administrative order during the Exhibition period, making it impossible to continue the Exhibition, the participation fee shall be refunded on a prorated basis according to the affected exhibition days (three days).<br>
+                        3. Except for the circumstances described in Paragraph 1, participation fees shall not be refunded in the event of force majeure or other special circumstances not attributable to the Organizer, including cancellation, postponement, rescheduling, or reduction of the Exhibition. In such cases, exhibitors shall not be entitled to claim compensation from the Organizer.<br><br>
 
-                        <div class="form_pri_titt">제 10 조 (안전관리)</div>
-                        1. 전시자는 개장 시간 이전에 전시품 및 부스 환경을 확인하여 안전한 행사 운영이 이루어질 수 있도록 하고 폐장 시 모든 안전 요소를 점검ㆍ관리하여야 한다.<br>
-                        2. 주관자는 안전한 행사 환경 조성을 위해 장치, 행사, 철거 기간에 경비용역 서비스를 제공한다. 이때, 전시자 및 기타 용역업체는 경비요원의 지시에 따라야 한다.<br>
-                        3. 필요 시 전시자는 인명ㆍ재산피해에 대비하여 보험에 가입하는 등 대책을 강구해야 한다.<br>
-                        4. 전시장에서 발생한 모든 사고 및 전시품ㆍ제반장비ㆍ시설의 최종적인 보호 및 분실에 대한 책임은 전시자에 있으며, 상황 발생 시 즉시 사무국에 통보하고 사무국을 면책하여야 한다.<br>
-                        5. 전시자는 전시장 내 모든 시설물을 보호하여야 하며, 전시자의 과실(전시자 발주 용역사 포함)로 인한 오염ㆍ파손ㆍ손상ㆍ훼손 등 발생 시 전시장 규정에 맞추어 원상 복구의 책임을 진다.<br>
-                        6. 전시자는 전시자가 지정한 협력업체에게 킨텍스의 규정을 사전 공지하여야 하며, 행사 분야별 현장대리인 안전가이드를 취합하여 사무국이 지정한 기간 내에 사무국에 제출하여야 한다. 이때 협력업체 관리 책임은 전시자에 있으며 협력업체가 규정을 준수하지 않아 발생하는 모든 책임은 전시자에게 있다.<br>
-                        7. 전시품의 실연(實演)이 이루어지는 장소 주변에는 적절한 안전보호시설을 설치하여야 한다.<br>
-                        8. 폭발물, 가연성 물질 등 위험물의 전시장 내 반입은 금지한다. 다만, 전시품 가동에 반드시 필요한 경우, 『위험물 사용 승인신청서』를 사무국이 지정한 기간 내에 사무국에 제출하여야 한다.<br>
-                        9. 전기ㆍ가스ㆍ압축공기ㆍ급배수 사용 시 안전사고의 예방을 위하여 수시로 해당 용역업체 책임자가 부스 내 설비와 시운전 상황을 점검하도록 해야 하며, 매일 행사 종료 후에는 적절한 안전 조치가 되었는지 확인 후 퇴장하여야 한다. 또한, 불량 소재가 발견될 때에는 즉시 보수를 지시하고 사무국에 알리는 등 적절한 조치를 취하여야 한다.<br><br>
+                        <div class="form_pri_titt">Article 10 (Safety Management)</div>
+                        1. Exhibitors shall inspect their exhibits and booth environment before opening hours to ensure safe event operation and shall inspect and manage all safety-related elements at the close of each day.<br>
+                        2. To maintain a safe exhibition environment, the Organizer shall provide security services during booth installation, exhibition operation, and dismantling periods. Exhibitors and service providers shall comply with the instructions of security personnel.<br>
+                        3. Exhibitors shall take appropriate measures, including obtaining insurance coverage, to protect against personal injury and property damage when necessary.<br>
+                        4. Exhibitors shall bear full responsibility for all accidents occurring within the exhibition venue and for the protection and loss of exhibits, equipment, and facilities. In the event of an incident, the exhibitor shall immediately notify the Secretariat and indemnify the Secretariat from any liability.<br>
+                        5. Exhibitors shall protect all facilities within the exhibition venue. Any contamination, breakage, damage, or destruction caused by the exhibitor's negligence (including contractors engaged by the exhibitor) shall be restored in accordance with venue regulations at the exhibitor's expense.<br>
+                        6. Exhibitors shall inform their designated contractors of all KINTEX regulations in advance and submit safety guidelines for on-site representatives by event category to the Secretariat within the designated period. Exhibitors shall be fully responsible for the management of their contractors and for any consequences arising from their contractors' failure to comply with regulations.<br>
+                        7. Appropriate safety barriers and protective facilities shall be installed around areas where live demonstrations of exhibits are conducted.<br>
+                        8. The entry of hazardous materials, including explosives and flammable substances, into the exhibition venue is prohibited. However, if such materials are essential for operating an exhibit, an "Application for Approval to Use Hazardous Materials" must be submitted to the Secretariat within the designated period.<br>
+                        9. When using electricity, gas, compressed air, water supply, or drainage systems, the responsible contractor shall regularly inspect booth facilities and test operations to prevent accidents. At the end of each exhibition day, exhibitors shall verify that all necessary safety measures have been implemented before leaving the venue. If defective materials or unsafe conditions are identified, immediate corrective action shall be taken and the Secretariat shall be notified without delay.<br><br>
 
-                        <div class="form_pri_titt">제 11 조 (전시장 경비, 위험부담 및 보험)</div>
-                        1. 주관자는 부스 설치, 전시 기간 및 철거 기간 동안 경비용역 업체와 계약을 체결하여 전시장 출입 통제 및 질서유지를 목적으로 경비 서비스를 제공한다. 전시품 및 기타 물품에 대한 최종적인 책임은 해당 참가기업에 있으며, 도난, 파손 등에 대한 보상을 청구할 수 없다. 따라서, 참가기업은 부스 설치, 전시 기간 및 철거 기간 동안 자사 전시품 및 기타 물품에 대한 손해, 손실 등에 대하여 보험 가입 등 대책을 강구해야 하며, 부스 및 전시품 관리에 만전을 기해야 한다.<br>
-                        2. 주관자는 사무국의 귀책 사유가 아닌, 천재지변 등의 불가항력이나 제3자에 의한 방화, 절도, 파손 등으로 인한 모든 피해에 대해서 책임을 지지 않는다.<br>
-                        3. 참가기업의 전시품 또는 서비스의 하자, 기타 전시회 관련 활동에 의하여 발생하는 하자담보책임, 손해배상책임 등 모든 민‧ 형사행정상 법적 책임은 전적으로 참가기업에게 있다. 만일 제3자가 참가기업의 명백한 사유로 전시로 인한 하자담보책임, 손해배상책임 등 민형사상 법적 책임을 사무국에 청구하는 경우 참가기업은 민원처리, 소송 기타 법적 대응 등 사무국을 면책시키는 조치를 취해야 한다. 또한, 위 제3자의 청구에 대한 대응을 위하여 사무국이 비용을 지출한 경우 참가기업은 즉시 그 비용을 사무국에 보상해 주어야 한다. 다만, 전시장 자체의 하자 등 전시장 및 사무국의 책임 있는 사유로 인한 경우가 명백한 경우는 예외로 한다.<br>
-                        4. 참가기업은 부스 설치, 전시 기간 및 철거 기간에 자사 전시와 관련하여 발생한 모든 제반 사고에 대해 책임지며, 사고 발생 시 즉시 사무국에 통보하고 사고대응 조치에 최선을 다해야 한다. 또한, 참가기업이 고의 또는 과실로 화재, 도난, 파손, 기타 사고를 발생케 하여 사무국, 전시장 및 제3자에게 손해를 입힌 때에는 참가기업이 배상책임을 져야 한다.<br><br>
+                        <div class="form_pri_titt">Article 11 (Security, Risk, and Insurance)</div>
+                        1. The Organizer shall provide security services during booth installation, the exhibition period, and dismantling by contracting with a professional security company for access control and order maintenance within the exhibition venue. The exhibiting company shall bear ultimate responsibility for its exhibits and other property and shall not be entitled to claim compensation for theft, damage, or loss. Therefore, exhibitors shall obtain insurance coverage and take appropriate measures against damage or loss of exhibits and property during installation, exhibition, and dismantling periods, and shall exercise due care in managing their booths and exhibits.<br>
+                        2. The Organizer shall not be liable for any loss or damage caused by force majeure, including natural disasters, arson, theft, vandalism, or other acts committed by third parties, except where such loss or damage results from the negligence of the Secretariat.<br>
+                        3. All civil, criminal, and administrative liabilities arising from defects in the exhibitor’s products or services, or from any exhibition-related activities, including product liability and claims for damages, shall be the sole responsibility of the exhibiting company. If a third party asserts claims against the Secretariat due to the exhibitor’s fault, including product liability or damages arising from the exhibition, the exhibitor shall indemnify and hold the Secretariat harmless by taking all necessary actions, including complaint handling, litigation, and other legal proceedings. Furthermore, if the Secretariat incurs expenses in responding to such claims, the exhibitor shall promptly reimburse those expenses. This shall not apply where the loss or damage is clearly attributable to defects in the exhibition venue itself or other causes for which the venue or Secretariat is responsible.<br>
+                        4. The exhibiting company shall be responsible for all incidents and accidents arising in connection with its participation during booth installation, the exhibition period, and dismantling. In the event of an accident, the exhibitor shall immediately notify the Secretariat and make every effort to take appropriate response measures. If the exhibitor intentionally or negligently causes fire, theft, damage, or any other incident resulting in loss to the Secretariat, the venue, or any third party, the exhibitor shall be liable for all resulting damages.<br><br>
 
-                        <div class="form_pri_titt">제 12 조 (부스설치 제한 및 방화 규칙)</div>
-                        1. 모든 장치물의 높이는 전시 규모, 위치 등을 고려하여 주관자가 지정한 높이 이상을 초과할 수 없다.<br>
-                        2. 전시장 내 장치물의 자재는 소방법규에 따라 불연 처리되어야 한다.<br>
-                        3. 주관자는 필요에 따라 전시자에게 화재방지와 관련하여 시정을 요구할 수 있으며, 전시자는 이러한 시정조치에 대하여 즉시 이행하여야 하며 전시자가 이에 불응할 경우 주관자는 전시 중단, 철거 및 반출을 명할 수 있다.<br><br>
+                        <div class="form_pri_titt">Article 12 (Booth Installation Restrictions and Fire Prevention Rules)</div>
+                        1. The height of all structures and installations shall not exceed the maximum height designated by the Organizer, taking into account the scale and location of the exhibition.<br>
+                        2. All materials used for structures and installations within the exhibition hall shall be treated with fire-retardant materials in accordance with applicable fire safety regulations.<br>
+                        3. The Organizer may require exhibitors to take corrective measures related to fire prevention when deemed necessary. Exhibitors shall immediately comply with such requirements. If an exhibitor fails to comply, the Organizer may order suspension of the exhibition, removal, or withdrawal of the relevant exhibits or structures.<br><br>
 
-                        <div class="form_pri_titt">제 13 조 (전시회 만족도 설문조사)</div>
-                        1. 주관자는 경기국제보트쇼 운영과 해양레저산업 발전을 위하여 참가자에게 만족도 설문조사 및 실태 설문조사를 진행한다.<br>
-                        2. 주관자는 객관적인 설문 및 평가를 위하여 전문 리서치 기관을 이용하여 참가자에게 설문을 할 수 있다.<br><br>
+                        <div class="form_pri_titt">Article 13 (Exhibition Satisfaction Survey)</div>
+                        1. The Organizer shall conduct satisfaction surveys and industry status surveys for participants to support the operation of the Korea International Boat Show and the development of the marine leisure industry.<br>
+                        2. For objective surveys and evaluations, the Organizer may engage professional research organizations to conduct surveys of participants.<br><br>
 
-                        <div class="form_pri_titt">제 14 조 (참가자 매뉴얼 및 보충규정 준수)</div>
-                        1. 주관자는 전시 업무 수행에 필요한 참가자 매뉴얼을 참가자에게 제공한다.<br>
-                        2. 주관자는 필요 시 본 규정 이외에도 보충규정을 제정할 수 있으며, 참가자는 본 규정뿐만 아니라 보충규정을 준수하여야 한다.<br><br>
+                        <div class="form_pri_titt">Article 14 (Compliance with Exhibitor Manual and Supplementary Regulations)</div>
+                        1. The Organizer shall provide participants with an Exhibitor Manual necessary for the performance of exhibition-related activities.<br>
+                        2. The Organizer may establish supplementary regulations in addition to these rules whenever necessary, and participants shall comply with both these rules and any supplementary regulations.<br><br>
 
-                        <div class="form_pri_titt">제 15 조 (규정의 해석 및 분쟁 해결)</div>
-                        1. 본 규정의 해석에 관하여 주관자와 전시자 간의 이견이 있을 경우 주관자의 해석과 결정에 따른다.<br>
-                        2. 본 전시회에 관하여 발생하는 권리 및 의무에 대한 분쟁은 서울 소재 대한상사중재원의 중재판정에 따른다.
-
+                        <div class="form_pri_titt">Article 15 (Interpretation of Rules and Dispute Resolution)</div>
+                        1. In the event of any disagreement between the Organizer and an exhibitor regarding the interpretation of these rules, the Organizer’s interpretation and decision shall prevail.<br>
+                        2. Any dispute concerning rights and obligations arising from participation in this Exhibition shall be settled through arbitration by the Korean Commercial Arbitration Board (KCAB) in Seoul, and the arbitral award shall be final and binding upon the parties.
                     </div>
-
                 </div>
             </div>
             <!-- //약관 -->
@@ -168,166 +170,163 @@
             <!-- 약관 -->
             <div class="form_wrap">
                 <div class="form_tit">
-                    <div class="big">개인정보 취급방침</div>
+                    <div class="big">Privacy Policy</div>
                 </div>
                 <div class="form_pri">
-
                     <div class="form_pri_box">
 
-                        <div class="form_pri_titt">킨텍스 개인정보 처리방침</div>
-                        킨텍스(이하 ‘회사’라 한다)는 개인정보 보호법 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리지침을 수립․공개합니다.<br><br>
+                        <div class="form_pri_titt">KINTEX Privacy Policy</div>
+                        KINTEX (hereinafter referred to as the “Company”) establishes and discloses the following Privacy Policy in accordance with Article 30 of the Personal Information Protection Act in order to protect the personal information of data subjects and to promptly and smoothly handle related complaints.<br><br>
 
-                        <div class="form_pri_titt">제 1 조 (개인정보의 처리목적)</div>
-                        회사는 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는 개인정보 보호법 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.<br>
-                        1. 홈페이지 회원 가입 및 관리<br>
-                        회원 가입 의사 확인, 회원제 서비스 제공에 따른 본인 식별․인증, 회원자격 유지․관리, 제한적 본인확인제 시행에 따른 본인확인, 서비스 부정 이용 방지, 만 14세 미만 아동의 개인정보 처리 시 법정대리인의 동의 여부 확인, 각종 고지․통지, 고충 처리 등을 목적으로 개인정보를 처리합니다.<br>
-                        2. 재화 또는 서비스 제공<br>
-                        전시/컨벤션 서비스 제공(부스 참가, 전시회 입장 등), 콘텐츠 제공, 맞춤 서비스 제공, 본인인증, 연령 인증, 비용 결제․정산 등을 목적으로 개인정보를 처리합니다.<br>
-                        3. 고충 처리<br>
-                        민원인의 신원 확인, 민원 사항 확인, 사실조사를 위한 연락․통지, 처리결과 통보 등의 목적으로 개인정보를 처리합니다.<br>
-                        4. 마케팅 및 광고에의 활용<br>
-                        신규 서비스 및 맞춤 서비스 제공, 이벤트 및 광고성 정보 제공 및 참여기회 제공, 인구통계학적 특성에 따른 서비스 제공 및 광고 등을 목적으로 개인정보를 처리합니다. 또한 재화나 서비스의 홍보 또는 판매 권유 등을 위하여 해당 개인정보를 이용하여 정보 주체에게 연락할 수 있습니다.<br>
-                        5. 개인정보 수집 항목 및 현황<br>
-                        - 개인정보 수집 항목 : 로그인 ID, 이름, 전화번호, 이메일, 비밀번호, 연령, 성별, 출생 연도, 지역, 직장명(단체명), 설문조사 결과, 주소<br>
-                        - 수집 방법 : 홈페이지, 킨텍스 앱, 주관전시 홈페이지 사전등록, 서면 양식, 온·오프라인 이벤트 행사<br>
-                        - 보유 근거 : 회원가입 시 개인정보처리방침 동의 (개인정보 마케팅 활용 : 5년)<br><br>
+                        <div class="form_pri_titt">Article 1 (Purpose of Processing Personal Information)</div>
+                        The Company processes personal information for the following purposes. The personal information being processed will not be used for purposes other than those stated below. If the purpose of use changes, the Company will take necessary measures, including obtaining separate consent, in accordance with Article 18 of the Personal Information Protection Act.<br>
+                        1. Website Membership Registration and Management<br>
+                        Personal information is processed for purposes including confirming membership registration intent, providing member services, identification and authentication of members, maintaining and managing membership status, identity verification under the limited verification system, prevention of unauthorized service use, confirmation of parental consent for children under the age of 14, notices and announcements, and complaint handling.<br>
+                        2. Provision of Goods or Services<br>
+                        Personal information is processed for purposes including the provision of exhibition and convention services (such as booth participation and exhibition admission), content provision, customized services, identity verification, age verification, payment processing, and settlement.<br>
+                        3. Complaint Handling<br>
+                        Personal information is processed for purposes including verifying the identity of complainants, confirming complaint details, communication and notification for fact-finding investigations, and notifying processing results.<br>
+                        4. Marketing and Advertising<br>
+                        Personal information is processed for purposes including providing new services and customized services, offering event and promotional information, providing participation opportunities, delivering services and advertisements based on demographic characteristics, and other marketing activities. The Company may also contact data subjects using such personal information for promotional or sales-related purposes regarding goods or services.<br>
+                        5. Personal Information Collection Items and Status<br>
+                        - Personal Information Collected: Login ID, name, telephone number, email address, password, age, gender, birth year, region, company name (organization name), survey results, and address<br>
+                        - Collection Methods: Website, KINTEX App, pre-registration through organizer exhibition websites, written forms, online and offline event activities<br>
+                        - Legal Basis for Retention: Consent to the Privacy Policy upon membership registration (personal information for marketing purposes: retained for 5 years)<br><br>
 
-                        <div class="form_pri_titt">제 2 조 (개인정보의 처리 및 보유기간)</div>
-                        1. 회사는 법령에 따른 개인정보 보유․이용 기간 또는 정보 주체로부터 개인정보 수집 시에 동의받은 개인정보 보유․이용 기간 내에서 개인정보를 처리․보유합니다.<br>
-                        2. 각각의 개인정보 처리 및 보유 기간은 다음과 같습니다.<br>
-                        1) 홈페이지 회원 가입 및 관리 : 홈페이지 탈퇴 시까지<br>
-                        다만, 다음의 사유에 해당하는 경우에는 해당 사유 종료 시까지<br>
-                        - 관계 법령 위반에 따른 수사․조사 등이 진행 중인 경우에는 해당 수사․조사 종료 시까지<br>
-                        2) 재화 또는 서비스 제공 : 재화․서비스 공급 완료 및 요금 결제․정산 완료 시까지<br>
-                        다만, 다음의 사유에 해당하는 경우에는 해당 기간 종료 시까지<br>
-                        - 「전자상거래 등에서의 소비자 보호에 관한 법률」에 따른 표시․광고, 계약 내용 및 이행 등<br>
-                        3) 거래에 관한 기록<br>
-                        • 표시․광고에 관한 기록 : 6개월<br>
-                        • 계약 또는 청약 철회, 대금결제, 재화 등의 공급기록 : 5년<br>
-                        • 소비자 불만 또는 분쟁 처리에 관한 기록 : 3년<br><br>
+                        <div class="form_pri_titt">Article 2 (Processing and Retention Period of Personal Information)</div>
+                        1. The Company processes and retains personal information within the period prescribed by applicable laws or within the period agreed upon by the data subject at the time of collection.<br>
+                        2. The retention periods for each category of personal information are as follows:<br>
+                        1) Website Membership Registration and Management: Until membership withdrawal from the website<br>
+                        However, if any of the following circumstances apply, personal information shall be retained until the relevant matter is concluded:<br>
+                        - Where investigations or inquiries relating to violations of applicable laws are ongoing, until such investigations or inquiries are completed<br>
+                        2) Provision of Goods or Services: Until the supply of goods or services and payment settlement have been completed<br>
+                        However, if any of the following circumstances apply, personal information shall be retained until the applicable retention period expires:<br>
+                        - Records relating to labeling, advertising, contract details, and performance of contracts under the Act on Consumer Protection in Electronic Commerce, etc.<br>
+                        3) Records Related to Transactions<br>
+                        • Records on labeling and advertising: 6 months<br>
+                        • Records on contracts, withdrawal of subscriptions, payment processing, and supply of goods: 5 years<br>
+                        • Records on consumer complaints and dispute resolution: 3 years<br><br>
 
-                        <div class="form_pri_titt">제 3 조 (개인정보의 제3자 제공)</div>
-                        1. 회사는 정보 주체의 개인정보를 제1조(개인정보의 처리 목적)에서 명시한 범위 내에서만 처리하며, 정보 주체의 동의, 법률의 특별한 규정 등 개인정보 보호법 제17조에 해당하는 경우에 개인정보를 제3자에게 제공할 수 있습니다.<br>
-                        2. 회사는 다음과 같이 개인정보를 제3자에게 제공할 수 있습니다.<br>
-                        - 개인정보를 제공받는 자 : 킨텍스 앱의 무료/유료 서비스를 사용하는 전시회 /컨벤션 행사 주최자<br>
-                        • 제공받는 자의 개인정보 이용 목적 : 전시회/컨벤션의 무료 서비스, 유료 결제 서비스, 이벤트 공동 개최, 마케팅, 광고 등<br>
-                        • 제공하는 개인정보 항목 : 아이디, 이름, 휴대폰 번호, 지역, 성별, 출생 연도, 직장명(단체), 추천인(ID 또는 이름), 전시회/컨벤션별 설문조사 항목 정보<br><br>
+                        <div class="form_pri_titt">Article 3 (Provision of Personal Information to Third Parties)</div>
+                        1. The Company processes personal information only within the scope specified in Article 1 (Purpose of Processing Personal Information). Personal information may be provided to third parties only with the consent of the data subject or in cases permitted under Article 17 of the Personal Information Protection Act and other applicable laws.<br>
+                        2. The Company may provide personal information to third parties as follows:<br>
 
-                        - 개인정보를 제공받는 자 : 전시산업진흥회<br>
-                        • 제공받는 자의 개인정보 이용 목적 : 전시산업진흥회 전시회 인증을 위한 정보 제공<br>
-                        • 제공하는 개인정보 항목 : 아이디, 이름, 휴대폰 번호, 지역, 성별, 출생 연도, 직장명(단체), 추천인(ID 또는 이름), 전시회/컨벤션별 설문조사 항목 정보<br><br>
+                        - Recipient of Personal Information: Organizers of exhibitions and convention events using the free or paid services of the KINTEX App<br>
+                        • Purpose of Use by Recipient: Provision of free exhibition/convention services, paid payment services, joint event hosting, marketing, advertising, and related activities<br>
+                        • Personal Information Provided: User ID, name, mobile phone number, region, gender, birth year, company/organization name, referrer (ID or name), and survey information related to each exhibition/convention event<br><br>
 
-                        <div class="form_pri_titt">제 4 조 (개인정보처리의 위탁)</div>
-                        1. 회사는 원활한 개인정보 업무처리를 위하여 다음과 같이 개인정보 처리 업무를 위탁하고 있습니다.<br>
-                        - (위탁자) : 킨텍스 (수탁자) : 에스브이엠플래닛<br>
-                        - 위탁하는 업무의 내용 : 경기국제보트쇼 홈페이지 관리<br>
-                        - 위탁기간 : 위탁계약 종료 시<br>
-                        2. 회사는 위탁계약 체결 시 개인정보 보호법 제②5조에 따라 위탁 업무 수행 목적 외 개인정보 처리금지, 기술적․관리적 보호조치, 재위탁 제한, 수탁자에 대한 관리․감독, 손해배상 등 책임에 관한 사항을 계약서 등 문서에 명시하고, 수탁자가 개인정보를 안전하게 처리하는지를 감독하고 있습니다.<br>
-                        3. 위탁 업무의 내용이나 수탁자가 변경될 경우에는 지체없이 본 개인정보 처리방침을 통하여 공개하도록 하겠습니다.<br><br>
+                        - Recipient of Personal Information: Association of Korean Exhibition Industry (AKEI)<br>
+                        • Purpose of Use by Recipient: Provision of information for exhibition certification by the Association of Korean Exhibition Industry<br>
+                        • Personal Information Provided: User ID, name, mobile phone number, region, gender, birth year, company/organization name, referrer (ID or name), and survey information related to each exhibition/convention event<br><br>
 
-                        <div class="form_pri_titt">제 5 조 (정보 주체의 권리․의무 및 행사방법)</div>
-                        1. 정보 주체는 회사에 대해 언제든지 다음 각 호의 개인정보 보호 관련 권리를 행사할 수 있습니다.<br>
-                        - 개인정보 열람 요구<br>
-                        - 오류 등이 있을 경우 정정 요구<br>
-                        - 삭제 요구<br>
-                        - 처리정지 요구<br>
-                        2. 제1항에 따른 권리 행사는 회사에 대해 서면, 전화, 전자우편 등을 통하여 하실 수 있으며 회사는 이에 대해 지체없이 조치하겠습니다.<br>
-                        3. 정보 주체가 개인정보의 오류 등에 대한 정정 또는 삭제를 요구한 경우에는 회사는 정정 또는 삭제를 완료할 때까지 당해 개인정보를 이용하거나 제공하지 않습니다.<br>
-                        4. 제1항에 따른 권리 행사는 정보 주체의 법정대리인이나 위임을 받은 자 등 대리인을 통하여 하실 수 있습니다. 이 경우 개인정보 보호법 시행규칙 별지 제11호 서식에 따른 위임장을 제출하셔야 합니다.<br>
-                        5. 정보 주체는 개인정보 보호법 등 관계 법령을 위반하여 회사가 처리하고 있는 정보 주체 본인이나 타인의 개인정보 및 사생활을 침해하여서는 안 됩니다.<br><br>
+                        <div class="form_pri_titt">Article 4 (Entrustment of Personal Information Processing)</div>
+                        1. The Company entrusts the following personal information processing tasks to facilitate efficient management of personal information.<br>
+                        - (Entrusting Party): KINTEX / (Entrusted Party): SVM Planet<br>
+                        - Scope of Entrusted Work: Management and operation of the Korea International Boat Show website<br>
+                        - Entrustment Period: Until the termination of the entrustment agreement<br>
+                        2. When entering into an entrustment agreement, the Company specifies matters concerning responsibilities such as prohibition of personal information processing beyond the purpose of the entrusted work, technical and administrative safeguards, restrictions on re-entrustment, supervision and management of the entrusted party, and liability for damages in accordance with Article 26 of the Personal Information Protection Act. The Company also supervises whether the entrusted party processes personal information safely.<br>
+                        3. If the details of the entrusted work or the entrusted party change, the Company will disclose such changes without delay through this Privacy Policy.<br><br>
 
-                        <div class="form_pri_titt">제 6 조 (처리하는 개인정보 항목)</div>
-                        회사는 다음의 개인정보 항목을 처리하고 있습니다.<br>
-                        1. 홈페이지/앱 회원 가입 및 관리<br>
-                        - 필수항목 : 아이디, 이름, 휴대폰 번호, 지역구분, 성별, 출생 연도<br>
-                        - 선택항목 : 직장인(단체), 추천인(ID 또는 이름), 설문조사<br>
-                        2. 서비스 제공<br>
-                        - 필수항목 : 아이디, 이름, 휴대폰 번호, 지역구분, 성별, 출생 연도<br>
-                        - 선택항목 : 직장인(단체), 추천인(ID 또는 이름), 설문조사, 과거 구매내역<br>
-                        3. 인터넷 서비스 이용 과정에서 아래 개인정보 항목이 자동으로 생성되어 수집될 수 있습니다.<br>
-                        - IP주소, 쿠키, MAC 주소, 서비스 이용기록, 방문 기록, 불량 이용기록 등<br><br>
+                        <div class="form_pri_titt">Article 5 (Rights and Obligations of Data Subjects and Methods of Exercise)</div>
+                        1. Data subjects may exercise the following rights related to personal information protection at any time:<br>
+                        - Request access to personal information<br>
+                        - Request correction of errors or inaccuracies<br>
+                        - Request deletion of personal information<br>
+                        - Request suspension of processing<br>
+                        2. The rights under Paragraph 1 may be exercised by submitting requests in writing, by telephone, email, or other means, and the Company shall take appropriate action without delay.<br>
+                        3. If a data subject requests correction or deletion of personal information, the Company shall not use or provide the relevant personal information until such correction or deletion has been completed.<br>
+                        4. The rights under Paragraph 1 may also be exercised through a legal representative or an authorized agent. In such cases, a power of attorney in the form prescribed by Appendix Form No. 11 of the Enforcement Rules of the Personal Information Protection Act must be submitted.<br>
+                        5. Data subjects shall not infringe upon their own or others’ personal information and privacy by violating the Personal Information Protection Act or other applicable laws while using the services provided by the Company.<br><br>
 
-                        <div class="form_pri_titt">제 7 조 (개인정보의 파기)</div>
-                        1. 회사는 개인정보 보유기간의 경과, 처리 목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체없이 해당 개인정보를 파기합니다.<br>
-                        2. 정보 주체로부터 동의받은 개인정보 보유기간이 경과하거나 처리 목적이 달성되었음에도 불구하고 다른 법령에 따라 개인정보를 계속 보존하여야 하는 경우에는, 해당 개인정보를 별도의 데이터베이스(DB)로 옮기거나 보관 장소를 달리하여 보존합니다.<br>
-                        3. 개인정보 파기의 절차 및 방법은 다음과 같습니다.<br>
-                        - 파기절차 : 회사는 파기 사유가 발생한 개인정보를 즉시 파기합니다.<br>
-                        - 파기방법 : 회사는 전자적 파일 형태로 기록․저장된 개인정보는 기록을 재생할 수 없도록 DB데이터 삭제 등의 방법을 이용하여 파기하며, 종이 문서에 기록․저장된 개인정보는 분쇄기로 분쇄하거나 소각하여 파기합니다.<br><br>
+                        <div class="form_pri_titt">Article 6 (Categories of Personal Information Processed)</div>
+                        The Company processes the following categories of personal information:<br>
+                        1. Website/App Membership Registration and Management<br>
+                        - Required Information: User ID, name, mobile phone number, country/region, gender, birth year<br>
+                        - Optional Information: Company/organization affiliation, referrer (ID or name), survey responses<br>
+                        2. Provision of Services<br>
+                        - Required Information: User ID, name, mobile phone number, country/region, gender, birth year<br>
+                        - Optional Information: Company/organization affiliation, referrer (ID or name), survey responses, previous purchase history<br>
+                        3. During the use of Internet services, the following information may be automatically generated and collected:<br>
+                        - IP address, cookies, MAC address, service usage records, visit history, records of improper use, and similar information<br><br>
 
-                        <div class="form_pri_titt">제 8 조 (개인정보의 안전성 확보조치)</div>
-                        회사는 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고 있습니다.<br>
-                        1. 관리적 조치 : 내부관리계획 수립․시행, 정기적 직원 교육 등<br>
-                        2. 기술적 조치 : 개인정보처리 시스템 등의 접근권한 관리, 접근통제, 고유식별정보 등의 암호화, 보안프로그램 설치<br>
-                        3. 물리적 조치 : 전산실, 자료보관실 등의 접근통제<br><br>
+                        <div class="form_pri_titt">Article 7 (Destruction of Personal Information)</div>
+                        1. The Company shall promptly destroy personal information when it becomes unnecessary, such as upon expiration of the retention period or achievement of the processing purpose.<br>
+                        2. If personal information must be retained in accordance with other applicable laws even after the retention period agreed upon by the data subject has expired or the processing purpose has been achieved, such personal information shall be transferred to a separate database (DB) or stored in a different location.<br>
+                        3. The procedures and methods for destroying personal information are as follows:<br>
+                        - Destruction Procedure: The Company shall immediately destroy personal information upon the occurrence of a valid reason for destruction.<br>
+                        - Destruction Method: Personal information stored in electronic file format shall be destroyed using methods such as deletion of database records to prevent recovery. Personal information recorded or stored in paper documents shall be destroyed by shredding or incineration.<br><br>
 
-                        <div class="form_pri_titt">제 9 조 (개인정보 자동 수집 장치의 설치∙운영 및 거부에 관한 사항)</div>
-                        1. 회사는 이용자에게 개별적인 맞춤 서비스를 제공하기 위해 이용 정보를 저장하고 수시로 불러오는 ‘쿠키(cookie)’를 사용할 수 있습니다.<br>
-                        2. 쿠키는 웹사이트를 운영하는데 이용되는 서버(http)가 이용자의 컴퓨터 브라우저에게 보내는 소량의 정보이며 이용자들의 PC 컴퓨터 내의 하드디스크에 저장되기도 합니다.<br>
-                        - 쿠키의 사용 목적: 이용자가 방문한 각 서비스와 웹사이트들에 대한 방문 및 이용 형태, 인기 검색어, 보안 접속 여부, 등을 파악하여 이용자에게 최적화된 정보 제공을 위해 사용됩니다.<br>
-                        - 쿠키의 설치·운영 및 거부 : 웹브라우저 상단의 도구>인터넷 옵션>개인정보 메뉴의 옵션 설정을 통해 쿠키 저장을 거부할 수 있습니다.<br>
-                        - 쿠키 저장을 거부할 경우 맞춤형 서비스 이용에 어려움이 발생할 수 있습니다.<br><br>
+                        <div class="form_pri_titt">Article 8 (Measures to Ensure the Security of Personal Information)</div>
+                        The Company takes the following measures to ensure the security of personal information:<br>
+                        1. Administrative Measures: Establishment and implementation of internal management plans, regular employee training, etc.<br>
+                        2. Technical Measures: Access control and management of access rights to personal information processing systems, encryption of unique identification information, installation of security software, etc.<br>
+                        3. Physical Measures: Access control to computer rooms, document storage rooms, and other restricted areas.<br><br>
 
-                        <div class="form_pri_titt">제 10 조 (개인정보 보호책임자)</div>
-                        1. 회사는 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보 주체의 불만 처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.<br>
-                        ▶ 개인정보 보호책임자 : 사업부사장<br>
-                        ▶ 개인정보 보호 관리자<br>
-                        부서명 : 전시사업3팀<br>
-                        관리자 : 구기훈 팀장<br>
-                        연락처 : 031-995-8771 / ghkoo@kintex.com<br><br>
+                        <div class="form_pri_titt">Article 9 (Installation, Operation, and Refusal of Automatic Personal Information Collection Devices)</div>
+                        1. The Company may use “cookies” that store and retrieve user information from time to time in order to provide personalized services.<br>
+                        2. Cookies are small amounts of information sent by the server (HTTP) operating the website to the user’s web browser and may be stored on the hard disk of the user’s computer.<br>
+                        - Purpose of Cookie Use: Cookies are used to analyze visit patterns, service usage, popular search terms, security access status, and other information related to services and websites visited by users in order to provide optimized information and services.<br>
+                        - Installation, Operation, and Refusal of Cookies: Users may refuse the storage of cookies by adjusting the settings under Tools > Internet Options > Privacy in their web browser.<br>
+                        - If users refuse the storage of cookies, they may experience difficulties in using customized services.<br><br>
 
-                        ▶ 개인정보 보호 담당자<br>
-                        부서명 : 전시사업3팀<br>
-                        담당자 : 오병훈 차장<br>
-                        연락처 : 031-995-8777 / sky@kintex.com<br><br>
+                        <div class="form_pri_titt">Article 10 (Chief Privacy Officer)</div>
+                        1. The Company designates the following personnel as responsible for overseeing personal information processing and handling complaints, inquiries, and remedies related to personal information protection.<br>
+                        ▶ Chief Privacy Officer: Executive Vice President, Business Division<br>
+                        ▶ Personal Information Protection Manager<br>
+                        Department: Exhibition Business Team 3<br>
+                        Manager: Ki-Hoon Koo, Team Leader<br>
+                        Contact: 031-995-8771 / ghkoo@kintex.com<br><br>
 
-                        2. 정보 주체는 회사의 서비스(또는 사업)을 이용하면서 발생한 모든 개인정보 보호 관련 문의, 불만 처리, 피해구제 등에 관한 사항을 개인정보 담당 부서로 문의하실 수 있습니다. 회사는 정보 주체의 문의에 대해 지체없이 답변 및 처리해 드릴 것입니다.<br><br>
+                        ▶ Personal Information Protection Officer<br>
+                        Department: Exhibition Business Team 3<br>
+                        Officer: Byung-Hoon Oh, Deputy General Manager<br>
+                        Contact: 031-995-8777 / sky@kintex.com<br><br>
 
-                        <div class="form_pri_titt">제 11 조 (개인정보 열람청구)</div>
-                        정보 주체는 개인정보 보호법 제35조에 따른 개인정보의 열람청구를 아래의 부서에 할 수 있습니다. 회사는 정보 주체의 개인정보 열람청구가 신속하게 처리되도록 노력하겠습니다.<br>
-                        ▶ 개인정보 열람청구 접수․처리 부서 : 전시사업3팀<br><br>
+                        2. Data subjects may contact the department responsible for personal information protection regarding all inquiries, complaints, and requests for remedies related to personal information protection arising from the use of the Company's services (or business activities). The Company will respond and process such inquiries without delay.<br><br>
 
-                        <div class="form_pri_titt">제 12 조 (권익침해 구제방법)</div>
-                        정보 주체는 아래의 기관에 대해 개인정보 침해에 대한 피해구제, 상담 등을 문의하실 수 있습니다.<br>
-                        &lt;아래의 기관은 회사와는 별개의 기관으로서, 회사의 자체적인 개인정보 불만 처리, 피해구제 결과에 만족하지 못하시거나 보다 자세한 도움이 필요하시면 문의하여 주시기 바랍니다&gt;<br><br>
+                        <div class="form_pri_titt">Article 11 (Request for Access to Personal Information)</div>
+                        Data subjects may request access to their personal information pursuant to Article 35 of the Personal Information Protection Act through the department listed below. The Company will make every effort to ensure that such requests are processed promptly.<br>
+                        ▶ Department Responsible for Receiving and Processing Requests for Access to Personal Information: Exhibition Business Team 3<br><br>
 
-                            ▶ 개인정보 침해신고센터 (한국인터넷진흥원 운영)<br>
-                            - 소관업무 : 개인정보 침해 사실 신고, 상담 신청<br>
-                            - 홈페이지 : privacy.kisa.or.kr<br>
-                            - 전화 : (국번없이) 118<br>
-                            - 주소 : (58324) 전남 나주시 진흥길 9(빛가람동 301-2) 3층 개인정보침해신고센터<br><br>
+                        <div class="form_pri_titt">Article 12 (Remedies for Infringement of Rights and Interests)</div>
+                        Data subjects may contact the following organizations for consultation, dispute resolution, or remedies related to personal information infringement.<br>
+                        &lt;The organizations listed below are independent of the Company. If you are not satisfied with the Company's handling of personal information complaints or remedies, or if you require further assistance, please contact the relevant organization directly.&gt;<br><br>
 
-                            ▶ 개인정보 분쟁조정위원회<br>
-                            - 소관업무 : 개인정보 분쟁조정신청, 집단분쟁조정 (민사적 해결)<br>
-                            - 홈페이지 : www.kopico.go.kr<br>
-                            - 전화 : (국번없이) 1833-6972<br>
-                            - 주소 : (03171) 서울특별시 종로구 세종대로 209 정부서울청사 4층<br><br>
+                        ▶ Personal Information Infringement Report Center (operated by the Korea Internet & Security Agency, KISA)<br>
+                        - Responsibilities: Reporting personal information infringements and requesting consultation<br>
+                        - Website: privacy.kisa.or.kr<br>
+                        - Phone: 118 (without area code)<br>
+                        - Address: Personal Information Infringement Report Center, 3rd Floor, 9 Jinheung-gil, Naju-si, Jeollanam-do 58324, Republic of Korea<br><br>
 
-                            ▶ 대검찰청 사이버범죄수사단 : 02-3480-3573 (www.spo.go.kr)<br><br>
+                        ▶ Personal Information Dispute Mediation Committee<br>
+                        - Responsibilities: Personal information dispute mediation and collective dispute mediation (civil resolution)<br>
+                        - Website: www.kopico.go.kr<br>
+                        - Phone: 1833-6972 (without area code)<br>
+                        - Address: 4th Floor, Government Complex-Seoul, 209 Sejong-daero, Jongno-gu, Seoul 03171, Republic of Korea<br><br>
 
-                            ▶ 경찰청 사이버안전국 : 182 (http://cyberbureau.police.go.kr)<br><br>
+                        ▶ Cyber Crime Investigation Division, Supreme Prosecutors' Office: 02-3480-3573 (www.spo.go.kr)<br><br>
 
+                        ▶ Cyber Bureau, National Police Agency: 182 (http://cyberbureau.police.go.kr)<br><br>
 
-                            <div class="form_pri_titt">제 13 조 (영상정보처리기기 설치․운영)</div>
-                            1. 킨텍스는 아래와 같이 영상정보처리기기를 설치․운영하고 있습니다.<br>
-                            - 영상정보처리기기 설치 근거․목적 : 킨텍스의 시설안전․화재예방<br>
-                            - 설치 대수, 설치 위치, 촬영 범위 : 전시장 로비․전시실 등 주요 시설물에 설치, 촬영 범위는 주요 시설물의 전 공간을 촬영<br>
-                            - 관리책임자, 담당 부서 및 영상정보에 대한 접근 권한자 : 시설운영팀<br>
-                            - 영상정보 촬영 시간, 보관기간, 보관 장소, 처리 방법<br>
-                            • 촬영 시간 : 24시간 촬영<br>
-                            • 보관 장소 및 처리 방법 : 영상정보처리기기 통제실에 보관․처리<br>
-                            - 영상정보 확인 방법 및 장소 : 시설운영팀<br>
-                            - 정보 주체의 영상정보 열람 등 요구에 대한 조치 : 개인 영상정보 열람․존재확인 청구서로 신청하여야 하며, 정보 주체 자신이 촬영된 경우 또는 명백히 정보 주체의 생명․신체․재산 이익을 위해 필요한 경우에 한해 열람을 허용함<br>
-                            - 영상정보 보호를 위한 기술적․관리적․물리적 조치 : 내부관리계획 수립, 접근통제 및 접근권한 제한, 영상정보의 안전한 저장․전송 기술 적용, 처리기록 보관 및 위․변조 방지 조치, 보관시설 마련 및 잠금장치 설치 등<br><br>
+                        <div class="form_pri_titt">Article 13 (Installation and Operation of Video Information Processing Devices)</div>
+                        1. KINTEX installs and operates video information processing devices as follows:<br>
+                        - Purpose of Installation and Operation: Facility security and fire prevention at KINTEX<br>
+                        - Number of Devices, Installation Locations, and Recording Scope: Installed in major facilities such as exhibition hall lobbies and exhibition halls, recording all areas of major facilities<br>
+                        - Responsible Manager, Department, and Authorized Personnel with Access to Video Information: Facility Operations Team<br>
+                        - Recording Hours, Retention Period, Storage Location, and Processing Method of Video Information<br>
+                        • Recording Hours: 24-hour continuous recording<br>
+                        • Storage Location and Processing Method: Stored and managed in the video information control room<br>
+                        - Method and Location for Accessing Video Information: Facility Operations Team<br>
+                        - Procedures for Requests to Access Video Information: Requests must be submitted using a Personal Video Information Access/Existence Confirmation Request Form. Access is granted only when the data subject appears in the footage or when access is clearly necessary to protect the life, body, or property interests of the data subject.<br>
+                        - Technical, Administrative, and Physical Measures for Protecting Video Information: Establishment of internal management plans, access control and restrictions, secure storage and transmission technologies, maintenance of processing records and prevention of forgery or alteration, provision of secure storage facilities and locking devices, etc.<br><br>
 
-                            <div class="form_pri_titt">제 14 조 (영상정보(사진 및 동영상 등) 촬영에 관한 동의)</div>
-                            1. 전시회 현장에서 사진 촬영 및 영상 녹화가 진행됩니다.<br>
-                            2. 촬영 목적<br>
-                            1) 본 행사 및 추후 개최될 전시회와 컨퍼런스 홍보<br>
-                            2) 전시회 관련 보도자료 및 문건 첨부<br>
-                            3. 촬영된 자료는 다른 목적으로 사용되지 않습니다.
-
+                        <div class="form_pri_titt">Article 14 (Consent to Photography and Video Recording)</div>
+                        1. Photography and video recording may take place at the exhibition venue.<br>
+                        2. Purpose of Recording<br>
+                        1) Promotion of this event and future exhibitions and conferences<br>
+                        2) Inclusion in exhibition-related press releases and official documents<br>
+                        3. Recorded materials will not be used for any purpose other than those specified above.
                     </div>
-
                 </div>
             </div>
             <!-- //약관 -->

@@ -294,7 +294,7 @@
                     <div class="form_pri">
                         <div class="form_pri_item">
                             &lt;Early Registration (Round 1)&gt;<br>
-                            - Period : January 1, 2026 – February 14, 2027<br>
+                            - Period : january 1, 2027 – February 14, 2027<br>
                             - Fee : Free<br><br>
                             &lt;Early Registration (Round 2)&gt;<br>
                             - Period : February 15 – March 9, 2027<br>
@@ -375,7 +375,7 @@
                                         <option value="+86" <c:if test="${fn:startsWith(info.tel,'+86')}">selected</c:if> >+86 (CHN)</option>
                                         <option value="+91" <c:if test="${fn:startsWith(info.tel,'+91')}">selected</c:if> >+91 (IND)</option>
                                     </select>
-                                    <input type="tel" id="tel" name="tel" class="onlyGeneralTel" placeholder="Numbers only. Hyphens are added automatically." value="${info.tel}">
+                                    <input type="tel" id="tel" name="tel" class="onlyGeneralTel" maxlength="13" placeholder="Please enter only the numbers." value="${info.tel}">
                                 </div>
                             </li>
                             <li class="w50">
@@ -396,7 +396,7 @@
                                     </select>
                                     <input type="tel" id="phone" name="phone" class="onlyTel" inputmode="numeric"
                                            pattern="[0-9]*"
-                                           autocomplete="off" placeholder="Numbers only. Hyphens are added automatically." value="${info.phone}">
+                                           autocomplete="off" placeholder="Please enter only the numbers." value="${info.phone}">
                                 </div>
                             </li>
                             <li>
@@ -411,7 +411,7 @@
                             </li>
                             <li>
                                 <div class="item req" id="companyNameDiv">
-                                    <p>Company/Organization Name</p>
+                                    <p>Company /<br>Organization Name</p>
                                 </div>
                                 <div class="input companyNameBox" style="flex-wrap: wrap">
                                     <input class="companyNameInput" type="text" id="companyName" name="companyName" value="${info.companyName}" placeholder="Enter your company or organization name">

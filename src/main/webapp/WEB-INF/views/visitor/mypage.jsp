@@ -423,7 +423,7 @@
                                     <p>전화번호</p>
                                 </div>
                                 <div class="input">
-                                    <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyGeneralTel" maxlength="14" placeholder="숫자만 입력해 주세요. 하이픈(-) 자동 입력">
+                                    <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyGeneralTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
                                 </div>
                             </li>
                             <li class="w50">
@@ -433,7 +433,7 @@
                                 <div class="input">
                                     <input type="tel" id="phone" name="phone" class="onlyTel" value="${info.phone}" inputmode="numeric"
                                            pattern="[0-9]*"
-                                           autocomplete="off" placeholder="숫자만 입력해 주세요. 하이픈(-) 자동 입력" readonly>
+                                           autocomplete="off" placeholder="숫자만 입력해 주세요." readonly>
                                 </div>
                             </li>
                             <li>

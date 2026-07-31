@@ -141,18 +141,18 @@
                                             1. An exhibitor wishing to participate in the Exhibition shall complete the online booth application and pay the full participation fee according to the invoice issued by the Organizer. The application shall be considered complete upon such payment.<br>
                                             2. If the application is not completed in accordance with Paragraph 1 of this Article, the applicant shall not be permitted to participate in any Exhibition-related activities.<br>
                                             3. Participation fees are USD 3,000 per booth for a raw space booth and USD 3,300 per booth for a shell scheme booth. Raw space booths require a minimum application of two (2) booths.
-                                            4. After the exhibitor’s application has been reviewed and approved by the Secretariat, an invoice will be issued accordingly. The exhibitor shall pay 100% of the participation fee within seven (7) days from the date of invoice issuance.
-                                            5. All overseas bank transfer fees, including intermediary and receiving bank charges, shall be borne by the exhibitor. The full invoiced participation fee must be received by the Organizer.
-                                            6. VAT may vary depending on the exhibitor’s country and the applicable Korean tax regulations. Exhibitors shall refer to the invoice issued by the Secretariat for the final payable amount.
-                                            7. Submission of the application form does not constitute final confirmation of participation. Participation shall be confirmed only after the application has been reviewed and approved by the Secretariat and the required payment has been completed.
-                                            8. Utility services shall be applied for separately according to the exhibitor’s needs after full payment of the participation fee. The Organizer shall provide the requested services upon receipt of the full service fee according to the invoice issued by the Organizer.
-                                            9. Utility services and shell scheme booth construction shall be provided by the Organizer upon request. Any changes to the application or utility service request must be immediately reported to the Organizer by email. The exhibitor shall be responsible for any disadvantages resulting from failure to provide such notice.
-                                            10. Any changes to the information provided in the application form must be immediately reported in writing to the Organizer. The exhibitor shall be responsible for any disadvantages resulting from failure to provide such notice.
-                                            11. The Organizer reserves the right to reject an application if exhibition space is fully booked or if the proposed exhibits are deemed unsuitable for the Exhibition.
+                                            4. After the exhibitor’s application has been reviewed and approved by the Secretariat, an invoice will be issued accordingly. The exhibitor shall pay 100% of the participation fee within seven (7) days from the date of invoice issuance.<br>
+                                            5. All overseas bank transfer fees, including intermediary and receiving bank charges, shall be borne by the exhibitor. The full invoiced participation fee must be received by the Organizer.<br>
+                                            6. VAT may vary depending on the exhibitor’s country and the applicable Korean tax regulations. Exhibitors shall refer to the invoice issued by the Secretariat for the final payable amount.<br>
+                                            7. Submission of the application form does not constitute final confirmation of participation. Participation shall be confirmed only after the application has been reviewed and approved by the Secretariat and the required payment has been completed.<br>
+                                            8. Utility services shall be applied for separately according to the exhibitor’s needs after full payment of the participation fee. The Organizer shall provide the requested services upon receipt of the full service fee according to the invoice issued by the Organizer.<br>
+                                            9. Utility services and shell scheme booth construction shall be provided by the Organizer upon request. Any changes to the application or utility service request must be immediately reported to the Organizer by email. The exhibitor shall be responsible for any disadvantages resulting from failure to provide such notice.<br>
+                                            10. Any changes to the information provided in the application form must be immediately reported in writing to the Organizer. The exhibitor shall be responsible for any disadvantages resulting from failure to provide such notice.<br>
+                                            11. The Organizer reserves the right to reject an application if exhibition space is fully booked or if the proposed exhibits are deemed unsuitable for the Exhibition.<br><br>
 
                                             <div class="form_pri_titt">Article 3 (Payment Terms)</div>
                                             1. The exhibitor shall pay the full participation fee within fourteen (14) days of submitting the application form. However, applications submitted on or after February 1, 2027, must be accompanied by full payment at the time of application.<br>
-                                            2. If the exhibitor fails to pay the balance by the designated deadline, the Organizer may terminate the participation agreement. In such cases, any participation fees already paid shall not be refundable. <br><br>
+                                            2. If the exhibitor fails to pay the balance by the designated deadline, the Organizer may terminate the participation agreement. In such cases, any participation fees already paid shall not be refundable.<br><br>
 
                                             <div class="form_pri_titt">Article 4 (Allocation of Exhibition Space and Booth Location)</div>
                                             1. Booth locations shall be assigned by the Organizer based on the order of application, characteristics of the exhibits, requested booth size, and other reasonable criteria. Exhibitors shall not raise objections to such assignments.<br>
@@ -435,7 +435,7 @@
                                                 <p>Company Name</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" id="companyNameEn" name="companyNameEn" value="${info.companyNameEn}" placeholder="English" class="onlyEngCompany">
+                                                <input type="text" id="companyNameEn" name="companyNameEn" value="${info.companyNameEn}" placeholder="Please enter your company name." class="onlyEngCompany">
                                             </div>
                                         </li>
                                         <li>
@@ -514,7 +514,7 @@
                                                     <option value="+86" <c:if test="${fn:startsWith(info.companyTel,'+86')}">selected</c:if> >+86 (CHN)</option>
                                                     <option value="+91" <c:if test="${fn:startsWith(info.companyTel,'+91')}">selected</c:if> >+91 (IND)</option>
                                                 </select>
-                                                <input type="tel" id="companyTel" name="companyTel" value="${info.companyTel}" class="onlyGeneralTel" maxlength="20" placeholder="Please enter only the numbers.">
+                                                <input type="tel" id="companyTel" name="companyTel" value="${info.companyTel}" class="onlyGeneralTel" maxlength="13" placeholder="Please enter only the numbers.">
                                             </div>
                                         </li>
                                         <li class="w50">
@@ -542,7 +542,7 @@
                                                     <option value="+86" <c:if test="${fn:startsWith(info.companyFax,'+86')}">selected</c:if> >+86 (CHN)</option>
                                                     <option value="+91" <c:if test="${fn:startsWith(info.companyFax,'+91')}">selected</c:if> >+91 (IND)</option>
                                                 </select>
-                                                <input type="tel" id="companyFax" name="companyFax" value="${info.companyFax}" class="onlyNumh" maxlength="25" placeholder="Please enter only the numbers.">
+                                                <input type="tel" id="companyFax" name="companyFax" value="${info.companyFax}" class="onlyNum" placeholder="Please enter only the numbers.">
                                             </div>
                                         </li>
                                         <li>
@@ -704,7 +704,7 @@
                                                     <option value="+86" <c:if test="${fn:startsWith(info.tel,'+86')}">selected</c:if> >+86 (CHN)</option>
                                                     <option value="+91" <c:if test="${fn:startsWith(info.tel,'+91')}">selected</c:if> >+91 (IND)</option>
                                                 </select>
-                                                <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyGeneralTel" maxlength="20" placeholder="Please enter only the numbers.">
+                                                <input type="tel" id="tel" name="tel" value="${info.tel}" class="onlyGeneralTel" maxlength="13" placeholder="Please enter only the numbers.">
                                             </div>
                                         </li>
                                         <li class="w50">
@@ -784,7 +784,7 @@
                                                         <option value="+86">+86 (CHN)</option>
                                                         <option value="+91">+91 (IND)</option>
                                                     </select>
-                                                    <input type="tel" name="chargePersonTel" class="onlyGeneralTel" maxlength="20" placeholder="Please enter only the numbers.">
+                                                    <input type="tel" name="chargePersonTel" class="onlyGeneralTel" maxlength="13" placeholder="Please enter only the numbers.">
                                                 </div>
                                             </li>
                                             <li class="w50">
@@ -867,7 +867,7 @@
                                                             <option value="+86" <c:if test="${fn:startsWith(charge.chargePersonTel,'+86')}">selected</c:if> >+86 (CHN)</option>
                                                             <option value="+91" <c:if test="${fn:startsWith(charge.chargePersonTel,'+91')}">selected</c:if> >+91 (IND)</option>
                                                         </select>
-                                                        <input type="tel" name="chargePersonTel" value="${charge.chargePersonTel}" class="onlyGeneralTel" maxlength="20" placeholder="Please enter only the numbers.">
+                                                        <input type="tel" name="chargePersonTel" value="${charge.chargePersonTel}" class="onlyGeneralTel" maxlength="13" placeholder="Please enter only the numbers.">
                                                     </div>
                                                 </li>
                                                 <li class="w50">
@@ -1498,7 +1498,7 @@
                                                     <option value="+86">+86 (CHN)</option>
                                                     <option value="+91">+91 (IND)</option>
                                                 </select>
-                                                <input type="text" id="buyer_tel" name="buyerCompanyTel" class="onlyGeneralTel" maxlength="20" placeholder="Include hyphens (-)." style="width: calc(70% - 10px);">
+                                                <input type="text" id="buyer_tel" name="buyerCompanyTel" class="onlyGeneralTel" maxlength="13" placeholder="Please enter only the numbers." style="width: calc(70% - 10px);">
                                             </div>
                                         </li>
                                         <li>
@@ -1517,7 +1517,7 @@
                                                     <option value="+86">+86 (CHN)</option>
                                                     <option value="+91">+91 (IND)</option>
                                                 </select>
-                                                <input type="tel" id="buyer_phone" name="buyerCompanyPhone" class="onlyTel" maxlength="20" placeholder="Include hyphens (-)." style="width: calc(70% - 10px);">
+                                                <input type="tel" id="buyer_phone" name="buyerCompanyPhone" class="onlyTel" maxlength="20" placeholder="Please enter only the numbers." style="width: calc(70% - 10px);">
                                             </div>
                                         </li>
                                         <li>
@@ -1525,7 +1525,7 @@
                                                 <p>FAX</p>
                                             </div>
                                             <div class="input">
-                                                <input type="text" id="buyer_fax" name="buyerCompanyFax" class="onlyNumh" placeholder="Include hyphens (-)."/>
+                                                <input type="text" id="buyer_fax" name="buyerCompanyFax" class="onlyNum" placeholder="Please enter only the numbers."/>
                                             </div>
                                         </li>
                                         <li>
