@@ -431,9 +431,7 @@
                                     <p>휴대전화</p>
                                 </div>
                                 <div class="input">
-                                    <input type="tel" id="phone" name="phone" class="onlyTel" value="${info.phone}" inputmode="numeric"
-                                           pattern="[0-9]*"
-                                           autocomplete="off" placeholder="숫자만 입력해 주세요." readonly>
+                                    <input type="tel" id="phone" name="phone" value="${info.phone}" class="onlyTel" maxlength="13" placeholder="숫자만 입력해 주세요.">
                                 </div>
                             </li>
                             <li>

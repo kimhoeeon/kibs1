@@ -451,9 +451,7 @@
                                             <option value="+86">+86 (CHN)</option>
                                             <option value="+91">+91 (IND)</option>
                                         </select>
-                                        <input type="tel" id="phone" name="phone" class="onlyTel" inputmode="numeric"
-                                               pattern="[0-9]*"
-                                               autocomplete="off" placeholder="Please enter only the numbers.">
+                                        <input type="tel" id="phone" name="phone" class="onlyTel" maxlength="13" placeholder="Please enter only the numbers.">
                                     </div>
                                 </li>
                                 <li>

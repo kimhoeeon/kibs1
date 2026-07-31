@@ -233,7 +233,7 @@ public class KibsServiceImpl implements KibsService {
                 }else{
                     exhibitorNewDTO.setBoothType("");
                     exhibitorNewDTO.setDeposit("0");
-                    exhibitorNewDTO.setBalance("");
+                    exhibitorNewDTO.setBalance("0");
                     exhibitorNewDTO.setRegistrationCnt(0);
                     exhibitorNewDTO.setRegistrationFee(0);
                     exhibitorNewDTO.setBoothPrcSum(0);

@@ -723,7 +723,7 @@
                                                     <option value="+86" <c:if test="${fn:startsWith(info.phone,'+86')}">selected</c:if> >+86 (CHN)</option>
                                                     <option value="+91" <c:if test="${fn:startsWith(info.phone,'+91')}">selected</c:if> >+91 (IND)</option>
                                                 </select>
-                                                <input type="tel" id="phone" name="phone" value="${info.phone}" class="onlyTel" maxlength="20" placeholder="Please enter only the numbers.">
+                                                <input type="tel" id="phone" name="phone" value="${info.phone}" class="onlyTel" maxlength="13" placeholder="Please enter only the numbers.">
                                             </div>
                                         </li>
                                         <li>

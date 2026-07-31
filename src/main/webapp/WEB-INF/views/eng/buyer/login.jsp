@@ -84,7 +84,7 @@
                             <option value="+86">+86 (CHN)</option>
                             <option value="+91">+91 (IND)</option>
                         </select>
-                        <input type="tel" id="phone" name="phone" class="onlyTel" maxlength="20" placeholder="Please enter only numbers.">
+                        <input type="tel" id="phone" name="phone" class="onlyTel" maxlength="13" placeholder="Please enter only numbers.">
                     </div>
                     <div class="btnLogin"><a href="javascript:void(0);" onclick="f_en_pre_apply_check_login()" class="btnSt01">Confirm Registration</a></div>
                 </div>
