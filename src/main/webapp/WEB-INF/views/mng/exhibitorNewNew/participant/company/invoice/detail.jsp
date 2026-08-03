@@ -54,6 +54,7 @@ License: For each use you must have a valid license purchased only from above li
 <!--end::Head-->
 <!--begin::Body-->
 <body id="kt_app_body" data-exhibitor-seq="${info.seq}" data-company-name-ko="${info.companyNameKo}" data-member-yn="${info.memberCompanyYn}"
+      data-lang="${info.lang}"
       data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
       data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
       data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
@@ -87,6 +88,11 @@ if (document.documentElement) {
 </c:if>
 
 <c:if test="${sessionScope.get('status') eq 'logon'}">
+
+    <c:set var="isEng" value="${info.lang eq 'EN'}" />
+    <c:set var="currMark" value="${isEng ? 'USD ' : '￦ '}" />
+    <c:set var="currTail" value="${isEng ? '' : '원'}" />
+    <c:set var="currUnit" value="${isEng ? '' : ' (원)'}" />
 
     <!--begin::Page loading(append to body)-->
     <div class="page-loader flex-column bg-dark bg-opacity-25">
@@ -200,7 +206,7 @@ if (document.documentElement) {
                                         <div id="kt_company_info">
                                             <!--begin::Card body-->
                                             <div class="card-body border-top p-9">
-                                                <h4 class="fw-bold">${info.companyNameKo} / ${info.companyNameEn}</h4>
+                                                <h4 class="fw-bold"><c:choose><c:when test="${isEng}">${info.companyNameEn}</c:when><c:otherwise>${info.companyNameKo} / ${info.companyNameEn}</c:otherwise></c:choose></h4>
                                             </div>
                                             <!--end::Card body-->
                                         </div>
@@ -236,88 +242,14 @@ if (document.documentElement) {
                                     <input type="hidden" id="balanceData" name="balance" value=""/>
                                     <input type="hidden" id="discountPrcSumData" name="discountPrcSum" value="${info.discountPrcSum}"/>
 
-                                    <!--begin::Basic info-->
-                                    <div class="card mb-5 mb-xl-10">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0">
-                                            <!--begin::Card title-->
-                                            <div class="card-title m-0">
-                                                <h3 class="fw-bold m-0">등록비 정보</h3>
-                                            </div>
-                                            <!--end::Card title-->
-                                        </div>
-                                        <!--begin::Card header-->
-                                        <!--begin::Card body-->
-                                        <div class="card-body border-top p-9">
-                                            <!--begin::Table container-->
-                                            <div class="table-responsive">
-                                                <!--begin::Table-->
-                                                <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
-                                                    <!--begin::Table head-->
-                                                    <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
-                                                        <tr class="text-center">
-                                                            <th class="w-150px">구분</th>
-                                                            <th class="w-150px">단가</th>
-                                                            <th class="w-150px">신청수량</th>
-                                                            <th class="w-175px">금액 (원)</th>
-                                                            <th>비고</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <!--end::Table head-->
-                                                    <!--begin::Table body-->
-                                                    <tbody>
-                                                        <tr class="text-center align-middle">
-                                                            <td>
-                                                                <div class="cate">
-                                                                    <span class="fw-semibold d-block fs-7">등록비</span>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div class="cost">
-                                                                    <span class="fw-semibold d-block fs-7">￦ 100,000</span>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div class="quantity">
-                                                                    <p class="j_num">
-                                                                        1
-                                                                    </p>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div class="amount">
-                                                                    <p class="price">
-                                                                        <input type="text" id="registrationFee" value="￦ 100,000" style="background:unset; border: 0; text-align: center;" disabled>
-                                                                    </p>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <span class="fw-semibold d-block fs-7">
-                                                                    2019년부터 참가업체의 홍보 지원을 위하여 업체당 참가신청 등록비를 받습니다.<br>
-                                                                    등록비는 참가업체의 각종 온라인 홍보 및 대외 홍보에 사용됩니다.
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                    <!--end::Table body-->
-                                                </table>
-                                                <!--end::Table-->
-                                            </div>
-                                            <!--begin::Table container-->
-                                        </div>
-                                        <!--end::Card body-->
-                                    </div>
-                                    <!--end::Basic info-->
-
-                                    <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}"/>
-                                    <c:if test="${info.memberCompanyYn == 'Y'}">
+                                    <c:if test="${!isEng}">
                                         <!--begin::Basic info-->
                                         <div class="card mb-5 mb-xl-10">
                                             <!--begin::Card header-->
                                             <div class="card-header border-0">
                                                 <!--begin::Card title-->
                                                 <div class="card-title m-0">
-                                                    <h3 class="fw-bold m-0">한국해양레저산업협회 발전기금</h3>
+                                                    <h3 class="fw-bold m-0">등록비 정보</h3>
                                                 </div>
                                                 <!--end::Card title-->
                                             </div>
@@ -331,7 +263,9 @@ if (document.documentElement) {
                                                         <!--begin::Table head-->
                                                         <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
                                                             <tr class="text-center">
-                                                                <th class="w-300px">구분</th>
+                                                                <th class="w-150px">구분</th>
+                                                                <th class="w-150px">단가</th>
+                                                                <th class="w-150px">신청수량</th>
                                                                 <th class="w-175px">금액 (원)</th>
                                                                 <th>비고</th>
                                                             </tr>
@@ -342,30 +276,32 @@ if (document.documentElement) {
                                                             <tr class="text-center align-middle">
                                                                 <td>
                                                                     <div class="cate">
-                                                                        <span class="fw-semibold d-block fs-7">한국해양레저산업협회<br>발전기금</span>
+                                                                        <span class="fw-semibold d-block fs-7">등록비</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="cost">
+                                                                        <span class="fw-semibold d-block fs-7">￦ 100,000</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="quantity">
+                                                                        <p class="j_num">
+                                                                            1
+                                                                        </p>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <div class="amount">
                                                                         <p class="price">
-                                                                            <c:set var="baseTotal" value="${info.boothPrcSum - info.discountPrcSum}"/>
-                                                                            <c:set var="baseSpecialDiscount" value="0"/>
-                                                                            <c:if test="${info.discountSpecial1Yn}">
-                                                                                <c:set var="baseSpecialDiscount" value="${baseTotal * 0.5}"/>
-                                                                            </c:if>
-                                                                            <c:if test="${info.discountSpecial2Yn}">
-                                                                                <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial2Amount}"/>
-                                                                            </c:if>
-                                                                            <c:if test="${info.discountSpecial3Yn}">
-                                                                                <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial3Amount}"/>
-                                                                            </c:if>
-                                                                            <input type="text" value="<fmt:formatNumber value="${(info.boothPrcSum - (info.discountPrcSum + baseSpecialDiscount)) * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/>" style="background:unset; border: 0; text-align: center; color: #000000;" disabled>
+                                                                            <input type="text" id="registrationFee" value="￦ 100,000" style="background:unset; border: 0; text-align: center;" disabled>
                                                                         </p>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <span class="fw-semibold d-block fs-7">
-                                                                        참가비 내역 합계(공급가)의 10%
+                                                                        2019년부터 참가업체의 홍보 지원을 위하여 업체당 참가신청 등록비를 받습니다.<br>
+                                                                        등록비는 참가업체의 각종 온라인 홍보 및 대외 홍보에 사용됩니다.
                                                                     </span>
                                                                 </td>
                                                             </tr>
@@ -379,6 +315,78 @@ if (document.documentElement) {
                                             <!--end::Card body-->
                                         </div>
                                         <!--end::Basic info-->
+
+                                        <input type="hidden" id="memberCompanyYn" value="${info.memberCompanyYn}"/>
+                                        <c:if test="${info.memberCompanyYn == 'Y'}">
+                                            <!--begin::Basic info-->
+                                            <div class="card mb-5 mb-xl-10">
+                                                <!--begin::Card header-->
+                                                <div class="card-header border-0">
+                                                    <!--begin::Card title-->
+                                                    <div class="card-title m-0">
+                                                        <h3 class="fw-bold m-0">한국해양레저산업협회 발전기금</h3>
+                                                    </div>
+                                                    <!--end::Card title-->
+                                                </div>
+                                                <!--begin::Card header-->
+                                                <!--begin::Card body-->
+                                                <div class="card-body border-top p-9">
+                                                    <!--begin::Table container-->
+                                                    <div class="table-responsive">
+                                                        <!--begin::Table-->
+                                                        <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
+                                                            <!--begin::Table head-->
+                                                            <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
+                                                                <tr class="text-center">
+                                                                    <th class="w-300px">구분</th>
+                                                                    <th class="w-175px">금액 (원)</th>
+                                                                    <th>비고</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <!--end::Table head-->
+                                                            <!--begin::Table body-->
+                                                            <tbody>
+                                                                <tr class="text-center align-middle">
+                                                                    <td>
+                                                                        <div class="cate">
+                                                                            <span class="fw-semibold d-block fs-7">한국해양레저산업협회<br>발전기금</span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="amount">
+                                                                            <p class="price">
+                                                                                <c:set var="baseTotal" value="${info.boothPrcSum - info.discountPrcSum}"/>
+                                                                                <c:set var="baseSpecialDiscount" value="0"/>
+                                                                                <c:if test="${info.discountSpecial1Yn}">
+                                                                                    <c:set var="baseSpecialDiscount" value="${baseTotal * 0.5}"/>
+                                                                                </c:if>
+                                                                                <c:if test="${info.discountSpecial2Yn}">
+                                                                                    <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial2Amount}"/>
+                                                                                </c:if>
+                                                                                <c:if test="${info.discountSpecial3Yn}">
+                                                                                    <c:set var="baseSpecialDiscount" value="${baseSpecialDiscount + info.discountSpecial3Amount}"/>
+                                                                                </c:if>
+                                                                                <input type="text" value="<fmt:formatNumber value="${(info.boothPrcSum - (info.discountPrcSum + baseSpecialDiscount)) * 0.1}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/>" style="background:unset; border: 0; text-align: center; color: #000000;" disabled>
+                                                                            </p>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span class="fw-semibold d-block fs-7">
+                                                                            참가비 내역 합계(공급가)의 10%
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <!--end::Table body-->
+                                                        </table>
+                                                        <!--end::Table-->
+                                                    </div>
+                                                    <!--begin::Table container-->
+                                                </div>
+                                                <!--end::Card body-->
+                                            </div>
+                                            <!--end::Basic info-->
+                                        </c:if>
                                     </c:if>
 
                                     <!--begin::Basic info-->
@@ -412,21 +420,21 @@ if (document.documentElement) {
                                                     <tbody>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">독립부스</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 1,800,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 3,000</c:when><c:otherwise>￦ 1,800,000</c:otherwise></c:choose></span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.standAloneBoothCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.standAloneBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.standAloneBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">조립부스</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 2,100,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 3,300</c:when><c:otherwise>￦ 2,100,000</c:otherwise></c:choose></span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.assemblyBoothCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.assemblyBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.assemblyBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                         </tr>
                                                         <%--<tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">온라인부스</span></td>
                                                             <td><span class="fw-semibold d-block fs-7">￦ 1,000,000</span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.onlineBoothCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.onlineBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.onlineBoothFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                         </tr>--%>
                                                     </tbody>
                                                     <!--end::Table body-->
@@ -438,104 +446,106 @@ if (document.documentElement) {
                                     </div>
                                     <!--end::Basic info-->
 
-                                    <!--begin::Basic info-->
-                                    <div class="card mb-5 mb-xl-10">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0">
-                                            <!--begin::Card title-->
-                                            <div class="card-title m-0">
-                                                <h3 class="fw-bold m-0">할인액 내역</h3>
+                                    <c:if test="${!isEng}">
+                                        <!--begin::Basic info-->
+                                        <div class="card mb-5 mb-xl-10">
+                                            <!--begin::Card header-->
+                                            <div class="card-header border-0">
+                                                <!--begin::Card title-->
+                                                <div class="card-title m-0">
+                                                    <h3 class="fw-bold m-0">할인액 내역</h3>
+                                                </div>
+                                                <!--end::Card title-->
                                             </div>
-                                            <!--end::Card title-->
-                                        </div>
-                                        <!--begin::Card header-->
-                                        <!--begin::Card body-->
-                                        <div class="card-body border-top p-9">
-                                            <!--begin::Table container-->
-                                            <div class="table-responsive mt-5">
-                                                <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
-                                                    <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
-                                                    <tr class="text-center"><th colspan="4">기본 할인 내역</th></tr>
-                                                    <tr class="text-center">
-                                                        <th style="width: 8%;">선택</th>
-                                                        <th style="width: 15%;">구분</th>
-                                                        <th>할인금액(부스당)</th>
-                                                        <th style="width: 20%;">내용</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr class="text-center align-middle">
-                                                        <td><input type="checkbox" class="form-check-input basic-discount" id="discountEarly1" data-discount="300000" <c:if test="${info.discountEarly1}">checked</c:if> disabled></td>
-                                                        <td rowspan="2">조기신청 할인</td>
-                                                        <td>(1차) 조기신청 할인 (~2025.11.14 금)</td>
-                                                        <td>300,000 원</td>
-                                                    </tr>
-                                                    <tr class="text-center align-middle">
-                                                        <td><input type="checkbox" class="form-check-input basic-discount" id="discountEarly2" data-discount="200000" <c:if test="${info.discountEarly2}">checked</c:if> disabled></td>
-                                                        <td>(2차) 조기신청 할인 (~2025.12.12 금)</td>
-                                                        <td>200,000 원</td>
-                                                    </tr>
-                                                    <tr class="text-center align-middle">
-                                                        <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale1" data-discount="400000" <c:if test="${info.discountScale1}">checked</c:if> disabled></td>
-                                                        <td rowspan="6">규모 할인</td>
-                                                        <td>10부스 이상 참가업체</td>
-                                                        <td>400,000 원</td>
-                                                    </tr>
-                                                    <tr class="text-center align-middle">
-                                                        <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale2" data-discount="650000" <c:if test="${info.discountScale2}">checked</c:if> disabled></td>
-                                                        <td>20부스 이상 참가업체</td>
-                                                        <td>650,000 원</td>
-                                                    </tr>
-                                                    <tr class="text-center align-middle">
-                                                        <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale3" data-discount="750000" <c:if test="${info.discountScale3}">checked</c:if> disabled></td>
-                                                        <td>30부스 이상 참가업체</td>
-                                                        <td>750,000 원</td>
-                                                    </tr>
-                                                    <tr class="text-center align-middle">
-                                                        <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale4" data-discount="800000" <c:if test="${info.discountScale4}">checked</c:if> disabled></td>
-                                                        <td>40부스 이상 참가업체</td>
-                                                        <td>800,000 원</td>
-                                                    </tr>
-                                                    <tr class="text-center align-middle">
-                                                        <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale5" data-discount="850000" <c:if test="${info.discountScale5}">checked</c:if> disabled></td>
-                                                        <td>50부스 이상 참가업체</td>
-                                                        <td>850,000 원</td>
-                                                    </tr>
-                                                    <tr class="text-center align-middle">
-                                                        <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale6" data-discount="900000" <c:if test="${info.discountScale6}">checked</c:if> disabled></td>
-                                                        <td>100부스 이상 참가업체</td>
-                                                        <td>900,000 원</td>
-                                                    </tr>
-                                                    <tr class="text-center align-middle">
-                                                        <td><input type="checkbox" class="form-check-input basic-discount" id="discountRe" data-discount="200000" <c:if test="${info.discountRe}">checked</c:if> disabled></td>
-                                                        <td>재참가 할인</td>
-                                                        <td>2015년 ~ 2026년 참가 업체</td>
-                                                        <td>200,000 원</td>
-                                                    </tr>
-                                                    <tr class="text-center align-middle">
-                                                        <td><input type="checkbox" class="form-check-input basic-discount" id="discountFirstUnder10" data-discount="500000" <c:if test="${info.discountFirstUnder10}">checked</c:if> disabled></td>
-                                                        <td rowspan="2">첫참가 할인</td>
-                                                        <td>최초 참가업체 (10부스 미만 참가)</td>
-                                                        <td>500,000 원</td>
-                                                    </tr>
-                                                    <tr class="text-center align-middle">
-                                                        <td><input type="checkbox" class="form-check-input basic-discount" id="discountFirstOver10" data-discount="300000" <c:if test="${info.discountFirstOver10}">checked</c:if> disabled></td>
-                                                        <td>최초 참가업체 (10부스 이상 참가)</td>
-                                                        <td>300,000 원</td>
-                                                    </tr>
-                                                    <tr class="text-center align-middle">
-                                                        <td><input type="checkbox" class="form-check-input basic-discount" id="discountLeisure" data-discount="200000" <c:if test="${info.discountLeisure}">checked</c:if> disabled></td>
-                                                        <td>협회 할인</td>
-                                                        <td>한국해양레저산업협회 회원사</td>
-                                                        <td>200,000 원</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+                                            <!--begin::Card header-->
+                                            <!--begin::Card body-->
+                                            <div class="card-body border-top p-9">
+                                                <!--begin::Table container-->
+                                                <div class="table-responsive mt-5">
+                                                    <table class="table table-bordered table-row-gray-400 table-rounded table-row-bordered border">
+                                                        <thead class="bg-primary fw-semibold fs-6 text-white border-bottom-2 border-gray-200">
+                                                        <tr class="text-center"><th colspan="4">기본 할인 내역</th></tr>
+                                                        <tr class="text-center">
+                                                            <th style="width: 8%;">선택</th>
+                                                            <th style="width: 15%;">구분</th>
+                                                            <th>할인금액(부스당)</th>
+                                                            <th style="width: 20%;">내용</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountEarly1" data-discount="300000" <c:if test="${info.discountEarly1}">checked</c:if> disabled></td>
+                                                            <td rowspan="2">조기신청 할인</td>
+                                                            <td>(1차) 조기신청 할인 (~2026. 11. 30 월)</td>
+                                                            <td>300,000 원</td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountEarly2" data-discount="200000" <c:if test="${info.discountEarly2}">checked</c:if> disabled></td>
+                                                            <td>(2차) 조기신청 할인 (~2026. 12. 31 목)</td>
+                                                            <td>200,000 원</td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale1" data-discount="400000" <c:if test="${info.discountScale1}">checked</c:if> disabled></td>
+                                                            <td rowspan="6">규모 할인</td>
+                                                            <td>10부스 이상 참가업체</td>
+                                                            <td>400,000 원</td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale2" data-discount="650000" <c:if test="${info.discountScale2}">checked</c:if> disabled></td>
+                                                            <td>20부스 이상 참가업체</td>
+                                                            <td>650,000 원</td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale3" data-discount="750000" <c:if test="${info.discountScale3}">checked</c:if> disabled></td>
+                                                            <td>30부스 이상 참가업체</td>
+                                                            <td>750,000 원</td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale4" data-discount="800000" <c:if test="${info.discountScale4}">checked</c:if> disabled></td>
+                                                            <td>40부스 이상 참가업체</td>
+                                                            <td>800,000 원</td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale5" data-discount="850000" <c:if test="${info.discountScale5}">checked</c:if> disabled></td>
+                                                            <td>50부스 이상 참가업체</td>
+                                                            <td>850,000 원</td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale6" data-discount="900000" <c:if test="${info.discountScale6}">checked</c:if> disabled></td>
+                                                            <td>100부스 이상 참가업체</td>
+                                                            <td>900,000 원</td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountRe" data-discount="200000" <c:if test="${info.discountRe}">checked</c:if> disabled></td>
+                                                            <td>재참가 할인</td>
+                                                            <td>2015년 ~ 2026년 참가 업체</td>
+                                                            <td>200,000 원</td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountFirstUnder10" data-discount="500000" <c:if test="${info.discountFirstUnder10}">checked</c:if> disabled></td>
+                                                            <td rowspan="2">첫참가 할인</td>
+                                                            <td>최초 참가업체 (10부스 미만 참가)</td>
+                                                            <td>500,000 원</td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountFirstOver10" data-discount="300000" <c:if test="${info.discountFirstOver10}">checked</c:if> disabled></td>
+                                                            <td>최초 참가업체 (10부스 이상 참가)</td>
+                                                            <td>300,000 원</td>
+                                                        </tr>
+                                                        <tr class="text-center align-middle">
+                                                            <td><input type="checkbox" class="form-check-input basic-discount" id="discountLeisure" data-discount="200000" <c:if test="${info.discountLeisure}">checked</c:if> disabled></td>
+                                                            <td>협회 할인</td>
+                                                            <td>한국해양레저산업협회 회원사</td>
+                                                            <td>200,000 원</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
+                                            <!--end::Card body-->
                                         </div>
-                                        <!--end::Card body-->
-                                    </div>
-                                    <!--end::Basic info-->
+                                        <!--end::Basic info-->
+                                    </c:if>
 
                                     <!--begin::Basic info-->
                                     <div class="card mb-5 mb-xl-10">
@@ -568,57 +578,57 @@ if (document.documentElement) {
                                                     <tbody>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">주간 단상 220V</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 100,000/1kw</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 100/1kw</c:when><c:otherwise>￦ 100,000/1kw</c:otherwise></c:choose></span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityJuganCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityJuganFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityJuganFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">24시간용 220V</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 150,000/1kw</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 150/1kw</c:when><c:otherwise>￦ 150,000/1kw</c:otherwise></c:choose></span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityDayCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">작업전기</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 100,000/1kw</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 100/1kw</c:when><c:otherwise>￦ 100,000/1kw</c:otherwise></c:choose></span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityWorkCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWorkFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWorkFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">압축공기 기본형</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 250,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 250</c:when><c:otherwise>￦ 250,000</c:otherwise></c:choose></span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityCompressedAirCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityCompressedAirFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityCompressedAirFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">급배수 기본형</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 250,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 250</c:when><c:otherwise>￦ 250,000</c:otherwise></c:choose></span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityWaterBasicCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWaterBasicFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWaterBasicFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">인터넷</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 250,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 250</c:when><c:otherwise>￦ 250,000</c:otherwise></c:choose></span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityInternetCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityInternetFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityInternetFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">파이텍스 (신품)</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 100,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 100</c:when><c:otherwise>￦ 100,000</c:otherwise></c:choose></span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityPytexNewCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityPytexNewFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityPytexNewFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">파이텍스 (재사용품)</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 50,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 50</c:when><c:otherwise>￦ 50,000</c:otherwise></c:choose></span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityPytexReCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityPytexReFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityPytexReFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><span class="fw-semibold d-block fs-7">참관객/바이어 바코드 리더기</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7">￦ 250,000</span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 250</c:when><c:otherwise>￦ 250,000</c:otherwise></c:choose></span></td>
                                                             <td><span class="fw-semibold d-block fs-7">${info.utilityBarcodeCnt}</span></td>
-                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityBarcodeFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                            <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityBarcodeFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                         </tr>
                                                     </tbody>
                                                     <!--end::Table body-->
@@ -1111,7 +1121,7 @@ if (document.documentElement) {
                 </div>
                 <div class="modal-footer flex-center">
                     <button type="button" class="btn btn-light me-3" data-bs-dismiss="modal">취소</button>
-                    <button type="button" id="createInvoiceConfirmBtn" data-company-name="${info.companyNameKo}" class="btn btn-primary">생성</button>
+                    <button type="button" id="createInvoiceConfirmBtn" data-company-name-ko="${info.companyNameKo}" data-company-name-en="${info.companyNameEn}" class="btn btn-primary">생성</button>
                 </div>
             </div>
         </div>

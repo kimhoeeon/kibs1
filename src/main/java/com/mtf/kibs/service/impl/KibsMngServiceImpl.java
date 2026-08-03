@@ -3672,9 +3672,6 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public InvoiceBoothDTO createAndInsertInvoiceBooth(String exhibitorSeq) throws Exception {
         // 1. 인보이스를 생성할 참가업체의 최신 정보를 불러옵니다.
-        // ※ 주의: 참가업체 상세 정보를 가져오는 메서드가 KibsMngMapper에 있어야 합니다.
-        // ※ (예: selectExhibitorNewForInvoice) 없다면 KibsMapper.getExhibitorNewDetail 사용
-        // ※ 기존 코드의 selectExhibitorNewInvoiceDetail 메서드가 금액 관련 모든 필드를 반환하는지 확인 필요
         ExhibitorNewDTO currentExhibitorInfo = kibsMngMapper.selectExhibitorNewInvoiceDetail(exhibitorSeq);
         if (currentExhibitorInfo == null) {
             throw new Exception("참가업체 정보가 존재하지 않습니다.");
@@ -3721,10 +3718,10 @@ public class KibsMngServiceImpl implements KibsMngService {
         // 3. *** 공통 계산 서비스 호출 ***
         CalculationResultDTO calcResult = calculationService.calculateTotals(input);
 
-        // 4. [기존 로직] DB에서 해당 참가업체의 기존 인보이스 발급 횟수를 조회합니다.
+        // 4. DB에서 해당 참가업체의 기존 인보이스 발급 횟수를 조회합니다.
         int invoiceCount = kibsMngMapper.countInvoiceBoothByExhibitorSeq(exhibitorSeq);
 
-        // 5. [기존 로직] 새로운 인보이스 코드를 생성합니다. (발급 횟수 + 1)
+        // 5. 새로운 인보이스 코드를 생성합니다. (발급 횟수 + 1)
         int nextInvoiceNumber = invoiceCount + 1;
         // exhibitorSeq가 "EN0000058" 형태라고 가정하고 뒤 4자리 사용
         String invoiceCodeCount = exhibitorSeq.length() >= 4 ? exhibitorSeq.substring(exhibitorSeq.length() - 4) : exhibitorSeq;
@@ -3751,11 +3748,9 @@ public class KibsMngServiceImpl implements KibsMngService {
         newInvoice.setEndDttm(String.valueOf(LocalDate.now().plusDays(14))); // 납부 기한 (end_dttm 컬럼)
         newInvoice.setSendStatus("미발송"); // 초기 상태
         newInvoice.setDelYn("N");
-        // newInvoice.setRegId("admin"); // regId 컬럼 없음
-        newInvoice.setFinalRegiPic("admin"); // 최종 수정자 (예시)
+        newInvoice.setFinalRegiPic("admin"); // 최종 수정자
 
         // 7. Mapper를 호출하여 DB에 인보이스를 INSERT 합니다.
-        // ※※※ kibsMngMapper.insertInvoiceBooth 메서드는 useGeneratedKeys="true" keyProperty="invoiceSeq" 설정이 필요합니다. ※※※
         int insertResult = kibsMngMapper.insertInvoiceBooth(newInvoice);
 
         // 8. INSERT 성공 여부 및 생성된 PK 확인

@@ -138,9 +138,9 @@ $(function(){
 
                 // --- 3-1. 전시부스 계산서 UI 업데이트 ---
                 $('#summary_booth_total').text(numberToWon(result.boothPrcSum)); // 부스 총액
-                $('#summary_development_fund').text('+ ' + numberToWon(result.developmentFund).replace('￦ ','')); // 발전기금
-                $('#summary_basic_discount').text('- ' + numberToWon(result.basicDiscountSum).replace('￦ ','')); // 기본 할인
-                $('#summary_special_discount').text('- ' + numberToWon(result.specialDiscountTotal).replace('￦ ','')); // 특별 할인
+                $('#summary_development_fund').text('+ ' + numberToWon(result.developmentFund).replace(/￦\s*|USD\s*/g, '')); // 발전기금
+                $('#summary_basic_discount').text('- ' + numberToWon(result.basicDiscountSum).replace(/￦\s*|USD\s*/g, '')); // 기본 할인
+                $('#summary_special_discount').text('- ' + numberToWon(result.specialDiscountTotal).replace(/￦\s*|USD\s*/g, '')); // 특별 할인
                 $('#summary_booth_subtotal').text(numberToWon(result.boothSubtotal)); // 부스 소계
                 $('#summary_booth_vat').text(numberToWon(result.boothVat));          // 부스 부가세 (오차 보정됨)
                 $('#summary_booth_final_total').text(numberToWon(result.boothTotal)); // 부스 합계

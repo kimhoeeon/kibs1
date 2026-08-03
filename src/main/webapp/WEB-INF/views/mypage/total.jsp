@@ -254,7 +254,7 @@
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>(1차) 조기신청 할인 (~2025.11.14 금)</td>
+                                                    <td>(1차) 조기신청 할인 (~ 2026. 11. 30 월)</td>
                                                     <td>1 부스당 300,000 원 할인</td>
                                                     <td><c:out value="${physicalBoothCnt}"/></td>
                                                     <td>- <fmt:formatNumber value="${physicalBoothCnt * 300000}"/></td>
@@ -264,7 +264,7 @@
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>(2차) 조기신청 할인 (~2025.12.12 금)</td>
+                                                    <td>(2차) 조기신청 할인 (~ 2026. 12. 31 목)</td>
                                                     <td>1 부스당 200,000 원 할인</td>
                                                     <td><c:out value="${physicalBoothCnt}"/></td>
                                                     <td>- <fmt:formatNumber value="${physicalBoothCnt * 200000}"/></td>

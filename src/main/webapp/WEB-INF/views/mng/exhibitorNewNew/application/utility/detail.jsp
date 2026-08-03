@@ -54,6 +54,7 @@ License: For each use you must have a valid license purchased only from above li
 <!--end::Head-->
 <!--begin::Body-->
 <body id="kt_app_body" data-exhibitor-seq="${info.seq}" data-company-name-ko="${info.companyNameKo}" data-member-yn="${info.memberCompanyYn}"
+      data-lang="${info.lang}"
       data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
       data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
       data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
@@ -87,6 +88,11 @@ if (document.documentElement) {
 </c:if>
 
 <c:if test="${sessionScope.get('status') eq 'logon'}">
+
+    <c:set var="isEng" value="${info.lang eq 'EN'}" />
+    <c:set var="currMark" value="${isEng ? 'USD ' : '￦ '}" />
+    <c:set var="currTail" value="${isEng ? '' : '원'}" />
+    <c:set var="currUnit" value="${isEng ? '' : ' (원)'}" />
 
     <!--begin::Page loading(append to body)-->
     <div class="page-loader flex-column bg-dark bg-opacity-25">
@@ -192,7 +198,7 @@ if (document.documentElement) {
                                         <div id="kt_company_info">
                                             <!--begin::Card body-->
                                             <div class="card-body border-top p-9">
-                                                <h4 class="fw-bold">${info.companyNameKo} / ${info.companyNameEn}</h4>
+                                                <h4 class="fw-bold"><c:choose><c:when test="${isEng}">${info.companyNameEn}</c:when><c:otherwise>${info.companyNameKo} / ${info.companyNameEn}</c:otherwise></c:choose></h4>
                                             </div>
                                             <!--end::Card body-->
                                         </div>
@@ -200,7 +206,7 @@ if (document.documentElement) {
                                     </div>
                                     <!--end::Basic info-->
 
-                                        <%-- 계산 API 호출 시 필요한 기본 정보 --%>
+                                    <%-- 계산 API 호출 시 필요한 기본 정보 --%>
                                     <input type="hidden" id="registrationCnt" value="${info.registrationCnt}"/> <%-- 등록비 포함 여부 (보통 1) --%>
                                     <input type="hidden" id="baseBoothStandAloneCnt" value="${info.standAloneBoothCnt}"/> <%-- 독립부스 수 --%>
                                     <input type="hidden" id="baseBoothAssemblyCnt" value="${info.assemblyBoothCnt}"/> <%-- 조립부스 수 --%>
@@ -208,7 +214,7 @@ if (document.documentElement) {
                                     <input type="hidden" id="baseUtilitySum" value="${info.utilityPrcSum}"/>  <%-- 유틸리티 총액 (기존에 이미 있음) --%>
                                     <input type="hidden" id="deposit" value="${info.deposit}"/> <%-- 선납금 --%>
 
-                                        <%-- 기본 할인 적용 여부 (DB 값 그대로 전달) --%>
+                                    <%-- 기본 할인 적용 여부 (DB 값 그대로 전달) --%>
                                     <input type="hidden" id="discountEarly1Checked" value="${info.discountEarly1}"/>
                                     <input type="hidden" id="discountEarly2Checked" value="${info.discountEarly2}"/>
                                     <input type="hidden" id="discountFirstUnder10Checked" value="${info.discountFirstUnder10}"/>
@@ -259,57 +265,57 @@ if (document.documentElement) {
                                                     <tbody>
                                                     <tr class="text-center align-middle">
                                                         <td><span class="fw-semibold d-block fs-7">주간 단상 220V</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7">￦ 100,000/1kw</span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 100/1kw</c:when><c:otherwise>￦ 100,000/1kw</c:otherwise></c:choose></span></td>
                                                         <td><span class="fw-semibold d-block fs-7">${info.utilityJuganCnt}</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityJuganFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityJuganFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                     </tr>
                                                     <tr class="text-center align-middle">
                                                         <td><span class="fw-semibold d-block fs-7">24시간용 220V</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7">￦ 150,000/1kw</span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 150/1kw</c:when><c:otherwise>￦ 150,000/1kw</c:otherwise></c:choose></span></td>
                                                         <td><span class="fw-semibold d-block fs-7">${info.utilityDayCnt}</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityDayFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                     </tr>
                                                     <tr class="text-center align-middle">
                                                         <td><span class="fw-semibold d-block fs-7">작업전기</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7">￦ 100,000/1kw</span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 100/1kw</c:when><c:otherwise>￦ 100,000/1kw</c:otherwise></c:choose></span></td>
                                                         <td><span class="fw-semibold d-block fs-7">${info.utilityWorkCnt}</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWorkFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWorkFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                     </tr>
                                                     <tr class="text-center align-middle">
                                                         <td><span class="fw-semibold d-block fs-7">압축공기 기본형</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7">￦ 250,000</span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 250</c:when><c:otherwise>￦ 250,000</c:otherwise></c:choose></span></td>
                                                         <td><span class="fw-semibold d-block fs-7">${info.utilityCompressedAirCnt}</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityCompressedAirFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityCompressedAirFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                     </tr>
                                                     <tr class="text-center align-middle">
                                                         <td><span class="fw-semibold d-block fs-7">급배수 기본형</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7">￦ 250,000</span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 250</c:when><c:otherwise>￦ 250,000</c:otherwise></c:choose></span></td>
                                                         <td><span class="fw-semibold d-block fs-7">${info.utilityWaterBasicCnt}</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWaterBasicFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityWaterBasicFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                     </tr>
                                                     <tr class="text-center align-middle">
                                                         <td><span class="fw-semibold d-block fs-7">인터넷</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7">￦ 250,000</span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 250</c:when><c:otherwise>￦ 250,000</c:otherwise></c:choose></span></td>
                                                         <td><span class="fw-semibold d-block fs-7">${info.utilityInternetCnt}</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityInternetFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityInternetFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                     </tr>
                                                     <tr class="text-center align-middle">
                                                         <td><span class="fw-semibold d-block fs-7">파이텍스 (신품)</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7">￦ 100,000</span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 100</c:when><c:otherwise>￦ 100,000</c:otherwise></c:choose></span></td>
                                                         <td><span class="fw-semibold d-block fs-7">${info.utilityPytexNewCnt}</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityPytexNewFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityPytexNewFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                     </tr>
                                                     <tr class="text-center align-middle">
                                                         <td><span class="fw-semibold d-block fs-7">파이텍스 (재사용품)</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7">￦ 50,000</span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 50</c:when><c:otherwise>￦ 50,000</c:otherwise></c:choose></span></td>
                                                         <td><span class="fw-semibold d-block fs-7">${info.utilityPytexReCnt}</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityPytexReFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityPytexReFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                     </tr>
                                                     <tr class="text-center align-middle">
                                                         <td><span class="fw-semibold d-block fs-7">참관객/바이어 바코드 리더기</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7">￦ 250,000</span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><c:choose><c:when test="${isEng}">USD 250</c:when><c:otherwise>￦ 250,000</c:otherwise></c:choose></span></td>
                                                         <td><span class="fw-semibold d-block fs-7">${info.utilityBarcodeCnt}</span></td>
-                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityBarcodeFee}" type="currency" maxFractionDigits="0" currencySymbol="￦ "/></span></td>
+                                                        <td><span class="fw-semibold d-block fs-7"><fmt:formatNumber value="${info.utilityBarcodeFee}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/></span></td>
                                                     </tr>
                                                     </tbody>
                                                     <!--end::Table body-->
@@ -541,7 +547,7 @@ if (document.documentElement) {
                 </div>
                 <div class="modal-footer flex-center">
                     <button type="button" class="btn btn-light me-3" data-bs-dismiss="modal">취소</button>
-                    <button type="button" id="createInvoiceConfirmBtn" data-company-name="${info.companyNameKo}" class="btn btn-primary">생성</button>
+                    <button type="button" id="createInvoiceConfirmBtn" data-company-name-ko="${info.companyNameKo}" data-company-name-en="${info.companyNameEn}" class="btn btn-primary">생성</button>
                 </div>
             </div>
         </div>

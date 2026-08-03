@@ -803,7 +803,7 @@
                                                         <option value="+86">+86 (CHN)</option>
                                                         <option value="+91">+91 (IND)</option>
                                                     </select>
-                                                    <input type="tel" name="chargePersonPhone" class="onlyTel" maxlength="20" placeholder="Please enter only the numbers.">
+                                                    <input type="tel" name="chargePersonPhone" class="onlyTel" maxlength="13" placeholder="Please enter only the numbers.">
                                                 </div>
                                             </li>
                                             <li>
@@ -886,7 +886,7 @@
                                                             <option value="+86" <c:if test="${fn:startsWith(charge.chargePersonPhone,'+86')}">selected</c:if> >+86 (CHN)</option>
                                                             <option value="+91" <c:if test="${fn:startsWith(charge.chargePersonPhone,'+91')}">selected</c:if> >+91 (IND)</option>
                                                         </select>
-                                                        <input type="tel" name="chargePersonPhone" value="${charge.chargePersonPhone}" class="onlyTel" maxlength="20" placeholder="Please enter only the numbers.">
+                                                        <input type="tel" name="chargePersonPhone" value="${charge.chargePersonPhone}" class="onlyTel" maxlength="13" placeholder="Please enter only the numbers.">
                                                     </div>
                                                 </li>
                                                 <li>
@@ -1517,7 +1517,7 @@
                                                     <option value="+86">+86 (CHN)</option>
                                                     <option value="+91">+91 (IND)</option>
                                                 </select>
-                                                <input type="tel" id="buyer_phone" name="buyerCompanyPhone" class="onlyTel" maxlength="20" placeholder="Please enter only the numbers." style="width: calc(70% - 10px);">
+                                                <input type="tel" id="buyer_phone" name="buyerCompanyPhone" class="onlyTel" maxlength="13" placeholder="Please enter only the numbers." style="width: calc(70% - 10px);">
                                             </div>
                                         </li>
                                         <li>

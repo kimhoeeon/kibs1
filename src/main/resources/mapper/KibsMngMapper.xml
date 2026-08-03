@@ -3634,8 +3634,10 @@
 
     <select id="getExhibitorNewInfo" parameterType="com.mtf.kibs.dto.ExhibitorNewDTO" resultType="com.mtf.kibs.dto.ExhibitorNewDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.getExhibitorNewInfo */
-        SELECT company_name_ko
+        SELECT lang
              , email
+             , company_name_ko
+             , company_name_en
         FROM exhibitor_new
         WHERE seq = #{seq}
     </select>

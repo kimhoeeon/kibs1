@@ -20,6 +20,9 @@ $(function(){
         }
     });
 
+    const langMode = $('body').data('lang') || 'KO';
+    const isEng = (langMode === 'EN');
+
     /******************************************************
      * 특별 할인 관련 로직
      ******************************************************/
@@ -31,16 +34,16 @@ $(function(){
             return str;
         }
         str = String(str);
-        // "￦ " 기호와 "," 콤마를 모두 제거
-        return parseInt(str.replace(/￦\s*|,/g, ''), 10) || 0;
+        // "￦ ", "USD ", "," 콤마를 모두 제거
+        return parseInt(str.replace(/￦\s*|USD\s*|,/g, ''), 10) || 0;
     }
 
     /**
-     * 숫자를 원화 포맷으로 변경하는 함수 (main.js 또는 여기에 있어야 함)
+     * 숫자를 통화 포맷으로 변경하는 함수 (함수명은 기존 로직 호환성을 위해 numberToWon 유지)
      */
     function numberToWon(number){
-        if (isNaN(number)) return "￦ 0"; // 숫자가 아니면 0원 반환
-        return "￦ " + Number(number).toLocaleString();
+        if (isNaN(number)) return isEng ? "USD 0" : "￦ 0";
+        return (isEng ? "USD " : "￦ ") + Number(number).toLocaleString('en-US');
     }
 
     // 1. '특별 할인 변경내용저장' 버튼 클릭 이벤트
@@ -82,6 +85,8 @@ $(function(){
     async function recalculateFinalTotal() {
         // 1. 계산에 필요한 모든 입력값을 DOM에서 수집
         const inputData = {
+            lang: langMode,
+
             // 부스 정보 (hidden input 등에서 가져오기)
             registrationCnt: 1, // 예시 ID (JSP에 <input type="hidden" id="registrationCnt" value="${info.registrationCnt}"> 필요)
             standAloneBoothCnt: parseInt($('#baseBoothStandAloneCnt').val()) || 0, // 예시 ID
@@ -138,9 +143,9 @@ $(function(){
 
                 // --- 3-1. 전시부스 계산서 UI 업데이트 ---
                 $('#summary_booth_total').text(numberToWon(result.boothPrcSum)); // 부스 총액
-                $('#summary_development_fund').text('+ ' + numberToWon(result.developmentFund).replace('￦ ','')); // 발전기금
-                $('#summary_basic_discount').text('- ' + numberToWon(result.basicDiscountSum).replace('￦ ','')); // 기본 할인
-                $('#summary_special_discount').text('- ' + numberToWon(result.specialDiscountTotal).replace('￦ ','')); // 특별 할인
+                $('#summary_development_fund').text('+ ' + numberToWon(result.developmentFund).replace(/￦\s*|USD\s*/g, '')); // 발전기금
+                $('#summary_basic_discount').text('- ' + numberToWon(result.basicDiscountSum).replace(/￦\s*|USD\s*/g, '')); // 기본 할인
+                $('#summary_special_discount').text('- ' + numberToWon(result.specialDiscountTotal).replace(/￦\s*|USD\s*/g, '')); // 특별 할인
                 $('#summary_booth_subtotal').text(numberToWon(result.boothSubtotal)); // 부스 소계
                 $('#summary_booth_vat').text(numberToWon(result.boothVat));          // 부스 부가세 (오차 보정됨)
                 $('#summary_booth_final_total').text(numberToWon(result.boothTotal)); // 부스 합계
@@ -420,7 +425,8 @@ $(function(){
                     if (data.resultCode === "0") {
                         const param = {
                             seq: data.customValue,
-                            companyNameKo: $('#createInvoiceConfirmBtn').data('company-name')
+                            companyNameKo: $('#createInvoiceConfirmBtn').data('company-name-ko'),
+                            companyNameEn: $('#createInvoiceConfirmBtn').data('company-name-en'),
                         };
 
                         createAndUploadPdfFromIframe(param, pdfSavePath, invoiceType)
@@ -572,7 +578,8 @@ $(function(){
             KTApp.hidePageLoading();
             alert('발송에 필요한 참가업체 정보를 찾지 못했습니다.');
         }else{
-            const companyNameKo = exhibitorInfo.companyNameKo;
+            let lang = exhibitorInfo.lang;
+            const companyName = nvl(exhibitorInfo.companyNameKo,'') !== '' ? exhibitorInfo.companyNameKo : exhibitorInfo.companyNameEn;
 
             if (!filePath) {
                 KTApp.hidePageLoading();
@@ -588,13 +595,23 @@ $(function(){
             // 4. 인보이스 타입에 따라 메일 제목, gbn, 결과 업데이트 URL 분기
             let subject = '', gbn = '', updateUrl = '', template = '';
             if (invoiceType === 'booth') {
-                template = '172';
-                subject = `[KIBS 2027] ` + companyNameKo + ` 전시부스 인보이스 발송` + ` (` + invoiceCode + `)`;
+                if(lang === 'KO'){
+                    template = '172';
+                    subject = `[KIBS 2027] ` + companyName + ` 전시부스 인보이스 발송` + ` (` + invoiceCode + `)`;
+                }else{
+                    template = '193';
+                    subject = `[KIBS 2027] ` + companyName + ` Booth Invoice` + ` (` + invoiceCode + `)`;
+                }
                 gbn = 'BOOTH';
                 updateUrl = '/mng/exhibitorNewNew/application/booth/invoice/mail/result/update.do';
             } else if (invoiceType === 'utility') {
-                template = '176';
-                subject = `[KIBS 2027] ` + companyNameKo + ` 유틸리티 인보이스 발송` + ` (` + invoiceCode + `)`;
+                if(lang === 'KO'){
+                    template = '176';
+                    subject = `[KIBS 2027] ` + companyName + ` 전시부스 인보이스 발송` + ` (` + invoiceCode + `)`;
+                }else{
+                    template = '196';
+                    subject = `[KIBS 2027] ` + companyName + ` Utility Invoice` + ` (` + invoiceCode + `)`;
+                }
                 gbn = 'UTILITY';
                 updateUrl = '/mng/exhibitorNewNew/application/utility/invoice/mail/result/update.do';
             }
@@ -608,7 +625,7 @@ $(function(){
                 receiver: [{
                     email: recipientEmail,
                     //note1: "https://kibs.com" + folderPath_r, // note1: 인보이스 링크
-                    note2: companyNameKo,                     // note2: 회사명
+                    note2: companyName,                     // note2: 회사명
                     note3: invoiceCode,                       // note3: 인보이스 코드
                     note4: issueDate                          // note4: 발행일자
                 }],
@@ -806,24 +823,24 @@ $(function(){
  */
 async function createAndUploadPdfFromIframe(param, uploadPath, invoiceType) {
     const seq = param.seq;
-    let companyNameKo = param.companyNameKo;
-    if (typeof companyNameKo !== 'string') {
-        // companyNameKo가 문자열이 아닐 경우(예: 숫자 117),
+    let companyName = nvl(param.companyNameKo,'') !== '' ? param.companyNameKo : param.companyNameEn;
+    if (typeof companyName !== 'string') {
+        // companyName가 문자열이 아닐 경우(예: 숫자 117),
         // String() 함수로 String 형으로 변환합니다.
-        companyNameKo = String(companyNameKo);
+        companyName = String(companyName);
     }
-    companyNameKo = companyNameKo.replace(/[^a-zA-Z0-9ㄱ-힣]/g, '');
+    companyName = companyName.replace(/[^a-zA-Z0-9ㄱ-힣]/g, '');
 
     let fileName = "";
     let viewUrl = "";
     let updateUrl = "";
 
     if (invoiceType === 'booth') {
-        fileName = `invoice_${companyNameKo}_booth_${new Date().getTime()}`;
+        fileName = `invoice_${companyName}_booth_${new Date().getTime()}`;
         viewUrl = `/mng/exhibitorNewNew/application/booth/invoice/detail.do?seq=${seq}`;
         updateUrl = '/mng/exhibitorNewNew/application/booth/invoice/filePath/update.do';
     } else if (invoiceType === 'utility') {
-        fileName = `invoice_${companyNameKo}_utility_${new Date().getTime()}`;
+        fileName = `invoice_${companyName}_utility_${new Date().getTime()}`;
         viewUrl = `/mng/exhibitorNewNew/application/utility/invoice/detail.do?seq=${seq}`;
         updateUrl = '/mng/exhibitorNewNew/application/utility/invoice/filePath/update.do';
     } else {

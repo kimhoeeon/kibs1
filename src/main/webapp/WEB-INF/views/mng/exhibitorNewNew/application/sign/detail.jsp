@@ -87,6 +87,8 @@ if (document.documentElement) {
 
 <c:if test="${sessionScope.get('status') eq 'logon'}">
 
+    <c:set var="isEng" value="${info.lang eq 'EN'}" />
+
     <!--begin::App-->
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
         <!--begin::Page-->
@@ -184,7 +186,7 @@ if (document.documentElement) {
                                         <div id="kt_company_info">
                                             <!--begin::Card body-->
                                             <div class="card-body border-top p-9">
-                                                <h4 class="fw-bold">${info.companyNameKo} / ${info.companyNameEn}</h4>
+                                                <h4 class="fw-bold"><c:choose><c:when test="${isEng}">${info.companyNameEn}</c:when><c:otherwise>${info.companyNameKo} / ${info.companyNameEn}</c:otherwise></c:choose></h4>
                                             </div>
                                             <!--end::Card body-->
                                         </div>

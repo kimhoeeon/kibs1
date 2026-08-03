@@ -314,7 +314,7 @@
                                                 </div>
                                                 <div class="cate rowspan-2">조기신청 할인<%-- (종료)--%></div>
                                                 <div class="note">300,000 원</div>
-                                                <div class="discount">(1차) 조기신청 할인 (~2025.11.14 금)</div>
+                                                <div class="discount">(1차) 조기신청 할인 (~ 2026. 11. 30 월)</div>
 
                                                 <div class="select">
                                                     <label class="discount-item" id="discountItem2">
@@ -322,7 +322,7 @@
                                                     </label>
                                                 </div>
                                                 <div class="note">200,000 원</div>
-                                                <div class="discount">(2차) 조기신청 할인 (~2025.12.12 금)</div>
+                                                <div class="discount">(2차) 조기신청 할인 (~ 2026. 12. 31 목)</div>
 
                                                 <div class="select">
                                                     <label class="discount-item single-choice-discount">
@@ -506,8 +506,8 @@
 
                 // --- 1. 날짜 및 마감일 정의 (KST: UTC+9) ---
                 const today = new Date(); // 사용자의 현재 시간
-                const deadline1 = new Date('2025-11-14T23:59:59+09:00'); // 1차 마감: 11월 14일 23:59:59
-                const deadline2 = new Date('2025-12-12T23:59:59+09:00'); // 2차 마감: 12월 12일 23:59:59
+                const deadline1 = new Date('2026-11-30T23:59:59+09:00'); // 1차 마감: 11월 30일 23:59:59
+                const deadline2 = new Date('2026-12-31T23:59:59+09:00'); // 2차 마감: 12월 31일 23:59:59
 
                 // --- 2. 체크박스 및 라벨 요소 ---
                 const $check1 = $('#discountEarly1');

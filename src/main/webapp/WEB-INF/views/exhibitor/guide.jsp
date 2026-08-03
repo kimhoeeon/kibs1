@@ -120,7 +120,7 @@
                         </div>
                         <div class="txt2">
                             <div class="small">박람회 홈페이지 온라인 신청</div>
-                            <div class="big">~ 2025. 12. 31(수)</div>
+                            <div class="big">~ 2026. 12. 31(목)</div>
                         </div>
                         <%--<div class="txt3">kibs.com</div>--%>
                     </div>
@@ -149,7 +149,7 @@
                         </div>
                         <div class="txt2">
                             <div class="small">별도 신청 부대시설비 납부 기한</div>
-                            <div class="big">~ 2026. 02. 13(금)</div>
+                            <div class="big">~ 2027. 02. 19(금)</div>
                         </div>
                         <%--<div class="txt3">잔금 납입 시, 계약 완료</div>--%>
                     </div>
@@ -260,12 +260,12 @@
                         <tbody>
                         <tr>
                             <td rowspan="2">조기신청 할인</td>
-                            <td>(1차) 조기신청 할인(~2025. 11. 14_금)</td>
+                            <td>(1차) 조기신청 할인(~2026. 11. 30_월)</td>
                             <td>300,000원</td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td>(2차) 조기신청 할인(~2025. 12. 12_금)</td>
+                            <td>(2차) 조기신청 할인(~2026. 12. 31_목)</td>
                             <td>200,000원</td>
                             <td></td>
                         </tr>
@@ -297,7 +297,7 @@
                         </tr>
                         <tr>
                             <td>재참가 할인</td>
-                            <td>2015년 ~ 2025년 참가업체</td>
+                            <td>2015년 ~ 2026년 참가업체</td>
                             <td>200,000원</td>
                             <td></td>
                         </tr>
