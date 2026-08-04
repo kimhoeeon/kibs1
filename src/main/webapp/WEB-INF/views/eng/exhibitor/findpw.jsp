@@ -81,9 +81,9 @@
                 <div class="login_form">
                     <div class="loginInfo">
                         <p>ID</p>
-                        <input type="text" id="id" maxlength="10" class="onlyNum" placeholder="Please enter your ID.">
+                        <input type="text" id="id" placeholder="Please enter your ID." autocomplete="false">
                         <div style="margin-top: 15px; color: #8c8c8c; font-weight: bold; font-size: 0.875em;">
-                            ※ Only corporate members who joined after October 2025 can request password reset.
+                            ※ Only corporate members who joined after August 2026 can request password reset.
                         </div>
                     </div>
                     <div class="btnLogin">

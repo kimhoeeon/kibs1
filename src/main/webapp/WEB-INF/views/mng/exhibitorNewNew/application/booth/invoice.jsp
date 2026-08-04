@@ -79,7 +79,7 @@
         <div class="top_box">
             <div class="box">
                 <div class="event">
-                    <div class="logo"><img src="/img/invoce_logo_kibs.png"></div>
+                    <div class="logo"><img src="/img/invoce_logo_kibs2027.png"></div>
                     <div class="date">
                         <c:choose>
                             <c:when test="${isEng}">Mar 12 - 14, 2027, KINTEX</c:when>
