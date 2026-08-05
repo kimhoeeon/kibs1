@@ -805,6 +805,24 @@
                                                         <!--begin:Menu item-->
                                                         <div class="menu-item p-0 m-0">
                                                             <!--begin:Menu link-->
+                                                            <a href="/mng/newsletter/subscriber/list.do" class="menu-link">
+                                                                <span class="menu-title">구독자 관리</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
+                                                            <a href="/mng/newsletter/clipping/list.do" class="menu-link">
+                                                                <span class="menu-title">AI 뉴스 관리</span>
+                                                            </a>
+                                                            <!--end:Menu link-->
+                                                        </div>
+                                                        <!--end:Menu item-->
+                                                        <!--begin:Menu item-->
+                                                        <div class="menu-item p-0 m-0">
+                                                            <!--begin:Menu link-->
                                                             <a href="/mng/center/board/faq.do" class="menu-link">
                                                                 <span class="menu-title">FAQ</span>
                                                             </a>

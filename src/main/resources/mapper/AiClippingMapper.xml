@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtf.kibs.mapper.AiClippingMapper">
+
+    <insert id="insertAiClipping" parameterType="com.mtf.kibs.dto.AiClippingDTO" useGeneratedKeys="true" keyProperty="seq">
+        INSERT INTO ai_clipping (
+            title,
+            content,
+            view_cnt,
+            share_cnt,
+            send_success_cnt,
+            send_fail_cnt,
+            del_yn,
+            reg_date,
+            mod_date
+        ) VALUES (
+                     #{title},
+                     #{content},
+                     0,
+                     0,
+                     0,
+                     0,
+                     'N',
+                     CURRENT_TIMESTAMP,
+                     CURRENT_TIMESTAMP
+                 )
+    </insert>
+
+    <select id="selectAiClippingList" parameterType="com.mtf.kibs.dto.AiClippingDTO" resultType="com.mtf.kibs.dto.AiClippingDTO">
+        SELECT
+        seq,
+        title,
+        content,
+        view_cnt AS viewCnt,
+        share_cnt AS shareCnt,
+        send_success_cnt AS sendSuccessCnt,
+        send_fail_cnt AS sendFailCnt,
+        del_yn AS delYn,
+        DATE_FORMAT(reg_date, '%Y-%m-%d %H:%i:%s') AS regDate,
+        DATE_FORMAT(mod_date, '%Y-%m-%d %H:%i:%s') AS modDate
+        FROM ai_clipping
+        WHERE del_yn = 'N'
+        <if test="title != null and title != ''">
+            AND title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        ORDER BY seq DESC
+        <if test="limit != null and limit > 0">
+            LIMIT #{limit} OFFSET #{offset}
+        </if>
+    </select>
+
+    <select id="selectAiClippingCount" parameterType="com.mtf.kibs.dto.AiClippingDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM ai_clipping
+        WHERE del_yn = 'N'
+        <if test="title != null and title != ''">
+            AND title LIKE CONCAT('%', #{title}, '%')
+        </if>
+    </select>
+
+    <select id="selectAiClippingLatest" resultType="com.mtf.kibs.dto.AiClippingDTO">
+        SELECT
+            seq,
+            title,
+            content,
+            view_cnt AS viewCnt,
+            share_cnt AS shareCnt,
+            send_success_cnt AS sendSuccessCnt,
+            send_fail_cnt AS sendFailCnt,
+            del_yn AS delYn,
+            DATE_FORMAT(reg_date, '%Y-%m-%d %H:%i:%s') AS regDate,
+            DATE_FORMAT(mod_date, '%Y-%m-%d %H:%i:%s') AS modDate
+        FROM ai_clipping
+        WHERE del_yn = 'N'
+        ORDER BY reg_date DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectAiClippingDetail" parameterType="String" resultType="com.mtf.kibs.dto.AiClippingDTO">
+        SELECT
+            seq,
+            title,
+            content,
+            view_cnt AS viewCnt,
+            share_cnt AS shareCnt,
+            send_success_cnt AS sendSuccessCnt,
+            send_fail_cnt AS sendFailCnt,
+            del_yn AS delYn,
+            DATE_FORMAT(reg_date, '%Y-%m-%d %H:%i:%s') AS regDate,
+            DATE_FORMAT(mod_date, '%Y-%m-%d %H:%i:%s') AS modDate
+        FROM ai_clipping
+        WHERE seq = #{seq}
+    </select>
+
+    <update id="updateAiClipping" parameterType="com.mtf.kibs.dto.AiClippingDTO">
+        UPDATE ai_clipping
+        SET
+            title = #{title},
+            content = #{content}
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="deleteAiClipping" parameterType="String">
+        UPDATE ai_clipping
+        SET del_yn = 'Y'
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateViewCnt" parameterType="String">
+        UPDATE ai_clipping
+        SET view_cnt = view_cnt + 1
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateShareCnt" parameterType="String">
+        UPDATE ai_clipping
+        SET share_cnt = share_cnt + 1
+        WHERE seq = #{seq}
+    </update>
+
+    <update id="updateSendCnt" parameterType="com.mtf.kibs.dto.AiClippingDTO">
+        UPDATE ai_clipping
+        SET
+            send_success_cnt = send_success_cnt + #{sendSuccessCnt},
+            send_fail_cnt = send_fail_cnt + #{sendFailCnt}
+        WHERE seq = #{seq}
+    </update>
+
+</mapper>

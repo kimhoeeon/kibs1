@@ -1041,6 +1041,11 @@ function f_pw_init(){
         return false;
     }
 
+    if(!emailCheck(id)){
+        showMessage('#id', 'error', '[ Member Info ]', 'Please enter a valid email format for your ID.', '');
+        return false;
+    }
+
     // ID 체크
     let jsonStr = { id : id , transferYear: transferYear};// 2027
     let seq = ajaxConnectSimple('/searchExhibitorNewSeq.do', 'post', jsonStr);

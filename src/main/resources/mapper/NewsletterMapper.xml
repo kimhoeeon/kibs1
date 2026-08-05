@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtf.kibs.mapper.NewsletterMapper">
+
+    <!-- ================== 구독자 관리 ================== -->
+
+    <insert id="insertSubscriber" parameterType="com.mtf.kibs.dto.NewsletterSubscriberDTO" useGeneratedKeys="true" keyProperty="seq">
+        INSERT INTO newsletter_subscriber (
+            name,
+            email,
+            privacy_agree_yn,
+            ad_agree_yn,
+            receive_status,
+            reg_date
+        ) VALUES (
+                     #{name},
+                     #{email},
+                     #{privacyAgreeYn},
+                     #{adAgreeYn},
+                     '수신중',
+                     CURRENT_TIMESTAMP
+                 )
+    </insert>
+
+    <select id="checkEmailDuplicate" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM newsletter_subscriber
+        WHERE email = #{email}
+    </select>
+
+    <select id="selectSubscriberList" parameterType="map" resultType="com.mtf.kibs.dto.NewsletterSubscriberDTO">
+        SELECT
+        seq,
+        name,
+        email,
+        privacy_agree_yn AS privacyAgreeYn,
+        ad_agree_yn AS adAgreeYn,
+        receive_status AS receiveStatus,
+        DATE_FORMAT(last_send_date, '%Y-%m-%d') AS lastSendDate,
+        DATE_FORMAT(reg_date, '%Y-%m-%d %H:%i:%s') AS regDate
+        FROM newsletter_subscriber
+        <where>
+            <if test="searchText != null and searchText != ''">
+                AND (name LIKE CONCAT('%', #{searchText}, '%') OR email LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+            <if test="receiveStatus != null and receiveStatus != '' and receiveStatus != '전체'">
+                AND receive_status = #{receiveStatus}
+            </if>
+            <if test="startDate != null and startDate != ''">
+                AND reg_date >= CONCAT(#{startDate}, ' 00:00:00')
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[ AND reg_date <= CONCAT(#{endDate}, ' 23:59:59') ]]>
+            </if>
+        </where>
+        ORDER BY seq DESC
+        <if test="limit != null and limit > 0">
+            LIMIT #{limit} OFFSET #{offset}
+        </if>
+    </select>
+
+    <select id="selectSubscriberCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM newsletter_subscriber
+        <where>
+            <if test="searchText != null and searchText != ''">
+                AND (name LIKE CONCAT('%', #{searchText}, '%') OR email LIKE CONCAT('%', #{searchText}, '%'))
+            </if>
+            <if test="receiveStatus != null and receiveStatus != '' and receiveStatus != '전체'">
+                AND receive_status = #{receiveStatus}
+            </if>
+            <if test="startDate != null and startDate != ''">
+                AND reg_date >= CONCAT(#{startDate}, ' 00:00:00')
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[ AND reg_date <= CONCAT(#{endDate}, ' 23:59:59') ]]>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSubscriberStatistics" resultType="map">
+        SELECT
+                (SELECT COUNT(*) FROM newsletter_subscriber) AS totalCount,
+                (SELECT COUNT(*) FROM newsletter_subscriber WHERE receive_status = '수신중') AS activeCount,
+                (SELECT COUNT(*) FROM newsletter_subscriber WHERE receive_status = '수신거부') AS rejectCount,
+                (SELECT COUNT(*) FROM newsletter_subscriber WHERE DATE(reg_date) = CURDATE()) AS todayNewCount
+    </select>
+
+    <update id="updateReceiveStatus" parameterType="com.mtf.kibs.dto.NewsletterSubscriberDTO">
+        UPDATE newsletter_subscriber
+        SET receive_status = #{receiveStatus}
+        <choose>
+            <when test="email != null and email != ''">
+                WHERE email = #{email}
+            </when>
+            <otherwise>
+                WHERE seq = #{seq}
+            </otherwise>
+        </choose>
+    </update>
+
+    <delete id="deleteSubscriber" parameterType="String">
+        DELETE FROM newsletter_subscriber
+        WHERE seq = #{seq}
+    </delete>
+
+    <select id="selectActiveSubscribers" resultType="com.mtf.kibs.dto.NewsletterSubscriberDTO">
+        SELECT
+            seq,
+            name,
+            email
+        FROM newsletter_subscriber
+        WHERE receive_status = '수신중'
+    </select>
+
+    <update id="updateLastSendDate" parameterType="String">
+        UPDATE newsletter_subscriber
+        SET last_send_date = CURRENT_TIMESTAMP
+        WHERE email = #{email}
+    </update>
+
+
+    <!-- ================== 발송 이력 관리 ================== -->
+
+    <insert id="insertSendHistory" parameterType="com.mtf.kibs.dto.NewsletterSendHistoryDTO" useGeneratedKeys="true" keyProperty="seq">
+        INSERT INTO newsletter_send_history (
+            clipping_seq,
+            subscriber_email,
+            send_result,
+            send_result_msg,
+            send_date
+        ) VALUES (
+                     #{clippingSeq},
+                     #{subscriberEmail},
+                     #{sendResult},
+                     #{sendResultMsg},
+                     CURRENT_TIMESTAMP
+                 )
+    </insert>
+
+    <select id="selectSendHistoryList" parameterType="String" resultType="com.mtf.kibs.dto.NewsletterSendHistoryDTO">
+        SELECT
+            seq,
+            clipping_seq AS clippingSeq,
+            subscriber_email AS subscriberEmail,
+            send_result AS sendResult,
+            send_result_msg AS sendResultMsg,
+            DATE_FORMAT(send_date, '%Y-%m-%d %H:%i:%s') AS sendDate
+        FROM newsletter_send_history
+        WHERE clipping_seq = #{clippingSeq}
+        ORDER BY seq DESC
+    </select>
+
+</mapper>
