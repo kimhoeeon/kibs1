@@ -75,7 +75,7 @@ public class AiClippingScheduler {
             String summarizedContent = generateSummaryViaOpenAI(rawArticles);
 
             String todayDate = java.time.LocalDate.now().toString();
-            String generatedTitle = "[AI 브리핑] " + todayDate + " 해양레저산업 주요 동향";
+            String generatedTitle = "[경기국제보트쇼 AI 클리핑] " + todayDate + " 해양레저산업 주요 동향";
 
             // DB에 저장
             AiClippingDTO clippingDTO = new AiClippingDTO();
