@@ -407,10 +407,9 @@
                     <div class="main_tit">
                         <div class="top">Newsletter</div>
                         <div class="big">뉴스레터 구독하기</div>
-                        <div class="nae">경기국제보트쇼의 소식을 전달합니다. <br/>
-                            다양한 컨퍼런스와 어쩌고저쩌고 놓쳐서는 안될 유익한 트렌드를 큐레이팅하고,<br class="pc_only">
-                            새로운 관점으로 이슈를 전합니다. 경기국제보트쇼의 소식을 전달합니다. <br/>
-                            경기국제보트쇼의 소식을 전달합니다.
+                        <div class="nae">경기국제보트쇼의 소식을 전달합니다.<br/>
+                            다양한 컨퍼런스와 놓쳐서는 안될 유익한 트렌드를 큐레이팅하고,<br class="pc_only">
+                            새로운 관점으로 이슈를 전합니다.
                         </div>
                     </div>
                     <div class="news_letter_box">
