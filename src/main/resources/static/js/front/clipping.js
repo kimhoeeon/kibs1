@@ -48,8 +48,22 @@ $(function() {
         let totalPages = Math.ceil(totalCount / pageSize);
         if(totalPages === 0) totalPages = 1;
 
+        // 한 화면에 보여줄 페이징 숫자 개수 설정 (10개씩 노출)
+        const pageBlockSize = 10;
+
+        // 현재 페이지가 속한 블록 계산
+        let currentBlock = Math.ceil(currentPage / pageBlockSize);
+        let startPage = (currentBlock - 1) * pageBlockSize + 1;
+        let endPage = startPage + pageBlockSize - 1;
+
+        // 마지막 페이지 번호 보정
+        if (endPage > totalPages) {
+            endPage = totalPages;
+        }
+
         let html = '';
-        for (let i = 1; i <= totalPages; i++) {
+        // 1부터 무조건 도는 것이 아니라, 계산된 startPage부터 endPage까지만 반복
+        for (let i = startPage; i <= endPage; i++) {
             if(i === currentPage) {
                 html += '<li><a href="javascript:void(0);" class="this">' + i + '</a></li>';
             } else {
@@ -58,7 +72,7 @@ $(function() {
         }
         $('#paginationArea').html(html);
 
-        // 이전/다음 등 버튼 이벤트 매핑
+        // 이전/다음 등 버튼 이벤트 매핑 (버튼 기능은 기존과 동일)
         $('#first_page').off('click').on('click', function() { changePage(1); });
         $('#prev_page').off('click').on('click', function() { if(currentPage > 1) changePage(currentPage - 1); });
         $('#next_page').off('click').on('click', function() { if(currentPage < totalPages) changePage(currentPage + 1); });

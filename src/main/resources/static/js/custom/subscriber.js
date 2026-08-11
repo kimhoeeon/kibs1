@@ -38,16 +38,15 @@ $(function() {
         }
 
         if (confirm("선택한 구독자를 완전히 삭제하시겠습니까?")) {
-            // (퍼블리셔 연동을 위해 임시로 AJAX 구현)
             $.ajax({
-                url: '/mng/center/board/subscriber/delete.do', // 해당 API 필요
+                url: '/mng/center/board/subscriber/delete.do',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(selectedSeqs),
                 success: function(res) {
                     alert("삭제가 완료되었습니다.");
-                    loadSubscriberList(currentPage);
-                    $('#checkAll').prop('checked', false);
+                    // 리스트 갱신 대신 새로고침을 통해 상단 대시보드 통계까지 전체 갱신
+                    location.reload();
                 }
             });
         }
@@ -67,14 +66,14 @@ $(function() {
 
         if (confirm("선택한 구독자를 수신거부 상태로 변경하시겠습니까?")) {
             $.ajax({
-                url: '/mng/center/board/subscriber/reject.do', // 해당 API 필요
+                url: '/mng/center/board/subscriber/reject.do',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(selectedSeqs),
                 success: function(res) {
                     alert("수신거부 처리가 완료되었습니다.");
-                    loadSubscriberList(currentPage);
-                    $('#checkAll').prop('checked', false);
+                    // 리스트 갱신 대신 새로고침을 통해 상단 대시보드 통계까지 전체 갱신
+                    location.reload();
                 }
             });
         }

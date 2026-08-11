@@ -115,7 +115,7 @@
                 <div class="board_view_box">
                     <div class="board_view_tit">${clippingInfo.title}</div>
                     <div class="board_view_info">
-                        <div class="write">AI</div>
+                        <div class="write">관리자</div>
                         <div class="date">
                             <c:set var="writeDate" value="${fn:replace(fn:split(clippingInfo.regDate,' ')[0],'-','.')}" />
                             ${writeDate}

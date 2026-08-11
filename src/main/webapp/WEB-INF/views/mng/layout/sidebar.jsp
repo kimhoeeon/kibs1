@@ -746,7 +746,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="/mng/newsletter/subscriber/list.do">
+                            <a class="menu-link" href="/mng/center/board/subscriber.do">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
@@ -758,7 +758,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="/mng/newsletter/clipping/list.do">
+                            <a class="menu-link" href="/mng/center/board/clipping.do">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>

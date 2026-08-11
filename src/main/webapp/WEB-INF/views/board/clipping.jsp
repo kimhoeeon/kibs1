@@ -121,7 +121,7 @@
                 <div class="paging">
                     <span class="first" id="first_page"><a><img src="/img/btn_first.gif" style="cursor: pointer"></a></span>
                     <span class="prev" id="prev_page"><a><img src="/img/btn_prev.gif" style="cursor: pointer"></a></span>
-                    <ol>
+                    <ol id="paginationArea">
                         <%--<li>
                           <a class="this">1</a>
                         </li>
