@@ -612,11 +612,29 @@
             let agreePrivacy = $('#nlPrivacy').is(':checked') ? 'Y' : 'N';
             let agreeAd = $('#nlAd').is(':checked') ? 'Y' : 'N';
 
+            // 1. 빈 값 체크
             if (!email || !name) {
                 alert("이름과 이메일을 모두 입력해주세요.");
                 return;
             }
 
+            // 2. 이름 유효성 검사 (한글, 영문, 공백 허용, 2~20자)
+            let nameRegex = /^[가-힣a-zA-Z\s]{2,20}$/;
+            if (!nameRegex.test(name)) {
+                alert("이름은 한글 또는 영문으로 2자 이상 입력해주세요.\n(특수문자 및 숫자 사용 불가)");
+                $('#nlName').focus();
+                return;
+            }
+
+            // 3. 이메일 유효성 검사 (표준 이메일 형식)
+            let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                alert("유효한 이메일 주소 형식이 아닙니다.\n(예: example@kibs.com)");
+                $('#nlEmail').focus();
+                return;
+            }
+
+            // 4. 약관 동의 체크
             if (agreePrivacy === 'N' || agreeAd === 'N') {
                 alert("필수 약관에 모두 동의해 주셔야 구독이 가능합니다.");
                 return;
