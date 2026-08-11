@@ -75,7 +75,6 @@ public class NewsletterServiceImpl implements NewsletterService {
     }
 
     @Override
-    @Transactional
     public void sendClippingNewsletter(String clippingSeq, String title, String content) {
         List<NewsletterSubscriberDTO> activeSubscribers = newsletterMapper.selectActiveSubscribers();
 
@@ -88,7 +87,9 @@ public class NewsletterServiceImpl implements NewsletterService {
 
         for (NewsletterSubscriberDTO subscriber : activeSubscribers) {
             MailRequestDTO mailReq = new MailRequestDTO();
-            mailReq.setSubject("[경기국제보트쇼 AI 클리핑] " + title);
+
+            // 이메일 제목 중복 제거 (스케줄러에서 만든 title 그대로 사용)
+            mailReq.setSubject(title);
 
             String encodedEmail = "";
             try {
