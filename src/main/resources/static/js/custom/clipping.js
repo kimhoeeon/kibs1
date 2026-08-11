@@ -48,7 +48,7 @@ $(function() {
         let seq = $(this).data('seq');
         // 상세 데이터 조회 후 모달에 세팅 (구현 API 호출)
         $.ajax({
-            url: '/mng/center/board/clipping/detail/' + seq,
+            url: '/mng/center/board/clipping/detail.ajax?seq=' + seq,
             type: 'GET',
             success: function(res) {
                 $('#editSeq').val(res.data.seq);
@@ -66,7 +66,7 @@ $(function() {
         let content = $('#editContent').val();
 
         $.ajax({
-            url: '/mng/center/board/clipping/update',
+            url: '/mng/center/board/clipping/update.do',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ seq: seq, title: title, content: content }),
@@ -83,8 +83,10 @@ $(function() {
         if(confirm("해당 기사를 정말 삭제하시겠습니까?")) {
             let seq = $('#editSeq').val();
             $.ajax({
-                url: '/mng/center/board/clipping/delete/' + seq,
+                url: '/mng/center/board/clipping/delete.do',
                 type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ seq: seq }),
                 success: function(res) {
                     alert("삭제되었습니다.");
                     bootstrap.Modal.getInstance(document.getElementById('modalClippingDetail')).hide();
@@ -92,5 +94,39 @@ $(function() {
                 }
             });
         }
+    });
+
+    // AI 클리핑 수동 생성 (업데이트)
+    $('#btnManualUpdate').on('click', function() {
+        if(!confirm("AI 클리핑을 수동으로 생성하시겠습니까?\n기사 수집 및 AI 요약에 약 10~20초 정도 소요될 수 있습니다.")) {
+            return;
+        }
+
+        let $btn = $(this);
+        let originalHtml = $btn.html();
+
+        // 중복 클릭 방지 및 로딩 상태 표시
+        $btn.prop('disabled', true).text('기사 수집 및 요약 중...');
+
+        $.ajax({
+            url: '/mng/center/board/clipping/manual-update.do',
+            type: 'POST',
+            success: function(res) {
+                if(res.resultCode === "0") {
+                    alert("AI 클리핑이 성공적으로 생성 및 구독자에게 발송되었습니다.");
+                    currentPage = 1;
+                    loadClippingList(currentPage); // 생성 완료 후 목록 갱신
+                } else {
+                    alert(res.resultMsg || "생성 중 오류가 발생했습니다.");
+                }
+            },
+            error: function() {
+                alert("서버 통신 중 오류가 발생했습니다.");
+            },
+            complete: function() {
+                // 통신 완료 후 버튼 원상복구
+                $btn.prop('disabled', false).html(originalHtml);
+            }
+        });
     });
 });

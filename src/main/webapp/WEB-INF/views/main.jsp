@@ -349,6 +349,26 @@
             <!-- //section -->
 
             <!-- section -->
+            <div class="main_ai">
+                <div class="inner">
+                    <div class="main_tit">
+                        <div class="top">AI News Clipping</div>
+                        <div class="big">AI 뉴스 클리핑</div>
+                    </div>
+                    <div class="ai_clipping_box" id="mainAiContainer" style="display: none;">
+                        <div class="ai_top">
+                            <div class="tit" id="mainAiTitle"></div>
+                            <!-- 공유하기 클릭 시 카운트 증가 및 클립보드 복사 -->
+                            <button type="button" class="more" id="btnShareAi">공유하기</button>
+                        </div>
+                        <div class="nae" id="mainAiContent"></div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- //section -->
+
+            <!-- section -->
             <div class="main_tv">
                 <div class="inner">
                     <div class="main_tit">
@@ -376,6 +396,52 @@
                                 </a>
                             </li>--%>
                         </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- //section -->
+
+            <!-- section -->
+            <div class="main_newsletter">
+                <div class="inner">
+                    <div class="main_tit">
+                        <div class="top">Newsletter</div>
+                        <div class="big">뉴스레터 구독하기</div>
+                        <div class="nae">경기국제보트쇼의 소식을 전달합니다. <br/>
+                            다양한 컨퍼런스와 어쩌고저쩌고 놓쳐서는 안될 유익한 트렌드를 큐레이팅하고,<br class="pc_only">
+                            새로운 관점으로 이슈를 전합니다. 경기국제보트쇼의 소식을 전달합니다. <br/>
+                            경기국제보트쇼의 소식을 전달합니다.
+                        </div>
+                    </div>
+                    <div class="news_letter_box">
+                        <div class="form_wrap">
+                            <ul class="form_box">
+                                <li>
+                                    <div class="item"><p>이메일</p></div>
+                                    <div class="input">
+                                        <input type="text" id="nlEmail" placeholder="이메일을 입력해주세요">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item"><p>이름</p></div>
+                                    <div class="input">
+                                        <input type="text" id="nlName" placeholder="이름을 입력해주세요">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="input check">
+                                        <label><input type="checkbox" id="nlPrivacy">(필수) <span class="pri_btn">개인정보 수집 및 이용</span>에 동의합니다.</label>
+                                        <label><input type="checkbox" id="nlAd">(필수) <span class="adv_btn">광고성 정보 수신</span>에 동의합니다.</label>
+                                    </div>
+                                    <div class="comnt">
+                                        * 뉴스레터 수신 거부를 원하시는 분께서는 수신하신 뉴스레터 하단의 “수신거부”를 클릭하시면 수신거부 처리가 완료됩니다.
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="subscribe_btn">
+                                <button type="button" onclick="subscribeNewsletter()">뉴스레터 구독하기</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -420,6 +486,73 @@
         </div>
     </div>
 
+    <div class="popPrivacy popForm popup">
+        <div class="popup_inner">
+            <div class="popup_wrap">
+                <div class="pop_tit">
+                    <div class="tit">[개인정보 수집 이용 동의] 약관</div>
+                    <a class="close" href="#close"><img src="../../img/close_w.png"></a>
+                </div>
+                <div class="pop_box">
+                    <div class="pop_cont">
+                        <b>[개인정보 수집 및 이용 동의]</b> <br />
+                        경기국제보트쇼 사무국은 뉴스레터 발송을 위해 아래와 같이 개인정보를 수집·이용합니다.<br /><br />
+                        1. 수집 항목<br />
+                        이름<br />
+                        이메일 주소<br /><br />
+
+                        2. 수집 및 이용 목적<br />
+                        경기국제보트쇼 뉴스레터 발송<br />
+                        행사 소식, 공지사항, 참가/참관 안내 제공<br />
+                        전시회 관련 산업 뉴스 및 콘텐츠 제공<br />
+                        뉴스레터 신청자 관리 및 문의 응대<br /><br />
+
+                        3. 보유 및 이용 기간 수집된 개인정보는 뉴스레터 수신 동의 철회 시까지 보유·이용하며, 수신자가 구독 해지를 요청하거나 개인정보 삭제를 요청하는 경우 지체 없이 파기합니다.<br />
+                        단, 관계 법령에 따라 보관이 필요한 경우 해당 법령에서 정한 기간 동안 보관할 수 있습니다.<br /><br />
+                        4. 동의 거부 권리 및 불이익 이용자는 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있습니다.<br />
+                        다만, 동의를 거부할 경우 뉴스레터 신청 및 수신이 제한될 수 있습니다.<br /><br />
+
+                        위와 같이 개인정보를 수집·이용하는 데 동의합니다.
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="popAdver popForm popup">
+        <div class="popup_inner">
+            <div class="popup_wrap">
+                <div class="pop_tit">
+                    <div class="tit">[광고성 정보 수신 동의]</div>
+                    <a class="close" href="#close"><img src="../../img/close_w.png"></a>
+                </div>
+                <div class="pop_box">
+                    <div class="pop_cont">
+                        경기국제보트쇼 사무국은 뉴스레터를 통해 경기국제보트쇼 및 관련 행사, 전시, 산업 정보, 홍보 콘텐츠 등을 안내하기 위해 아래와 같이 광고성 정보를 발송할 수 있습니다.<br /><br />
+
+                        1. 수신 항목<br />
+                        경기국제보트쇼 행사 안내<br />
+                        참가업체 및 참관객 대상 주요 공지<br />
+                        전시회 참가/참관 안내<br />
+                        관련 산업 뉴스, 콘텐츠, 이벤트 및 홍보 정보<br />
+                        사무국에서 제공하는 마케팅성 안내<br /><br />
+
+                        2. 수신 방법<br />
+                        이메일<br /><br />
+
+                        3. 보유 및 이용 기간 광고성 정보 수신 동의 철회 시까지 보유·이용합니다. 수신자는 뉴스레터 하단의 수신 거부 또는 사무국 문의를 통해 언제든지 수신 동의를 철회할 수 있습니다.<br /><br />
+
+                        4. 동의 거부 권리 및 불이익 이용자는 광고성 정보 수신에 대한 동의를 거부할 권리가 있습니다. 다만, 동의를 거부할 경우 행사 홍보, 이벤트, 산업 뉴스 등 마케팅성 정보 수신이 제한될 수 있습니다.<br /><br />
+
+                        위와 같이 광고성 정보를 수신하는 데 동의합니다.
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <c:import url="footer.jsp" charEncoding="UTF-8"/>
 
     <script>
@@ -436,7 +569,89 @@
                 }
                 f_show_main_popup(popup_param);
             </c:forEach>
+
+            // 1. 메인 페이지 최신 AI 클리핑 불러오기
+            $.ajax({
+                url: '/api/clipping/latest',
+                type: 'GET',
+                success: function(res) {
+                    if(res.resultCode === "0" && res.data) {
+                        let aiData = res.data;
+                        $('#mainAiTitle').text(aiData.title);
+                        // HTML 태그가 이미 포함되어 있으므로 html()로 삽입
+                        $('#mainAiContent').html(aiData.content);
+                        $('#btnShareAi').data('seq', aiData.seq);
+                        $('#mainAiContainer').show();
+                    }
+                }
+            });
+
+            // 2. AI 클리핑 공유하기 액션
+            $('#btnShareAi').on('click', function() {
+                let seq = $(this).data('seq');
+                if(!seq) return;
+
+                // 공유 횟수 증가 API
+                $.post('/api/clipping/share/' + seq, function() {
+                    // 현재 사이트 URL 복사 로직 등 추가 가능
+                    let dummy = document.createElement("input");
+                    document.body.appendChild(dummy);
+                    dummy.value = window.location.origin + "/board/clipping.do";
+                    dummy.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(dummy);
+
+                    alert("게시판 URL이 클립보드에 복사되었습니다.");
+                });
+            });
         });
+
+        // 3. 뉴스레터 구독 기능
+        function subscribeNewsletter() {
+            let email = $('#nlEmail').val().trim();
+            let name = $('#nlName').val().trim();
+            let agreePrivacy = $('#nlPrivacy').is(':checked') ? 'Y' : 'N';
+            let agreeAd = $('#nlAd').is(':checked') ? 'Y' : 'N';
+
+            if (!email || !name) {
+                alert("이름과 이메일을 모두 입력해주세요.");
+                return;
+            }
+
+            if (agreePrivacy === 'N' || agreeAd === 'N') {
+                alert("필수 약관에 모두 동의해 주셔야 구독이 가능합니다.");
+                return;
+            }
+
+            let payload = {
+                email: email,
+                name: name,
+                privacyAgreeYn: agreePrivacy,
+                adAgreeYn: agreeAd
+            };
+
+            $.ajax({
+                url: '/api/newsletter/subscribe',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: function(res) {
+                    if (res.resultCode === "0") {
+                        alert("뉴스레터 구독 신청이 완료되었습니다.");
+                        $('#nlEmail').val('');
+                        $('#nlName').val('');
+                        $('#nlPrivacy').prop('checked', false);
+                        $('#nlAd').prop('checked', false);
+                    } else {
+                        alert(res.resultMsg || "오류가 발생했습니다.");
+                    }
+                },
+                error: function(xhr) {
+                    let err = xhr.responseJSON;
+                    alert(err && err.resultMsg ? err.resultMsg : "구독 처리 중 서버 오류가 발생했습니다.");
+                }
+            });
+        }
     </script>
 
 </body>

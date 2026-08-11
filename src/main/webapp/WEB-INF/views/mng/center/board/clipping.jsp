@@ -106,6 +106,11 @@ if (document.documentElement) {
                                                 <input type="text" id="searchTitle" class="form-control form-control-solid w-250px ps-12" placeholder="제목 검색" />
                                             </div>
                                         </div>
+                                        <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                                            <button type="button" id="btnManualUpdate" class="btn btn-sm btn-primary">
+                                                <i class="ki-duotone ki-arrows-circle fs-2"></i> AI 클리핑 수동 생성
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="card-body pt-0">
                                         <div class="table-responsive">

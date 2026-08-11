@@ -52,103 +52,97 @@
         <a itemprop="sameAs" href="https://www.youtube.com/channel/UCvcRu_g4M1MOIIuJyllR6Rw"></a>
         <a itemprop="sameAs" href="https://www.youtube.com/@KIBSKINTEX"></a>
     </span>
-
 </head>
 
 <body>
-<c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-<div id="container">
+    <c:import url="../header.jsp" charEncoding="UTF-8"/>
 
-    <!-- section -->
-    <div class="sub_top">
-        <div class="inner">
-            <div class="sub_top_box">
-                <div class="sub_top_nav">
-                    <span>홈</span><span>미디어센터</span><span>기사 및 칼럼</span>
+    <div id="container">
+
+        <!-- section -->
+        <div class="sub_top">
+            <div class="inner">
+                <div class="sub_top_box">
+                    <div class="sub_top_nav">
+                        <span>홈</span><span>미디어센터</span><span>AI 클리핑</span>
+                    </div>
+                    <div class="sub_top_tit">AI 클리핑</div>
                 </div>
-                <div class="sub_top_tit">기사 및 칼럼</div>
             </div>
         </div>
-    </div>
-    <!-- //section -->
+        <!-- //section -->
 
-    <!-- section -->
-    <div class="sub_tab">
-        <div class="inner">
-            <div class="sub_tab_box">
-                <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
-                <div class="optionBox">
-                    <div class="tabOpt1 tabOption">
-                        <div class="tabOptAct">미디어센터</div>
-                        <div class="tabOptSel">
-                            <a href="/guide/summary.do">KIBS 안내</a>
-                            <a href="/exhibitor/guide.do">참가기업</a>
-                            <a href="/visitor/guide_off.do">참관객</a>
-                            <a class="active" href="/guide/notice.do">미디어센터</a>
-                            <a href="/online/company.do">온라인 전시관</a>
-                            <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
-                            <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
-                            <%--<a href="/guide/maritime_expo.do">해상전시회(시흥 거북섬마리나)</a>--%>
+        <!-- section -->
+        <div class="sub_tab">
+            <div class="inner">
+                <div class="sub_tab_box">
+                    <a href="javascript:void(0);" onclick="home('ko');" class="iconHome"><img src="/img/icon_home.png"></a>
+                    <div class="optionBox">
+                        <div class="tabOpt1 tabOption">
+                            <div class="tabOptAct">미디어센터</div>
+                            <div class="tabOptSel">
+                                <a href="/guide/summary.do">KIBS 안내</a>
+                                <a href="/exhibitor/guide.do">참가기업</a>
+                                <a href="/visitor/guide_off.do">참관객</a>
+                                <a class="active" href="/guide/notice.do">미디어센터</a>
+                                <a href="/online/company.do">온라인 전시관</a>
+                                <a href="/guide/summary_kiss.do">KISS(코리아 서프쇼)</a>
+                                <a href="/guide/summary_kmts.do">KMTS(해양관광전)</a>
+                                <%--<a href="/guide/maritime_expo.do">해상전시회(시흥 거북섬마리나)</a>--%>
+                            </div>
+                        </div>
+                        <div class="tabOpt2 tabOption">
+                            <div class="tabOptAct">AI 클리핑</div>
+                            <div class="tabOptSel">
+                                <a href="/guide/notice.do">공지사항</a>
+                                <a href="/board/gallery.do">갤러리</a>
+                                <a href="/online/kibstv.do">KIBS Tube</a>
+                                <a href="/board/press.do">기사 및 칼럼</a>
+                                <a class="active" href="/board/clipping.do">AI 클리핑</a>
+                                <a href="/board/newsletter.do">뉴스레터</a>
+                                <a href="/board/contest.do">해양레저 사진 공모전</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="tabOpt2 tabOption">
-                        <div class="tabOptAct">기사 및 칼럼</div>
-                        <div class="tabOptSel">
-                            <a href="/guide/notice.do">공지사항</a>
-                            <a href="/board/gallery.do">갤러리</a>
-                            <a href="/online/kibstv.do">KIBS Tube</a>
-                            <a class="active" href="/board/press.do">기사 및 칼럼</a>
-                            <a href="/board/clipping.do">AI 클리핑</a>
-                            <a href="/board/newsletter.do">뉴스레터</a>
-                            <a href="/board/contest.do">해양레저 사진 공모전</a>
+                </div>
+            </div>
+        </div>
+        <!-- section -->
+
+        <div class="board_view padding_tb">
+            <div class="inner">
+                <div class="board_view_box">
+                    <div class="board_view_tit">${clippingInfo.title}</div>
+                    <div class="board_view_info">
+                        <div class="write">AI</div>
+                        <div class="date">
+                            <c:set var="writeDate" value="${fn:replace(fn:split(clippingInfo.regDate,' ')[0],'-','.')}" />
+                            ${writeDate}
                         </div>
+                        <div class="count">${clippingInfo.viewCnt}</div>
+                    </div>
+                    <div class="board_view_cont ql-editor">
+                        ${clippingInfo.content}
+                    </div>
+                    <div class="board_view_btn">
+                        <c:if test="${clippingInfo.prevSeq ne null and clippingInfo.prevSeq ne ''}">
+                            <a href="/board/clippingView.do?seq=${clippingInfo.prevSeq}" class="prevBtn">이전글</a>
+                        </c:if>
+                        <a href="/board/clipping.do" class="listBtn">목록</a>
+                        <c:if test="${clippingInfo.nextSeq ne null and clippingInfo.nextSeq ne ''}">
+                            <a href="/board/clippingView.do?seq=${clippingInfo.nextSeq}" class="nextBtn">다음글</a>
+                        </c:if>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- section -->
 
-    <div class="board_view padding_tb">
-        <div class="inner">
-            <div class="board_view_box">
-                <div class="board_view_tit">${pressInfo.title}</div>
-                <div class="board_view_info">
-                    <div class="write">${pressInfo.writer}</div>
-                    <div class="date">
-                        <c:set var="writeDate" value="${fn:replace(fn:split(pressInfo.writeDate,' ')[0],'-','.')}" />
-                        ${writeDate}
-                    </div>
-                    <div class="count">${pressInfo.viewCnt}</div>
-                </div>
-                <div class="board_view_cont">
-                    ${pressInfo.content}
-                </div>
-                <div class="board_view_file">
-                    <c:if test="${not empty fileList}">
-                        <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1" varStatus="status">
-                            <%--<a href="/file/download.do?path=center/board/${fileInfo.folderPath}&fileName=${fileInfo.fullFileName}">${fileInfo.fileName}</a>--%>
-                            <a href="javascript:void(0);" onclick="f_file_download('center/board/${fileInfo.folderPath}', '${fileInfo.fileName}')">${fileInfo.fileName}</a>
-                        </c:forEach>
-                    </c:if>
-                </div>
-                <div class="board_view_btn">
-                    <c:if test="${pressInfo.prevId ne null and pressInfo.prevId ne ''}">
-                        <a href="/board/pressView.do?id=${pressInfo.prevId}" class="prevBtn">이전글</a>
-                    </c:if>
-                    <a href="/board/press.do" class="listBtn">목록</a>
-                    <c:if test="${pressInfo.nextId ne null and pressInfo.nextId ne ''}">
-                        <a href="/board/pressView.do?id=${pressInfo.nextId}" class="nextBtn">다음글</a>
-                    </c:if>
-                </div>
-            </div>
-        </div>
     </div>
 
-</div>
+    <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
-<c:import url="../footer.jsp" charEncoding="UTF-8"/>
+    <script src="/js/front/clipping.js?ver=20260811"></script>
 
 </body>
 </html>

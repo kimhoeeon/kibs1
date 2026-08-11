@@ -47,6 +47,8 @@ dependencies {
 	//implementation fileTree(dir : 'src/main/webapp/WEB-INF/lib', include : [ '*.jar'])
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
+	implementation 'org.jsoup:jsoup:1.17.2'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.0.6'
 	annotationProcessor 'org.projectlombok:lombok'

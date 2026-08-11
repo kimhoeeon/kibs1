@@ -612,6 +612,24 @@ $(document).ready(function () {
         return false;
     });
 
+    // 개인정보 팝업
+    $('.pri_btn').on('click', function () {
+        $('.popPrivacy').toggleClass('on');
+        $('body').toggleClass('lock_scroll');
+        document.querySelector('.pop_box').scrollTop = 0;
+
+        return false;
+    });
+
+    // 광고성 팝업
+    $('.adv_btn').on('click', function () {
+        $('.popAdver').toggleClass('on');
+        $('body').toggleClass('lock_scroll');
+        document.querySelector('.pop_box').scrollTop = 0;
+
+        return false;
+    });
+
     // 수출상담회 바이어 신청 팝업
     $('.addFormBuyer, .modifyFormBuyer').on('click', function () {
         $('.popFormBuyer').toggleClass('on');

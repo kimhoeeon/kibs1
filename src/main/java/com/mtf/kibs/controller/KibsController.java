@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mtf.kibs.constants.CommConstants;
 import com.mtf.kibs.dto.*;
+import com.mtf.kibs.mapper.AiClippingMapper;
 import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.CommService;
 import com.mtf.kibs.service.KibsService;
@@ -40,6 +41,9 @@ public class KibsController {
 
     @Autowired
     private CalculationService calculationService; // 1. 공통 계산 서비스 주입
+
+    @Autowired
+    private AiClippingMapper aiClippingMapper;
 
     private final KibsService kibsService;
 
@@ -1208,6 +1212,55 @@ public class KibsController {
             }
         }
         mv.setViewName("/board/columnView");
+        return mv;
+    }
+
+    @RequestMapping(value = "/board/clipping.do", method = RequestMethod.GET)
+    public ModelAndView board_clipping() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/board/clipping");
+        return mv;
+    }
+
+    @RequestMapping(value = "/board/clippingView.do", method = RequestMethod.GET)
+    public ModelAndView board_clippingView(String seq) {
+        ModelAndView mv = new ModelAndView();
+
+        // 1. 조회수 증가는 JS 단에서 API를 호출하여 이미 처리했으므로, 여기서는 데이터만 조회합니다.
+        // 하지만 안전을 위해 서버단에서도 처리하고 싶다면 주석을 해제하세요.
+        // aiClippingMapper.updateViewCnt(seq);
+
+        // 2. 데이터 단건 조회 로직
+        // (AiClippingMapper를 KibsController 상단에 @Autowired로 주입받아야 합니다)
+        AiClippingDTO clippingInfo = aiClippingMapper.selectAiClippingDetail(seq);
+
+        if(clippingInfo != null){
+            // 이전글/다음글을 세팅하기 위한 전체 리스트 조회
+            AiClippingDTO searchDto = new AiClippingDTO();
+            searchDto.setLimit(1000); // 이전/다음글 찾기용 임시 세팅
+            searchDto.setOffset(0);
+
+            List<AiClippingDTO> responseList = aiClippingMapper.selectAiClippingList(searchDto);
+
+            // 이전글, 다음글의 Seq를 찾아서 세팅 (목록이 내림차순이라 가정)
+            for (int i = 0; i < responseList.size(); i++) {
+                if (responseList.get(i).getSeq().equals(seq)) {
+                    // 이전 글 (최신글 방향)
+                    if (i > 0) {
+                        clippingInfo.setPrevSeq(responseList.get(i - 1).getSeq());
+                    }
+                    // 다음 글 (과거글 방향)
+                    if (i < responseList.size() - 1) {
+                        clippingInfo.setNextSeq(responseList.get(i + 1).getSeq());
+                    }
+                    break;
+                }
+            }
+
+            mv.addObject("clippingInfo", clippingInfo);
+        }
+
+        mv.setViewName("/board/clippingView");
         return mv;
     }
 

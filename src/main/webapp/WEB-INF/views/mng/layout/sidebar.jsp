@@ -762,7 +762,7 @@
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
-                                <span class="menu-title">칼럼</span>
+                                <span class="menu-title">AI 뉴스 관리</span>
                             </a>
                             <!--end:Menu link-->
                         </div>

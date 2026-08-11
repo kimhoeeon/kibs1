@@ -137,6 +137,7 @@
                             <li><a href="<c:url value="/board/gallery.do"/>"><span>갤러리</span></a></li>
                             <li><a href="<c:url value="/online/kibstv.do"/>"><span>KIBS Tube</span></a></li>
                             <li><a href="<c:url value="/board/press.do"/>"><span>기사 및 칼럼</span></a></li>
+                            <li><a href="<c:url value="/board/clipping.do"/>"><span>AI 클리핑</span></a></li>
                             <li><a href="<c:url value="/board/newsletter.do"/>"><span>뉴스레터</span></a></li>
                             <li><a href="<c:url value="/board/contest.do"/>"><span>해양레저 사진 공모전</span></a></li>
                         </ul>
@@ -245,6 +246,7 @@
                                     <li><a href="<c:url value="/board/column.do"/>"><span>칼럼</span></a></li>
                                 </ul>
                             </li>
+                            <li><a href="<c:url value="/board/clipping.do"/>"><span>AI 클리핑</span></a></li>
                             <li><a href="<c:url value="/board/newsletter.do"/>"><span>뉴스레터</span></a></li>
                             <li><a href="<c:url value="/board/contest.do"/>"><span>해양레저 사진 공모전</span></a></li>
                         </ul>

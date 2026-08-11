@@ -98,7 +98,7 @@ $(function() {
 
         // 관리자 API 호출 (구현 필요)
         $.ajax({
-            url: '/mng/api/newsletter/subscriber/list',
+            url: '/mng/center/board/subscriber/list.ajax',
             type: 'GET',
             data: reqData,
             success: function(res) {

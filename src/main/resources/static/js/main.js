@@ -4397,7 +4397,7 @@ function step_03_check(exhibitorSeq){
                 for(let j=0; j<emailArr.length; j++){
                     let email = emailArr[j];
                     let jsonObj = {
-                        subject: '[2027 경기국제보트쇼] 참가업체 접수 완료', //제목
+                        subject: '[2027 경기국제보트쇼] 참가업체 참가신청 접수완료', //제목
                         body: "", //본문
                         template: "6", //템플릿 번호
                         receiver: [{email: email}]
@@ -6173,7 +6173,7 @@ function my_step_03_check(exhibitorSeq){
                 for(let j=0; j<emailArr.length; j++){
                     let email = emailArr[j];
                     let jsonObj = {
-                        subject: '[2027 경기국제보트쇼] 참가업체 접수 완료', //제목
+                        subject: '[2027 경기국제보트쇼] 참가업체 참가신청 접수완료', //제목
                         body: "", //본문
                         template: "6", //템플릿 번호
                         receiver: [{email: email}]
@@ -6576,11 +6576,11 @@ function f_visitor_apply(gbn){
 
                             if(gbn === 'I'){
                                 /* 참관객 완료 메일 전송 */
-                                let subject = '2027 경기국제보트쇼 <1차 사전등록(무료)> 신청 완료';
+                                let subject = '[2027 경기국제보트쇼] 1차 사전등록 신청 완료';
                                 let template = '178';
                                 let timeGbn = data.timeGbn;
                                 if(timeGbn === '2차'){
-                                    subject = '2027 경기국제보트쇼 <2차 사전등록> 신청 완료';
+                                    subject = '[2027 경기국제보트쇼] 2차 사전등록 신청 완료';
                                     template = '181';
                                 }
                                 let email = data.email + '@' + data.domain;
@@ -7837,7 +7837,7 @@ function makeJsonFormat(data){
     });
 
     returnJsonObj = {
-        subject: '[2027 경기국제보트쇼] 참가업체 접수 완료', //제목
+        subject: '[2027 경기국제보트쇼] 참가업체 참가신청 접수완료', //제목
         body: "", //본문
         template: "6", //템플릿 번호
         receiver: receiverArr

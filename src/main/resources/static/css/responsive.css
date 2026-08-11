@@ -91,6 +91,8 @@
     .form_s .form_guide.m_br li br{
         display: none;
     }
+    .main_newsletter .main_tit{width: 55%;}
+    .main_newsletter .news_letter_box{width: 45%;}
 }
 
 
@@ -267,6 +269,10 @@
     .sub_cont_tit::before{height: 80%;}
     .summ_join .summ_wrap .desc{font-size: 2rem;}
     .summ_join .summ_wrap .desc span{font-size: 1.6rem;}
+
+    .main_newsletter .inner{flex-direction: column;}
+    .main_newsletter .main_tit{width: 100%;}
+    .main_newsletter .news_letter_box{width: 100%;}
 }
 
 /* 900px ~ 1024px */
@@ -879,6 +885,11 @@
     }
     .hd_site_map .site_map_nav .site_map_new li {width: 100% !important; padding-bottom: 10px;}
     .hd_site_map .site_map_nav{gap: 0;}
+
+    .main_ai{padding-bottom: 120px;}
+    .main_newsletter{padding-bottom: 120px;}
+
+    .board_ai ul {grid-template-columns: repeat(2, 1fr);}
 }
 
 /* 769px ~ 899px */
@@ -909,6 +920,8 @@
     .marina_s2 .box .item .tit {font-size: 1.6rem;}
     .marina_s2 .box .item .descrip {font-size: 1.4rem;}
 
+    .main_ai .ai_clipping_box{padding: 40px;}
+    .main_ai .ai_clipping_box .ai_top{flex-direction:column-reverse; gap: 30px;margin-bottom: 20px;}
 }
 
 /* 481px ~ 768px */
@@ -1509,12 +1522,12 @@
 
 
     .form_pass_eng .passPosE:before {
-        content: "Position (Eng.)";
+        content: "Job title (Eng.)";
 
     }
 
     .form_pass_eng .passNote:before {
-        content: "Remarks";
+        content: "Note";
     }
 
     .form_tb .form_tb_btn {
@@ -2437,4 +2450,20 @@
     .expo .maritime_poster{grid-template-columns: repeat(1,1fr);}
 
     .exh_g_table.break{word-break:break-all}
+
+    .main_ai{padding-bottom: 70px;}
+    .main_ai .ai_clipping_box{padding: 20px;}
+    .main_ai .ai_clipping_box .tit{font-size: 2rem;}
+    .main_ai .ai_clipping_box .nae{font-size: 1.6rem;}
+    .main_ai .ai_clipping_box .ai_top{margin-bottom: 10px;gap:20px}
+
+    .main_newsletter{padding-bottom: 70px;}
+    .main_newsletter .news_letter_box .item p{font-size: 1.6rem;}
+    .main_newsletter .news_letter_box .input > input{height: 46px;padding: 0 18px;}
+    .pc_only{display: none;}
+
+    .board_ai ul { grid-template-columns: repeat(1, 1fr); gap: 10px;}
+    .board_ai ul li a .tit{font-size: 1.6rem; height: 42px; margin-bottom: 10px;}
+    .board_ai ul li a .desc{margin-bottom: 20px; font-size: 1.4rem; height: 54px;}
+    .board_ai ul li a .date{font-size: 1.4rem;}
 }
