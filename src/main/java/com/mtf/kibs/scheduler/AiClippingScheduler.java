@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Component
@@ -191,12 +193,27 @@ public class AiClippingScheduler {
             if (responseBody != null && responseBody.containsKey("choices")) {
                 List<Map<String, Object>> choices = (List<Map<String, Object>>) responseBody.get("choices");
                 Map<String, Object> messageResp = (Map<String, Object>) choices.get(0).get("message");
-                return (String) messageResp.get("content");
+                String aiContent = (String) messageResp.get("content");
+
+                // 3단계: 현재 시간 가져오기 및 AI 꼬리말 포맷팅 생성
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String currentTime = LocalDateTime.now().format(formatter);
+
+                // 깔끔한 박스 형태의 꼬리말 HTML
+                String footerHtml = "<div style='margin-top: 50px; padding: 20px; background-color: #f8f9fa; border-left: 4px solid #1d5cad; border-radius: 5px; text-align: left; font-size: 14px; color: #444; line-height: 1.6;'>" +
+                        "   <strong style='color: #1d5cad;'>■ 작성자:</strong> 경기국제보트쇼 AI 브리핑 봇<br>" +
+                        "   <strong style='color: #1d5cad;'>■ 생성 모델:</strong> OpenAI " + openAiModel + "<br>" +
+                        "   <strong style='color: #1d5cad;'>■ 생성 일시:</strong> " + currentTime + "<br>" +
+                        "   <span style='font-size: 12px; color: #888; display: block; margin-top: 8px;'>* 본 기사는 인공지능 모델이 자동 수집 및 요약한 내용으로, 원본 기사의 논조와 일부 다를 수 있습니다.</span>" +
+                        "</div>";
+
+                // 원본 콘텐츠 끝에 꼬리말을 덧붙여서 반환
+                return aiContent + footerHtml;
             }
         } catch (Exception e) {
             System.err.println("OpenAI API 호출 실패: " + e.getMessage());
         }
 
-        return "<h3>오늘의 해양레저 주요 동향</h3><p>기사 요약을 생성하는 중 일시적인 오류가 발생했습니다. 자세한 내용은 경기국제보트쇼 홈페이지를 참조해 주세요.</p>";
+        return "<h3 style='margin-top: 40px; margin-bottom: 20px; font-size: 22px; color: #1d5cad; border-bottom: 2px solid #1d5cad; padding-bottom: 10px;'>오늘의 해양레저 주요 동향</h3><p style='margin-bottom: 25px; line-height: 1.8; font-size: 16px; color: #333;'>기사 요약을 생성하는 중 일시적인 오류가 발생했습니다. 자세한 내용은 홈페이지를 참조해 주세요.</p>";
     }
 }
