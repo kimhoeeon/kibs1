@@ -162,9 +162,11 @@ public class AiClippingScheduler {
                 "반드시 아래의 요구사항을 엄격하게 지켜서 HTML 태그 형식으로만 답변해.\n\n" +
                 "[요구사항]\n" +
                 "1. 전체 내용을 최소 4~5개의 소주제(섹션)로 나누어 아주 길고 상세하게 서술할 것.\n" +
-                "2. 각 섹션의 제목은 반드시 HTML <h3> 태그를 사용할 것.\n" +
-                "3. 본문 내용은 여러 개의 HTML <p> 태그를 사용하여 가독성 있게 문단을 나눌 것.\n" +
-                "4. (가장 중요) 제공된 기사 데이터의 '원본링크'를 반드시 활용하여, 본문 문맥 중 텍스트에 <a> 태그로 하이퍼링크를 걸어줄 것.\n" +
+                "2. (가장 중요: 여백 확보) 각 섹션의 제목은 반드시 아래 형식의 <h3> 태그를 사용할 것. (단락 구분 여백 포함)\n" +
+                "   -> <h3 style='margin-top: 40px; margin-bottom: 20px; font-size: 22px; color: #1d5cad; border-bottom: 2px solid #1d5cad; padding-bottom: 10px;'>섹션 제목</h3>\n" +
+                "3. (가장 중요: 단락 띄어쓰기) 본문 내용은 가독성을 위해 단락마다 반드시 아래 형식의 <p> 태그를 사용할 것. (문단 사이에 여백이 크게 생기도록 margin-bottom을 꼭 넣을 것)\n" +
+                "   -> <p style='margin-bottom: 25px; line-height: 1.8; font-size: 16px; color: #333;'>본문 내용...</p>\n" +
+                "4. 제공된 기사 데이터의 '원본링크'를 반드시 활용하여, 본문 문맥 중 텍스트에 <a> 태그로 하이퍼링크를 걸어줄 것.\n" +
                 "   -> 하이퍼링크 스타일 양식: <a href='원본링크' target='_blank' style='color:#222222; text-decoration:underline; text-underline-offset:4px; font-weight:bold;'>키워드</a>\n" +
                 "5. 단순 요약이 아닌, 독자에게 인사이트를 제공하는 전문적인 기사 톤으로 작성할 것.\n" +
                 "6. 인사말이나 맺음말 없이 바로 <h3> 태그로 시작하는 본문 HTML만 출력하고, 문장이 중간에 잘리지 않도록 반드시 끝맺음을 완벽하게 할 것.\n\n" +
