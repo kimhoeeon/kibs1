@@ -35,12 +35,19 @@ public class AiClippingScheduler {
     @Value("${openai.model.summarize}")
     private String openAiModel;
 
+    // 1. 매일 아침 9시 자동 실행 (무조건 발송)
     @Scheduled(cron = "0 0 9 * * MON-FRI")
-    public void generateAndSendAiClipping() {
-        System.out.println("========== AI 클리핑 스케줄러 실행 시작 (상세 버전) ==========");
+    public void generateAndSendAiClippingScheduled() {
+        System.out.println("========== AI 클리핑 스케줄러 자동 실행 ==========");
+        processAiClipping(true); // 스케줄러는 항상 생성+발송 처리
+    }
+
+    // 2. 실제 클리핑 수집, 생성, 발송을 담당하는 코어 로직
+    public void processAiClipping(boolean isSend) {
+        System.out.println("========== AI 클리핑 코어 프로세스 시작 (발송여부: " + isSend + ") ==========");
 
         try {
-            // 기획안에 명시된 5가지 카테고리별 세부 키워드 배열 정의
+            // 5가지 카테고리별 세부 키워드 배열 정의
             String[][] keywordGroups = {
                     {"보트", "요트", "레저보트", "파워보트", "세일링 요트", "고무보트", "낚시보트"},
                     {"마리나", "마리나 산업", "마리나 항만"},
@@ -87,16 +94,21 @@ public class AiClippingScheduler {
             if (insertCnt > 0 && clippingDTO.getSeq() != null) {
                 System.out.println("========== AI 클리핑 생성 완료 (SEQ: " + clippingDTO.getSeq() + ") ==========");
 
-                // 생성된 기사를 뉴스레터 구독자에게 발송
-                newsletterService.sendClippingNewsletter(
-                        clippingDTO.getSeq(),
-                        clippingDTO.getTitle(),
-                        clippingDTO.getContent()
-                );
+                // 발송 여부(isSend)에 따른 분기 처리
+                if (isSend) {
+                    newsletterService.sendClippingNewsletter(
+                            clippingDTO.getSeq(),
+                            clippingDTO.getTitle(),
+                            clippingDTO.getContent()
+                    );
+                    System.out.println("========== AI 클리핑 뉴스레터 발송 완료 ==========");
+                } else {
+                    System.out.println("========== AI 클리핑 뉴스레터 발송 생략 (생성만 수행) ==========");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("========== AI 클리핑 스케줄러 실행 중 오류 발생 ==========");
+            System.out.println("========== AI 클리핑 프로세스 실행 중 오류 발생 ==========");
         }
     }
 
@@ -105,7 +117,7 @@ public class AiClippingScheduler {
         StringBuilder articlesBuilder = new StringBuilder();
         try {
             String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
-            String url = "https://search.daum.net/search?w=news&q=" + encodedKeyword + "&sort=rec"; // 최신순
+            String url = "https://search.daum.net/search?w=news&q=" + encodedKeyword + "&sort=rec";
 
             Document doc = Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
@@ -115,21 +127,19 @@ public class AiClippingScheduler {
             Elements newsElements = doc.select(".c-item-content");
             int count = 0;
             for (Element element : newsElements) {
-                if (count >= 3) break; // 각 키워드당 상위 3개 기사 수집
+                if (count >= 3) break;
 
                 Element titleElement = element.select(".item-title").first();
                 if (titleElement == null) continue;
 
                 String title = titleElement.text();
-                // <a> 태그의 href 속성(원본 링크) 추출
                 String link = titleElement.tagName().equals("a") ? titleElement.attr("href") : titleElement.select("a").attr("href");
                 if (link == null || link.isEmpty()) {
-                    link = element.select("a").first().attr("href"); // 대체 추출
+                    link = element.select("a").first().attr("href");
                 }
 
                 String summary = element.select(".conts-desc").text();
 
-                // AI에게 전달할 데이터 포맷에 원본링크 명시
                 articlesBuilder.append("제목: ").append(title).append("\n");
                 articlesBuilder.append("원본링크: ").append(link).append("\n");
                 articlesBuilder.append("내용: ").append(summary).append("\n\n");
@@ -148,17 +158,16 @@ public class AiClippingScheduler {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(openAiApiKey);
 
-        // 프롬프트(지시어)를 상세 기사 작성 및 하이퍼링크 삽입 포맷으로 전면 개편
         String prompt = "다음 수집된 해양레저 관련 기사 데이터를 바탕으로, 뉴스레터 독자들을 위한 심층적이고 상세한 분석 기사를 작성해줘.\n" +
                 "반드시 아래의 요구사항을 엄격하게 지켜서 HTML 태그 형식으로만 답변해.\n\n" +
                 "[요구사항]\n" +
                 "1. 전체 내용을 최소 4~5개의 소주제(섹션)로 나누어 아주 길고 상세하게 서술할 것.\n" +
-                "2. 각 섹션의 제목은 반드시 HTML <h3> 태그를 사용할 것 (예: <h3>해양레저 인프라 확충</h3>).\n" +
+                "2. 각 섹션의 제목은 반드시 HTML <h3> 태그를 사용할 것.\n" +
                 "3. 본문 내용은 여러 개의 HTML <p> 태그를 사용하여 가독성 있게 문단을 나눌 것.\n" +
-                "4. (가장 중요) 제공된 기사 데이터의 '원본링크'를 반드시 활용하여, 본문 문맥 중 텍스트(핵심 키워드, 기업명, 정책명 등)에 <a> 태그로 하이퍼링크를 걸어줄 것.\n" +
+                "4. (가장 중요) 제공된 기사 데이터의 '원본링크'를 반드시 활용하여, 본문 문맥 중 텍스트에 <a> 태그로 하이퍼링크를 걸어줄 것.\n" +
                 "   -> 하이퍼링크 스타일 양식: <a href='원본링크' target='_blank' style='color:#222222; text-decoration:underline; text-underline-offset:4px; font-weight:bold;'>키워드</a>\n" +
-                "5. 단순 요약이 아닌, 독자에게 인사이트를 제공하는 전문적인 기사 톤(평어체, ~다, ~했다)으로 작성할 것.\n" +
-                "6. 인사말이나 맺음말 없이 바로 <h3> 태그로 시작하는 본문 HTML만 출력할 것.\n\n" +
+                "5. 단순 요약이 아닌, 독자에게 인사이트를 제공하는 전문적인 기사 톤으로 작성할 것.\n" +
+                "6. 인사말이나 맺음말 없이 바로 <h3> 태그로 시작하는 본문 HTML만 출력하고, 문장이 중간에 잘리지 않도록 반드시 끝맺음을 완벽하게 할 것.\n\n" +
                 "[수집된 기사 데이터]\n" + rawArticles;
 
         Map<String, Object> message = new HashMap<>();
@@ -168,9 +177,8 @@ public class AiClippingScheduler {
         Map<String, Object> body = new HashMap<>();
         body.put("model", openAiModel);
         body.put("messages", Collections.singletonList(message));
-        // 긴 글을 끊김 없이 생성하도록 최대 토큰 수 여유 있게 상향 및 창의성(temperature) 조절
-        body.put("max_completion_tokens", 3000);
-        //body.put("temperature", 0.6);
+        body.put("max_completion_tokens", 8000);
+        body.put("temperature", 0.6);
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
@@ -187,7 +195,6 @@ public class AiClippingScheduler {
             System.err.println("OpenAI API 호출 실패: " + e.getMessage());
         }
 
-        // 오류 발생 시 기본 템플릿 반환
         return "<h3>오늘의 해양레저 주요 동향</h3><p>기사 요약을 생성하는 중 일시적인 오류가 발생했습니다. 자세한 내용은 경기국제보트쇼 홈페이지를 참조해 주세요.</p>";
     }
 }

@@ -169,10 +169,12 @@ if (document.documentElement) {
                         <textarea id="editContent" class="form-control form-control-solid" rows="10"></textarea>
                     </div>
                 </div>
-                <div class="modal-footer flex-center">
-                    <button type="button" class="btn btn-danger me-auto" id="btnDeleteClipping">삭제</button>
-                    <button type="button" class="btn btn-light me-3" data-bs-dismiss="modal">취소</button>
-                    <button type="button" id="btnSaveClipping" class="btn btn-primary">저장</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="btnSendNewsletter">이 기사로 뉴스레터 발송</button>
+
+                    <button type="button" class="btn btn-primary" id="btnSaveClipping">수정 저장</button>
+                    <button type="button" class="btn btn-danger" id="btnDeleteClipping">삭제</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
             </div>
         </div>

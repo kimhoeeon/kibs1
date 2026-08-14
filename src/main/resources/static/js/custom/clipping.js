@@ -98,43 +98,120 @@ $(function() {
 
     // AI 클리핑 수동 생성 (업데이트)
     $('#btnManualUpdate').off('click').on('click', function() {
-        if(!confirm("AI 클리핑을 수동으로 생성하시겠습니까?\n기사 수집 및 상세 AI 요약에 약 30초 ~ 1분 이상 소요될 수 있습니다.")) {
-            return;
-        }
+        // 1. 옵션 선택 팝업(모달) HTML 동적 생성
+        let popupHtml = `
+            <div id="aiOptionOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9998; display: flex; justify-content: center; align-items: center;">
+                <div style="background: #fff; padding: 30px; border-radius: 8px; width: 420px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                    <h3 style="margin-bottom: 20px; font-size: 20px; font-weight: bold; color: #333;">AI 클리핑 수동 생성</h3>
+                    <p style="margin-bottom: 25px; color: #555; font-size: 15px; word-break: keep-all; line-height: 1.5;">
+                        AI 클리핑 기사를 수집하고 요약합니다.<br>생성 후 구독자에게 뉴스레터를 즉시 발송하시겠습니까?
+                    </p>
+                    <div style="display: flex; justify-content: space-between; gap: 10px;">
+                        <button type="button" id="btnGenOnly" style="flex: 1; padding: 12px; background: #6c757d; color: white; border: none; border-radius: 5px; font-size: 14px; font-weight: bold; cursor: pointer;">
+                            생성만 하기
+                        </button>
+                        <button type="button" id="btnGenAndSend" style="flex: 1; padding: 12px; background: #0d6efd; color: white; border: none; border-radius: 5px; font-size: 14px; font-weight: bold; cursor: pointer;">
+                            생성 및 발송 (기본)
+                        </button>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button type="button" id="btnGenCancel" style="padding: 8px 20px; background: transparent; color: #888; border: 1px solid #ccc; border-radius: 5px; font-size: 13px; cursor: pointer;">
+                            취소
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
 
-        // 1. 화면 전체를 덮는 로딩 인디케이터(오버레이) 동적 생성 및 body에 추가
+        $('body').append(popupHtml);
+
+        // 이벤트: 취소 버튼
+        $('#btnGenCancel').on('click', function() {
+            $('#aiOptionOverlay').remove();
+        });
+
+        // 이벤트: 생성만 하기 버튼 클릭 (sendYn = 'N')
+        $('#btnGenOnly').on('click', function() {
+            $('#aiOptionOverlay').remove();
+            executeManualUpdate('N');
+        });
+
+        // 이벤트: 생성 및 발송 버튼 클릭 (sendYn = 'Y')
+        $('#btnGenAndSend').on('click', function() {
+            $('#aiOptionOverlay').remove();
+            executeManualUpdate('Y');
+        });
+    });
+
+    // 실제 백엔드 통신 및 로딩 인디케이터 처리 함수
+    function executeManualUpdate(sendYn) {
+        // 로딩 인디케이터 HTML 동적 생성
         let loadingHtml = `
-            <div id="aiLoadingOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white;">
+            <div id="aiLoadingOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white;">
                 <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem; margin-bottom: 20px; border-width: 0.3em;">
                     <span class="visually-hidden">Loading...</span>
                 </div>
                 <h3 style="color: white; font-weight: bold; margin-bottom: 15px; font-size: 24px;">AI 클리핑 기사를 생성하고 있습니다.</h3>
-                <p style="font-size: 16px; color: #dddddd;">뉴스 수집 및 상세 요약에 30초 ~ 1분 정도 소요됩니다.<br>작업이 완료될 때까지 창을 닫거나 새로고침하지 마세요.</p>
+                <p style="font-size: 16px; color: #dddddd; text-align: center;">뉴스 수집 및 상세 요약에 30초 ~ 1분 정도 소요됩니다.<br>작업이 완료될 때까지 창을 닫거나 새로고침하지 마세요.</p>
             </div>
         `;
         $('body').append(loadingHtml);
 
-        // 2. 백엔드 통신
         $.ajax({
             url: '/mng/center/board/clipping/manual-update.do',
             type: 'POST',
+            data: { sendYn: sendYn }, // 'Y' 또는 'N' 전달
             success: function(res) {
-                // 성공 시 오버레이 즉시 제거
-                $('#aiLoadingOverlay').remove();
+                $('#aiLoadingOverlay').remove(); // 로딩 제거
 
                 if(res.resultCode === "0") {
-                    alert("AI 클리핑이 성공적으로 생성 및 구독자에게 발송되었습니다.");
+                    alert(res.resultMsg); // 상황에 맞는 성공 메시지 출력
                     currentPage = 1;
-                    loadClippingList(currentPage); // 생성 완료 후 목록 갱신
+                    loadClippingList(currentPage); // 리스트 갱신
                 } else {
                     alert(res.resultMsg || "생성 중 오류가 발생했습니다.");
                 }
             },
             error: function() {
-                // 에러 발생 시에도 오버레이 제거하여 화면 멈춤 방지
                 $('#aiLoadingOverlay').remove();
                 alert("서버 통신 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
             }
         });
+    }
+
+    $('#btnSendNewsletter').on('click', function() {
+        let seq = $('#editSeq').val();
+
+        if(!seq) {
+            alert("기사 정보가 없습니다.");
+            return;
+        }
+
+        if(confirm("현재 보고 계신 기사 내용으로 뉴스레터를 즉시 발송하시겠습니까?")) {
+            let originalText = $(this).text();
+            $(this).prop('disabled', true).text('발송 중...');
+
+            $.ajax({
+                url: '/mng/center/board/clipping/send.do',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ seq: seq }),
+                success: function(res) {
+                    if(res.resultCode === "0") {
+                        alert(res.resultMsg);
+                        bootstrap.Modal.getInstance(document.getElementById('modalClippingDetail')).hide();
+                        loadClippingList(currentPage); // 발송 횟수 갱신을 위해 리스트 리로드
+                    } else {
+                        alert(res.resultMsg || "발송에 실패했습니다.");
+                    }
+                },
+                error: function() {
+                    alert("서버 통신 중 오류가 발생했습니다.");
+                },
+                complete: function() {
+                    $('#btnSendNewsletter').prop('disabled', false).text(originalText);
+                }
+            });
+        }
     });
 });

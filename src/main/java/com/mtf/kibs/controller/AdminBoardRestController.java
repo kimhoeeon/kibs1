@@ -5,6 +5,7 @@ import com.mtf.kibs.dto.NewsletterSubscriberDTO;
 import com.mtf.kibs.mapper.AiClippingMapper;
 import com.mtf.kibs.mapper.NewsletterMapper;
 import com.mtf.kibs.scheduler.AiClippingScheduler;
+import com.mtf.kibs.service.NewsletterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,9 @@ public class AdminBoardRestController {
 
     @Autowired
     private AiClippingScheduler aiClippingScheduler;
+
+    @Autowired
+    private NewsletterService newsletterService;
 
     /* ================= 뉴스레터 구독자 관리 ================= */
 
@@ -138,18 +142,48 @@ public class AdminBoardRestController {
     }
 
     @PostMapping("/clipping/manual-update.do")
-    public ResponseEntity<Map<String, Object>> manualUpdateClipping() {
+    public ResponseEntity<Map<String, Object>> manualUpdateClipping(@RequestParam(defaultValue = "Y") String sendYn) {
         Map<String, Object> result = new HashMap<>();
         try {
-            // 스케줄러에 등록된 메인 생성 로직을 수동으로 호출
-            aiClippingScheduler.generateAndSendAiClipping();
+            boolean isSend = "Y".equals(sendYn);
+
+            // 파라미터가 추가된 새 메서드를 호출
+            aiClippingScheduler.processAiClipping(isSend);
 
             result.put("resultCode", "0");
-            result.put("resultMsg", "AI 클리핑 수동 생성 및 발송 완료");
+            // 선택에 따라 사용자에게 보여줄 메시지를 다르게 세팅
+            result.put("resultMsg", isSend ? "AI 클리핑 기사 생성 및 뉴스레터 발송이 완료되었습니다." : "AI 클리핑 기사가 생성되었습니다. (발송 생략)");
         } catch (Exception e) {
             e.printStackTrace();
             result.put("resultCode", "-1");
             result.put("resultMsg", "생성 중 오류가 발생했습니다.");
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/clipping/send.do")
+    public ResponseEntity<Map<String, Object>> sendExistingClipping(@RequestBody Map<String, String> param) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            String seq = param.get("seq");
+
+            // 1. 발송할 기사의 제목과 내용을 DB에서 다시 불러옴
+            AiClippingDTO clipping = aiClippingMapper.selectAiClippingDetail(seq);
+
+            if (clipping != null) {
+                // 2. 뉴스레터 발송 서비스 호출
+                newsletterService.sendClippingNewsletter(clipping.getSeq(), clipping.getTitle(), clipping.getContent());
+
+                result.put("resultCode", "0");
+                result.put("resultMsg", "해당 기사로 뉴스레터 발송이 완료되었습니다.");
+            } else {
+                result.put("resultCode", "-1");
+                result.put("resultMsg", "발송할 기사 데이터를 찾을 수 없습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("resultCode", "-1");
+            result.put("resultMsg", "발송 처리 중 오류가 발생했습니다.");
         }
         return ResponseEntity.ok(result);
     }
