@@ -1,4 +1,4 @@
-package com.mtf.kibs.controller.api;
+package com.mtf.kibs.controller;
 
 import com.mtf.kibs.dto.AiClippingDTO;
 import com.mtf.kibs.mapper.AiClippingMapper;

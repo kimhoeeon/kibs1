@@ -1,4 +1,4 @@
-package com.mtf.kibs.controller.api;
+package com.mtf.kibs.controller;
 
 import com.mtf.kibs.dto.NewsletterSubscriberDTO;
 import com.mtf.kibs.service.NewsletterService;

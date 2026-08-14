@@ -97,21 +97,31 @@ $(function() {
     });
 
     // AI 클리핑 수동 생성 (업데이트)
-    $('#btnManualUpdate').on('click', function() {
-        if(!confirm("AI 클리핑을 수동으로 생성하시겠습니까?\n기사 수집 및 AI 요약에 약 10~20초 정도 소요될 수 있습니다.")) {
+    $('#btnManualUpdate').off('click').on('click', function() {
+        if(!confirm("AI 클리핑을 수동으로 생성하시겠습니까?\n기사 수집 및 상세 AI 요약에 약 30초 ~ 1분 이상 소요될 수 있습니다.")) {
             return;
         }
 
-        let $btn = $(this);
-        let originalHtml = $btn.html();
+        // 1. 화면 전체를 덮는 로딩 인디케이터(오버레이) 동적 생성 및 body에 추가
+        let loadingHtml = `
+            <div id="aiLoadingOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white;">
+                <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem; margin-bottom: 20px; border-width: 0.3em;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h3 style="color: white; font-weight: bold; margin-bottom: 15px; font-size: 24px;">AI 클리핑 기사를 생성하고 있습니다.</h3>
+                <p style="font-size: 16px; color: #dddddd;">뉴스 수집 및 상세 요약에 30초 ~ 1분 정도 소요됩니다.<br>작업이 완료될 때까지 창을 닫거나 새로고침하지 마세요.</p>
+            </div>
+        `;
+        $('body').append(loadingHtml);
 
-        // 중복 클릭 방지 및 로딩 상태 표시
-        $btn.prop('disabled', true).text('기사 수집 및 요약 중...');
-
+        // 2. 백엔드 통신
         $.ajax({
             url: '/mng/center/board/clipping/manual-update.do',
             type: 'POST',
             success: function(res) {
+                // 성공 시 오버레이 즉시 제거
+                $('#aiLoadingOverlay').remove();
+
                 if(res.resultCode === "0") {
                     alert("AI 클리핑이 성공적으로 생성 및 구독자에게 발송되었습니다.");
                     currentPage = 1;
@@ -121,11 +131,9 @@ $(function() {
                 }
             },
             error: function() {
-                alert("서버 통신 중 오류가 발생했습니다.");
-            },
-            complete: function() {
-                // 통신 완료 후 버튼 원상복구
-                $btn.prop('disabled', false).html(originalHtml);
+                // 에러 발생 시에도 오버레이 제거하여 화면 멈춤 방지
+                $('#aiLoadingOverlay').remove();
+                alert("서버 통신 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
             }
         });
     });
