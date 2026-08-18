@@ -38,7 +38,7 @@ public class AiClippingScheduler {
     private String openAiModel;
 
     // 1. 매일 아침 9시 자동 실행 (무조건 발송)
-    @Scheduled(cron = "0 0 9 * * MON-FRI")
+    @Scheduled(cron = "0 0 9 * * MON-FRI", zone = "Asia/Seoul")
     public void generateAndSendAiClippingScheduled() {
         System.out.println("========== AI 클리핑 스케줄러 자동 실행 ==========");
         processAiClipping(true); // 스케줄러는 항상 생성+발송 처리
