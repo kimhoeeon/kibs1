@@ -204,11 +204,13 @@ public class AdminBoardRestController {
     @GetMapping("/clipping/history.ajax")
     public ResponseEntity<Map<String, Object>> getSendHistoryList(
             @RequestParam String clippingSeq,
+            @RequestParam(required = false) String sendResult,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
 
         Map<String, Object> params = new HashMap<>();
         params.put("clippingSeq", clippingSeq);
+        params.put("sendResult", sendResult);
         params.put("limit", size);
         params.put("offset", (page - 1) * size);
 

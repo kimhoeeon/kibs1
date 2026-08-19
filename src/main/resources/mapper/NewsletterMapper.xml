@@ -149,6 +149,9 @@
             DATE_FORMAT(send_date, '%Y-%m-%d %H:%i:%s') AS sendDate
         FROM newsletter_send_history
         WHERE clipping_seq = #{clippingSeq}
+        <if test="sendResult != null and sendResult != ''">
+            AND send_result = #{sendResult}
+        </if>
         ORDER BY seq DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
@@ -158,6 +161,9 @@
         SELECT COUNT(*)
         FROM newsletter_send_history
         WHERE clipping_seq = #{clippingSeq}
+        <if test="sendResult != null and sendResult != ''">
+            AND send_result = #{sendResult}
+        </if>
     </select>
 
 </mapper>

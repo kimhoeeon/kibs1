@@ -190,6 +190,15 @@ if (document.documentElement) {
                 </div>
                 <div class="modal-body py-10 px-lg-17">
                     <input type="hidden" id="historyClippingSeq" />
+
+                    <div class="d-flex justify-content-end mb-3">
+                        <select id="filterSendResult" class="form-select form-select-sm form-select-solid w-150px">
+                            <option value="">전체 보기</option>
+                            <option value="발송성공">발송 성공</option>
+                            <option value="발송실패">발송 실패</option>
+                        </select>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table align-middle table-row-dashed fs-6 gy-5">
                             <thead>
