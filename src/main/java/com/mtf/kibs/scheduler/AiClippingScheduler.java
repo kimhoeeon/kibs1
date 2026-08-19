@@ -49,6 +49,23 @@ public class AiClippingScheduler {
         System.out.println("========== AI 클리핑 코어 프로세스 시작 (발송여부: " + isSend + ") ==========");
 
         try {
+            // 다중 도메인 환경에서 5개의 스케줄러가 동시 실행되는 것을 방지하기 위해 0~10초 랜덤 대기
+            int sleepTime = new Random().nextInt(10000);
+            Thread.sleep(sleepTime);
+
+            String todayDate = java.time.LocalDate.now().toString();
+            String generatedTitle = "[경기국제보트쇼 AI 클리핑] " + todayDate + " 해양레저산업 주요 동향";
+
+            // 오늘 날짜의 기사가 이미 DB에 생성되었는지 확인
+            AiClippingDTO searchDto = new AiClippingDTO();
+            searchDto.setTitle(todayDate);
+            int todayClippingCount = aiClippingMapper.selectAiClippingCount(searchDto);
+
+            if (todayClippingCount > 0) {
+                System.out.println("========== 오늘 날짜의 AI 클리핑이 이미 존재하여 중복 실행을 취소합니다 ==========");
+                return; // 이미 다른 도메인 스레드에서 생성 및 발송을 마쳤다면 즉시 종료
+            }
+
             // 5가지 카테고리별 세부 키워드 배열 정의
             String[][] keywordGroups = {
                     {"보트", "요트", "레저보트", "파워보트", "세일링 요트", "고무보트", "낚시보트"},
@@ -82,9 +99,6 @@ public class AiClippingScheduler {
 
             // OpenAI API 연동하여 기사 상세 작성 (링크 포함)
             String generatedContent = generateDetailedArticleViaOpenAI(rawArticles);
-
-            String todayDate = java.time.LocalDate.now().toString();
-            String generatedTitle = "[경기국제보트쇼 AI 클리핑] " + todayDate + " 해양레저산업 주요 동향";
 
             // DB에 저장
             AiClippingDTO clippingDTO = new AiClippingDTO();
@@ -142,9 +156,9 @@ public class AiClippingScheduler {
 
                 String summary = element.select(".conts-desc").text();
 
-                articlesBuilder.append("제목: ").append(title).append("\n");
-                articlesBuilder.append("원본링크: ").append(link).append("\n");
-                articlesBuilder.append("내용: ").append(summary).append("\n\n");
+                articlesBuilder.append("제목 : ").append(title).append("\n");
+                articlesBuilder.append("원본링크 : ").append(link).append("\n");
+                articlesBuilder.append("내용 : ").append(summary).append("\n\n");
                 count++;
             }
         } catch (Exception e) {

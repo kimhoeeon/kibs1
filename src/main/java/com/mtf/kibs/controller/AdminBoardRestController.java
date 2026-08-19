@@ -145,13 +145,25 @@ public class AdminBoardRestController {
     public ResponseEntity<Map<String, Object>> manualUpdateClipping(@RequestParam(defaultValue = "Y") String sendYn) {
         Map<String, Object> result = new HashMap<>();
         try {
-            boolean isSend = "Y".equals(sendYn);
+            // 1. 백엔드 2차 검증: 오늘 날짜 기사가 이미 있는지 DB 조회
+            String todayDate = java.time.LocalDate.now().toString();
+            AiClippingDTO searchDto = new AiClippingDTO();
+            searchDto.setTitle(todayDate); // 제목에 오늘 날짜가 포함되어 있는지 LIKE 검색
 
-            // 파라미터가 추가된 새 메서드를 호출
+            int todayClippingCount = aiClippingMapper.selectAiClippingCount(searchDto);
+
+            if (todayClippingCount > 0) {
+                // 이미 존재한다면 스케줄러를 호출하지 않고 에러 메시지 반환
+                result.put("resultCode", "-1");
+                result.put("resultMsg", "오늘 날짜의 AI 클리핑 기사가 이미 존재합니다.\n새로 생성하시려면 기존 기사를 먼저 삭제해 주세요.");
+                return ResponseEntity.ok(result);
+            }
+
+            // 2. 중복이 없을 경우에만 정상적으로 생성/발송 프로세스 실행
+            boolean isSend = "Y".equals(sendYn);
             aiClippingScheduler.processAiClipping(isSend);
 
             result.put("resultCode", "0");
-            // 선택에 따라 사용자에게 보여줄 메시지를 다르게 세팅
             result.put("resultMsg", isSend ? "AI 클리핑 기사 생성 및 뉴스레터 발송이 완료되었습니다." : "AI 클리핑 기사가 생성되었습니다. (발송 생략)");
         } catch (Exception e) {
             e.printStackTrace();

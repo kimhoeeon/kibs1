@@ -481,4 +481,6 @@ public interface KibsMngService {
     void updateInvoiceHistoryStatusByMailId(String reserveId, String status);
 
     List<BuyerDetailDTO> processSelectExcelBuyerDetailList(String transferYear);
+
+    ResponseDTO processNewsletterBulkSend(MailRequestDTO mailReq);
 }

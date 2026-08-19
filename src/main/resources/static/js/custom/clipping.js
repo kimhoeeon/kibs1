@@ -31,14 +31,12 @@ $(function() {
                         html += '  <td>' + item.viewCnt + '</td>';
                         html += '  <td>' + item.shareCnt + '</td>';
                         html += '  <td><span class="badge badge-light-primary">' + sendStatus + '</span></td>';
-                        html += '  <td>' + item.regDate + '</td>';
+                        html += '  <td class="date">' + item.regDate + '</td>';
                         html += '  <td><button class="btn btn-sm btn-light-info btn-edit" data-seq="' + item.seq + '" data-title="' + item.title + '">수정 / 삭제</button></td>';
                         html += '</tr>';
                     });
                 }
                 $('#clippingListBody').html(html);
-
-                // Content 데이터를 html attribute에 넣으면 깨질 수 있으므로 상세조회 API를 붙이거나 모달 클릭시 처리
             }
         });
     }
@@ -98,7 +96,28 @@ $(function() {
 
     // AI 클리핑 수동 생성 (업데이트)
     $('#btnManualUpdate').off('click').on('click', function() {
-        // 1. 옵션 선택 팝업(모달) HTML 동적 생성
+        // 1. 오늘 날짜 생성 여부 프론트엔드 즉시 검사
+        let today = new Date();
+        let year = today.getFullYear();
+        let month = String(today.getMonth() + 1).padStart(2, '0');
+        let day = String(today.getDate()).padStart(2, '0');
+        let todayStr = year + '-' + month + '-' + day; // YYYY-MM-DD 형식
+
+        let isTodayExist = false;
+        // 화면에 렌더링된 기사 날짜들을 순회하며 검사
+        $('#clippingListBody .date').each(function() {
+            if ($(this).text().trim() === todayStr) {
+                isTodayExist = true;
+            }
+        });
+
+        // 오늘 날짜 기사가 이미 있다면 팝업을 띄우지 않고 경고창 후 종료
+        if (isTodayExist) {
+            alert("오늘 날짜의 AI 클리핑 기사가 이미 존재합니다.\n새로 생성하시려면 기존 기사를 먼저 삭제해 주세요.");
+            return;
+        }
+
+        // 2. 옵션 선택 팝업(모달) HTML 동적 생성
         let popupHtml = `
             <div id="aiOptionOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9998; display: flex; justify-content: center; align-items: center;">
                 <div style="background: #fff; padding: 30px; border-radius: 8px; width: 420px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">

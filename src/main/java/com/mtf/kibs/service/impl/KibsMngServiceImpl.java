@@ -6210,4 +6210,99 @@ public class KibsMngServiceImpl implements KibsMngService {
         return rrVO;
     }
 
+    /* ==============================================================
+     * 뉴스레터 전용 다건(Bulk) 발송 메서드 (DirectSend 치환 태그 활용)
+     * ============================================================== */
+    public ResponseDTO processNewsletterBulkSend(MailRequestDTO mailRequestDTO) {
+        ResponseDTO responseDto = new ResponseDTO();
+
+        // DirectSend 대량 발송 API URL
+        String url = "https://directsend.co.kr/index.php/api_v2/mail_change_word";
+
+        try {
+            java.net.URL obj = new java.net.URL(url);
+            java.net.HttpURLConnection con = (java.net.HttpURLConnection) obj.openConnection();
+            con.setRequestProperty("Cache-Control", "no-cache");
+            con.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+            con.setRequestProperty("Accept", "application/json");
+
+            // 발송 기본 파라미터 세팅[cite: 1, 2]
+            String subject = mailRequestDTO.getSubject();
+            String body = mailRequestDTO.getBody().replaceAll("\"", "'");
+            String sender = "kibs@kibs.com";
+            String sender_name = "경기국제보트쇼";
+            String username = "meetingfan";
+            String key = "L7QNsEQIyrAzNHO";
+
+            // 1. 수신자 정보(receiver)를 JSON Array로 일괄 조립[cite: 2]
+            org.json.simple.JSONArray jsonArray = new org.json.simple.JSONArray();
+            for (MailRequestDTO.Receiver receiverInfo : mailRequestDTO.getReceiver()) {
+                org.json.simple.JSONObject jsonObject = new org.json.simple.JSONObject();
+                jsonObject.put("email", receiverInfo.getEmail());
+
+                if (receiverInfo.getName() != null && !receiverInfo.getName().isEmpty()) {
+                    jsonObject.put("name", receiverInfo.getName());
+                }
+                jsonArray.add(jsonObject);
+            }
+            String receiver = jsonArray.toJSONString();
+
+            // 2. DirectSend API 필수 파라미터 JSON 포맷팅[cite: 1, 2]
+            String urlParameters = "\"subject\":\"" + subject + "\" "
+                    + ", \"body\":\"" + body + "\" "
+                    + ", \"sender\":\"" + sender + "\" "
+                    + ", \"sender_name\":\"" + sender_name + "\" "
+                    + ", \"username\":\"" + username + "\" "
+                    + ", \"receiver\":" + receiver
+                    + ", \"duplicate_yn\":\"1\" " // 수신자 정보가 중복이고 내용이 다를 경우 중복 허용[cite: 2]
+                    + ", \"key\":\"" + key + "\" ";
+            urlParameters = "{" + urlParameters + "}";
+
+            // 3. API 호출 통신 처리[cite: 1, 2]
+            System.setProperty("jsse.enableSNIExtension", "false");
+            con.setDoOutput(true);
+            java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(con.getOutputStream(), java.nio.charset.StandardCharsets.UTF_8);
+            wr.write(urlParameters);
+            wr.flush();
+            wr.close();
+
+            // 4. API 응답 결과 처리[cite: 1, 2]
+            java.io.BufferedReader in = new java.io.BufferedReader(
+                    new java.io.InputStreamReader(con.getInputStream(), java.nio.charset.StandardCharsets.UTF_8));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
+            org.json.simple.JSONObject responseObj = (org.json.simple.JSONObject) parser.parse(response.toString());
+
+            if (responseObj.get("status") != null) {
+                String mailResponseCode = String.valueOf(responseObj.get("status"));
+                // status "0"은 다이렉트센드 DB 서버에 정상 수신됨을 의미[cite: 2]
+                if ("0".equals(mailResponseCode)) {
+                    responseDto.setResultCode(CommConstants.RESULT_CODE_SUCCESS);
+                    responseDto.setResultMessage(CommConstants.RESULT_MSG_SUCCESS);
+                } else {
+                    responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
+                    String msg = responseObj.get("msg") != null ? String.valueOf(responseObj.get("msg")) : "";
+                    String msgDetail = responseObj.get("msg_detail") != null ? String.valueOf(responseObj.get("msg_detail")) : "";
+                    responseDto.setResultMessage("[" + mailResponseCode + "] " + msg + " " + msgDetail);
+                }
+            } else {
+                responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
+                responseDto.setResultMessage(CommConstants.RESULT_MSG_FAIL);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
+            responseDto.setResultMessage("메일 발송 중 시스템 오류가 발생했습니다.");
+        }
+
+        return responseDto;
+    }
+
 }
