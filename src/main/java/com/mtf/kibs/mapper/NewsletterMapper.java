@@ -45,6 +45,10 @@ public interface NewsletterMapper {
     // 발송 결과 이력 등록
     int insertSendHistory(NewsletterSendHistoryDTO dto);
 
-    // 특정 클리핑 기사의 발송 이력 목록 조회
-    List<NewsletterSendHistoryDTO> selectSendHistoryList(String clippingSeq);
+    // 발송 이력 페이징 목록 조회
+    List<NewsletterSendHistoryDTO> selectSendHistoryList(Map<String, Object> params);
+
+    // 발송 이력 총 개수 조회
+    int selectSendHistoryCount(Map<String, Object> params);
+
 }

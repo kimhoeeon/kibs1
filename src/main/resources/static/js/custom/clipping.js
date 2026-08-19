@@ -2,6 +2,10 @@ $(function() {
     let currentPage = 1;
     const pageSize = 10;
 
+    // 발송 이력용 페이징 변수
+    let currentHistoryPage = 1;
+    const historyPageSize = 10;
+
     loadClippingList(currentPage);
 
     $('#searchTitle').on('keyup', function(e) {
@@ -30,13 +34,16 @@ $(function() {
                         html += '  <td class="text-start text-dark fw-bold">' + item.title + '</td>';
                         html += '  <td>' + item.viewCnt + '</td>';
                         html += '  <td>' + item.shareCnt + '</td>';
-                        html += '  <td><span class="badge badge-light-primary">' + sendStatus + '</span></td>';
+                        html += '  <td><span class="badge badge-light-primary">' + sendStatus + '</span><br>';
+                        html += '      <button class="btn btn-sm btn-light-success btn-history mt-2" data-seq="' + item.seq + '">이력보기</button></td>';
                         html += '  <td class="date">' + item.regDate + '</td>';
                         html += '  <td><button class="btn btn-sm btn-light-info btn-edit" data-seq="' + item.seq + '" data-title="' + item.title + '">수정 / 삭제</button></td>';
                         html += '</tr>';
                     });
                 }
                 $('#clippingListBody').html(html);
+                // 메인 목록 페이징 렌더링 호출 로직 (기존 구현되어 있다고 가정)
+                //renderClippingPagination(res.totalCount, page, pageSize);
             }
         });
     }
@@ -44,7 +51,6 @@ $(function() {
     // 상세/수정 모달 열기
     $(document).on('click', '.btn-edit', function() {
         let seq = $(this).data('seq');
-        // 상세 데이터 조회 후 모달에 세팅 (구현 API 호출)
         $.ajax({
             url: '/mng/center/board/clipping/detail.ajax?seq=' + seq,
             type: 'GET',
@@ -94,30 +100,27 @@ $(function() {
         }
     });
 
-    // AI 클리핑 수동 생성 (업데이트)
+    // AI 클리핑 수동 생성 (옵션 팝업 및 중복 방어)
     $('#btnManualUpdate').off('click').on('click', function() {
-        // 1. 오늘 날짜 생성 여부 프론트엔드 즉시 검사
         let today = new Date();
         let year = today.getFullYear();
         let month = String(today.getMonth() + 1).padStart(2, '0');
         let day = String(today.getDate()).padStart(2, '0');
-        let todayStr = year + '-' + month + '-' + day; // YYYY-MM-DD 형식
+        let todayStr = year + '-' + month + '-' + day;
 
         let isTodayExist = false;
-        // 화면에 렌더링된 기사 날짜들을 순회하며 검사
         $('#clippingListBody .date').each(function() {
-            if ($(this).text().trim() === todayStr) {
+            let regDateText = $(this).text().trim();
+            if (regDateText.startsWith(todayStr)) {
                 isTodayExist = true;
             }
         });
 
-        // 오늘 날짜 기사가 이미 있다면 팝업을 띄우지 않고 경고창 후 종료
         if (isTodayExist) {
             alert("오늘 날짜의 AI 클리핑 기사가 이미 존재합니다.\n새로 생성하시려면 기존 기사를 먼저 삭제해 주세요.");
             return;
         }
 
-        // 2. 옵션 선택 팝업(모달) HTML 동적 생성
         let popupHtml = `
             <div id="aiOptionOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9998; display: flex; justify-content: center; align-items: center;">
                 <div style="background: #fff; padding: 30px; border-radius: 8px; width: 420px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
@@ -144,27 +147,13 @@ $(function() {
 
         $('body').append(popupHtml);
 
-        // 이벤트: 취소 버튼
-        $('#btnGenCancel').on('click', function() {
-            $('#aiOptionOverlay').remove();
-        });
-
-        // 이벤트: 생성만 하기 버튼 클릭 (sendYn = 'N')
-        $('#btnGenOnly').on('click', function() {
-            $('#aiOptionOverlay').remove();
-            executeManualUpdate('N');
-        });
-
-        // 이벤트: 생성 및 발송 버튼 클릭 (sendYn = 'Y')
-        $('#btnGenAndSend').on('click', function() {
-            $('#aiOptionOverlay').remove();
-            executeManualUpdate('Y');
-        });
+        $('#btnGenCancel').on('click', function() { $('#aiOptionOverlay').remove(); });
+        $('#btnGenOnly').on('click', function() { $('#aiOptionOverlay').remove(); executeManualUpdate('N'); });
+        $('#btnGenAndSend').on('click', function() { $('#aiOptionOverlay').remove(); executeManualUpdate('Y'); });
     });
 
-    // 실제 백엔드 통신 및 로딩 인디케이터 처리 함수
+    // 실제 수동 생성 백엔드 통신
     function executeManualUpdate(sendYn) {
-        // 로딩 인디케이터 HTML 동적 생성
         let loadingHtml = `
             <div id="aiLoadingOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white;">
                 <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem; margin-bottom: 20px; border-width: 0.3em;">
@@ -179,14 +168,13 @@ $(function() {
         $.ajax({
             url: '/mng/center/board/clipping/manual-update.do',
             type: 'POST',
-            data: { sendYn: sendYn }, // 'Y' 또는 'N' 전달
+            data: { sendYn: sendYn },
             success: function(res) {
-                $('#aiLoadingOverlay').remove(); // 로딩 제거
-
+                $('#aiLoadingOverlay').remove();
                 if(res.resultCode === "0") {
-                    alert(res.resultMsg); // 상황에 맞는 성공 메시지 출력
+                    alert(res.resultMsg);
                     currentPage = 1;
-                    loadClippingList(currentPage); // 리스트 갱신
+                    loadClippingList(currentPage);
                 } else {
                     alert(res.resultMsg || "생성 중 오류가 발생했습니다.");
                 }
@@ -198,6 +186,7 @@ $(function() {
         });
     }
 
+    // 모달 내 기존 기사로 즉시 발송
     $('#btnSendNewsletter').on('click', function() {
         let seq = $('#editSeq').val();
 
@@ -219,7 +208,7 @@ $(function() {
                     if(res.resultCode === "0") {
                         alert(res.resultMsg);
                         bootstrap.Modal.getInstance(document.getElementById('modalClippingDetail')).hide();
-                        loadClippingList(currentPage); // 발송 횟수 갱신을 위해 리스트 리로드
+                        loadClippingList(currentPage);
                     } else {
                         alert(res.resultMsg || "발송에 실패했습니다.");
                     }
@@ -231,6 +220,94 @@ $(function() {
                     $('#btnSendNewsletter').prop('disabled', false).text(originalText);
                 }
             });
+        }
+    });
+
+    /* =========================================================
+       발송 이력 (모달 및 페이징) 기능 추가 부분
+    ========================================================= */
+
+    // 이력보기 버튼 클릭 시 모달 열기
+    $(document).on('click', '.btn-history', function() {
+        let seq = $(this).data('seq');
+        $('#historyClippingSeq').val(seq);
+        currentHistoryPage = 1;
+        loadHistoryList(seq, currentHistoryPage);
+        new bootstrap.Modal(document.getElementById('modalSendHistory')).show();
+    });
+
+    // 이력 목록 데이터를 AJAX로 불러오기
+    function loadHistoryList(clippingSeq, page) {
+        $.ajax({
+            url: '/mng/center/board/clipping/history.ajax',
+            type: 'GET',
+            data: { clippingSeq: clippingSeq, page: page, size: historyPageSize },
+            success: function(res) {
+                let html = '';
+                if(res.list.length === 0){
+                    html = '<tr><td colspan="5" class="text-center text-muted py-10">해당 기사의 발송 이력이 없습니다.</td></tr>';
+                } else {
+                    res.list.forEach(function(item, index) {
+                        let no = res.totalCount - ((page - 1) * historyPageSize) - index;
+                        let badgeClass = item.sendResult === '발송성공' ? 'badge-light-success' : 'badge-light-danger';
+
+                        html += '<tr>';
+                        html += '  <td>' + no + '</td>';
+                        html += '  <td class="text-start text-dark">' + item.subscriberEmail + '</td>';
+                        html += '  <td><span class="badge ' + badgeClass + '">' + item.sendResult + '</span></td>';
+                        html += '  <td class="text-start">' + (item.sendResultMsg || '-') + '</td>';
+                        html += '  <td>' + item.sendDate + '</td>';
+                        html += '</tr>';
+                    });
+                }
+                $('#historyListBody').html(html);
+                renderHistoryPagination(res.totalCount, page, historyPageSize);
+            }
+        });
+    }
+
+    // 이력 팝업 전용 페이징 렌더러
+    function renderHistoryPagination(totalCount, currentPage, pageSize) {
+        let totalPages = Math.ceil(totalCount / pageSize);
+        let paginationHtml = '<ul class="pagination">';
+
+        if (totalPages === 0) {
+            $('#historyPagination').html('');
+            return;
+        }
+
+        let startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
+        let endPage = Math.min(startPage + 4, totalPages);
+
+        if (currentPage > 1) {
+            paginationHtml += '<li class="page-item previous"><a href="#" class="page-link" data-page="' + (currentPage - 1) + '"><i class="previous"></i></a></li>';
+        } else {
+            paginationHtml += '<li class="page-item previous disabled"><a href="#" class="page-link"><i class="previous"></i></a></li>';
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            let activeClass = (i === currentPage) ? 'active' : '';
+            paginationHtml += '<li class="page-item ' + activeClass + '"><a href="#" class="page-link" data-page="' + i + '">' + i + '</a></li>';
+        }
+
+        if (currentPage < totalPages) {
+            paginationHtml += '<li class="page-item next"><a href="#" class="page-link" data-page="' + (currentPage + 1) + '"><i class="next"></i></a></li>';
+        } else {
+            paginationHtml += '<li class="page-item next disabled"><a href="#" class="page-link"><i class="next"></i></a></li>';
+        }
+
+        paginationHtml += '</ul>';
+        $('#historyPagination').html(paginationHtml);
+    }
+
+    // 이력 팝업 페이지 번호 클릭 이벤트
+    $(document).on('click', '#historyPagination .page-link', function(e) {
+        e.preventDefault();
+        let page = $(this).data('page');
+        if (page) {
+            currentHistoryPage = page;
+            let seq = $('#historyClippingSeq').val();
+            loadHistoryList(seq, currentHistoryPage);
         }
     });
 });

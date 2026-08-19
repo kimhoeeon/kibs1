@@ -1,6 +1,7 @@
 package com.mtf.kibs.controller;
 
 import com.mtf.kibs.dto.AiClippingDTO;
+import com.mtf.kibs.dto.NewsletterSendHistoryDTO;
 import com.mtf.kibs.dto.NewsletterSubscriberDTO;
 import com.mtf.kibs.mapper.AiClippingMapper;
 import com.mtf.kibs.mapper.NewsletterMapper;
@@ -199,4 +200,27 @@ public class AdminBoardRestController {
         }
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/clipping/history.ajax")
+    public ResponseEntity<Map<String, Object>> getSendHistoryList(
+            @RequestParam String clippingSeq,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("clippingSeq", clippingSeq);
+        params.put("limit", size);
+        params.put("offset", (page - 1) * size);
+
+        List<NewsletterSendHistoryDTO> list = newsletterMapper.selectSendHistoryList(params);
+        int totalCount = newsletterMapper.selectSendHistoryCount(params);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("resultCode", "0");
+        result.put("list", list);
+        result.put("totalCount", totalCount);
+
+        return ResponseEntity.ok(result);
+    }
+
 }

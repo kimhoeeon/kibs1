@@ -180,6 +180,40 @@ if (document.documentElement) {
         </div>
     </div>
 
+    <!-- 발송 이력 모달 팝업 추가 -->
+    <div class="modal fade" id="modalSendHistory" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-900px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="fw-bold">뉴스레터 발송 이력</h2>
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal"><i class="ki-duotone ki-cross fs-1"></i></div>
+                </div>
+                <div class="modal-body py-10 px-lg-17">
+                    <input type="hidden" id="historyClippingSeq" />
+                    <div class="table-responsive">
+                        <table class="table align-middle table-row-dashed fs-6 gy-5">
+                            <thead>
+                            <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                <th class="min-w-50px text-center">번호</th>
+                                <th class="min-w-200px text-center">수신자 이메일</th>
+                                <th class="min-w-100px text-center">결과</th>
+                                <th class="min-w-150px text-center">메시지</th>
+                                <th class="min-w-150px text-center">발송일시</th>
+                            </tr>
+                            </thead>
+                            <tbody class="fw-semibold text-gray-600 text-center" id="historyListBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-center mt-5" id="historyPagination"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>var hostUrl = "/assets/";</script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="/assets/plugins/global/plugins.bundle.js"></script>
