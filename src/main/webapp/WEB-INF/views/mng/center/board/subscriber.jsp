@@ -110,38 +110,42 @@ if (document.documentElement) {
                                 <!-- Dashboard Cards -->
                                 <div class="row g-5 g-xl-8 mb-8">
                                     <div class="col-xl-3">
-                                        <div class="card bg-light-primary">
+                                        <div class="card bg-light-primary border border-primary border-2">
                                             <div class="card-body">
                                                 <div class="text-primary fw-bold fs-2 mb-2 mt-5">총 구독자</div>
-                                                <div class="fw-bolder text-dark fs-1"><fmt:formatNumber
-                                                        value="${stats.totalCount}" pattern="#,###"/></div>
+                                                <div class="fw-bolder text-dark fs-1">
+                                                    <fmt:formatNumber value="${stats.totalCount}" pattern="#,###"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-3">
-                                        <div class="card bg-light-success">
+                                        <div class="card bg-light-success border border-success border-2">
                                             <div class="card-body">
                                                 <div class="text-success fw-bold fs-2 mb-2 mt-5">수신 가능</div>
-                                                <div class="fw-bolder text-dark fs-1"><fmt:formatNumber
-                                                        value="${stats.activeCount}" pattern="#,###"/></div>
+                                                <div class="fw-bolder text-dark fs-1">
+                                                    <fmt:formatNumber value="${stats.activeCount}" pattern="#,###"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-3">
-                                        <div class="card bg-light-danger">
+                                        <div class="card bg-light-danger border border-danger border-2">
                                             <div class="card-body">
                                                 <div class="text-danger fw-bold fs-2 mb-2 mt-5">수신 거부</div>
-                                                <div class="fw-bolder text-dark fs-1"><fmt:formatNumber
-                                                        value="${stats.rejectCount}" pattern="#,###"/></div>
+                                                <div class="fw-bolder text-dark fs-1">
+                                                    <fmt:formatNumber value="${stats.rejectCount}" pattern="#,###"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-3">
-                                        <div class="card bg-light-info">
+                                        <div class="card bg-light-info border border-info border-2">
                                             <div class="card-body">
                                                 <div class="text-info fw-bold fs-2 mb-2 mt-5">오늘 신규</div>
-                                                <div class="fw-bolder text-dark fs-1"><fmt:formatNumber
-                                                        value="${stats.todayNewCount}" pattern="#,###"/></div>
+                                                <div class="fw-bolder text-dark fs-1">
+                                                    <fmt:formatNumber value="${stats.todayNewCount}" pattern="#,###"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

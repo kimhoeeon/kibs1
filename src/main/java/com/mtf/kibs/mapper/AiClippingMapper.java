@@ -1,6 +1,7 @@
 package com.mtf.kibs.mapper;
 
 import com.mtf.kibs.dto.AiClippingDTO;
+import com.mtf.kibs.dto.AiClippingKeywordDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -37,4 +38,13 @@ public interface AiClippingMapper {
 
     // 메일 발송 성공/실패 카운트 업데이트
     int updateSendCnt(AiClippingDTO dto);
+
+    // ==== 키워드 관리 ====
+    List<AiClippingKeywordDTO> selectKeywordList();
+
+    int checkKeywordDuplicate(String keyword);
+
+    int insertKeyword(AiClippingKeywordDTO dto);
+
+    int deleteKeyword(int seq);
 }

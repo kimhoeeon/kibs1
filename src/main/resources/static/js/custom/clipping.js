@@ -299,7 +299,7 @@ $(function() {
         $.ajax({
             url: '/mng/center/board/clipping/history.ajax',
             type: 'GET',
-            data: { clippingSeq: clippingSeq, sendResult: sendResult, page: page, size: historyPageSize }, // 💡 파라미터 추가
+            data: { clippingSeq: clippingSeq, sendResult: sendResult, page: page, size: historyPageSize }, // 파라미터 추가
             success: function(res) {
                 let html = '';
                 if(res.list.length === 0){
@@ -367,4 +367,99 @@ $(function() {
         }
     });
 
+    /* =========================================================
+       5. 키워드 관리 (팝업 및 추가/삭제) 로직
+    ========================================================= */
+    // 키워드 관리 버튼 클릭
+    $('#btnKeywordMng').on('click', function() {
+        $('#newKeyword').val('');
+        loadKeywordList();
+        new bootstrap.Modal(document.getElementById('modalKeywordMng')).show();
+    });
+
+    // 엔터키 입력 지원
+    $('#newKeyword').on('keyup', function(e) {
+        if (e.key === 'Enter') {
+            $('#btnAddKeyword').click();
+        }
+    });
+
+    // 키워드 목록 로드
+    function loadKeywordList() {
+        $.ajax({
+            url: '/mng/center/board/clipping/keyword/list.ajax',
+            type: 'GET',
+            success: function(res) {
+                let html = '';
+                if(res.resultCode === "0") {
+
+                    $('#keywordTotalCount').text(res.list.length);
+
+                    if(res.list.length === 0){
+                        html = '<tr><td class="text-center text-muted py-5">등록된 키워드가 없습니다.</td></tr>';
+                    } else {
+                        res.list.forEach(function(item) {
+                            html += '<tr>';
+                            html += '  <td class="ps-2"><i class="ki-duotone ki-right-square fs-3 text-primary me-2"><span class="path1"></span><span class="path2"></span></i>' + item.keyword + '</td>';
+                            html += '  <td class="text-end pe-2"><button type="button" class="btn btn-sm btn-icon btn-light-danger btn-delete-keyword" data-seq="' + item.seq + '"><i class="ki-duotone ki-trash fs-5"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i></button></td>';
+                            html += '</tr>';
+                        });
+                    }
+                    $('#keywordListBody').html(html);
+                } else {
+                    alert(res.resultMsg);
+                }
+            }
+        });
+    }
+
+    // 키워드 추가 (중복 검사는 백엔드에서 처리)
+    $('#btnAddKeyword').on('click', function() {
+        let keyword = $('#newKeyword').val().trim();
+        if(!keyword) {
+            alert("키워드를 입력해주세요.");
+            $('#newKeyword').focus();
+            return;
+        }
+
+        $.ajax({
+            url: '/mng/center/board/clipping/keyword/add.do',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ keyword: keyword }),
+            success: function(res) {
+                if(res.resultCode === "0") {
+                    $('#newKeyword').val('');
+                    loadKeywordList(); // 목록 즉시 갱신
+                } else {
+                    // 중복 등록 불가 alert 출력
+                    alert(res.resultMsg);
+                }
+            },
+            error: function() {
+                alert("통신 중 오류가 발생했습니다.");
+            }
+        });
+    });
+
+    // 키워드 삭제
+    $(document).on('click', '.btn-delete-keyword', function() {
+        let seq = $(this).data('seq');
+
+        if(confirm("해당 키워드를 정말 삭제하시겠습니까?")) {
+            $.ajax({
+                url: '/mng/center/board/clipping/keyword/delete.do',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ seq: seq }),
+                success: function(res) {
+                    if(res.resultCode === "0") {
+                        loadKeywordList();
+                    } else {
+                        alert(res.resultMsg);
+                    }
+                }
+            });
+        }
+    });
 });

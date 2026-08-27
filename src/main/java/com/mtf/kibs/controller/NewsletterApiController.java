@@ -51,14 +51,23 @@ public class NewsletterApiController {
         }
     }
 
-    // 수신 거부 (이메일 하단 링크 클릭 시 이동)
+    // 프론트엔드 메인 화면에서 '구독 해지' 버튼 클릭 시 (AJAX POST)
+    @PostMapping("/unsubscribe")
+    public ResponseEntity<Map<String, Object>> unsubscribePost(@RequestBody Map<String, String> param) {
+        String email = param.get("email");
+        Map<String, Object> result = newsletterService.unsubscribe(email);
+        return ResponseEntity.ok(result);
+    }
+
+    // 수신 거부 (뉴스레터 이메일 하단 링크 클릭 시 이동 - GET)
     @GetMapping("/unsubscribe")
     public ResponseEntity<String> unsubscribe(@RequestParam String email) {
         Map<String, Object> result = newsletterService.unsubscribe(email);
 
         String msg = (String) result.get("resultMsg");
-        // 사용자에게 보여질 수신거부 완료 페이지 HTML 반환 (퍼블리셔가 작성한 jsp로 리다이렉트 처리해도 무방함)
-        String htmlResponse = "<html><body><h2>" + msg + "</h2><button onclick='window.close()'>닫기</button></body></html>";
+
+        // 브라우저 경고창(Alert)을 띄우고 메인 페이지로 이동시키는 스크립트 반환
+        String htmlResponse = "<html><body><script>alert('" + msg + "'); location.href='/';</script></body></html>";
 
         return ResponseEntity.ok().header("Content-Type", "text/html; charset=UTF-8").body(htmlResponse);
     }

@@ -1,6 +1,7 @@
 package com.mtf.kibs.controller;
 
 import com.mtf.kibs.dto.AiClippingDTO;
+import com.mtf.kibs.dto.AiClippingKeywordDTO;
 import com.mtf.kibs.dto.NewsletterSendHistoryDTO;
 import com.mtf.kibs.dto.NewsletterSubscriberDTO;
 import com.mtf.kibs.mapper.AiClippingMapper;
@@ -222,6 +223,59 @@ public class AdminBoardRestController {
         result.put("list", list);
         result.put("totalCount", totalCount);
 
+        return ResponseEntity.ok(result);
+    }
+
+    /* ================= AI 클리핑 키워드 관리 ================= */
+
+    @GetMapping("/clipping/keyword/list.ajax")
+    public ResponseEntity<Map<String, Object>> getKeywordList() {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            List<AiClippingKeywordDTO> list = aiClippingMapper.selectKeywordList();
+            result.put("resultCode", "0");
+            result.put("list", list);
+        } catch (Exception e) {
+            result.put("resultCode", "-1");
+            result.put("resultMsg", "조회 중 오류가 발생했습니다.");
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/clipping/keyword/add.do")
+    public ResponseEntity<Map<String, Object>> addKeyword(@RequestBody AiClippingKeywordDTO dto) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            // 중복 검사
+            int count = aiClippingMapper.checkKeywordDuplicate(dto.getKeyword());
+            if (count > 0) {
+                result.put("resultCode", "-1");
+                result.put("resultMsg", "이미 등록된 키워드입니다.");
+                return ResponseEntity.ok(result);
+            }
+
+            aiClippingMapper.insertKeyword(dto);
+            result.put("resultCode", "0");
+            result.put("resultMsg", "추가되었습니다.");
+        } catch (Exception e) {
+            result.put("resultCode", "-1");
+            result.put("resultMsg", "추가 중 오류가 발생했습니다.");
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/clipping/keyword/delete.do")
+    public ResponseEntity<Map<String, Object>> deleteKeyword(@RequestBody Map<String, Integer> param) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            int seq = param.get("seq");
+            aiClippingMapper.deleteKeyword(seq);
+            result.put("resultCode", "0");
+            result.put("resultMsg", "삭제되었습니다.");
+        } catch (Exception e) {
+            result.put("resultCode", "-1");
+            result.put("resultMsg", "삭제 중 오류가 발생했습니다.");
+        }
         return ResponseEntity.ok(result);
     }
 

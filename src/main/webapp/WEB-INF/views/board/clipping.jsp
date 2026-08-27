@@ -132,6 +132,10 @@
                     <span class="next" id="next_page"><a><img src="/img/btn_next.gif" style="cursor: pointer"></a></span>
                     <span class="last" id="last_page"><a><img src="/img/btn_last.gif" style="cursor: pointer"></a></span>
                 </div>
+
+                <div class="btn board_ai_btn">
+                    <a href="javascript:void(0);" id="btnUnsubscribe" class="btnSt01">구독해지</a>
+                </div>
             </div>
         </div>
 
@@ -140,6 +144,39 @@
     <c:import url="../footer.jsp" charEncoding="UTF-8"/>
 
     <script src="/js/front/clipping.js?ver=20260811"></script>
+
+    <script>
+        $(function() {
+            $('#btnUnsubscribe').on('click', function() {
+                let email = prompt("구독을 해지할 이메일 주소를 입력해 주세요.");
+
+                if (email) {
+                    email = email.trim();
+
+                    // 이메일 정규식 검사
+                    let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                    if (!emailRegex.test(email)) {
+                        alert("유효한 이메일 주소 형식이 아닙니다.");
+                        return;
+                    }
+
+                    // 구독 해지 API 호출
+                    $.ajax({
+                        url: '/api/newsletter/unsubscribe',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ email: email }),
+                        success: function(res) {
+                            alert(res.resultMsg);
+                        },
+                        error: function() {
+                            alert("통신 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>

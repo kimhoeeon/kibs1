@@ -440,6 +440,12 @@
                             <div class="subscribe_btn">
                                 <button type="button" onclick="subscribeNewsletter()">뉴스레터 구독하기</button>
                             </div>
+
+                            <div style="margin-top: 15px; text-align: center;">
+                                <a href="javascript:void(0);" id="btnUnsubscribe" style="font-size: 14px; color: #888; text-decoration: underline; font-weight: 500;">
+                                    뉴스레터 구독 해지하기
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -603,6 +609,34 @@
                     alert("게시판 URL이 클립보드에 복사되었습니다.");
                 });
             });
+
+            // 4. 뉴스레터 구독 해지 기능
+            $('#btnUnsubscribe').on('click', function() {
+                let email = prompt("구독을 해지할 이메일 주소를 입력해 주세요.");
+
+                if (email) {
+                    email = email.trim();
+
+                    let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                    if (!emailRegex.test(email)) {
+                        alert("유효한 이메일 주소 형식이 아닙니다.");
+                        return;
+                    }
+
+                    $.ajax({
+                        url: '/api/newsletter/unsubscribe',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ email: email }),
+                        success: function(res) {
+                            alert(res.resultMsg);
+                        },
+                        error: function() {
+                            alert("통신 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+                        }
+                    });
+                }
+            });
         });
 
         // 3. 뉴스레터 구독 기능
@@ -669,6 +703,8 @@
                 }
             });
         }
+
+
     </script>
 
 </body>

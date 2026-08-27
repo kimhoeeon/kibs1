@@ -126,4 +126,30 @@
         WHERE seq = #{seq}
     </update>
 
+    <!-- ==== 키워드 관리 ==== -->
+    <select id="selectKeywordList" resultType="com.mtf.kibs.dto.AiClippingKeywordDTO">
+        SELECT
+            seq,
+            keyword,
+            DATE_FORMAT(reg_date, '%Y-%m-%d') AS regDate
+        FROM ai_clipping_keyword
+        ORDER BY keyword ASC
+    </select>
+
+    <select id="checkKeywordDuplicate" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM ai_clipping_keyword
+        WHERE keyword = #{keyword}
+    </select>
+
+    <insert id="insertKeyword" parameterType="com.mtf.kibs.dto.AiClippingKeywordDTO">
+        INSERT INTO ai_clipping_keyword (keyword)
+        VALUES (#{keyword})
+    </insert>
+
+    <delete id="deleteKeyword" parameterType="int">
+        DELETE FROM ai_clipping_keyword
+        WHERE seq = #{seq}
+    </delete>
+
 </mapper>

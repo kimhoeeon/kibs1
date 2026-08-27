@@ -5977,6 +5977,9 @@ position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-w
 .board_ai ul li a .tit{font-size: 2rem;font-weight: 600; margin-bottom: 15px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2; height: 52px;}
 .board_ai ul li a .desc{margin-bottom: 30px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3; height: 62px;}
 .board_ai ul li a .date{text-align: right; color: #777;}
+.board_ai_btn{margin-top: 30px;min-width: 200px; display: inline-block;text-align: center; display: flex; justify-content: right;}
+.board_ai_btn a{padding:10px 15px;}
+
 
 
 

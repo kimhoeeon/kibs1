@@ -110,6 +110,9 @@ if (document.documentElement) {
                                             <button type="button" id="btnManualUpdate" class="btn btn-sm btn-primary">
                                                 <i class="ki-duotone ki-arrows-circle fs-2"></i> AI 클리핑 수동 생성
                                             </button>
+                                            <button type="button" id="btnKeywordMng" class="btn btn-sm btn-info">
+                                                <i class="ki-duotone ki-setting-2 fs-2"></i> 키워드 관리
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="card-body pt-0">
@@ -215,6 +218,46 @@ if (document.documentElement) {
                         </table>
                     </div>
                     <div class="d-flex justify-content-center mt-5" id="historyPagination"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 키워드 관리 모달 팝업 추가 (파일 맨 하단 </body> 바로 위쪽) -->
+    <div class="modal fade" id="modalKeywordMng" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-600px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="fw-bold">수집 키워드 관리</h2>
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal"><i class="ki-duotone ki-cross fs-1"></i></div>
+                </div>
+                <div class="modal-body py-10 px-lg-17">
+
+                    <div class="d-flex mb-3">
+                        <input type="text" id="newKeyword" class="form-control form-control-solid me-2" placeholder="새로운 수집 키워드 입력" />
+                        <button type="button" id="btnAddKeyword" class="btn btn-primary min-w-80px">추가</button>
+                    </div>
+                    <!-- 안내문구 추가 -->
+                    <div class="text-gray-600 fs-7 mb-5" style="line-height: 1.5;">
+                        * 15개 이하 키워드 등록을 권장하지 않습니다 (중복 기사 가능성이 높아집니다).<br>
+                        * 등록된 키워드 풀에서 <strong>5개씩 무작위(랜덤)로 추출</strong>하여 뉴스를 수집합니다.<br>
+                        * <strong>5개씩 추출하는 이유:</strong> 너무 적은 개수로 수집하면 비슷한 기사만 쏠려서 수집되고, 너무 많은 개수로 수집하면 OpenAI API 토큰 한도 초과 및 크롤링 차단(Timeout) 위험이 발생하므로, 다양성과 시스템 안정성을 모두 확보할 수 있는 최적의 숫자이기 때문입니다.
+                    </div>
+
+                    <div class="d-flex justify-content-end mb-2">
+                        <span class="fw-bold fs-6 text-dark">총 등록 키워드 : <span id="keywordTotalCount" class="text-primary fs-5">0</span> 개</span>
+                    </div>
+
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table align-middle table-row-dashed fs-6 gy-3">
+                            <tbody id="keywordListBody" class="text-gray-700 fw-bold">
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>

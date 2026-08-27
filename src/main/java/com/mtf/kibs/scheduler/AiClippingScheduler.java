@@ -1,6 +1,7 @@
 package com.mtf.kibs.scheduler;
 
 import com.mtf.kibs.dto.AiClippingDTO;
+import com.mtf.kibs.dto.AiClippingKeywordDTO;
 import com.mtf.kibs.mapper.AiClippingMapper;
 import com.mtf.kibs.service.NewsletterService;
 import org.jsoup.Jsoup;
@@ -38,11 +39,11 @@ public class AiClippingScheduler {
     private String openAiModel;
 
     // 1. 매일 아침 9시 자동 실행 (무조건 발송)
-    @Scheduled(cron = "0 0 9 * * MON-FRI", zone = "Asia/Seoul")
+    /*@Scheduled(cron = "0 0 9 * * MON-FRI", zone = "Asia/Seoul")
     public void generateAndSendAiClippingScheduled() {
         System.out.println("========== AI 클리핑 스케줄러 자동 실행 ==========");
         processAiClipping(true); // 스케줄러는 항상 생성+발송 처리
-    }
+    }*/
 
     // 2. 실제 클리핑 수집, 생성, 발송을 담당하는 코어 로직
     public void processAiClipping(boolean isSend) {
@@ -66,27 +67,37 @@ public class AiClippingScheduler {
                 return; // 이미 다른 도메인 스레드에서 생성 및 발송을 마쳤다면 즉시 종료
             }
 
-            // 5가지 카테고리별 세부 키워드 배열 정의
-            String[][] keywordGroups = {
-                    {"보트", "요트", "레저보트", "파워보트", "세일링 요트", "고무보트", "낚시보트"},
-                    {"마리나", "마리나 산업", "마리나 항만"},
-                    {"해양관광", "해양레저", "수상레저", "해양스포츠"},
-                    {"전기보트", "친환경 선박", "수소선박", "하이브리드 선박"},
-                    {"보트 엔진", "선외기", "해양레저장비", "선박 기자재", "해양 안전"}
-            };
+            // 1. DB에서 전체 키워드 목록 조회 (동적 로드)
+            List<AiClippingKeywordDTO> keywordList = aiClippingMapper.selectKeywordList();
+
+            if (keywordList == null || keywordList.isEmpty()) {
+                System.out.println("========== 등록된 키워드가 없어 AI 클리핑을 종료합니다 ==========");
+                return;
+            }
+
+            // 2. 매일 똑같은 기사가 생성되지 않도록 전체 키워드를 무작위로 섞음
+            Collections.shuffle(keywordList);
+
+            // 3. 최대 5개까지만 추출 (토큰 한도 및 크롤링 부하 방지)
+            int limit = Math.min(keywordList.size(), 5);
+            List<AiClippingKeywordDTO> selectedKeywords = keywordList.subList(0, limit);
 
             StringBuilder rawArticlesBuilder = new StringBuilder();
-            Random random = new Random();
 
-            // 5개 카테고리에서 각각 랜덤하게 키워드를 1개씩 추출하여 검색
-            for (String[] group : keywordGroups) {
-                String targetKeyword = group[random.nextInt(group.length)];
+            // 하단 출처 표기를 위한 리스트
+            List<String> usedKeywords = new ArrayList<>();
+            List<String[]> usedSources = new ArrayList<>(); // {언론사, 링크, 제목}
+
+            // 4. 추출된 키워드들로 기사 수집
+            for (AiClippingKeywordDTO kw : selectedKeywords) {
+                String targetKeyword = kw.getKeyword();
+                usedKeywords.add(targetKeyword); // 사용된 키워드 기록
                 System.out.println("-> 수집 키워드: " + targetKeyword);
 
-                String articles = fetchArticlesFromDaum(targetKeyword);
+                // 크롤러에 출처 리스트(usedSources)를 넘겨서 데이터를 채워오도록 처리
+                String articles = fetchArticlesFromDaum(targetKeyword, usedSources);
                 rawArticlesBuilder.append(articles);
 
-                // 연속적인 크롤링으로 인한 차단 방지를 위해 1.5초 대기
                 Thread.sleep(1500);
             }
 
@@ -97,8 +108,8 @@ public class AiClippingScheduler {
                 return;
             }
 
-            // OpenAI API 연동하여 기사 상세 작성 (링크 포함)
-            String generatedContent = generateDetailedArticleViaOpenAI(rawArticles);
+            // 수집된 키워드와 출처 데이터를 AI 문서 생성기에 파라미터로 전달
+            String generatedContent = generateDetailedArticleViaOpenAI(rawArticles, usedKeywords, usedSources);
 
             // DB에 저장
             AiClippingDTO clippingDTO = new AiClippingDTO();
@@ -129,7 +140,7 @@ public class AiClippingScheduler {
     }
 
     // Daum 뉴스 크롤링 메서드
-    private String fetchArticlesFromDaum(String keyword) {
+    private String fetchArticlesFromDaum(String keyword, List<String[]> usedSources) {
         StringBuilder articlesBuilder = new StringBuilder();
         try {
             String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
@@ -156,9 +167,20 @@ public class AiClippingScheduler {
 
                 String summary = element.select(".conts-desc").text();
 
+                // 신문사(언론사) 파싱 로직
+                Element pubElement = element.select(".info_news").first();
+                if (pubElement == null) pubElement = element.select(".txt_info").first(); // 대체 클래스 확인
+                String publisher = pubElement != null ? pubElement.text() : "언론사";
+                // 가독성을 위해 불필요한 '다음뉴스' 나 '|' 기호 등 제거
+                publisher = publisher.replace("다음뉴스", "").replace("|", "").trim();
+
                 articlesBuilder.append("제목 : ").append(title).append("\n");
                 articlesBuilder.append("원본링크 : ").append(link).append("\n");
                 articlesBuilder.append("내용 : ").append(summary).append("\n\n");
+
+                // 출처 데이터 누적: {언론사, 링크, 기사제목}
+                usedSources.add(new String[]{publisher, link, title});
+
                 count++;
             }
         } catch (Exception e) {
@@ -168,7 +190,7 @@ public class AiClippingScheduler {
     }
 
     // OpenAI API 통신 메서드
-    private String generateDetailedArticleViaOpenAI(String rawArticles) {
+    private String generateDetailedArticleViaOpenAI(String rawArticles, List<String> keywords, List<String[]> sources) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -209,19 +231,48 @@ public class AiClippingScheduler {
                 Map<String, Object> messageResp = (Map<String, Object>) choices.get(0).get("message");
                 String aiContent = (String) messageResp.get("content");
 
-                // 3단계: 현재 시간 가져오기 및 AI 꼬리말 포맷팅 생성
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String currentTime = LocalDateTime.now().format(formatter);
 
-                // 깔끔한 박스 형태의 꼬리말 HTML
+                // 출처 표기를 위한 HTML 생성
+                StringBuilder sourceHtml = new StringBuilder();
+                sourceHtml.append("<div style='margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;'>");
+
+                // 1. 수집 키워드 표기 (#키워드1 #키워드2)
+                sourceHtml.append("   <strong style='color: #1d5cad; display:block; margin-bottom:5px;'>■ 수집 키워드</strong>");
+                sourceHtml.append("   <span style='color: #555; font-size: 13px; font-weight: bold;'>");
+                for (String kw : keywords) {
+                    sourceHtml.append("#").append(kw).append(" ");
+                }
+                sourceHtml.append("   </span><br><br>");
+
+                // 2. 출처 표기 (출처1) 신문사 | 원문링크)
+                sourceHtml.append("   <strong style='color: #1d5cad; display:block; margin-bottom:5px;'>■ 기사 출처</strong>");
+                sourceHtml.append("   <ul style='list-style: none; padding: 0; margin: 0;'>");
+                for (int i = 0; i < sources.size(); i++) {
+                    String[] src = sources.get(i);
+                    String pub = src[0];    // 언론사
+                    String url = src[1];    // 링크
+                    String title = src[2];  // 기사 제목
+
+                    sourceHtml.append("<li style='font-size: 12px; color: #666; margin-bottom: 5px; line-height: 1.4;'>");
+                    sourceHtml.append("출처").append(i + 1).append(") ").append(pub).append(" | ");
+                    sourceHtml.append("<a href='").append(url).append("' target='_blank' style='color:#666; text-decoration:underline;'>원문링크</a>");
+                    sourceHtml.append(" <span style='color:#999;'>- ").append(title).append("</span>");
+                    sourceHtml.append("</li>");
+                }
+                sourceHtml.append("   </ul>");
+                sourceHtml.append("</div>");
+
+                // 최종 꼬리말 조립
                 String footerHtml = "<div style='margin-top: 50px; padding: 20px; background-color: #f8f9fa; border-left: 4px solid #1d5cad; border-radius: 5px; text-align: left; font-size: 14px; color: #444; line-height: 1.6;'>" +
                         "   <strong style='color: #1d5cad;'>■ 작성자 :</strong> 경기국제보트쇼 AI 브리핑 봇<br>" +
                         "   <strong style='color: #1d5cad;'>■ 생성 모델 :</strong> OpenAI " + openAiModel + "<br>" +
                         "   <strong style='color: #1d5cad;'>■ 생성 일시 :</strong> " + currentTime + "<br>" +
-                        "   <span style='font-size: 12px; color: #888; display: block; margin-top: 8px;'>* 본 기사는 인공지능 모델이 자동 수집 및 요약한 내용으로, 원본 기사의 논조와 일부 다를 수 있습니다.</span>" +
+                        "   <span style='font-size: 12px; color: #888; display: block; margin-top: 8px; margin-bottom: 12px;'>* 본 기사는 인공지능 모델이 자동 수집 및 요약한 내용으로, 원본 기사의 논조와 일부 다를 수 있습니다.</span>" +
+                        sourceHtml.toString() +
                         "</div>";
 
-                // 원본 콘텐츠 끝에 꼬리말을 덧붙여서 반환
                 return aiContent + footerHtml;
             }
         } catch (Exception e) {
