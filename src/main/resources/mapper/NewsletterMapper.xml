@@ -28,6 +28,23 @@
         WHERE email = #{email}
     </select>
 
+    <select id="checkSubscriberStatus" parameterType="String" resultType="String">
+        SELECT receive_status
+        FROM newsletter_subscriber
+        WHERE email = #{email}
+        LIMIT 1
+    </select>
+
+    <update id="updateReSubscribe" parameterType="com.mtf.kibs.dto.NewsletterSubscriberDTO">
+        UPDATE newsletter_subscriber
+        SET name = #{name},
+            privacy_agree_yn = #{privacyAgreeYn},
+            ad_agree_yn = #{adAgreeYn},
+            receive_status = '수신중',
+            reg_date = CURRENT_TIMESTAMP
+        WHERE email = #{email}
+    </update>
+
     <select id="selectSubscriberList" parameterType="map" resultType="com.mtf.kibs.dto.NewsletterSubscriberDTO">
         SELECT
         seq,

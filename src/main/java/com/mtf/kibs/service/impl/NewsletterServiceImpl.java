@@ -42,20 +42,36 @@ public class NewsletterServiceImpl implements NewsletterService {
     public Map<String, Object> subscribe(NewsletterSubscriberDTO dto) {
         Map<String, Object> result = new HashMap<>();
 
-        if (newsletterMapper.checkEmailDuplicate(dto.getEmail()) > 0) {
-            result.put("resultCode", "-1");
-            result.put("resultMsg", "이미 구독 중인 이메일입니다.");
-            return result;
+        // 1. 해당 이메일의 가입 이력 및 수신 상태 조회
+        String currentStatus = newsletterMapper.checkSubscriberStatus(dto.getEmail());
+
+        // 2. 가입 이력이 존재하는 경우 분기 처리
+        if (currentStatus != null) {
+            if ("수신중".equals(currentStatus)) {
+                // 이미 수신 중인 경우 가입 차단
+                result.put("resultCode", "-1");
+                result.put("resultMsg", "이미 구독 중인 이메일입니다.");
+                return result;
+
+            } else if ("수신거부".equals(currentStatus)) {
+                // 수신 거부 상태인 경우 기존 정보 갱신(재구독) 처리
+                newsletterMapper.updateReSubscribe(dto);
+                result.put("resultCode", "0");
+                result.put("resultMsg", "다시 구독해 주셔서 감사합니다! 뉴스레터 구독이 정상적으로 처리되었습니다.");
+                return result;
+            }
         }
 
+        // 3. 가입 이력이 전혀 없는 완전 신규 구독인 경우
         int insertCnt = newsletterMapper.insertSubscriber(dto);
         if (insertCnt > 0) {
             result.put("resultCode", "0");
-            result.put("resultMsg", "구독 신청이 완료되었습니다.");
+            result.put("resultMsg", "뉴스레터 구독 신청이 완료되었습니다.");
         } else {
             result.put("resultCode", "-1");
             result.put("resultMsg", "구독 신청 중 오류가 발생했습니다.");
         }
+
         return result;
     }
 

@@ -15,6 +15,10 @@ public interface NewsletterMapper {
     // 구독 신청
     int insertSubscriber(NewsletterSubscriberDTO dto);
 
+    String checkSubscriberStatus(String email);
+
+    int updateReSubscribe(NewsletterSubscriberDTO dto);
+
     // 이메일 중복 체크 (결과가 0보다 크면 중복)
     int checkEmailDuplicate(String email);
 
