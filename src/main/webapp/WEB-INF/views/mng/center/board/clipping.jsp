@@ -116,6 +116,10 @@ if (document.documentElement) {
                                         </div>
                                     </div>
                                     <div class="card-body pt-0">
+                                        <div class="d-flex justify-content-start mb-3">
+                                            <span class="fw-bold fs-6 text-gray-700">총 발행 건수 : <span id="clippingTotalCount" class="text-primary fs-5">0</span> 건</span>
+                                        </div>
+
                                         <div class="table-responsive">
                                             <table class="table align-middle table-row-dashed fs-6 gy-5">
                                                 <thead>

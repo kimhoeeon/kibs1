@@ -26,6 +26,9 @@ $(function() {
             type: 'GET',
             data: { page: page, size: pageSize, title: $('#searchTitle').val() },
             success: function(res) {
+
+                $('#clippingTotalCount').text(res.totalCount || 0);
+
                 let html = '';
                 if(res.list.length === 0){
                     html = '<tr><td colspan="7" class="text-center text-muted py-10">생성된 클리핑 기사가 없습니다.</td></tr>';
@@ -400,7 +403,7 @@ $(function() {
                     } else {
                         res.list.forEach(function(item) {
                             html += '<tr>';
-                            html += '  <td class="ps-2"><i class="ki-duotone ki-right-square fs-3 text-primary me-2"><span class="path1"></span><span class="path2"></span></i>' + item.keyword + '</td>';
+                            html += '  <td class="ps-2"><div class="d-flex align-items-center"><i class="ki-duotone ki-right-square fs-3 text-primary me-2"><span class="path1"></span><span class="path2"></span></i><span>' + item.keyword + '</span></div></td>';
                             html += '  <td class="text-end pe-2"><button type="button" class="btn btn-sm btn-icon btn-light-danger btn-delete-keyword" data-seq="' + item.seq + '"><i class="ki-duotone ki-trash fs-5"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i></button></td>';
                             html += '</tr>';
                         });
