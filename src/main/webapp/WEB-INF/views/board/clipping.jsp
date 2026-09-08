@@ -110,7 +110,29 @@
         </div>
         <!-- section -->
 
-        <div class="board_list padding_t padding_b">
+        <!-- section -->
+        <div class="board_search padding_t">
+            <div class="inner">
+                <div class="search">
+                    <form class="search_box">
+                        <span class="select">
+                            <select>
+                                <option value="제목">제목</option>
+                                <option value="내용">내용</option>
+                                <option value="내용+제목">내용+제목</option>
+                            </select>
+                        </span>
+                        <span class="search">
+                            <input type="text" placeholder="검색어를 입력해주세요.">
+                            <button type="submit"></button>
+                        </span>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- section -->
+
+        <div class="board_list padding_b">
             <div class="inner">
                 <div class="board_ai">
                     <ul id="clippingListBody">
@@ -139,6 +161,121 @@
             </div>
         </div>
 
+        <!-- section -->
+        <div class="main_newsletter sub_newsletter">
+            <div class="inner">
+                <div class="main_tit">
+                    <div class="top">Newsletter</div>
+                    <div class="big">뉴스레터 구독하기</div>
+                    <div class="nae">경기국제보트쇼의 소식을 전달합니다. <br />
+                        다양한 컨퍼런스와 놓쳐서는 안될 유익한 트렌드를 큐레이팅하고,<br class="pc_only">
+                        새로운 관점으로 이슈를 전합니다.</div>
+                </div>
+                <div class="news_letter_box">
+                    <div class="form_wrap">
+                        <ul class="form_box">
+                            <li>
+                                <div class="item">
+                                    <p>이메일</p>
+                                </div>
+                                <div class="input">
+                                    <input type="text" placeholder="이메일을 입력해주세요">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item">
+                                    <p>이름</p>
+                                </div>
+                                <div class="input">
+                                    <input type="text" placeholder="이름을 입력해주세요">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="input check">
+                                    <label><input type="checkbox" name="" id="">(필수) <span class="pri_btn">개인정보 수집 및 이용</span>에 동의합니다.</label>
+                                    <label><input type="checkbox" name="" id="">(필수) <span class="adv_btn">광고성 정보 수신</span>에 동의합니다.</label>
+                                </div>
+                                <div class="comnt">
+                                    * 뉴스레터 수신 거부를 원하시는 분께서는 수신하신 뉴스레터 하단의 “수신거부”를 클릭하시면 수신거부 처리가 완료됩니다.
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="subscribe_btn">
+                            <button type="button">뉴스레터 구독하기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- //section -->
+
+    </div>
+
+    <div class="popPrivacy popForm popup">
+        <div class="popup_inner">
+            <div class="popup_wrap">
+                <div class="pop_tit">
+                    <div class="tit">[개인정보 수집 이용 동의] 약관</div>
+                    <a class="close" href="#close"><img src="../../img/close_w.png"></a>
+                </div>
+                <div class="pop_box">
+                    <div class="pop_cont">
+                        <b>[개인정보 수집 및 이용 동의]</b> <br />
+                        경기국제보트쇼 사무국은 뉴스레터 발송을 위해 아래와 같이 개인정보를 수집·이용합니다.<br /><br />
+                        1. 수집 항목<br />
+                        이름<br />
+                        이메일 주소<br /><br />
+
+                        2. 수집 및 이용 목적<br />
+                        경기국제보트쇼 뉴스레터 발송<br />
+                        행사 소식, 공지사항, 참가/참관 안내 제공<br />
+                        전시회 관련 산업 뉴스 및 콘텐츠 제공<br />
+                        뉴스레터 신청자 관리 및 문의 응대<br /><br />
+
+                        3. 보유 및 이용 기간 수집된 개인정보는 뉴스레터 수신 동의 철회 시까지 보유·이용하며, 수신자가 구독 해지를 요청하거나 개인정보 삭제를 요청하는 경우 지체 없이 파기합니다.<br />
+                        단, 관계 법령에 따라 보관이 필요한 경우 해당 법령에서 정한 기간 동안 보관할 수 있습니다.<br /><br />
+                        4. 동의 거부 권리 및 불이익 이용자는 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있습니다.<br />
+                        다만, 동의를 거부할 경우 뉴스레터 신청 및 수신이 제한될 수 있습니다.<br /><br />
+
+                        위와 같이 개인정보를 수집·이용하는 데 동의합니다.
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="popAdver popForm popup">
+        <div class="popup_inner">
+            <div class="popup_wrap">
+                <div class="pop_tit">
+                    <div class="tit">[광고성 정보 수신 동의]</div>
+                    <a class="close" href="#close"><img src="../../img/close_w.png"></a>
+                </div>
+                <div class="pop_box">
+                    <div class="pop_cont">
+                        경기국제보트쇼 사무국은 뉴스레터를 통해 경기국제보트쇼 및 관련 행사, 전시, 산업 정보, 홍보 콘텐츠 등을 안내하기 위해 아래와 같이 광고성 정보를 발송할 수 있습니다.<br /><br />
+
+                        1. 수신 항목<br />
+                        경기국제보트쇼 행사 안내<br />
+                        참가업체 및 참관객 대상 주요 공지<br />
+                        전시회 참가/참관 안내<br />
+                        관련 산업 뉴스, 콘텐츠, 이벤트 및 홍보 정보<br />
+                        사무국에서 제공하는 마케팅성 안내<br /><br />
+
+                        2. 수신 방법<br />
+                        이메일<br /><br />
+
+                        3. 보유 및 이용 기간 광고성 정보 수신 동의 철회 시까지 보유·이용합니다. 수신자는 뉴스레터 하단의 수신 거부 또는 사무국 문의를 통해 언제든지 수신 동의를 철회할 수 있습니다.<br /><br />
+
+                        4. 동의 거부 권리 및 불이익 이용자는 광고성 정보 수신에 대한 동의를 거부할 권리가 있습니다. 다만, 동의를 거부할 경우 행사 홍보, 이벤트, 산업 뉴스 등 마케팅성 정보 수신이 제한될 수 있습니다.<br /><br />
+
+                        위와 같이 광고성 정보를 수신하는 데 동의합니다.
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <c:import url="../footer.jsp" charEncoding="UTF-8"/>
