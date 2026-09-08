@@ -1,6 +1,7 @@
 package com.mtf.kibs.controller;
 
 import com.mtf.kibs.dto.AiClippingDTO;
+import com.mtf.kibs.dto.AiClippingKeywordDTO;
 import com.mtf.kibs.mapper.AiClippingMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,12 +34,18 @@ public class AiClippingApiController {
     public ResponseEntity<Map<String, Object>> getClippingList(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int size,
-            @RequestParam(required = false) String title) {
+            @RequestParam(required = false) String searchType,
+            @RequestParam(required = false) String searchKeyword,
+            @RequestParam(required = false) String filterKeyword,
+            @RequestParam(required = false) String displayYn) {
 
         Map<String, Object> result = new HashMap<>();
 
         AiClippingDTO searchDto = new AiClippingDTO();
-        searchDto.setTitle(title);
+        searchDto.setSearchType(searchType);
+        searchDto.setSearchKeyword(searchKeyword);
+        searchDto.setFilterKeyword(filterKeyword);
+        searchDto.setDisplayYn(displayYn);
         searchDto.setLimit(size);
         searchDto.setOffset((page - 1) * size);
 
@@ -50,6 +57,21 @@ public class AiClippingApiController {
         result.put("totalCount", totalCount);
         result.put("currentPage", page);
 
+        return ResponseEntity.ok(result);
+    }
+
+    // 2. 컨트롤러 맨 아래에 프론트엔드용 키워드 목록 조회 API 신규 추가
+    @GetMapping("/keyword/list")
+    public ResponseEntity<Map<String, Object>> getFrontKeywordList() {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            List<AiClippingKeywordDTO> list = aiClippingMapper.selectKeywordList();
+            result.put("resultCode", "0");
+            result.put("list", list);
+        } catch (Exception e) {
+            result.put("resultCode", "-1");
+            result.put("resultMsg", "키워드 조회 중 오류가 발생했습니다.");
+        }
         return ResponseEntity.ok(result);
     }
 

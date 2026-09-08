@@ -24,7 +24,12 @@ $(function() {
         $.ajax({
             url: '/api/clipping/list',
             type: 'GET',
-            data: { page: page, size: pageSize, title: $('#searchTitle').val() },
+            data: {
+                page: page,
+                size: pageSize,
+                searchType: '제목',
+                searchKeyword: $('#searchTitle').val()
+            },
             success: function(res) {
 
                 $('#clippingTotalCount').text(res.totalCount || 0);
@@ -44,8 +49,20 @@ $(function() {
                         html += '  <td>' + item.shareCnt + '</td>';
                         html += '  <td><span class="badge badge-light-primary">' + sendStatus + '</span><br>';
                         html += '      <button class="btn btn-sm btn-light-success btn-history mt-2" data-seq="' + item.seq + '">이력보기</button></td>';
+
+                        // 노출 상태에 따른 뱃지 및 토글 버튼 렌더링
+                        html += '  <td>';
+                        if(item.displayYn === 'Y') {
+                            html += '<span class="badge badge-light-success mb-1">게시중</span><br>';
+                            html += '<button class="btn btn-sm btn-light-danger btn-toggle-display mt-1" data-seq="' + item.seq + '" data-status="N">미노출 변경</button>';
+                        } else {
+                            html += '<span class="badge badge-light-secondary mb-1">임시저장</span><br>';
+                            html += '<button class="btn btn-sm btn-primary btn-toggle-display mt-1" data-seq="' + item.seq + '" data-status="Y">게시 (승인)</button>';
+                        }
+                        html += '  </td>';
+
                         html += '  <td class="date">' + item.regDate + '</td>';
-                        html += '  <td><button class="btn btn-sm btn-light-info btn-edit" data-seq="' + item.seq + '" data-title="' + item.title + '">수정 / 삭제</button></td>';
+                        html += '  <td><button class="btn btn-sm btn-light-info btn-edit" data-seq="' + item.seq + '" data-title="' + item.title + '">수정/상세</button></td>';
                         html += '</tr>';
                     });
                 }
@@ -461,6 +478,38 @@ $(function() {
                     } else {
                         alert(res.resultMsg);
                     }
+                }
+            });
+        }
+    });
+
+    // 노출 상태 토글(게시 <-> 미노출) 버튼 클릭 이벤트
+    $(document).on('click', '.btn-toggle-display', function() {
+        let seq = String($(this).data('seq'));
+        let status = String($(this).data('status'));
+
+        let confirmMsg = status === 'Y'
+            ? '해당 기사를 홈페이지에 게시(승인)하시겠습니까?'
+            : '해당 기사를 홈페이지에서 미노출(임시저장) 처리하시겠습니까?';
+
+        if(confirm(confirmMsg)) {
+            $.ajax({
+                url: '/mng/center/board/clipping/display.do',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ seq: seq, displayYn: status }),
+                success: function(res) {
+                    if(res.resultCode === "0") {
+                        alert(res.resultMsg);
+                        loadClippingList(currentPage);
+                    } else {
+                        alert(res.resultMsg || "상태 변경에 실패했습니다.");
+                    }
+                },
+                error: function(xhr) {
+                    // 실제 서버 에러 확인을 위한 콘솔 로그 추가
+                    alert("서버 통신 중 오류가 발생했습니다. (F12 콘솔 확인)");
+                    console.error("Error Detail: ", xhr.responseText);
                 }
             });
         }

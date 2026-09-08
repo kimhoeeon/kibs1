@@ -14,6 +14,11 @@ public class AiClippingDTO {
     private String delYn;
     private String regDate;
     private String modDate;
+    private String displayYn;
+
+    private String searchType;
+    private String searchKeyword;
+    private String filterKeyword;
 
     // 페이징 및 검색용 필드 (SearchDTO 상속 대신 내부 처리 시)
     private int offset;

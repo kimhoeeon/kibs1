@@ -114,19 +114,23 @@
         <div class="board_search padding_t">
             <div class="inner">
                 <div class="search">
-                    <form class="search_box">
+                    <form class="search_box" id="clippingSearchForm" onsubmit="return false;">
                         <span class="select">
-                            <select>
+                            <select id="searchType">
                                 <option value="제목">제목</option>
                                 <option value="내용">내용</option>
                                 <option value="내용+제목">내용+제목</option>
                             </select>
                         </span>
                         <span class="search">
-                            <input type="text" placeholder="검색어를 입력해주세요.">
-                            <button type="submit"></button>
+                            <input type="text" id="searchKeyword" placeholder="검색어를 입력해주세요.">
+                            <button type="submit" id="btnSearchClipping"></button>
                         </span>
                     </form>
+                </div>
+
+                <div id="keywordFilterArea" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 25px; clear: both; padding-top: 30px;">
+                    <!-- JS 연동으로 버튼 렌더링 -->
                 </div>
             </div>
         </div>
@@ -179,7 +183,7 @@
                                     <p>이메일</p>
                                 </div>
                                 <div class="input">
-                                    <input type="text" placeholder="이메일을 입력해주세요">
+                                    <input type="text" id="nlEmail" placeholder="이메일을 입력해주세요">
                                 </div>
                             </li>
                             <li>
@@ -187,13 +191,13 @@
                                     <p>이름</p>
                                 </div>
                                 <div class="input">
-                                    <input type="text" placeholder="이름을 입력해주세요">
+                                    <input type="text" id="nlName" placeholder="이름을 입력해주세요">
                                 </div>
                             </li>
                             <li>
                                 <div class="input check">
-                                    <label><input type="checkbox" name="" id="">(필수) <span class="pri_btn">개인정보 수집 및 이용</span>에 동의합니다.</label>
-                                    <label><input type="checkbox" name="" id="">(필수) <span class="adv_btn">광고성 정보 수신</span>에 동의합니다.</label>
+                                    <label><input type="checkbox" id="nlPrivacy">(필수) <span class="pri_btn">개인정보 수집 및 이용</span>에 동의합니다.</label>
+                                    <label><input type="checkbox" id="nlAd">(필수) <span class="adv_btn">광고성 정보 수신</span>에 동의합니다.</label>
                                 </div>
                                 <div class="comnt">
                                     * 뉴스레터 수신 거부를 원하시는 분께서는 수신하신 뉴스레터 하단의 “수신거부”를 클릭하시면 수신거부 처리가 완료됩니다.
@@ -284,13 +288,13 @@
 
     <script>
         $(function() {
+            // 1. 구독 해지 기능
             $('#btnUnsubscribe').on('click', function() {
                 let email = prompt("구독을 해지할 이메일 주소를 입력해 주세요.");
 
                 if (email) {
                     email = email.trim();
 
-                    // 이메일 정규식 검사
                     let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
                     if (!emailRegex.test(email)) {
                         alert("유효한 이메일 주소 형식이 아닙니다.");
@@ -312,7 +316,89 @@
                     });
                 }
             });
+
+            // 2. 검색 폼 제출 이벤트
+            $('#clippingSearchForm').on('submit', function(e) {
+                e.preventDefault();
+
+                // window.loadClippingList 로 전역 함수 유무 체크 및 호출
+                if (typeof window.loadClippingList === 'function') {
+                    // 페이지 번호를 1로 초기화 후 검색 수행
+                    window.currentPage = 1;
+                    window.loadClippingList(1);
+                } else {
+                    // 전역 함수가 없을 시 URL 파라미터로 이동
+                    let searchType = $('#searchType').val();
+                    let searchKeyword = $('#searchKeyword').val();
+                    location.href = "?searchType=" + encodeURIComponent(searchType) + "&searchKeyword=" + encodeURIComponent(searchKeyword);
+                }
+            });
         });
+
+        // 3. 뉴스레터 구독 기능 연동
+        function subscribeNewsletter() {
+            let email = $('#nlEmail').val().trim();
+            let name = $('#nlName').val().trim();
+            let agreePrivacy = $('#nlPrivacy').is(':checked') ? 'Y' : 'N';
+            let agreeAd = $('#nlAd').is(':checked') ? 'Y' : 'N';
+
+            // 1. 빈 값 체크
+            if (!email || !name) {
+                alert("이름과 이메일을 모두 입력해주세요.");
+                return;
+            }
+
+            // 2. 이름 유효성 검사 (한글, 영문, 공백 허용, 2~20자)
+            let nameRegex = /^[가-힣a-zA-Z\s]{2,20}$/;
+            if (!nameRegex.test(name)) {
+                alert("이름은 한글 또는 영문으로 2자 이상 입력해주세요.\n(특수문자 및 숫자 사용 불가)");
+                $('#nlName').focus();
+                return;
+            }
+
+            // 3. 이메일 유효성 검사 (표준 이메일 형식)
+            let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                alert("유효한 이메일 주소 형식이 아닙니다.\n(예: example@kibs.com)");
+                $('#nlEmail').focus();
+                return;
+            }
+
+            // 4. 약관 동의 체크
+            if (agreePrivacy === 'N' || agreeAd === 'N') {
+                alert("필수 약관에 모두 동의해 주셔야 구독이 가능합니다.");
+                return;
+            }
+
+            let payload = {
+                email: email,
+                name: name,
+                privacyAgreeYn: agreePrivacy,
+                adAgreeYn: agreeAd
+            };
+
+            $.ajax({
+                url: '/api/newsletter/subscribe',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: function(res) {
+                    if (res.resultCode === "0") {
+                        alert("뉴스레터 구독 신청이 완료되었습니다.");
+                        $('#nlEmail').val('');
+                        $('#nlName').val('');
+                        $('#nlPrivacy').prop('checked', false);
+                        $('#nlAd').prop('checked', false);
+                    } else {
+                        alert(res.resultMsg || "오류가 발생했습니다.");
+                    }
+                },
+                error: function(xhr) {
+                    let err = xhr.responseJSON;
+                    alert(err && err.resultMsg ? err.resultMsg : "구독 처리 중 서버 오류가 발생했습니다.");
+                }
+            });
+        }
     </script>
 
 </body>

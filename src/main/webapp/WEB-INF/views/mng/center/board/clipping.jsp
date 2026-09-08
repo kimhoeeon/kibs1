@@ -129,6 +129,7 @@ if (document.documentElement) {
                                                     <th class="min-w-100px text-center">조회수</th>
                                                     <th class="min-w-100px text-center">공유횟수</th>
                                                     <th class="min-w-150px text-center">발송 현황</th>
+                                                    <th class="min-w-125px text-center">노출 상태</th>
                                                     <th class="min-w-150px text-center">등록일시</th>
                                                     <th class="min-w-100px text-center">상세보기</th>
                                                 </tr>

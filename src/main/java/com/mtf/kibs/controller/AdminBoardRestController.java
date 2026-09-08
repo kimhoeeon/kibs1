@@ -150,7 +150,9 @@ public class AdminBoardRestController {
             // 1. 백엔드 2차 검증: 오늘 날짜 기사가 이미 있는지 DB 조회
             String todayDate = java.time.LocalDate.now().toString();
             AiClippingDTO searchDto = new AiClippingDTO();
-            searchDto.setTitle(todayDate); // 제목에 오늘 날짜가 포함되어 있는지 LIKE 검색
+            // 변경된 다중 검색 파라미터 규격에 맞게 오늘 날짜 세팅
+            searchDto.setSearchType("제목");
+            searchDto.setSearchKeyword(todayDate);
 
             int todayClippingCount = aiClippingMapper.selectAiClippingCount(searchDto);
 
@@ -275,6 +277,20 @@ public class AdminBoardRestController {
         } catch (Exception e) {
             result.put("resultCode", "-1");
             result.put("resultMsg", "삭제 중 오류가 발생했습니다.");
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/clipping/display.do")
+    public ResponseEntity<Map<String, Object>> updateClippingDisplay(@RequestBody Map<String, String> payload) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            aiClippingMapper.updateDisplayStatus(payload);
+            result.put("resultCode", "0");
+            result.put("resultMsg", "노출 상태가 변경되었습니다.");
+        } catch (Exception e) {
+            result.put("resultCode", "-1");
+            result.put("resultMsg", "상태 변경 중 오류 발생");
         }
         return ResponseEntity.ok(result);
     }

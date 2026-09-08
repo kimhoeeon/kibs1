@@ -5,6 +5,7 @@ import com.mtf.kibs.dto.AiClippingKeywordDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AiClippingMapper {
@@ -47,4 +48,6 @@ public interface AiClippingMapper {
     int insertKeyword(AiClippingKeywordDTO dto);
 
     int deleteKeyword(int seq);
+
+    int updateDisplayStatus(Map<String, String> param);
 }
