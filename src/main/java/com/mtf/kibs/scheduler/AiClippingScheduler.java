@@ -160,9 +160,24 @@ public class AiClippingScheduler {
                 if (titleElement == null) continue;
 
                 String title = titleElement.text();
-                String link = titleElement.tagName().equals("a") ? titleElement.attr("href") : titleElement.select("a").attr("href");
-                if (link == null || link.isEmpty()) {
+                // 링크 추출 안정성 강화
+                String link = "";
+                if (titleElement.tagName().equals("a")) {
+                    link = titleElement.attr("href");
+                } else if (titleElement.select("a").first() != null) {
+                    link = titleElement.select("a").first().attr("href");
+                } else if (element.select("a").first() != null) {
                     link = element.select("a").first().attr("href");
+                }
+
+                // 상대 경로 보정 (http로 시작하지 않으면 앞에 다음 도메인 추가)
+                if (link != null && !link.isEmpty() && !link.startsWith("http")) {
+                    link = "https://search.daum.net/search" + (link.startsWith("/") ? "" : "/") + link;
+                }
+
+                // 만약 끝까지 링크를 못 찾았다면 기본 검색 결과 페이지로 대체하여 HTML이 깨지는 것을 방지
+                if (link == null || link.isEmpty()) {
+                    link = url;
                 }
 
                 String summary = element.select(".conts-desc").text();

@@ -158,9 +158,9 @@ if (document.documentElement) {
     </div>
     <!--end::Scrolltop-->
 
-    <!-- 상세 모달 팝업 -->
+    <!-- 상세 모달 팝업 (크기 대폭 확장 및 textarea 기반 원본 편집) -->
     <div class="modal fade" id="modalClippingDetail" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered mw-800px">
+        <div class="modal-dialog modal-dialog-centered mw-1000px mh-850px">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="fw-bold">클리핑 기사 상세/수정</h2>
@@ -168,21 +168,37 @@ if (document.documentElement) {
                 </div>
                 <div class="modal-body py-10 px-lg-17">
                     <input type="hidden" id="editSeq" />
+
                     <div class="fv-row mb-7">
                         <label class="form-label fw-bold">제목</label>
-                        <input type="text" id="editTitle" class="form-control form-control-solid" />
+                        <input type="text" id="editTitle" class="form-control form-control-solid form-control-lg" />
                     </div>
+
                     <div class="fv-row mb-7">
-                        <label class="form-label fw-bold">내용</label>
-                        <textarea id="editContent" class="form-control form-control-solid" rows="10"></textarea>
+                        <label class="form-label fw-bold d-flex justify-content-between">
+                            <span>내용 (아래 텍스트를 마우스로 클릭하여 바로 수정하세요)</span>
+                        </label>
+                        <div style="border: 1px solid #e4e6ef; border-radius: 0.475rem; padding: 1.5rem; height: 500px; overflow-y: auto; background-color: #fff;">
+                            <!-- contenteditable="true" 가 핵심! 태그는 숨기고 텍스트만 시각적으로 수정할 수 있게 해줍니다 -->
+                            <div id="visualEditor" contenteditable="true" style="outline: none; min-height: 100%;"></div>
+                        </div>
+                        <div class="text-muted fs-7 mt-2">* 복잡한 HTML 코드는 숨겨집니다. 화면에 보이는 대로 글자를 수정하시면 디자인과 하단 출처는 안전하게 유지됩니다.</div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" id="btnSendNewsletter">이 기사로 뉴스레터 발송</button>
-
-                    <button type="button" class="btn btn-primary" id="btnSaveClipping">수정 저장</button>
-                    <button type="button" class="btn btn-danger" id="btnDeleteClipping">삭제</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <div class="modal-footer d-flex justify-content-between">
+                    <!-- 좌측: 프론트 미리보기 버튼 -->
+                    <div>
+                        <button type="button" class="btn btn-info" id="btnPreviewClipping">
+                            <i class="ki-duotone ki-monitor fs-2"></i> 프론트 미리보기
+                        </button>
+                    </div>
+                    <!-- 우측: 기존 기능 버튼들 -->
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-success" id="btnSendNewsletter">이 기사로 뉴스레터 발송</button>
+                        <button type="button" class="btn btn-primary" id="btnSaveClipping">수정 저장</button>
+                        <button type="button" class="btn btn-danger" id="btnDeleteClipping">삭제</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    </div>
                 </div>
             </div>
         </div>

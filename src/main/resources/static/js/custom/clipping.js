@@ -119,8 +119,9 @@ $(function() {
     });
 
     /* =========================================================
-       2. 클리핑 상세/수정/삭제 모달 로직
+       2. 클리핑 상세/수정/삭제 모달 및 미리보기 로직
     ========================================================= */
+    // 1. 리스트에서 [수정/상세] 버튼 클릭 시
     $(document).on('click', '.btn-edit', function() {
         let seq = $(this).data('seq');
         $.ajax({
@@ -129,16 +130,22 @@ $(function() {
             success: function(res) {
                 $('#editSeq').val(res.data.seq);
                 $('#editTitle').val(res.data.title);
-                $('#editContent').val(res.data.content);
+
+                // textarea(val) 대신 시각적 에디터에 HTML 렌더링 형태로 삽입
+                $('#visualEditor').html(res.data.content);
+
                 new bootstrap.Modal(document.getElementById('modalClippingDetail')).show();
             }
         });
     });
 
+    // 2. 수정한 기사 저장 시
     $('#btnSaveClipping').on('click', function() {
         let seq = $('#editSeq').val();
         let title = $('#editTitle').val();
-        let content = $('#editContent').val();
+
+        // 사용자가 시각적으로 수정한 결과물을 다시 HTML 코드로 추출
+        let content = $('#visualEditor').html();
 
         $.ajax({
             url: '/mng/center/board/clipping/update.do',
@@ -153,6 +160,46 @@ $(function() {
         });
     });
 
+    // 3. [프론트 미리보기] 버튼 클릭 로직
+    $('#btnPreviewClipping').on('click', function() {
+        let title = $('#editTitle').val();
+        let content = $('#visualEditor').html();
+
+        // 새 창(팝업)을 열어 프론트엔드와 동일한 UI 렌더링
+        let previewWin = window.open('', '_blank', 'width=1200,height=900,scrollbars=yes');
+        previewWin.document.write(`
+            <!DOCTYPE html>
+            <html lang="ko">
+            <head>
+                <title>미리보기 - ${title}</title>
+                <style>
+                    body { background-color: #f5f5f5; padding: 50px 0; font-family: 'Inter', sans-serif; }
+                    .board_view { background-color: #fff; max-width: 1000px; margin: 0 auto; padding: 50px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+                    .board_view_tit { font-size: 32px; font-weight: bold; margin-bottom: 20px; border-bottom: 2px solid #222; padding-bottom: 20px; color: #111; }
+                    .board_view_info { display: flex; gap: 20px; color: #666; font-size: 15px; margin-bottom: 40px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+                    .board_view_cont { font-size: 16px; line-height: 1.8; color: #333; min-height: 400px; }
+                    .board_view_cont img { max-width: 100%; height: auto; display: block; margin: 20px auto; border-radius: 5px; }
+                </style>
+            </head>
+            <body>
+                <div class="board_view">
+                    <div class="board_view_tit">${title}</div>
+                    <div class="board_view_info">
+                        <div class="write">작성자 : 관리자</div>
+                        <div class="date">등록일 : 임시 미리보기</div>
+                        <div class="count">조회수 : 0</div>
+                    </div>
+                    <div class="board_view_cont">
+                        ${content}
+                    </div>
+                </div>
+            </body>
+            </html>
+        `);
+        previewWin.document.close();
+    });
+
+    // 4. 삭제 버튼 로직 (기존과 동일)
     $('#btnDeleteClipping').on('click', function() {
         if(confirm("해당 기사를 정말 삭제하시겠습니까?")) {
             let seq = $('#editSeq').val();
