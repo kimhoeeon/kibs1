@@ -744,11 +744,11 @@
                                         </li>
                                         <!--end:Nav item-->
                                         <!--begin:Nav item-->
-                                        <li class="nav-item mx-lg-1">
+                                        <%--<li class="nav-item mx-lg-1">
                                             <a class="nav-link py-3 py-lg-6 text-active-primary" href="#"
                                                data-bs-toggle="tab"
                                                data-bs-target="#kt_app_header_menu_pages_newsletter">eDM 관리</a>
-                                        </li>
+                                        </li>--%>
                                         <!--end:Nav item-->
                                     </ul>
                                 </div>
@@ -934,7 +934,7 @@
                                     </div>
                                     <!--end:Tab pane-->
                                     <!--begin:Tab pane-->
-                                    <div class="tab-pane w-lg-400px"
+                                    <%--<div class="tab-pane w-lg-400px"
                                          id="kt_app_header_menu_pages_newsletter">
                                         <!--begin:Row-->
                                         <div class="row">
@@ -961,7 +961,7 @@
                                             <!--end:Col-->
                                         </div>
                                         <!--end:Row-->
-                                    </div>
+                                    </div>--%>
                                     <!--end:Tab pane-->
                                 </div>
                                 <!--end:Tab content-->
