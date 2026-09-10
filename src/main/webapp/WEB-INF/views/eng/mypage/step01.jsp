@@ -283,7 +283,7 @@
 
                                             <div class="form_pri_titt">Article 4 (Entrustment of Personal Information Processing)</div>
                                             1. The Company entrusts the following personal information processing tasks to facilitate efficient management of personal information.<br>
-                                            - (Entrusting Party): KINTEX / (Entrusted Party): SVM Planet<br>
+                                            - (Entrusting Party): KINTEX / Creative Lab Studio Co., Ltd<br>
                                             - Scope of Entrusted Work: Management and operation of the Korea International Boat Show website<br>
                                             - Entrustment Period: Until the termination of the entrustment agreement<br>
                                             2. When entering into an entrustment agreement, the Company specifies matters concerning responsibilities such as prohibition of personal information processing beyond the purpose of the entrusted work, technical and administrative safeguards, restrictions on re-entrustment, supervision and management of the entrusted party, and liability for damages in accordance with Article 26 of the Personal Information Protection Act. The Company also supervises whether the entrusted party processes personal information safely.<br>
@@ -336,8 +336,8 @@
                                             ▶ Chief Privacy Officer: Executive Vice President, Business Division<br>
                                             ▶ Personal Information Protection Manager<br>
                                             Department: Exhibition Business Team 3<br>
-                                            Manager: Ki-Hoon Koo, Team Leader<br>
-                                            Contact: 031-995-8771 / ghkoo@kintex.com<br><br>
+                                            Officer: Byung-Hoon Oh, Deputy General Manager<br>
+                                            Contact: 031-995-8777 / sky@kintex.com<br><br>
 
                                             ▶ Personal Information Protection Officer<br>
                                             Department: Exhibition Business Team 3<br>

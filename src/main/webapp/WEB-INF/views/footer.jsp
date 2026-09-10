@@ -116,7 +116,7 @@
                         <span>사업자등록번호 128-81-78009</span>
                     </p>
                 </div>
-                <a class="ft_pri" href="/privacy.do" target="_blank">[ 개인정보취급방침 ]</a>
+                <a class="ft_pri" href="/privacy.do" target="_blank">[ 개인정보처리방침 ]</a>
                 <p class="copyright">Copyright(c) KIBS 2025. All rights reserved</p>
             </div>
             <div class="ft_cs_btn">

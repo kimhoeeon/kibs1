@@ -132,7 +132,7 @@
                             <div class="form_pri_titt">Article 4 (Entrustment of Personal Information Processing)</div>
                             1. The Company entrusts the following personal information processing tasks for efficient management of personal information.<br>
                             - Entrusting Party: KINTEX<br>
-                            - Entrusted Party: SVM Planet<br>
+                            - Entrusted Party: Creative Lab Studio Co., Ltd<br>
                             - Scope of Entrusted Work: Management and operation of the Korea International Boat Show website<br>
                             - Entrustment Period: Until termination of the entrustment agreement<br>
                             2. When entering into an entrustment agreement, the Company specifies matters concerning responsibilities such as prohibition of personal information processing beyond the purpose of the entrusted work, technical and administrative safeguards, restrictions on re-entrustment, supervision and management of the entrusted party, and liability for damages in accordance with the Personal Information Protection Act. The Company also supervises whether the entrusted party processes personal information safely.<br>
