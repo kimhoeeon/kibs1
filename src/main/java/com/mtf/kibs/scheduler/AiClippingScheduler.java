@@ -222,7 +222,8 @@ public class AiClippingScheduler {
                 "4. 제공된 기사 데이터의 '원본링크'를 반드시 활용하여, 본문 문맥 중 텍스트에 <a> 태그로 하이퍼링크를 걸어줄 것.\n" +
                 "   -> 하이퍼링크 스타일 양식: <a href='원본링크' target='_blank' style='color:#222222; text-decoration:underline; text-underline-offset:4px; font-weight:bold;'>키워드</a>\n" +
                 "5. 단순 요약이 아닌, 독자에게 인사이트를 제공하는 전문적인 기사 톤으로 작성할 것.\n" +
-                "6. 인사말이나 맺음말 없이 바로 <h3> 태그로 시작하는 본문 HTML만 출력하고, 문장이 중간에 잘리지 않도록 반드시 끝맺음을 완벽하게 할 것.\n\n" +
+                "6. 인사말이나 맺음말 없이 바로 <h3> 태그로 시작하는 본문 HTML만 출력하고, 문장이 중간에 잘리지 않도록 반드시 끝맺음을 완벽하게 할 것.\n" +
+                "7. [매우 중요] 매일 비슷하거나 정형화된 서론, 결론, 문장 구조가 반복되지 않도록 주의할 것. 매번 새로운 시각, 다채로운 어휘, 그리고 트렌디한 표현 방식을 도입하여 독자가 지루하지 않게 작성할 것.\n\n" +
                 "[수집된 기사 데이터]\n" + rawArticles;
 
         Map<String, Object> message = new HashMap<>();
@@ -233,7 +234,7 @@ public class AiClippingScheduler {
         body.put("model", openAiModel);
         body.put("messages", Collections.singletonList(message));
         body.put("max_completion_tokens", 8000);
-        body.put("temperature", 0.6);
+        body.put("temperature", 0.8);
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
