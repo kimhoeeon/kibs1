@@ -20,6 +20,9 @@ public class AiClippingDTO {
     private String searchKeyword;
     private String filterKeyword;
 
+    private String startDate;
+    private String endDate;
+
     // 페이징 및 검색용 필드 (SearchDTO 상속 대신 내부 처리 시)
     private int offset;
     private int limit;

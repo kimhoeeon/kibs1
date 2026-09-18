@@ -17,6 +17,20 @@ $(function() {
         }
     });
 
+    $('#btnSearchClipping').on('click', function() {
+        currentPage = 1;
+        loadClippingList(currentPage);
+    });
+
+    // 초기화 버튼 이벤트 로직 추가
+    $('#btnResetSearch').on('click', function() {
+        $('#searchTitle').val('');
+        $('#searchStartDate').val('');
+        $('#searchEndDate').val('');
+        currentPage = 1;
+        loadClippingList(currentPage);
+    });
+
     /* =========================================================
        1. 메인 AI 클리핑 목록 및 페이징 로직
     ========================================================= */
@@ -28,7 +42,9 @@ $(function() {
                 page: page,
                 size: pageSize,
                 searchType: '제목',
-                searchKeyword: $('#searchTitle').val()
+                searchKeyword: $('#searchTitle').val(),
+                startDate: $('#searchStartDate').val(),
+                endDate: $('#searchEndDate').val()
             },
             success: function(res) {
 
@@ -221,25 +237,6 @@ $(function() {
        3. AI 클리핑 수동 생성 로직
     ========================================================= */
     $('#btnManualUpdate').off('click').on('click', function() {
-        let today = new Date();
-        let year = today.getFullYear();
-        let month = String(today.getMonth() + 1).padStart(2, '0');
-        let day = String(today.getDate()).padStart(2, '0');
-        let todayStr = year + '-' + month + '-' + day;
-
-        let isTodayExist = false;
-        $('#clippingListBody .date').each(function() {
-            let regDateText = $(this).text().trim();
-            if (regDateText.startsWith(todayStr)) {
-                isTodayExist = true;
-            }
-        });
-
-        if (isTodayExist) {
-            alert("오늘 날짜의 AI 클리핑 기사가 이미 존재합니다.\n새로 생성하시려면 기존 기사를 먼저 삭제해 주세요.");
-            return;
-        }
-
         let popupHtml = `
             <div id="aiOptionOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9998; display: flex; justify-content: center; align-items: center;">
                 <div style="background: #fff; padding: 30px; border-radius: 8px; width: 420px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">

@@ -101,9 +101,18 @@ if (document.documentElement) {
                                 <div class="card card-flush">
                                     <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                                         <div class="card-title">
-                                            <div class="d-flex align-items-center position-relative my-1">
-                                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4"><span class="path1"></span><span class="path2"></span></i>
-                                                <input type="text" id="searchTitle" class="form-control form-control-solid w-250px ps-12" placeholder="제목 검색" />
+                                            <div class="d-flex align-items-center position-relative my-1 gap-2">
+                                                <!-- 날짜 필터 -->
+                                                <input type="date" id="searchStartDate" class="form-control form-control-solid w-150px" placeholder="시작일" />
+                                                <span class="fw-bold text-gray-400">~</span>
+                                                <input type="date" id="searchEndDate" class="form-control form-control-solid w-150px" placeholder="종료일" />
+                                                <!-- 제목 검색 (크기 w-350px로 확장) -->
+                                                <div class="d-flex align-items-center position-relative ms-2">
+                                                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4"><span class="path1"></span><span class="path2"></span></i>
+                                                    <input type="text" id="searchTitle" class="form-control form-control-solid w-350px ps-12" placeholder="기사 제목 검색" />
+                                                </div>
+                                                <button type="button" id="btnSearchClipping" class="btn btn-sm btn-secondary ms-2">검색</button>
+                                                <button type="button" id="btnResetSearch" class="btn btn-sm btn-light ms-2">초기화</button>
                                             </div>
                                         </div>
                                         <div class="card-toolbar flex-row-fluid justify-content-end gap-5">

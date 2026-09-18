@@ -28,6 +28,12 @@
         <if test="displayYn != null and displayYn != ''">
             AND display_yn = #{displayYn}
         </if>
+        <if test="startDate != null and startDate != ''">
+            AND reg_date <![CDATA[>=]]> CONCAT(#{startDate}, ' 00:00:00')
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND reg_date <![CDATA[<=]]> CONCAT(#{endDate}, ' 23:59:59')
+        </if>
         <if test="searchKeyword != null and searchKeyword != ''">
             <choose>
                 <when test="searchType == '제목'">
@@ -59,6 +65,12 @@
         WHERE del_yn = 'N'
         <if test="displayYn != null and displayYn != ''">
             AND display_yn = #{displayYn}
+        </if>
+        <if test="startDate != null and startDate != ''">
+            AND reg_date <![CDATA[>=]]> CONCAT(#{startDate}, ' 00:00:00')
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND reg_date <![CDATA[<=]]> CONCAT(#{endDate}, ' 23:59:59')
         </if>
         <if test="searchKeyword != null and searchKeyword != ''">
             <choose>

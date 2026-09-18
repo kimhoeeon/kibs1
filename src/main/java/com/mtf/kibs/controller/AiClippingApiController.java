@@ -37,7 +37,9 @@ public class AiClippingApiController {
             @RequestParam(required = false) String searchType,
             @RequestParam(required = false) String searchKeyword,
             @RequestParam(required = false) String filterKeyword,
-            @RequestParam(required = false) String displayYn) {
+            @RequestParam(required = false) String displayYn,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
 
         Map<String, Object> result = new HashMap<>();
 
@@ -46,6 +48,8 @@ public class AiClippingApiController {
         searchDto.setSearchKeyword(searchKeyword);
         searchDto.setFilterKeyword(filterKeyword);
         searchDto.setDisplayYn(displayYn);
+        searchDto.setStartDate(startDate);
+        searchDto.setEndDate(endDate);
         searchDto.setLimit(size);
         searchDto.setOffset((page - 1) * size);
 

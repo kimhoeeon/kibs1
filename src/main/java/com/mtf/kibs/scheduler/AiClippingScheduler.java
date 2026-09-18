@@ -57,16 +57,6 @@ public class AiClippingScheduler {
             String todayDate = java.time.LocalDate.now().toString();
             String generatedTitle = "[경기국제보트쇼 AI 클리핑] " + todayDate + " 해양레저산업 주요 동향";
 
-            // 오늘 날짜의 기사가 이미 DB에 생성되었는지 확인
-            AiClippingDTO searchDto = new AiClippingDTO();
-            searchDto.setTitle(todayDate);
-            int todayClippingCount = aiClippingMapper.selectAiClippingCount(searchDto);
-
-            if (todayClippingCount > 0) {
-                System.out.println("========== 오늘 날짜의 AI 클리핑이 이미 존재하여 중복 실행을 취소합니다 ==========");
-                return; // 이미 다른 도메인 스레드에서 생성 및 발송을 마쳤다면 즉시 종료
-            }
-
             // 1. DB에서 전체 키워드 목록 조회 (동적 로드)
             List<AiClippingKeywordDTO> keywordList = aiClippingMapper.selectKeywordList();
 
