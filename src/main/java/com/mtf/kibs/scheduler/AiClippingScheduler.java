@@ -39,11 +39,11 @@ public class AiClippingScheduler {
     private String openAiModel;
 
     // 1. 매일 아침 9시 자동 실행 (무조건 발송)
-    /*@Scheduled(cron = "0 0 9 * * MON-FRI", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 9 * * MON-FRI", zone = "Asia/Seoul")
     public void generateAndSendAiClippingScheduled() {
-        System.out.println("========== AI 클리핑 스케줄러 자동 실행 ==========");
-        processAiClipping(true); // 스케줄러는 항상 생성+발송 처리
-    }*/
+        System.out.println("========== AI 클리핑 스케줄러 자동 실행 (미노출/미발송 모드) ==========");
+        processAiClipping(false); // false를 전달하여 뉴스레터 자동 발송을 차단 (임시저장)
+    }
 
     // 2. 실제 클리핑 수집, 생성, 발송을 담당하는 코어 로직
     public void processAiClipping(boolean isSend) {
