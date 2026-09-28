@@ -204,46 +204,53 @@ public class AiClippingScheduler {
 
                 String summary = element.select(".conts-desc").text();
 
-                // 💡 [최종 완결판] 수학적 소거법 (Total Subtraction Method) 도입
-                String fullText = element.text();
-
-                // 1. 전체 텍스트에서 이미 추출 성공한 '제목'과 '요약내용'을 텍스트에서 삭제
-                fullText = fullText.replace(title, "").replace(summary, "");
-
-                // 2. 화면 리더기용 숨김 텍스트 및 페이징 쓰레기값 완벽 제거
-                fullText = fullText.replace("동영상 첨부된 문서", "")
-                        .replace("사진 첨부된 문서", "")
-                        .replace("음성 첨부된 문서", "")
-                        .replace("다음뉴스", "")
-                        .replaceAll("관련기사\\s*\\d+건?", "")
-                        .replaceAll("관련뉴스\\s*\\d+건?", "")
-                        .replaceAll("[|·ⓒ]", " ")
-                        .trim();
-
+                // 💡 [수정됨] 하이브리드 추출 로직 (이미지 로고 + 텍스트 소거법)
                 String publisher = "";
                 String articleDate = "";
 
-                // 3. 날짜/시간만 정규식으로 핀셋 추출
-                java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)");
-                java.util.regex.Matcher matcher = pattern.matcher(fullText);
+                // 1. 정보 영역 블록 찾기
+                Element infoBlock = element.selectFirst(".info_news, .txt_info, .c-info, .wrap_info");
 
-                if (matcher.find()) {
-                    articleDate = matcher.group(1).trim();
-                    // 💡 찾은 날짜를 전체 텍스트에서 통째로 소거!
-                    fullText = fullText.replace(matcher.group(0), "").trim();
+                if (infoBlock != null) {
+                    // 시각장애인용 숨김 텍스트 등 불필요한 요소 원천 제거
+                    infoBlock.select(".screen_out, .ico_video, .ico_photo").remove();
+
+                    // 2. 언론사 로고 이미지(alt) 최우선 탐색
+                    Element logo = infoBlock.selectFirst("img");
+                    if (logo != null && logo.hasAttr("alt") && !logo.attr("alt").trim().isEmpty()) {
+                        publisher = logo.attr("alt").trim();
+                    }
+
+                    // 3. 텍스트 추출 및 찌꺼기 정제
+                    String rawInfoText = infoBlock.text().replace("다음뉴스", "")
+                            .replaceAll("관련기사\\s*\\d+건?", "")
+                            .replaceAll("관련뉴스\\s*\\d+건?", "");
+
+                    // 4. 날짜/시간 추출 및 소거
+                    java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)").matcher(rawInfoText);
+                    if (m.find()) {
+                        articleDate = m.group(1).trim();
+                        rawInfoText = rawInfoText.replace(m.group(0), ""); // 날짜 문자열만 텍스트에서 삭제
+                    }
+
+                    // 5. 로고 이미지가 없었다면, 남은 텍스트를 언론사명으로 지정
+                    if (publisher.isEmpty()) {
+                        String leftover = rawInfoText.replaceAll("[|·ⓒ]", "")
+                                .replaceAll("(?<!\\S)\\d+(?!\\S)", "") // 단독 숫자 삭제
+                                .replaceAll("\\s{2,}", " ")
+                                .trim();
+
+                        if (!leftover.isEmpty() && !leftover.matches("^[0-9\\p{P}\\s]+$")) {
+                            publisher = leftover;
+                        }
+                    }
                 }
 
-                // 4. 제목, 요약, 날짜, 쓰레기가 모두 지워지고 남은 텍스트는 오직 '언론사명' 뿐!
-                publisher = fullText.replaceAll("(?<!\\S)\\d+(?!\\S)", "") // 단독 숫자 찌꺼기 방어
-                        .replaceAll("\\s{2,}", " ") // 다중 공백 제거
-                        .trim();
-
-                // 혹시라도 내용이 너무 짧아 다 지워졌거나 특수기호만 남았다면 기본값 세팅
-                if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) {
+                // 최종 안전장치
+                if (publisher.isEmpty()) {
                     publisher = "언론사";
                 }
 
-                // 날짜 후처리 (빈 경우 오늘 날짜 세팅 및 마침표 제거)
                 if (articleDate.isEmpty()) {
                     articleDate = java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                 } else if (articleDate.endsWith(".")) {
