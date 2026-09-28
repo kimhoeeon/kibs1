@@ -204,7 +204,7 @@ public class AiClippingScheduler {
 
                 String summary = element.select(".conts-desc").text();
 
-                // 1. 검색 목록 페이지에서 '날짜'만 우선 추출 (기존 정규식 활용)
+                // 수학적 소거법 (Total Subtraction Method)
                 String fullText = element.text();
                 fullText = fullText.replace(title, "").replace(summary, "");
                 fullText = fullText.replace("동영상 첨부된 문서", "")
@@ -225,37 +225,18 @@ public class AiClippingScheduler {
                     fullText = fullText.replace(matcher.group(0), "").trim();
                 }
 
+                String publisher = fullText.replaceAll("(?<!\\S)\\d+(?!\\S)", "")
+                        .replaceAll("\\s{2,}", " ")
+                        .trim();
+
+                if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) {
+                    publisher = "언론사";
+                }
+
                 if (articleDate.isEmpty()) {
                     articleDate = java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                 } else if (articleDate.endsWith(".")) {
                     articleDate = articleDate.substring(0, articleDate.length() - 1);
-                }
-
-                // 💡 [핵심 수정] 2. 개발자님 아이디어 도입: 실제 기사 링크로 직접 들어가서 meta 태그에서 언론사명 100% 획득
-                String publisher = "언론사";
-                try {
-                    Document articleDoc = Jsoup.connect(link)
-                            .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-                            .timeout(3000)
-                            .get();
-
-                    Element ogSiteName = articleDoc.selectFirst("meta[property=og:site_name]");
-                    if (ogSiteName != null && ogSiteName.hasAttr("content")) {
-                        String siteName = ogSiteName.attr("content");
-                        // "Daum | 국민일보" 같은 형태에서 "Daum | " 제거
-                        publisher = siteName.replace("Daum", "").replace("|", "").trim();
-                    } else {
-                        // 만약 외부 언론사 사이트로 연결되어 meta 태그 형식이 다를 경우, 앞서 걸러둔 남은 텍스트 사용
-                        publisher = fullText.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
-                    }
-                } catch (Exception e) {
-                    // 링크 접속 실패 시(타임아웃 등) 기존 텍스트 기반 소거법 재활용
-                    publisher = fullText.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
-                }
-
-                // 최종 방어 로직
-                if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) {
-                    publisher = "언론사";
                 }
 
                 articlesBuilder.append("제목 : ").append(title).append("\n");
@@ -329,19 +310,34 @@ public class AiClippingScheduler {
                     String title = src[2];  // 기사 제목
                     String rawDate = src.length > 3 ? src[3] : "";
 
-                    // 날짜를 분석하여 요일 포함 포맷팅
+                    // 💡 [핵심 수정] 상대적 시간("1시간 전", "어제" 등)을 실제 날짜로 계산하는 스마트 변환 로직
                     String displayDate = rawDate;
                     try {
+                        java.time.LocalDate calculatedDate = java.time.LocalDate.now(); // 기본값은 오늘 날짜
+
                         if (rawDate.matches("\\d{4}\\.\\d{2}\\.\\d{2}")) {
-                            java.time.LocalDate parsedDate = java.time.LocalDate.parse(rawDate, java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-                            String dayOfWeek = parsedDate.format(java.time.format.DateTimeFormatter.ofPattern("E", java.util.Locale.KOREAN));
-                            displayDate = rawDate + "(" + dayOfWeek + ")";
+                            // 이미 정상적인 날짜 포맷인 경우
+                            calculatedDate = java.time.LocalDate.parse(rawDate, java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                        } else if (rawDate.contains("어제")) {
+                            // "어제"인 경우 하루 빼기
+                            calculatedDate = java.time.LocalDate.now().minusDays(1);
+                        } else if (rawDate.matches("\\d+\\s*일\\s*전")) {
+                            // "X일 전"인 경우 해당 일수 빼기
+                            int days = Integer.parseInt(rawDate.replaceAll("[^0-9]", ""));
+                            calculatedDate = java.time.LocalDate.now().minusDays(days);
                         }
+                        // 그 외 "시간 전", "분 전" 등은 모두 위에서 세팅한 오늘 날짜(calculatedDate 기본값) 유지
+
+                        String formattedDateStr = calculatedDate.format(java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                        String dayOfWeek = calculatedDate.format(java.time.format.DateTimeFormatter.ofPattern("E", java.util.Locale.KOREAN));
+
+                        displayDate = formattedDateStr + "(" + dayOfWeek + ")";
                     } catch (Exception e) {
-                        displayDate = rawDate; // 파싱 실패 시 원본 그대로 노출 ("6분 전" 등)
+                        // 만약 파싱 중 에러가 나면 안전하게 오늘 날짜를 강제로 덮어씌움
+                        java.time.LocalDate today = java.time.LocalDate.now();
+                        displayDate = today.format(java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd")) + "(" + today.format(java.time.format.DateTimeFormatter.ofPattern("E", java.util.Locale.KOREAN)) + ")";
                     }
 
-                    // 포맷: 출처 (1) 기사날짜(요일) | 기사제목 | 언론사명
                     headerHtml.append("<li style='font-size: 14px; color: #333; margin-bottom: 8px;'>");
                     headerHtml.append("출처 (").append(i + 1).append(") ").append(displayDate).append(" | ");
                     headerHtml.append("<a href='").append(url).append("' target='_blank' style='color:#1d5cad; font-weight:bold; text-decoration:underline; text-underline-offset:2px;'>").append(title).append("</a>");
