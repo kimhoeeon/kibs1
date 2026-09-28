@@ -204,47 +204,46 @@ public class AiClippingScheduler {
 
                 String summary = element.select(".conts-desc").text();
 
-                // 💡 [완벽 수정됨] 쪼개기(Split) 방식 폐기 -> 날짜 소거법 도입
-                String publisher = "언론사";
+                // 💡 [최종 완결판] 수학적 소거법 (Total Subtraction Method) 도입
+                String fullText = element.text();
+
+                // 1. 전체 텍스트에서 이미 추출 성공한 '제목'과 '요약내용'을 텍스트에서 삭제
+                fullText = fullText.replace(title, "").replace(summary, "");
+
+                // 2. 화면 리더기용 숨김 텍스트 및 페이징 쓰레기값 완벽 제거
+                fullText = fullText.replace("동영상 첨부된 문서", "")
+                        .replace("사진 첨부된 문서", "")
+                        .replace("음성 첨부된 문서", "")
+                        .replace("다음뉴스", "")
+                        .replaceAll("관련기사\\s*\\d+건?", "")
+                        .replaceAll("관련뉴스\\s*\\d+건?", "")
+                        .replaceAll("[|·ⓒ]", " ")
+                        .trim();
+
+                String publisher = "";
                 String articleDate = "";
 
-                Element infoBlock = element.selectFirst(".info_news, .txt_info, .c-info");
-                if (infoBlock != null) {
-                    // "동영상 첨부된 문서" 등 화면 리더기용 숨김 텍스트를 추출 전에 아예 삭제[cite: 34]
-                    Elements hiddenElements = infoBlock.select(".screen_out, .ico_video, .ico_photo");
-                    if (hiddenElements != null) {
-                        hiddenElements.remove();
-                    }
+                // 3. 날짜/시간만 정규식으로 핀셋 추출
+                java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)");
+                java.util.regex.Matcher matcher = pattern.matcher(fullText);
 
-                    // 불필요한 '다음뉴스' 및 관련기사 건수 텍스트 제거
-                    String rawText = infoBlock.text().replace("다음뉴스", "").trim();
-                    rawText = rawText.replaceAll("관련기사\\s*\\d+건?", "").replaceAll("관련뉴스\\s*\\d+건?", "").trim();
-
-                    // 1. 정규식으로 날짜를 먼저 찾아서 빼냄
-                    java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)").matcher(rawText);
-                    if (m.find()) {
-                        articleDate = m.group(1).trim();
-                        // 2. 전체 텍스트에서 알아낸 날짜 부분을 통째로 삭제
-                        rawText = rawText.replace(articleDate, "").trim();
-                    }
-
-                    // 3. 남은 텍스트에서 파이프(|), 가운뎃점(·) 등 불필요 기호 제거
-                    rawText = rawText.replaceAll("[|·]", "").trim();
-
-                    // 4. "3 58" 처럼 남은 찌꺼기 숫자를 삭제
-                    rawText = rawText.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
-
-                    // 5. 남은 텍스트가 순수 공백이나 기호가 아니라면 언론사명으로 확정
-                    if (!rawText.isEmpty() && !rawText.replaceAll("[0-9\\s\\p{P}]", "").isEmpty()) {
-                        publisher = rawText;
-                    }
+                if (matcher.find()) {
+                    articleDate = matcher.group(1).trim();
+                    // 💡 찾은 날짜를 전체 텍스트에서 통째로 소거!
+                    fullText = fullText.replace(matcher.group(0), "").trim();
                 }
 
-                if (publisher.isEmpty()) {
+                // 4. 제목, 요약, 날짜, 쓰레기가 모두 지워지고 남은 텍스트는 오직 '언론사명' 뿐!
+                publisher = fullText.replaceAll("(?<!\\S)\\d+(?!\\S)", "") // 단독 숫자 찌꺼기 방어
+                        .replaceAll("\\s{2,}", " ") // 다중 공백 제거
+                        .trim();
+
+                // 혹시라도 내용이 너무 짧아 다 지워졌거나 특수기호만 남았다면 기본값 세팅
+                if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) {
                     publisher = "언론사";
                 }
 
-                // 날짜 다듬기
+                // 날짜 후처리 (빈 경우 오늘 날짜 세팅 및 마침표 제거)
                 if (articleDate.isEmpty()) {
                     articleDate = java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                 } else if (articleDate.endsWith(".")) {
