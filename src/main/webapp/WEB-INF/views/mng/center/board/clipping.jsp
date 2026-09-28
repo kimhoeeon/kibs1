@@ -98,6 +98,27 @@ if (document.documentElement) {
 
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <div class="app-container container-fluid">
+
+                                <!-- 💡 AI 클리핑 운영 가이드 안내창 -->
+                                <div class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 mb-7">
+                                    <i class="ki-duotone ki-information-5 fs-2tx text-primary me-4">
+                                        <span class="path1"></span><span class="path2"></span><span class="path3"></span>
+                                    </i>
+                                    <div class="d-flex flex-stack flex-grow-1">
+                                        <div class="fw-semibold">
+                                            <h4 class="text-gray-900 fw-bold">AI 뉴스 클리핑 자동화 운영 가이드</h4>
+                                            <div class="fs-6 text-gray-700 mt-2" style="line-height: 1.6;">
+                                                <ul class="mb-0 px-5">
+                                                    <li class="mb-3"><strong>자동 생성 및 발송 사이클 :</strong> 매일 <b>오전 10시</b>에 새로운 클리핑 기사가 <b>'미노출(임시저장)'</b> 상태로 자동 생성됩니다.<br>관리자의 내용 검수 후 <b>다음 날 오전 8시</b>에 홈페이지 게시(노출) 및 뉴스레터 구독자 전원에게 이메일이 자동 발송됩니다.</li>
+                                                    <li class="mb-3"><strong>수동 생성 및 비상 발송 :</strong> <b>[AI 클리핑 수동 생성]</b>을 누른 뒤 <b>'생성만 하기'</b>를 선택하면 메일 발송 없이 기사만 생성(미노출)되며 익일 8시 스케줄러가 알아서 발송합니다.<br>오늘 당장 긴급으로 발송하려면 <b>'생성 및 발송'</b>을 누르거나, 기사 상세창에서 [이 기사로 뉴스레터 발송]을 이용해 주세요.</li>
+                                                    <li><strong>키워드 풀(Pool) 관리 :</strong> <b>[키워드 관리]</b>에 여러 개의 키워드를 등록해두면, 시스템이 매일 <b>무작위로 5개를 추출</b>하여 뉴스를 수집합니다.<br><span class="text-muted">(특정 주제 편향 방지 및 크롤링 차단을 막기 위함이므로 다양하게 등록해 주세요)</span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- // AI 클리핑 운영 가이드 안내창 끝 -->
+
                                 <div class="card card-flush">
                                     <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                                         <div class="card-title">
