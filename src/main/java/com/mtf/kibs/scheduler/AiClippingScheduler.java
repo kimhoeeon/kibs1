@@ -204,16 +204,46 @@ public class AiClippingScheduler {
 
                 String summary = element.select(".conts-desc").text();
 
-                Element pubElement = element.select(".info_news").first();
-                if (pubElement == null) pubElement = element.select(".txt_info").first();
-                String publisher = pubElement != null ? pubElement.text() : "언론사";
-                publisher = publisher.replace("다음뉴스", "").replace("|", "").trim();
+                // 언론사명 & 날짜 완벽 분리 로직
+                String publisher = "언론사";
+                String articleDate = "";
+
+                // 하단 정보 영역 텍스트 덩어리를 모두 추출
+                String infoText = element.select(".c-info, .info_news, .txt_info").text().replace("다음뉴스", "").trim();
+
+                if (!infoText.isEmpty()) {
+                    // 정규식: "2026.09.09." 또는 "10분 전", "5시간 전", "2일 전", "어제" 등 날짜/시간 패턴 탐지
+                    java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주)\\s*전|어제)");
+                    java.util.regex.Matcher matcher = pattern.matcher(infoText);
+
+                    if (matcher.find()) {
+                        articleDate = matcher.group(1).trim();
+                        // 전체 텍스트에서 날짜와 불필요한 기호(|, ·)를 지우면 언론사명만 남음
+                        publisher = infoText.replace(articleDate, "").replace("|", "").replace("·", "").trim();
+                    } else {
+                        // 날짜가 아예 없는 경우 전체가 언론사명
+                        publisher = infoText.replace("|", "").trim();
+                    }
+                }
+
+                if (publisher.isEmpty()) {
+                    publisher = "언론사";
+                }
+
+                if (articleDate.isEmpty()) {
+                    articleDate = java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                }
+
+                // 끝에 붙은 마침표 제거 (예: 2026.09.09. -> 2026.09.09)
+                if (articleDate.endsWith(".")) {
+                    articleDate = articleDate.substring(0, articleDate.length() - 1);
+                }
 
                 articlesBuilder.append("제목 : ").append(title).append("\n");
                 articlesBuilder.append("원본링크 : ").append(link).append("\n");
                 articlesBuilder.append("내용 : ").append(summary).append("\n\n");
 
-                usedSources.add(new String[]{publisher, link, title});
+                usedSources.add(new String[]{publisher, link, title, articleDate});
                 count++;
             }
         } catch (Exception e) {
@@ -268,11 +298,6 @@ public class AiClippingScheduler {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String currentTime = LocalDateTime.now().format(formatter);
 
-                // 날짜 포맷 생성 (예: 2026.09.28(월))
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd(E)", Locale.KOREAN);
-                String formattedDate = LocalDateTime.now().format(dateFormatter);
-
-                // 상단 출처 표기를 위한 HTML 생성 (헤더 영역)
                 StringBuilder headerHtml = new StringBuilder();
                 headerHtml.append("<div style='margin-bottom: 40px; padding: 20px; background-color: #f8f9fa; border-top: 4px solid #1d5cad; border-bottom: 1px solid #ddd;'>");
                 headerHtml.append("   <strong style='color: #1d5cad; display:block; margin-bottom:15px; font-size: 16px;'>■ 기사 출처</strong>");
@@ -283,10 +308,23 @@ public class AiClippingScheduler {
                     String pub = src[0];    // 언론사
                     String url = src[1];    // 링크
                     String title = src[2];  // 기사 제목
+                    String rawDate = src.length > 3 ? src[3] : "";
 
-                    // 요청된 포맷: 출처 (1) 2026.00.00(요일) | 기사제목 | 신문사명
+                    // 날짜를 분석하여 요일 포함 포맷팅
+                    String displayDate = rawDate;
+                    try {
+                        if (rawDate.matches("\\d{4}\\.\\d{2}\\.\\d{2}")) {
+                            java.time.LocalDate parsedDate = java.time.LocalDate.parse(rawDate, java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                            String dayOfWeek = parsedDate.format(java.time.format.DateTimeFormatter.ofPattern("E", java.util.Locale.KOREAN));
+                            displayDate = rawDate + "(" + dayOfWeek + ")";
+                        }
+                    } catch (Exception e) {
+                        displayDate = rawDate; // 날짜 파싱 실패 시 원본 그대로 노출 ("6분 전" 등)
+                    }
+
+                    // 💡 요청된 포맷: 출처 (1) 기사날짜(요일) | 기사제목 | 언론사명
                     headerHtml.append("<li style='font-size: 14px; color: #333; margin-bottom: 8px;'>");
-                    headerHtml.append("출처 (").append(i + 1).append(") ").append(formattedDate).append(" | ");
+                    headerHtml.append("출처 (").append(i + 1).append(") ").append(displayDate).append(" | ");
                     headerHtml.append("<a href='").append(url).append("' target='_blank' style='color:#1d5cad; font-weight:bold; text-decoration:underline; text-underline-offset:2px;'>").append(title).append("</a>");
                     headerHtml.append(" | ").append(pub);
                     headerHtml.append("</li>");
@@ -294,7 +332,6 @@ public class AiClippingScheduler {
                 headerHtml.append("   </ul>");
                 headerHtml.append("</div>");
 
-                // 최종 꼬리말 조립 (수집 키워드 및 생성 정보만 남김)
                 String footerHtml = "<div style='margin-top: 50px; padding: 20px; background-color: #f8f9fa; border-left: 4px solid #1d5cad; border-radius: 5px; text-align: left; font-size: 14px; color: #444; line-height: 1.6;'>" +
                         "   <strong style='color: #1d5cad;'>■ 수집 키워드 :</strong> ";
                 for (String kw : keywords) {
@@ -307,7 +344,6 @@ public class AiClippingScheduler {
                         "   <span style='font-size: 12px; color: #888; display: block; margin-top: 8px; margin-bottom: 12px;'>* 본 기사는 인공지능 모델이 자동 수집 및 요약한 내용으로, 원본 기사의 논조와 일부 다를 수 있습니다.</span>" +
                         "</div>";
 
-                // 헤더(출처) + 본문(AI) + 푸터(시스템 정보) 순으로 병합하여 반환
                 return headerHtml.toString() + aiContent + footerHtml;
             }
         } catch (Exception e) {

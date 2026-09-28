@@ -249,7 +249,7 @@ $(function() {
                             생성만 하기
                         </button>
                         <button type="button" id="btnGenAndSend" style="flex: 1; padding: 12px; background: #0d6efd; color: white; border: none; border-radius: 5px; font-size: 14px; font-weight: bold; cursor: pointer;">
-                            생성 및 발송 (기본)
+                            생성 및 발송
                         </button>
                     </div>
                     <div style="margin-top: 15px;">
