@@ -159,9 +159,9 @@
                     <span class="last" id="last_page"><a><img src="/img/btn_last.gif" style="cursor: pointer"></a></span>
                 </div>
 
-                <div class="btn board_ai_btn">
+                <%--<div class="btn board_ai_btn">
                     <a href="javascript:void(0);" id="btnUnsubscribe" class="btnSt01">구독해지</a>
-                </div>
+                </div>--%>
             </div>
         </div>
 
@@ -289,7 +289,7 @@
     <script>
         $(function() {
             // 1. 구독 해지 기능
-            $('#btnUnsubscribe').on('click', function() {
+            /*$('#btnUnsubscribe').on('click', function() {
                 let email = prompt("구독을 해지할 이메일 주소를 입력해 주세요.");
 
                 if (email) {
@@ -315,7 +315,7 @@
                         }
                     });
                 }
-            });
+            });*/
 
             // 2. 검색 폼 제출 이벤트
             $('#clippingSearchForm').on('submit', function(e) {

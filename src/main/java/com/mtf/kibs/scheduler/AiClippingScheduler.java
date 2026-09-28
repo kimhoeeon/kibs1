@@ -38,19 +38,57 @@ public class AiClippingScheduler {
     @Value("${openai.model.summarize}")
     private String openAiModel;
 
-    // 1. 매일 아침 9시 자동 실행 (무조건 발송)
-    @Scheduled(cron = "0 0 9 * * MON-FRI", zone = "Asia/Seoul")
-    public void generateAndSendAiClippingScheduled() {
-        System.out.println("========== AI 클리핑 스케줄러 자동 실행 (미노출/미발송 모드) ==========");
-        processAiClipping(false); // false를 전달하여 뉴스레터 자동 발송을 차단 (임시저장)
+    // 1. [생성 담당] 매일 오전 10시 자동 실행 (미노출/미발송 상태로 생성만 수행)
+    @Scheduled(cron = "0 0 10 * * MON-FRI", zone = "Asia/Seoul")
+    public void generateAiClippingAt10AM() {
+        System.out.println("========== [10:00 AM] AI 클리핑 자동 생성 스케줄러 시작 (미노출/미발송) ==========");
+        processAiClipping(false); // false를 전달하여 뉴스레터 자동 발송 차단 (임시저장)
     }
 
-    // 2. 실제 클리핑 수집, 생성, 발송을 담당하는 코어 로직
+    // 2. [발행 담당] 매일 오전 8시 자동 실행 (검수 완료된 기사를 노출로 변경 후 발송)
+    @Scheduled(cron = "0 0 8 * * MON-FRI", zone = "Asia/Seoul")
+    public void publishAndSendAiClippingAt8AM() {
+        System.out.println("========== [08:00 AM] AI 클리핑 자동 승인 및 발송 스케줄러 시작 ==========");
+
+        try {
+            // DB에서 가장 최근에 생성된 미노출(display_yn='N') 기사 1건을 조회
+            AiClippingDTO searchDto = new AiClippingDTO();
+            searchDto.setDisplayYn("N");
+            searchDto.setLimit(1);
+            searchDto.setOffset(0);
+
+            List<AiClippingDTO> pendingList = aiClippingMapper.selectAiClippingList(searchDto);
+
+            if (pendingList != null && !pendingList.isEmpty()) {
+                AiClippingDTO target = pendingList.get(0);
+
+                // 1) 노출 상태를 'Y'로 업데이트하여 홈페이지에 게시
+                Map<String, String> param = new HashMap<>();
+                param.put("seq", target.getSeq());
+                param.put("displayYn", "Y");
+                aiClippingMapper.updateDisplayStatus(param);
+                System.out.println("-> 게시물 노출 상태 [게시중(Y)]으로 변경 완료 (SEQ: " + target.getSeq() + ")");
+
+                // 2) 구독자에게 뉴스레터 메일 발송
+                newsletterService.sendClippingNewsletter(target.getSeq(), target.getTitle(), target.getContent());
+                System.out.println("-> 뉴스레터 자동 발송 완료");
+
+                System.out.println("========== [08:00 AM] AI 클리핑 승인/발송 프로세스 정상 종료 ==========");
+            } else {
+                System.out.println("========== [08:00 AM] 발송 대기 중인(미노출) 기사가 없습니다. ==========");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("========== [08:00 AM] AI 클리핑 승인/발송 중 오류 발생 ==========");
+        }
+    }
+
+    // 3. 실제 클리핑 수집 및 생성을 담당하는 코어 로직
     public void processAiClipping(boolean isSend) {
         System.out.println("========== AI 클리핑 코어 프로세스 시작 (발송여부: " + isSend + ") ==========");
 
         try {
-            // 다중 도메인 환경에서 5개의 스케줄러가 동시 실행되는 것을 방지하기 위해 0~10초 랜덤 대기
+            // 다중 도메인 환경에서 여러 스케줄러가 동시 실행되는 것을 방지하기 위해 0~10초 랜덤 대기
             int sleepTime = new Random().nextInt(10000);
             Thread.sleep(sleepTime);
 
@@ -84,7 +122,6 @@ public class AiClippingScheduler {
                 usedKeywords.add(targetKeyword); // 사용된 키워드 기록
                 System.out.println("-> 수집 키워드: " + targetKeyword);
 
-                // 크롤러에 출처 리스트(usedSources)를 넘겨서 데이터를 채워오도록 처리
                 String articles = fetchArticlesFromDaum(targetKeyword, usedSources);
                 rawArticlesBuilder.append(articles);
 
@@ -101,7 +138,7 @@ public class AiClippingScheduler {
             // 수집된 키워드와 출처 데이터를 AI 문서 생성기에 파라미터로 전달
             String generatedContent = generateDetailedArticleViaOpenAI(rawArticles, usedKeywords, usedSources);
 
-            // DB에 저장
+            // DB에 저장 (Mapper에서 기본적으로 display_yn='N' 상태로 INSERT 됨)
             AiClippingDTO clippingDTO = new AiClippingDTO();
             clippingDTO.setTitle(generatedTitle);
             clippingDTO.setContent(generatedContent);
@@ -109,18 +146,16 @@ public class AiClippingScheduler {
             int insertCnt = aiClippingMapper.insertAiClipping(clippingDTO);
 
             if (insertCnt > 0 && clippingDTO.getSeq() != null) {
-                System.out.println("========== AI 클리핑 생성 완료 (SEQ: " + clippingDTO.getSeq() + ") ==========");
+                System.out.println("========== AI 클리핑 생성 완료 (SEQ: " + clippingDTO.getSeq() + ", 상태: 미노출) ==========");
 
-                // 발송 여부(isSend)에 따른 분기 처리
+                // 발송 여부(isSend)에 따른 분기 처리 (10시 스케줄러는 false이므로 여기를 타지 않음)
                 if (isSend) {
                     newsletterService.sendClippingNewsletter(
                             clippingDTO.getSeq(),
                             clippingDTO.getTitle(),
                             clippingDTO.getContent()
                     );
-                    System.out.println("========== AI 클리핑 뉴스레터 발송 완료 ==========");
-                } else {
-                    System.out.println("========== AI 클리핑 뉴스레터 발송 생략 (생성만 수행) ==========");
+                    System.out.println("========== AI 클리핑 뉴스레터 수동 즉시 발송 완료 ==========");
                 }
             }
         } catch (Exception e) {
@@ -150,7 +185,6 @@ public class AiClippingScheduler {
                 if (titleElement == null) continue;
 
                 String title = titleElement.text();
-                // 링크 추출 안정성 강화
                 String link = "";
                 if (titleElement.tagName().equals("a")) {
                     link = titleElement.attr("href");
@@ -160,32 +194,26 @@ public class AiClippingScheduler {
                     link = element.select("a").first().attr("href");
                 }
 
-                // 상대 경로 보정 (http로 시작하지 않으면 앞에 다음 도메인 추가)
                 if (link != null && !link.isEmpty() && !link.startsWith("http")) {
                     link = "https://search.daum.net/search" + (link.startsWith("/") ? "" : "/") + link;
                 }
 
-                // 만약 끝까지 링크를 못 찾았다면 기본 검색 결과 페이지로 대체하여 HTML이 깨지는 것을 방지
                 if (link == null || link.isEmpty()) {
                     link = url;
                 }
 
                 String summary = element.select(".conts-desc").text();
 
-                // 신문사(언론사) 파싱 로직
                 Element pubElement = element.select(".info_news").first();
-                if (pubElement == null) pubElement = element.select(".txt_info").first(); // 대체 클래스 확인
+                if (pubElement == null) pubElement = element.select(".txt_info").first();
                 String publisher = pubElement != null ? pubElement.text() : "언론사";
-                // 가독성을 위해 불필요한 '다음뉴스' 나 '|' 기호 등 제거
                 publisher = publisher.replace("다음뉴스", "").replace("|", "").trim();
 
                 articlesBuilder.append("제목 : ").append(title).append("\n");
                 articlesBuilder.append("원본링크 : ").append(link).append("\n");
                 articlesBuilder.append("내용 : ").append(summary).append("\n\n");
 
-                // 출처 데이터 누적: {언론사, 링크, 기사제목}
                 usedSources.add(new String[]{publisher, link, title});
-
                 count++;
             }
         } catch (Exception e) {
@@ -204,10 +232,10 @@ public class AiClippingScheduler {
         String prompt = "다음 수집된 해양레저 관련 기사 데이터를 바탕으로, 뉴스레터 독자들을 위한 심층적이고 상세한 분석 기사를 작성해줘.\n" +
                 "반드시 아래의 요구사항을 엄격하게 지켜서 HTML 태그 형식으로만 답변해.\n\n" +
                 "[요구사항]\n" +
-                "1. 전체 내용을 최소 4~5개의 소주제(섹션)로 나누어 아주 길고 상세하게 서술할 것.\n" +
+                "1. 전체 내용을 4~5개의 소주제(섹션)로 나누되, 분량이 너무 길지 않도록 **각 섹션당 본문은 반드시 정확히 2개의 문단**으로만 핵심을 요약해서 작성할 것.\n" +
                 "2. (가장 중요: 여백 확보) 각 섹션의 제목은 반드시 아래 형식의 <h3> 태그를 사용할 것. (단락 구분 여백 포함)\n" +
                 "   -> <h3 style='margin-top: 40px; margin-bottom: 20px; font-size: 22px; color: #1d5cad; border-bottom: 2px solid #1d5cad; padding-bottom: 10px;'>섹션 제목</h3>\n" +
-                "3. (가장 중요: 단락 띄어쓰기) 본문 내용은 가독성을 위해 단락마다 반드시 아래 형식의 <p> 태그를 사용할 것. (문단 사이에 여백이 크게 생기도록 margin-bottom을 꼭 넣을 것)\n" +
+                "3. (가장 중요: 단락 띄어쓰기) 본문 내용은 가독성을 위해 단락마다 반드시 아래 형식의 <p> 태그를 사용할 것. (각 섹션당 <p>태그는 딱 2개씩만 생성할 것)\n" +
                 "   -> <p style='margin-bottom: 25px; line-height: 1.8; font-size: 16px; color: #333;'>본문 내용...</p>\n" +
                 "4. 제공된 기사 데이터의 '원본링크'를 반드시 활용하여, 본문 문맥 중 텍스트에 <a> 태그로 하이퍼링크를 걸어줄 것.\n" +
                 "   -> 하이퍼링크 스타일 양식: <a href='원본링크' target='_blank' style='color:#222222; text-decoration:underline; text-underline-offset:4px; font-weight:bold;'>키워드</a>\n" +
@@ -240,46 +268,47 @@ public class AiClippingScheduler {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String currentTime = LocalDateTime.now().format(formatter);
 
-                // 출처 표기를 위한 HTML 생성
-                StringBuilder sourceHtml = new StringBuilder();
-                sourceHtml.append("<div style='margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;'>");
+                // 날짜 포맷 생성 (예: 2026.09.28(월))
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd(E)", Locale.KOREAN);
+                String formattedDate = LocalDateTime.now().format(dateFormatter);
 
-                // 1. 수집 키워드 표기 (#키워드1 #키워드2)
-                sourceHtml.append("   <strong style='color: #1d5cad; display:block; margin-bottom:5px;'>■ 수집 키워드</strong>");
-                sourceHtml.append("   <span style='color: #555; font-size: 13px; font-weight: bold;'>");
-                for (String kw : keywords) {
-                    sourceHtml.append("#").append(kw).append(" ");
-                }
-                sourceHtml.append("   </span><br><br>");
+                // 상단 출처 표기를 위한 HTML 생성 (헤더 영역)
+                StringBuilder headerHtml = new StringBuilder();
+                headerHtml.append("<div style='margin-bottom: 40px; padding: 20px; background-color: #f8f9fa; border-top: 4px solid #1d5cad; border-bottom: 1px solid #ddd;'>");
+                headerHtml.append("   <strong style='color: #1d5cad; display:block; margin-bottom:15px; font-size: 16px;'>■ 기사 출처</strong>");
+                headerHtml.append("   <ul style='list-style: none; padding: 0; margin: 0;'>");
 
-                // 2. 출처 표기 (출처1) 신문사 | 원문링크)
-                sourceHtml.append("   <strong style='color: #1d5cad; display:block; margin-bottom:5px;'>■ 기사 출처</strong>");
-                sourceHtml.append("   <ul style='list-style: none; padding: 0; margin: 0;'>");
                 for (int i = 0; i < sources.size(); i++) {
                     String[] src = sources.get(i);
                     String pub = src[0];    // 언론사
                     String url = src[1];    // 링크
                     String title = src[2];  // 기사 제목
 
-                    sourceHtml.append("<li style='font-size: 12px; color: #666; margin-bottom: 5px; line-height: 1.4;'>");
-                    sourceHtml.append("출처").append(i + 1).append(") ").append(pub).append(" | ");
-                    sourceHtml.append("<a href='").append(url).append("' target='_blank' style='color:#666; text-decoration:underline;'>원문링크</a>");
-                    sourceHtml.append(" <span style='color:#999;'>- ").append(title).append("</span>");
-                    sourceHtml.append("</li>");
+                    // 요청된 포맷: 출처 (1) 2026.00.00(요일) | 기사제목 | 신문사명
+                    headerHtml.append("<li style='font-size: 14px; color: #333; margin-bottom: 8px;'>");
+                    headerHtml.append("출처 (").append(i + 1).append(") ").append(formattedDate).append(" | ");
+                    headerHtml.append("<a href='").append(url).append("' target='_blank' style='color:#1d5cad; font-weight:bold; text-decoration:underline; text-underline-offset:2px;'>").append(title).append("</a>");
+                    headerHtml.append(" | ").append(pub);
+                    headerHtml.append("</li>");
                 }
-                sourceHtml.append("   </ul>");
-                sourceHtml.append("</div>");
+                headerHtml.append("   </ul>");
+                headerHtml.append("</div>");
 
-                // 최종 꼬리말 조립
+                // 최종 꼬리말 조립 (수집 키워드 및 생성 정보만 남김)
                 String footerHtml = "<div style='margin-top: 50px; padding: 20px; background-color: #f8f9fa; border-left: 4px solid #1d5cad; border-radius: 5px; text-align: left; font-size: 14px; color: #444; line-height: 1.6;'>" +
+                        "   <strong style='color: #1d5cad;'>■ 수집 키워드 :</strong> ";
+                for (String kw : keywords) {
+                    footerHtml += "#" + kw + " ";
+                }
+                footerHtml += "<br><br>" +
                         "   <strong style='color: #1d5cad;'>■ 작성자 :</strong> 경기국제보트쇼 AI 브리핑 봇<br>" +
                         "   <strong style='color: #1d5cad;'>■ 생성 모델 :</strong> OpenAI " + openAiModel + "<br>" +
                         "   <strong style='color: #1d5cad;'>■ 생성 일시 :</strong> " + currentTime + "<br>" +
                         "   <span style='font-size: 12px; color: #888; display: block; margin-top: 8px; margin-bottom: 12px;'>* 본 기사는 인공지능 모델이 자동 수집 및 요약한 내용으로, 원본 기사의 논조와 일부 다를 수 있습니다.</span>" +
-                        sourceHtml.toString() +
                         "</div>";
 
-                return aiContent + footerHtml;
+                // 헤더(출처) + 본문(AI) + 푸터(시스템 정보) 순으로 병합하여 반환
+                return headerHtml.toString() + aiContent + footerHtml;
             }
         } catch (Exception e) {
             System.err.println("OpenAI API 호출 실패: " + e.getMessage());
