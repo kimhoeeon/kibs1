@@ -204,64 +204,79 @@ public class AiClippingScheduler {
 
                 String summary = element.select(".conts-desc").text();
 
-                // 언론사명 & 날짜 초정밀 타겟팅 추출 로직
+                // 💡 [수정됨] 언론사명 & 날짜 초정밀 타겟팅 추출 로직
                 String publisher = "";
                 String articleDate = "";
 
-                // 1. 명시적 클래스명으로 1차 타겟팅 (가장 정확한 방법)
-                Element pubEl = element.selectFirst(".c-tit, .tit_news, .info_news > a, .txt_info > a");
-                if (pubEl != null) {
-                    publisher = pubEl.text().trim();
-                }
+                // 1. 정보 영역 블록 추출
+                Element infoBlock = element.selectFirst(".info_news, .txt_info, .c-info, .item-contents");
 
-                Element dateEl = element.selectFirst(".c-date, .date, .info_news > span.date, .txt_info > span.date");
-                if (dateEl != null) {
-                    articleDate = dateEl.text().trim();
-                }
-
-                // 2. 만약 클래스를 못 찾아서 값이 비어있다면 하단 텍스트 전체를 긁어서 패턴으로 분리
-                if (publisher.isEmpty() || articleDate.isEmpty()) {
-                    String fullText = element.text();
-                    Element titleEl = element.selectFirst(".item-title");
-                    Element descEl = element.selectFirst(".conts-desc");
-
-                    // 본문과 제목 텍스트를 제거하여 하단 출처 영역 텍스트만 남김
-                    if (titleEl != null) fullText = fullText.replace(titleEl.text(), "");
-                    if (descEl != null) fullText = fullText.replace(descEl.text(), "");
-
-                    // "관련기사 58건" 등 에러를 유발하는 페이징 숫자 찌꺼기 완벽 제거
-                    fullText = fullText.replaceAll("관련기사\\s*\\d+건?", "")
-                            .replaceAll("관련뉴스\\s*\\d+건?", "")
-                            .replace("다음뉴스", "")
-                            .trim();
-
-                    java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주)\\s*전|어제)");
-                    java.util.regex.Matcher matcher = pattern.matcher(fullText);
-
-                    if (matcher.find()) {
-                        if (articleDate.isEmpty()) articleDate = matcher.group(1).trim();
-                        if (publisher.isEmpty()) {
-                            // 날짜를 지우고 남은 텍스트
-                            String leftover = fullText.replace(matcher.group(1), "").replaceAll("[|·]", "").trim();
-                            if (!leftover.matches("^\\d+$")) publisher = leftover; // 순수 숫자만 남은 쓰레기값 방어
-                        }
+                // 2. 언론사 로고(alt) 이미지 및 명시적 텍스트 우선 탐색
+                if (infoBlock != null) {
+                    Element logoImg = infoBlock.selectFirst("img");
+                    if (logoImg != null && logoImg.hasAttr("alt") && !logoImg.attr("alt").isEmpty()) {
+                        publisher = logoImg.attr("alt").trim();
                     } else {
-                        if (publisher.isEmpty()) {
-                            String leftover = fullText.replaceAll("[|·]", "").trim();
-                            if (!leftover.matches("^\\d+$")) publisher = leftover;
+                        // 명시적 텍스트 클래스 확인
+                        Element pubText = infoBlock.selectFirst(".c-tit, .tit_news, .tit_cp, .name_cp, .txt_cp, .info_cp");
+                        if (pubText != null) {
+                            publisher = pubText.text().trim();
                         }
                     }
                 }
 
-                // 3. 최종 안전 장치 (끝까지 못 찾았거나 순수 숫자만 들어왔을 경우)
-                if (publisher.isEmpty() || publisher.matches("^\\d+$")) {
+                // 3. 하단 텍스트 전체에서 날짜 정규식 추출 및 찌꺼기 제거
+                String fullInfoText = "";
+                if (infoBlock != null) {
+                    fullInfoText = infoBlock.text();
+                } else {
+                    fullInfoText = element.text();
+                    Element titleEl = element.selectFirst(".item-title");
+                    Element descEl = element.selectFirst(".conts-desc");
+                    if (titleEl != null) fullInfoText = fullInfoText.replace(titleEl.text(), "");
+                    if (descEl != null) fullInfoText = fullInfoText.replace(descEl.text(), "");
+                }
+
+                // 에러를 유발하는 관련 기사 페이징 텍스트 사전 제거
+                fullInfoText = fullInfoText.replaceAll("관련기사\\s*\\d+건?", "")
+                        .replaceAll("관련뉴스\\s*\\d+건?", "")
+                        .replace("다음뉴스", "")
+                        .trim();
+
+                // 날짜 패턴 추출
+                java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주)\\s*전|어제)");
+                java.util.regex.Matcher matcher = pattern.matcher(fullInfoText);
+
+                if (matcher.find()) {
+                    articleDate = matcher.group(1).trim();
+                }
+
+                // 4. 언론사명(publisher) 최종 보정 필터링
+                if (publisher.isEmpty()) {
+                    String leftover = fullInfoText;
+                    if (!articleDate.isEmpty()) {
+                        leftover = leftover.replace(articleDate, "");
+                    }
+                    leftover = leftover.replaceAll("[|·]", "").trim();
+
+                    // 💡 핵심: 독립된 숫자 찌꺼기(예: "3", "58")를 완벽하게 삭제하는 강력한 정규식
+                    leftover = leftover.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
+
+                    if (!leftover.isEmpty()) {
+                        publisher = leftover;
+                    }
+                }
+
+                // 끝까지 못 찾았거나 순수 숫자만 들어왔을 경우 기본값
+                if (publisher.isEmpty() || publisher.matches("^[0-9\\s]+$")) {
                     publisher = "언론사";
                 }
 
+                // 날짜 다듬기
                 if (articleDate.isEmpty()) {
                     articleDate = java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                 } else if (articleDate.endsWith(".")) {
-                    articleDate = articleDate.substring(0, articleDate.length() - 1); // 꼬리 마침표 제거
+                    articleDate = articleDate.substring(0, articleDate.length() - 1);
                 }
 
                 articlesBuilder.append("제목 : ").append(title).append("\n");
