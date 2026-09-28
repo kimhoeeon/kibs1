@@ -204,50 +204,51 @@ public class AiClippingScheduler {
 
                 String summary = element.select(".conts-desc").text();
 
-                // 💡 [수정됨] 처음의 심플한 방식으로 복귀 + 확실한 분리 로직 적용
+                // 💡 [완벽 수정됨] 쪼개기(Split) 방식 폐기 -> 날짜 소거법 도입
                 String publisher = "언론사";
                 String articleDate = "";
 
                 Element infoBlock = element.selectFirst(".info_news, .txt_info, .c-info");
                 if (infoBlock != null) {
-                    // "동영상 첨부된 문서" 등 화면 리더기용 숨김 텍스트를 추출 전에 아예 삭제해버림
+                    // "동영상 첨부된 문서" 등 화면 리더기용 숨김 텍스트를 추출 전에 아예 삭제[cite: 34]
                     Elements hiddenElements = infoBlock.select(".screen_out, .ico_video, .ico_photo");
                     if (hiddenElements != null) {
                         hiddenElements.remove();
                     }
 
-                    // 불필요한 '다음뉴스' 텍스트 및 관련기사 건수 텍스트 제거
+                    // 불필요한 '다음뉴스' 및 관련기사 건수 텍스트 제거
                     String rawText = infoBlock.text().replace("다음뉴스", "").trim();
                     rawText = rawText.replaceAll("관련기사\\s*\\d+건?", "").replaceAll("관련뉴스\\s*\\d+건?", "").trim();
 
-                    // 텍스트를 파이프(|)나 가운뎃점(·) 기준으로 분리 (예: "연합뉴스 | 2026.09.28")
-                    String[] parts = rawText.split("[|·]");
-                    for (String part : parts) {
-                        part = part.trim();
-                        if (part.isEmpty()) continue;
+                    // 1. 정규식으로 날짜를 먼저 찾아서 빼냄
+                    java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)").matcher(rawText);
+                    if (m.find()) {
+                        articleDate = m.group(1).trim();
+                        // 2. 전체 텍스트에서 알아낸 날짜 부분을 통째로 삭제
+                        rawText = rawText.replace(articleDate, "").trim();
+                    }
 
-                        // 날짜 패턴이면 날짜에 저장, 아니면 언론사명에 저장
-                        if (part.matches(".*\\d{4}\\.\\d{2}\\.\\d{2}.*") || part.matches(".*\\d+\\s*(시간|분|일|주|개월)\\s*전.*") || part.equals("어제")) {
-                            // 날짜 부분만 깔끔하게 빼냄
-                            java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)").matcher(part);
-                            if (m.find()) {
-                                articleDate = m.group(1);
-                            } else {
-                                articleDate = part;
-                            }
-                        } else if (!part.matches("^[0-9\\s]+$")) { // 숫자로만 된 쓰레기값 방어
-                            publisher = part;
-                        }
+                    // 3. 남은 텍스트에서 파이프(|), 가운뎃점(·) 등 불필요 기호 제거
+                    rawText = rawText.replaceAll("[|·]", "").trim();
+
+                    // 4. "3 58" 처럼 남은 찌꺼기 숫자를 삭제
+                    rawText = rawText.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
+
+                    // 5. 남은 텍스트가 순수 공백이나 기호가 아니라면 언론사명으로 확정
+                    if (!rawText.isEmpty() && !rawText.replaceAll("[0-9\\s\\p{P}]", "").isEmpty()) {
+                        publisher = rawText;
                     }
                 }
 
-                // 끝까지 값을 못 찾았을 경우 기본값 세팅
                 if (publisher.isEmpty()) {
                     publisher = "언론사";
                 }
 
+                // 날짜 다듬기
                 if (articleDate.isEmpty()) {
                     articleDate = java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                } else if (articleDate.endsWith(".")) {
+                    articleDate = articleDate.substring(0, articleDate.length() - 1);
                 }
 
                 articlesBuilder.append("제목 : ").append(title).append("\n");
