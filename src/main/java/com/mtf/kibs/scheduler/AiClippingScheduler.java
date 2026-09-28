@@ -204,7 +204,7 @@ public class AiClippingScheduler {
 
                 String summary = element.select(".conts-desc").text();
 
-                // 수학적 소거법 (Total Subtraction Method)
+                // 💡 1. [날짜 추출] 검색 목록 페이지 텍스트에서 날짜만 추출
                 String fullText = element.text();
                 fullText = fullText.replace(title, "").replace(summary, "");
                 fullText = fullText.replace("동영상 첨부된 문서", "")
@@ -222,21 +222,40 @@ public class AiClippingScheduler {
 
                 if (matcher.find()) {
                     articleDate = matcher.group(1).trim();
-                    fullText = fullText.replace(matcher.group(0), "").trim();
-                }
-
-                String publisher = fullText.replaceAll("(?<!\\S)\\d+(?!\\S)", "")
-                        .replaceAll("\\s{2,}", " ")
-                        .trim();
-
-                if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) {
-                    publisher = "언론사";
                 }
 
                 if (articleDate.isEmpty()) {
                     articleDate = java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                 } else if (articleDate.endsWith(".")) {
                     articleDate = articleDate.substring(0, articleDate.length() - 1);
+                }
+
+                // 💡 2. [언론사명 추출] 완벽 복구된 기사 링크 직접 접속(메타 태그 크롤링) 로직
+                String publisher = "언론사";
+                try {
+                    Document articleDoc = Jsoup.connect(link)
+                            .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                            .timeout(3000)
+                            .get();
+
+                    Element ogSiteName = articleDoc.selectFirst("meta[property=og:site_name]");
+                    if (ogSiteName != null && ogSiteName.hasAttr("content")) {
+                        String siteName = ogSiteName.attr("content");
+                        // "Daum | 국민일보" 같은 형태에서 "Daum | " 제거
+                        publisher = siteName.replace("Daum", "").replace("|", "").trim();
+                    }
+                } catch (Exception e) {
+                    // 링크 접속 실패 시(타임아웃 등) fallback 로직: 기존 소거 텍스트 활용
+                    String leftover = fullText;
+                    if (!articleDate.isEmpty()) {
+                        leftover = leftover.replace(articleDate, "");
+                    }
+                    publisher = leftover.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
+                }
+
+                // 최종 방어 로직
+                if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) {
+                    publisher = "언론사";
                 }
 
                 articlesBuilder.append("제목 : ").append(title).append("\n");
@@ -310,7 +329,7 @@ public class AiClippingScheduler {
                     String title = src[2];  // 기사 제목
                     String rawDate = src.length > 3 ? src[3] : "";
 
-                    // 💡 [핵심 수정] 상대적 시간("1시간 전", "어제" 등)을 실제 날짜로 계산하는 스마트 변환 로직
+                    // 💡 3. 상대적 시간("1시간 전", "어제" 등)을 실제 날짜로 계산하는 스마트 변환 로직 (유지됨)
                     String displayDate = rawDate;
                     try {
                         java.time.LocalDate calculatedDate = java.time.LocalDate.now(); // 기본값은 오늘 날짜
