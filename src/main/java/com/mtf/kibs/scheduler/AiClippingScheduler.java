@@ -204,39 +204,64 @@ public class AiClippingScheduler {
 
                 String summary = element.select(".conts-desc").text();
 
-                // 언론사명 & 날짜 완벽 분리 로직
-                String publisher = "언론사";
+                // 언론사명 & 날짜 초정밀 타겟팅 추출 로직
+                String publisher = "";
                 String articleDate = "";
 
-                // 하단 정보 영역 텍스트 덩어리를 모두 추출
-                String infoText = element.select(".c-info, .info_news, .txt_info").text().replace("다음뉴스", "").trim();
+                // 1. 명시적 클래스명으로 1차 타겟팅 (가장 정확한 방법)
+                Element pubEl = element.selectFirst(".c-tit, .tit_news, .info_news > a, .txt_info > a");
+                if (pubEl != null) {
+                    publisher = pubEl.text().trim();
+                }
 
-                if (!infoText.isEmpty()) {
-                    // 정규식: "2026.09.09." 또는 "10분 전", "5시간 전", "2일 전", "어제" 등 날짜/시간 패턴 탐지
+                Element dateEl = element.selectFirst(".c-date, .date, .info_news > span.date, .txt_info > span.date");
+                if (dateEl != null) {
+                    articleDate = dateEl.text().trim();
+                }
+
+                // 2. 만약 클래스를 못 찾아서 값이 비어있다면 하단 텍스트 전체를 긁어서 패턴으로 분리
+                if (publisher.isEmpty() || articleDate.isEmpty()) {
+                    String fullText = element.text();
+                    Element titleEl = element.selectFirst(".item-title");
+                    Element descEl = element.selectFirst(".conts-desc");
+
+                    // 본문과 제목 텍스트를 제거하여 하단 출처 영역 텍스트만 남김
+                    if (titleEl != null) fullText = fullText.replace(titleEl.text(), "");
+                    if (descEl != null) fullText = fullText.replace(descEl.text(), "");
+
+                    // "관련기사 58건" 등 에러를 유발하는 페이징 숫자 찌꺼기 완벽 제거
+                    fullText = fullText.replaceAll("관련기사\\s*\\d+건?", "")
+                            .replaceAll("관련뉴스\\s*\\d+건?", "")
+                            .replace("다음뉴스", "")
+                            .trim();
+
                     java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주)\\s*전|어제)");
-                    java.util.regex.Matcher matcher = pattern.matcher(infoText);
+                    java.util.regex.Matcher matcher = pattern.matcher(fullText);
 
                     if (matcher.find()) {
-                        articleDate = matcher.group(1).trim();
-                        // 전체 텍스트에서 날짜와 불필요한 기호(|, ·)를 지우면 언론사명만 남음
-                        publisher = infoText.replace(articleDate, "").replace("|", "").replace("·", "").trim();
+                        if (articleDate.isEmpty()) articleDate = matcher.group(1).trim();
+                        if (publisher.isEmpty()) {
+                            // 날짜를 지우고 남은 텍스트
+                            String leftover = fullText.replace(matcher.group(1), "").replaceAll("[|·]", "").trim();
+                            if (!leftover.matches("^\\d+$")) publisher = leftover; // 순수 숫자만 남은 쓰레기값 방어
+                        }
                     } else {
-                        // 날짜가 아예 없는 경우 전체가 언론사명
-                        publisher = infoText.replace("|", "").trim();
+                        if (publisher.isEmpty()) {
+                            String leftover = fullText.replaceAll("[|·]", "").trim();
+                            if (!leftover.matches("^\\d+$")) publisher = leftover;
+                        }
                     }
                 }
 
-                if (publisher.isEmpty()) {
+                // 3. 최종 안전 장치 (끝까지 못 찾았거나 순수 숫자만 들어왔을 경우)
+                if (publisher.isEmpty() || publisher.matches("^\\d+$")) {
                     publisher = "언론사";
                 }
 
                 if (articleDate.isEmpty()) {
                     articleDate = java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-                }
-
-                // 끝에 붙은 마침표 제거 (예: 2026.09.09. -> 2026.09.09)
-                if (articleDate.endsWith(".")) {
-                    articleDate = articleDate.substring(0, articleDate.length() - 1);
+                } else if (articleDate.endsWith(".")) {
+                    articleDate = articleDate.substring(0, articleDate.length() - 1); // 꼬리 마침표 제거
                 }
 
                 articlesBuilder.append("제목 : ").append(title).append("\n");
@@ -319,10 +344,10 @@ public class AiClippingScheduler {
                             displayDate = rawDate + "(" + dayOfWeek + ")";
                         }
                     } catch (Exception e) {
-                        displayDate = rawDate; // 날짜 파싱 실패 시 원본 그대로 노출 ("6분 전" 등)
+                        displayDate = rawDate; // 파싱 실패 시 원본 그대로 노출 ("6분 전" 등)
                     }
 
-                    // 💡 요청된 포맷: 출처 (1) 기사날짜(요일) | 기사제목 | 언론사명
+                    // 포맷: 출처 (1) 기사날짜(요일) | 기사제목 | 언론사명
                     headerHtml.append("<li style='font-size: 14px; color: #333; margin-bottom: 8px;'>");
                     headerHtml.append("출처 (").append(i + 1).append(") ").append(displayDate).append(" | ");
                     headerHtml.append("<a href='").append(url).append("' target='_blank' style='color:#1d5cad; font-weight:bold; text-decoration:underline; text-underline-offset:2px;'>").append(title).append("</a>");
