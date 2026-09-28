@@ -204,57 +204,58 @@ public class AiClippingScheduler {
 
                 String summary = element.select(".conts-desc").text();
 
-                // 💡 [수정됨] 하이브리드 추출 로직 (이미지 로고 + 텍스트 소거법)
-                String publisher = "";
+                // 1. 검색 목록 페이지에서 '날짜'만 우선 추출 (기존 정규식 활용)
+                String fullText = element.text();
+                fullText = fullText.replace(title, "").replace(summary, "");
+                fullText = fullText.replace("동영상 첨부된 문서", "")
+                        .replace("사진 첨부된 문서", "")
+                        .replace("음성 첨부된 문서", "")
+                        .replace("다음뉴스", "")
+                        .replaceAll("관련기사\\s*\\d+건?", "")
+                        .replaceAll("관련뉴스\\s*\\d+건?", "")
+                        .replaceAll("[|·ⓒ]", " ")
+                        .trim();
+
                 String articleDate = "";
+                java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)");
+                java.util.regex.Matcher matcher = pattern.matcher(fullText);
 
-                // 1. 정보 영역 블록 찾기
-                Element infoBlock = element.selectFirst(".info_news, .txt_info, .c-info, .wrap_info");
-
-                if (infoBlock != null) {
-                    // 시각장애인용 숨김 텍스트 등 불필요한 요소 원천 제거
-                    infoBlock.select(".screen_out, .ico_video, .ico_photo").remove();
-
-                    // 2. 언론사 로고 이미지(alt) 최우선 탐색
-                    Element logo = infoBlock.selectFirst("img");
-                    if (logo != null && logo.hasAttr("alt") && !logo.attr("alt").trim().isEmpty()) {
-                        publisher = logo.attr("alt").trim();
-                    }
-
-                    // 3. 텍스트 추출 및 찌꺼기 정제
-                    String rawInfoText = infoBlock.text().replace("다음뉴스", "")
-                            .replaceAll("관련기사\\s*\\d+건?", "")
-                            .replaceAll("관련뉴스\\s*\\d+건?", "");
-
-                    // 4. 날짜/시간 추출 및 소거
-                    java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)").matcher(rawInfoText);
-                    if (m.find()) {
-                        articleDate = m.group(1).trim();
-                        rawInfoText = rawInfoText.replace(m.group(0), ""); // 날짜 문자열만 텍스트에서 삭제
-                    }
-
-                    // 5. 로고 이미지가 없었다면, 남은 텍스트를 언론사명으로 지정
-                    if (publisher.isEmpty()) {
-                        String leftover = rawInfoText.replaceAll("[|·ⓒ]", "")
-                                .replaceAll("(?<!\\S)\\d+(?!\\S)", "") // 단독 숫자 삭제
-                                .replaceAll("\\s{2,}", " ")
-                                .trim();
-
-                        if (!leftover.isEmpty() && !leftover.matches("^[0-9\\p{P}\\s]+$")) {
-                            publisher = leftover;
-                        }
-                    }
-                }
-
-                // 최종 안전장치
-                if (publisher.isEmpty()) {
-                    publisher = "언론사";
+                if (matcher.find()) {
+                    articleDate = matcher.group(1).trim();
+                    fullText = fullText.replace(matcher.group(0), "").trim();
                 }
 
                 if (articleDate.isEmpty()) {
                     articleDate = java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                 } else if (articleDate.endsWith(".")) {
                     articleDate = articleDate.substring(0, articleDate.length() - 1);
+                }
+
+                // 💡 [핵심 수정] 2. 개발자님 아이디어 도입: 실제 기사 링크로 직접 들어가서 meta 태그에서 언론사명 100% 획득
+                String publisher = "언론사";
+                try {
+                    Document articleDoc = Jsoup.connect(link)
+                            .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                            .timeout(3000)
+                            .get();
+
+                    Element ogSiteName = articleDoc.selectFirst("meta[property=og:site_name]");
+                    if (ogSiteName != null && ogSiteName.hasAttr("content")) {
+                        String siteName = ogSiteName.attr("content");
+                        // "Daum | 국민일보" 같은 형태에서 "Daum | " 제거
+                        publisher = siteName.replace("Daum", "").replace("|", "").trim();
+                    } else {
+                        // 만약 외부 언론사 사이트로 연결되어 meta 태그 형식이 다를 경우, 앞서 걸러둔 남은 텍스트 사용
+                        publisher = fullText.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
+                    }
+                } catch (Exception e) {
+                    // 링크 접속 실패 시(타임아웃 등) 기존 텍스트 기반 소거법 재활용
+                    publisher = fullText.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
+                }
+
+                // 최종 방어 로직
+                if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) {
+                    publisher = "언론사";
                 }
 
                 articlesBuilder.append("제목 : ").append(title).append("\n");
