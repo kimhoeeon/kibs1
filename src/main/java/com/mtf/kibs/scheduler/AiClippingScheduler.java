@@ -273,6 +273,9 @@ public class AiClippingScheduler {
 
     // OpenAI API 통신 메서드
     private String generateDetailedArticleViaOpenAI(String rawArticles, List<String> keywords, List<String[]> sources) {
+
+        System.setProperty("https.protocols", "TLSv1.2,TLSv1.3");
+
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
