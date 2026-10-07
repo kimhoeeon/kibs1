@@ -114,7 +114,7 @@ public class AiClippingScheduler {
 
             // 하단 출처 표기를 위한 리스트
             List<String> usedKeywords = new ArrayList<>();
-            List<String[]> usedSources = new ArrayList<>(); // {언론사, 링크, 제목}
+            List<String[]> usedSources = new ArrayList<>(); // {언론사, 링크, 제목, 날짜}
 
             // 4. 추출된 키워드들로 기사 수집
             for (AiClippingKeywordDTO kw : selectedKeywords) {
@@ -285,8 +285,8 @@ public class AiClippingScheduler {
                 "반드시 아래의 요구사항을 엄격하게 지켜서 HTML 태그 형식으로만 답변해.\n\n" +
                 "[요구사항]\n" +
                 "1. 전체 내용을 4~5개의 소주제(섹션)로 나누되, 분량이 너무 길지 않도록 **각 섹션당 본문은 반드시 정확히 2개의 문단**으로만 핵심을 요약해서 작성할 것.\n" +
-                "2. (가장 중요: 여백 확보) 각 섹션의 제목은 반드시 아래 형식의 <h3> 태그를 사용할 것. (단락 구분 여백 포함)\n" +
-                "   -> <h3 style='margin-top: 40px; margin-bottom: 20px; font-size: 22px; color: #1d5cad; border-bottom: 2px solid #1d5cad; padding-bottom: 10px;'>섹션 제목</h3>\n" +
+                "2. (가장 중요: 여백 확보 및 순번 표기) 각 섹션의 제목은 반드시 '1.', '2.', '3.' 처럼 순번을 매겨서 아래 형식의 <h3> 태그를 사용할 것. (단락 구분 여백 포함)\n" +
+                "   -> <h3 style='margin-top: 40px; margin-bottom: 20px; font-size: 22px; color: #1d5cad; border-bottom: 2px solid #1d5cad; padding-bottom: 10px;'>1. 섹션 제목</h3>\n" +
                 "3. (가장 중요: 단락 띄어쓰기) 본문 내용은 가독성을 위해 단락마다 반드시 아래 형식의 <p> 태그를 사용할 것. (각 섹션당 <p>태그는 딱 2개씩만 생성할 것)\n" +
                 "   -> <p style='margin-bottom: 25px; line-height: 1.8; font-size: 16px; color: #333;'>본문 내용...</p>\n" +
                 "4. 제공된 기사 데이터의 '원본링크'를 반드시 활용하여, 본문 문맥 중 텍스트에 <a> 태그로 하이퍼링크를 걸어줄 것.\n" +
@@ -320,50 +320,77 @@ public class AiClippingScheduler {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String currentTime = LocalDateTime.now().format(formatter);
 
+                // 기사 목록 오름차순(과거순) 정렬 및 데이터 가공을 위한 리스트 생성
+                List<Map<String, Object>> parsedSources = new ArrayList<>();
+
+                for (String[] src : sources) {
+                    Map<String, Object> map = new HashMap<>();
+                    String pub = src[0];
+                    String url = src[1];
+                    String title = src[2];
+                    String rawDate = src.length > 3 ? src[3] : "";
+
+                    java.time.LocalDate calculatedDate = java.time.LocalDate.now();
+                    try {
+                        if (rawDate.matches("\\d{4}\\.\\d{2}\\.\\d{2}")) {
+                            calculatedDate = java.time.LocalDate.parse(rawDate, java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                        } else if (rawDate.contains("어제")) {
+                            calculatedDate = java.time.LocalDate.now().minusDays(1);
+                        } else if (rawDate.matches("\\d+\\s*일\\s*전")) {
+                            int days = Integer.parseInt(rawDate.replaceAll("[^0-9]", ""));
+                            calculatedDate = java.time.LocalDate.now().minusDays(days);
+                        }
+                    } catch (Exception e) {
+                        calculatedDate = java.time.LocalDate.now();
+                    }
+
+                    String displayDate = calculatedDate.format(java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd")) + "(" + calculatedDate.format(java.time.format.DateTimeFormatter.ofPattern("E", java.util.Locale.KOREAN)) + ")";
+
+                    map.put("publisher", pub);
+                    map.put("url", url);
+                    map.put("title", title);
+                    map.put("date", calculatedDate);
+                    map.put("displayDate", displayDate);
+
+                    parsedSources.add(map);
+                }
+
+                // 날짜 오름차순 정렬 (가장 오래된 기사가 위로 오도록)
+                parsedSources.sort((m1, m2) -> ((java.time.LocalDate) m1.get("date")).compareTo((java.time.LocalDate) m2.get("date")));
+
+                // 대제목 블록에 사용할 기간(최소~최대) 텍스트 추출
+                String dateRange = "";
+                if (!parsedSources.isEmpty()) {
+                    java.time.format.DateTimeFormatter mdFormatter = java.time.format.DateTimeFormatter.ofPattern("M. d.");
+                    String startDate = ((java.time.LocalDate) parsedSources.get(0).get("date")).format(mdFormatter);
+                    String endDate = ((java.time.LocalDate) parsedSources.get(parsedSources.size() - 1).get("date")).format(mdFormatter);
+
+                    if (startDate.equals(endDate)) {
+                        dateRange = startDate;
+                    } else {
+                        dateRange = startDate + " ~ " + endDate;
+                    }
+                }
+
                 StringBuilder headerHtml = new StringBuilder();
+
+                // 대제목 블록 삽입
+                if (!dateRange.isEmpty()) {
+                    headerHtml.append("<div style='background-color: #1d5cad; color: #ffffff; text-align: center; padding: 25px 15px; font-size: 24px; font-weight: bold; margin-bottom: 40px; border-radius: 5px;'>");
+                    headerHtml.append("해양레저산업 기사 요약 (기간: ").append(dateRange).append(")");
+                    headerHtml.append("</div>");
+                }
+
                 headerHtml.append("<div style='margin-bottom: 40px; padding: 20px; background-color: #f8f9fa; border-top: 4px solid #1d5cad; border-bottom: 1px solid #ddd;'>");
                 headerHtml.append("   <strong style='color: #1d5cad; display:block; margin-bottom:15px; font-size: 16px;'>■ 기사</strong>");
                 headerHtml.append("   <ul style='list-style: none; padding: 0; margin: 0;'>");
 
-                for (int i = 0; i < sources.size(); i++) {
-                    String[] src = sources.get(i);
-                    String pub = src[0];    // 언론사
-                    String url = src[1];    // 링크
-                    String title = src[2];  // 기사 제목
-                    String rawDate = src.length > 3 ? src[3] : "";
-
-                    // 3. 상대적 시간("1시간 전", "어제" 등)을 실제 날짜로 계산하는 스마트 변환 로직 (유지됨)
-                    String displayDate = rawDate;
-                    try {
-                        java.time.LocalDate calculatedDate = java.time.LocalDate.now(); // 기본값은 오늘 날짜
-
-                        if (rawDate.matches("\\d{4}\\.\\d{2}\\.\\d{2}")) {
-                            // 이미 정상적인 날짜 포맷인 경우
-                            calculatedDate = java.time.LocalDate.parse(rawDate, java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-                        } else if (rawDate.contains("어제")) {
-                            // "어제"인 경우 하루 빼기
-                            calculatedDate = java.time.LocalDate.now().minusDays(1);
-                        } else if (rawDate.matches("\\d+\\s*일\\s*전")) {
-                            // "X일 전"인 경우 해당 일수 빼기
-                            int days = Integer.parseInt(rawDate.replaceAll("[^0-9]", ""));
-                            calculatedDate = java.time.LocalDate.now().minusDays(days);
-                        }
-                        // 그 외 "시간 전", "분 전" 등은 모두 위에서 세팅한 오늘 날짜(calculatedDate 기본값) 유지
-
-                        String formattedDateStr = calculatedDate.format(java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-                        String dayOfWeek = calculatedDate.format(java.time.format.DateTimeFormatter.ofPattern("E", java.util.Locale.KOREAN));
-
-                        displayDate = formattedDateStr + "(" + dayOfWeek + ")";
-                    } catch (Exception e) {
-                        // 만약 파싱 중 에러가 나면 안전하게 오늘 날짜를 강제로 덮어씌움
-                        java.time.LocalDate today = java.time.LocalDate.now();
-                        displayDate = today.format(java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd")) + "(" + today.format(java.time.format.DateTimeFormatter.ofPattern("E", java.util.Locale.KOREAN)) + ")";
-                    }
-
+                for (int i = 0; i < parsedSources.size(); i++) {
+                    Map<String, Object> ps = parsedSources.get(i);
                     headerHtml.append("<li style='font-size: 14px; color: #333; margin-bottom: 8px;'>");
-                    headerHtml.append("출처 (").append(i + 1).append(") ").append(displayDate).append(" | ");
-                    headerHtml.append("<a href='").append(url).append("' target='_blank' style='color:#1d5cad; font-weight:bold; text-decoration:underline; text-underline-offset:2px;'>").append(title).append("</a>");
-                    headerHtml.append(" | ").append(pub);
+                    headerHtml.append("출처 (").append(i + 1).append(") ").append(ps.get("displayDate")).append(" | ");
+                    headerHtml.append("<a href='").append(ps.get("url")).append("' target='_blank' style='color:#1d5cad; font-weight:bold; text-decoration:underline; text-underline-offset:2px;'>").append(ps.get("title")).append("</a>");
+                    headerHtml.append(" | ").append(ps.get("publisher"));
                     headerHtml.append("</li>");
                 }
                 headerHtml.append("   </ul>");
