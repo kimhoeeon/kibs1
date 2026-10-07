@@ -99,7 +99,7 @@ if (document.documentElement) {
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <div class="app-container container-fluid">
 
-                                <!-- 💡 AI 클리핑 운영 가이드 안내창 -->
+                                <!-- AI 클리핑 운영 가이드 안내창 -->
                                 <div class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6 mb-7">
                                     <i class="ki-duotone ki-information-5 fs-2tx text-primary me-4">
                                         <span class="path1"></span><span class="path2"></span><span class="path3"></span>

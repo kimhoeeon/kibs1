@@ -204,7 +204,7 @@ public class AiClippingScheduler {
 
                 String summary = element.select(".conts-desc").text();
 
-                // 💡 1. [날짜 추출] 검색 목록 페이지 텍스트에서 날짜만 추출
+                // 1. [날짜 추출] 검색 목록 페이지 텍스트에서 날짜만 추출
                 String fullText = element.text();
                 fullText = fullText.replace(title, "").replace(summary, "");
                 fullText = fullText.replace("동영상 첨부된 문서", "")
@@ -230,7 +230,7 @@ public class AiClippingScheduler {
                     articleDate = articleDate.substring(0, articleDate.length() - 1);
                 }
 
-                // 💡 2. [언론사명 추출] 완벽 복구된 기사 링크 직접 접속(메타 태그 크롤링) 로직
+                // 2. [언론사명 추출] 완벽 복구된 기사 링크 직접 접속(메타 태그 크롤링) 로직
                 String publisher = "언론사";
                 try {
                     Document articleDoc = Jsoup.connect(link)
@@ -322,7 +322,7 @@ public class AiClippingScheduler {
 
                 StringBuilder headerHtml = new StringBuilder();
                 headerHtml.append("<div style='margin-bottom: 40px; padding: 20px; background-color: #f8f9fa; border-top: 4px solid #1d5cad; border-bottom: 1px solid #ddd;'>");
-                headerHtml.append("   <strong style='color: #1d5cad; display:block; margin-bottom:15px; font-size: 16px;'>■ 기사 출처</strong>");
+                headerHtml.append("   <strong style='color: #1d5cad; display:block; margin-bottom:15px; font-size: 16px;'>■ 기사</strong>");
                 headerHtml.append("   <ul style='list-style: none; padding: 0; margin: 0;'>");
 
                 for (int i = 0; i < sources.size(); i++) {
@@ -332,7 +332,7 @@ public class AiClippingScheduler {
                     String title = src[2];  // 기사 제목
                     String rawDate = src.length > 3 ? src[3] : "";
 
-                    // 💡 3. 상대적 시간("1시간 전", "어제" 등)을 실제 날짜로 계산하는 스마트 변환 로직 (유지됨)
+                    // 3. 상대적 시간("1시간 전", "어제" 등)을 실제 날짜로 계산하는 스마트 변환 로직 (유지됨)
                     String displayDate = rawDate;
                     try {
                         java.time.LocalDate calculatedDate = java.time.LocalDate.now(); // 기본값은 오늘 날짜
