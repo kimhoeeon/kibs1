@@ -320,7 +320,6 @@ public class AiClippingScheduler {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String currentTime = LocalDateTime.now().format(formatter);
 
-                // 기사 목록 오름차순(과거순) 정렬 및 데이터 가공을 위한 리스트 생성
                 List<Map<String, Object>> parsedSources = new ArrayList<>();
 
                 for (String[] src : sources) {
@@ -355,15 +354,15 @@ public class AiClippingScheduler {
                     parsedSources.add(map);
                 }
 
-                // 날짜 오름차순 정렬 (가장 오래된 기사가 위로 오도록)
-                parsedSources.sort((m1, m2) -> ((java.time.LocalDate) m1.get("date")).compareTo((java.time.LocalDate) m2.get("date")));
+                // 날짜 내림차순 정렬 (가장 최신 기사가 위로 오도록)
+                parsedSources.sort((m1, m2) -> ((java.time.LocalDate) m2.get("date")).compareTo((java.time.LocalDate) m1.get("date")));
 
-                // 대제목 블록에 사용할 기간(최소~최대) 텍스트 추출
+                // 대제목 블록에 사용할 기간(최소~최대) 텍스트 추출 (내림차순이므로 인덱스 역순)
                 String dateRange = "";
                 if (!parsedSources.isEmpty()) {
                     java.time.format.DateTimeFormatter mdFormatter = java.time.format.DateTimeFormatter.ofPattern("M. d.");
-                    String startDate = ((java.time.LocalDate) parsedSources.get(0).get("date")).format(mdFormatter);
-                    String endDate = ((java.time.LocalDate) parsedSources.get(parsedSources.size() - 1).get("date")).format(mdFormatter);
+                    String startDate = ((java.time.LocalDate) parsedSources.get(parsedSources.size() - 1).get("date")).format(mdFormatter);
+                    String endDate = ((java.time.LocalDate) parsedSources.get(0).get("date")).format(mdFormatter);
 
                     if (startDate.equals(endDate)) {
                         dateRange = startDate;
@@ -374,13 +373,7 @@ public class AiClippingScheduler {
 
                 StringBuilder headerHtml = new StringBuilder();
 
-                // 대제목 블록 삽입
-                if (!dateRange.isEmpty()) {
-                    headerHtml.append("<div style='background-color: #1d5cad; color: #ffffff; text-align: center; padding: 25px 15px; font-size: 24px; font-weight: bold; margin-bottom: 40px; border-radius: 5px;'>");
-                    headerHtml.append("해양레저산업 기사 요약 (기간: ").append(dateRange).append(")");
-                    headerHtml.append("</div>");
-                }
-
+                // 1. 출처 리스트 영역 먼저 추가
                 headerHtml.append("<div style='margin-bottom: 40px; padding: 20px; background-color: #f8f9fa; border-top: 4px solid #1d5cad; border-bottom: 1px solid #ddd;'>");
                 headerHtml.append("   <strong style='color: #1d5cad; display:block; margin-bottom:15px; font-size: 16px;'>■ 기사</strong>");
                 headerHtml.append("   <ul style='list-style: none; padding: 0; margin: 0;'>");
@@ -395,6 +388,13 @@ public class AiClippingScheduler {
                 }
                 headerHtml.append("   </ul>");
                 headerHtml.append("</div>");
+
+                // 2. 대제목 블록 나중에 추가
+                if (!dateRange.isEmpty()) {
+                    headerHtml.append("<div style='background-color: #1d5cad; color: #ffffff; text-align: center; padding: 25px 15px; font-size: 24px; font-weight: bold; margin-bottom: 40px; border-radius: 5px;'>");
+                    headerHtml.append("해양레저산업 기사 요약 (기간: ").append(dateRange).append(")");
+                    headerHtml.append("</div>");
+                }
 
                 String footerHtml = "<div style='margin-top: 50px; padding: 20px; background-color: #f8f9fa; border-left: 4px solid #1d5cad; border-radius: 5px; text-align: left; font-size: 14px; color: #444; line-height: 1.6;'>" +
                         "   <strong style='color: #1d5cad;'>■ 수집 키워드 :</strong> ";
