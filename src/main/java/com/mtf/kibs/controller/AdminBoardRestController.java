@@ -8,6 +8,7 @@ import com.mtf.kibs.mapper.AiClippingMapper;
 import com.mtf.kibs.mapper.NewsletterMapper;
 import com.mtf.kibs.scheduler.AiClippingScheduler;
 import com.mtf.kibs.service.NewsletterService;
+import com.mtf.kibs.util.AES256Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,9 @@ public class AdminBoardRestController {
 
     @Autowired
     private NewsletterService newsletterService;
+
+    @Autowired
+    private AES256Util aes256Util;
 
     /* ================= 뉴스레터 구독자 관리 ================= */
 
@@ -77,6 +81,10 @@ public class AdminBoardRestController {
             @RequestParam(required = false) String receiveStatus,
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate) {
+
+        if (searchText != null && searchText.contains("@")) {
+            searchText = aes256Util.encrypt(searchText);
+        }
 
         Map<String, Object> params = new HashMap<>();
         params.put("limit", size);

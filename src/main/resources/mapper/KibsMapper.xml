@@ -3863,13 +3863,13 @@
                , #{partGbn}
                , #{timeGbn}
                , TRIM(#{name})
-               , TRIM(#{tel})
-               , TRIM(#{phone})
-               , TRIM(#{email})
+               , #{tel}
+               , #{phone}
+               , #{email}
                , TRIM(#{domain})
                , TRIM(#{companyName})
-               , TRIM(#{companyAddress})
-               , TRIM(#{companyAddressDetail})
+               , #{companyAddress}
+               , #{companyAddressDetail}
                , #{partnerYn}
                , #{sex}
                , #{regionSi}
