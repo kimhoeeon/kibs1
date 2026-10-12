@@ -10,6 +10,7 @@ import com.mtf.kibs.mapper.AiClippingMapper;
 import com.mtf.kibs.mapper.NewsletterMapper;
 import com.mtf.kibs.service.KibsMngService;
 import com.mtf.kibs.service.NewsletterService;
+import com.mtf.kibs.util.AES256Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,13 +38,20 @@ public class NewsletterServiceImpl implements NewsletterService {
     @Autowired
     private KibsMngService kibsMngService;
 
+    @Autowired
+    private AES256Util aes256Util;
+
     @Override
     @Transactional
     public Map<String, Object> subscribe(NewsletterSubscriberDTO dto) {
         Map<String, Object> result = new HashMap<>();
 
+        // 1. 암호화 처리 추가
+        String encryptedEmail = aes256Util.encrypt(dto.getEmail());
+        dto.setEmail(encryptedEmail);
+
         // 1. 해당 이메일의 가입 이력 및 수신 상태 조회
-        String currentStatus = newsletterMapper.checkSubscriberStatus(dto.getEmail());
+        String currentStatus = newsletterMapper.checkSubscriberStatus(encryptedEmail);
 
         // 2. 가입 이력이 존재하는 경우 분기 처리
         if (currentStatus != null) {
@@ -80,7 +88,7 @@ public class NewsletterServiceImpl implements NewsletterService {
     public Map<String, Object> unsubscribe(String email) {
         Map<String, Object> result = new HashMap<>();
         NewsletterSubscriberDTO dto = new NewsletterSubscriberDTO();
-        dto.setEmail(email);
+        dto.setEmail(aes256Util.encrypt(email));
         dto.setReceiveStatus("수신거부");
 
         int updateCnt = newsletterMapper.updateReceiveStatus(dto);
@@ -168,7 +176,7 @@ public class NewsletterServiceImpl implements NewsletterService {
                 historyDto.setSendResult("발송성공");
                 historyDto.setSendResultMsg("정상 발송 접수");
                 successCnt++;
-                newsletterMapper.updateLastSendDate(subscriber.getEmail());
+                newsletterMapper.updateLastSendDate(aes256Util.encrypt(subscriber.getEmail()));
             } else {
                 historyDto.setSendResult("발송실패");
                 historyDto.setSendResultMsg(sendResponse.getResultMessage());

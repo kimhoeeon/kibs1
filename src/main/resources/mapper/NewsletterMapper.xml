@@ -58,13 +58,13 @@
         FROM newsletter_subscriber
         <where>
             <if test="searchText != null and searchText != ''">
-                AND (name LIKE CONCAT('%', #{searchText}, '%') OR email LIKE CONCAT('%', #{searchText}, '%'))
+                AND (name LIKE CONCAT('%', #{searchText}, '%') OR email = #{searchText})
             </if>
             <if test="receiveStatus != null and receiveStatus != '' and receiveStatus != '전체'">
                 AND receive_status = #{receiveStatus}
             </if>
             <if test="startDate != null and startDate != ''">
-                AND reg_date >= CONCAT(#{startDate}, ' 00:00:00')
+                <![CDATA[ AND reg_date >= CONCAT(#{startDate}, ' 00:00:00') ]]>
             </if>
             <if test="endDate != null and endDate != ''">
                 <![CDATA[ AND reg_date <= CONCAT(#{endDate}, ' 23:59:59') ]]>
@@ -81,13 +81,13 @@
         FROM newsletter_subscriber
         <where>
             <if test="searchText != null and searchText != ''">
-                AND (name LIKE CONCAT('%', #{searchText}, '%') OR email LIKE CONCAT('%', #{searchText}, '%'))
+                AND (name LIKE CONCAT('%', #{searchText}, '%') OR email = #{searchText})
             </if>
             <if test="receiveStatus != null and receiveStatus != '' and receiveStatus != '전체'">
                 AND receive_status = #{receiveStatus}
             </if>
             <if test="startDate != null and startDate != ''">
-                AND reg_date >= CONCAT(#{startDate}, ' 00:00:00')
+                <![CDATA[ AND reg_date >= CONCAT(#{startDate}, ' 00:00:00') ]]>
             </if>
             <if test="endDate != null and endDate != ''">
                 <![CDATA[ AND reg_date <= CONCAT(#{endDate}, ' 23:59:59') ]]>

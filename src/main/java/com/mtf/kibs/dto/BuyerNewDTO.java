@@ -1,5 +1,6 @@
 package com.mtf.kibs.dto;
 
+import com.mtf.kibs.annotation.EncryptField;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,9 +19,9 @@ public class BuyerNewDTO {
     String buyerCompanyCharge; //담당자성명
     String buyerCompanyDepart; //부서
     String buyerCompanyPosition; //직책
-    String buyerCompanyEmail; //이메일
-    String buyerCompanyTel; //전화번호
-    String buyerCompanyPhone; //휴대전화
+    @EncryptField String buyerCompanyEmail; //이메일
+    @EncryptField String buyerCompanyTel; //전화번호
+    @EncryptField String buyerCompanyPhone; //휴대전화
     String buyerCompanyFax; //팩스
     String buyerCompanyItem; //취급품목
     String buyerCompanyInviteReason; //초청사유

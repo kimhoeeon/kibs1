@@ -2575,6 +2575,12 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public List<VisitorDTO> processSelectVisitorList(SearchDTO searchDTO) {
         //System.out.println("KibsMngServiceImpl > processSelectVisitorList");
+        if ("email".equals(searchDTO.getCondition()) || "phone".equals(searchDTO.getCondition())) {
+            // 2027년 참관객 탭에서 검색하는 경우 -> 수동으로 암호화해서 DB로 전달
+            if ("2027".equals(searchDTO.getJoinYear())) {
+                searchDTO.setSearchText(aes256Util.encrypt(searchDTO.getSearchText()));
+            }
+        }
         return kibsMngMapper.selectVisitorList(searchDTO);
     }
 

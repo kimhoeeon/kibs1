@@ -1,5 +1,6 @@
 package com.mtf.kibs.dto;
 
+import com.mtf.kibs.annotation.EncryptField;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -56,12 +57,12 @@ public class ExhibitorNewDTO {
     String companyState;
     String companyCity;
     String companyZipcode;
-    String companyAddress; //주소
-    String companyAddressDetail; //상세주소
-    String factoryAddress; //공장주소
-    String factoryAddressDetail; //공장상세주소
+    @EncryptField String companyAddress; //주소
+    @EncryptField String companyAddressDetail; //상세주소
+    @EncryptField String factoryAddress; //공장주소
+    @EncryptField String factoryAddressDetail; //공장상세주소
     String companyCeo; //대표자
-    String companyTel; //전화
+    @EncryptField String companyTel; //전화
     String companyHomepage; //홈페이지
     String companyFax; //Fax
     String industryPart; //산업분류
@@ -74,9 +75,9 @@ public class ExhibitorNewDTO {
     String name; //이름
     String position; //직위
     String depart; //부서
-    String tel; //전화번호
-    String phone; //휴대전화
-    String email; //이메일
+    @EncryptField String tel; //전화번호
+    @EncryptField String phone; //휴대전화
+    @EncryptField String email; //이메일
     String emailMarketingYn; //이메일 마케팅 수신여부
 
     //부담당자정보

@@ -1,5 +1,6 @@
 package com.mtf.kibs.dto;
 
+import com.mtf.kibs.annotation.EncryptField;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,9 +14,9 @@ public class ChargeNewDTO {
     String chargePersonName; //담당자명
     String chargePersonPosition; //직위
     String chargePersonDepart; //부서
-    String chargePersonTel; //전화번호
-    String chargePersonPhone; //휴대전화
-    String chargePersonEmail; //이메일
+    @EncryptField String chargePersonTel; //전화번호
+    @EncryptField String chargePersonPhone; //휴대전화
+    @EncryptField String chargePersonEmail; //이메일
     String note; //비고
     String initRegiPic; //최초 등록 담당자
     String initRegiDttm; //최초 등록 일시

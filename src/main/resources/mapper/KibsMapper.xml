@@ -3743,7 +3743,7 @@
         SELECT seq
         FROM visitor
         WHERE join_year = #{joinYear}
-          AND phone = TRIM(#{phone})
+          AND phone = #{phone}
         <if test='name != null and name != ""'>
           AND name = TRIM(#{name})
         </if>
