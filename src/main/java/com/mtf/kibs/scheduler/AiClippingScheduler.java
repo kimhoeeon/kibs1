@@ -38,17 +38,17 @@ public class AiClippingScheduler {
     @Value("${openai.model.summarize}")
     private String openAiModel;
 
-    // 1. [생성 담당] 매일 오전 10시 자동 실행 (미노출/미발송 상태로 생성만 수행)
-    @Scheduled(cron = "0 0 10 * * MON-FRI", zone = "Asia/Seoul")
+    // 1. [생성 담당] 매주 금요일 오전 8시 자동 실행 (미노출/미발송 상태로 생성만 수행)
+    @Scheduled(cron = "0 0 8 * * FRI", zone = "Asia/Seoul")
     public void generateAiClippingAt10AM() {
-        System.out.println("========== [10:00 AM] AI 클리핑 자동 생성 스케줄러 시작 (미노출/미발송) ==========");
+        System.out.println("========== [금요일 08:00 AM] AI 클리핑 자동 생성 스케줄러 시작 (미노출/미발송) ==========");
         processAiClipping(false); // false를 전달하여 뉴스레터 자동 발송 차단 (임시저장)
     }
 
-    // 2. [발행 담당] 매일 오전 8시 자동 실행 (검수 완료된 기사를 노출로 변경 후 발송)
-    @Scheduled(cron = "0 0 8 * * MON-FRI", zone = "Asia/Seoul")
+    // 2. [발행 담당] 매주 월요일 오전 8시 자동 실행 (금요일에 생성되어 검수 완료된 기사를 노출로 변경 후 발송)
+    @Scheduled(cron = "0 0 8 * * MON", zone = "Asia/Seoul")
     public void publishAndSendAiClippingAt8AM() {
-        System.out.println("========== [08:00 AM] AI 클리핑 자동 승인 및 발송 스케줄러 시작 ==========");
+        System.out.println("========== [월요일 08:00 AM] AI 클리핑 자동 승인 및 발송 스케줄러 시작 ==========");
 
         try {
             // DB에서 가장 최근에 생성된 미노출(display_yn='N') 기사 1건을 조회
@@ -73,13 +73,13 @@ public class AiClippingScheduler {
                 newsletterService.sendClippingNewsletter(target.getSeq(), target.getTitle(), target.getContent());
                 System.out.println("-> 뉴스레터 자동 발송 완료");
 
-                System.out.println("========== [08:00 AM] AI 클리핑 승인/발송 프로세스 정상 종료 ==========");
+                System.out.println("========== [월요일 08:00 AM] AI 클리핑 승인/발송 프로세스 정상 종료 ==========");
             } else {
-                System.out.println("========== [08:00 AM] 발송 대기 중인(미노출) 기사가 없습니다. ==========");
+                System.out.println("========== [월요일 08:00 AM] 발송 대기 중인(미노출) 기사가 없습니다. ==========");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("========== [08:00 AM] AI 클리핑 승인/발송 중 오류 발생 ==========");
+            System.out.println("========== [월요일 08:00 AM] AI 클리핑 승인/발송 중 오류 발생 ==========");
         }
     }
 
@@ -179,12 +179,36 @@ public class AiClippingScheduler {
             Elements newsElements = doc.select(".c-item-content");
             int count = 0;
             for (Element element : newsElements) {
-                if (count >= 3) break;
+                if (count >= 3) break; // 최대 3개까지만 수집 시도
 
                 Element titleElement = element.select(".item-title").first();
                 if (titleElement == null) continue;
 
                 String title = titleElement.text();
+                String summary = element.select(".conts-desc").text();
+
+                // [1차 필터링 로직] 기사가 해양레저/타겟키워드와 실질적인 관련이 있는지 검증
+                boolean isRelevant = false;
+
+                // 1. 타겟 키워드가 제목이나 요약 내용에 명시적으로 포함되어 있는지 우선 확인
+                if (title.contains(keyword) || summary.contains(keyword)) {
+                    isRelevant = true;
+                } else {
+                    // 2. 동음이의어 등의 이유로 타겟 키워드가 직접 매칭되지 않더라도, 해양레저 관련 필수 단어가 있는지 2차 검증
+                    String[] industryKeywords = {"해양", "레저", "보트", "요트", "마리나", "수상", "선박", "서핑", "다이빙", "조선", "크루즈", "항구", "어촌"};
+                    for (String indKey : industryKeywords) {
+                        if (title.contains(indKey) || summary.contains(indKey)) {
+                            isRelevant = true;
+                            break;
+                        }
+                    }
+                }
+
+                // 관련성이 없다고 판단되면 이 기사는 수집하지 않고 과감히 스킵 (출처 리스트 제외)
+                if (!isRelevant) {
+                    continue;
+                }
+
                 String link = "";
                 if (titleElement.tagName().equals("a")) {
                     link = titleElement.attr("href");
@@ -201,8 +225,6 @@ public class AiClippingScheduler {
                 if (link == null || link.isEmpty()) {
                     link = url;
                 }
-
-                String summary = element.select(".conts-desc").text();
 
                 // 1. [날짜 추출] 검색 목록 페이지 텍스트에서 날짜만 추출
                 String fullText = element.text();
@@ -281,9 +303,11 @@ public class AiClippingScheduler {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(openAiApiKey);
 
+        // [2차 필터링 로직] 프롬프트 0번 항목 신설하여 AI가 직접 무관한 기사를 배제하도록 지시
         String prompt = "다음 수집된 해양레저 관련 기사 데이터를 바탕으로, 뉴스레터 독자들을 위한 심층적이고 상세한 분석 기사를 작성해줘.\n" +
                 "반드시 아래의 요구사항을 엄격하게 지켜서 HTML 태그 형식으로만 답변해.\n\n" +
                 "[요구사항]\n" +
+                "0. [매우 중요] 제공된 기사 데이터 중 해양레저 산업과 전혀 무관한 내용(예: 동명이인, 다른 산업 분야, 단순 연예/정치 기사 등)이 섞여 있다면, 해당 기사는 요약에서 완전히 제외하고 무시할 것.\n" +
                 "1. 전체 내용을 4~5개의 소주제(섹션)로 나누되, 분량이 너무 길지 않도록 **각 섹션당 본문은 반드시 정확히 2개의 문단**으로만 핵심을 요약해서 작성할 것.\n" +
                 "2. (가장 중요: 여백 확보 및 순번 표기) 각 섹션의 제목은 반드시 '1.', '2.', '3.' 처럼 순번을 매겨서 아래 형식의 <h3> 태그를 사용할 것. (단락 구분 여백 포함)\n" +
                 "   -> <h3 style='margin-top: 40px; margin-bottom: 20px; font-size: 22px; color: #1d5cad; border-bottom: 2px solid #1d5cad; padding-bottom: 10px;'>1. 섹션 제목</h3>\n" +
