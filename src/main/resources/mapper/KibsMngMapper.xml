@@ -5,10 +5,9 @@
 
     <select id="login" parameterType="com.mtf.kibs.dto.AdminDTO" resultType="com.mtf.kibs.dto.AdminDTO">
         /* com.mtf.kibs.mapper.kibsMngMapper.loginCheck */
-        SELECT id, note
+        SELECT id, password, note
         FROM admin
         WHERE id = #{id}
-          AND password = <![CDATA[#{password}]]>
     </select>
 
     <delete id="deleteAccessIp">

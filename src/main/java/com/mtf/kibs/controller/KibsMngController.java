@@ -2848,7 +2848,7 @@ public class KibsMngController {
         try {
             // 1. 메인 국문 파일 처리
             String mainKoPath = formData.getMainKoFile_existing();
-            String mainKoOrigName = formData.getMainKoOriginalName_existing(); // [추가]
+            String mainKoOrigName = formData.getMainKoOriginalName_existing();
             if (formData.getMainKoFile() != null && !formData.getMainKoFile().isEmpty()) {
                 FileUploadUtil.deleteFile(PHYSICAL_PATH_BASE + mainKoPath);
                 String newFileName = FileUploadUtil.saveFile(formData.getMainKoFile(), PHYSICAL_SAVE_PATH);
@@ -2856,46 +2856,46 @@ public class KibsMngController {
                 mainKoOrigName = formData.getMainKoFile().getOriginalFilename(); // 원본 파일명 저장
             }
             formData.setMainKoPath(mainKoPath);
-            formData.setMainKoOriginalName(mainKoOrigName); // [추가]
+            formData.setMainKoOriginalName(mainKoOrigName);
 
 
             // 2. 메인 영문 파일 처리
             String mainEnPath = formData.getMainEnFile_existing();
-            String mainEnOrigName = formData.getMainEnOriginalName_existing(); // [추가]
+            String mainEnOrigName = formData.getMainEnOriginalName_existing();
             if (formData.getMainEnFile() != null && !formData.getMainEnFile().isEmpty()) {
                 FileUploadUtil.deleteFile(PHYSICAL_PATH_BASE + mainEnPath);
                 String newFileName = FileUploadUtil.saveFile(formData.getMainEnFile(), PHYSICAL_SAVE_PATH);
                 mainEnPath = WEB_PATH_BASE + newFileName;
-                mainEnOrigName = formData.getMainEnFile().getOriginalFilename(); // [추가]
+                mainEnOrigName = formData.getMainEnFile().getOriginalFilename();
             }
             formData.setMainEnPath(mainEnPath);
-            formData.setMainEnOriginalName(mainEnOrigName); // [추가]
+            formData.setMainEnOriginalName(mainEnOrigName);
 
 
             // 3. KISS 파일 처리
             String kissPath = formData.getKissFile_existing();
-            String kissOrigName = formData.getKissOriginalName_existing(); // [추가]
+            String kissOrigName = formData.getKissOriginalName_existing();
             if (formData.getKissFile() != null && !formData.getKissFile().isEmpty()) {
                 FileUploadUtil.deleteFile(PHYSICAL_PATH_BASE + kissPath);
                 String newFileName = FileUploadUtil.saveFile(formData.getKissFile(), PHYSICAL_SAVE_PATH);
                 kissPath = WEB_PATH_BASE + newFileName;
-                kissOrigName = formData.getKissFile().getOriginalFilename(); // [추가]
+                kissOrigName = formData.getKissFile().getOriginalFilename();
             }
             formData.setKissPath(kissPath);
-            formData.setKissOriginalName(kissOrigName); // [추가]
+            formData.setKissOriginalName(kissOrigName);
 
 
             // 4. KMTS 파일 처리
             String kmtsPath = formData.getKmtsFile_existing();
-            String kmtsOrigName = formData.getKmtsOriginalName_existing(); // [추가]
+            String kmtsOrigName = formData.getKmtsOriginalName_existing();
             if (formData.getKmtsFile() != null && !formData.getKmtsFile().isEmpty()) {
                 FileUploadUtil.deleteFile(PHYSICAL_PATH_BASE + kmtsPath);
                 String newFileName = FileUploadUtil.saveFile(formData.getKmtsFile(), PHYSICAL_SAVE_PATH);
                 kmtsPath = WEB_PATH_BASE + newFileName;
-                kmtsOrigName = formData.getKmtsFile().getOriginalFilename(); // [추가]
+                kmtsOrigName = formData.getKmtsFile().getOriginalFilename();
             }
             formData.setKmtsPath(kmtsPath);
-            formData.setKmtsOriginalName(kmtsOrigName); // [추가]
+            formData.setKmtsOriginalName(kmtsOrigName);
 
 
             // 5. DB에 최종 정보 업데이트

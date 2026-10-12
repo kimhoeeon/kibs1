@@ -5,6 +5,7 @@ import com.mtf.kibs.dto.*;
 import com.mtf.kibs.mapper.KibsMapper;
 import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.KibsService;
+import com.mtf.kibs.util.AES256Util;
 import com.mtf.kibs.util.StringUtil;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class KibsServiceImpl implements KibsService {
 
     @Setter(onMethod_ = {@Autowired})
     private KibsMapper kibsMapper;
+
+    @Autowired
+    private AES256Util aes256Util;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
@@ -88,21 +92,29 @@ public class KibsServiceImpl implements KibsService {
     @Override
     public String getExhibitorNewEmail(ExhibitorNewDTO exhibitorNewDTO) {
         //System.out.println("KibsServiceImpl > getExhibitorNewEmail : ======");
-        return kibsMapper.getExhibitorNewEmail(exhibitorNewDTO);
+        String encryptedEmail = kibsMapper.getExhibitorNewEmail(exhibitorNewDTO);
+        return aes256Util.decrypt(encryptedEmail);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public String getExhibitorNewRepEmail(ExhibitorNewDTO exhibitorNewDTO) {
         //System.out.println("KibsServiceImpl > getExhibitorNewRepEmail : ======");
-        return kibsMapper.getExhibitorNewRepEmail(exhibitorNewDTO);
+        String encryptedEmail = kibsMapper.getExhibitorNewRepEmail(exhibitorNewDTO);
+        return aes256Util.decrypt(encryptedEmail);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public List<String> preGetExhibitorEmail(ExhibitorDTO exhibitorDTO) {
         //System.out.println("KibsServiceImpl > preGetExhibitorEmail : ======");
-        return kibsMapper.preGetExhibitorEmail(exhibitorDTO);
+        List<String> encryptedList = kibsMapper.preGetExhibitorEmail(exhibitorDTO);
+        List<String> decryptedList = new ArrayList<>();
+
+        for (String email : encryptedList) {
+            decryptedList.add(aes256Util.decrypt(email)); // 각각 수동 복호화
+        }
+        return decryptedList;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})

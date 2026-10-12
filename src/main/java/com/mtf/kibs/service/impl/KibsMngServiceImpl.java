@@ -7,6 +7,7 @@ import com.mtf.kibs.mapper.CommMapper;
 import com.mtf.kibs.mapper.KibsMngMapper;
 import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.KibsMngService;
+import com.mtf.kibs.util.AES256Util;
 import com.mtf.kibs.util.StringUtil;
 import lombok.Setter;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -23,6 +24,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +60,12 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Setter(onMethod_ = {@Autowired})
     private CommMapper commMapper;
+
+    @Autowired
+    private AES256Util aes256Util;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
@@ -100,7 +108,8 @@ public class KibsMngServiceImpl implements KibsMngService {
         // 3. 실제 ID/PW 검증
         AdminDTO admin = kibsMngMapper.login(adminDTO);
 
-        if (admin != null) {
+        // 입력받은 평문 비밀번호와 DB에 저장된 암호화된 비밀번호 대조
+        if (admin != null && passwordEncoder.matches(adminDTO.getPassword(), admin.getPassword())) {
             // 로그인 성공: 세션 발급 및 실패 카운트 완전히 초기화
             session.setAttribute("status", "logon");
             session.setAttribute("id", admin.getId());
@@ -5332,7 +5341,13 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public List<String> getExhibitorNewEmailList(ExhibitorNewDTO exhibitorNewDTO) {
         //System.out.println("KibsMngServiceImpl > getExhibitorNewEmailList");
-        return kibsMngMapper.getExhibitorNewEmailList(exhibitorNewDTO);
+        List<String> encryptedList = kibsMngMapper.getExhibitorNewEmailList(exhibitorNewDTO);
+        List<String> decryptedList = new ArrayList<>();
+
+        for (String email : encryptedList) {
+            decryptedList.add(aes256Util.decrypt(email)); // 각각 수동 복호화
+        }
+        return decryptedList;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})

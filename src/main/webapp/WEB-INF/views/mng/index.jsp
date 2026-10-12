@@ -63,64 +63,6 @@
 
 <c:import url="../inc/commonMngJS.jsp" charEncoding="UTF-8"/>
 
-<script type="text/javascript">
-
-    $.ajax({
-        url: 'https://api.ip.pe.kr/json',
-        method: 'get'
-    }).done(function(api) {
-        let ipAddress = api.ip;
-        console.log(ipAddress);
-
-        let jsonObj = {ip: ipAddress};
-
-        $.ajax({
-            url: '/mng/admin/access/selectIp.do',
-            method: 'post',
-            data: JSON.stringify(jsonObj),
-            contentType: 'application/json; charset=utf-8' //server charset 확인 필요
-        })
-        .done(function (data, status){
-            // console.log(status);
-            // console.log(data);
-            let pass = false;
-            if(Number.parseInt(data.customValue) > 0) {
-                pass = true;
-            }
-
-            if(!pass){
-                alert('KIBS 관리자 시스템에 접근 권한이 없는 IP입니다.\n메인페이지로 이동합니다.');
-                window.location.href = '/';
-            }
-        })
-        .fail(function(xhr, status, errorThrown) {
-            $('body').html("오류가 발생했습니다.")
-                .append("<br>오류명: " + errorThrown)
-                .append("<br>상태: " + status);
-        })
-        .always(function() {
-        });
-
-        /*let ipArr = [
-            '211.208.232.85' /!*킨텍스*!/
-            ,'118.36.143.89' /!*미팅팬*!/
-            ,'210.121.176.15'
-            ,'61.80.16.77' /!*미팅팬*!/
-            ,'175.113.156.128' /!*미팅팬2*!/
-            ,'183.102.14.160' /!*미팅팬 작업자*!/
-            ,'211.105.95.173' /!*킨텍스*!/
-            ,'211.105.95.177'
-            ,'211.105.95.162'
-        ];*/
-    });
-
-    document.addEventListener("keyup", function(event) {
-        if (event.key === 'Enter') {
-            loginFormSubmit();
-        }
-    });
-</script>
-
 </body>
 
 </html>
