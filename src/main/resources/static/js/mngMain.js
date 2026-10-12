@@ -232,11 +232,14 @@ function loginFormSubmit() {
         data: JSON.stringify(jsonObj),
         contentType: 'application/json; charset=utf-8' //server charset 확인 필요
     })
-        .done(function (data) {
-            if (data !== "") {
-                form.submit(); // /mng/main.do
+        .done(function (res) {
+            // 백엔드의 방어 로직 결과(Map)에 따라 분기 처리
+            if (res.resultCode === "SUCCESS") {
+                form.submit(); // 정상 로그인 시 /mng/main.do 이동
             } else {
-                showMessage('', 'info', '로그인 실패', '관리자 아이디와 비밀번호를 확인해 주세요.', '');
+                // BLOCKED, LIMIT, FAIL 등의 구체적인 사유를 출력
+                let iconType = (res.resultCode === "FAIL") ? 'info' : 'warning';
+                showMessage('', iconType, '로그인 실패', res.resultMsg, '');
             }
         })
         .fail(function (xhr, status, errorThrown) {

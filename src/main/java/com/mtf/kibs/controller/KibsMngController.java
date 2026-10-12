@@ -402,9 +402,27 @@ public class KibsMngController {
      */
     @RequestMapping(value = "/mng/login.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<AdminDTO> login(@RequestBody AdminDTO adminDTO, HttpSession session) {
-        //System.out.println("KibsMngController > login");
-        AdminDTO result = kibsMngService.login(adminDTO, session);
+    public ResponseEntity<Map<String, Object>> login(@RequestBody AdminDTO adminDTO, HttpSession session, HttpServletRequest request) {
+
+        // 프론트에 의존하지 않고 서버에서 직접 실제 IP 추출 (프록시 방어)
+        String clientIp = request.getHeader("X-Forwarded-For");
+        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) {
+            clientIp = request.getHeader("Proxy-Client-IP");
+        }
+        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) {
+            clientIp = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) {
+            clientIp = request.getRemoteAddr();
+        }
+
+        // 콤마로 구분된 여러 IP가 들어올 경우 (클라이언트 최초 IP만 획득)
+        if (clientIp != null && clientIp.contains(",")) {
+            clientIp = clientIp.split(",")[0].trim();
+        }
+
+        Map<String, Object> result = kibsMngService.loginWithFailCheck(adminDTO, session, clientIp);
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

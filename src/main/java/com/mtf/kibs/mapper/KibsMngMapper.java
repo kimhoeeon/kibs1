@@ -651,4 +651,12 @@ public interface KibsMngMapper {
     int updateInvoiceHistoryStatusByMailId(@Param("mailId") String mailId, @Param("status") String status);
 
     List<BuyerDetailDTO> selectExcelBuyerDetailList(String transferYear);
+
+    Map<String, Object> selectLoginFailLog(Map<String, Object> paramMap);
+
+    int upsertLoginFailLog(Map<String, Object> paramMap);
+
+    int resetLoginFailLog(Map<String, Object> paramMap);
+
+    int updateLoginBlock(Map<String, Object> paramMap);
 }

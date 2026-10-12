@@ -6586,4 +6586,31 @@
           AND en.cancel_yn = 'N'
     </select>
 
+    <select id="selectLoginFailLog" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT ip, admin_id, fail_cnt, last_fail_dttm, block_yn
+        FROM admin_login_fail_log
+        WHERE ip = #{ip} AND admin_id = #{adminId}
+    </select>
+
+    <insert id="upsertLoginFailLog" parameterType="java.util.Map">
+        INSERT INTO admin_login_fail_log (ip, admin_id, fail_cnt, last_fail_dttm, block_yn)
+        VALUES (#{ip}, #{adminId}, 1, NOW(), 'N')
+        ON DUPLICATE KEY UPDATE
+                             fail_cnt = fail_cnt + 1,
+                             last_fail_dttm = NOW()
+    </insert>
+
+    <update id="resetLoginFailLog" parameterType="java.util.Map">
+        UPDATE admin_login_fail_log
+        SET fail_cnt = 0,
+            block_yn = 'N'
+        WHERE ip = #{ip} AND admin_id = #{adminId}
+    </update>
+
+    <update id="updateLoginBlock" parameterType="java.util.Map">
+        UPDATE admin_login_fail_log
+        SET block_yn = 'Y'
+        WHERE ip = #{ip} AND admin_id = #{adminId}
+    </update>
+
 </mapper>

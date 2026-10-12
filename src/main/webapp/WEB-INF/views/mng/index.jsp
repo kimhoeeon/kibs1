@@ -80,26 +80,26 @@
             data: JSON.stringify(jsonObj),
             contentType: 'application/json; charset=utf-8' //server charset 확인 필요
         })
-            .done(function (data, status){
-                // console.log(status);
-                // console.log(data);
-                let pass = false;
-                if(Number.parseInt(data.customValue) > 0) {
-                    pass = true;
-                }
+        .done(function (data, status){
+            // console.log(status);
+            // console.log(data);
+            let pass = false;
+            if(Number.parseInt(data.customValue) > 0) {
+                pass = true;
+            }
 
-                if(!pass){
-                    alert('KIBS 관리자 시스템에 접근 권한이 없는 IP입니다.\n메인페이지로 이동합니다.');
-                    window.location.href = '/';
-                }
-            })
-            .fail(function(xhr, status, errorThrown) {
-                $('body').html("오류가 발생했습니다.")
-                    .append("<br>오류명: " + errorThrown)
-                    .append("<br>상태: " + status);
-            })
-            .always(function() {
-            });
+            if(!pass){
+                alert('KIBS 관리자 시스템에 접근 권한이 없는 IP입니다.\n메인페이지로 이동합니다.');
+                window.location.href = '/';
+            }
+        })
+        .fail(function(xhr, status, errorThrown) {
+            $('body').html("오류가 발생했습니다.")
+                .append("<br>오류명: " + errorThrown)
+                .append("<br>상태: " + status);
+        })
+        .always(function() {
+        });
 
         /*let ipArr = [
             '211.208.232.85' /!*킨텍스*!/

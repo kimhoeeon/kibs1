@@ -61,15 +61,76 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
-    public AdminDTO login(AdminDTO adminDTO, HttpSession session) {
-        //System.out.println("KibsMngServiceImpl > loginCheck : ======");
+    public Map<String, Object> loginWithFailCheck(AdminDTO adminDTO, HttpSession session, String clientIp) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("ip", clientIp);
+        paramMap.put("adminId", adminDTO.getId());
+
+        // 1. 기존 실패 이력 조회
+        Map<String, Object> failLog = kibsMngMapper.selectLoginFailLog(paramMap);
+
+        if (failLog != null) {
+            String blockYn = (String) failLog.get("block_yn");
+            int failCnt = ((Number) failLog.get("fail_cnt")).intValue();
+
+            // [1차 방어] 영구 차단(100회 초과) 확인
+            if ("Y".equals(blockYn) || failCnt >= 100) {
+                resultMap.put("resultCode", "BLOCKED");
+                resultMap.put("resultMsg", "비정상적인 접근이 감지되어 해당 IP가 영구 차단되었습니다. 시스템 관리자에게 문의하세요.");
+                return resultMap;
+            }
+
+            // [2차 방어] 10분 임시 제한 확인 (fail_cnt >= 5 이고, 마지막 실패시간이 10분 이내)
+            if (failCnt >= 5) {
+                Date lastFailTime = (Date) failLog.get("last_fail_dttm");
+                if (lastFailTime != null) {
+                    long diffMin = (new Date().getTime() - lastFailTime.getTime()) / 60000;
+                    if (diffMin < 10) {
+                        resultMap.put("resultCode", "LIMIT");
+                        resultMap.put("resultMsg", "연속 로그인 5회 실패로 10분 동안 로그인이 제한되었습니다. (" + (10 - diffMin) + "분 후 재시도 가능)");
+                        return resultMap;
+                    }
+                    // 10분이 지났으면 통과시켜줌 (성공하면 초기화, 실패하면 다시 카운트)
+                }
+            }
+        }
+
+        // 3. 실제 ID/PW 검증
         AdminDTO admin = kibsMngMapper.login(adminDTO);
-        if(admin != null){
+
+        if (admin != null) {
+            // 로그인 성공: 세션 발급 및 실패 카운트 완전히 초기화
             session.setAttribute("status", "logon");
             session.setAttribute("id", admin.getId());
             session.setAttribute("note", admin.getNote());
+
+            kibsMngMapper.resetLoginFailLog(paramMap); // 성공 시 카운트 리셋
+
+            resultMap.put("resultCode", "SUCCESS");
+            resultMap.put("data", admin);
+        } else {
+            // 로그인 실패: 카운트 증가(없으면 Insert, 있으면 Update)
+            kibsMngMapper.upsertLoginFailLog(paramMap);
+
+            Map<String, Object> updatedLog = kibsMngMapper.selectLoginFailLog(paramMap);
+            int currentFailCnt = updatedLog != null ? ((Number) updatedLog.get("fail_cnt")).intValue() : 1;
+
+            if (currentFailCnt >= 100) {
+                kibsMngMapper.updateLoginBlock(paramMap); // 100회 도달 시 차단
+                resultMap.put("resultCode", "BLOCKED");
+                resultMap.put("resultMsg", "연속 100회 실패로 비정상적인 접근이 감지되어 해당 IP가 영구 차단되었습니다.");
+            } else if (currentFailCnt >= 5) {
+                resultMap.put("resultCode", "LIMIT");
+                resultMap.put("resultMsg", "비밀번호가 일치하지 않습니다. 연속 5회 실패로 10분간 로그인이 제한됩니다.");
+            } else {
+                resultMap.put("resultCode", "FAIL");
+                resultMap.put("resultMsg", "관리자 아이디와 비밀번호를 확인해 주세요. (연속 실패 " + currentFailCnt + "회 / 5회 초과 시 제한)");
+            }
         }
-        return admin;
+
+        return resultMap;
     }
 
     @Override

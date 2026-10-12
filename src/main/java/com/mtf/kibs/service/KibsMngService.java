@@ -10,7 +10,9 @@ import java.util.Map;
 
 public interface KibsMngService {
 
-    AdminDTO login(AdminDTO adminDTO, HttpSession session);
+    //AdminDTO login(AdminDTO adminDTO, HttpSession session);
+
+    Map<String, Object> loginWithFailCheck(AdminDTO adminDTO, HttpSession session, String clientIp);
 
     void logoutCheck(HttpSession session);
 
@@ -483,4 +485,5 @@ public interface KibsMngService {
     List<BuyerDetailDTO> processSelectExcelBuyerDetailList(String transferYear);
 
     ResponseDTO processNewsletterBulkSend(MailRequestDTO mailReq);
+
 }

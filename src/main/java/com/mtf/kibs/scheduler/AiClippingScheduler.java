@@ -103,6 +103,12 @@ public class AiClippingScheduler {
                 return;
             }
 
+            // DB에 등록된 전체 키워드 목록을 문자열 리스트로 변환 (2차 필터링 검증용 풀)
+            List<String> allRegisteredKeywords = new ArrayList<>();
+            for (AiClippingKeywordDTO dto : keywordList) {
+                allRegisteredKeywords.add(dto.getKeyword());
+            }
+
             // 2. 매일 똑같은 기사가 생성되지 않도록 전체 키워드를 무작위로 섞음
             Collections.shuffle(keywordList);
 
@@ -122,7 +128,8 @@ public class AiClippingScheduler {
                 usedKeywords.add(targetKeyword); // 사용된 키워드 기록
                 System.out.println("-> 수집 키워드: " + targetKeyword);
 
-                String articles = fetchArticlesFromDaum(targetKeyword, usedSources);
+                // 크롤링 메서드 호출 시 전체 키워드 풀(allRegisteredKeywords) 파라미터 전달
+                String articles = fetchArticlesFromDaum(targetKeyword, usedSources, allRegisteredKeywords);
                 rawArticlesBuilder.append(articles);
 
                 Thread.sleep(1500);
@@ -165,7 +172,7 @@ public class AiClippingScheduler {
     }
 
     // Daum 뉴스 크롤링 메서드
-    private String fetchArticlesFromDaum(String keyword, List<String[]> usedSources) {
+    private String fetchArticlesFromDaum(String keyword, List<String[]> usedSources, List<String> allRegisteredKeywords) {
         StringBuilder articlesBuilder = new StringBuilder();
         try {
             String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
@@ -187,17 +194,16 @@ public class AiClippingScheduler {
                 String title = titleElement.text();
                 String summary = element.select(".conts-desc").text();
 
-                // [1차 필터링 로직] 기사가 해양레저/타겟키워드와 실질적인 관련이 있는지 검증
+                // [1차 필터링 로직] 기사가 타겟 키워드 또는 관리자가 등록한 전체 키워드 풀과 관련이 있는지 검증
                 boolean isRelevant = false;
 
                 // 1. 타겟 키워드가 제목이나 요약 내용에 명시적으로 포함되어 있는지 우선 확인
                 if (title.contains(keyword) || summary.contains(keyword)) {
                     isRelevant = true;
                 } else {
-                    // 2. 동음이의어 등의 이유로 타겟 키워드가 직접 매칭되지 않더라도, 해양레저 관련 필수 단어가 있는지 2차 검증
-                    String[] industryKeywords = {"해양", "레저", "보트", "요트", "마리나", "수상", "선박", "서핑", "다이빙", "조선", "크루즈", "항구", "어촌"};
-                    for (String indKey : industryKeywords) {
-                        if (title.contains(indKey) || summary.contains(indKey)) {
+                    // 고정 배열 대신 관리자가 DB에 등록해둔 전체 수집 키워드 풀을 순회하며 검증
+                    for (String dbKey : allRegisteredKeywords) {
+                        if (title.contains(dbKey) || summary.contains(dbKey)) {
                             isRelevant = true;
                             break;
                         }
