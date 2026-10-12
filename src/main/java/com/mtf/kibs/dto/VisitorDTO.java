@@ -1,5 +1,6 @@
 package com.mtf.kibs.dto;
 
+import com.mtf.kibs.annotation.EncryptField;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,12 +22,12 @@ public class VisitorDTO {
     String timeGbn; //1차/2차
     String name; //이름
     String tel; //전화번호
-    String phone; //휴대전화
-    String email; //이메일
+    @EncryptField String phone; //휴대전화
+    @EncryptField String email; //이메일
     String domain; //도메인
     String companyName; //회사명
-    String companyAddress; //회사주소
-    String companyAddressDetail; //회사상세주소
+    @EncryptField String companyAddress; //회사주소
+    @EncryptField String companyAddressDetail; //회사상세주소
     String partnerYn; //동반자 여부
     String sex; //성별
     String regionSi; //지역(시)
