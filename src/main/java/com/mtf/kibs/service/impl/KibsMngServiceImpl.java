@@ -22,6 +22,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -52,6 +54,8 @@ import java.util.*;
  */
 @Service
 public class KibsMngServiceImpl implements KibsMngService {
+
+    private static final Logger log = LoggerFactory.getLogger(KibsMngServiceImpl.class);
 
     @Autowired
     private CalculationService calculationService; // 1. 공통 계산 서비스 주입
@@ -90,53 +94,70 @@ public class KibsMngServiceImpl implements KibsMngService {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("ip", clientIp);
         paramMap.put("adminId", adminDTO.getId());
-
-        // 쿼리에 properties 값 전달용
         paramMap.put("ipCheckMinutes", ipCheckMinutes);
         paramMap.put("ipLockMinutes", ipLockMinutes);
 
-        // 1. 기존 (계정 + IP) 실패 이력 조회
         Map<String, Object> failLog = kibsMngMapper.selectLoginFailLog(paramMap);
 
         // ==============================================================
-        // [1차 방어] 단일 IP 기준 다중 계정 공격 방어 (properties 적용)
+        // [1차 방어] 단일 IP 기준 다중 계정 공격 방어
         // ==============================================================
         int ipFailCount = kibsMngMapper.selectRecentFailCountByIp(paramMap);
 
         if (ipFailCount >= ipMaxFail) {
             int ipBlockCount = kibsMngMapper.selectIpBlockCheck(paramMap);
             if (ipBlockCount > 0) {
+                // [로그 기록] IP 차단 이벤트
+                log.warn("[LOGIN-EVENT] 계정: {}, IP: {}, 상태: IP_BLOCKED, IP누적실패: {}, 차단시간: {}분",
+                        adminDTO.getId(), clientIp, ipFailCount, ipLockMinutes);
+
                 resultMap.put("resultCode", "LIMIT");
-                // 요건 충족: 시간 노출 금지
                 resultMap.put("resultMsg", "비정상적인 로그인 시도가 감지되어 접근이 일시적으로 제한되었습니다. 잠시 후 다시 시도해 주세요.");
                 return resultMap;
             }
         }
 
-        // ==============================================================
-        // [2차 방어] 특정 계정 연속 실패 제한 (properties 적용)
+        // [2차 방어] 특정 계정 10회 연속 실패 시 10분 제한 & 100회 이상 영구 차단
         // ==============================================================
         if (failLog != null) {
             String blockYn = (String) failLog.get("block_yn");
             int failCnt = ((Number) failLog.get("fail_cnt")).intValue();
 
-            // 영구 차단 확인 (기존 로직 유지 또는 삭제 가능)
+            // [영구 차단(100회 이상)] 확인
             if ("Y".equals(blockYn) || failCnt >= 100) {
+                log.warn("[LOGIN-EVENT] 계정: {}, IP: {}, 상태: ACCOUNT_PERMA_BLOCKED, 계정누적실패: {}", adminDTO.getId(), clientIp, failCnt);
                 resultMap.put("resultCode", "BLOCKED");
                 resultMap.put("resultMsg", "보안 정책에 의해 접근이 차단되었습니다. 관리자에게 문의해 주세요.");
                 return resultMap;
             }
 
-            // 계정 임시 제한 확인
+            // [임시 제한] 확인
             if (failCnt >= accountMaxFail) {
-                Date lastFailTime = (Date) failLog.get("last_fail_dttm");
-                if (lastFailTime != null) {
-                    long diffMin = (new Date().getTime() - lastFailTime.getTime()) / 60000;
+                Object dttmObj = failLog.get("last_fail_dttm");
+                if (dttmObj != null) {
+
+                    // 에러 방지: DB 타입(Date, Timestamp, LocalDateTime)에 관계없이 안전하게 밀리초 추출
+                    long lastFailTimeMs = 0;
+                    if (dttmObj instanceof java.sql.Timestamp) {
+                        lastFailTimeMs = ((java.sql.Timestamp) dttmObj).getTime();
+                    } else if (dttmObj instanceof java.time.LocalDateTime) {
+                        lastFailTimeMs = java.sql.Timestamp.valueOf((java.time.LocalDateTime) dttmObj).getTime();
+                    } else if (dttmObj instanceof java.util.Date) {
+                        lastFailTimeMs = ((java.util.Date) dttmObj).getTime();
+                    }
+
+                    // 경과 시간(분) 계산
+                    long diffMin = (System.currentTimeMillis() - lastFailTimeMs) / 60000;
+
                     if (diffMin < accountLockMinutes) {
+                        log.warn("[LOGIN-EVENT] 계정: {}, IP: {}, 상태: ACCOUNT_LOCKED, 계정누적실패: {}, 잔여차단시간: {}분", adminDTO.getId(), clientIp, failCnt, (accountLockMinutes - diffMin));
                         resultMap.put("resultCode", "LIMIT");
-                        // 요건 충족: 구체적인 시간/횟수 노출 금지
                         resultMap.put("resultMsg", "로그인 실패 횟수를 초과하여 계정이 일시적으로 보호 조치 되었습니다. 잠시 후 다시 시도해 주세요.");
                         return resultMap;
+                    } else {
+                        // [논리 버그 수정] 10분이 경과했으므로 패스너 검증 전 실패 횟수를 미리 0으로 초기화
+                        kibsMngMapper.resetLoginFailLog(paramMap);
+                        log.info("[LOGIN-EVENT] 계정: {}, IP: {}, 상태: ACCOUNT_UNLOCK, 메시지: 차단 시간 경과로 카운트 초기화", adminDTO.getId(), clientIp);
                     }
                 }
             }
@@ -153,6 +174,9 @@ public class KibsMngServiceImpl implements KibsMngService {
             session.setAttribute("note", admin.getNote());
             kibsMngMapper.resetLoginFailLog(paramMap);
 
+            // [로그 기록] 로그인 성공
+            log.info("[LOGIN-EVENT] 계정: {}, IP: {}, 상태: SUCCESS", admin.getId(), clientIp);
+
             resultMap.put("resultCode", "SUCCESS");
             resultMap.put("data", admin);
         } else {
@@ -163,13 +187,19 @@ public class KibsMngServiceImpl implements KibsMngService {
 
             if (currentFailCnt >= 100) {
                 kibsMngMapper.updateLoginBlock(paramMap);
+                log.warn("[LOGIN-EVENT] 계정: {}, IP: {}, 상태: ACCOUNT_LOCKED_100_FAIL, 누적실패: {}", adminDTO.getId(), clientIp, currentFailCnt);
+
                 resultMap.put("resultCode", "BLOCKED");
                 resultMap.put("resultMsg", "보안 정책에 의해 접근이 차단되었습니다.");
             } else if (currentFailCnt >= accountMaxFail) {
+                log.warn("[LOGIN-EVENT] 계정: {}, IP: {}, 상태: ACCOUNT_LOCKED_LIMIT, 누적실패: {}", adminDTO.getId(), clientIp, currentFailCnt);
+
                 resultMap.put("resultCode", "LIMIT");
                 resultMap.put("resultMsg", "로그인 실패 횟수를 초과하여 계정이 일시적으로 보호 조치 되었습니다. 잠시 후 다시 시도해 주세요.");
             } else {
-                // 요건 충족: 아이디 존재 여부 추측 불가 안내문구 적용
+                // [로그 기록] 단순 비밀번호/아이디 오류
+                log.info("[LOGIN-EVENT] 계정: {}, IP: {}, 상태: FAIL_MISMATCH, 누적실패: {}", adminDTO.getId(), clientIp, currentFailCnt);
+
                 resultMap.put("resultCode", "FAIL");
                 resultMap.put("resultMsg", "아이디 또는 비밀번호가 올바르지 않습니다.");
             }
