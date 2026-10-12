@@ -6612,4 +6612,20 @@
         WHERE ip = #{ip} AND admin_id = #{adminId}
     </update>
 
+    <!-- 특정 IP의 최근 지정된 시간(분) 이내 총 실패 횟수 (계정 무관) -->
+    <select id="selectRecentFailCountByIp" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COALESCE(SUM(fail_cnt), 0)
+        FROM admin_login_fail_log
+        WHERE ip = #{ip}
+          AND last_fail_dttm >= DATE_SUB(NOW(), INTERVAL #{ipCheckMinutes} MINUTE)
+    </select>
+
+    <!-- 특정 IP가 지정된 차단 시간(분) 이내에 있는지 검사 -->
+    <select id="selectIpBlockCheck" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM admin_login_fail_log
+        WHERE ip = #{ip}
+          AND last_fail_dttm >= DATE_SUB(NOW(), INTERVAL #{ipLockMinutes} MINUTE)
+    </select>
+
 </mapper>

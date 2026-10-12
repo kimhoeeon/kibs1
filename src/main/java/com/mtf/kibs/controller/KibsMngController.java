@@ -4027,6 +4027,63 @@ public class KibsMngController {
                     file = part.getSubmittedFileName();
                     oriFile = part.getSubmittedFileName();
 
+                    // =============== [보안 강화: 파일 검증 로직 시작] ===============
+                    long sizeInBytes = part.getSize();
+                    if (sizeInBytes > 10 * 1024 * 1024) { // 10MB 제한
+                        response.put("resultCode", "-1");
+                        response.put("resultMessage", "10MB를 초과하는 파일은 업로드할 수 없습니다.");
+                        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                    }
+
+                    String lowerFileName = oriFile.toLowerCase();
+                    // 1. 차단할 블랙리스트 (요청사항 반영)
+                    List<String> BLACKLIST = Arrays.asList(
+                            "jsp", "jspx", "war", "jar", "class", "php", "php3", "php4", "php5", "phtml", "phar",
+                            "asp", "aspx", "cgi", "pl", "py", "sh", "bash", "bat", "cmd", "exe", "dll", "com",
+                            "msi", "js", "html", "htm", "xhtml", "svg", "xml", "swf", "htaccess"
+                    );
+
+                    // 2. 이중 확장자 및 악성 확장자 원천 차단 (예: test.jpg.jsp 방어)
+                    boolean isBad = false;
+                    for (String badExt : BLACKLIST) {
+                        if (lowerFileName.contains("." + badExt)) {
+                            isBad = true;
+                            break;
+                        }
+                    }
+                    if (isBad) {
+                        response.put("resultCode", "-1");
+                        response.put("resultMessage", "보안 정책에 의해 차단된 확장자가 포함되어 있습니다.");
+                        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                    }
+
+                    int lastDotIndex = lowerFileName.lastIndexOf(".");
+                    if (lastDotIndex == -1) {
+                        response.put("resultCode", "-1");
+                        response.put("resultMessage", "확장자가 없는 파일은 업로드할 수 없습니다.");
+                        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                    }
+                    String ext = lowerFileName.substring(lastDotIndex + 1);
+
+                    // 3. 목적에 따른 화이트리스트 검증
+                    String inputName = part.getName(); // HTML의 input name (예: companyLicenseFile, logoFile)
+                    if (inputName != null && inputName.toLowerCase().contains("license")) {
+                        // 사업자등록증: PDF, JPG, PNG 허용
+                        if (!ext.equals("pdf") && !ext.equals("jpg") && !ext.equals("jpeg") && !ext.equals("png")) {
+                            response.put("resultCode", "-1");
+                            response.put("resultMessage", "사업자등록증은 PDF, JPG, PNG 형식만 업로드 가능합니다.");
+                            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                        }
+                    } else {
+                        // 로고, 제품, 배너 등 나머지 모든 파일: JPG, PNG 허용 (PDF 포함 차단)
+                        if (!ext.equals("jpg") && !ext.equals("jpeg") && !ext.equals("png")) {
+                            response.put("resultCode", "-1");
+                            response.put("resultMessage", "해당 항목은 JPG, PNG 형식만 업로드 가능합니다.");
+                            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                        }
+                    }
+                    // =============== [보안 강화: 파일 검증 로직 종료] ===============
+
                     file = appendSuffixName(uploadPath.getPath() , file, 1);
                     part.write(uploadPath.getPath() + File.separator + file);
                 }

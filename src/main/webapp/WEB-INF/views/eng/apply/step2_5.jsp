@@ -319,7 +319,7 @@
                                         </div>
                                         <div class="input file_box">
                                             <input type="text" id="gift_photo" class="upload_name" value="" disabled="disabled">
-                                            <input type="file" name="giftPhotoFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                            <input type="file" name="giftPhotoFile" class="upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                             <label>Browse</label>
                                             <span class="giftPhotoBox"></span>
                                             <div style="font-size: 0.7em; color: #666;">
@@ -334,7 +334,7 @@
                                         </div>
                                         <div class="input file_box">
                                             <input type="text" id="gift_company_logo" class="upload_name" value="" disabled="disabled">
-                                            <input type="file" name="giftCompanyLogoFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                            <input type="file" name="giftCompanyLogoFile" class="upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                             <label>Browse</label>
                                             <span class="giftCompanyLogoBox"></span>
                                             <div style="font-size: 0.7em; color: #666;">

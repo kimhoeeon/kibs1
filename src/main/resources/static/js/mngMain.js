@@ -102,44 +102,80 @@ $(function(){
 
     // 파일 입력 변경에 대한 이벤트 핸들러 추가
     $(document).on('change', '.upload_hidden', function () {
-
         let fileName = $(this).val();
-        if(nvl(fileName,'') !== ''){
-            let fileNameVal = $(this).val().split('\\').pop();
-            let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
 
+        // 동적으로 .upload_name 인풋박스 찾기
+        let fileNameInput = $(this).siblings('.upload_name');
+        if (fileNameInput.length === 0) {
+            fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
+        }
+
+        if (nvl(fileName, '') !== '') {
+            let fileNameVal = $(this).val().split('\\').pop();
             let _lastDot = fileNameVal.lastIndexOf('.');
             let realFileName = fileNameVal.substring(0, _lastDot).toLowerCase();
+            let ext = fileNameVal.substring(_lastDot + 1).toLowerCase();
 
-            // 파일명에 특수문자 체크
+            // 1. 파일명 특수문자 체크
             let pattern = /[\{\}\/?,.;:|\[\]*~`!^\+<>@\#$%&\\\=\'\"]/gi;
-            if(pattern.test(String(realFileName)) ){
-                $(this).val(''); //업로드한 파일 제거
+            if (pattern.test(String(realFileName))) {
+                $(this).val(''); // 파일 싹 비움
                 fileNameInput.val('File');
                 alert('파일명에 허용되지 않는 공백 및 특수문자가 포함되어 있습니다.\n허용된 특수문자는 - _ ( ) 입니다.');
-            }else{
-                if (this.files && this.files[0]) {
-                    let maxSize = 10 * 1024 * 1024; //* 10MB 사이즈 제한
-                    let file = this.files[0];
-                    if (file.size > maxSize) {
-                        alert("파일 첨부는 10MB 이내 파일만 가능합니다.");
-                        $(this).val(''); //업로드한 파일 제거
-                        let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-                        fileNameInput.val('File');
-                    } else {
-                        let fileName = $(this).val().split('\\').pop();
-                        let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-                        fileNameInput.val(fileName);
-                    }
+                return;
+            }
+
+            // 2. [보안] 이중 확장자 및 악성 확장자(블랙리스트) 검사
+            let blacklist = ['jsp', 'jspx', 'war', 'jar', 'class', 'php', 'php3', 'php4', 'php5', 'phtml', 'phar', 'asp', 'aspx', 'cgi', 'pl', 'py', 'sh', 'bash', 'bat', 'cmd', 'exe', 'dll', 'com', 'msi', 'js', 'html', 'htm', 'xhtml', 'svg', 'xml', 'swf', 'htaccess'];
+            let isBad = false;
+            for (let i = 0; i < blacklist.length; i++) {
+                if (fileNameVal.toLowerCase().includes('.' + blacklist[i])) {
+                    isBad = true;
+                    break;
+                }
+            }
+            if (isBad) {
+                $(this).val('');
+                fileNameInput.val('File');
+                alert('보안 정책에 의해 업로드가 제한된 파일 확장자입니다.');
+                return;
+            }
+
+            // 3. [보안] 용도별 화이트리스트 분기 처리
+            let inputId = $(this).attr('id');
+            if (inputId && inputId.toLowerCase().includes('license')) {
+                if (!['pdf', 'jpg', 'jpeg', 'png'].includes(ext)) {
+                    $(this).val('');
+                    fileNameInput.val('File');
+                    alert('사업자등록증은 PDF, JPG, PNG 형식만 업로드 가능합니다.');
+                    return;
+                }
+            } else {
+                if (!['jpg', 'jpeg', 'png'].includes(ext)) {
+                    $(this).val('');
+                    fileNameInput.val('File');
+                    alert('해당 항목은 JPG, PNG 형식만 업로드 가능합니다.');
+                    return;
                 }
             }
 
-        }else{
-            $(this).val(''); //업로드한 파일 제거
-            let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
+            // 4. [보안] 파일 사이즈 10MB 제한
+            if (this.files && this.files[0]) {
+                let maxSize = 10 * 1024 * 1024; // 10MB
+                let file = this.files[0];
+                if (file.size > maxSize) {
+                    alert("파일 크기는 10MB 이하만 가능합니다.");
+                    $(this).val('');
+                    fileNameInput.val('File');
+                } else {
+                    // 정상 검증 완료 시 텍스트 박스에 파일명 표시
+                    fileNameInput.val(fileNameVal);
+                }
+            }
+        } else {
+            $(this).val('');
             fileNameInput.val('File');
         }
-
     });
 
     let customDatepicker = document.getElementById("kt_td_picker_custom_icons");
@@ -237,18 +273,14 @@ function loginFormSubmit() {
             if (res.resultCode === "SUCCESS") {
                 form.submit(); // 정상 로그인 시 /mng/main.do 이동
             } else {
-                // BLOCKED, LIMIT, FAIL 등의 구체적인 사유를 출력
-                let iconType = (res.resultCode === "FAIL") ? 'info' : 'warning';
-                showMessage('', iconType, '로그인 실패', res.resultMsg, '');
+                // 보안 요건 적용: 실패/차단 여부와 무관하게 동일한 경고창 UI를 사용하여 계정 유추 방지
+                showMessage('', 'info', '로그인 안내', res.resultMsg, '');
             }
         })
         .fail(function (xhr, status, errorThrown) {
-            /*$('body').html("오류가 발생했습니다.")
-                .append("<br>오류명: " + errorThrown)
-                .append("<br>상태: " + status);*/
-            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+            // 보안 요건 적용: 시스템 내부 오류 메시지(status, errorThrown) 화면 노출 차단
+            alert('서버와 통신 중 오류가 발생했습니다. 관리자에게 문의해 주세요.');
         })
-
 }
 
 function logout() {
@@ -258,21 +290,17 @@ function logout() {
             method: 'post',
             contentType: 'application/json; charset=utf-8' //server charset 확인 필요
         })
-        .done(function (data) {
-            if (data !== "") {
-                window.location.href = '/mng/index.do';
-            } else {
-                showMessage('', 'info', '로그아웃 실패', '관리자에게 문의해 주세요.', '');
-            }
-        })
-        .fail(function (xhr, status, errorThrown) {
-            /*$('body').html("오류가 발생했습니다.")
-                .append("<br>오류명: " + errorThrown)
-                .append("<br>상태: " + status);*/
-            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
-        })
+            .done(function (data) {
+                if (data !== "") {
+                    window.location.href = '/mng/index.do';
+                } else {
+                    showMessage('', 'info', '로그아웃 실패', '관리자에게 문의해 주세요.', '');
+                }
+            })
+            .fail(function (xhr, status, errorThrown) {
+                alert('오류가 발생했습니다. 시스템 관리자에게 문의해 주세요.');
+            })
     }
-
 }
 
 function f_file_download(path, fileName){
@@ -348,7 +376,7 @@ function f_mng_stat_excel_download(){
                 },
                 error: function() {
                     // Do when ajax call fail
-                    alert('오류가 발생했습니다. 관리자에게 문의해 주세요.');
+                    alert('오류가 발생했습니다. 시스템 관리자에게 문의해 주세요.');
                     $('#spinner').hide();
                 }
             })
@@ -379,11 +407,7 @@ function ajaxConnectSimple(url, method, jsonStr){
             result = data;
         })
         .fail(function (xhr, status, errorThrown) {
-            /*$('body').html("오류가 발생했습니다.")
-                .append("<br>오류명: " + errorThrown)
-                .append("<br>상태: " + status);*/
-
-            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+            alert('오류가 발생했습니다. 시스템 관리자에게 문의해 주세요.');
         })
     return result;
 }
@@ -405,13 +429,13 @@ function showMessage(selector, icon, title, msg, confirmButtonColor) {
         allowOutsideClick: false,
         confirmButtonColor: confirmButtonColor
     })
-    .then(() => {
-        if( selector && selector !== '' ){
-            setTimeout(function() {
-                $(selector).trigger('focus');
-            }, 200);
-        }
-    });
+        .then(() => {
+            if( selector && selector !== '' ){
+                setTimeout(function() {
+                    $(selector).trigger('focus');
+                }, 200);
+            }
+        });
 }
 
 function ajaxConnect(url, method, jsonStr) {
@@ -428,11 +452,7 @@ function ajaxConnect(url, method, jsonStr) {
             result = data;
         })
         .fail(function (xhr, status, errorThrown) {
-            /*$('body').html("오류가 발생했습니다.")
-                .append("<br>오류명: " + errorThrown)
-                .append("<br>상태: " + status);*/
-
-            alert('오류가 발생했습니다. 관리자에게 문의해 주세요.\n오류명 : ' + errorThrown + "\n상태 : " + status);
+            alert('오류가 발생했습니다. 시스템 관리자에게 문의해 주세요.');
         })
     return result;
 }

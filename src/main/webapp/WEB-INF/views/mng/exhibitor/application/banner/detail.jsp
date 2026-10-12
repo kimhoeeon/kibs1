@@ -315,7 +315,7 @@ if (document.documentElement) {
                                                             <!--end::Col-->
                                                             <!--begin::Col-->
                                                             <div class="col-lg-6">
-                                                                <input type="file" id="bannerImageFile1" name="bannerImageFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg">
+                                                                <input type="file" id="bannerImageFile1" name="bannerImageFile" class="d-none upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                                 <label class="btn btn-primary" for="bannerImageFile1">파일선택</label>
                                                             </div>
                                                             <!--end::Col-->
@@ -341,7 +341,7 @@ if (document.documentElement) {
                                                             <!--end::Col-->
                                                             <!--begin::Col-->
                                                             <div class="col-lg-6">
-                                                                <input type="file" id="logoImageFile1" name="logoImageFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg">
+                                                                <input type="file" id="logoImageFile1" name="logoImageFile" class="d-none upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                                 <label class="btn btn-primary" for="logoImageFile1">파일선택</label>
                                                             </div>
                                                             <!--end::Col-->

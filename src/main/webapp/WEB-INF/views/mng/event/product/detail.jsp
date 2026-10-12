@@ -339,7 +339,7 @@ if (document.documentElement) {
                                                             <!--end::Col-->
                                                             <!--begin::Col-->
                                                             <div class="col-lg-6">
-                                                                <input type="file" id="productPhotoFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg">
+                                                                <input type="file" id="productPhotoFile" class="d-none upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                                 <label class="btn btn-primary" for="productPhotoFile">파일선택</label>
                                                             </div>
                                                             <!--end::Col-->

@@ -695,7 +695,7 @@
                                             </div>
                                             <div class="input file_box">
                                                 <input type="text" id="logo" class="upload_name" value="" placeholder="File" disabled="disabled">
-                                                <input type="file" id="logoFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                                <input type="file" id="logoFile" class="upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                 <label for="logoFile">Browse</label>
                                                 <div class="cmnt">JPG, PNG formats, and only under 10MB are accepted. (Recommended: 150x150px)</div>
                                             </div>
@@ -1162,7 +1162,7 @@
                                                     <div class="cmnt2">Up to 5 images per product</div>
                                                     <div class="onlinePrdBox">
                                                         <input type="text" id="onlineImage1_1" name="onlineImage" class="upload_name" value="" placeholder="File" disabled="disabled">
-                                                        <input type="file" id="onlineImageFile1_1" name="onlineImageFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                                        <input type="file" id="onlineImageFile1_1" name="onlineImageFile" class="upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                         <label for="onlineImageFile1_1">Browse</label>
                                                         <span class="onlinePrdAdd" style="cursor: pointer">Add</span>
                                                         <span class="onlinePrdDel" style="cursor: pointer">Delete</span>
@@ -1295,7 +1295,7 @@
                                                                 </c:if>
                                                             </c:forEach>
                                                             <input type="text" id="onlineImage${onlineInfoNumIdx}_${onlineImageNumIdx + 1}" name="onlineImage" class="upload_name" value="" disabled="disabled">
-                                                            <input type="file" id="onlineImageFile${onlineInfoNumIdx}_${onlineImageNumIdx + 1}" name="onlineImageFile" accept=".png, .jpg, .jpeg" class="upload_hidden">
+                                                            <input type="file" id="onlineImageFile${onlineInfoNumIdx}_${onlineImageNumIdx + 1}" name="onlineImageFile" accept="image/jpeg, image/png, .jpg, .jpeg, .png" class="upload_hidden">
                                                             <label for="onlineImageFile${onlineInfoNumIdx}_${onlineImageNumIdx + 1}">Browse</label>
                                                             <span class="onlinePrdAdd" style="cursor: pointer">Add</span>
                                                             <span class="onlinePrdDel" style="cursor: pointer">Delete</span>

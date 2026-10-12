@@ -549,7 +549,7 @@
                                             </div>
                                             <div class="input file_box d-flex align-items-center">
                                                 <input type="text" id="companyLicense" name="companyLicense" class="upload_name" value="" placeholder="File" disabled="disabled">
-                                                <input type="file" id="companyLicenseFile" class="upload_hidden" accept=".png, .jpg, .jpeg, .pdf">
+                                                <input type="file" id="companyLicenseFile" class="upload_hidden" accept="image/jpeg, image/png, application/pdf, .jpg, .jpeg, .png, .pdf">
                                                 <label for="companyLicenseFile">파일선택</label>
                                                 <div class="cmnt">PDF, JPG, PNG형식, 10MB 이하만 가능합니다.</div>
                                             </div>
@@ -581,7 +581,7 @@
                                             </div>
                                             <div class="input file_box">
                                                 <input type="text" id="logo" class="upload_name" value="" placeholder="File" disabled="disabled">
-                                                <input type="file" id="logoFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                                <input type="file" id="logoFile" class="upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                 <label for="logoFile">파일선택</label>
                                                 <div class="cmnt">JPG, PNG형식, 10MB 이하만 가능합니다. (권장 사이즈 : 150x150px)</div>
                                             </div>
@@ -1006,7 +1006,7 @@
                                                     <div class="cmnt2">1개 제품 당 제품사진 최대 5개 등록 가능</div>
                                                     <div class="onlinePrdBox">
                                                         <input type="text" id="onlineImage1_1" name="onlineImage" class="upload_name" value="" placeholder="File" disabled="disabled">
-                                                        <input type="file" id="onlineImageFile1_1" name="onlineImageFile" class="upload_hidden" accept=".png, .jpg, .jpeg">
+                                                        <input type="file" id="onlineImageFile1_1" name="onlineImageFile" class="upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                         <label for="onlineImageFile1_1">파일선택</label>
                                                         <span class="onlinePrdAdd" style="cursor: pointer">추가</span>
                                                         <span class="onlinePrdDel" style="cursor: pointer">삭제</span>
@@ -1139,7 +1139,7 @@
                                                                 </c:if>
                                                             </c:forEach>
                                                             <input type="text" id="onlineImage${onlineInfoNumIdx}_${onlineImageNumIdx + 1}" name="onlineImage" class="upload_name" value="" disabled="disabled">
-                                                            <input type="file" id="onlineImageFile${onlineInfoNumIdx}_${onlineImageNumIdx + 1}" name="onlineImageFile" accept=".png, .jpg, .jpeg" class="upload_hidden">
+                                                            <input type="file" id="onlineImageFile${onlineInfoNumIdx}_${onlineImageNumIdx + 1}" name="onlineImageFile" accept="image/jpeg, image/png, .jpg, .jpeg, .png" class="upload_hidden">
                                                             <label for="onlineImageFile${onlineInfoNumIdx}_${onlineImageNumIdx + 1}">파일선택</label>
                                                             <span class="onlinePrdAdd" style="cursor: pointer">추가</span>
                                                             <span class="onlinePrdDel" style="cursor: pointer">삭제</span>

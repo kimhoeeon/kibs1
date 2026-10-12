@@ -299,7 +299,7 @@ if (document.documentElement) {
                                                                         <!--end::Col-->
                                                                         <!--begin::Col-->
                                                                         <div class="col-lg-6">
-                                                                            <input type="file" id="productImageFile${status.index + 1}_${productImageNumIdx + 1}" name="productImageFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg">
+                                                                            <input type="file" id="productImageFile${status.index + 1}_${productImageNumIdx + 1}" name="productImageFile" class="d-none upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                                             <label class="btn btn-primary" for="productImageFile${status.index + 1}_${productImageNumIdx + 1}">파일선택</label>
                                                                             <span class="onlinePrdAdd" style="cursor: pointer">추가</span>
                                                                             <span class="onlinePrdDel" style="cursor: pointer">삭제</span>

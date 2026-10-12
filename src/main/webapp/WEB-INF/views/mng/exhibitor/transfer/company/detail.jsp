@@ -514,7 +514,7 @@ if (document.documentElement) {
                                                             <!--end::Col-->
                                                             <!--begin::Col-->
                                                             <div class="col-lg-6">
-                                                                <input type="file" id="companyLicenseFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg, .pdf">
+                                                                <input type="file" id="companyLicenseFile" class="d-none upload_hidden" accept="image/jpeg, image/png, application/pdf, .jpg, .jpeg, .png, .pdf">
                                                                 <label class="btn btn-primary" for="companyLicenseFile">파일선택</label>
                                                             </div>
                                                             <!--end::Col-->
@@ -1402,7 +1402,7 @@ if (document.documentElement) {
                                                                 <!--end::Col-->
                                                                 <!--begin::Col-->
                                                                 <div class="col-lg-6">
-                                                                    <input type="file" id="promotionImageFile1" name="promotionImageFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg">
+                                                                    <input type="file" id="promotionImageFile1" name="promotionImageFile" class="d-none upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                                     <label class="btn btn-primary" for="promotionImageFile1">파일선택</label>
                                                                     <span class="proImgDel file_box_del mx-4 my-4 fs-base cursor-pointer">삭제</span>
                                                                 </div>
@@ -1433,7 +1433,7 @@ if (document.documentElement) {
                                                                 <!--end::Col-->
                                                                 <!--begin::Col-->
                                                                 <div class="col-lg-6">
-                                                                    <input type="file" id="promotionImageFile2" name="promotionImageFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg">
+                                                                    <input type="file" id="promotionImageFile2" name="promotionImageFile" class="d-none upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                                     <label class="btn btn-primary" for="promotionImageFile2">파일선택</label>
                                                                     <span class="proImgDel file_box_del mx-4 my-4 fs-base cursor-pointer">삭제</span>
                                                                 </div>
@@ -1464,7 +1464,7 @@ if (document.documentElement) {
                                                                 <!--end::Col-->
                                                                 <!--begin::Col-->
                                                                 <div class="col-lg-6">
-                                                                    <input type="file" id="promotionImageFile3" name="promotionImageFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg">
+                                                                    <input type="file" id="promotionImageFile3" name="promotionImageFile" class="d-none upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                                     <label class="btn btn-primary" for="promotionImageFile3">파일선택</label>
                                                                     <span class="proImgDel file_box_del mx-4 my-4 fs-base cursor-pointer">삭제</span>
                                                                 </div>
@@ -1643,7 +1643,7 @@ if (document.documentElement) {
                                                                     <!--end::Col-->
                                                                     <!--begin::Col-->
                                                                     <div class="col-lg-6">
-                                                                        <input type="file" id="productImageFile1_1" name="productImageFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg">
+                                                                        <input type="file" id="productImageFile1_1" name="productImageFile" class="d-none upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                                         <label class="btn btn-primary" for="productImageFile1_1">파일선택</label>
                                                                         <span class="onlinePrdAdd" style="cursor: pointer">추가</span>
                                                                         <span class="onlinePrdDel" style="cursor: pointer">삭제</span>
@@ -1795,7 +1795,7 @@ if (document.documentElement) {
                                                                         <!--end::Col-->
                                                                         <!--begin::Col-->
                                                                         <div class="col-lg-6">
-                                                                            <input type="file" id="productImageFile${status.index + 1}_${productImageNumIdx + 1}" name="productImageFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg">
+                                                                            <input type="file" id="productImageFile${status.index + 1}_${productImageNumIdx + 1}" name="productImageFile" class="d-none upload_hidden" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
                                                                             <label class="btn btn-primary" for="productImageFile${status.index + 1}_${productImageNumIdx + 1}">파일선택</label>
                                                                             <span class="onlinePrdAdd" style="cursor: pointer">추가</span>
                                                                             <span class="onlinePrdDel" style="cursor: pointer">삭제</span>
