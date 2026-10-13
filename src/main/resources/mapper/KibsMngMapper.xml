@@ -6617,7 +6617,7 @@
         SELECT COALESCE(SUM(fail_cnt), 0)
         FROM admin_login_fail_log
         WHERE ip = #{ip}
-          AND last_fail_dttm >= DATE_SUB(NOW(), INTERVAL #{ipCheckMinutes} MINUTE)
+          AND last_fail_dttm >= DATE_SUB(NOW(), INTERVAL #{ipLockMinutes} MINUTE)
     </select>
 
     <!-- 특정 IP가 지정된 차단 시간(분) 이내에 있는지 검사 -->

@@ -4025,7 +4025,7 @@
         SELECT IFNULL(SUM(fail_cnt), 0)
         FROM user_login_fail_log
         WHERE ip = #{ip}
-          AND last_fail_dttm >= DATE_SUB(NOW(), INTERVAL #{ipCheckMinutes} MINUTE)
+          AND last_fail_dttm >= DATE_SUB(NOW(), INTERVAL #{ipLockMinutes} MINUTE)
     </select>
 
     <!-- 3. 특정 IP 차단 여부 확인 (최근 차단시간(ipLockMinutes) 이내에 실패 이력이 존재하는지) -->
