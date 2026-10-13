@@ -3918,12 +3918,27 @@ public class KibsMngController {
         if (orgFilename != null) {
             String lowerFileName = orgFilename.toLowerCase();
 
-            // 1. 블랙리스트 검사 (이중 확장자 방어)
+            // 블랙리스트: 기존 + 우회/악성/매크로/설정파일 완벽 차단
             List<String> BLACKLIST = Arrays.asList(
+                    // 1. 기존 차단 목록 (기본 웹셸 및 스크립트)
                     "jsp", "jspx", "war", "jar", "class", "php", "php3", "php4", "php5", "phtml", "phar",
                     "asp", "aspx", "cgi", "pl", "py", "sh", "bash", "bat", "cmd", "exe", "dll", "com",
-                    "msi", "js", "html", "htm", "xhtml", "svg", "xml", "swf", "htaccess"
+                    "msi", "js", "html", "htm", "xhtml", "svg", "xml", "swf", "htaccess",
+
+                    // 2. 웹셸 우회용 특수/변형 확장자
+                    "jspa", "jsw", "jsv", "jtml", "pht", "phps", "php6", "php7", "inc",
+                    "asa", "asax", "ashx", "asmx", "cer", "shtml", "shtm", "cfm", "cfml",
+
+                    // 3. 악성코드 및 랜섬웨어 윈도우 스크립트
+                    "vbs", "vbe", "ps1", "scr", "pif", "hta", "wsf", "wsc", "ws", "cpl", "msc",
+
+                    // 4. 매크로 바이러스 (악성 오피스 문서)
+                    "docm", "xlsm", "pptm", "rtf",
+
+                    // 5. 서버 설정 덮어쓰기 및 정보 탈취
+                    "config", "htpasswd", "env", "ini"
             );
+
             for (String badExt : BLACKLIST) {
                 if (lowerFileName.contains("." + badExt)) {
                     throw new RuntimeException("보안 정책에 의해 차단된 확장자가 포함되어 있습니다.");
@@ -4068,11 +4083,26 @@ public class KibsMngController {
                     }
 
                     String lowerFileName = oriFile.toLowerCase();
-                    // 1. 차단할 블랙리스트 (요청사항 반영)
+
+                    // 블랙리스트: 기존 + 우회/악성/매크로/설정파일 완벽 차단
                     List<String> BLACKLIST = Arrays.asList(
+                            // 1. 기존 차단 목록 (기본 웹셸 및 스크립트)
                             "jsp", "jspx", "war", "jar", "class", "php", "php3", "php4", "php5", "phtml", "phar",
                             "asp", "aspx", "cgi", "pl", "py", "sh", "bash", "bat", "cmd", "exe", "dll", "com",
-                            "msi", "js", "html", "htm", "xhtml", "svg", "xml", "swf", "htaccess"
+                            "msi", "js", "html", "htm", "xhtml", "svg", "xml", "swf", "htaccess",
+
+                            // 2. 웹셸 우회용 특수/변형 확장자
+                            "jspa", "jsw", "jsv", "jtml", "pht", "phps", "php6", "php7", "inc",
+                            "asa", "asax", "ashx", "asmx", "cer", "shtml", "shtm", "cfm", "cfml",
+
+                            // 3. 악성코드 및 랜섬웨어 윈도우 스크립트
+                            "vbs", "vbe", "ps1", "scr", "pif", "hta", "wsf", "wsc", "ws", "cpl", "msc",
+
+                            // 4. 매크로 바이러스 (악성 오피스 문서)
+                            "docm", "xlsm", "pptm", "rtf",
+
+                            // 5. 서버 설정 덮어쓰기 및 정보 탈취
+                            "config", "htpasswd", "env", "ini"
                     );
 
                     // 2. 이중 확장자 및 악성 확장자 원천 차단 (예: test.jpg.jsp 방어)
