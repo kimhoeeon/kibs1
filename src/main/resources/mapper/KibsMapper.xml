@@ -4005,4 +4005,60 @@
         WHERE ex_seq = #{exSeq}
     </delete>
 
+    <!-- ============================================================== -->
+    <!-- 사용자 로그인 보안 제어 (user_login_fail_log) -->
+    <!-- ============================================================== -->
+
+    <!-- 1. 계정별 실패 로그 조회 -->
+    <select id="selectUserLoginFailLog" parameterType="map" resultType="map">
+        SELECT user_id
+             , ip
+             , fail_cnt
+             , block_yn
+             , last_fail_dttm
+        FROM user_login_fail_log
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 2. 특정 IP 기준 지정된 시간(ipCheckMinutes) 내의 총 실패 횟수 합산 -->
+    <select id="selectUserRecentFailCountByIp" parameterType="map" resultType="int">
+        SELECT IFNULL(SUM(fail_cnt), 0)
+        FROM user_login_fail_log
+        WHERE ip = #{ip}
+          AND last_fail_dttm >= DATE_SUB(NOW(), INTERVAL #{ipCheckMinutes} MINUTE)
+    </select>
+
+    <!-- 3. 특정 IP 차단 여부 확인 (최근 차단시간(ipLockMinutes) 이내에 실패 이력이 존재하는지) -->
+    <select id="selectUserIpBlockCheck" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM user_login_fail_log
+        WHERE ip = #{ip}
+          AND last_fail_dttm >= DATE_SUB(NOW(), INTERVAL #{ipLockMinutes} MINUTE)
+    </select>
+
+    <!-- 4. 로그인 실패 시 카운트 증가 (UPSERT: 없으면 INSERT, 있으면 UPDATE) -->
+    <insert id="upsertUserLoginFailLog" parameterType="map">
+        INSERT INTO user_login_fail_log (user_id, ip, fail_cnt, last_fail_dttm)
+        VALUES (#{userId}, #{ip}, 1, NOW())
+        ON DUPLICATE KEY UPDATE
+                             ip = #{ip},
+                             fail_cnt = fail_cnt + 1,
+                             last_fail_dttm = NOW()
+    </insert>
+
+    <!-- 5. 로그인 성공 또는 차단 시간 경과 시 실패 카운트 0으로 초기화 -->
+    <update id="resetUserLoginFailLog" parameterType="map">
+        UPDATE user_login_fail_log
+        SET fail_cnt = 0
+          , ip = #{ip}
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- 6. 100회 이상 실패 시 계정 영구 차단 처리 -->
+    <update id="updateUserLoginBlock" parameterType="map">
+        UPDATE user_login_fail_log
+        SET block_yn = 'Y'
+        WHERE user_id = #{userId}
+    </update>
+
 </mapper>

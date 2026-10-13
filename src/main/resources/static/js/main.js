@@ -6209,7 +6209,8 @@ function exibitLoginFormSubmit() {
     let jsonObj = {
         id: id,
         password: password,
-        transferYear: transferYear
+        transferYear: transferYear,
+        lang: 'KO'
     };
     $.ajax({
         url: '/exhibit/loginForm.do',
@@ -6218,20 +6219,19 @@ function exibitLoginFormSubmit() {
         contentType: 'application/json; charset=utf-8' //server charset 확인 필요
     })
         .done(function (data) {
-            if (data.resultCode === "0") {
-
+            if (data.resultCode === "SUCCESS") {
                 let hiddenField_seq = document.createElement('input');
                 hiddenField_seq.type = 'hidden';
                 hiddenField_seq.name = 'seq';
                 hiddenField_seq.value = data.customValue;
 
                 form.appendChild(hiddenField_seq); //seq
-
                 document.body.appendChild(form);
 
                 form.submit(); // /mypage/index.do
             } else {
-                showMessage('', 'info', '[ 로그인 실패 ]', '아이디와 비밀번호를 확인해 주세요.', '');
+                // 실패 시 서버에서 보내주는 메시지를 노출 (계정 차단, 불일치 등)
+                showMessage('', 'info', '[ 로그인 실패 ]', data.resultMsg, '');
             }
         })
         .fail(function (xhr, status, errorThrown) {
@@ -6333,6 +6333,18 @@ function f_pre_apply_check_login(){
     // 결과 팝업 (딜레이 적용)
     setTimeout(function() {
         if(nvl(resData,'') !== ''){
+            // [차단 감지 분기 추가]
+            if (resData.seq === "IP_BLOCKED") {
+                Swal.fire({
+                    icon: 'warning', title: '[ 접근 제한 ]',
+                    html: '<span style="font-size: 1.2em;">' + resData.note + '</span>',
+                    allowOutsideClick: false, allowEscapeKey: false,
+                    confirmButtonColor: '#00a8ff', confirmButtonText: '확인',
+                    returnFocus: false
+                }).then(() => { isLoginProcess = false; });
+                return false;
+            }
+
             // [CASE 1: 데이터 있음]
             Swal.fire({
                 icon: 'info', title: '[ 참관 신청 확인 ]',

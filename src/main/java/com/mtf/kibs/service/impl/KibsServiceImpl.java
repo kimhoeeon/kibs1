@@ -8,7 +8,10 @@ import com.mtf.kibs.service.KibsService;
 import com.mtf.kibs.util.AES256Util;
 import com.mtf.kibs.util.StringUtil;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +49,23 @@ public class KibsServiceImpl implements KibsService {
 
     @Autowired
     private AES256Util aes256Util;
+
+    @Value("${security.login.account-max-fail:10}")
+    private int accountMaxFail;
+
+    @Value("${security.login.account-lock-minutes:10}")
+    private int accountLockMinutes;
+
+    @Value("${security.login.ip-check-minutes:10}")
+    private int ipCheckMinutes;
+
+    @Value("${security.login.ip-max-fail:30}")
+    private int ipMaxFail;
+
+    @Value("${security.login.ip-lock-minutes:30}")
+    private int ipLockMinutes;
+
+    private static final Logger log = LoggerFactory.getLogger(KibsServiceImpl.class);
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
@@ -86,6 +106,143 @@ public class KibsServiceImpl implements KibsService {
         responseDTO.setResultCode(resultCode);
         responseDTO.setResultMessage(resultMessage);
         return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public Map<String, Object> loginWithFailCheck(ExhibitorNewDTO exhibitorNewDTO, HttpSession session, String clientIp) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("ip", clientIp);
+        paramMap.put("userId", exhibitorNewDTO.getId());
+        paramMap.put("ipCheckMinutes", ipCheckMinutes);
+        paramMap.put("ipLockMinutes", ipLockMinutes);
+
+        // 유저 전용 로그인 실패 로그 테이블이 필요 (ex: user_login_fail_log)
+        // 아래 쿼리들은 KibsMapper에 추가해 주셔야 합니다.
+        Map<String, Object> failLog = kibsMapper.selectUserLoginFailLog(paramMap);
+
+        // ==============================================================
+        // [1차 방어] 단일 IP 기준 다중 계정 공격 방어
+        // ==============================================================
+        int ipFailCount = kibsMapper.selectUserRecentFailCountByIp(paramMap);
+
+        if (ipFailCount >= ipMaxFail) {
+            int ipBlockCount = kibsMapper.selectUserIpBlockCheck(paramMap);
+            if (ipBlockCount > 0) {
+                // [로그 기록] IP 차단 이벤트
+                log.warn("[LOGIN-EVENT-USER] 계정: {}, IP: {}, 상태: IP_BLOCKED, IP누적실패: {}, 차단시간: {}분",
+                        exhibitorNewDTO.getId(), clientIp, ipFailCount, ipLockMinutes);
+
+                resultMap.put("resultCode", "LIMIT");
+                resultMap.put("resultMsg", "비정상적인 로그인 시도가 감지되어 접근이 일시적으로 제한되었습니다. 잠시 후 다시 시도해 주세요.");
+                return resultMap;
+            }
+        }
+
+        // ==============================================================
+        // [2차 방어] 특정 계정 연속 실패 제한
+        // ==============================================================
+        if (failLog != null) {
+            String blockYn = (String) failLog.get("block_yn");
+            int failCnt = ((Number) failLog.get("fail_cnt")).intValue();
+
+            // [영구 차단(100회 이상)] 확인
+            if ("Y".equals(blockYn) || failCnt >= 100) {
+                log.warn("[LOGIN-EVENT-USER] 계정: {}, IP: {}, 상태: ACCOUNT_PERMA_BLOCKED, 계정누적실패: {}", exhibitorNewDTO.getId(), clientIp, failCnt);
+                resultMap.put("resultCode", "BLOCKED");
+                resultMap.put("resultMsg", "보안 정책에 의해 접근이 차단되었습니다. 관리자에게 문의해 주세요.");
+                return resultMap;
+            }
+
+            // [임시 제한] 확인
+            if (failCnt >= accountMaxFail) {
+                Object dttmObj = failLog.get("last_fail_dttm");
+                if (dttmObj != null) {
+
+                    // 에러 방지: DB 타입(Date, Timestamp, LocalDateTime)에 관계없이 안전하게 밀리초 추출
+                    long lastFailTimeMs = 0;
+                    if (dttmObj instanceof java.sql.Timestamp) {
+                        lastFailTimeMs = ((java.sql.Timestamp) dttmObj).getTime();
+                    } else if (dttmObj instanceof java.time.LocalDateTime) {
+                        lastFailTimeMs = java.sql.Timestamp.valueOf((java.time.LocalDateTime) dttmObj).getTime();
+                    } else if (dttmObj instanceof java.util.Date) {
+                        lastFailTimeMs = ((java.util.Date) dttmObj).getTime();
+                    }
+
+                    // 경과 시간(분) 계산
+                    long diffMin = (System.currentTimeMillis() - lastFailTimeMs) / 60000;
+
+                    if (diffMin < accountLockMinutes) {
+                        log.warn("[LOGIN-EVENT-USER] 계정: {}, IP: {}, 상태: ACCOUNT_LOCKED, 계정누적실패: {}, 잔여차단시간: {}분", exhibitorNewDTO.getId(), clientIp, failCnt, (accountLockMinutes - diffMin));
+                        resultMap.put("resultCode", "LIMIT");
+                        resultMap.put("resultMsg", "로그인 실패 횟수를 초과하여 계정이 일시적으로 보호 조치 되었습니다. 잠시 후 다시 시도해 주세요.");
+                        return resultMap;
+                    } else {
+                        // 10분이 경과했으므로 패스워드 검증 전 실패 횟수를 미리 0으로 초기화
+                        kibsMapper.resetUserLoginFailLog(paramMap);
+                        log.info("[LOGIN-EVENT-USER] 계정: {}, IP: {}, 상태: ACCOUNT_UNLOCK, 메시지: 차단 시간 경과로 카운트 초기화", exhibitorNewDTO.getId(), clientIp);
+                    }
+                }
+            }
+        }
+
+        // ==============================================================
+        // 3. 실제 ID/PW 검증
+        // ==============================================================
+        String getSalt = kibsMapper.getExhibitorNewSalt(exhibitorNewDTO);
+
+        // 아이디가 존재하지 않을 경우 Salt값이 null일 수 있으므로 방어 코드 추가
+        if (getSalt == null) {
+            kibsMapper.upsertUserLoginFailLog(paramMap); // 실패 카운트 증가
+            log.info("[LOGIN-EVENT-USER] 계정: {}, IP: {}, 상태: FAIL_MISMATCH", exhibitorNewDTO.getId(), clientIp);
+            resultMap.put("resultCode", "FAIL");
+            resultMap.put("resultMsg", "아이디 또는 비밀번호가 올바르지 않습니다.");
+            return resultMap;
+        }
+
+        //암호화
+        String pw_encrypt = SHA512(exhibitorNewDTO.getPassword(), getSalt);
+        exhibitorNewDTO.setPassword(pw_encrypt);
+
+        String seq = kibsMapper.checkLoginExhibitorNew(exhibitorNewDTO);
+
+        if (seq != null && !seq.isEmpty()) {
+            kibsMapper.resetUserLoginFailLog(paramMap);
+
+            // [로그 기록] 로그인 성공
+            log.info("[LOGIN-EVENT-USER] 계정: {}, IP: {}, 상태: SUCCESS", exhibitorNewDTO.getId(), clientIp);
+
+            exhibitorNewDTO.setSeq(seq);
+            resultMap.put("resultCode", "SUCCESS");
+            resultMap.put("customValue", seq);
+        } else {
+            kibsMapper.upsertUserLoginFailLog(paramMap);
+
+            Map<String, Object> updatedLog = kibsMapper.selectUserLoginFailLog(paramMap);
+            int currentFailCnt = updatedLog != null ? ((Number) updatedLog.get("fail_cnt")).intValue() : 1;
+
+            if (currentFailCnt >= 100) {
+                kibsMapper.updateUserLoginBlock(paramMap);
+                log.warn("[LOGIN-EVENT-USER] 계정: {}, IP: {}, 상태: ACCOUNT_LOCKED_100_FAIL, 누적실패: {}", exhibitorNewDTO.getId(), clientIp, currentFailCnt);
+
+                resultMap.put("resultCode", "BLOCKED");
+                resultMap.put("resultMsg", "보안 정책에 의해 접근이 차단되었습니다.");
+            } else if (currentFailCnt >= accountMaxFail) {
+                log.warn("[LOGIN-EVENT-USER] 계정: {}, IP: {}, 상태: ACCOUNT_LOCKED_LIMIT, 누적실패: {}", exhibitorNewDTO.getId(), clientIp, currentFailCnt);
+
+                resultMap.put("resultCode", "LIMIT");
+                resultMap.put("resultMsg", "로그인 실패 횟수를 초과하여 계정이 일시적으로 보호 조치 되었습니다. 잠시 후 다시 시도해 주세요.");
+            } else {
+                // [로그 기록] 단순 비밀번호/아이디 오류
+                log.info("[LOGIN-EVENT-USER] 계정: {}, IP: {}, 상태: FAIL_MISMATCH, 누적실패: {}", exhibitorNewDTO.getId(), clientIp, currentFailCnt);
+
+                resultMap.put("resultCode", "FAIL");
+                resultMap.put("resultMsg", "아이디 또는 비밀번호가 올바르지 않습니다.");
+            }
+        }
+
+        return resultMap;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -2058,9 +2215,40 @@ public class KibsServiceImpl implements KibsService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public VisitorDTO processSelectPreVisitorCheck(VisitorDTO visitorDTO) {
-        //System.out.println("KibsServiceImpl > processSelectPreVisitorCheck : ======");
-        return kibsMapper.selectPreVisitorCheck(visitorDTO);
+    public VisitorDTO processSelectPreVisitorCheck(VisitorDTO visitorDTO, String clientIp) {
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("ip", clientIp);
+        paramMap.put("userId", "VISITOR_" + clientIp); // 참관객용 임시 키 (IP 기반)
+        paramMap.put("ipCheckMinutes", ipCheckMinutes);
+        paramMap.put("ipLockMinutes", ipLockMinutes);
+
+        // [방어 로직] 10분 내 30회 초과 조회 실패 시 30분 차단
+        int ipFailCount = kibsMapper.selectUserRecentFailCountByIp(paramMap);
+        if (ipFailCount >= ipMaxFail) {
+            int ipBlockCount = kibsMapper.selectUserIpBlockCheck(paramMap);
+            if (ipBlockCount > 0) {
+                log.warn("[VISITOR-LOGIN-EVENT] IP: {}, 상태: IP_BLOCKED, IP누적실패: {}", clientIp, ipFailCount);
+                VisitorDTO errorDto = new VisitorDTO();
+                errorDto.setSeq("IP_BLOCKED");
+                return errorDto;
+            }
+        }
+
+        // 실제 참관객 데이터 조회
+        VisitorDTO result = kibsMapper.selectPreVisitorCheck(visitorDTO);
+
+        if (result == null) {
+            // 조회 실패 시 카운트 증가
+            kibsMapper.upsertUserLoginFailLog(paramMap);
+            log.info("[VISITOR-LOGIN-EVENT] IP: {}, 상태: FAIL_NOT_FOUND", clientIp);
+        } else {
+            // 조회 성공 시 카운트 초기화
+            kibsMapper.resetUserLoginFailLog(paramMap);
+            log.info("[VISITOR-LOGIN-EVENT] IP: {}, 상태: SUCCESS", clientIp);
+        }
+
+        return result;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})

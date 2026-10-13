@@ -329,4 +329,15 @@ public interface KibsMapper {
     ExhibitorNewDTO selectExhibitorNewInvoiceDetail(String seq);
 
     BrochureDTO selectBrochureInfo(String year);
+
+    // ==============================================================
+    // 사용자 로그인 보안 제어 (Fail Log)
+    // ==============================================================
+    Map<String, Object> selectUserLoginFailLog(Map<String, Object> paramMap);
+    int selectUserRecentFailCountByIp(Map<String, Object> paramMap);
+    int selectUserIpBlockCheck(Map<String, Object> paramMap);
+    void upsertUserLoginFailLog(Map<String, Object> paramMap);
+    void resetUserLoginFailLog(Map<String, Object> paramMap);
+    void updateUserLoginBlock(Map<String, Object> paramMap);
+
 }

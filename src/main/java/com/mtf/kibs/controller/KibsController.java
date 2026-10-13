@@ -918,9 +918,28 @@ public class KibsController {
 
     @RequestMapping(value = "/visitor/preApplyCheck.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<VisitorDTO> visitor_preApplyCheck(@RequestBody VisitorDTO visitorDTO) {
-        //System.out.println("KibsController > visitor_preApplyCheck");
-        VisitorDTO result = kibsService.processSelectPreVisitorCheck(visitorDTO);
+    public ResponseEntity<Object> visitor_preApplyCheck(@RequestBody VisitorDTO visitorDTO, HttpServletRequest request) {
+
+        // 실제 IP 추출 (프록시/L4 방어)
+        String clientIp = request.getHeader("X-Forwarded-For");
+        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getHeader("Proxy-Client-IP");
+        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getHeader("WL-Proxy-Client-IP");
+        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getRemoteAddr();
+        if (clientIp != null && clientIp.contains(",")) clientIp = clientIp.split(",")[0].trim();
+
+        // 서비스 로직 호출 (IP 전달)
+        VisitorDTO result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
+
+        // 차단된 상태인 경우 (429 에러 대신 DTO에 메시지를 담아 200 OK로 리턴)
+        if (result != null && "IP_BLOCKED".equals(result.getSeq())) {
+            String errorMsg = "비정상적인 조회 시도가 감지되어 접근이 일시적으로 제한되었습니다. 잠시 후 다시 시도해 주세요.";
+            if ("EN".equals(visitorDTO.getLang())) {
+                errorMsg = "Access temporarily restricted due to abnormal attempts. Please try again later.";
+            }
+            result.setNote(errorMsg); // 메시지를 빈 필드(note)에 담아 전달
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -2534,16 +2553,47 @@ public class KibsController {
 
     @RequestMapping(value = "/exhibit/loginForm.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> exhibit_loginForm(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
-        //System.out.println("KibsController > exhibit_loginForm");
-        ResponseDTO response = kibsService.processLoginExhibitorNew(exhibitorNewDTO);
-        if(response.getResultCode().equals("0")){
+    public ResponseEntity<Map<String, Object>> exhibit_loginForm(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session, HttpServletRequest request) {
+
+        // 실제 IP 추출 (프록시/L4 방어)
+        String clientIp = request.getHeader("X-Forwarded-For");
+        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getHeader("Proxy-Client-IP");
+        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getHeader("WL-Proxy-Client-IP");
+        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getRemoteAddr();
+        if (clientIp != null && clientIp.contains(",")) clientIp = clientIp.split(",")[0].trim();
+
+        // 서비스 단에서 로그인 보안 로직 처리 (실패/차단 포함)
+        Map<String, Object> response = kibsService.loginWithFailCheck(exhibitorNewDTO, session, clientIp);
+
+        if("SUCCESS".equals(response.get("resultCode"))){
             session.setAttribute("status", "logon");
-            session.setAttribute("lang", "KO");
-            session.setAttribute("seq", exhibitorNewDTO.getSeq());
+
+            // 프론트에서 넘겨준 lang 값 셋팅 (없을 경우 기본값 KO)
+            String lang = exhibitorNewDTO.getLang() != null ? exhibitorNewDTO.getLang() : "KO";
+            session.setAttribute("lang", lang);
+
+            // 서비스 로직에서 넘겨받은 seq 값 셋팅
+            session.setAttribute("seq", response.get("customValue"));
             session.setAttribute("id", exhibitorNewDTO.getId());
             session.setAttribute("transferYear", exhibitorNewDTO.getTransferYear());
         }
+
+        // [선택 사항] 영문일 경우 에러 메시지를 영어로 치환 (lang 플래그 확인)
+        if (!"SUCCESS".equals(response.get("resultCode")) && "EN".equals(exhibitorNewDTO.getLang())) {
+            String krMsg = (String) response.get("resultMsg");
+            if (krMsg != null) {
+                if (krMsg.contains("올바르지 않습니다")) {
+                    response.put("resultMsg", "Invalid ID or Password.");
+                } else if (krMsg.contains("차단되었습니다")) {
+                    response.put("resultMsg", "Access blocked by security policy.");
+                } else if (krMsg.contains("초과하여")) {
+                    response.put("resultMsg", "Account locked due to multiple failed attempts. Please try again later.");
+                } else {
+                    response.put("resultMsg", "Login Failed.");
+                }
+            }
+        }
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -2786,9 +2836,41 @@ public class KibsController {
         ResponseDTO response = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+
         if(uploadFiles != null) {
             for (MultipartFile multipartFile : uploadFiles) {
                 try {
+
+                    // =============== [보안 검증 로직 시작] ===============
+                    long sizeInBytes = multipartFile.getSize();
+                    if (sizeInBytes > 10 * 1024 * 1024) {
+                        throw new RuntimeException("10MB를 초과하는 파일은 업로드할 수 없습니다.");
+                    }
+
+                    String orgFilename = multipartFile.getOriginalFilename();
+                    if(orgFilename != null) {
+                        String lowerFileName = orgFilename.toLowerCase();
+                        List<String> BLACKLIST = Arrays.asList(
+                                "jsp", "jspx", "war", "jar", "class", "php", "php3", "php4", "php5", "phtml", "phar",
+                                "asp", "aspx", "cgi", "pl", "py", "sh", "bash", "bat", "cmd", "exe", "dll", "com",
+                                "msi", "js", "html", "htm", "xhtml", "svg", "xml", "swf", "htaccess"
+                        );
+                        for (String badExt : BLACKLIST) {
+                            if (lowerFileName.contains("." + badExt)) {
+                                throw new RuntimeException("보안 정책에 의해 차단된 확장자가 포함되어 있습니다.");
+                            }
+                        }
+
+                        int lastDotIndex = lowerFileName.lastIndexOf(".");
+                        if (lastDotIndex == -1) {
+                            throw new RuntimeException("확장자가 없는 파일은 업로드할 수 없습니다.");
+                        }
+                        String ext = lowerFileName.substring(lastDotIndex + 1);
+                        if (!ext.equals("pdf") && !ext.equals("jpg") && !ext.equals("jpeg") && !ext.equals("png") && !ext.equals("gif")) {
+                            throw new RuntimeException("허용되지 않는 파일 형식입니다. (PDF, JPG, PNG, GIF 허용)");
+                        }
+                    }
+
                     /* Prod */
                     String path = ResourceUtils.getFile("/usr/local/tomcat/webapps/upload/" + uploadFilePath).toPath().toString();
 

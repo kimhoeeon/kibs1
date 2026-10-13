@@ -3909,11 +3909,43 @@ public class KibsMngController {
         System.out.println("파일타입 : " + image.getContentType());
         System.out.println("파일크기 : " + image.getSize());*/
 
-        String orgFilename = image.getOriginalFilename();                                         // 원본 파일명
-        String uuid = UUID.randomUUID().toString().replaceAll("-", "");           // 32자리 랜덤 문자열
-        String extension = Objects.requireNonNull(orgFilename).substring(orgFilename.lastIndexOf(".") + 1);  // 확장자
-        String saveFilename = uuid + "." + extension;                                             // 디스크에 저장할 파일명
-        String fileFullPath = "/usr/local/tomcat/webapps/upload/editor" + "/" + saveFilename;                      // 디스크에 저장할 파일의 전체 경로
+        long sizeInBytes = image.getSize();
+        if (sizeInBytes > 10 * 1024 * 1024) { // 10MB 제한
+            throw new RuntimeException("10MB를 초과하는 파일은 업로드할 수 없습니다.");
+        }
+
+        String orgFilename = image.getOriginalFilename(); // 원본 파일명
+        if (orgFilename != null) {
+            String lowerFileName = orgFilename.toLowerCase();
+
+            // 1. 블랙리스트 검사 (이중 확장자 방어)
+            List<String> BLACKLIST = Arrays.asList(
+                    "jsp", "jspx", "war", "jar", "class", "php", "php3", "php4", "php5", "phtml", "phar",
+                    "asp", "aspx", "cgi", "pl", "py", "sh", "bash", "bat", "cmd", "exe", "dll", "com",
+                    "msi", "js", "html", "htm", "xhtml", "svg", "xml", "swf", "htaccess"
+            );
+            for (String badExt : BLACKLIST) {
+                if (lowerFileName.contains("." + badExt)) {
+                    throw new RuntimeException("보안 정책에 의해 차단된 확장자가 포함되어 있습니다.");
+                }
+            }
+
+            // 2. 화이트리스트 검사
+            int lastDotIndex = lowerFileName.lastIndexOf(".");
+            if (lastDotIndex == -1) {
+                throw new RuntimeException("확장자가 없는 파일은 업로드할 수 없습니다.");
+            }
+            String ext = lowerFileName.substring(lastDotIndex + 1);
+            if (!ext.equals("jpg") && !ext.equals("jpeg") && !ext.equals("png") && !ext.equals("gif")) {
+                throw new RuntimeException("에디터 이미지는 JPG, PNG, GIF 형식만 업로드 가능합니다.");
+            }
+        }
+
+
+        String uuid = UUID.randomUUID().toString().replaceAll("-", ""); // 32자리 랜덤 문자열
+        String extension = Objects.requireNonNull(orgFilename).substring(orgFilename.lastIndexOf(".") + 1); // 확장자
+        String saveFilename = uuid + "." + extension; // 디스크에 저장할 파일명
+        String fileFullPath = "/usr/local/tomcat/webapps/upload/editor" + "/" + saveFilename; // 디스크에 저장할 파일의 전체 경로
 
         // uploadDir에 해당되는 디렉터리가 없으면, uploadDir에 포함되는 전체 디렉터리 생성
         File dir = new File("/usr/local/tomcat/webapps/upload/editor");

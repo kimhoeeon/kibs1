@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 public interface KibsService {
 
@@ -223,7 +224,7 @@ public interface KibsService {
 
     ResponseDTO processUpdateInstaRefresh(InstaTokenDTO instaTokenDTO);
 
-    VisitorDTO processSelectPreVisitorCheck(VisitorDTO visitorDTO);
+    VisitorDTO processSelectPreVisitorCheck(VisitorDTO visitorDTO, String clientIp);
 
     ResponseDTO processSaveVisitor(VisitorDTO visitorDTO);
 
@@ -246,4 +247,6 @@ public interface KibsService {
     ResponseDTO processUpdateExhibitorNewMaritime(ExhibitorNewDTO exhibitorNewDTO);
 
     BrochureDTO getBrochureInfo(String currentYear);
+
+    Map<String, Object> loginWithFailCheck(ExhibitorNewDTO exhibitorNewDTO, HttpSession session, String clientIp);
 }
