@@ -257,6 +257,12 @@ $(function(){
 });
 
 function loginFormSubmit() {
+
+    // 팝업(Swal)이 화면에 떠 있는 상태라면 함수 실행을 즉시 중단 (무한 엔터 방지)
+    if (Swal.isVisible()) {
+        return false;
+    }
+
     let form = document.getElementById("login_form");
     let id = document.getElementById("adminId");
     let password = document.getElementById("adminPw");
