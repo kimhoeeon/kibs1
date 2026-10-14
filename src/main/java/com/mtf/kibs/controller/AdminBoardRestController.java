@@ -157,14 +157,20 @@ public class AdminBoardRestController {
         try {
             // 관리자가 원할 때 언제든 AI 기사를 추가로 생성해 볼 수 있도록 유연성 제공
             boolean isSend = "Y".equals(sendYn);
-            aiClippingScheduler.processAiClipping(isSend);
+            boolean isSuccess = aiClippingScheduler.processAiClipping(isSend);
 
-            result.put("resultCode", "0");
-            result.put("resultMsg", isSend ? "AI 클리핑 기사 생성 및 뉴스레터 발송이 완료되었습니다." : "AI 클리핑 기사가 생성되었습니다. (발송 생략)");
+            if (isSuccess) {
+                result.put("resultCode", "0");
+                result.put("resultMsg", isSend ? "AI 클리핑 기사 생성 및 뉴스레터 발송이 완료되었습니다." : "AI 클리핑 기사가 생성되었습니다. (발송 생략)");
+            } else {
+                // 수집된 유효 기사가 하나도 없어 생성되지 않았을 때
+                result.put("resultCode", "-1");
+                result.put("resultMsg", "등록된 키워드로 수집할 수 있는 유효한 최신 기사가 없습니다. 나중에 다시 시도해 주세요.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             result.put("resultCode", "-1");
-            result.put("resultMsg", "생성 중 오류가 발생했습니다.");
+            result.put("resultMsg", "생성 중 시스템 오류가 발생했습니다.");
         }
         return ResponseEntity.ok(result);
     }

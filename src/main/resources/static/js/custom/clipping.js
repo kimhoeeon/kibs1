@@ -291,7 +291,8 @@ $(function() {
                     currentPage = 1;
                     loadClippingList(currentPage);
                 } else {
-                    alert(res.resultMsg || "생성 중 오류가 발생했습니다.");
+                    // 수집 실패 시(기사 없음 등) 여기서 Controller가 보낸 resultMsg를 출력
+                    alert(res.resultMsg || "기사 생성 조건을 만족하지 못했습니다.");
                 }
             },
             error: function() {

@@ -87,52 +87,46 @@ public class AiClippingScheduler {
     }
 
     // 3. 실제 클리핑 수집 및 생성을 담당하는 코어 로직
-    public void processAiClipping(boolean isSend) {
+    public boolean processAiClipping(boolean isSend) { // 반환 타입을 boolean으로 변경하여 성공 여부 전달
         System.out.println("========== AI 클리핑 코어 프로세스 시작 (발송여부: " + isSend + ") ==========");
 
         try {
-            // 다중 도메인 환경에서 여러 스케줄러가 동시 실행되는 것을 방지하기 위해 0~10초 랜덤 대기
             int sleepTime = new Random().nextInt(10000);
             Thread.sleep(sleepTime);
 
             String todayDate = LocalDate.now().toString();
             String generatedTitle = "[경기국제보트쇼 AI 클리핑] " + todayDate + " 해양레저산업 주요 동향";
 
-            // 1. DB에서 전체 키워드 목록 조회 (동적 로드)
             List<AiClippingKeywordDTO> keywordList = aiClippingMapper.selectKeywordList();
 
             if (keywordList == null || keywordList.isEmpty()) {
                 System.out.println("========== 등록된 키워드가 없어 AI 클리핑을 종료합니다 ==========");
-                return;
+                return false; // 실패 반환
             }
 
-            // DB에 등록된 전체 키워드 목록을 문자열 리스트로 변환 (2차 필터링 검증용 풀)
             List<String> allRegisteredKeywords = new ArrayList<>();
             for (AiClippingKeywordDTO dto : keywordList) {
                 allRegisteredKeywords.add(dto.getKeyword());
             }
 
-            // 2. 매일 똑같은 기사가 생성되지 않도록 전체 키워드를 무작위로 섞음
             Collections.shuffle(keywordList);
 
             StringBuilder rawArticlesBuilder = new StringBuilder();
             List<String> usedKeywords = new ArrayList<>();
-            List<String[]> usedSources = new ArrayList<>(); // {언론사, 링크, 제목, 날짜}
+            List<String[]> usedSources = new ArrayList<>();
 
             int successKeywordCount = 0;
-            int maxKeywordLimit = 5; // 최대 5개의 유효한 키워드에서 기사 수집
+            int maxKeywordLimit = 5;
 
-            // 3. 추출된 키워드들로 기사 수집 (유효한 기사가 5개 키워드 분량만큼 찰 때까지 반복)
             for (AiClippingKeywordDTO kw : keywordList) {
                 String targetKeyword = kw.getKeyword();
                 System.out.println("-> 수집 시도 키워드: " + targetKeyword);
 
-                // 크롤링 메서드 호출 시 전체 키워드 풀(allRegisteredKeywords) 파라미터 전달
                 String articles = fetchArticlesFromDaum(targetKeyword, usedSources, allRegisteredKeywords);
 
                 if (articles != null && !articles.trim().isEmpty()) {
                     rawArticlesBuilder.append(articles);
-                    usedKeywords.add(targetKeyword); // 유효한 기사가 수집된 키워드만 기록
+                    usedKeywords.add(targetKeyword);
                     successKeywordCount++;
                     System.out.println("   [성공] 유효 기사 수집됨 (현재 수집된 키워드 수: " + successKeywordCount + "/" + maxKeywordLimit + ")");
                 } else {
@@ -140,23 +134,21 @@ public class AiClippingScheduler {
                 }
 
                 if (successKeywordCount >= maxKeywordLimit) {
-                    break; // 5개 키워드에서 수집 완료 시 반복문 탈출
+                    break;
                 }
 
-                Thread.sleep(1500); // 딜레이
+                Thread.sleep(1500);
             }
 
             String rawArticles = rawArticlesBuilder.toString();
 
             if (rawArticles.trim().isEmpty()) {
                 System.out.println("========== 전체 키워드를 탐색했으나 수집된 유효 기사가 없어 AI 클리핑을 종료합니다 ==========");
-                return;
+                return false; // 실패 반환
             }
 
-            // 수집된 키워드와 출처 데이터를 AI 문서 생성기에 파라미터로 전달
             String generatedContent = generateDetailedArticleViaOpenAI(rawArticles, usedKeywords, usedSources);
 
-            // DB에 저장 (Mapper에서 기본적으로 display_yn='N' 상태로 INSERT 됨)
             AiClippingDTO clippingDTO = new AiClippingDTO();
             clippingDTO.setTitle(generatedTitle);
             clippingDTO.setContent(generatedContent);
@@ -166,7 +158,6 @@ public class AiClippingScheduler {
             if (insertCnt > 0 && clippingDTO.getSeq() != null) {
                 System.out.println("========== AI 클리핑 생성 완료 (SEQ: " + clippingDTO.getSeq() + ", 상태: 미노출) ==========");
 
-                // 발송 여부(isSend)에 따른 분기 처리 (10시 스케줄러는 false이므로 여기를 타지 않음)
                 if (isSend) {
                     newsletterService.sendClippingNewsletter(
                             clippingDTO.getSeq(),
@@ -175,11 +166,13 @@ public class AiClippingScheduler {
                     );
                     System.out.println("========== AI 클리핑 뉴스레터 수동 즉시 발송 완료 ==========");
                 }
+                return true; // 성공 반환
             }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("========== AI 클리핑 프로세스 실행 중 오류 발생 ==========");
         }
+        return false; // 예외 발생 시 실패 반환
     }
 
     // Daum 뉴스 크롤링 메서드
@@ -196,8 +189,16 @@ public class AiClippingScheduler {
 
             Elements newsElements = doc.select(".c-item-content");
             int count = 0;
+
+            // ★ [강화 1] 부정적/무관련 단어 블랙리스트 대폭 확장
+            String[] negativeKeywords = {
+                    "구조", "고립", "사망", "숨져", "실종", "추돌", "사고", "화재", "적발", "침몰",
+                    "골프", "부동산", "아파트", "분양", "슈퍼리치", "트럼프", "마약", "음주",
+                    "투기", "사기", "구속", "경찰", "해경", "수사", "논란", "비리", "특혜"
+            };
+
             for (Element element : newsElements) {
-                if (count >= 3) break; // 최대 3개까지만 수집 시도
+                if (count >= 3) break;
 
                 Element titleElement = element.select(".item-title").first();
                 if (titleElement == null) continue;
@@ -205,19 +206,33 @@ public class AiClippingScheduler {
                 String title = titleElement.text();
                 String summary = element.select(".conts-desc").text();
 
-                // [보안 필터 1] 자바스크립트나 HTML 태그가 그대로 노출된 불량 텍스트 차단
+                // 1. 불량 텍스트 차단 (JavaScript/CSS 찌꺼기 등)
                 if (summary.contains("function()") || summary.contains("document.") || summary.contains("{") || summary.contains("}")) {
-                    continue; // 불량 내용 건너뜀
+                    continue;
                 }
 
-                // [1차 필터링 로직] 기사가 타겟 키워드 또는 관리자가 등록한 전체 키워드 풀과 관련이 있는지 검증
+                // 2. 블랙리스트 키워드가 포함되어 있으면 즉시 스킵
+                boolean hasNegativeKeyword = false;
+                for (String negWord : negativeKeywords) {
+                    if (title.contains(negWord) || summary.contains(negWord)) {
+                        hasNegativeKeyword = true;
+                        break;
+                    }
+                }
+                if (hasNegativeKeyword) {
+                    //System.out.println("     [블랙리스트 필터링됨] 제목: " + title);
+                    continue;
+                }
+
+                // 3. ★ [강화 2] 엄격한 관련성 검증 (화이트리스트 기반)
+                // 단순히 '포함'되는 것을 넘어, 의미상 매칭을 강화
                 boolean isRelevant = false;
 
-                // 1. 타겟 키워드가 제목이나 요약 내용에 명시적으로 포함되어 있는지 우선 확인
+                // 3-1. 현재 탐색 중인 타겟 키워드가 제목이나 본문에 있는지 확인
                 if (title.contains(keyword) || summary.contains(keyword)) {
                     isRelevant = true;
                 } else {
-                    // 고정 배열 대신 관리자가 DB에 등록해둔 전체 수집 키워드 풀을 순회하며 검증
+                    // 3-2. 현재 키워드가 없더라도, DB에 등록된 다른 키워드가 명시적으로 포함되어 있는지 확인
                     for (String dbKey : allRegisteredKeywords) {
                         if (title.contains(dbKey) || summary.contains(dbKey)) {
                             isRelevant = true;
@@ -226,10 +241,12 @@ public class AiClippingScheduler {
                     }
                 }
 
-                // 관련성이 없다고 판단되면 이 기사는 수집하지 않고 과감히 스킵 (출처 리스트 제외)
-                if (!isRelevant) continue;
+                if (!isRelevant) {
+                    //System.out.println("     [관련성 부족 필터링됨] 제목: " + title);
+                    continue;
+                }
 
-                // 링크 추출
+                // 4. 링크 추출
                 String link = "";
                 if (titleElement.tagName().equals("a")) {
                     link = titleElement.attr("href");
@@ -239,16 +256,16 @@ public class AiClippingScheduler {
                     link = element.select("a").first().attr("href");
                 }
 
-                // 기사 원문으로 연결되지 않고 검색창으로 돌아가거나 비어있는 깡통 링크 차단
-                if (link == null || link.trim().isEmpty() || link.startsWith("#") || link.contains("search.daum.net")) {
-                    continue; // 실제 기사 링크가 없는 출처는 완전히 제외
+                // 5. 깡통 링크 차단 (단, v.daum.net 같은 포털 기사 링크는 허용)
+                if (link == null || link.trim().isEmpty() || link.startsWith("#") || link.equals(url) || link.equals("https://search.daum.net/search")) {
+                    continue;
                 }
 
                 if (!link.startsWith("http")) {
                     link = "https:" + (link.startsWith("/") ? "" : "/") + link;
                 }
 
-                // 1. [날짜 추출] 검색 목록 페이지 텍스트에서 날짜만 추출
+                // --- (이하 날짜 및 언론사 추출 로직은 기존과 동일) ---
                 String fullText = element.text();
                 fullText = fullText.replace(title, "").replace(summary, "");
                 fullText = fullText.replace("동영상 첨부된 문서", "")
@@ -274,7 +291,6 @@ public class AiClippingScheduler {
                     articleDate = articleDate.substring(0, articleDate.length() - 1);
                 }
 
-                // 2. [언론사명 추출] 완벽 복구된 기사 링크 직접 접속(메타 태그 크롤링) 로직
                 String publisher = "언론사";
                 try {
                     Document articleDoc = Jsoup.connect(link)
@@ -288,7 +304,6 @@ public class AiClippingScheduler {
                         publisher = siteName.replace("Daum", "").replace("|", "").trim();
                     }
                 } catch (Exception e) {
-                    // 링크 접속 실패 시(타임아웃 등) fallback 로직: 기존 소거 텍스트 활용
                     String leftover = fullText;
                     if (!articleDate.isEmpty()) {
                         leftover = leftover.replace(articleDate, "");
@@ -341,7 +356,7 @@ public class AiClippingScheduler {
                 "   -> 하이퍼링크 스타일 양식: <a href='원본링크' target='_blank' style='color:#222222; text-decoration:underline; text-underline-offset:4px; font-weight:bold;'>키워드</a>\n" +
                 "5. 단순 요약이 아닌, 독자(업계 관계자)에게 인사이트를 제공하는 전문적인 기사 톤으로 작성할 것.\n" +
                 "6. 인사말이나 맺음말 없이 바로 <h3> 태그로 시작하는 본문 HTML만 출력하고, 문장이 중간에 잘리지 않도록 반드시 끝맺음을 완벽하게 할 것.\n" +
-                "7. 매일 비슷하거나 정형화된 서론, 문장 구조가 반복되지 않도록 다채로운 어휘를 사용할 것.\n\n" +
+                "7. 매일 비슷하거나 정형화된 서론, 결론, 문장 구조가 반복되지 않도록 주의할 것. 매번 새로운 시각, 다채로운 어휘, 그리고 트렌디한 표현 방식을 도입하여 독자가 지루하지 않게 작성할 것.\n\n" +
                 "[수집된 기사 데이터]\n" + rawArticles;
 
         Map<String, Object> message = new HashMap<>();
