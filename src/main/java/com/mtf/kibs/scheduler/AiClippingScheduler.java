@@ -22,6 +22,7 @@ import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Component
 public class AiClippingScheduler {
@@ -194,6 +195,11 @@ public class AiClippingScheduler {
                 String title = titleElement.text();
                 String summary = element.select(".conts-desc").text();
 
+                // [보안 필터 1] 자바스크립트나 HTML 태그가 그대로 노출된 불량 기사(게시글) 차단
+                if (summary.contains("function()") || summary.contains("document.") || summary.contains("{") || summary.contains("}")) {
+                    continue; // 불량 내용 건너뜀
+                }
+
                 // [1차 필터링 로직] 기사가 타겟 키워드 또는 관리자가 등록한 전체 키워드 풀과 관련이 있는지 검증
                 boolean isRelevant = false;
 
@@ -232,6 +238,11 @@ public class AiClippingScheduler {
                     link = url;
                 }
 
+                // [보안 필터 2] 언론사 원문 링크가 아닌 Daum 포털 자체 링크(v.daum.net 등)는 품질 저하 우려로 차단
+                if (link.contains("v.daum.net") || link.contains("media.daum.net") || link.contains("news.daum.net")) {
+                    continue; // 원문 기사가 아닌 포털 링크는 건너뜀
+                }
+
                 // 1. [날짜 추출] 검색 목록 페이지 텍스트에서 날짜만 추출
                 String fullText = element.text();
                 fullText = fullText.replace(title, "").replace(summary, "");
@@ -245,7 +256,7 @@ public class AiClippingScheduler {
                         .trim();
 
                 String articleDate = "";
-                java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)");
+                Pattern pattern = Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)");
                 java.util.regex.Matcher matcher = pattern.matcher(fullText);
 
                 if (matcher.find()) {
@@ -309,21 +320,25 @@ public class AiClippingScheduler {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(openAiApiKey);
 
-        // [2차 필터링 로직] 프롬프트 0번 항목 신설하여 AI가 직접 무관한 기사를 배제하도록 지시
-        String prompt = "다음 수집된 해양레저 관련 기사 데이터를 바탕으로, 뉴스레터 독자들을 위한 심층적이고 상세한 분석 기사를 작성해줘.\n" +
-                "반드시 아래의 요구사항을 엄격하게 지켜서 HTML 태그 형식으로만 답변해.\n\n" +
-                "[요구사항]\n" +
-                "0. [매우 중요] 제공된 기사 데이터 중 해양레저 산업과 전혀 무관한 내용(예: 동명이인, 다른 산업 분야, 단순 연예/정치 기사 등)이 섞여 있다면, 해당 기사는 요약에서 완전히 제외하고 무시할 것.\n" +
-                "1. 전체 내용을 4~5개의 소주제(섹션)로 나누되, 분량이 너무 길지 않도록 **각 섹션당 본문은 반드시 정확히 2개의 문단**으로만 핵심을 요약해서 작성할 것.\n" +
-                "2. (가장 중요: 여백 확보 및 순번 표기) 각 섹션의 제목은 반드시 '1.', '2.', '3.' 처럼 순번을 매겨서 아래 형식의 <h3> 태그를 사용할 것. (단락 구분 여백 포함)\n" +
+        // [2차 필터링 로직] 프롬프트를 대폭 강화하여, 해양레저 산업과 직결되는 내용만 선별하도록 지시
+        String prompt = "다음 수집된 여러 기사 데이터를 바탕으로, 해양레저 산업 및 비즈니스 동향을 파악하기 위한 B2B 뉴스레터를 작성해줘.\n" +
+                "아래의 [강력한 필터링 지침]과 [작성 요구사항]을 엄격하게 지켜서 HTML 태그 형식으로만 답변해야 해.\n\n" +
+                "[강력한 필터링 지침 - 매우 중요]\n" +
+                "1. 산업 무관 배제: 해양레저(요트, 보트, 서핑, 마리나 등) 비즈니스와 전혀 무관한 기사(예: 골프, 부동산, 슈퍼리치 가십, 정치권 논란 등)는 본문에 키워드가 우연히 섞여 있더라도 **무조건 요약에서 제외하고 폐기**할 것.\n" +
+                "2. 부정적 사건·사고 배제: 단순한 해상 조난, 구조, 실종, 사망, 화재 등 부정적인 사건·사고 사회면 기사(예: '갯벌에 고립된 레저보트 구조' 등)는 산업 동향 파악 목적에 맞지 않으므로 **무조건 제외**할 것.\n" +
+                "   -> (단, 단순 사고가 아닌 해양 안전 장비 개발, 훈련, 해경 정책 발표 등에 관한 건설적인 기사는 포함 가능)\n" +
+                "3. 수집된 기사 중 위 1, 2번에 해당하지 않는 '유효한 산업 관련 기사'만 선별하여 분석 기사를 작성할 것.\n\n" +
+                "[작성 요구사항]\n" +
+                "1. 선별된 유효한 기사 내용을 바탕으로 4~5개의 소주제(섹션)로 나눌 것. 분량이 너무 길지 않도록 **각 섹션당 본문은 반드시 정확히 2개의 문단**으로만 핵심을 요약해서 작성할 것.\n" +
+                "2. (여백 확보 및 순번 표기) 각 섹션의 제목은 반드시 '1.', '2.', '3.' 처럼 순번을 매겨서 아래 형식의 <h3> 태그를 사용할 것. (단락 구분 여백 포함)\n" +
                 "   -> <h3 style='margin-top: 40px; margin-bottom: 20px; font-size: 22px; color: #1d5cad; border-bottom: 2px solid #1d5cad; padding-bottom: 10px;'>1. 섹션 제목</h3>\n" +
-                "3. (가장 중요: 단락 띄어쓰기) 본문 내용은 가독성을 위해 단락마다 반드시 아래 형식의 <p> 태그를 사용할 것. (각 섹션당 <p>태그는 딱 2개씩만 생성할 것)\n" +
+                "3. (단락 띄어쓰기) 본문 내용은 가독성을 위해 단락마다 반드시 아래 형식의 <p> 태그를 사용할 것. (각 섹션당 <p>태그는 딱 2개씩만 생성할 것)\n" +
                 "   -> <p style='margin-bottom: 25px; line-height: 1.8; font-size: 16px; color: #333;'>본문 내용...</p>\n" +
-                "4. 제공된 기사 데이터의 '원본링크'를 반드시 활용하여, 본문 문맥 중 텍스트에 <a> 태그로 하이퍼링크를 걸어줄 것.\n" +
+                "4. 선별하여 요약에 반영한 기사의 '원본링크'를 반드시 활용하여, 본문 문맥 중 핵심 텍스트에 <a> 태그로 하이퍼링크를 1개 이상 걸어줄 것.\n" +
                 "   -> 하이퍼링크 스타일 양식: <a href='원본링크' target='_blank' style='color:#222222; text-decoration:underline; text-underline-offset:4px; font-weight:bold;'>키워드</a>\n" +
-                "5. 단순 요약이 아닌, 독자에게 인사이트를 제공하는 전문적인 기사 톤으로 작성할 것.\n" +
+                "5. 단순 요약이 아닌, 독자(업계 관계자)에게 인사이트를 제공하는 전문적인 기사 톤으로 작성할 것.\n" +
                 "6. 인사말이나 맺음말 없이 바로 <h3> 태그로 시작하는 본문 HTML만 출력하고, 문장이 중간에 잘리지 않도록 반드시 끝맺음을 완벽하게 할 것.\n" +
-                "7. [매우 중요] 매일 비슷하거나 정형화된 서론, 결론, 문장 구조가 반복되지 않도록 주의할 것. 매번 새로운 시각, 다채로운 어휘, 그리고 트렌디한 표현 방식을 도입하여 독자가 지루하지 않게 작성할 것.\n\n" +
+                "7. 매일 비슷하거나 정형화된 서론, 문장 구조가 반복되지 않도록 다채로운 어휘를 사용할 것.\n\n" +
                 "[수집된 기사 데이터]\n" + rawArticles;
 
         Map<String, Object> message = new HashMap<>();
