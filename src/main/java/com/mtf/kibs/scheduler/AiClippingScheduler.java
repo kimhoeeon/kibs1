@@ -19,9 +19,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
@@ -93,7 +95,7 @@ public class AiClippingScheduler {
             int sleepTime = new Random().nextInt(10000);
             Thread.sleep(sleepTime);
 
-            String todayDate = java.time.LocalDate.now().toString();
+            String todayDate = LocalDate.now().toString();
             String generatedTitle = "[경기국제보트쇼 AI 클리핑] " + todayDate + " 해양레저산업 주요 동향";
 
             // 1. DB에서 전체 키워드 목록 조회 (동적 로드)
@@ -203,7 +205,7 @@ public class AiClippingScheduler {
                 String title = titleElement.text();
                 String summary = element.select(".conts-desc").text();
 
-                // [보안 필터 1] 자바스크립트나 HTML 태그가 그대로 노출된 불량 기사(게시글) 차단
+                // [보안 필터 1] 자바스크립트나 HTML 태그가 그대로 노출된 불량 텍스트 차단
                 if (summary.contains("function()") || summary.contains("document.") || summary.contains("{") || summary.contains("}")) {
                     continue; // 불량 내용 건너뜀
                 }
@@ -225,10 +227,9 @@ public class AiClippingScheduler {
                 }
 
                 // 관련성이 없다고 판단되면 이 기사는 수집하지 않고 과감히 스킵 (출처 리스트 제외)
-                if (!isRelevant) {
-                    continue;
-                }
+                if (!isRelevant) continue;
 
+                // 링크 추출
                 String link = "";
                 if (titleElement.tagName().equals("a")) {
                     link = titleElement.attr("href");
@@ -238,17 +239,13 @@ public class AiClippingScheduler {
                     link = element.select("a").first().attr("href");
                 }
 
-                if (link != null && !link.isEmpty() && !link.startsWith("http")) {
-                    link = "https://search.daum.net/search" + (link.startsWith("/") ? "" : "/") + link;
+                // 기사 원문으로 연결되지 않고 검색창으로 돌아가거나 비어있는 깡통 링크 차단
+                if (link == null || link.trim().isEmpty() || link.startsWith("#") || link.contains("search.daum.net")) {
+                    continue; // 실제 기사 링크가 없는 출처는 완전히 제외
                 }
 
-                if (link == null || link.isEmpty()) {
-                    link = url;
-                }
-
-                // [보안 필터 2] 언론사 원문 링크가 아닌 Daum 포털 자체 링크(v.daum.net 등)는 품질 저하 우려로 차단
-                if (link.contains("v.daum.net") || link.contains("media.daum.net") || link.contains("news.daum.net")) {
-                    continue; // 원문 기사가 아닌 포털 링크는 건너뜀
+                if (!link.startsWith("http")) {
+                    link = "https:" + (link.startsWith("/") ? "" : "/") + link;
                 }
 
                 // 1. [날짜 추출] 검색 목록 페이지 텍스트에서 날짜만 추출
@@ -265,14 +262,14 @@ public class AiClippingScheduler {
 
                 String articleDate = "";
                 Pattern pattern = Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)");
-                java.util.regex.Matcher matcher = pattern.matcher(fullText);
+                Matcher matcher = pattern.matcher(fullText);
 
                 if (matcher.find()) {
                     articleDate = matcher.group(1).trim();
                 }
 
                 if (articleDate.isEmpty()) {
-                    articleDate = java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                    articleDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                 } else if (articleDate.endsWith(".")) {
                     articleDate = articleDate.substring(0, articleDate.length() - 1);
                 }
@@ -288,7 +285,6 @@ public class AiClippingScheduler {
                     Element ogSiteName = articleDoc.selectFirst("meta[property=og:site_name]");
                     if (ogSiteName != null && ogSiteName.hasAttr("content")) {
                         String siteName = ogSiteName.attr("content");
-                        // "Daum | 국민일보" 같은 형태에서 "Daum | " 제거
                         publisher = siteName.replace("Daum", "").replace("|", "").trim();
                     }
                 } catch (Exception e) {
@@ -300,7 +296,6 @@ public class AiClippingScheduler {
                     publisher = leftover.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
                 }
 
-                // 최종 방어 로직
                 if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) {
                     publisher = "언론사";
                 }
@@ -382,21 +377,21 @@ public class AiClippingScheduler {
                     String title = src[2];
                     String rawDate = src.length > 3 ? src[3] : "";
 
-                    java.time.LocalDate calculatedDate = java.time.LocalDate.now();
+                    LocalDate calculatedDate = LocalDate.now();
                     try {
                         if (rawDate.matches("\\d{4}\\.\\d{2}\\.\\d{2}")) {
-                            calculatedDate = java.time.LocalDate.parse(rawDate, java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                            calculatedDate = LocalDate.parse(rawDate, DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                         } else if (rawDate.contains("어제")) {
-                            calculatedDate = java.time.LocalDate.now().minusDays(1);
+                            calculatedDate = LocalDate.now().minusDays(1);
                         } else if (rawDate.matches("\\d+\\s*일\\s*전")) {
                             int days = Integer.parseInt(rawDate.replaceAll("[^0-9]", ""));
-                            calculatedDate = java.time.LocalDate.now().minusDays(days);
+                            calculatedDate = LocalDate.now().minusDays(days);
                         }
                     } catch (Exception e) {
-                        calculatedDate = java.time.LocalDate.now();
+                        calculatedDate = LocalDate.now();
                     }
 
-                    String displayDate = calculatedDate.format(java.time.format.DateTimeFormatter.ofPattern("yyyy.MM.dd")) + "(" + calculatedDate.format(java.time.format.DateTimeFormatter.ofPattern("E", java.util.Locale.KOREAN)) + ")";
+                    String displayDate = calculatedDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) + "(" + calculatedDate.format(DateTimeFormatter.ofPattern("E", java.util.Locale.KOREAN)) + ")";
 
                     map.put("publisher", pub);
                     map.put("url", url);
@@ -408,14 +403,14 @@ public class AiClippingScheduler {
                 }
 
                 // 날짜 내림차순 정렬 (가장 최신 기사가 위로 오도록)
-                parsedSources.sort((m1, m2) -> ((java.time.LocalDate) m2.get("date")).compareTo((java.time.LocalDate) m1.get("date")));
+                parsedSources.sort((m1, m2) -> ((LocalDate) m2.get("date")).compareTo((LocalDate) m1.get("date")));
 
                 // 대제목 블록에 사용할 기간(최소~최대) 텍스트 추출 (내림차순이므로 인덱스 역순)
                 String dateRange = "";
                 if (!parsedSources.isEmpty()) {
-                    java.time.format.DateTimeFormatter mdFormatter = java.time.format.DateTimeFormatter.ofPattern("M. d.");
-                    String startDate = ((java.time.LocalDate) parsedSources.get(parsedSources.size() - 1).get("date")).format(mdFormatter);
-                    String endDate = ((java.time.LocalDate) parsedSources.get(0).get("date")).format(mdFormatter);
+                    DateTimeFormatter mdFormatter = DateTimeFormatter.ofPattern("M. d.");
+                    String startDate = ((LocalDate) parsedSources.get(parsedSources.size() - 1).get("date")).format(mdFormatter);
+                    String endDate = ((LocalDate) parsedSources.get(0).get("date")).format(mdFormatter);
 
                     if (startDate.equals(endDate)) {
                         dateRange = startDate;
