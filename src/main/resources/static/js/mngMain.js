@@ -4,15 +4,10 @@
 $(function(){
 
     // --- Ajax 전역 에러 핸들러 설정 ---
-    $.ajaxSetup({
-        error: function(xhr, status, err) {
-            // 401 (Session Expired) 또는 403 (Access Denied IP) 에러 감지
-            if (xhr.status === 401 || xhr.status === 403) {
-                alert("세션이 만료되었거나 접근 권한이 없습니다. 안전을 위해 다시 로그인해 주세요.");
-                window.location.href = "/mng/index.do"; // 관리자 로그인 페이지로 강제 이동
-            } else {
-                alert("서버와 통신 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
-            }
+    $(document).ajaxError(function(event, xhr, settings, thrownError) {
+        if (xhr.status === 401 || xhr.status === 403) {
+            alert("세션이 만료되었거나 접근 권한이 없습니다. 안전을 위해 다시 로그인해 주세요.");
+            window.location.href = "/mng/index.do";
         }
     });
     // ----------------------------------------
@@ -634,6 +629,11 @@ function f_mng_uploadFile(formId, path) {
             body: formData
         })
             .then(function (response) {
+                if (response.status === 401 || response.status === 403) {
+                    alert("세션이 만료되었거나 접근 권한이 없습니다. 안전을 위해 다시 로그인해 주세요.");
+                    window.location.href = "/mng/index.do";
+                    return Promise.reject("Session Expired");
+                }
                 return response.json();
             })
             .then(res => {
@@ -743,6 +743,11 @@ function f_company_uploadFile(elementId, path) {
             body: formData
         })
             .then(function (response) {
+                if (response.status === 401 || response.status === 403) {
+                    alert("세션이 만료되었거나 접근 권한이 없습니다. 안전을 위해 다시 로그인해 주세요.");
+                    window.location.href = "/mng/index.do";
+                    return Promise.reject("Session Expired");
+                }
                 return response.json();
             })
             .then(res => {

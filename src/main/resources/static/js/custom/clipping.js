@@ -295,9 +295,11 @@ $(function() {
                     alert(res.resultMsg || "기사 생성 조건을 만족하지 못했습니다.");
                 }
             },
-            error: function() {
+            error: function(xhr) {
                 $('#aiLoadingOverlay').remove();
-                alert("서버 통신 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                if (xhr.status !== 401 && xhr.status !== 403) {
+                    alert("서버 통신 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                }
             }
         });
     }
@@ -329,8 +331,10 @@ $(function() {
                         alert(res.resultMsg || "발송에 실패했습니다.");
                     }
                 },
-                error: function() {
-                    alert("서버 통신 중 오류가 발생했습니다.");
+                error: function(xhr) {
+                    if (xhr.status !== 401 && xhr.status !== 403) {
+                        alert("서버 통신 중 오류가 발생했습니다.");
+                    }
                 },
                 complete: function() {
                     $('#btnSendNewsletter').prop('disabled', false).text(originalText);
@@ -501,8 +505,10 @@ $(function() {
                     alert(res.resultMsg);
                 }
             },
-            error: function() {
-                alert("통신 중 오류가 발생했습니다.");
+            error: function(xhr) {
+                if (xhr.status !== 401 && xhr.status !== 403) {
+                    alert("통신 중 오류가 발생했습니다.");
+                }
             }
         });
     });
@@ -552,9 +558,10 @@ $(function() {
                     }
                 },
                 error: function(xhr) {
-                    // 실제 서버 에러 확인을 위한 콘솔 로그 추가
-                    alert("서버 통신 중 오류가 발생했습니다. (F12 콘솔 확인)");
-                    console.error("Error Detail: ", xhr.responseText);
+                    if (xhr.status !== 401 && xhr.status !== 403) {
+                        alert("서버 통신 중 오류가 발생했습니다. (F12 콘솔 확인)");
+                        console.error("Error Detail: ", xhr.responseText);
+                    }
                 }
             });
         }
