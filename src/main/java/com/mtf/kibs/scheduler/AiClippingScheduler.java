@@ -87,7 +87,7 @@ public class AiClippingScheduler {
     }
 
     // 3. 실제 클리핑 수집 및 생성을 담당하는 코어 로직
-    public boolean processAiClipping(boolean isSend) { // 반환 타입을 boolean으로 변경하여 성공 여부 전달
+    public boolean processAiClipping(boolean isSend) {
         System.out.println("========== AI 클리핑 코어 프로세스 시작 (발송여부: " + isSend + ") ==========");
 
         try {
@@ -101,12 +101,7 @@ public class AiClippingScheduler {
 
             if (keywordList == null || keywordList.isEmpty()) {
                 System.out.println("========== 등록된 키워드가 없어 AI 클리핑을 종료합니다 ==========");
-                return false; // 실패 반환
-            }
-
-            List<String> allRegisteredKeywords = new ArrayList<>();
-            for (AiClippingKeywordDTO dto : keywordList) {
-                allRegisteredKeywords.add(dto.getKeyword());
+                return false;
             }
 
             Collections.shuffle(keywordList);
@@ -122,15 +117,24 @@ public class AiClippingScheduler {
                 String targetKeyword = kw.getKeyword();
                 System.out.println("-> 수집 시도 키워드: " + targetKeyword);
 
-                String articles = fetchArticlesFromDaum(targetKeyword, usedSources, allRegisteredKeywords);
+                // [개선 1] Daum에서 후보 기사들만 일단 긁어옴 (단순 태그/깡통 링크만 1차 제거)
+                List<String[]> candidateArticles = fetchCandidateArticlesFromDaum(targetKeyword);
 
-                if (articles != null && !articles.trim().isEmpty()) {
-                    rawArticlesBuilder.append(articles);
+                if (candidateArticles.isEmpty()) {
+                    System.out.println("   [스킵] 크롤링 결과 없음.");
+                    continue;
+                }
+
+                // [개선 2] 능동적 필터링: AI에게 이 기사들이 해양레저 산업/비즈니스와 직결되는지 물어보고, 통과된 것만 반환받음
+                String validArticleFromAi = filterAndSummarizeValidArticle(targetKeyword, candidateArticles, usedSources);
+
+                if (validArticleFromAi != null && !validArticleFromAi.trim().isEmpty()) {
+                    rawArticlesBuilder.append(validArticleFromAi).append("\n\n");
                     usedKeywords.add(targetKeyword);
                     successKeywordCount++;
-                    System.out.println("   [성공] 유효 기사 수집됨 (현재 수집된 키워드 수: " + successKeywordCount + "/" + maxKeywordLimit + ")");
+                    System.out.println("   [성공] AI 필터링을 통과한 유효 기사 확보 (현재 수집 키워드: " + successKeywordCount + "/" + maxKeywordLimit + ")");
                 } else {
-                    System.out.println("   [스킵] 해당 키워드에 필터링을 통과한 유효 기사 없음. 다음 키워드 탐색...");
+                    System.out.println("   [스킵] 수집된 후보 기사들이 AI 적합성 심사(산업 무관, 단순 사고 등)에서 모두 탈락함.");
                 }
 
                 if (successKeywordCount >= maxKeywordLimit) {
@@ -143,11 +147,12 @@ public class AiClippingScheduler {
             String rawArticles = rawArticlesBuilder.toString();
 
             if (rawArticles.trim().isEmpty()) {
-                System.out.println("========== 전체 키워드를 탐색했으나 수집된 유효 기사가 없어 AI 클리핑을 종료합니다 ==========");
-                return false; // 실패 반환
+                System.out.println("========== 전체 키워드를 탐색했으나 AI 필터링을 통과한 유효 기사가 없어 종료합니다 ==========");
+                return false; // 컨트롤러에 실패(false) 반환
             }
 
-            String generatedContent = generateDetailedArticleViaOpenAI(rawArticles, usedKeywords, usedSources);
+            // 4. 최종 확보된 유효 기사 모음(rawArticles)으로 최종 뉴스레터 HTML 생성
+            String generatedContent = generateFinalNewsletter(rawArticles, usedKeywords, usedSources);
 
             AiClippingDTO clippingDTO = new AiClippingDTO();
             clippingDTO.setTitle(generatedTitle);
@@ -164,38 +169,30 @@ public class AiClippingScheduler {
                             clippingDTO.getTitle(),
                             clippingDTO.getContent()
                     );
-                    System.out.println("========== AI 클리핑 뉴스레터 수동 즉시 발송 완료 ==========");
+                    System.out.println("========== AI 클리핑 뉴스레터 즉시 발송 완료 ==========");
                 }
-                return true; // 성공 반환
+                return true; // 컨트롤러에 성공(true) 반환
             }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("========== AI 클리핑 프로세스 실행 중 오류 발생 ==========");
         }
-        return false; // 예외 발생 시 실패 반환
+        return false;
     }
 
-    // Daum 뉴스 크롤링 메서드
-    private String fetchArticlesFromDaum(String keyword, List<String[]> usedSources, List<String> allRegisteredKeywords) {
-        StringBuilder articlesBuilder = new StringBuilder();
+    // 1단계: Daum에서 후보 기사 크롤링 (단순 필터링만 수행)
+    private List<String[]> fetchCandidateArticlesFromDaum(String keyword) {
+        List<String[]> candidates = new ArrayList<>();
         try {
             String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
             String url = "https://search.daum.net/search?w=news&q=" + encodedKeyword + "&sort=rec";
 
             Document doc = Jsoup.connect(url)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-                    .timeout(5000)
-                    .get();
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/91.0.4472.124 Safari/537.36")
+                    .timeout(5000).get();
 
             Elements newsElements = doc.select(".c-item-content");
             int count = 0;
-
-            // ★ [강화 1] 부정적/무관련 단어 블랙리스트 대폭 확장
-            String[] negativeKeywords = {
-                    "구조", "고립", "사망", "숨져", "실종", "추돌", "사고", "화재", "적발", "침몰",
-                    "골프", "부동산", "아파트", "분양", "슈퍼리치", "트럼프", "마약", "음주",
-                    "투기", "사기", "구속", "경찰", "해경", "수사", "논란", "비리", "특혜"
-            };
 
             for (Element element : newsElements) {
                 if (count >= 3) break;
@@ -206,148 +203,114 @@ public class AiClippingScheduler {
                 String title = titleElement.text();
                 String summary = element.select(".conts-desc").text();
 
-                // 1. 불량 텍스트 차단 (JavaScript/CSS 찌꺼기 등)
-                if (summary.contains("function()") || summary.contains("document.") || summary.contains("{") || summary.contains("}")) {
+                // 최소한의 찌꺼기 텍스트만 1차 방어
+                if (summary.contains("function()") || summary.contains("document.") || summary.contains("{")) {
                     continue;
                 }
 
-                // 2. 블랙리스트 키워드가 포함되어 있으면 즉시 스킵
-                boolean hasNegativeKeyword = false;
-                for (String negWord : negativeKeywords) {
-                    if (title.contains(negWord) || summary.contains(negWord)) {
-                        hasNegativeKeyword = true;
-                        break;
-                    }
-                }
-                if (hasNegativeKeyword) {
-                    //System.out.println("     [블랙리스트 필터링됨] 제목: " + title);
-                    continue;
-                }
-
-                // 3. ★ [강화 2] 엄격한 관련성 검증 (화이트리스트 기반)
-                // 단순히 '포함'되는 것을 넘어, 의미상 매칭을 강화
-                boolean isRelevant = false;
-
-                // 3-1. 현재 탐색 중인 타겟 키워드가 제목이나 본문에 있는지 확인
-                if (title.contains(keyword) || summary.contains(keyword)) {
-                    isRelevant = true;
-                } else {
-                    // 3-2. 현재 키워드가 없더라도, DB에 등록된 다른 키워드가 명시적으로 포함되어 있는지 확인
-                    for (String dbKey : allRegisteredKeywords) {
-                        if (title.contains(dbKey) || summary.contains(dbKey)) {
-                            isRelevant = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (!isRelevant) {
-                    //System.out.println("     [관련성 부족 필터링됨] 제목: " + title);
-                    continue;
-                }
-
-                // 4. 링크 추출
                 String link = "";
-                if (titleElement.tagName().equals("a")) {
-                    link = titleElement.attr("href");
-                } else if (titleElement.select("a").first() != null) {
-                    link = titleElement.select("a").first().attr("href");
-                } else if (element.select("a").first() != null) {
-                    link = element.select("a").first().attr("href");
-                }
+                if (titleElement.tagName().equals("a")) link = titleElement.attr("href");
+                else if (titleElement.select("a").first() != null) link = titleElement.select("a").first().attr("href");
+                else if (element.select("a").first() != null) link = element.select("a").first().attr("href");
 
-                // 5. 깡통 링크 차단 (단, v.daum.net 같은 포털 기사 링크는 허용)
-                if (link == null || link.trim().isEmpty() || link.startsWith("#") || link.equals(url) || link.equals("https://search.daum.net/search")) {
+                // 깡통 링크 차단
+                if (link == null || link.trim().isEmpty() || link.startsWith("#") || link.contains("search.daum.net")) {
                     continue;
                 }
+                if (!link.startsWith("http")) link = "https:" + (link.startsWith("/") ? "" : "/") + link;
 
-                if (!link.startsWith("http")) {
-                    link = "https:" + (link.startsWith("/") ? "" : "/") + link;
-                }
-
-                // --- (이하 날짜 및 언론사 추출 로직은 기존과 동일) ---
-                String fullText = element.text();
-                fullText = fullText.replace(title, "").replace(summary, "");
-                fullText = fullText.replace("동영상 첨부된 문서", "")
-                        .replace("사진 첨부된 문서", "")
-                        .replace("음성 첨부된 문서", "")
-                        .replace("다음뉴스", "")
-                        .replaceAll("관련기사\\s*\\d+건?", "")
-                        .replaceAll("관련뉴스\\s*\\d+건?", "")
-                        .replaceAll("[|·ⓒ]", " ")
-                        .trim();
-
+                // 날짜 및 언론사 추출 (기존 정규식 로직 동일)
+                String fullText = element.text().replace(title, "").replace(summary, "").replaceAll("[|·ⓒ]", " ").trim();
                 String articleDate = "";
-                Pattern pattern = Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)");
-                Matcher matcher = pattern.matcher(fullText);
-
-                if (matcher.find()) {
-                    articleDate = matcher.group(1).trim();
-                }
-
-                if (articleDate.isEmpty()) {
-                    articleDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-                } else if (articleDate.endsWith(".")) {
-                    articleDate = articleDate.substring(0, articleDate.length() - 1);
-                }
+                Matcher matcher = Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)").matcher(fullText);
+                if (matcher.find()) articleDate = matcher.group(1).trim();
+                if (articleDate.isEmpty()) articleDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                else if (articleDate.endsWith(".")) articleDate = articleDate.substring(0, articleDate.length() - 1);
 
                 String publisher = "언론사";
                 try {
-                    Document articleDoc = Jsoup.connect(link)
-                            .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-                            .timeout(3000)
-                            .get();
-
+                    Document articleDoc = Jsoup.connect(link).timeout(2000).get();
                     Element ogSiteName = articleDoc.selectFirst("meta[property=og:site_name]");
-                    if (ogSiteName != null && ogSiteName.hasAttr("content")) {
-                        String siteName = ogSiteName.attr("content");
-                        publisher = siteName.replace("Daum", "").replace("|", "").trim();
-                    }
+                    if (ogSiteName != null) publisher = ogSiteName.attr("content").replace("Daum", "").replace("|", "").trim();
                 } catch (Exception e) {
-                    String leftover = fullText;
-                    if (!articleDate.isEmpty()) {
-                        leftover = leftover.replace(articleDate, "");
-                    }
-                    publisher = leftover.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
+                    publisher = fullText.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
                 }
+                if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) publisher = "언론사";
 
-                if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) {
-                    publisher = "언론사";
-                }
-
-                articlesBuilder.append("제목 : ").append(title).append("\n");
-                articlesBuilder.append("원본링크 : ").append(link).append("\n");
-                articlesBuilder.append("내용 : ").append(summary).append("\n\n");
-
-                usedSources.add(new String[]{publisher, link, title, articleDate});
+                candidates.add(new String[]{publisher, link, title, articleDate, summary});
                 count++;
             }
         } catch (Exception e) {
-            System.err.println("Daum 크롤링 실패 [" + keyword + "]: " + e.getMessage());
+            System.err.println("Daum 크롤링 오류: " + e.getMessage());
         }
-        return articlesBuilder.toString();
+        return candidates;
     }
 
-    // OpenAI API 통신 메서드
-    private String generateDetailedArticleViaOpenAI(String rawArticles, List<String> keywords, List<String[]> sources) {
+    // 2단계: AI에게 후보 기사를 던져주고, "진짜배기 산업 뉴스" 1개만 골라서 리턴하게 함 (능동적 필터링)
+    private String filterAndSummarizeValidArticle(String keyword, List<String[]> candidates, List<String[]> usedSources) {
+        StringBuilder promptBuilder = new StringBuilder();
+        promptBuilder.append("너는 해양레저산업 비즈니스 전문가야. 다음은 '").append(keyword).append("' 키워드로 검색된 최신 뉴스 후보들이야.\n\n");
+        promptBuilder.append("[판단 기준 - 매우 엄격함]\n");
+        promptBuilder.append("1. **부정적/사건사고 기사 절대 배제**: 바다에서 일어난 조난, 구조, 갯벌 고립, 실종, 사망, 침몰, 해경 적발 등 단순 사회면/사건사고 기사는 무조건 버려.\n");
+        promptBuilder.append("2. **타 산업/가십 절대 배제**: 정치인 가십, 골프 클럽, 부동산, 아파트 분양 등 해양레저(보트, 요트, 마리나, 해양관광) 산업/비즈니스 동향과 관련 없는 기사는 키워드가 있더라도 무조건 버려.\n");
+        promptBuilder.append("3. 위 두 기준을 통과한, 업계 관계자에게 유의미한 '산업 동향, 기술 발전, 전시회, 비즈니스, 관광 정책' 관련 기사만 합격이야.\n\n");
+        promptBuilder.append("[요구사항]\n");
+        promptBuilder.append("- 합격한 기사가 있다면, 그 중 가장 중요한 1개의 기사만 골라내.\n");
+        promptBuilder.append("- 출력 형식은 반드시 아래와 같이 딱 4줄 텍스트로만 해. (다른 말은 절대 금지)\n");
+        promptBuilder.append("선택번호: (1,2,3 중 하나)\n");
+        promptBuilder.append("제목: (선택한 기사 제목)\n");
+        promptBuilder.append("링크: (선택한 기사 링크)\n");
+        promptBuilder.append("내용: (해당 기사의 핵심 내용을 3~4문장으로 요약)\n\n");
+        promptBuilder.append("- 만약 모든 기사가 판단 기준에 미달하여 합격한 기사가 0개라면, 딱 한 단어 'REJECT' 라고만 출력해.\n\n");
+        promptBuilder.append("[기사 후보 목록]\n");
 
-        System.setProperty("https.protocols", "TLSv1.2,TLSv1.3");
+        for (int i = 0; i < candidates.size(); i++) {
+            String[] c = candidates.get(i);
+            promptBuilder.append((i + 1)).append(". 제목: ").append(c[2]).append("\n");
+            promptBuilder.append("   내용: ").append(c[4]).append("\n\n");
+        }
 
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(openAiApiKey);
+        // OpenAI 통신 (필터링 용도)
+        String aiResponse = callOpenAI(promptBuilder.toString(), 1000);
 
-        // [2차 필터링 로직] 프롬프트를 대폭 강화하여, 해양레저 산업과 직결되는 내용만 선별하도록 지시
-        String prompt = "다음 수집된 여러 기사 데이터를 바탕으로, 해양레저 산업 및 비즈니스 동향을 파악하기 위한 B2B 뉴스레터를 작성해줘.\n" +
-                "아래의 [강력한 필터링 지침]과 [작성 요구사항]을 엄격하게 지켜서 HTML 태그 형식으로만 답변해야 해.\n\n" +
-                "[강력한 필터링 지침 - 매우 중요]\n" +
-                "1. 산업 무관 배제: 해양레저(요트, 보트, 서핑, 마리나 등) 비즈니스와 전혀 무관한 기사(예: 골프, 부동산, 슈퍼리치 가십, 정치권 논란 등)는 본문에 키워드가 우연히 섞여 있더라도 **무조건 요약에서 제외하고 폐기**할 것.\n" +
-                "2. 부정적 사건·사고 배제: 단순한 해상 조난, 구조, 실종, 사망, 화재 등 부정적인 사건·사고 사회면 기사(예: '갯벌에 고립된 레저보트 구조' 등)는 산업 동향 파악 목적에 맞지 않으므로 **무조건 제외**할 것.\n" +
-                "   -> (단, 단순 사고가 아닌 해양 안전 장비 개발, 훈련, 해경 정책 발표 등에 관한 건설적인 기사는 포함 가능)\n" +
-                "3. 수집된 기사 중 위 1, 2번에 해당하지 않는 '유효한 산업 관련 기사'만 선별하여 분석 기사를 작성할 것.\n\n" +
+        if (aiResponse == null || aiResponse.contains("REJECT")) {
+            return null; // 모든 기사가 불합격
+        }
+
+        // AI가 합격시킨 기사의 원본 링크와 언론사 정보를 찾아 usedSources에 등록
+        try {
+            String selectedLink = "";
+            String selectedTitle = "";
+            String selectedSummary = "";
+
+            String[] lines = aiResponse.split("\n");
+            for (String line : lines) {
+                if (line.startsWith("링크:")) selectedLink = line.replace("링크:", "").trim();
+                else if (line.startsWith("제목:")) selectedTitle = line.replace("제목:", "").trim();
+                else if (line.startsWith("내용:")) selectedSummary = line.replace("내용:", "").trim();
+            }
+
+            // 선택된 링크를 바탕으로 원본 출처 정보(언론사, 날짜) 매핑
+            for (String[] c : candidates) {
+                if (c[1].equals(selectedLink)) {
+                    usedSources.add(new String[]{c[0], c[1], selectedTitle, c[3]}); // 언론사, 링크, AI가 고른 제목, 날짜
+                    break;
+                }
+            }
+
+            // 최종 뉴스레터 작성기로 넘어갈 텍스트 포맷
+            return "제목: " + selectedTitle + "\n원본링크: " + selectedLink + "\n내용: " + selectedSummary;
+
+        } catch (Exception e) {
+            return null; // 파싱 실패 시 버림
+        }
+    }
+
+    // 3단계: 최종 엄선된 기사들로 뉴스레터 HTML 코드 생성
+    private String generateFinalNewsletter(String rawArticles, List<String> keywords, List<String[]> sources) {
+        String prompt = "다음은 AI가 1차적으로 엄선한 해양레저 산업 관련 핵심 기사 요약본들이야. 이를 바탕으로 독자(업계 관계자)를 위한 전문적인 B2B 뉴스레터 본문을 작성해줘.\n\n" +
                 "[작성 요구사항]\n" +
-                "1. 선별된 유효한 기사 내용을 바탕으로 4~5개의 소주제(섹션)로 나눌 것. 분량이 너무 길지 않도록 **각 섹션당 본문은 반드시 정확히 2개의 문단**으로만 핵심을 요약해서 작성할 것.\n" +
+                "1. 전달받은 기사 내용을 바탕으로 4~5개의 소주제(섹션)로 나눌 것. 분량이 너무 길지 않도록 **각 섹션당 본문은 반드시 정확히 2개의 문단**으로만 핵심을 요약해서 작성할 것.\n" +
                 "2. (여백 확보 및 순번 표기) 각 섹션의 제목은 반드시 '1.', '2.', '3.' 처럼 순번을 매겨서 아래 형식의 <h3> 태그를 사용할 것. (단락 구분 여백 포함)\n" +
                 "   -> <h3 style='margin-top: 40px; margin-bottom: 20px; font-size: 22px; color: #1d5cad; border-bottom: 2px solid #1d5cad; padding-bottom: 10px;'>1. 섹션 제목</h3>\n" +
                 "3. (단락 띄어쓰기) 본문 내용은 가독성을 위해 단락마다 반드시 아래 형식의 <p> 태그를 사용할 것. (각 섹션당 <p>태그는 딱 2개씩만 생성할 것)\n" +
@@ -357,7 +320,93 @@ public class AiClippingScheduler {
                 "5. 단순 요약이 아닌, 독자(업계 관계자)에게 인사이트를 제공하는 전문적인 기사 톤으로 작성할 것.\n" +
                 "6. 인사말이나 맺음말 없이 바로 <h3> 태그로 시작하는 본문 HTML만 출력하고, 문장이 중간에 잘리지 않도록 반드시 끝맺음을 완벽하게 할 것.\n" +
                 "7. 매일 비슷하거나 정형화된 서론, 결론, 문장 구조가 반복되지 않도록 주의할 것. 매번 새로운 시각, 다채로운 어휘, 그리고 트렌디한 표현 방식을 도입하여 독자가 지루하지 않게 작성할 것.\n\n" +
-                "[수집된 기사 데이터]\n" + rawArticles;
+                "[엄선된 기사 데이터]\n" + rawArticles;
+
+        String aiContent = callOpenAI(prompt, 6000);
+        if (aiContent == null) return "<p>생성 중 오류 발생</p>";
+
+        // 하단 출처 표기 및 조립 로직
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String currentTime = LocalDateTime.now().format(formatter);
+
+        List<Map<String, Object>> parsedSources = new ArrayList<>();
+        for (String[] src : sources) {
+            Map<String, Object> map = new HashMap<>();
+            String pub = src[0];
+            String url = src[1];
+            String title = src[2];
+            String rawDate = src.length > 3 ? src[3] : "";
+
+            LocalDate calculatedDate = LocalDate.now();
+            try {
+                if (rawDate.matches("\\d{4}\\.\\d{2}\\.\\d{2}")) {
+                    calculatedDate = LocalDate.parse(rawDate, DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                } else if (rawDate.contains("어제")) {
+                    calculatedDate = LocalDate.now().minusDays(1);
+                } else if (rawDate.matches("\\d+\\s*일\\s*전")) {
+                    int days = Integer.parseInt(rawDate.replaceAll("[^0-9]", ""));
+                    calculatedDate = LocalDate.now().minusDays(days);
+                }
+            } catch (Exception e) {
+                calculatedDate = LocalDate.now();
+            }
+
+            String displayDate = calculatedDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) + "(" + calculatedDate.format(DateTimeFormatter.ofPattern("E", java.util.Locale.KOREAN)) + ")";
+            map.put("publisher", pub);
+            map.put("url", url);
+            map.put("title", title);
+            map.put("date", calculatedDate);
+            map.put("displayDate", displayDate);
+            parsedSources.add(map);
+        }
+
+        parsedSources.sort((m1, m2) -> ((LocalDate) m2.get("date")).compareTo((LocalDate) m1.get("date")));
+
+        String dateRange = "";
+        if (!parsedSources.isEmpty()) {
+            DateTimeFormatter mdFormatter = DateTimeFormatter.ofPattern("M. d.");
+            String startDate = ((LocalDate) parsedSources.get(parsedSources.size() - 1).get("date")).format(mdFormatter);
+            String endDate = ((LocalDate) parsedSources.get(0).get("date")).format(mdFormatter);
+            dateRange = startDate.equals(endDate) ? startDate : startDate + " ~ " + endDate;
+        }
+
+        StringBuilder headerHtml = new StringBuilder();
+        headerHtml.append("<div style='margin-bottom: 40px; padding: 20px; background-color: #f8f9fa; border-top: 4px solid #1d5cad; border-bottom: 1px solid #ddd;'>");
+        headerHtml.append("   <strong style='color: #1d5cad; display:block; margin-bottom:15px; font-size: 16px;'>■ 기사</strong>");
+        headerHtml.append("   <ul style='list-style: none; padding: 0; margin: 0;'>");
+        for (int i = 0; i < parsedSources.size(); i++) {
+            Map<String, Object> ps = parsedSources.get(i);
+            headerHtml.append("<li style='font-size: 14px; color: #333; margin-bottom: 8px;'>");
+            headerHtml.append("출처 (").append(i + 1).append(") ").append(ps.get("displayDate")).append(" | ");
+            headerHtml.append("<a href='").append(ps.get("url")).append("' target='_blank' style='color:#1d5cad; font-weight:bold; text-decoration:underline; text-underline-offset:2px;'>").append(ps.get("title")).append("</a>");
+            headerHtml.append(" | ").append(ps.get("publisher")).append("</li>");
+        }
+        headerHtml.append("   </ul></div>");
+
+        if (!dateRange.isEmpty()) {
+            headerHtml.append("<div style='background-color: #1d5cad; color: #ffffff; text-align: center; padding: 25px 15px; font-size: 24px; font-weight: bold; margin-bottom: 40px; border-radius: 5px;'>");
+            headerHtml.append("해양레저산업 기사 요약 (기간: ").append(dateRange).append(")</div>");
+        }
+
+        StringBuilder footerHtml = new StringBuilder("<div style='margin-top: 50px; padding: 20px; background-color: #f8f9fa; border-left: 4px solid #1d5cad; border-radius: 5px; text-align: left; font-size: 14px; color: #444; line-height: 1.6;'>");
+        footerHtml.append("   <strong style='color: #1d5cad;'>■ 수집 키워드 :</strong> ");
+        for (String kw : keywords) footerHtml.append("#").append(kw).append(" ");
+        footerHtml.append("<br><br>");
+        footerHtml.append("   <strong style='color: #1d5cad;'>■ 작성자 :</strong> 경기국제보트쇼 AI 브리핑 봇<br>");
+        footerHtml.append("   <strong style='color: #1d5cad;'>■ 생성 모델 :</strong> OpenAI ").append(openAiModel).append("<br>");
+        footerHtml.append("   <strong style='color: #1d5cad;'>■ 생성 일시 :</strong> ").append(currentTime).append("<br>");
+        footerHtml.append("   <span style='font-size: 12px; color: #888; display: block; margin-top: 8px; margin-bottom: 12px;'>* 본 기사는 인공지능 모델이 자동 수집 및 요약한 내용으로, 원본 기사의 논조와 일부 다를 수 있습니다.</span></div>");
+
+        return headerHtml.toString() + aiContent + footerHtml.toString();
+    }
+
+    // 공통 OpenAI API 호출 헬퍼
+    private String callOpenAI(String prompt, int maxTokens) {
+        System.setProperty("https.protocols", "TLSv1.2,TLSv1.3");
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(openAiApiKey);
 
         Map<String, Object> message = new HashMap<>();
         message.put("role", "user");
@@ -366,117 +415,21 @@ public class AiClippingScheduler {
         Map<String, Object> body = new HashMap<>();
         body.put("model", openAiModel);
         body.put("messages", Collections.singletonList(message));
-        body.put("max_completion_tokens", 8000);
-        body.put("temperature", 0.8);
+        body.put("max_completion_tokens", maxTokens);
+        body.put("temperature", 0.7);
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
-
         try {
             ResponseEntity<Map> response = restTemplate.postForEntity("https://api.openai.com/v1/chat/completions", request, Map.class);
             Map<String, Object> responseBody = response.getBody();
-
             if (responseBody != null && responseBody.containsKey("choices")) {
                 List<Map<String, Object>> choices = (List<Map<String, Object>>) responseBody.get("choices");
                 Map<String, Object> messageResp = (Map<String, Object>) choices.get(0).get("message");
-                String aiContent = (String) messageResp.get("content");
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                String currentTime = LocalDateTime.now().format(formatter);
-
-                List<Map<String, Object>> parsedSources = new ArrayList<>();
-
-                for (String[] src : sources) {
-                    Map<String, Object> map = new HashMap<>();
-                    String pub = src[0];
-                    String url = src[1];
-                    String title = src[2];
-                    String rawDate = src.length > 3 ? src[3] : "";
-
-                    LocalDate calculatedDate = LocalDate.now();
-                    try {
-                        if (rawDate.matches("\\d{4}\\.\\d{2}\\.\\d{2}")) {
-                            calculatedDate = LocalDate.parse(rawDate, DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-                        } else if (rawDate.contains("어제")) {
-                            calculatedDate = LocalDate.now().minusDays(1);
-                        } else if (rawDate.matches("\\d+\\s*일\\s*전")) {
-                            int days = Integer.parseInt(rawDate.replaceAll("[^0-9]", ""));
-                            calculatedDate = LocalDate.now().minusDays(days);
-                        }
-                    } catch (Exception e) {
-                        calculatedDate = LocalDate.now();
-                    }
-
-                    String displayDate = calculatedDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) + "(" + calculatedDate.format(DateTimeFormatter.ofPattern("E", java.util.Locale.KOREAN)) + ")";
-
-                    map.put("publisher", pub);
-                    map.put("url", url);
-                    map.put("title", title);
-                    map.put("date", calculatedDate);
-                    map.put("displayDate", displayDate);
-
-                    parsedSources.add(map);
-                }
-
-                // 날짜 내림차순 정렬 (가장 최신 기사가 위로 오도록)
-                parsedSources.sort((m1, m2) -> ((LocalDate) m2.get("date")).compareTo((LocalDate) m1.get("date")));
-
-                // 대제목 블록에 사용할 기간(최소~최대) 텍스트 추출 (내림차순이므로 인덱스 역순)
-                String dateRange = "";
-                if (!parsedSources.isEmpty()) {
-                    DateTimeFormatter mdFormatter = DateTimeFormatter.ofPattern("M. d.");
-                    String startDate = ((LocalDate) parsedSources.get(parsedSources.size() - 1).get("date")).format(mdFormatter);
-                    String endDate = ((LocalDate) parsedSources.get(0).get("date")).format(mdFormatter);
-
-                    if (startDate.equals(endDate)) {
-                        dateRange = startDate;
-                    } else {
-                        dateRange = startDate + " ~ " + endDate;
-                    }
-                }
-
-                StringBuilder headerHtml = new StringBuilder();
-
-                // 1. 출처 리스트 영역 먼저 추가
-                headerHtml.append("<div style='margin-bottom: 40px; padding: 20px; background-color: #f8f9fa; border-top: 4px solid #1d5cad; border-bottom: 1px solid #ddd;'>");
-                headerHtml.append("   <strong style='color: #1d5cad; display:block; margin-bottom:15px; font-size: 16px;'>■ 기사</strong>");
-                headerHtml.append("   <ul style='list-style: none; padding: 0; margin: 0;'>");
-
-                for (int i = 0; i < parsedSources.size(); i++) {
-                    Map<String, Object> ps = parsedSources.get(i);
-                    headerHtml.append("<li style='font-size: 14px; color: #333; margin-bottom: 8px;'>");
-                    headerHtml.append("출처 (").append(i + 1).append(") ").append(ps.get("displayDate")).append(" | ");
-                    headerHtml.append("<a href='").append(ps.get("url")).append("' target='_blank' style='color:#1d5cad; font-weight:bold; text-decoration:underline; text-underline-offset:2px;'>").append(ps.get("title")).append("</a>");
-                    headerHtml.append(" | ").append(ps.get("publisher"));
-                    headerHtml.append("</li>");
-                }
-                headerHtml.append("   </ul>");
-                headerHtml.append("</div>");
-
-                // 2. 대제목 블록 나중에 추가
-                if (!dateRange.isEmpty()) {
-                    headerHtml.append("<div style='background-color: #1d5cad; color: #ffffff; text-align: center; padding: 25px 15px; font-size: 24px; font-weight: bold; margin-bottom: 40px; border-radius: 5px;'>");
-                    headerHtml.append("해양레저산업 기사 요약 (기간: ").append(dateRange).append(")");
-                    headerHtml.append("</div>");
-                }
-
-                String footerHtml = "<div style='margin-top: 50px; padding: 20px; background-color: #f8f9fa; border-left: 4px solid #1d5cad; border-radius: 5px; text-align: left; font-size: 14px; color: #444; line-height: 1.6;'>" +
-                        "   <strong style='color: #1d5cad;'>■ 수집 키워드 :</strong> ";
-                for (String kw : keywords) {
-                    footerHtml += "#" + kw + " ";
-                }
-                footerHtml += "<br><br>" +
-                        "   <strong style='color: #1d5cad;'>■ 작성자 :</strong> 경기국제보트쇼 AI 브리핑 봇<br>" +
-                        "   <strong style='color: #1d5cad;'>■ 생성 모델 :</strong> OpenAI " + openAiModel + "<br>" +
-                        "   <strong style='color: #1d5cad;'>■ 생성 일시 :</strong> " + currentTime + "<br>" +
-                        "   <span style='font-size: 12px; color: #888; display: block; margin-top: 8px; margin-bottom: 12px;'>* 본 기사는 인공지능 모델이 자동 수집 및 요약한 내용으로, 원본 기사의 논조와 일부 다를 수 있습니다.</span>" +
-                        "</div>";
-
-                return headerHtml.toString() + aiContent + footerHtml;
+                return (String) messageResp.get("content");
             }
         } catch (Exception e) {
-            System.err.println("OpenAI API 호출 실패: " + e.getMessage());
+            System.err.println("OpenAI API 호출 에러: " + e.getMessage());
         }
-
-        return "<h3 style='margin-top: 40px; margin-bottom: 20px; font-size: 22px; color: #1d5cad; border-bottom: 2px solid #1d5cad; padding-bottom: 10px;'>오늘의 해양레저 주요 동향</h3><p style='margin-bottom: 25px; line-height: 1.8; font-size: 16px; color: #333;'>기사 요약을 생성하는 중 일시적인 오류가 발생했습니다. 자세한 내용은 홈페이지를 참조해 주세요.</p>";
+        return null;
     }
 }
