@@ -113,33 +113,41 @@ public class AiClippingScheduler {
             // 2. 매일 똑같은 기사가 생성되지 않도록 전체 키워드를 무작위로 섞음
             Collections.shuffle(keywordList);
 
-            // 3. 최대 5개까지만 추출 (토큰 한도 및 크롤링 부하 방지)
-            int limit = Math.min(keywordList.size(), 5);
-            List<AiClippingKeywordDTO> selectedKeywords = keywordList.subList(0, limit);
-
             StringBuilder rawArticlesBuilder = new StringBuilder();
-
-            // 하단 출처 표기를 위한 리스트
             List<String> usedKeywords = new ArrayList<>();
             List<String[]> usedSources = new ArrayList<>(); // {언론사, 링크, 제목, 날짜}
 
-            // 4. 추출된 키워드들로 기사 수집
-            for (AiClippingKeywordDTO kw : selectedKeywords) {
+            int successKeywordCount = 0;
+            int maxKeywordLimit = 5; // 최대 5개의 유효한 키워드에서 기사 수집
+
+            // 3. 추출된 키워드들로 기사 수집 (유효한 기사가 5개 키워드 분량만큼 찰 때까지 반복)
+            for (AiClippingKeywordDTO kw : keywordList) {
                 String targetKeyword = kw.getKeyword();
-                usedKeywords.add(targetKeyword); // 사용된 키워드 기록
-                System.out.println("-> 수집 키워드: " + targetKeyword);
+                System.out.println("-> 수집 시도 키워드: " + targetKeyword);
 
                 // 크롤링 메서드 호출 시 전체 키워드 풀(allRegisteredKeywords) 파라미터 전달
                 String articles = fetchArticlesFromDaum(targetKeyword, usedSources, allRegisteredKeywords);
-                rawArticlesBuilder.append(articles);
 
-                Thread.sleep(1500);
+                if (articles != null && !articles.trim().isEmpty()) {
+                    rawArticlesBuilder.append(articles);
+                    usedKeywords.add(targetKeyword); // 유효한 기사가 수집된 키워드만 기록
+                    successKeywordCount++;
+                    System.out.println("   [성공] 유효 기사 수집됨 (현재 수집된 키워드 수: " + successKeywordCount + "/" + maxKeywordLimit + ")");
+                } else {
+                    System.out.println("   [스킵] 해당 키워드에 필터링을 통과한 유효 기사 없음. 다음 키워드 탐색...");
+                }
+
+                if (successKeywordCount >= maxKeywordLimit) {
+                    break; // 5개 키워드에서 수집 완료 시 반복문 탈출
+                }
+
+                Thread.sleep(1500); // 딜레이
             }
 
             String rawArticles = rawArticlesBuilder.toString();
 
             if (rawArticles.trim().isEmpty()) {
-                System.out.println("========== 수집된 기사가 없어 AI 클리핑을 종료합니다 ==========");
+                System.out.println("========== 전체 키워드를 탐색했으나 수집된 유효 기사가 없어 AI 클리핑을 종료합니다 ==========");
                 return;
             }
 
