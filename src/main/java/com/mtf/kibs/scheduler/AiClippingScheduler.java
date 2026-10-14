@@ -117,7 +117,7 @@ public class AiClippingScheduler {
                 String targetKeyword = kw.getKeyword();
                 System.out.println("-> 수집 시도 키워드: " + targetKeyword);
 
-                // [개선 1] Daum에서 후보 기사들만 일단 긁어옴 (단순 태그/깡통 링크만 1차 제거)
+                // [1단계] Daum에서 후보 기사 긁어오기
                 List<String[]> candidateArticles = fetchCandidateArticlesFromDaum(targetKeyword);
 
                 if (candidateArticles.isEmpty()) {
@@ -125,7 +125,7 @@ public class AiClippingScheduler {
                     continue;
                 }
 
-                // [개선 2] 능동적 필터링: AI에게 이 기사들이 해양레저 산업/비즈니스와 직결되는지 물어보고, 통과된 것만 반환받음
+                // [2단계] 능동적 필터링: AI에게 기사 적합성 심사
                 String validArticleFromAi = filterAndSummarizeValidArticle(targetKeyword, candidateArticles, usedSources);
 
                 if (validArticleFromAi != null && !validArticleFromAi.trim().isEmpty()) {
@@ -151,7 +151,7 @@ public class AiClippingScheduler {
                 return false; // 컨트롤러에 실패(false) 반환
             }
 
-            // 4. 최종 확보된 유효 기사 모음(rawArticles)으로 최종 뉴스레터 HTML 생성
+            // [3단계] 최종 확보된 유효 기사들로 뉴스레터 본문(HTML) 생성
             String generatedContent = generateFinalNewsletter(rawArticles, usedKeywords, usedSources);
 
             AiClippingDTO clippingDTO = new AiClippingDTO();
@@ -169,7 +169,7 @@ public class AiClippingScheduler {
                             clippingDTO.getTitle(),
                             clippingDTO.getContent()
                     );
-                    System.out.println("========== AI 클리핑 뉴스레터 즉시 발송 완료 ==========");
+                    System.out.println("========== AI 클리핑 뉴스레터 수동 즉시 발송 완료 ==========");
                 }
                 return true; // 컨트롤러에 성공(true) 반환
             }
@@ -180,7 +180,7 @@ public class AiClippingScheduler {
         return false;
     }
 
-    // 1단계: Daum에서 후보 기사 크롤링 (단순 필터링만 수행)
+    // 1단계: Daum 뉴스 크롤링 메서드
     private List<String[]> fetchCandidateArticlesFromDaum(String keyword) {
         List<String[]> candidates = new ArrayList<>();
         try {
@@ -188,8 +188,9 @@ public class AiClippingScheduler {
             String url = "https://search.daum.net/search?w=news&q=" + encodedKeyword + "&sort=rec";
 
             Document doc = Jsoup.connect(url)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/91.0.4472.124 Safari/537.36")
-                    .timeout(5000).get();
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                    .timeout(5000)
+                    .get();
 
             Elements newsElements = doc.select(".c-item-content");
             int count = 0;
@@ -203,11 +204,12 @@ public class AiClippingScheduler {
                 String title = titleElement.text();
                 String summary = element.select(".conts-desc").text();
 
-                // 최소한의 찌꺼기 텍스트만 1차 방어
-                if (summary.contains("function()") || summary.contains("document.") || summary.contains("{")) {
+                // 1. 불량 텍스트 차단
+                if (summary.contains("function()") || summary.contains("document.") || summary.contains("{") || summary.contains("}")) {
                     continue;
                 }
 
+                // 2. 링크 처리
                 String link = "";
                 if (titleElement.tagName().equals("a")) link = titleElement.attr("href");
                 else if (titleElement.select("a").first() != null) link = titleElement.select("a").first().attr("href");
@@ -219,45 +221,54 @@ public class AiClippingScheduler {
                 }
                 if (!link.startsWith("http")) link = "https:" + (link.startsWith("/") ? "" : "/") + link;
 
-                // 날짜 및 언론사 추출 (기존 정규식 로직 동일)
-                String fullText = element.text().replace(title, "").replace(summary, "").replaceAll("[|·ⓒ]", " ").trim();
+                // 3. 날짜 추출
+                String fullText = element.text().replace(title, "").replace(summary, "");
+                fullText = fullText.replace("동영상 첨부된 문서", "").replace("사진 첨부된 문서", "").replace("음성 첨부된 문서", "").replace("다음뉴스", "")
+                        .replaceAll("관련기사\\s*\\d+건?", "").replaceAll("관련뉴스\\s*\\d+건?", "").replaceAll("[|·ⓒ]", " ").trim();
+
                 String articleDate = "";
                 Matcher matcher = Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)").matcher(fullText);
                 if (matcher.find()) articleDate = matcher.group(1).trim();
                 if (articleDate.isEmpty()) articleDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
                 else if (articleDate.endsWith(".")) articleDate = articleDate.substring(0, articleDate.length() - 1);
 
+                // 4. 언론사명 추출
                 String publisher = "언론사";
                 try {
-                    Document articleDoc = Jsoup.connect(link).timeout(2000).get();
+                    Document articleDoc = Jsoup.connect(link).timeout(3000).get();
                     Element ogSiteName = articleDoc.selectFirst("meta[property=og:site_name]");
-                    if (ogSiteName != null) publisher = ogSiteName.attr("content").replace("Daum", "").replace("|", "").trim();
+                    if (ogSiteName != null) {
+                        publisher = ogSiteName.attr("content").replace("Daum", "").replace("|", "").trim();
+                    }
                 } catch (Exception e) {
-                    publisher = fullText.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
+                    String leftover = fullText;
+                    if (!articleDate.isEmpty()) leftover = leftover.replace(articleDate, "");
+                    publisher = leftover.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
                 }
+
                 if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) publisher = "언론사";
 
                 candidates.add(new String[]{publisher, link, title, articleDate, summary});
                 count++;
             }
         } catch (Exception e) {
-            System.err.println("Daum 크롤링 오류: " + e.getMessage());
+            System.err.println("Daum 크롤링 실패 [" + keyword + "]: " + e.getMessage());
         }
         return candidates;
     }
 
-    // 2단계: AI에게 후보 기사를 던져주고, "진짜배기 산업 뉴스" 1개만 골라서 리턴하게 함 (능동적 필터링)
+    // 2단계: AI 필터링 (번호를 기반으로 매칭하는 견고한 로직)
     private String filterAndSummarizeValidArticle(String keyword, List<String[]> candidates, List<String[]> usedSources) {
         StringBuilder promptBuilder = new StringBuilder();
         promptBuilder.append("너는 해양레저산업 비즈니스 전문가야. 다음은 '").append(keyword).append("' 키워드로 검색된 최신 뉴스 후보들이야.\n\n");
         promptBuilder.append("[판단 기준 - 매우 엄격함]\n");
         promptBuilder.append("1. **부정적/사건사고 기사 절대 배제**: 바다에서 일어난 조난, 구조, 갯벌 고립, 실종, 사망, 침몰, 해경 적발 등 단순 사회면/사건사고 기사는 무조건 버려.\n");
-        promptBuilder.append("2. **타 산업/가십 절대 배제**: 정치인 가십, 골프 클럽, 부동산, 아파트 분양 등 해양레저(보트, 요트, 마리나, 해양관광) 산업/비즈니스 동향과 관련 없는 기사는 키워드가 있더라도 무조건 버려.\n");
+        promptBuilder.append("2. **타 산업/가십 절대 배제**: 정치인 가십, 골프 클럽, 부동산, 아파트 분양 등 해양레저(보트, 요트, 마리나, 해양관광) 산업/비즈니스 동향과 관련 없는 기사는 무조건 버려.\n");
         promptBuilder.append("3. 위 두 기준을 통과한, 업계 관계자에게 유의미한 '산업 동향, 기술 발전, 전시회, 비즈니스, 관광 정책' 관련 기사만 합격이야.\n\n");
         promptBuilder.append("[요구사항]\n");
         promptBuilder.append("- 합격한 기사가 있다면, 그 중 가장 중요한 1개의 기사만 골라내.\n");
-        promptBuilder.append("- 출력 형식은 반드시 아래와 같이 딱 4줄 텍스트로만 해. (다른 말은 절대 금지)\n");
-        promptBuilder.append("선택번호: (1,2,3 중 하나)\n");
+        promptBuilder.append("- 출력 형식은 반드시 아래와 같이 딱 4줄 텍스트로만 해. (마크다운 ** 등 절대 금지)\n");
+        promptBuilder.append("선택번호: (1,2,3 중 하나 숫자만 입력)\n");
         promptBuilder.append("제목: (선택한 기사 제목)\n");
         promptBuilder.append("링크: (선택한 기사 링크)\n");
         promptBuilder.append("내용: (해당 기사의 핵심 내용을 3~4문장으로 요약)\n\n");
@@ -270,40 +281,70 @@ public class AiClippingScheduler {
             promptBuilder.append("   내용: ").append(c[4]).append("\n\n");
         }
 
-        // OpenAI 통신 (필터링 용도)
-        String aiResponse = callOpenAI(promptBuilder.toString(), 1000);
+        String aiResponse = callOpenAI(promptBuilder.toString(), 1500);
 
         if (aiResponse == null || aiResponse.contains("REJECT")) {
             return null; // 모든 기사가 불합격
         }
 
-        // AI가 합격시킨 기사의 원본 링크와 언론사 정보를 찾아 usedSources에 등록
+        // [중요 수정] 출처 매칭 로직: URL 문자열 매칭 대신 '선택번호' 파싱 우선
         try {
-            String selectedLink = "";
+            int selectedIndex = -1;
             String selectedTitle = "";
-            String selectedSummary = "";
+            String selectedLink = "";
+            StringBuilder selectedSummaryBuilder = new StringBuilder();
+            boolean isContentMode = false;
 
             String[] lines = aiResponse.split("\n");
             for (String line : lines) {
-                if (line.startsWith("링크:")) selectedLink = line.replace("링크:", "").trim();
-                else if (line.startsWith("제목:")) selectedTitle = line.replace("제목:", "").trim();
-                else if (line.startsWith("내용:")) selectedSummary = line.replace("내용:", "").trim();
-            }
+                // 마크다운 흔적 방어
+                String cleanLine = line.trim().replaceAll("\\*\\*", "");
 
-            // 선택된 링크를 바탕으로 원본 출처 정보(언론사, 날짜) 매핑
-            for (String[] c : candidates) {
-                if (c[1].equals(selectedLink)) {
-                    usedSources.add(new String[]{c[0], c[1], selectedTitle, c[3]}); // 언론사, 링크, AI가 고른 제목, 날짜
-                    break;
+                if (cleanLine.startsWith("선택번호:")) {
+                    isContentMode = false;
+                    String numStr = cleanLine.replace("선택번호:", "").replaceAll("[^0-9]", "");
+                    if (!numStr.isEmpty()) selectedIndex = Integer.parseInt(numStr) - 1;
+                } else if (cleanLine.startsWith("제목:")) {
+                    isContentMode = false;
+                    selectedTitle = cleanLine.substring(cleanLine.indexOf("제목:") + 3).trim();
+                } else if (cleanLine.startsWith("링크:")) {
+                    isContentMode = false;
+                    selectedLink = cleanLine.substring(cleanLine.indexOf("링크:") + 3).trim();
+                } else if (cleanLine.startsWith("내용:")) {
+                    isContentMode = true;
+                    selectedSummaryBuilder.append(cleanLine.substring(cleanLine.indexOf("내용:") + 3).trim()).append(" ");
+                } else if (isContentMode && !cleanLine.isEmpty()) {
+                    selectedSummaryBuilder.append(cleanLine).append(" ");
                 }
             }
 
-            // 최종 뉴스레터 작성기로 넘어갈 텍스트 포맷
-            return "제목: " + selectedTitle + "\n원본링크: " + selectedLink + "\n내용: " + selectedSummary;
+            // 번호 파싱 실패 시, 예외적으로 URL 포함 여부로 매칭 시도 (Fallback)
+            if (selectedIndex < 0 || selectedIndex >= candidates.size()) {
+                for (int i = 0; i < candidates.size(); i++) {
+                    if (!selectedLink.isEmpty() && (candidates.get(i)[1].contains(selectedLink) || selectedLink.contains(candidates.get(i)[1]))) {
+                        selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            // 매칭된 기사가 있다면 출처에 추가 후 작성기로 넘김
+            if (selectedIndex >= 0 && selectedIndex < candidates.size()) {
+                String[] c = candidates.get(selectedIndex);
+
+                String finalTitle = selectedTitle.isEmpty() ? c[2] : selectedTitle;
+                String finalSummary = selectedSummaryBuilder.toString().trim();
+
+                // {언론사, 링크, 제목, 날짜}
+                usedSources.add(new String[]{c[0], c[1], finalTitle, c[3]});
+                return "제목: " + finalTitle + "\n원본링크: " + c[1] + "\n내용: " + finalSummary;
+            }
 
         } catch (Exception e) {
-            return null; // 파싱 실패 시 버림
+            System.err.println("AI 필터 응답 파싱 오류: " + e.getMessage());
         }
+
+        return null;
     }
 
     // 3단계: 최종 엄선된 기사들로 뉴스레터 HTML 코드 생성
