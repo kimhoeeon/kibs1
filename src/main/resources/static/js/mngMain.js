@@ -3,6 +3,20 @@
  * */
 $(function(){
 
+    // --- Ajax 전역 에러 핸들러 설정 ---
+    $.ajaxSetup({
+        error: function(xhr, status, err) {
+            // 401 (Session Expired) 또는 403 (Access Denied IP) 에러 감지
+            if (xhr.status === 401 || xhr.status === 403) {
+                alert("세션이 만료되었거나 접근 권한이 없습니다. 안전을 위해 다시 로그인해 주세요.");
+                window.location.href = "/mng/index.do"; // 관리자 로그인 페이지로 강제 이동
+            } else {
+                alert("서버와 통신 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+            }
+        }
+    });
+    // ----------------------------------------
+
     if (!window.location.href.includes('localhost')) {
         if (window.location.protocol !== "https:") {
             window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
@@ -278,9 +292,11 @@ function loginFormSubmit() {
             }
         })
         .fail(function (xhr, status, errorThrown) {
-            // 보안 요건 적용: 시스템 내부 오류 메시지(status, errorThrown) 화면 노출 차단
-            alert('서버와 통신 중 오류가 발생했습니다. 관리자에게 문의해 주세요.');
-        })
+            // 401, 403 에러는 $.ajaxSetup에서 공통 처리하므로 여기서는 무시
+            if (xhr.status !== 401 && xhr.status !== 403) {
+                alert('오류가 발생했습니다. 시스템 관리자에게 문의해 주세요.');
+            }
+        });
 }
 
 function logout() {
@@ -298,8 +314,11 @@ function logout() {
                 }
             })
             .fail(function (xhr, status, errorThrown) {
-                alert('오류가 발생했습니다. 시스템 관리자에게 문의해 주세요.');
-            })
+                // 401, 403 에러는 $.ajaxSetup에서 공통 처리하므로 여기서는 무시
+                if (xhr.status !== 401 && xhr.status !== 403) {
+                    alert('오류가 발생했습니다. 시스템 관리자에게 문의해 주세요.');
+                }
+            });
     }
 }
 
@@ -407,8 +426,11 @@ function ajaxConnectSimple(url, method, jsonStr){
             result = data;
         })
         .fail(function (xhr, status, errorThrown) {
-            alert('오류가 발생했습니다. 시스템 관리자에게 문의해 주세요.');
-        })
+            // 401, 403 에러는 $.ajaxSetup에서 공통 처리하므로 여기서는 무시
+            if (xhr.status !== 401 && xhr.status !== 403) {
+                alert('오류가 발생했습니다. 시스템 관리자에게 문의해 주세요.');
+            }
+        });
     return result;
 }
 
@@ -452,8 +474,11 @@ function ajaxConnect(url, method, jsonStr) {
             result = data;
         })
         .fail(function (xhr, status, errorThrown) {
-            alert('오류가 발생했습니다. 시스템 관리자에게 문의해 주세요.');
-        })
+            // 401, 403 에러는 $.ajaxSetup에서 공통 처리하므로 여기서는 무시
+            if (xhr.status !== 401 && xhr.status !== 403) {
+                alert('오류가 발생했습니다. 시스템 관리자에게 문의해 주세요.');
+            }
+        });
     return result;
 }
 
