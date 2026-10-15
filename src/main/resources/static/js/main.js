@@ -1588,7 +1588,7 @@ async function step_01_check(exhibitorSeq){
         showMessage('#phone', 'error', '[ 담당자 정보 ]', '휴대전화번호를 입력해 주세요.', '');
         return false;
     }else{
-        if ( !/^010-[0-9]{4}-[0-9]{4}$/.test( phone ) ) {
+        if ( !/^010-?[0-9]{4}-?[0-9]{4}$/.test( phone ) ) {
             showMessage('#phone', 'error', '[ 담당자 정보 ]', '올바른 휴대전화번호를 입력해 주세요.<br>(앞자리 010 만 가능합니다.)', '');
             return false;
         }
@@ -1662,7 +1662,7 @@ async function step_01_check(exhibitorSeq){
             charge_person_phone_flag = false;
         }
 
-        if ( charge_person_phone_flag && !/^010-[0-9]{4}-[0-9]{4}$/.test( charge_person_phone_el.eq(i).val() ) ) {
+        if ( charge_person_phone_flag && !/^010-?[0-9]{4}-?[0-9]{4}$/.test( charge_person_phone_el.eq(i).val() ) ) {
             charge_person_phone_flag = false;
         }
     }
@@ -2175,7 +2175,7 @@ function f_buyer_add(exSeq){
 
     // 휴대전화
     let buyer_phone = $('#buyer_phone').val();
-    if ( nvl(buyer_phone,'') !== '' && !/^010-[0-9]{4}-[0-9]{4}$/.test( buyer_phone ) ) {
+    if ( nvl(buyer_phone,'') !== '' && !/^010-?[0-9]{4}-?[0-9]{4}$/.test( buyer_phone ) ) {
         showMessage('', 'error', '[ 바이어 정보 ]', '올바른 휴대전화번호를 입력해 주세요.<br>(앞자리 010 만 가능합니다.)', '');
         return false;
     }
@@ -4162,7 +4162,7 @@ function step_2_8_check(exhibitorSeq){
         if(charge_person_phone_el[i].value === ''){
             charge_person_phone_flag = false;
         }
-        if ( charge_person_phone_flag && !/^010-[0-9]{4}-[0-9]{4}$/.test( charge_person_phone_el[i].value ) ) {
+        if ( charge_person_phone_flag && !/^010-?[0-9]{4}-?[0-9]{4}$/.test( charge_person_phone_el[i].value ) ) {
             charge_person_phone_flag = false;
         }
     }
@@ -4727,7 +4727,7 @@ async function my_step_01_check(exhibitorSeq){
         showMessage('#phone', 'error', '[ 담당자 정보 ]', '휴대전화번호를 입력해 주세요.', '');
         return false;
     }else{
-        if ( !/^010-[0-9]{4}-[0-9]{4}$/.test( phone ) ) {
+        if ( !/^010-?[0-9]{4}-?[0-9]{4}$/.test( phone ) ) {
             showMessage('#phone', 'error', '[ 담당자 정보 ]', '올바른 휴대전화번호를 입력해 주세요.<br>(앞자리 010 만 가능합니다.)', '');
             return false;
         }
@@ -4801,7 +4801,7 @@ async function my_step_01_check(exhibitorSeq){
             charge_person_phone_flag = false;
         }
 
-        if ( charge_person_phone_flag && !/^010-[0-9]{4}-[0-9]{4}$/.test( charge_person_phone_el.eq(i).val() ) ) {
+        if ( charge_person_phone_flag && !/^010-?[0-9]{4}-?[0-9]{4}$/.test( charge_person_phone_el.eq(i).val() ) ) {
             charge_person_phone_flag = false;
         }
     }
@@ -7263,7 +7263,7 @@ function f_ask_request(companyName, id){
         showMessage('', 'info', '문의하기', '문의자 연락처를 작성해 주세요.', '');
         return false;
     }
-    if (!/^010-[0-9]{4}-[0-9]{4}$/.test(phone)) {
+    if (!/^010-?[0-9]{4}-?[0-9]{4}$/.test(phone)) {
         showMessage('', 'info', '문의하기', '올바른 휴대전화번호를 입력해 주세요.<br>(앞자리 010 만 가능합니다.)', '');
         return false;
     }
