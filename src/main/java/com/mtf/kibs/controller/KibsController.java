@@ -11,6 +11,7 @@ import com.mtf.kibs.mapper.AiClippingMapper;
 import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.CommService;
 import com.mtf.kibs.service.KibsService;
+import com.mtf.kibs.util.AES256Util;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,9 @@ public class KibsController {
     private final CommService commService;
 
     private final String transferYear = "2027";
+
+    @Autowired
+    private AES256Util aes256Util;
 
     public KibsController(KibsService ks, CommService cs){
         this.kibsService = ks;
@@ -926,6 +930,17 @@ public class KibsController {
         if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getHeader("WL-Proxy-Client-IP");
         if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getRemoteAddr();
         if (clientIp != null && clientIp.contains(",")) clientIp = clientIp.split(",")[0].trim();
+
+        // --- DB 조회를 위해 평문 휴대전화번호를 암호화 ---
+        if (visitorDTO.getPhone() != null && !visitorDTO.getPhone().isEmpty()) {
+            try {
+                String encryptedPhone = aes256Util.encrypt(visitorDTO.getPhone());
+                visitorDTO.setPhone(encryptedPhone);
+            } catch (Exception e) {
+                // 암호화 에러 발생 시 처리 (로그 기록 등)
+            }
+        }
+        // --------------------------------------------------------
 
         // 서비스 로직 호출 (IP 전달)
         VisitorDTO result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);

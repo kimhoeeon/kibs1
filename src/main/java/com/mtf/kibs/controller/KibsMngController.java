@@ -5,6 +5,7 @@ import com.mtf.kibs.dto.*;
 import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.CommService;
 import com.mtf.kibs.service.KibsMngService;
+import com.mtf.kibs.util.AES256Util;
 import com.mtf.kibs.util.FileUploadUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -60,6 +61,9 @@ public class KibsMngController {
     private final CommService commService;
 
     private final String transferYear = "2027";
+
+    @Autowired
+    private AES256Util aes256Util;
 
     /**
      * Instantiates a new Kibs controller.
@@ -4505,13 +4509,20 @@ public class KibsMngController {
                 cellCnt = 0;
                 row = sheet.createRow(rowCnt++);
 
+                // --- NPE 방지 및 영문 대체 로직 적용 ---
                 int nCount = 0;
-                String[] remark = info.getCompanyNameKo().split("\\^");
+                String targetCompanyName = info.getCompanyNameKo();
+                if (targetCompanyName == null || targetCompanyName.trim().isEmpty()) {
+                    targetCompanyName = info.getCompanyNameEn(); // 국문이 없으면 영문으로 대체
+                }
 
-                //줄 높이 계산
-                for (String s : remark) {
-                    if (s.length() > 0) {
-                        nCount++;
+                if (targetCompanyName != null) {
+                    String[] remark = targetCompanyName.split("\\^");
+                    //줄 높이 계산
+                    for (String s : remark) {
+                        if (s.length() > 0) {
+                            nCount++;
+                        }
                     }
                 }
 
@@ -4547,19 +4558,19 @@ public class KibsMngController {
                 // 본사 주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyAddress());
+                cell.setCellValue(aes256Util.decrypt(info.getCompanyAddress()));
                 // 본사 상세주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyAddressDetail());
+                cell.setCellValue(aes256Util.decrypt(info.getCompanyAddressDetail()));
                 // 공장주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFactoryAddress());
+                cell.setCellValue(aes256Util.decrypt(info.getFactoryAddress()));
                 // 공장상세주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getFactoryAddressDetail());
+                cell.setCellValue(aes256Util.decrypt(info.getFactoryAddressDetail()));
                 // 대표자
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
@@ -4567,7 +4578,7 @@ public class KibsMngController {
                 // 전화
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getCompanyTel());
+                cell.setCellValue(aes256Util.decrypt(info.getCompanyTel()));
                 // 홈페이지
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
@@ -4635,15 +4646,15 @@ public class KibsMngController {
                 // 담당자전화번호
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getTel());
+                cell.setCellValue(aes256Util.decrypt(info.getTel()));
                 // 담당자휴대전화
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getPhone());
+                cell.setCellValue(aes256Util.decrypt(info.getPhone()));
                 // 담당자이메일
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(info.getEmail());
+                cell.setCellValue(aes256Util.decrypt(info.getEmail()));
 
                 // 1. 제품분류(품목)
                 cell = row.createCell(cellCnt++);
@@ -4667,7 +4678,7 @@ public class KibsMngController {
                 cell.setCellStyle(bodyStyle_di);
                 cell.setCellValue(info.getProductBrand() != null ? info.getProductBrand().replaceAll("\\^","\n") : "");
 
-                // 5. [신규 추가] 특징 (DTO에 getProductFeature가 있어야 함)
+                // 5. 특징
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_di);
                 cell.setCellValue(info.getProductFeature() != null ? info.getProductFeature().replaceAll("\\^","\n") : "");
@@ -5755,13 +5766,20 @@ public class KibsMngController {
                 cellCnt = 0;
                 row = sheet.createRow(rowCnt++);
 
+                // --- NPE 방지 및 영문 대체 로직 적용 ---
                 int nCount = 0;
-                String[] remark = info.getCompanyNameKo().split("\\^");
+                String targetCompanyName = info.getCompanyNameKo();
+                if (targetCompanyName == null || targetCompanyName.trim().isEmpty()) {
+                    targetCompanyName = info.getCompanyNameEn(); // 국문이 없으면 영문으로 대체
+                }
 
-                //줄 높이 계산
-                for (String s : remark) {
-                    if (s.length() > 0) {
-                        nCount++;
+                if (targetCompanyName != null) {
+                    String[] remark = targetCompanyName.split("\\^");
+                    //줄 높이 계산
+                    for (String s : remark) {
+                        if (s.length() > 0) {
+                            nCount++;
+                        }
                     }
                 }
 
@@ -5945,7 +5963,16 @@ public class KibsMngController {
                     }
                     cell = row.createCell(cellCnt++);
                     cell.setCellStyle(bodyStyle);
-                    cell.setCellValue(convertValue(chargePersonEmailSplit, i));
+
+                    // --- 이메일 배열 요소 복호화 로직 ---
+                    String emailValue = convertValue(chargePersonEmailSplit, i);
+                    try {
+                        if (emailValue != null && !emailValue.trim().isEmpty()) {
+                            emailValue = aes256Util.decrypt(emailValue);
+                        }
+                    } catch (Exception e) {}
+                    cell.setCellValue(emailValue);
+                    // ------------------------------------------
                 }
 
                 // 참가분야
@@ -6920,7 +6947,7 @@ public class KibsMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 if(info.getTel() != null){
-                    cell.setCellValue(info.getTel());
+                    cell.setCellValue(aes256Util.decrypt(info.getTel()));
                 }else{
                     cell.setCellValue("-");
                 }
@@ -6928,12 +6955,25 @@ public class KibsMngController {
                 // 휴대전화
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getPhone());
+                cell.setCellValue(aes256Util.decrypt(info.getPhone()));
 
                 // 이메일
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(info.getEmail() + "@" + info.getDomain());
+
+                // --- 이메일 복호화 로직 ---
+                String decryptedEmail = "";
+                String decryptedDomain = "";
+                try {
+                    decryptedEmail = aes256Util.decrypt(info.getEmail());
+                    decryptedDomain = aes256Util.decrypt(info.getDomain());
+                    // 만약 평문이 들어있어서 복호화에 실패하더라도 원본 값을 유지하도록 try-catch 또는 유틸리티 내 예외 처리가 필요합니다.
+                } catch (Exception e) {
+                    decryptedEmail = info.getEmail();
+                    decryptedDomain = info.getDomain();
+                }
+                cell.setCellValue(decryptedEmail + "@" + decryptedDomain);
+                // ----------------------------------
 
                 // 직장명
                 cell = row.createCell(cellCnt++);

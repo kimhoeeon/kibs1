@@ -21,7 +21,7 @@ public class VisitorDTO {
     String eventGbn; //행사구분
     String timeGbn; //1차/2차
     String name; //이름
-    String tel; //전화번호
+    @EncryptField String tel; //전화번호
     @EncryptField String phone; //휴대전화
     @EncryptField String email; //이메일
     String domain; //도메인
