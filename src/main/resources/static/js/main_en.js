@@ -45,7 +45,7 @@ function certificateEmail(el){
     certifyCode = generateRandomCode(5);
     //console.log(certifyCode);
     let jsonObj = {
-        subject: '[ 2027 KIBS ] Participant Certification Info', //제목
+        subject: '[2027 KIBS] Participant Certification Info', //제목
         body: "", //본문
         template: "160", //템플릿 번호
         receiver: [{ email: email , note1: certifyCode }]
