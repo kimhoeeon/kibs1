@@ -775,7 +775,9 @@ public class KibsMngNewController {
                 // ==========================================
                 // ★ 엑셀 쓰기 전 복호화 전처리 시작 ★
                 // ==========================================
+                info.setCompanyAddress(safeDecrypt(info.getCompanyAddress()));
                 info.setCompanyAddressDetail(safeDecrypt(info.getCompanyAddressDetail()));
+                info.setFactoryAddress(safeDecrypt(info.getFactoryAddress()));
                 info.setFactoryAddressDetail(safeDecrypt(info.getFactoryAddressDetail()));
                 info.setCompanyTel(safeDecrypt(info.getCompanyTel()));
                 info.setCompanyFax(safeDecrypt(info.getCompanyFax()));
@@ -1272,7 +1274,7 @@ public class KibsMngNewController {
     }
 
     // ==========================================
-    // ★ 복호화 헬퍼 메서드 추가 ★
+    // 공통 안전 복호화 헬퍼 메서드
     // ==========================================
     private String safeDecrypt(String text) {
         if (text == null || text.trim().isEmpty()) return text;
@@ -1281,6 +1283,7 @@ public class KibsMngNewController {
 
         try {
             String cipher = original.replace(" ", "+");
+            // [수정 핵심] safeDecrypt가 아닌 aes256Util.decrypt()를 호출해야 합니다!
             String dec = aes256Util.decrypt(cipher);
 
             if (dec != null && !dec.equals(cipher)) {
@@ -1292,7 +1295,7 @@ public class KibsMngNewController {
                     decrypted = dec;
                 }
             } else if (original.contains("@")) {
-                // 전체 복호화 실패 & '@' 포함 -> 분리 복호화 시도
+                // 이메일 등 분리 복호화 시도
                 String[] parts = original.split("@", 2);
                 String cipherId = parts[0].replace(" ", "+");
                 String decId = aes256Util.decrypt(cipherId);

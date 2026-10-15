@@ -4558,19 +4558,19 @@ public class KibsMngController {
                 // 본사 주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(aes256Util.decrypt(info.getCompanyAddress()));
+                cell.setCellValue(safeDecrypt(info.getCompanyAddress()));
                 // 본사 상세주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(aes256Util.decrypt(info.getCompanyAddressDetail()));
+                cell.setCellValue(safeDecrypt(info.getCompanyAddressDetail()));
                 // 공장주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(aes256Util.decrypt(info.getFactoryAddress()));
+                cell.setCellValue(safeDecrypt(info.getFactoryAddress()));
                 // 공장상세주소
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(aes256Util.decrypt(info.getFactoryAddressDetail()));
+                cell.setCellValue(safeDecrypt(info.getFactoryAddressDetail()));
                 // 대표자
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
@@ -4578,7 +4578,7 @@ public class KibsMngController {
                 // 전화
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(aes256Util.decrypt(info.getCompanyTel()));
+                cell.setCellValue(safeDecrypt(info.getCompanyTel()));
                 // 홈페이지
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
@@ -4646,15 +4646,15 @@ public class KibsMngController {
                 // 담당자전화번호
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(aes256Util.decrypt(info.getTel()));
+                cell.setCellValue(safeDecrypt(info.getTel()));
                 // 담당자휴대전화
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(aes256Util.decrypt(info.getPhone()));
+                cell.setCellValue(safeDecrypt(info.getPhone()));
                 // 담당자이메일
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle_ch);
-                cell.setCellValue(aes256Util.decrypt(info.getEmail()));
+                cell.setCellValue(safeDecrypt(info.getEmail()));
 
                 // 1. 제품분류(품목)
                 cell = row.createCell(cellCnt++);
@@ -5968,7 +5968,7 @@ public class KibsMngController {
                     String emailValue = convertValue(chargePersonEmailSplit, i);
                     try {
                         if (emailValue != null && !emailValue.trim().isEmpty()) {
-                            emailValue = aes256Util.decrypt(emailValue);
+                            emailValue = safeDecrypt(emailValue);
                         }
                     } catch (Exception e) {}
                     cell.setCellValue(emailValue);
@@ -6947,7 +6947,7 @@ public class KibsMngController {
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
                 if(info.getTel() != null){
-                    cell.setCellValue(aes256Util.decrypt(info.getTel()));
+                    cell.setCellValue(safeDecrypt(info.getTel()));
                 }else{
                     cell.setCellValue("-");
                 }
@@ -6955,7 +6955,7 @@ public class KibsMngController {
                 // 휴대전화
                 cell = row.createCell(cellCnt++);
                 cell.setCellStyle(bodyStyle);
-                cell.setCellValue(aes256Util.decrypt(info.getPhone()));
+                cell.setCellValue(safeDecrypt(info.getPhone()));
 
                 // 이메일
                 cell = row.createCell(cellCnt++);
@@ -6965,8 +6965,8 @@ public class KibsMngController {
                 String decryptedEmail = "";
                 String decryptedDomain = "";
                 try {
-                    decryptedEmail = aes256Util.decrypt(info.getEmail());
-                    decryptedDomain = aes256Util.decrypt(info.getDomain());
+                    decryptedEmail = safeDecrypt(info.getEmail());
+                    decryptedDomain = safeDecrypt(info.getDomain());
                     // 만약 평문이 들어있어서 복호화에 실패하더라도 원본 값을 유지하도록 try-catch 또는 유틸리티 내 예외 처리가 필요합니다.
                 } catch (Exception e) {
                     decryptedEmail = info.getEmail();
@@ -8923,5 +8923,41 @@ public class KibsMngController {
         // JS에서 보낸 입력값(input)을 기반으로 즉시 계산하여 결과만 반환
         // (DB 저장은 없음)
         return calculationService.calculateTotals(input);
+    }
+
+    // ==========================================
+    // 공통 안전 복호화 헬퍼 메서드
+    // ==========================================
+    private String safeDecrypt(String text) {
+        if (text == null || text.trim().isEmpty()) return text;
+        String original = text.trim();
+        String decrypted = original;
+
+        try {
+            String cipher = original.replace(" ", "+");
+            // [수정 핵심] safeDecrypt가 아닌 aes256Util.decrypt()를 호출해야 합니다!
+            String dec = aes256Util.decrypt(cipher);
+
+            if (dec != null && !dec.equals(cipher)) {
+                // 이중 암호화 방어
+                String secondDec = aes256Util.decrypt(dec);
+                if (secondDec != null && !secondDec.equals(dec)) {
+                    decrypted = secondDec;
+                } else {
+                    decrypted = dec;
+                }
+            } else if (original.contains("@")) {
+                // 이메일 등 분리 복호화 시도
+                String[] parts = original.split("@", 2);
+                String cipherId = parts[0].replace(" ", "+");
+                String decId = aes256Util.decrypt(cipherId);
+                if (decId != null && !decId.equals(cipherId)) {
+                    decrypted = decId + "@" + parts[1];
+                }
+            }
+        } catch (Exception e) {
+            // 복호화 에러 발생 시 원본 텍스트 유지
+        }
+        return decrypted;
     }
 }

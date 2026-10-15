@@ -700,7 +700,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                             String[] parts = originalEmail.split("@", 2);
                             String cipherId = parts[0].replace(" ", "+");
 
-                            String decryptedId = aes256Util.decrypt(cipherId);
+                            String decryptedId = safeDecrypt(cipherId);
                             // Exception 대신 원본 텍스트 반환을 대비해 문자열 변화로 복호화 성공 여부 검증
                             if (decryptedId != null && !decryptedId.equals(cipherId)) {
                                 decryptedEmail = decryptedId + "@" + parts[1];
@@ -708,11 +708,11 @@ public class KibsMngServiceImpl implements KibsMngService {
                         } else {
                             // 참가업체: 전체 암호화(국문), 분리 암호화(영문), 또는 이중 암호화(오류 데이터)
                             String cipherEmail = originalEmail.replace(" ", "+");
-                            String decryptedFull = aes256Util.decrypt(cipherEmail);
+                            String decryptedFull = safeDecrypt(cipherEmail);
 
                             if (decryptedFull != null && !decryptedFull.equals(cipherEmail)) {
                                 // 1차 복호화 성공: 3번 업체처럼 이중 암호화된 경우를 대비해 2차 복호화 시도
-                                String secondDecrypt = aes256Util.decrypt(decryptedFull);
+                                String secondDecrypt = safeDecrypt(decryptedFull);
                                 if (secondDecrypt != null && !secondDecrypt.equals(decryptedFull)) {
                                     decryptedEmail = secondDecrypt;
                                 } else {
@@ -724,7 +724,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                                 String[] parts = originalEmail.split("@", 2);
                                 String cipherId = parts[0].replace(" ", "+");
 
-                                String decryptedId = aes256Util.decrypt(cipherId);
+                                String decryptedId = safeDecrypt(cipherId);
                                 if (decryptedId != null && !decryptedId.equals(cipherId)) {
                                     decryptedEmail = decryptedId + "@" + parts[1];
                                 }
@@ -2121,37 +2121,37 @@ public class KibsMngServiceImpl implements KibsMngService {
             try {
                 // 대표담당자 전화번호 복호화
                 if (info.getTel() != null && !info.getTel().trim().isEmpty()) {
-                    String decryptedTel = aes256Util.decrypt(info.getTel());
+                    String decryptedTel = safeDecrypt(info.getTel());
                     if (decryptedTel != null && !decryptedTel.isEmpty()) info.setTel(decryptedTel);
                 }
 
                 // 대표담당자 휴대전화 복호화
                 if (info.getPhone() != null && !info.getPhone().trim().isEmpty()) {
-                    String decryptedPhone = aes256Util.decrypt(info.getPhone());
+                    String decryptedPhone = safeDecrypt(info.getPhone());
                     if (decryptedPhone != null && !decryptedPhone.isEmpty()) info.setPhone(decryptedPhone);
                 }
 
                 // 대표담당자 이메일 복호화
                 if (info.getEmail() != null && !info.getEmail().trim().isEmpty()) {
-                    String decryptedEmail = aes256Util.decrypt(info.getEmail());
+                    String decryptedEmail = safeDecrypt(info.getEmail());
                     if (decryptedEmail != null && !decryptedEmail.isEmpty()) info.setEmail(decryptedEmail);
                 }
 
                 // 회사 전화번호 복호화
                 if (info.getCompanyTel() != null && !info.getCompanyTel().trim().isEmpty()) {
-                    String decryptedCompanyTel = aes256Util.decrypt(info.getCompanyTel());
+                    String decryptedCompanyTel = safeDecrypt(info.getCompanyTel());
                     if (decryptedCompanyTel != null && !decryptedCompanyTel.isEmpty()) info.setCompanyTel(decryptedCompanyTel);
                 }
 
                 // 회사 팩스번호 복호화
                 if (info.getCompanyFax() != null && !info.getCompanyFax().trim().isEmpty()) {
-                    String decryptedCompanyFax = aes256Util.decrypt(info.getCompanyFax());
+                    String decryptedCompanyFax = safeDecrypt(info.getCompanyFax());
                     if (decryptedCompanyFax != null && !decryptedCompanyFax.isEmpty()) info.setCompanyFax(decryptedCompanyFax);
                 }
 
                 // 주소 복호화
                 if (info.getCompanyAddress() != null && !info.getCompanyAddress().trim().isEmpty()) {
-                    String decryptedCompanyAddress = aes256Util.decrypt(info.getCompanyAddress());
+                    String decryptedCompanyAddress = safeDecrypt(info.getCompanyAddress());
                     if (decryptedCompanyAddress != null && !decryptedCompanyAddress.isEmpty()) {
                         info.setCompanyAddress(decryptedCompanyAddress);
                     }
@@ -2159,7 +2159,7 @@ public class KibsMngServiceImpl implements KibsMngService {
 
                 // 상세 주소 복호화
                 if (info.getCompanyAddressDetail() != null && !info.getCompanyAddressDetail().trim().isEmpty()) {
-                    String decryptedCompanyAddressDetail = aes256Util.decrypt(info.getCompanyAddressDetail());
+                    String decryptedCompanyAddressDetail = safeDecrypt(info.getCompanyAddressDetail());
                     if (decryptedCompanyAddressDetail != null && !decryptedCompanyAddressDetail.isEmpty()) {
                         info.setCompanyAddressDetail(decryptedCompanyAddressDetail);
                     }
@@ -2758,11 +2758,11 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (VisitorDTO info : list) {
                 try {
-                    if (info.getTel() != null) info.setTel(aes256Util.decrypt(info.getTel()));
-                    if (info.getPhone() != null) info.setPhone(aes256Util.decrypt(info.getPhone()));
-                    if (info.getEmail() != null) info.setEmail(aes256Util.decrypt(info.getEmail()));
-                    if (info.getCompanyAddress() != null) info.setCompanyAddress(aes256Util.decrypt(info.getCompanyAddress()));
-                    if (info.getCompanyAddressDetail() != null) info.setCompanyAddressDetail(aes256Util.decrypt(info.getCompanyAddressDetail()));
+                    if (info.getTel() != null) info.setTel(safeDecrypt(info.getTel()));
+                    if (info.getPhone() != null) info.setPhone(safeDecrypt(info.getPhone()));
+                    if (info.getEmail() != null) info.setEmail(safeDecrypt(info.getEmail()));
+                    if (info.getCompanyAddress() != null) info.setCompanyAddress(safeDecrypt(info.getCompanyAddress()));
+                    if (info.getCompanyAddressDetail() != null) info.setCompanyAddressDetail(safeDecrypt(info.getCompanyAddressDetail()));
                 } catch (Exception e) {}
             }
         }
@@ -3025,8 +3025,9 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (MngProductDTO info : list) {
                 try {
-                    if (info.getPhone() != null) info.setPhone(aes256Util.decrypt(info.getPhone()));
-                } catch (Exception e) {}
+                    if (info.getPhone() != null) info.setPhone(safeDecrypt(info.getPhone()));
+                } catch (Exception e) {
+                }
             }
         }
         return list;
@@ -3051,19 +3052,19 @@ public class KibsMngServiceImpl implements KibsMngService {
                 try {
                     // 바이어 전화번호 복호화
                     if (buyer.getBuyerCompanyTel() != null && !buyer.getBuyerCompanyTel().trim().isEmpty()) {
-                        String decryptedTel = aes256Util.decrypt(buyer.getBuyerCompanyTel());
+                        String decryptedTel = safeDecrypt(buyer.getBuyerCompanyTel());
                         if (decryptedTel != null && !decryptedTel.isEmpty()) buyer.setBuyerCompanyTel(decryptedTel);
                     }
 
                     // 바이어 휴대전화 복호화
                     if (buyer.getBuyerCompanyPhone() != null && !buyer.getBuyerCompanyPhone().trim().isEmpty()) {
-                        String decryptedPhone = aes256Util.decrypt(buyer.getBuyerCompanyPhone());
+                        String decryptedPhone = safeDecrypt(buyer.getBuyerCompanyPhone());
                         if (decryptedPhone != null && !decryptedPhone.isEmpty()) buyer.setBuyerCompanyPhone(decryptedPhone);
                     }
 
                     // 바이어 이메일 복호화
                     if (buyer.getBuyerCompanyEmail() != null && !buyer.getBuyerCompanyEmail().trim().isEmpty()) {
-                        String decryptedEmail = aes256Util.decrypt(buyer.getBuyerCompanyEmail());
+                        String decryptedEmail = safeDecrypt(buyer.getBuyerCompanyEmail());
                         if (decryptedEmail != null && !decryptedEmail.isEmpty()) buyer.setBuyerCompanyEmail(decryptedEmail);
                     }
                 } catch (Exception e) {
@@ -3628,19 +3629,19 @@ public class KibsMngServiceImpl implements KibsMngService {
                 try {
                     // 부담당자 전화번호 복호화
                     if (charge.getChargePersonTel() != null && !charge.getChargePersonTel().trim().isEmpty()) {
-                        String decryptedTel = aes256Util.decrypt(charge.getChargePersonTel());
+                        String decryptedTel = safeDecrypt(charge.getChargePersonTel());
                         if (decryptedTel != null && !decryptedTel.isEmpty()) charge.setChargePersonTel(decryptedTel);
                     }
 
                     // 부담당자 휴대전화 복호화
                     if (charge.getChargePersonPhone() != null && !charge.getChargePersonPhone().trim().isEmpty()) {
-                        String decryptedPhone = aes256Util.decrypt(charge.getChargePersonPhone());
+                        String decryptedPhone = safeDecrypt(charge.getChargePersonPhone());
                         if (decryptedPhone != null && !decryptedPhone.isEmpty()) charge.setChargePersonPhone(decryptedPhone);
                     }
 
                     // 부담당자 이메일 복호화
                     if (charge.getChargePersonEmail() != null && !charge.getChargePersonEmail().trim().isEmpty()) {
-                        String decryptedEmail = aes256Util.decrypt(charge.getChargePersonEmail());
+                        String decryptedEmail = safeDecrypt(charge.getChargePersonEmail());
                         if (decryptedEmail != null && !decryptedEmail.isEmpty()) charge.setChargePersonEmail(decryptedEmail);
                     }
                 } catch (Exception e) {
@@ -4461,7 +4462,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (ExhibitorNewDTO info : list) {
                 try {
-                    if (info.getPhone() != null) info.setPhone(aes256Util.decrypt(info.getPhone()));
+                    if (info.getPhone() != null) info.setPhone(safeDecrypt(info.getPhone()));
                 } catch (Exception e) {}
             }
         }
@@ -4557,7 +4558,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (ExhibitorNewDTO info : list) {
                 try {
-                    if (info.getPhone() != null) info.setPhone(aes256Util.decrypt(info.getPhone()));
+                    if (info.getPhone() != null) info.setPhone(safeDecrypt(info.getPhone()));
                 } catch (Exception e) {}
             }
         }
@@ -4667,7 +4668,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (MngPassDTO info : list) {
                 try {
-                    if (info.getPhone() != null) info.setPhone(aes256Util.decrypt(info.getPhone()));
+                    if (info.getPhone() != null) info.setPhone(safeDecrypt(info.getPhone()));
                 } catch (Exception e) {}
             }
         }
@@ -4824,9 +4825,9 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (MngBuyerDTO info : list) {
                 try {
-                    if (info.getBuyerCompanyTel() != null) info.setBuyerCompanyTel(aes256Util.decrypt(info.getBuyerCompanyTel()));
-                    if (info.getBuyerCompanyPhone() != null) info.setBuyerCompanyPhone(aes256Util.decrypt(info.getBuyerCompanyPhone()));
-                    if (info.getBuyerCompanyEmail() != null) info.setBuyerCompanyEmail(aes256Util.decrypt(info.getBuyerCompanyEmail()));
+                    if (info.getBuyerCompanyTel() != null) info.setBuyerCompanyTel(safeDecrypt(info.getBuyerCompanyTel()));
+                    if (info.getBuyerCompanyPhone() != null) info.setBuyerCompanyPhone(safeDecrypt(info.getBuyerCompanyPhone()));
+                    if (info.getBuyerCompanyEmail() != null) info.setBuyerCompanyEmail(safeDecrypt(info.getBuyerCompanyEmail()));
                 } catch (Exception e) {}
             }
         }
@@ -4841,9 +4842,9 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (MngBuyerDTO info : list) {
                 try {
-                    if (info.getBuyerCompanyTel() != null) info.setBuyerCompanyTel(aes256Util.decrypt(info.getBuyerCompanyTel()));
-                    if (info.getBuyerCompanyPhone() != null) info.setBuyerCompanyPhone(aes256Util.decrypt(info.getBuyerCompanyPhone()));
-                    if (info.getBuyerCompanyEmail() != null) info.setBuyerCompanyEmail(aes256Util.decrypt(info.getBuyerCompanyEmail()));
+                    if (info.getBuyerCompanyTel() != null) info.setBuyerCompanyTel(safeDecrypt(info.getBuyerCompanyTel()));
+                    if (info.getBuyerCompanyPhone() != null) info.setBuyerCompanyPhone(safeDecrypt(info.getBuyerCompanyPhone()));
+                    if (info.getBuyerCompanyEmail() != null) info.setBuyerCompanyEmail(safeDecrypt(info.getBuyerCompanyEmail()));
                 } catch (Exception e) {}
             }
         }
@@ -5341,13 +5342,13 @@ public class KibsMngServiceImpl implements KibsMngService {
             for (ExhibitorNewDetailDTO info : list) {
                 try {
                     // 단일 필드 복호화
-                    if (info.getCompanyAddress() != null) info.setCompanyAddress(aes256Util.decrypt(info.getCompanyAddress()));
-                    if (info.getCompanyAddressDetail() != null) info.setCompanyAddressDetail(aes256Util.decrypt(info.getCompanyAddressDetail()));
-                    if (info.getCompanyTel() != null) info.setCompanyTel(aes256Util.decrypt(info.getCompanyTel()));
-                    if (info.getCompanyFax() != null) info.setCompanyFax(aes256Util.decrypt(info.getCompanyFax()));
-                    if (info.getTel() != null) info.setTel(aes256Util.decrypt(info.getTel()));
-                    if (info.getPhone() != null) info.setPhone(aes256Util.decrypt(info.getPhone()));
-                    if (info.getEmail() != null) info.setEmail(aes256Util.decrypt(info.getEmail()));
+                    if (info.getCompanyAddress() != null) info.setCompanyAddress(safeDecrypt(info.getCompanyAddress()));
+                    if (info.getCompanyAddressDetail() != null) info.setCompanyAddressDetail(safeDecrypt(info.getCompanyAddressDetail()));
+                    if (info.getCompanyTel() != null) info.setCompanyTel(safeDecrypt(info.getCompanyTel()));
+                    if (info.getCompanyFax() != null) info.setCompanyFax(safeDecrypt(info.getCompanyFax()));
+                    if (info.getTel() != null) info.setTel(safeDecrypt(info.getTel()));
+                    if (info.getPhone() != null) info.setPhone(safeDecrypt(info.getPhone()));
+                    if (info.getEmail() != null) info.setEmail(safeDecrypt(info.getEmail()));
 
                     // GROUP_CONCAT 필드 복호화 (부담당자 1,2,3)
                     info.setChargePersonTel(decryptGroupConcat(info.getChargePersonTel()));
@@ -5375,12 +5376,12 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (VisitorDetailDTO info : list) {
                 try {
-                    if (info.getTel() != null) info.setTel(aes256Util.decrypt(info.getTel()));
-                    if (info.getPhone() != null) info.setPhone(aes256Util.decrypt(info.getPhone()));
-                    if (info.getEmail() != null) info.setEmail(aes256Util.decrypt(info.getEmail()));
-                    if (info.getDomain() != null) info.setDomain(aes256Util.decrypt(info.getDomain()));
-                    if (info.getCompanyAddress() != null) info.setCompanyAddress(aes256Util.decrypt(info.getCompanyAddress()));
-                    if (info.getCompanyAddressDetail() != null) info.setCompanyAddressDetail(aes256Util.decrypt(info.getCompanyAddressDetail()));
+                    if (info.getTel() != null) info.setTel(safeDecrypt(info.getTel()));
+                    if (info.getPhone() != null) info.setPhone(safeDecrypt(info.getPhone()));
+                    if (info.getEmail() != null) info.setEmail(safeDecrypt(info.getEmail()));
+                    if (info.getDomain() != null) info.setDomain(safeDecrypt(info.getDomain()));
+                    if (info.getCompanyAddress() != null) info.setCompanyAddress(safeDecrypt(info.getCompanyAddress()));
+                    if (info.getCompanyAddressDetail() != null) info.setCompanyAddressDetail(safeDecrypt(info.getCompanyAddressDetail()));
                 } catch (Exception e) {}
             }
         }
@@ -5683,7 +5684,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         List<String> decryptedList = new ArrayList<>();
 
         for (String email : encryptedList) {
-            decryptedList.add(aes256Util.decrypt(email)); // 각각 수동 복호화
+            decryptedList.add(safeDecrypt(email)); // 각각 수동 복호화
         }
         return decryptedList;
     }
@@ -5704,7 +5705,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             for (PassDetailDTO info : list) {
                 try {
                     if (info.getRepresentativePhone() != null)
-                        info.setRepresentativePhone(aes256Util.decrypt(info.getRepresentativePhone()));
+                        info.setRepresentativePhone(safeDecrypt(info.getRepresentativePhone()));
                 } catch (Exception e) {
                 }
             }
@@ -5721,7 +5722,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             for (SignDetailDTO info : list) {
                 try {
                     if (info.getRepresentativePhone() != null)
-                        info.setRepresentativePhone(aes256Util.decrypt(info.getRepresentativePhone()));
+                        info.setRepresentativePhone(safeDecrypt(info.getRepresentativePhone()));
                 } catch (Exception e) {
                 }
             }
@@ -5738,7 +5739,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             for (UtilityDetailDTO info : list) {
                 try {
                     if (info.getRepresentativePhone() != null)
-                        info.setRepresentativePhone(aes256Util.decrypt(info.getRepresentativePhone()));
+                        info.setRepresentativePhone(safeDecrypt(info.getRepresentativePhone()));
                 } catch (Exception e) {
                 }
             }
@@ -5762,11 +5763,11 @@ public class KibsMngServiceImpl implements KibsMngService {
             for (BuyerDetailDTO info : list) {
                 try {
                     if (info.getBuyerCompanyTel() != null)
-                        info.setBuyerCompanyTel(aes256Util.decrypt(info.getBuyerCompanyTel()));
+                        info.setBuyerCompanyTel(safeDecrypt(info.getBuyerCompanyTel()));
                     if (info.getBuyerCompanyPhone() != null)
-                        info.setBuyerCompanyPhone(aes256Util.decrypt(info.getBuyerCompanyPhone()));
+                        info.setBuyerCompanyPhone(safeDecrypt(info.getBuyerCompanyPhone()));
                     if (info.getBuyerCompanyEmail() != null)
-                        info.setBuyerCompanyEmail(aes256Util.decrypt(info.getBuyerCompanyEmail()));
+                        info.setBuyerCompanyEmail(safeDecrypt(info.getBuyerCompanyEmail()));
                 } catch (Exception e) {
                 }
             }
@@ -6330,7 +6331,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                 // --- [수정] 이력 저장 시에도 복호화된 평문 이메일을 남기도록 처리 ---
                 String historyEmail = mailRequestDTO.getRecipientEmail();
                 try {
-                    String decrypted = aes256Util.decrypt(historyEmail);
+                    String decrypted = safeDecrypt(historyEmail);
                     if (decrypted != null && !decrypted.trim().isEmpty()) historyEmail = decrypted;
                 } catch (Exception e) {}
 
@@ -6357,7 +6358,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                 String targetEmail = receiverInfo.getEmail();
                 try {
                     // 암호화된 문자열일 경우 복호화 시도
-                    String decryptedEmail = aes256Util.decrypt(targetEmail);
+                    String decryptedEmail = safeDecrypt(targetEmail);
                     if (decryptedEmail != null && !decryptedEmail.trim().isEmpty()) {
                         targetEmail = decryptedEmail; // 복호화 성공 시 평문으로 교체
                     }
@@ -6725,7 +6726,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                 // ==============================================================
                 String targetEmail = receiverInfo.getEmail();
                 try {
-                    String decryptedEmail = aes256Util.decrypt(targetEmail);
+                    String decryptedEmail = safeDecrypt(targetEmail);
                     if (decryptedEmail != null && !decryptedEmail.trim().isEmpty()) {
                         targetEmail = decryptedEmail;
                     }
@@ -6807,7 +6808,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         for (int i = 0; i < splits.length; i++) {
             try {
                 if (splits[i] != null && !splits[i].trim().isEmpty()) {
-                    String decrypted = aes256Util.decrypt(splits[i]);
+                    String decrypted = safeDecrypt(splits[i]);
                     if (decrypted != null && !decrypted.isEmpty()) splits[i] = decrypted;
                 }
             } catch (Exception e) {
@@ -6815,6 +6816,42 @@ public class KibsMngServiceImpl implements KibsMngService {
             }
         }
         return String.join("^", splits);
+    }
+
+    // ==========================================
+    // 공통 안전 복호화 헬퍼 메서드
+    // ==========================================
+    private String safeDecrypt(String text) {
+        if (text == null || text.trim().isEmpty()) return text;
+        String original = text.trim();
+        String decrypted = original;
+
+        try {
+            String cipher = original.replace(" ", "+");
+            // [수정 핵심] safeDecrypt가 아닌 aes256Util.decrypt()를 호출해야 합니다!
+            String dec = aes256Util.decrypt(cipher);
+
+            if (dec != null && !dec.equals(cipher)) {
+                // 이중 암호화 방어
+                String secondDec = aes256Util.decrypt(dec);
+                if (secondDec != null && !secondDec.equals(dec)) {
+                    decrypted = secondDec;
+                } else {
+                    decrypted = dec;
+                }
+            } else if (original.contains("@")) {
+                // 이메일 등 분리 복호화 시도
+                String[] parts = original.split("@", 2);
+                String cipherId = parts[0].replace(" ", "+");
+                String decId = aes256Util.decrypt(cipherId);
+                if (decId != null && !decId.equals(cipherId)) {
+                    decrypted = decId + "@" + parts[1];
+                }
+            }
+        } catch (Exception e) {
+            // 복호화 에러 발생 시 원본 텍스트 유지
+        }
+        return decrypted;
     }
 
 }
