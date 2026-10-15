@@ -6044,43 +6044,43 @@
         SELECT en.seq
              , en.company_name_ko
              , en.company_name_en
-             , IF(( SELECT COUNT(*) FROM invoice_booth ib WHERE ib.exhibitor_seq = en.seq AND ib.del_yn = 'N') <![CDATA[>]]> 0, 'Y', 'N') AS invoiceYn
+             , IF(( SELECT COUNT(*) FROM invoice_booth ib WHERE ib.exhibitor_seq = en.seq AND ib.del_yn = 'N') > 0, 'Y', 'N') AS invoiceYn
              , en.booth_type
-             , en.registration_cnt
-             , en.registration_fee
-             , en.stand_alone_booth_cnt
-             , en.stand_alone_booth_fee
-             , en.assembly_booth_cnt
-             , en.assembly_booth_fee
-             , en.discount_early_1
-             , en.discount_early_2
-             , en.discount_first_under_10
-             , en.discount_first_over_10
-             , en.discount_first
-             , en.discount_re
-             , en.discount_scale_1
-             , en.discount_scale_2
-             , en.discount_scale_3
-             , en.discount_scale_4
-             , en.discount_scale_5
-             , en.discount_scale_6
-             , en.discount_leisure
-             , en.booth_prc_sum
-             , en.discount_prc_sum
+             , IFNULL(en.registration_cnt, 0) as registration_cnt
+             , IFNULL(en.registration_fee, 0) as registration_fee
+             , IFNULL(en.stand_alone_booth_cnt, 0) as stand_alone_booth_cnt
+             , IFNULL(en.stand_alone_booth_fee, 0) as stand_alone_booth_fee
+             , IFNULL(en.assembly_booth_cnt, 0) as assembly_booth_cnt
+             , IFNULL(en.assembly_booth_fee, 0) as assembly_booth_fee
+             , IFNULL(en.discount_early_1, 0) as discount_early_1
+             , IFNULL(en.discount_early_2, 0) as discount_early_2
+             , IFNULL(en.discount_first_under_10, 0) as discount_first_under_10
+             , IFNULL(en.discount_first_over_10, 0) as discount_first_over_10
+             , IFNULL(en.discount_first, 0) as discount_first
+             , IFNULL(en.discount_re, 0) as discount_re
+             , IFNULL(en.discount_scale_1, 0) as discount_scale_1
+             , IFNULL(en.discount_scale_2, 0) as discount_scale_2
+             , IFNULL(en.discount_scale_3, 0) as discount_scale_3
+             , IFNULL(en.discount_scale_4, 0) as discount_scale_4
+             , IFNULL(en.discount_scale_5, 0) as discount_scale_5
+             , IFNULL(en.discount_scale_6, 0) as discount_scale_6
+             , IFNULL(en.discount_leisure, 0) as discount_leisure
+             , IFNULL(en.booth_prc_sum, 0) as booth_prc_sum
+             , IFNULL(en.discount_prc_sum, 0) as discount_prc_sum
              , en.member_company_yn
-             , en.discount_special_1_yn
+             , IFNULL(en.discount_special_1_yn, 0) as discount_special_1_yn
              , en.discount_special_1_note
-             , en.discount_special_2_yn
+             , IFNULL(en.discount_special_2_yn, 0) as discount_special_2_yn
              , en.discount_special_2_reason
-             , en.discount_special_2_amount
+             , IFNULL(en.discount_special_2_amount, 0) as discount_special_2_amount
              , en.discount_special_2_note
-             , en.discount_special_3_yn
+             , IFNULL(en.discount_special_3_yn, 0) as discount_special_3_yn
              , en.discount_special_3_reason
-             , en.discount_special_3_amount
+             , IFNULL(en.discount_special_3_amount, 0) as discount_special_3_amount
              , en.discount_special_3_note
-             , en.prc_sum
-             , en.prc_vat
-             , en.prc_total
+             , IFNULL(en.prc_sum, 0) as prc_sum
+             , IFNULL(en.prc_vat, 0) as prc_vat
+             , IFNULL(en.prc_total, 0) as prc_total
              , en.field_participatory
              , en.init_regi_dttm
              , en.final_regi_dttm

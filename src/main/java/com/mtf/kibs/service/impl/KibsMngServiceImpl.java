@@ -687,7 +687,15 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public List<MemberDTO> processSelectMemberList(SearchDTO searchDTO) {
         //System.out.println("KibsMngServiceImpl > processSelectMemberList");
-        return kibsMngMapper.selectMemberList(searchDTO);
+        List<MemberDTO> list = kibsMngMapper.selectMemberList(searchDTO);
+        if (list != null && !list.isEmpty()) {
+            for (MemberDTO info : list) {
+                try {
+                    if (info.getEmail() != null) info.setEmail(aes256Util.decrypt(info.getEmail()));
+                } catch (Exception e) {}
+            }
+        }
+        return list;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -2063,7 +2071,65 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public ExhibitorNewDTO processSelectExhibitorNewSingle(ExhibitorNewDTO exhibitorNewDTO) {
         //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewSingle");
-        return kibsMngMapper.selectExhibitorNewSingle(exhibitorNewDTO);
+        ExhibitorNewDTO info = kibsMngMapper.selectExhibitorNewSingle(exhibitorNewDTO);
+
+        // --- 참가업체 마이페이지 노출 전 개인정보/회사정보 복호화 ---
+        if (info != null) {
+            try {
+                // 대표담당자 전화번호 복호화
+                if (info.getTel() != null && !info.getTel().trim().isEmpty()) {
+                    String decryptedTel = aes256Util.decrypt(info.getTel());
+                    if (decryptedTel != null && !decryptedTel.isEmpty()) info.setTel(decryptedTel);
+                }
+
+                // 대표담당자 휴대전화 복호화
+                if (info.getPhone() != null && !info.getPhone().trim().isEmpty()) {
+                    String decryptedPhone = aes256Util.decrypt(info.getPhone());
+                    if (decryptedPhone != null && !decryptedPhone.isEmpty()) info.setPhone(decryptedPhone);
+                }
+
+                // 대표담당자 이메일 복호화
+                if (info.getEmail() != null && !info.getEmail().trim().isEmpty()) {
+                    String decryptedEmail = aes256Util.decrypt(info.getEmail());
+                    if (decryptedEmail != null && !decryptedEmail.isEmpty()) info.setEmail(decryptedEmail);
+                }
+
+                // 회사 전화번호 복호화
+                if (info.getCompanyTel() != null && !info.getCompanyTel().trim().isEmpty()) {
+                    String decryptedCompanyTel = aes256Util.decrypt(info.getCompanyTel());
+                    if (decryptedCompanyTel != null && !decryptedCompanyTel.isEmpty()) info.setCompanyTel(decryptedCompanyTel);
+                }
+
+                // 회사 팩스번호 복호화
+                if (info.getCompanyFax() != null && !info.getCompanyFax().trim().isEmpty()) {
+                    String decryptedCompanyFax = aes256Util.decrypt(info.getCompanyFax());
+                    if (decryptedCompanyFax != null && !decryptedCompanyFax.isEmpty()) info.setCompanyFax(decryptedCompanyFax);
+                }
+
+                // 주소 복호화
+                if (info.getCompanyAddress() != null && !info.getCompanyAddress().trim().isEmpty()) {
+                    String decryptedCompanyAddress = aes256Util.decrypt(info.getCompanyAddress());
+                    if (decryptedCompanyAddress != null && !decryptedCompanyAddress.isEmpty()) {
+                        info.setCompanyAddress(decryptedCompanyAddress);
+                    }
+                }
+
+                // 상세 주소 복호화
+                if (info.getCompanyAddressDetail() != null && !info.getCompanyAddressDetail().trim().isEmpty()) {
+                    String decryptedCompanyAddressDetail = aes256Util.decrypt(info.getCompanyAddressDetail());
+                    if (decryptedCompanyAddressDetail != null && !decryptedCompanyAddressDetail.isEmpty()) {
+                        info.setCompanyAddressDetail(decryptedCompanyAddressDetail);
+                    }
+                }
+
+            } catch (Exception e) {
+                // 복호화 에러 시(평문일 경우 등) 로그만 남기고 원래 값 유지
+                log.error("[Exhibitor Decrypt Error] seq: {}, msg: {}", info.getSeq(), e.getMessage());
+            }
+        }
+        // -----------------------------------------------------------------
+
+        return info;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -2640,14 +2706,24 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<VisitorDTO> processSelectVisitorList(SearchDTO searchDTO) {
-        //System.out.println("KibsMngServiceImpl > processSelectVisitorList");
         if ("email".equals(searchDTO.getCondition()) || "phone".equals(searchDTO.getCondition())) {
-            // 2027년 참관객 탭에서 검색하는 경우 -> 수동으로 암호화해서 DB로 전달
             if ("2027".equals(searchDTO.getJoinYear())) {
-                searchDTO.setSearchText(aes256Util.encrypt(searchDTO.getSearchText()));
+                try { searchDTO.setSearchText(aes256Util.encrypt(searchDTO.getSearchText())); } catch (Exception e) {}
             }
         }
-        return kibsMngMapper.selectVisitorList(searchDTO);
+        List<VisitorDTO> list = kibsMngMapper.selectVisitorList(searchDTO);
+        if (list != null && !list.isEmpty()) {
+            for (VisitorDTO info : list) {
+                try {
+                    if (info.getTel() != null) info.setTel(aes256Util.decrypt(info.getTel()));
+                    if (info.getPhone() != null) info.setPhone(aes256Util.decrypt(info.getPhone()));
+                    if (info.getEmail() != null) info.setEmail(aes256Util.decrypt(info.getEmail()));
+                    if (info.getCompanyAddress() != null) info.setCompanyAddress(aes256Util.decrypt(info.getCompanyAddress()));
+                    if (info.getCompanyAddressDetail() != null) info.setCompanyAddressDetail(aes256Util.decrypt(info.getCompanyAddressDetail()));
+                } catch (Exception e) {}
+            }
+        }
+        return list;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -4418,7 +4494,15 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public List<ExhibitorNewDTO> processSelectExhibitorNewUtilityList(SearchDTO searchDTO) {
         //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewUtilityList");
-        return kibsMngMapper.selectExhibitorNewUtilityList(searchDTO);
+        List<ExhibitorNewDTO> list = kibsMngMapper.selectExhibitorNewUtilityList(searchDTO);
+        if (list != null && !list.isEmpty()) {
+            for (ExhibitorNewDTO info : list) {
+                try {
+                    if (info.getPhone() != null) info.setPhone(aes256Util.decrypt(info.getPhone()));
+                } catch (Exception e) {}
+            }
+        }
+        return list;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -4520,7 +4604,15 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public List<MngPassDTO> processSelectExhibitorNewPassList(SearchDTO searchDTO) {
         //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewPassList");
-        return kibsMngMapper.selectExhibitorNewPassList(searchDTO);
+        List<MngPassDTO> list = kibsMngMapper.selectExhibitorNewPassList(searchDTO);
+        if (list != null && !list.isEmpty()) {
+            for (MngPassDTO info : list) {
+                try {
+                    if (info.getPhone() != null) info.setPhone(aes256Util.decrypt(info.getPhone()));
+                } catch (Exception e) {}
+            }
+        }
+        return list;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
