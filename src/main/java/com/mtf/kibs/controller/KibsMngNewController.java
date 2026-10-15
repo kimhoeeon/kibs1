@@ -4,6 +4,7 @@ import com.mtf.kibs.dto.*;
 import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.CommService;
 import com.mtf.kibs.service.KibsMngService;
+import com.mtf.kibs.util.AES256Util;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFRow;
@@ -29,25 +30,19 @@ import java.util.*;
 @Controller
 public class KibsMngNewController {
 
-    // 필드 주입이 아닌 생성자 주입형태로 사용합니다. '생성자 주입 형태'로 사용합니다.
     private final KibsMngService kibsMngService;
-
     private final CommService commService;
+    private final AES256Util aes256Util; // 복호화를 위한 AES256Util 추가
 
-    /**
-     * Instantiates a new Kibs controller.
-     *
-     * @param kms         the kms
-     * @param cs
-     */
-    public KibsMngNewController(KibsMngService kms, CommService cs){
+    @Autowired
+    public KibsMngNewController(KibsMngService kms, CommService cs, AES256Util aes256Util){
         this.kibsMngService = kms;
         this.commService = cs;
+        this.aes256Util = aes256Util;
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/participant/company.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitor_new_new_participant_company(String nameKo) {
-        //System.out.println("KibsMngController > mng_exhibitor_company");
         ModelAndView mv = new ModelAndView();
         if(nameKo != null){
             mv.addObject("nameKo", nameKo);
@@ -59,20 +54,13 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/participant/company/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNewNew_participant_company_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_participant_company_selectList");
-        //System.out.println(searchDTO.toString());
-
         List<ExhibitorNewDTO> responseList = kibsMngService.processSelectListExhibitorNew(searchDTO);
-
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/participant/company/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNewNew_company_detail(String seq, String lang) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_company_detail");
-        //System.out.println(seq);
         ModelAndView mv = new ModelAndView();
-        //seq == notice table id
         if(seq != null && !seq.isEmpty()){
             /* 전시업체정보 */
             ExhibitorNewDTO requestDto = new ExhibitorNewDTO();
@@ -141,7 +129,6 @@ public class KibsMngNewController {
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/booth.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_booth() {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNewNew/application/booth");
         return mv;
@@ -150,17 +137,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/booth/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_booth_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_selectList");
-        //System.out.println(searchDTO.toString());
-
         List<ExhibitorNewDTO> responseList = kibsMngService.processSelectExhibitorNewBoothList(searchDTO);
-
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/booth/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_booth_detail(String seq) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewInvoiceDetail(seq);
@@ -169,10 +151,6 @@ public class KibsMngNewController {
             // 3. 해당 참가업체의 '전시부스 인보이스' 목록 조회
             List<InvoiceBoothDTO> boothInvoiceList  = kibsMngService.getInvoiceBoothList(seq);
             mv.addObject("boothInvoiceList", boothInvoiceList);
-
-            // 4. 유틸리티 인보이스 목록 조회 로직 추가
-            //List<InvoiceUtilityDTO> utilityInvoiceList = kibsMngService.getInvoiceUtilityList(seq); // 이 Service 메소드를 새로 만들어야 합니다.
-            //mv.addObject("utilityInvoiceList", utilityInvoiceList);
         }
         mv.setViewName("/mng/exhibitorNewNew/application/booth/detail");
         return mv;
@@ -180,7 +158,6 @@ public class KibsMngNewController {
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/utility/invoice/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_utility_invoice_detail(String seq) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             InvoiceUtilityDTO invoiceInfo = kibsMngService.processSelectInvoiceUtilitySingle(seq);
@@ -198,14 +175,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/booth/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewBooth(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/booth/invoice/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_booth_invoice_detail(String seq) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             InvoiceBoothDTO invoiceInfo = kibsMngService.processSelectInvoiceBoothSingle(seq);
@@ -223,7 +198,6 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/booth/invoice/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_invoice_delete(@RequestBody InvoiceBoothDTO invoiceBoothDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewBoothInvoice(invoiceBoothDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -231,7 +205,6 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/utility/invoice/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_invoice_delete(@RequestBody InvoiceUtilityDTO invoiceUtilityDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewUtilityInvoice(invoiceUtilityDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -239,7 +212,6 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/booth/invoice/filePath/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_invoice_filePath_update(@RequestBody InvoiceBoothDTO invoiceBoothDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_filePath_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewBoothInvoiceFilePath(invoiceBoothDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -247,7 +219,6 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/utility/invoice/filePath/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_invoice_filePath_update(@RequestBody InvoiceUtilityDTO invoiceUtilityDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_filePath_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewUtilityInvoiceFilePath(invoiceUtilityDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -255,7 +226,6 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/booth/invoice/mail/result/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_booth_invoice_mail_result_update(@RequestBody InvoiceBoothDTO invoiceBoothDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_booth_invoice_mail_result_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewBoothInvoiceSendResult(invoiceBoothDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -263,14 +233,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/utility/invoice/mail/result/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_invoice_mail_result_update(@RequestBody InvoiceUtilityDTO invoiceUtilityDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_invoice_mail_result_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewUtilityInvoiceSendResult(invoiceUtilityDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/sign.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_sign() {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_sign");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNewNew/application/sign");
         return mv;
@@ -279,17 +247,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/sign/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_sign_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_sign_selectList");
-        //System.out.println(searchDTO.toString());
-
         List<ExhibitorNewDTO> responseList = kibsMngService.processSelectExhibitorNewSignList(searchDTO);
-
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/sign/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_sign_detail(String seq) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_sign_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             ExhibitorNewDTO exhibitorInfo = kibsMngService.processSelectExhibitorNewSignSingle(seq);
@@ -302,14 +265,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/sign/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_sign_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_sign_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewSign(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/utility.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_utility() {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNewNew/application/utility");
         return mv;
@@ -318,28 +279,18 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/utility/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_utility_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_selectList");
-        //System.out.println(searchDTO.toString());
-
         List<ExhibitorNewDTO> responseList = kibsMngService.processSelectExhibitorNewUtilityList(searchDTO);
-
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/utility/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_utility_detail(String seq) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             ExhibitorNewDTO info = kibsMngService.processSelectExhibitorNewInvoiceDetail(seq);
             mv.addObject("info", info);
 
-            // 3. 해당 참가업체의 '전시부스 인보이스' 목록 조회
-            //List<InvoiceBoothDTO> boothInvoiceList  = kibsMngService.getInvoiceBoothList(seq);
-            //mv.addObject("boothInvoiceList", boothInvoiceList);
-
-            // 4. 유틸리티 인보이스 목록 조회 로직 추가
-            List<InvoiceUtilityDTO> utilityInvoiceList = kibsMngService.getInvoiceUtilityList(seq); // 이 Service 메소드를 새로 만들어야 합니다.
+            List<InvoiceUtilityDTO> utilityInvoiceList = kibsMngService.getInvoiceUtilityList(seq);
             mv.addObject("utilityInvoiceList", utilityInvoiceList);
         }
         mv.setViewName("/mng/exhibitorNewNew/application/utility/detail");
@@ -349,7 +300,6 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/utility/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_utility_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_utility_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewUtility(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -357,13 +307,11 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/invoice/mail/open/update.do", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public void mng_exhibitorNew_application_invoice_mail_open_update(@RequestParam("hseq") int historySeq) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_invoice_mail_open_update");
         kibsMngService.updateInvoiceHistoryStatusToOpen(historySeq);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/pass.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_pass() {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_pass");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNewNew/application/pass");
         return mv;
@@ -372,17 +320,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/pass/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MngPassDTO>> mng_exhibitorNew_application_pass_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_pass_selectList");
-        //System.out.println(searchDTO.toString());
-
         List<MngPassDTO> responseList = kibsMngService.processSelectExhibitorNewPassList(searchDTO);
-
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/pass/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_pass_detail(String seq) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_pass_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             List<MngPassDTO> passList = kibsMngService.processSelectExhibitorNewPassDetailList(seq);
@@ -396,7 +339,6 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/pass/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_pass_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_pass_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewPass(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -404,14 +346,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/pass/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_pass_delete(@RequestBody PassNewDTO passNewDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_pass_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewPass(passNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/buyer.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_buyer() {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_buyer");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNewNew/application/buyer");
         return mv;
@@ -420,17 +360,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/buyer/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MngBuyerDTO>> mng_exhibitorNew_application_buyer_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_selectList");
-        //System.out.println(searchDTO.toString());
-
         List<MngBuyerDTO> responseList = kibsMngService.processSelectExhibitorNewBuyerList(searchDTO);
-
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/buyer/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_buyer_detail(String seq) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             List<MngBuyerDTO> buyerList = kibsMngService.processSelectExhibitorNewBuyerDetailList(seq);
@@ -444,7 +379,6 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/buyer/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_buyer_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewBuyer(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -452,14 +386,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/buyer/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_buyer_delete(@RequestBody BuyerNewDTO buyerNewDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_buyer_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewBuyer(buyerNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/gift.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_gift() {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_gift");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNewNew/application/gift");
         return mv;
@@ -468,17 +400,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/gift/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MngGiftDTO>> mng_exhibitorNew_application_gift_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_gift_selectList");
-        //System.out.println(searchDTO.toString());
-
         List<MngGiftDTO> responseList = kibsMngService.processSelectExhibitorNewGiftList(searchDTO);
-
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/gift/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_gift_detail(String seq) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_gift_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             List<MngGiftDTO> giftList = kibsMngService.processSelectExhibitorNewGiftDetailList(seq);
@@ -514,7 +441,6 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/gift/update.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_gift_update(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_gift_update");
         ResponseDTO response = kibsMngService.processUpdateExhibitorNewGift(exhibitorNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -522,14 +448,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/gift/delete.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_gift_delete(@RequestBody GiftNewDTO giftNewDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_gift_delete");
         ResponseDTO response = kibsMngService.processDeleteExhibitorNewGift(giftNewDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/online.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_online() {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_online");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNewNew/application/online");
         return mv;
@@ -538,17 +462,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/online/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<ExhibitorNewDTO>> mng_exhibitorNew_application_online_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_online_selectList");
-        //System.out.println(searchDTO.toString());
-
         List<ExhibitorNewDTO> responseList = kibsMngService.processSelectMngOnlineNewList(searchDTO);
-
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/online/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_online_detail(String seq) {
-        //System.out.println("KibsMngController > mng_exhibitor_application_online_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             /* 전시업체정보 */
@@ -583,17 +502,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/online/updateViewYn.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_application_online_updateViewYn(@RequestBody ExhibitorNewDTO exhibitorNewDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_online_updateViewYn");
-        //System.out.println(exhibitorNewDTO.getSeq());
-
         ResponseDTO responseDTO = kibsMngService.processUpdateExhibitorNewOnlineViewYn(exhibitorNewDTO);
-
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/product.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_product() {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_product");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/exhibitorNewNew/application/product");
         return mv;
@@ -602,17 +516,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/application/product/selectList.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<List<MngProductDTO>> mng_exhibitorNew_application_product_selectList(@RequestBody SearchDTO searchDTO) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_product_selectList");
-        //System.out.println(searchDTO.toString());
-
         List<MngProductDTO> responseList = kibsMngService.processSelectMngProductNewList(searchDTO);
-
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/application/product/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNew_application_product_detail(String seq) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_application_product_detail");
         ModelAndView mv = new ModelAndView();
         if(seq != null){
             /* 전시업체정보 */
@@ -626,7 +535,6 @@ public class KibsMngNewController {
             productReq.setExSeq(seq);
             List<ProductNewDTO> productList = kibsMngService.processSelectProductNewList(productReq);
             mv.addObject("productList", productList);
-
         }
         mv.setViewName("/mng/exhibitorNewNew/application/product/detail");
         return mv;
@@ -635,17 +543,12 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/participant/company/updateExhibitorNewPrcYn.do", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<ResponseDTO> mng_exhibitorNew_participant_company_updateExhibitorNewPrcYn(@RequestBody List<ExhibitorNewDTO> exhibitorList) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_participant_company_updateExhibitorNewPrcYn");
-
         ResponseDTO responseDTO = kibsMngService.processUpdateExhibitorNewPrcYn(exhibitorList);
-
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/participant/company/invoice/detail.do", method = RequestMethod.POST)
     public ModelAndView mng_exhibitorNewNew_company_invoice_detail(String seq) {
-        //System.out.println("KibsMngController > mng_exhibitorNew_company_invoice_detail");
-        //System.out.println(seq);
         ModelAndView mv = new ModelAndView();
 
         if(seq != null && !seq.isEmpty()){
@@ -658,7 +561,7 @@ public class KibsMngNewController {
             mv.addObject("boothInvoiceList", boothInvoiceList);
 
             // 4. 유틸리티 인보이스 목록 조회 로직 추가
-            List<InvoiceUtilityDTO> utilityInvoiceList = kibsMngService.getInvoiceUtilityList(seq); // 이 Service 메소드를 새로 만들어야 합니다.
+            List<InvoiceUtilityDTO> utilityInvoiceList = kibsMngService.getInvoiceUtilityList(seq);
             mv.addObject("utilityInvoiceList", utilityInvoiceList);
         }
 
@@ -666,10 +569,6 @@ public class KibsMngNewController {
         return mv;
     }
 
-    /**
-     * 생성된 PDF 파일 경로를 DB에 업데이트하는 API
-     * - JavaScript의 createAndUploadPdfFromIframe 함수 성공 후 호출될 것으로 예상
-     */
     @PostMapping("/mng/exhibitorNewNew/application/invoice/updateFilePath.do")
     @ResponseBody
     public Map<String, Object> updateInvoiceFilePath(@RequestBody InvoiceBoothDTO dto) {
@@ -690,9 +589,6 @@ public class KibsMngNewController {
         return resultMap;
     }
 
-    /**
-     * 선택된 인보이스들을 삭제하는 API
-     */
     @PostMapping("/mng/exhibitorNewNew/application/invoice/booth/delete.do")
     @ResponseBody
     public Map<String, Object> deleteInvoicesBooth(@RequestBody List<Integer> invoiceSeqList) {
@@ -728,11 +624,10 @@ public class KibsMngNewController {
     }
 
     @RequestMapping(value = "/mng/exhibitorNewNew/participant/company/invoice/saveSpecialDiscount.do", method = RequestMethod.POST)
-    @ResponseBody // AJAX 통신을 위해 ResponseBody 추가
+    @ResponseBody
     public Map<String, Object> mng_exhibitorNew_saveSpecialDiscount(@RequestBody ExhibitorNewDTO dto) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            // 특별 할인 정보 업데이트 서비스 호출
             int result = kibsMngService.processUpdateExhibitorNewSpecialDiscount(dto);
             if (result > 0) {
                 resultMap.put("resultCode", "0");
@@ -748,10 +643,6 @@ public class KibsMngNewController {
         return resultMap;
     }
 
-    /**
-     * 전시부스 인보이스 생성 API
-     * - Service를 호출하여 인보이스 데이터를 생성하고, 생성된 인보이스의 PK(invoiceSeq)를 반환합니다.
-     */
     @PostMapping("/mng/exhibitorNewNew/application/booth/invoice/insert.do")
     @ResponseBody
     public Map<String, Object> createBoothInvoice(@RequestBody Map<String, String> payload) {
@@ -762,7 +653,7 @@ public class KibsMngNewController {
             InvoiceBoothDTO newInvoice = kibsMngService.createAndInsertInvoiceBooth(exhibitorSeq);
             resultMap.put("resultCode", "0");
             resultMap.put("resultMsg", "인보이스가 생성되었습니다.");
-            resultMap.put("customValue", newInvoice.getInvoiceSeq()); // JavaScript에서 사용할 수 있도록 PK 반환
+            resultMap.put("customValue", newInvoice.getInvoiceSeq());
         } catch (Exception e) {
             resultMap.put("resultCode", "-1");
             resultMap.put("resultMsg", "인보이스 생성 중 오류 발생: " + e.getMessage());
@@ -790,29 +681,24 @@ public class KibsMngNewController {
 
     @RequestMapping(value = "/mng/exhibitorNewNew/download.do", method = RequestMethod.GET)
     public void exhibitorNewNew_download(HttpServletRequest req, HttpServletResponse res) {
-        //System.out.println("KibsMngController > exhibitor_download");
         String fileName = req.getParameter("fileName");
         String transferYear = req.getParameter("transferYear");
 
-        // XSSFWorkbook 대신 SXSSFWorkbook 사용
         try (SXSSFWorkbook workbook = new SXSSFWorkbook()) {
 
-            // --- 1. 헤더 배열 구성 ---
             List<String> headerList = new ArrayList<>();
 
-            // 1-1. 고정 헤더 (업체정보 ~ 해상전시회)
             String[] fixedHeaders1 = {
-                    /* 업체정보 (22) */ "No", "참가상태", "승인구분", "부스번호", "아이디", "등록일", "최종수정일", "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소", "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "기참가연도", "회원사 여부",
-                    /* 입금 현황 (11) */ "금액", "내용", "수납여부", "입금일", "입금예정일", "세금계산서", "입금자", "확인자", "코멘트", "등록일시", "수정일시",
-                    /* 대표담당자 (6) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
-                    /* 담당자 1~3 (18) */ "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
-                    /* 업체소개 (8) */ "회사소개영상", "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)", "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
-                    /* 참가분야 (4) */ "참가행사", "1순위", "2순위", "3순위",
-                    /* 해상전시회 (2) */ "참가여부", "참가구분"
+                    "No", "참가상태", "승인구분", "부스번호", "아이디", "등록일", "최종수정일", "사업자등록번호", "회사명(국문)", "회사명(영문)", "본사 주소", "본사 상세주소", "공장 주소", "공장 상세 주소", "대표자", "전화", "홈페이지", "Fax", "산업 분류", "산업 분류 기타", "기참가연도", "회원사 여부",
+                    "금액", "내용", "수납여부", "입금일", "입금예정일", "세금계산서", "입금자", "확인자", "코멘트", "등록일시", "수정일시",
+                    "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
+                    "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일", "성명", "직위", "부서", "전화번호", "휴대전화", "이메일",
+                    "회사소개영상", "회사소개(국문)", "회사소개(영문)", "KIBS참가목적(국문)", "KIBS참가목적(영문)", "신제품출품 사항 소개(국문)", "신제품출품 사항 소개(영문)", "프로모션 정보",
+                    "참가행사", "1순위", "2순위", "3순위",
+                    "참가여부", "참가구분"
             };
             Collections.addAll(headerList, fixedHeaders1);
 
-            // 1-4. 신청내역 (35개)
             String[] appHeaders = {
                     "수출상담회 참가희망여부", "참가비", "독립부스", "조립부스", "온라인부스", "총 부스 수", "부스가격",
                     "참가비 합계\n(등록비+부스가격)",
@@ -826,10 +712,8 @@ public class KibsMngNewController {
             };
             Collections.addAll(headerList, appHeaders);
 
-            // 리스트를 배열로 변환
             final String[] colNames_ex = headerList.toArray(new String[0]);
 
-            // 스타일 정의
             Font fontHeader = workbook.createFont(); fontHeader.setFontName("맑은 고딕"); fontHeader.setFontHeightInPoints((short) 9); fontHeader.setBold(true);
             Font font9 = workbook.createFont(); font9.setFontName("맑은 고딕"); font9.setFontHeightInPoints((short) 9);
 
@@ -854,7 +738,6 @@ public class KibsMngNewController {
             sheet.trackAllColumnsForAutoSizing();
             int rowCnt = 0;
 
-            // --- 1행 헤더 생성 및 병합 ---
             Row headerRow = sheet.createRow(rowCnt++);
 
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 21));   headerRow.createCell(0).setCellValue("참가업체정보");
@@ -871,7 +754,6 @@ public class KibsMngNewController {
                 headerRow.getCell(i).setCellStyle(headerStyle);
             }
 
-            // --- 2행 헤더 생성 ---
             Row subHeaderRow = sheet.createRow(rowCnt++);
             subHeaderRow.setHeightInPoints(35);
             for (int i = 0; i < colNames_ex.length; i++) {
@@ -880,8 +762,8 @@ public class KibsMngNewController {
                 cell.setCellValue(colNames_ex[i]);
                 sheet.setColumnWidth(i, 5000);
             }
-            sheet.setColumnWidth(0, 3000); // No 컬럼
-            sheet.setColumnWidth(105, 8000); // 총계
+            sheet.setColumnWidth(0, 3000);
+            sheet.setColumnWidth(105, 8000);
 
             ExhibitorNewDetailDTO exhibitorDetailDTO = new ExhibitorNewDetailDTO();
             exhibitorDetailDTO.setTransferYear(transferYear);
@@ -890,6 +772,28 @@ public class KibsMngNewController {
             DecimalFormat df = new DecimalFormat("#,##0");
 
             for (ExhibitorNewDetailDTO info : exhibitorDetailList) {
+                // ==========================================
+                // ★ 엑셀 쓰기 전 복호화 전처리 시작 ★
+                // ==========================================
+                info.setCompanyAddressDetail(safeDecrypt(info.getCompanyAddressDetail()));
+                info.setFactoryAddressDetail(safeDecrypt(info.getFactoryAddressDetail()));
+                info.setCompanyTel(safeDecrypt(info.getCompanyTel()));
+                info.setCompanyFax(safeDecrypt(info.getCompanyFax()));
+                info.setCompanyCeo(safeDecrypt(info.getCompanyCeo()));
+
+                info.setName(safeDecrypt(info.getName()));
+                info.setTel(safeDecrypt(info.getTel()));
+                info.setPhone(safeDecrypt(info.getPhone()));
+                info.setEmail(safeDecrypt(info.getEmail()));
+
+                info.setChargePersonName(decryptMulti(info.getChargePersonName()));
+                info.setChargePersonPosition(decryptMulti(info.getChargePersonPosition()));
+                info.setChargePersonDepart(decryptMulti(info.getChargePersonDepart()));
+                info.setChargePersonTel(decryptMulti(info.getChargePersonTel()));
+                info.setChargePersonPhone(decryptMulti(info.getChargePersonPhone()));
+                info.setChargePersonEmail(decryptMulti(info.getChargePersonEmail()));
+                // ==========================================
+
                 Row dataRow = sheet.createRow(rowCnt++);
                 int cellCnt = 0;
 
@@ -900,13 +804,6 @@ public class KibsMngNewController {
                 cellCnt = writeCompanyIntroInfo(dataRow, cellCnt, info);
                 cellCnt = writeParticipationFields(dataRow, cellCnt, info);
                 cellCnt = writeMaritimeExhibitionInfo(dataRow, cellCnt, info);
-
-                // [수정됨] 전시품, 뱃지, 온라인제품 메서드 호출 삭제됨
-                /*
-                cellCnt = writeExhibitionItems(dataRow, cellCnt, info);
-                cellCnt = writeCompanyBadges(dataRow, cellCnt, info);
-                cellCnt = writeOnlineProducts(dataRow, cellCnt, info);
-                */
 
                 cellCnt = writeApplicationDetails(dataRow, cellCnt, info, df);
 
@@ -932,7 +829,6 @@ public class KibsMngNewController {
 
             int rowCnt2 = 0;
 
-            // --- 폰트 및 스타일 정의 ---
             Font titleFont = workbook.createFont(); titleFont.setFontName("맑은 고딕"); titleFont.setBold(true); titleFont.setFontHeightInPoints((short) 12);
             Font headerFont = workbook.createFont(); headerFont.setFontName("맑은 고딕"); headerFont.setBold(true); headerFont.setFontHeightInPoints((short) 10);
             Font bodyFont = workbook.createFont(); bodyFont.setFontName("맑은 고딕"); bodyFont.setFontHeightInPoints((short) 10);
@@ -944,7 +840,6 @@ public class KibsMngNewController {
             bodyRightStyle = workbook.createCellStyle(); bodyRightStyle.cloneStyleFrom(bodyLeftStyle); bodyRightStyle.setAlignment(HorizontalAlignment.RIGHT);
             CellStyle noteStyle = workbook.createCellStyle(); noteStyle.cloneStyleFrom(bodyLeftStyle); noteStyle.setFont(noteFont);
 
-            // --- ■ 부스 (VAT 별도) ---
             SXSSFRow row = sheet2.createRow(rowCnt2++);
             row.createCell(0).setCellValue("■ 부스(vat 별도)"); row.getCell(0).setCellStyle(titleStyle);
             rowCnt2++;
@@ -957,7 +852,6 @@ public class KibsMngNewController {
             }
             rowCnt2+=2;
 
-            // --- ■ 할인내역 (VAT 별도) ---
             row = sheet2.createRow(rowCnt2++);
             row.createCell(0).setCellValue("■ 할인내역(vat 별도)"); row.getCell(0).setCellStyle(titleStyle);
             rowCnt2++;
@@ -971,13 +865,12 @@ public class KibsMngNewController {
                 row.createCell(0).setCellValue(d[0]); row.createCell(1).setCellValue(d[1]); row.createCell(2).setCellValue(d[2]); row.createCell(3).setCellValue(d[3]);
                 row.getCell(0).setCellStyle(subHeaderStyle); row.getCell(1).setCellStyle(bodyLeftStyle); row.getCell(2).setCellStyle(bodyRightStyle); row.getCell(3).setCellStyle(noteStyle);
             }
-            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow, discountStartRow + 1, 0, 0)); // 기본할인
-            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 2, discountStartRow + 7, 0, 0)); // 규모할인
-            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 8, discountStartRow + 10, 0, 0)); // 기본할인
-            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 11, discountStartRow + 12, 0, 0)); // 특별할인
+            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow, discountStartRow + 1, 0, 0));
+            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 2, discountStartRow + 7, 0, 0));
+            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 8, discountStartRow + 10, 0, 0));
+            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 11, discountStartRow + 12, 0, 0));
             rowCnt2+=2;
 
-            // --- ■ 유틸리티(부대시설) ---
             row = sheet2.createRow(rowCnt2++);
             row.createCell(0).setCellValue("■ 유틸리티(부대시설)"); row.getCell(0).setCellStyle(titleStyle);
             rowCnt2++;
@@ -1001,11 +894,9 @@ public class KibsMngNewController {
                 row.createCell(0).setCellValue(u[0]); row.createCell(1).setCellValue(u[1]); row.createCell(2).setCellValue(u[2]); row.createCell(3).setCellValue(u[3]);
             }
 
-            // 유틸리티 셀 병합 로직 수정
-            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow, utilityStartRow + 1, 0, 0)); // 파이텍스
-            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow + 2, utilityStartRow + 4, 0, 0)); // 전기
-            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow + 6, utilityStartRow + 7, 0, 0)); // 급배수 및 압축공기
-            // 인터넷과 바코드 리더기는 1줄이므로 병합하지 않음
+            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow, utilityStartRow + 1, 0, 0));
+            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow + 2, utilityStartRow + 4, 0, 0));
+            sheet2.addMergedRegion(new CellRangeAddress(utilityStartRow + 6, utilityStartRow + 7, 0, 0));
 
             for(int i = utilityStartRow; i < rowCnt2; i++){
                 row = sheet2.getRow(i);
@@ -1015,13 +906,11 @@ public class KibsMngNewController {
                 row.getCell(3).setCellStyle(bodyLeftStyle);
             }
 
-            // 컬럼 너비 자동 조정
             for (int i=0; i<4; i++) {
                 sheet.autoSizeColumn(i);
                 sheet.setColumnWidth(i, Math.min(255*256, sheet.getColumnWidth(i) + 1024));
             }
 
-            // 파일 저장
             res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             res.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
             workbook.write(res.getOutputStream());
@@ -1039,13 +928,6 @@ public class KibsMngNewController {
         dataRow.createCell(cellCnt++).setCellValue(info.getId());
         dataRow.createCell(cellCnt++).setCellValue(info.getInitRegiDttm());
         dataRow.createCell(cellCnt++).setCellValue(info.getFinalRegiDttm());
-        /*dataRow.createCell(cellCnt++).setCellValue(info.getBpNum());
-        dataRow.createCell(cellCnt++).setCellValue(info.getContactWriter());
-        dataRow.createCell(cellCnt++).setCellValue(info.getContactDate());
-        dataRow.createCell(cellCnt++).setCellValue(info.getContactContent());
-        dataRow.createCell(cellCnt++).setCellValue(info.getReferenceWriter());
-        dataRow.createCell(cellCnt++).setCellValue(info.getReferenceDate());
-        dataRow.createCell(cellCnt++).setCellValue(info.getReferenceContent());*/
         dataRow.createCell(cellCnt++).setCellValue(info.getCompanyLicenseNum());
         dataRow.createCell(cellCnt++).setCellValue(info.getCompanyNameKo());
         dataRow.createCell(cellCnt++).setCellValue(info.getCompanyNameEn());
@@ -1065,7 +947,6 @@ public class KibsMngNewController {
     }
 
     private int writeDepositHistory(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info, DecimalFormat df) {
-        // 1. 금액 (숫자 포맷팅 적용)
         String[] amounts = info.getDepositAmounts() != null ? info.getDepositAmounts().split("\n") : new String[0];
         StringBuilder formattedAmounts = new StringBuilder();
         for (String amount : amounts) {
@@ -1077,25 +958,15 @@ public class KibsMngNewController {
         }
         dataRow.createCell(cellCnt++).setCellValue(formattedAmounts.toString().trim());
 
-        // 2. 내용
         dataRow.createCell(cellCnt++).setCellValue(info.getDepositContents());
-        // 3. 수납여부
         dataRow.createCell(cellCnt++).setCellValue(info.getDepositStatuses());
-        // 4. 입금일
         dataRow.createCell(cellCnt++).setCellValue(info.getDepositDates());
-        // 5. 입금예정일
         dataRow.createCell(cellCnt++).setCellValue(info.getDepositScheduledDates());
-        // 6. 세금계산서
         dataRow.createCell(cellCnt++).setCellValue(info.getDepositTaxStatuses());
-        // 7. 입금자
         dataRow.createCell(cellCnt++).setCellValue(info.getDepositDepositorNames());
-        // 8. 확인자
         dataRow.createCell(cellCnt++).setCellValue(info.getDepositConfirmerNames());
-        // 9. 코멘트
         dataRow.createCell(cellCnt++).setCellValue(info.getDepositComments());
-        // 10. 등록일시
         dataRow.createCell(cellCnt++).setCellValue(info.getDepositInitRegiDttms());
-        // 11. 수정일시
         dataRow.createCell(cellCnt++).setCellValue(info.getDepositFinalRegiDttms());
 
         return cellCnt;
@@ -1157,23 +1028,17 @@ public class KibsMngNewController {
         else if ("travelShow".equals(eventType)) eventName = "해양관광전";
         else if (eventType != null) eventName = eventType;
 
-        dataRow.createCell(cellCnt++).setCellValue(eventName); // 1. 참가행사
-
-        // 2. 1순위
+        dataRow.createCell(cellCnt++).setCellValue(eventName);
         dataRow.createCell(cellCnt++).setCellValue(nvl(info.getFieldParticipatory1()));
-        // 3. 2순위
         dataRow.createCell(cellCnt++).setCellValue(nvl(info.getFieldParticipatory2()));
-        // 4. 3순위
         dataRow.createCell(cellCnt++).setCellValue(nvl(info.getFieldParticipatory3()));
 
         return cellCnt;
     }
 
     private int writeMaritimeExhibitionInfo(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info) {
-        // 1. 참가여부
         dataRow.createCell(cellCnt++).setCellValue("Y".equals(info.getMaritimeExhibitionYn()) ? "참가" : "미참가");
 
-        // 2. 참가구분
         boolean sea = Boolean.TRUE.equals(info.getMaritimeExhibitionSea());
         boolean land = Boolean.TRUE.equals(info.getMaritimeExhibitionLand());
         String participationType = "";
@@ -1181,7 +1046,7 @@ public class KibsMngNewController {
             participationType += "해상 전시 (시승체험)";
         }
         if (land) {
-            if (sea) participationType += "\n"; // 엑셀에서 줄바꿈은 \n
+            if (sea) participationType += "\n";
             participationType += "육상 전시";
         }
         dataRow.createCell(cellCnt++).setCellValue(participationType);
@@ -1190,19 +1055,15 @@ public class KibsMngNewController {
     }
 
     private int writeApplicationDetails(Row dataRow, int cellCnt, ExhibitorNewDetailDTO info, DecimalFormat df) {
-        // --- 1. 모든 금액 재계산을 위한 변수 선언 ---
         long registrationFee = info.getRegistrationFee() != null ? info.getRegistrationFee() : 0;
         long boothPrcSum = (info.getBoothPrcSum() != null) ? info.getBoothPrcSum() : 0;
         long basicDiscount = (info.getDiscountPrcSum() != null) ? info.getDiscountPrcSum() : 0;
         long utilityPrcSum = (info.getUtilityPrcSum() != null) ? info.getUtilityPrcSum() : 0;
 
-        // 부스신청총액 (등록비 제외)
         long boothPriceOnly = boothPrcSum - registrationFee;
 
         long baseAmountForSpecial = (boothPrcSum + utilityPrcSum) - basicDiscount;
 
-        // 특별 할인액 계산
-        // 일반 계산식은 (부스비 - 할인금액) * 0.5 지만 엑셀에서는 (부스비 + 유틸리티신청총액 - 할인금액) * 0.5 로 계산
         long specialDiscount1Amount = 0;
         if (Boolean.TRUE.equals(info.getDiscountSpecial1Yn())) {
             specialDiscount1Amount = (long)Math.floor(baseAmountForSpecial * 0.5);
@@ -1210,42 +1071,34 @@ public class KibsMngNewController {
         long specialDiscount2Amount = (Boolean.TRUE.equals(info.getDiscountSpecial2Yn()) && info.getDiscountSpecial2Amount() != null) ? info.getDiscountSpecial2Amount() : 0;
         long specialDiscount3Amount = (Boolean.TRUE.equals(info.getDiscountSpecial3Yn()) && info.getDiscountSpecial3Amount() != null) ? info.getDiscountSpecial3Amount() : 0;
 
-        // 할인가격 (총 할인액)
         long totalSpecialDiscount = specialDiscount1Amount + specialDiscount2Amount + specialDiscount3Amount;
         long totalDiscount = basicDiscount + totalSpecialDiscount;
 
-        // 발전기금 계산
         long developmentFund = 0;
         if (("Y".equals(info.getMemberCompanyYn()) || Boolean.TRUE.equals(info.getDiscountLeisure()))) {
             long developmentBase = boothPrcSum - totalDiscount;
             developmentFund = (long)(developmentBase * 0.1);
         }
 
-        // --- 요청하신 새 공식 적용 ---
+        long participationFeeTotal = registrationFee + boothPriceOnly + developmentFund;
 
-        // 참가비 합계 = 등록비 + 부스신청총액 + 발전기금 + 유틸리티신청총액
-        long participationFeeTotal = registrationFee + boothPriceOnly + developmentFund/* + utilityPrcSum*/;
-
-        // 소계(공급가액) = 참가비 합계 - 총 할인액
         long recalculatedPrcSum = participationFeeTotal - totalDiscount;
 
         long recalculatedPrcVat = (long) Math.floor(recalculatedPrcSum * 0.1);
         long recalculatedPrcTotal = recalculatedPrcSum + recalculatedPrcVat;
 
-        // --- 2. 셀 데이터 생성 (헤더 순서대로) ---
-
         dataRow.createCell(cellCnt++).setCellValue("Y".equals(info.getExportMeetingYn()) ? "참가" : "참가 안 함");
-        dataRow.createCell(cellCnt++).setCellValue(df.format(registrationFee)); // 등록비
+        dataRow.createCell(cellCnt++).setCellValue(df.format(registrationFee));
         int standAlone = info.getStandAloneBoothCnt() != null ? info.getStandAloneBoothCnt() : 0;
         int assembly = info.getAssemblyBoothCnt() != null ? info.getAssemblyBoothCnt() : 0;
         int online = info.getOnlineBoothCnt() != null ? info.getOnlineBoothCnt() : 0;
         dataRow.createCell(cellCnt++).setCellValue(standAlone);
         dataRow.createCell(cellCnt++).setCellValue(assembly);
         dataRow.createCell(cellCnt++).setCellValue(online);
-        dataRow.createCell(cellCnt++).setCellValue(standAlone + assembly + online); // 총 부스 수
-        dataRow.createCell(cellCnt++).setCellValue(df.format(boothPriceOnly)); // 부스가격
+        dataRow.createCell(cellCnt++).setCellValue(standAlone + assembly + online);
+        dataRow.createCell(cellCnt++).setCellValue(df.format(boothPriceOnly));
 
-        dataRow.createCell(cellCnt++).setCellValue(df.format(boothPrcSum)); // 참가비 합계
+        dataRow.createCell(cellCnt++).setCellValue(df.format(boothPrcSum));
 
         dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountEarly1()) ? "O" : "");
         dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountEarly2()) ? "O" : "");
@@ -1258,9 +1111,8 @@ public class KibsMngNewController {
         dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale4()) ? "O" : "");
         dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale5()) ? "O" : "");
         dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountScale6()) ? "O" : "");
-        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountLeisure()) ? "O" : ""); // 협회할인
+        dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountLeisure()) ? "O" : "");
 
-        // 특별 할인
         dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountSpecial1Yn()) ? df.format(specialDiscount1Amount) : "");
         dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial1Note());
 
@@ -1270,12 +1122,11 @@ public class KibsMngNewController {
 
         dataRow.createCell(cellCnt++).setCellValue(Boolean.TRUE.equals(info.getDiscountSpecial3Yn()) ? df.format(specialDiscount3Amount) : "");
         dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Reason());
-        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Note()); // 특할3 비고
+        dataRow.createCell(cellCnt++).setCellValue(info.getDiscountSpecial3Note());
 
-        dataRow.createCell(cellCnt++).setCellValue(df.format(totalDiscount)); // 할인가격
-        dataRow.createCell(cellCnt++).setCellValue(developmentFund > 0 ? df.format(developmentFund) : ""); // 협회 발전기금
+        dataRow.createCell(cellCnt++).setCellValue(df.format(totalDiscount));
+        dataRow.createCell(cellCnt++).setCellValue(developmentFund > 0 ? df.format(developmentFund) : "");
 
-        // --- 유틸리티 신청내역 생성 ---
         StringBuilder utilityDetails = new StringBuilder();
         if (info.getUtilityJuganCnt() != null && info.getUtilityJuganCnt() > 0) utilityDetails.append("주간 단상 220v (").append(info.getUtilityJuganCnt()).append(")\n");
         if (info.getUtilityDayCnt() != null && info.getUtilityDayCnt() > 0) utilityDetails.append("24시간용 220v (").append(info.getUtilityDayCnt()).append(")\n");
@@ -1287,21 +1138,17 @@ public class KibsMngNewController {
         if (info.getUtilityPytexReCnt() != null && info.getUtilityPytexReCnt() > 0) utilityDetails.append("파이텍스-재사용품 (").append(info.getUtilityPytexReCnt()).append(")\n");
         if (info.getUtilityBarcodeCnt() != null && info.getUtilityBarcodeCnt() > 0) utilityDetails.append("바코드 리더기 (").append(info.getUtilityBarcodeCnt()).append(")\n");
 
-        // 마지막 줄바꿈 제거
         String utilityDetailsStr = utilityDetails.toString();
         if (utilityDetailsStr.endsWith("\n")) {
             utilityDetailsStr = utilityDetailsStr.substring(0, utilityDetailsStr.length() - 1);
         }
 
-        // 1. 유틸리티 신청내역 셀
         dataRow.createCell(cellCnt++).setCellValue(utilityDetailsStr);
-        // 2. 유틸리티 총액 셀
         dataRow.createCell(cellCnt++).setCellValue(utilityPrcSum > 0 ? df.format(utilityPrcSum) : "");
 
-        // 최종 금액 (재계산된 값 사용)
-        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcSum)); // 소계(공급가액)
-        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcVat)); // 부가세
-        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcTotal)); // 총계
+        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcSum));
+        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcVat));
+        dataRow.createCell(cellCnt++).setCellValue(df.format(recalculatedPrcTotal));
         return cellCnt;
     }
 
@@ -1309,7 +1156,6 @@ public class KibsMngNewController {
         for(int i=0; i<20; i++){
             String[] productOptionBigSplit = info.getProductOptionBig() != null ? info.getProductOptionBig().split("\\^", -1) : new String[0];
             String productOptionBig = convertValue(productOptionBigSplit, i);
-            // 제품분류 값이 있을 때만 데이터를 입력합니다.
             if (productOptionBig != null && !productOptionBig.trim().isEmpty()) {
                 String[] productOptionSmallSplit = info.getProductOptionSmall() != null ? info.getProductOptionSmall().split("\\^", -1) : new String[0];
                 dataRow.createCell(cellCnt++).setCellValue(!productOptionBig.isEmpty() ? productOptionBig + " / " + convertValue(productOptionSmallSplit, i) : "");
@@ -1349,7 +1195,6 @@ public class KibsMngNewController {
                 dataRow.createCell(cellCnt++).setCellValue(convertValue(productYearSplit, i));
 
             }else{
-                // 데이터가 없으면 12개 컬럼을 모두 빈칸으로 채움
                 for (int j = 0; j < 12; j++) {
                     dataRow.createCell(cellCnt++).setCellValue("");
                 }
@@ -1371,7 +1216,6 @@ public class KibsMngNewController {
         for(int i=0; i<30; i++) {
             String[] onlineOptionBigSplit = info.getOnlineOptionBig() != null ? info.getOnlineOptionBig().split("\\^", -1) : new String[0];
             String onlineOptionBig = convertValue(onlineOptionBigSplit, i);
-            // 제품분류 값이 있을 때만 데이터를 입력합니다.
             if (onlineOptionBig != null && !onlineOptionBig.trim().isEmpty()) {
                 String[] onlineOptionSmallSplit = info.getOnlineOptionSmall() != null ? info.getOnlineOptionSmall().split("\\^", -1) : new String[0];
                 dataRow.createCell(cellCnt++).setCellValue((onlineOptionBig != null && !onlineOptionBig.isEmpty()) ? onlineOptionBig + " / " + convertValue(onlineOptionSmallSplit, i) : "");
@@ -1407,7 +1251,6 @@ public class KibsMngNewController {
                 dataRow.createCell(cellCnt++).setCellValue(convertValue(onlineYearSplit, i));
 
             }else{
-                // 데이터가 없으면 11개 컬럼을 모두 빈칸으로 채움
                 for (int j = 0; j < 11; j++) {
                     dataRow.createCell(cellCnt++).setCellValue("");
                 }
@@ -1428,4 +1271,49 @@ public class KibsMngNewController {
         return str == null ? "" : str;
     }
 
+    // ==========================================
+    // ★ 복호화 헬퍼 메서드 추가 ★
+    // ==========================================
+    private String safeDecrypt(String text) {
+        if (text == null || text.trim().isEmpty()) return text;
+        String original = text.trim();
+        String decrypted = original;
+
+        try {
+            String cipher = original.replace(" ", "+");
+            String dec = aes256Util.decrypt(cipher);
+
+            if (dec != null && !dec.equals(cipher)) {
+                // 이중 암호화 방어
+                String secondDec = aes256Util.decrypt(dec);
+                if (secondDec != null && !secondDec.equals(dec)) {
+                    decrypted = secondDec;
+                } else {
+                    decrypted = dec;
+                }
+            } else if (original.contains("@")) {
+                // 전체 복호화 실패 & '@' 포함 -> 분리 복호화 시도
+                String[] parts = original.split("@", 2);
+                String cipherId = parts[0].replace(" ", "+");
+                String decId = aes256Util.decrypt(cipherId);
+                if (decId != null && !decId.equals(cipherId)) {
+                    decrypted = decId + "@" + parts[1];
+                }
+            }
+        } catch (Exception e) {
+            // 복호화 에러 발생 시 원본 텍스트 유지
+        }
+        return decrypted;
+    }
+
+    private String decryptMulti(String text) {
+        if (text == null || text.trim().isEmpty()) return text;
+        String[] parts = text.split("\\^", -1);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < parts.length; i++) {
+            sb.append(safeDecrypt(parts[i]));
+            if (i < parts.length - 1) sb.append("^");
+        }
+        return sb.toString();
+    }
 }
