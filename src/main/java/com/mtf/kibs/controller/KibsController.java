@@ -931,19 +931,54 @@ public class KibsController {
         if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getRemoteAddr();
         if (clientIp != null && clientIp.contains(",")) clientIp = clientIp.split(",")[0].trim();
 
-        // --- DB 조회를 위해 평문 휴대전화번호를 암호화 ---
-        if (visitorDTO.getPhone() != null && !visitorDTO.getPhone().isEmpty()) {
-            try {
-                String encryptedPhone = aes256Util.encrypt(visitorDTO.getPhone());
-                visitorDTO.setPhone(encryptedPhone);
-            } catch (Exception e) {
-                // 암호화 에러 발생 시 처리 (로그 기록 등)
+        VisitorDTO result = null;
+        String originalPhone = visitorDTO.getPhone();
+
+        if (originalPhone != null && !originalPhone.isEmpty()) {
+            // 1. 입력된 번호에서 숫자만 추출 (하이픈 제거)
+            String cleanPhone = originalPhone.replaceAll("[^0-9]", "");
+
+            // 2. 하이픈이 포함된 포맷 생성 (010-XXXX-XXXX)
+            String hyphenPhone = cleanPhone;
+            if (cleanPhone.length() == 11) {
+                hyphenPhone = cleanPhone.substring(0, 3) + "-" + cleanPhone.substring(3, 7) + "-" + cleanPhone.substring(7);
             }
+
+            try {
+                // Case 1: 하이픈 포함 포맷 암호화 조회
+                visitorDTO.setPhone(aes256Util.encrypt(hyphenPhone));
+                result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
+
+                // Case 2: 하이픈 제거 포맷 암호화 조회
+                if (result == null) {
+                    visitorDTO.setPhone(aes256Util.encrypt(cleanPhone));
+                    result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
+                }
+
+                // Case 3: DB에 평문으로 들어간 경우 (하이픈 포함 평문)
+                if (result == null) {
+                    visitorDTO.setPhone(hyphenPhone);
+                    result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
+                }
+
+                // Case 4: DB에 평문으로 들어간 경우 (하이픈 제거 평문)
+                if (result == null) {
+                    visitorDTO.setPhone(cleanPhone);
+                    result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
+                }
+            } catch (Exception e) {
+                // 암호화 에러 시 평문 조회로 폴백
+                visitorDTO.setPhone(hyphenPhone);
+                result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
+                if (result == null) {
+                    visitorDTO.setPhone(cleanPhone);
+                    result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
+                }
+            }
+        } else {
+            result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
         }
         // --------------------------------------------------------
-
-        // 서비스 로직 호출 (IP 전달)
-        VisitorDTO result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
 
         // 차단된 상태인 경우 (429 에러 대신 DTO에 메시지를 담아 200 OK로 리턴)
         if (result != null && "IP_BLOCKED".equals(result.getSeq())) {

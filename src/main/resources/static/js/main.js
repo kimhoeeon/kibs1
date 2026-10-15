@@ -6323,7 +6323,7 @@ function f_pre_apply_check_login(){
 
     let jsonObj = {
         name: name,
-        phone: phone,
+        phone: pureNum,
         joinYear: transferYear // JSP 상단 혹은 공통 js에 선언된 변수로 가정
     };
 

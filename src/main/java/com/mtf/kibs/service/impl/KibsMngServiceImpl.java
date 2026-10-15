@@ -690,9 +690,47 @@ public class KibsMngServiceImpl implements KibsMngService {
         List<MemberDTO> list = kibsMngMapper.selectMemberList(searchDTO);
         if (list != null && !list.isEmpty()) {
             for (MemberDTO info : list) {
-                try {
-                    if (info.getEmail() != null) info.setEmail(aes256Util.decrypt(info.getEmail()));
-                } catch (Exception e) {}
+                if (info.getEmail() != null && !info.getEmail().trim().isEmpty()) {
+                    String originalEmail = info.getEmail().trim();
+                    String decryptedEmail = originalEmail;
+
+                    try {
+                        if ("참관객".equals(info.getGbn()) && originalEmail.contains("@")) {
+                            // 참관객: 이메일과 도메인이 합쳐져서 넘어옴 (암호문@평문)
+                            String[] parts = originalEmail.split("@", 2);
+                            String cipherId = parts[0].trim().replace(" ", "+"); // Base64 공백 깨짐 방어
+                            String plainDomain = parts[1].trim();
+
+                            String decryptedId = aes256Util.decrypt(cipherId);
+                            // 복호화 유틸이 에러 시 원본을 뱉는 경우를 대비해 확실히 변경되었는지 검증
+                            if (decryptedId != null && !decryptedId.equals(cipherId)) {
+                                decryptedEmail = decryptedId + "@" + plainDomain;
+                            }
+                        } else {
+                            // 참가업체: 국문(전체 암호화) vs 영문(예외 케이스)
+                            String cipherEmail = originalEmail.replace(" ", "+"); // Base64 공백 깨짐 방어
+                            String decryptedFull = aes256Util.decrypt(cipherEmail);
+
+                            if (decryptedFull != null && !decryptedFull.equals(cipherEmail)) {
+                                decryptedEmail = decryptedFull; // 전체 복호화 성공
+                            } else if (originalEmail.contains("@")) {
+                                // 영문 참가업체 등에서 도메인이 따로 저장된 예외 케이스 대응 (분리 복호화 시도)
+                                String[] parts = originalEmail.split("@", 2);
+                                String cipherId = parts[0].trim().replace(" ", "+");
+                                String plainDomain = parts[1].trim();
+
+                                String decryptedId = aes256Util.decrypt(cipherId);
+                                if (decryptedId != null && !decryptedId.equals(cipherId)) {
+                                    decryptedEmail = decryptedId + "@" + plainDomain;
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        // 예외 발생 시 추가 처리 없이 원본(평문 혹은 복호화 실패 상태) 유지
+                    }
+
+                    info.setEmail(decryptedEmail);
+                }
             }
         }
         return list;
