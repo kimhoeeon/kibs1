@@ -7817,7 +7817,12 @@ public class KibsMngController {
                     }
 
                     row.createCell(cellCnt++).setCellValue(displayBoothType); // 5. 부스구분
-                    row.createCell(cellCnt++).setCellValue(booth.getStandAloneBoothCnt() + booth.getAssemblyBoothCnt() + booth.getOnlineBoothCnt()); // 6. 부스수량
+                    int standAlone = booth.getStandAloneBoothCnt() != null ? booth.getStandAloneBoothCnt() : 0;
+                    int assembly = booth.getAssemblyBoothCnt() != null ? booth.getAssemblyBoothCnt() : 0;
+                    int online = booth.getOnlineBoothCnt() != null ? booth.getOnlineBoothCnt() : 0;
+                    row.createCell(cellCnt++).setCellValue(standAlone + assembly + online); // 6. 부스수량
+                    // --------------------------------------------------------
+
                     row.createCell(cellCnt++).setCellValue(df.format(boothPriceOnly)); // 7. 부스가격
 
                     // 8. 참가비 합계(참가비+부스가격)

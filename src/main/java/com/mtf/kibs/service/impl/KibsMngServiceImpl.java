@@ -2978,7 +2978,15 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public List<MngProductDTO> processSelectMngProductNewList(SearchDTO searchDTO) {
         //System.out.println("KibsMngServiceImpl > processSelectMngProductNewList");
-        return kibsMngMapper.selectMngProductNewList(searchDTO);
+        List<MngProductDTO> list = kibsMngMapper.selectMngProductNewList(searchDTO);
+        if (list != null && !list.isEmpty()) {
+            for (MngProductDTO info : list) {
+                try {
+                    if (info.getPhone() != null) info.setPhone(aes256Util.decrypt(info.getPhone()));
+                } catch (Exception e) {}
+            }
+        }
+        return list;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -4406,7 +4414,15 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public List<ExhibitorNewDTO> processSelectExhibitorNewSignList(SearchDTO searchDTO) {
         //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewSignList");
-        return kibsMngMapper.selectExhibitorNewSignList(searchDTO);
+        List<ExhibitorNewDTO> list = kibsMngMapper.selectExhibitorNewSignList(searchDTO);
+        if (list != null && !list.isEmpty()) {
+            for (ExhibitorNewDTO info : list) {
+                try {
+                    if (info.getPhone() != null) info.setPhone(aes256Util.decrypt(info.getPhone()));
+                } catch (Exception e) {}
+            }
+        }
+        return list;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -4761,14 +4777,34 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public List<MngBuyerDTO> processSelectMngBuyerList(SearchDTO searchDTO) {
         //System.out.println("KibsMngServiceImpl > processSelectMngBuyerList");
-        return kibsMngMapper.selectMngBuyerList(searchDTO);
+        List<MngBuyerDTO> list = kibsMngMapper.selectMngBuyerList(searchDTO);
+        if (list != null && !list.isEmpty()) {
+            for (MngBuyerDTO info : list) {
+                try {
+                    if (info.getBuyerCompanyTel() != null) info.setBuyerCompanyTel(aes256Util.decrypt(info.getBuyerCompanyTel()));
+                    if (info.getBuyerCompanyPhone() != null) info.setBuyerCompanyPhone(aes256Util.decrypt(info.getBuyerCompanyPhone()));
+                    if (info.getBuyerCompanyEmail() != null) info.setBuyerCompanyEmail(aes256Util.decrypt(info.getBuyerCompanyEmail()));
+                } catch (Exception e) {}
+            }
+        }
+        return list;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public List<MngBuyerDTO> processSelectExhibitorNewBuyerList(SearchDTO searchDTO) {
         //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewBuyerList");
-        return kibsMngMapper.selectExhibitorNewBuyerList(searchDTO);
+        List<MngBuyerDTO> list = kibsMngMapper.selectExhibitorNewBuyerList(searchDTO);
+        if (list != null && !list.isEmpty()) {
+            for (MngBuyerDTO info : list) {
+                try {
+                    if (info.getBuyerCompanyTel() != null) info.setBuyerCompanyTel(aes256Util.decrypt(info.getBuyerCompanyTel()));
+                    if (info.getBuyerCompanyPhone() != null) info.setBuyerCompanyPhone(aes256Util.decrypt(info.getBuyerCompanyPhone()));
+                    if (info.getBuyerCompanyEmail() != null) info.setBuyerCompanyEmail(aes256Util.decrypt(info.getBuyerCompanyEmail()));
+                } catch (Exception e) {}
+            }
+        }
+        return list;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -5623,7 +5659,11 @@ public class KibsMngServiceImpl implements KibsMngService {
         List<PassDetailDTO> list = kibsMngMapper.selectExcelPassDetailList(transferYear);
         if (list != null) {
             for (PassDetailDTO info : list) {
-                try { if (info.getRepresentativePhone() != null) info.setRepresentativePhone(aes256Util.decrypt(info.getRepresentativePhone())); } catch (Exception e) {}
+                try {
+                    if (info.getRepresentativePhone() != null)
+                        info.setRepresentativePhone(aes256Util.decrypt(info.getRepresentativePhone()));
+                } catch (Exception e) {
+                }
             }
         }
         return list;
@@ -5636,7 +5676,11 @@ public class KibsMngServiceImpl implements KibsMngService {
         List<SignDetailDTO> list = kibsMngMapper.selectExcelSignDetailList(transferYear);
         if (list != null) {
             for (SignDetailDTO info : list) {
-                try { if (info.getRepresentativePhone() != null) info.setRepresentativePhone(aes256Util.decrypt(info.getRepresentativePhone())); } catch (Exception e) {}
+                try {
+                    if (info.getRepresentativePhone() != null)
+                        info.setRepresentativePhone(aes256Util.decrypt(info.getRepresentativePhone()));
+                } catch (Exception e) {
+                }
             }
         }
         return list;
@@ -5649,7 +5693,11 @@ public class KibsMngServiceImpl implements KibsMngService {
         List<UtilityDetailDTO> list = kibsMngMapper.selectExcelUtilityDetailList(transferYear);
         if (list != null) {
             for (UtilityDetailDTO info : list) {
-                try { if (info.getRepresentativePhone() != null) info.setRepresentativePhone(aes256Util.decrypt(info.getRepresentativePhone())); } catch (Exception e) {}
+                try {
+                    if (info.getRepresentativePhone() != null)
+                        info.setRepresentativePhone(aes256Util.decrypt(info.getRepresentativePhone()));
+                } catch (Exception e) {
+                }
             }
         }
         return list;
@@ -5670,10 +5718,14 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (BuyerDetailDTO info : list) {
                 try {
-                    if (info.getBuyerCompanyTel() != null) info.setBuyerCompanyTel(aes256Util.decrypt(info.getBuyerCompanyTel()));
-                    if (info.getBuyerCompanyPhone() != null) info.setBuyerCompanyPhone(aes256Util.decrypt(info.getBuyerCompanyPhone()));
-                    if (info.getBuyerCompanyEmail() != null) info.setBuyerCompanyEmail(aes256Util.decrypt(info.getBuyerCompanyEmail()));
-                } catch (Exception e) {}
+                    if (info.getBuyerCompanyTel() != null)
+                        info.setBuyerCompanyTel(aes256Util.decrypt(info.getBuyerCompanyTel()));
+                    if (info.getBuyerCompanyPhone() != null)
+                        info.setBuyerCompanyPhone(aes256Util.decrypt(info.getBuyerCompanyPhone()));
+                    if (info.getBuyerCompanyEmail() != null)
+                        info.setBuyerCompanyEmail(aes256Util.decrypt(info.getBuyerCompanyEmail()));
+                } catch (Exception e) {
+                }
             }
         }
         return list;
