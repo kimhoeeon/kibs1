@@ -54,4 +54,71 @@ public class AES256Util {
             return cipherText;
         }
     }
+
+    // ==========================================
+    // 공통 안전 복호화 헬퍼 메서드 (강화 버전 - Util 통합)
+    // ==========================================
+    public String safeDecrypt(String text) {
+        if (text == null || text.trim().isEmpty()) return text;
+        String original = text.trim();
+        String decrypted = original;
+
+        try {
+            // 1차 복호화 시도 (공백을 +로 치환)
+            String cipher = original.replace(" ", "+");
+            String dec = this.decrypt(cipher); // 내부 decrypt 호출
+
+            if (dec != null && !dec.equals(cipher)) {
+                decrypted = dec;
+
+                // 2차 복호화 시도 (이중 암호화 방어)
+                String secondCipher = dec.replace(" ", "+");
+                try {
+                    String secondDec = this.decrypt(secondCipher);
+                    if (secondDec != null && !secondDec.equals(secondCipher)) {
+                        decrypted = secondDec;
+                    }
+                } catch (Exception ignored) {} // 2차 복호화 실패 시 1차 결과 유지
+
+            } else {
+                // 전체 복호화 실패 시, 이메일처럼 '@' 기준으로 분리된 형태인지 확인
+                if (original.contains("@")) {
+                    String[] parts = original.split("@", 2);
+                    String cipherId = parts[0].replace(" ", "+");
+                    try {
+                        String decId = this.decrypt(cipherId);
+                        if (decId != null && !decId.equals(cipherId)) {
+                            // ID 부분만 이중 암호화된 경우 대비
+                            String secondCipherId = decId.replace(" ", "+");
+                            try {
+                                String secondDecId = this.decrypt(secondCipherId);
+                                if (secondDecId != null && !secondDecId.equals(secondCipherId)) {
+                                    decId = secondDecId;
+                                }
+                            } catch (Exception ignored) {}
+
+                            decrypted = decId + "@" + parts[1];
+                        }
+                    } catch (Exception ignored) {}
+                }
+            }
+        } catch (Exception e) {
+            // 복호화 과정 중 예외 발생 시 원본 반환
+        }
+        return decrypted;
+    }
+
+    // ==========================================
+    // 다중 암호문(GROUP_CONCAT 등) 복호화 헬퍼 메서드 (Util 통합)
+    // ==========================================
+    public String decryptMulti(String text) {
+        if (text == null || text.trim().isEmpty()) return text;
+        String[] parts = text.split("\\^", -1);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < parts.length; i++) {
+            sb.append(this.safeDecrypt(parts[i])); // 내부 safeDecrypt 호출
+            if (i < parts.length - 1) sb.append("^");
+        }
+        return sb.toString();
+    }
 }

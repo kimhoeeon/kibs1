@@ -775,25 +775,25 @@ public class KibsMngNewController {
                 // ==========================================
                 // ★ 엑셀 쓰기 전 복호화 전처리 시작 ★
                 // ==========================================
-                info.setCompanyAddress(safeDecrypt(info.getCompanyAddress()));
-                info.setCompanyAddressDetail(safeDecrypt(info.getCompanyAddressDetail()));
-                info.setFactoryAddress(safeDecrypt(info.getFactoryAddress()));
-                info.setFactoryAddressDetail(safeDecrypt(info.getFactoryAddressDetail()));
-                info.setCompanyTel(safeDecrypt(info.getCompanyTel()));
-                info.setCompanyFax(safeDecrypt(info.getCompanyFax()));
-                info.setCompanyCeo(safeDecrypt(info.getCompanyCeo()));
+                info.setCompanyAddress(aes256Util.safeDecrypt(info.getCompanyAddress()));
+                info.setCompanyAddressDetail(aes256Util.safeDecrypt(info.getCompanyAddressDetail()));
+                info.setFactoryAddress(aes256Util.safeDecrypt(info.getFactoryAddress()));
+                info.setFactoryAddressDetail(aes256Util.safeDecrypt(info.getFactoryAddressDetail()));
+                info.setCompanyTel(aes256Util.safeDecrypt(info.getCompanyTel()));
+                info.setCompanyFax(aes256Util.safeDecrypt(info.getCompanyFax()));
+                info.setCompanyCeo(aes256Util.safeDecrypt(info.getCompanyCeo()));
 
-                info.setName(safeDecrypt(info.getName()));
-                info.setTel(safeDecrypt(info.getTel()));
-                info.setPhone(safeDecrypt(info.getPhone()));
-                info.setEmail(safeDecrypt(info.getEmail()));
+                info.setName(aes256Util.safeDecrypt(info.getName()));
+                info.setTel(aes256Util.safeDecrypt(info.getTel()));
+                info.setPhone(aes256Util.safeDecrypt(info.getPhone()));
+                info.setEmail(aes256Util.safeDecrypt(info.getEmail()));
 
-                info.setChargePersonName(decryptMulti(info.getChargePersonName()));
-                info.setChargePersonPosition(decryptMulti(info.getChargePersonPosition()));
-                info.setChargePersonDepart(decryptMulti(info.getChargePersonDepart()));
-                info.setChargePersonTel(decryptMulti(info.getChargePersonTel()));
-                info.setChargePersonPhone(decryptMulti(info.getChargePersonPhone()));
-                info.setChargePersonEmail(decryptMulti(info.getChargePersonEmail()));
+                info.setChargePersonName(aes256Util.decryptMulti(info.getChargePersonName()));
+                info.setChargePersonPosition(aes256Util.decryptMulti(info.getChargePersonPosition()));
+                info.setChargePersonDepart(aes256Util.decryptMulti(info.getChargePersonDepart()));
+                info.setChargePersonTel(aes256Util.decryptMulti(info.getChargePersonTel()));
+                info.setChargePersonPhone(aes256Util.decryptMulti(info.getChargePersonPhone()));
+                info.setChargePersonEmail(aes256Util.decryptMulti(info.getChargePersonEmail()));
                 // ==========================================
 
                 Row dataRow = sheet.createRow(rowCnt++);
@@ -1273,50 +1273,4 @@ public class KibsMngNewController {
         return str == null ? "" : str;
     }
 
-    // ==========================================
-    // 공통 안전 복호화 헬퍼 메서드
-    // ==========================================
-    private String safeDecrypt(String text) {
-        if (text == null || text.trim().isEmpty()) return text;
-        String original = text.trim();
-        String decrypted = original;
-
-        try {
-            String cipher = original.replace(" ", "+");
-            // [수정 핵심] safeDecrypt가 아닌 aes256Util.decrypt()를 호출해야 합니다!
-            String dec = aes256Util.decrypt(cipher);
-
-            if (dec != null && !dec.equals(cipher)) {
-                // 이중 암호화 방어
-                String secondDec = aes256Util.decrypt(dec);
-                if (secondDec != null && !secondDec.equals(dec)) {
-                    decrypted = secondDec;
-                } else {
-                    decrypted = dec;
-                }
-            } else if (original.contains("@")) {
-                // 이메일 등 분리 복호화 시도
-                String[] parts = original.split("@", 2);
-                String cipherId = parts[0].replace(" ", "+");
-                String decId = aes256Util.decrypt(cipherId);
-                if (decId != null && !decId.equals(cipherId)) {
-                    decrypted = decId + "@" + parts[1];
-                }
-            }
-        } catch (Exception e) {
-            // 복호화 에러 발생 시 원본 텍스트 유지
-        }
-        return decrypted;
-    }
-
-    private String decryptMulti(String text) {
-        if (text == null || text.trim().isEmpty()) return text;
-        String[] parts = text.split("\\^", -1);
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < parts.length; i++) {
-            sb.append(safeDecrypt(parts[i]));
-            if (i < parts.length - 1) sb.append("^");
-        }
-        return sb.toString();
-    }
 }

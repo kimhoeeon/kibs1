@@ -227,14 +227,14 @@ public class KibsServiceImpl implements KibsService {
     @Override
     public String getExhibitorNewEmail(ExhibitorNewDTO exhibitorNewDTO) {
         String encryptedEmail = kibsMapper.getExhibitorNewEmail(exhibitorNewDTO);
-        return safeDecrypt(encryptedEmail);
+        return aes256Util.safeDecrypt(encryptedEmail);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public String getExhibitorNewRepEmail(ExhibitorNewDTO exhibitorNewDTO) {
         String encryptedEmail = kibsMapper.getExhibitorNewRepEmail(exhibitorNewDTO);
-        return safeDecrypt(encryptedEmail);
+        return aes256Util.safeDecrypt(encryptedEmail);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -243,7 +243,7 @@ public class KibsServiceImpl implements KibsService {
         List<String> encryptedList = kibsMapper.preGetExhibitorEmail(exhibitorDTO);
         List<String> decryptedList = new ArrayList<>();
         for (String email : encryptedList) {
-            decryptedList.add(safeDecrypt(email));
+            decryptedList.add(aes256Util.safeDecrypt(email));
         }
         return decryptedList;
     }
@@ -613,39 +613,39 @@ public class KibsServiceImpl implements KibsService {
         if (info != null) {
             try {
                 if (info.getTel() != null && !info.getTel().trim().isEmpty()) {
-                    String decryptedTel = safeDecrypt(info.getTel());
+                    String decryptedTel = aes256Util.safeDecrypt(info.getTel());
                     if (decryptedTel != null && !decryptedTel.isEmpty()) info.setTel(decryptedTel);
                 }
 
                 if (info.getPhone() != null && !info.getPhone().trim().isEmpty()) {
-                    String decryptedPhone = safeDecrypt(info.getPhone());
+                    String decryptedPhone = aes256Util.safeDecrypt(info.getPhone());
                     if (decryptedPhone != null && !decryptedPhone.isEmpty()) info.setPhone(decryptedPhone);
                 }
 
                 if (info.getEmail() != null && !info.getEmail().trim().isEmpty()) {
-                    String decryptedEmail = safeDecrypt(info.getEmail());
+                    String decryptedEmail = aes256Util.safeDecrypt(info.getEmail());
                     if (decryptedEmail != null && !decryptedEmail.isEmpty()) info.setEmail(decryptedEmail);
                 }
 
                 if (info.getCompanyTel() != null && !info.getCompanyTel().trim().isEmpty()) {
-                    String decryptedCompanyTel = safeDecrypt(info.getCompanyTel());
+                    String decryptedCompanyTel = aes256Util.safeDecrypt(info.getCompanyTel());
                     if (decryptedCompanyTel != null && !decryptedCompanyTel.isEmpty()) info.setCompanyTel(decryptedCompanyTel);
                 }
 
                 if (info.getCompanyFax() != null && !info.getCompanyFax().trim().isEmpty()) {
-                    String decryptedCompanyFax = safeDecrypt(info.getCompanyFax());
+                    String decryptedCompanyFax = aes256Util.safeDecrypt(info.getCompanyFax());
                     if (decryptedCompanyFax != null && !decryptedCompanyFax.isEmpty()) info.setCompanyFax(decryptedCompanyFax);
                 }
 
                 if (info.getCompanyAddress() != null && !info.getCompanyAddress().trim().isEmpty()) {
-                    String decryptedCompanyAddress = safeDecrypt(info.getCompanyAddress());
+                    String decryptedCompanyAddress = aes256Util.safeDecrypt(info.getCompanyAddress());
                     if (decryptedCompanyAddress != null && !decryptedCompanyAddress.isEmpty()) {
                         info.setCompanyAddress(decryptedCompanyAddress);
                     }
                 }
 
                 if (info.getCompanyAddressDetail() != null && !info.getCompanyAddressDetail().trim().isEmpty()) {
-                    String decryptedCompanyAddressDetail = safeDecrypt(info.getCompanyAddressDetail());
+                    String decryptedCompanyAddressDetail = aes256Util.safeDecrypt(info.getCompanyAddressDetail());
                     if (decryptedCompanyAddressDetail != null && !decryptedCompanyAddressDetail.isEmpty()) {
                         info.setCompanyAddressDetail(decryptedCompanyAddressDetail);
                     }
@@ -668,17 +668,17 @@ public class KibsServiceImpl implements KibsService {
             for (ChargeNewDTO charge : chargeList) {
                 try {
                     if (charge.getChargePersonTel() != null && !charge.getChargePersonTel().trim().isEmpty()) {
-                        String decryptedTel = safeDecrypt(charge.getChargePersonTel());
+                        String decryptedTel = aes256Util.safeDecrypt(charge.getChargePersonTel());
                         if (decryptedTel != null && !decryptedTel.isEmpty()) charge.setChargePersonTel(decryptedTel);
                     }
 
                     if (charge.getChargePersonPhone() != null && !charge.getChargePersonPhone().trim().isEmpty()) {
-                        String decryptedPhone = safeDecrypt(charge.getChargePersonPhone());
+                        String decryptedPhone = aes256Util.safeDecrypt(charge.getChargePersonPhone());
                         if (decryptedPhone != null && !decryptedPhone.isEmpty()) charge.setChargePersonPhone(decryptedPhone);
                     }
 
                     if (charge.getChargePersonEmail() != null && !charge.getChargePersonEmail().trim().isEmpty()) {
-                        String decryptedEmail = safeDecrypt(charge.getChargePersonEmail());
+                        String decryptedEmail = aes256Util.safeDecrypt(charge.getChargePersonEmail());
                         if (decryptedEmail != null && !decryptedEmail.isEmpty()) charge.setChargePersonEmail(decryptedEmail);
                     }
                 } catch (Exception e) {
@@ -711,17 +711,17 @@ public class KibsServiceImpl implements KibsService {
             for (BuyerNewDTO buyer : buyerList) {
                 try {
                     if (buyer.getBuyerCompanyTel() != null && !buyer.getBuyerCompanyTel().trim().isEmpty()) {
-                        String decryptedTel = safeDecrypt(buyer.getBuyerCompanyTel());
+                        String decryptedTel = aes256Util.safeDecrypt(buyer.getBuyerCompanyTel());
                         if (decryptedTel != null && !decryptedTel.isEmpty()) buyer.setBuyerCompanyTel(decryptedTel);
                     }
 
                     if (buyer.getBuyerCompanyPhone() != null && !buyer.getBuyerCompanyPhone().trim().isEmpty()) {
-                        String decryptedPhone = safeDecrypt(buyer.getBuyerCompanyPhone());
+                        String decryptedPhone = aes256Util.safeDecrypt(buyer.getBuyerCompanyPhone());
                         if (decryptedPhone != null && !decryptedPhone.isEmpty()) buyer.setBuyerCompanyPhone(decryptedPhone);
                     }
 
                     if (buyer.getBuyerCompanyEmail() != null && !buyer.getBuyerCompanyEmail().trim().isEmpty()) {
-                        String decryptedEmail = safeDecrypt(buyer.getBuyerCompanyEmail());
+                        String decryptedEmail = aes256Util.safeDecrypt(buyer.getBuyerCompanyEmail());
                         if (decryptedEmail != null && !decryptedEmail.isEmpty()) buyer.setBuyerCompanyEmail(decryptedEmail);
                     }
                 } catch (Exception e) {
@@ -2273,25 +2273,25 @@ public class KibsServiceImpl implements KibsService {
         if (visitor != null) {
             try {
                 if (visitor.getTel() != null && !visitor.getTel().trim().isEmpty()) {
-                    String decryptedTel = safeDecrypt(visitor.getTel());
+                    String decryptedTel = aes256Util.safeDecrypt(visitor.getTel());
                     if (decryptedTel != null && !decryptedTel.isEmpty()) visitor.setTel(decryptedTel);
                 }
                 if (visitor.getPhone() != null && !visitor.getPhone().trim().isEmpty()) {
-                    String decryptedPhone = safeDecrypt(visitor.getPhone());
+                    String decryptedPhone = aes256Util.safeDecrypt(visitor.getPhone());
                     if (decryptedPhone != null && !decryptedPhone.isEmpty()) visitor.setPhone(decryptedPhone);
                 }
                 if (visitor.getEmail() != null && !visitor.getEmail().trim().isEmpty()) {
-                    String decryptedEmail = safeDecrypt(visitor.getEmail());
+                    String decryptedEmail = aes256Util.safeDecrypt(visitor.getEmail());
                     if (decryptedEmail != null && !decryptedEmail.isEmpty()) visitor.setEmail(decryptedEmail);
                 }
                 if (visitor.getCompanyAddress() != null && !visitor.getCompanyAddress().trim().isEmpty()) {
-                    String decryptedCompanyAddress = safeDecrypt(visitor.getCompanyAddress());
+                    String decryptedCompanyAddress = aes256Util.safeDecrypt(visitor.getCompanyAddress());
                     if (decryptedCompanyAddress != null && !decryptedCompanyAddress.isEmpty()) {
                         visitor.setCompanyAddress(decryptedCompanyAddress);
                     }
                 }
                 if (visitor.getCompanyAddressDetail() != null && !visitor.getCompanyAddressDetail().trim().isEmpty()) {
-                    String decryptedCompanyAddressDetail = safeDecrypt(visitor.getCompanyAddressDetail());
+                    String decryptedCompanyAddressDetail = aes256Util.safeDecrypt(visitor.getCompanyAddressDetail());
                     if (decryptedCompanyAddressDetail != null && !decryptedCompanyAddressDetail.isEmpty()) {
                         visitor.setCompanyAddressDetail(decryptedCompanyAddressDetail);
                     }
@@ -2414,35 +2414,4 @@ public class KibsServiceImpl implements KibsService {
         }
     }
 
-    // ==========================================
-    // 공통 안전 복호화 헬퍼 메서드
-    // ==========================================
-    private String safeDecrypt(String text) {
-        if (text == null || text.trim().isEmpty()) return text;
-        String original = text.trim();
-        String decrypted = original;
-
-        try {
-            String cipher = original.replace(" ", "+");
-            String dec = aes256Util.decrypt(cipher);
-
-            if (dec != null && !dec.equals(cipher)) {
-                String secondDec = aes256Util.decrypt(dec);
-                if (secondDec != null && !secondDec.equals(dec)) {
-                    decrypted = secondDec;
-                } else {
-                    decrypted = dec;
-                }
-            } else if (original.contains("@")) {
-                String[] parts = original.split("@", 2);
-                String cipherId = parts[0].replace(" ", "+");
-                String decId = aes256Util.decrypt(cipherId);
-                if (decId != null && !decId.equals(cipherId)) {
-                    decrypted = decId + "@" + parts[1];
-                }
-            }
-        } catch (Exception e) {
-        }
-        return decrypted;
-    }
 }

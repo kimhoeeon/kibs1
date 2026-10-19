@@ -1165,18 +1165,16 @@
                         FROM file f
                         WHERE f.user_id = en.seq
                           AND f.file_yn = 'Y'
-                          AND f.note LIKE CONCAT('productImage','%')
+                          AND f.note LIKE CONCAT('onlineImage','%')
                         ORDER BY f.note
                         LIMIT 1) AS promotionImageFilePath
                FROM exhibitor_new en
                WHERE 1=1
-                 AND en.transfer_year in (#{transferYear})
+                 AND en.transfer_year IN (#{transferYear}, #{transferYear}-1)
                  AND en.company_online_view_yn = 'Y'
                  AND en.apply_complt = 'Y'
                  AND en.approval_status = '참가승인'
-                 AND EXISTS ( SELECT 1
-                                 FROM product_new pdn
-                                 WHERE pdn.ex_seq = en.seq)
+                 AND EXISTS ( SELECT 1 FROM online_new oln WHERE oln.ex_seq = en.seq)
                ) r
         ORDER BY r.transfer_year DESC, LENGTH (r.company_badge) DESC, RAND()
         LIMIT 15;
@@ -2128,7 +2126,7 @@
                     (SELECT f.full_file_path FROM file f WHERE f.user_id = en.seq AND f.file_yn = 'Y' AND f.note LIKE CONCAT('onlineImage','%') ORDER BY f.note LIMIT 1) AS promotionImageFilePath
                 FROM exhibitor_new en
                 WHERE 1=1
-                  AND en.transfer_year IN (#{transferYear})
+                  AND en.transfer_year IN (#{transferYear}, #{transferYear}-1)
                   AND en.company_online_view_yn = 'Y'
                   AND en.apply_complt = 'Y'
                   AND en.approval_status = '참가승인'
@@ -2211,7 +2209,7 @@
                     (SELECT f.full_file_path FROM file f WHERE f.user_id = en.seq AND f.file_yn = 'Y' AND f.note LIKE CONCAT('onlineImage','%') ORDER BY f.note LIMIT 1) AS promotionImageFilePath
                 FROM exhibitor_new en
                 WHERE 1=1
-                  AND en.transfer_year IN (#{transferYear})
+                  AND en.transfer_year IN (#{transferYear}, #{transferYear}-1)
                   AND en.company_online_view_yn = 'Y'
                   AND en.apply_complt = 'Y'
                   AND en.approval_status = '참가승인'
@@ -2670,7 +2668,7 @@
                        JOIN exhibitor_new en
                        ON en.seq = ot.ex_seq
                        WHERE 1=1
-                         AND en.transfer_year in (#{transferYear})
+                         AND en.transfer_year IN (#{transferYear}, #{transferYear}-1)
                          <if test='searchText != null and searchText != ""'>
                             <if test='condition == "companyName"'>
                                 AND en.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
@@ -2807,7 +2805,7 @@
                         JOIN exhibitor_new en
                         ON en.seq = ot.ex_seq
                         WHERE 1=1
-                          AND en.transfer_year in (#{transferYear})
+                          AND en.transfer_year IN (#{transferYear}, #{transferYear}-1)
                           <if test='searchText != null and searchText != ""'>
                             <if test='condition == "companyName"'>
                                 AND en.company_name_ko LIKE CONCAT('%', #{searchText}, '%')
