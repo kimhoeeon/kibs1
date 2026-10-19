@@ -4006,6 +4006,7 @@
              , company_name_en
              , name
              , position
+             , tel
              , phone
              , booth_type
              , stand_alone_booth_cnt
@@ -4167,6 +4168,7 @@
              , en.booth_type
              , en.name
              , en.position
+             , en.tel
              , en.phone
              , en.registration_cnt
              , en.stand_alone_booth_cnt
@@ -4454,6 +4456,7 @@
              , e.company_name_en
              , e.name
              , e.position
+             , e.tel
              , e.phone
              , p_counts.totalPassCnt AS passCnt
              , e.init_regi_dttm
@@ -4968,6 +4971,7 @@
              , e.company_name_en
              , e.name
              , e.position
+             , e.tel
              , e.phone
              , e.init_regi_dttm
              , IFNULL(SUM(p.product_qty), 0) AS productCount

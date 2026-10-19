@@ -3025,9 +3025,9 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (MngProductDTO info : list) {
                 try {
+                    if (info.getTel() != null) info.setTel(aes256Util.safeDecrypt(info.getTel()));
                     if (info.getPhone() != null) info.setPhone(aes256Util.safeDecrypt(info.getPhone()));
-                } catch (Exception e) {
-                }
+                } catch (Exception e) {}
             }
         }
         return list;
@@ -4499,6 +4499,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (ExhibitorNewDTO info : list) {
                 try {
+                    if (info.getTel() != null) info.setTel(aes256Util.safeDecrypt(info.getTel()));
                     if (info.getPhone() != null) info.setPhone(aes256Util.safeDecrypt(info.getPhone()));
                 } catch (Exception e) {}
             }
@@ -4595,6 +4596,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (ExhibitorNewDTO info : list) {
                 try {
+                    if (info.getTel() != null) info.setTel(aes256Util.safeDecrypt(info.getTel()));
                     if (info.getPhone() != null) info.setPhone(aes256Util.safeDecrypt(info.getPhone()));
                 } catch (Exception e) {}
             }
@@ -4705,6 +4707,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         if (list != null && !list.isEmpty()) {
             for (MngPassDTO info : list) {
                 try {
+                    if (info.getTel() != null) info.setTel(aes256Util.safeDecrypt(info.getTel()));
                     if (info.getPhone() != null) info.setPhone(aes256Util.safeDecrypt(info.getPhone()));
                 } catch (Exception e) {}
             }

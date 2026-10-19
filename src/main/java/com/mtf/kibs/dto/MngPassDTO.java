@@ -29,5 +29,6 @@ public class MngPassDTO {
     Integer passCnt;
     String name;
     String phone;
+    String tel;
     String position;
 }

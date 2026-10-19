@@ -37,5 +37,6 @@ public class MngProductDTO {
     String name;
     String position;
     String phone;
+    String tel;
     int productCount;
 }
