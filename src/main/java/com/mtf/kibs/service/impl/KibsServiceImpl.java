@@ -1650,30 +1650,11 @@ public class KibsServiceImpl implements KibsService {
         ExhibitorDTO info = kibsMapper.selectOnlineExhibitorInfo(seq);
 
         if (info != null) {
-            try {
-                if (info.getCompanyTel() != null && !info.getCompanyTel().trim().isEmpty()) {
-                    info.setCompanyTel(aes256Util.safeDecrypt(info.getCompanyTel()));
-                }
-                if (info.getCompanyFax() != null && !info.getCompanyFax().trim().isEmpty()) {
-                    info.setCompanyFax(aes256Util.safeDecrypt(info.getCompanyFax()));
-                }
-                if (info.getTel() != null && !info.getTel().trim().isEmpty()) {
-                    info.setTel(aes256Util.safeDecrypt(info.getTel()));
-                }
-                if (info.getPhone() != null && !info.getPhone().trim().isEmpty()) {
-                    info.setPhone(aes256Util.safeDecrypt(info.getPhone()));
-                }
-                if (info.getEmail() != null && !info.getEmail().trim().isEmpty()) {
-                    info.setEmail(aes256Util.safeDecrypt(info.getEmail()));
-                }
-                if (info.getCompanyAddress() != null && !info.getCompanyAddress().trim().isEmpty()) {
-                    info.setCompanyAddress(aes256Util.safeDecrypt(info.getCompanyAddress()));
-                }
-                if (info.getCompanyAddressDetail() != null && !info.getCompanyAddressDetail().trim().isEmpty()) {
-                    info.setCompanyAddressDetail(aes256Util.safeDecrypt(info.getCompanyAddressDetail()));
-                }
-            } catch (Exception e) {
-                log.error("[OnlineView Decrypt Error (Old)] seq: {}, msg: {}", seq, e.getMessage());
+            if (info.getCompanyTel() == null || info.getCompanyTel().trim().isEmpty() || info.getCompanyTel().trim().equals("-")) {
+                String fallback = "";
+                if (info.getTel() != null && !info.getTel().trim().isEmpty()) fallback = info.getTel();
+                else if (info.getPhone() != null && !info.getPhone().trim().isEmpty()) fallback = info.getPhone();
+                info.setCompanyTel(fallback);
             }
         }
         return info;
@@ -1687,7 +1668,7 @@ public class KibsServiceImpl implements KibsService {
         if (info != null) {
             // 1. 쿼리에서 transfer_year를 안 가져올 경우를 대비해 단건 조회로 연도를 확실히 가져옵니다.
             String year = info.getTransferYear();
-            if (year == null || year.isEmpty()) {
+            if (year == null || year.trim().isEmpty()) {
                 ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
                 reqDTO.setSeq(seq);
                 ExhibitorNewDTO baseInfo = kibsMapper.selectExhibitorNewSingle(reqDTO);
@@ -1696,8 +1677,19 @@ public class KibsServiceImpl implements KibsService {
                 }
             }
 
-            // 2. 2027년 및 그 이후 연도 데이터만 복호화 진행 (사용자 요청 엄수)
-            if (info.getTransferYear() != null && info.getTransferYear().compareTo("2027") >= 0) {
+            // 2. 공백 제거 및 숫자 변환으로 "2027년 이상" 여부 완벽 검증
+            boolean isTargetYear = false;
+            try {
+                if (year != null && Integer.parseInt(year.trim()) >= 2027) {
+                    isTargetYear = true;
+                }
+            } catch (NumberFormatException e) {
+                // 연도가 숫자가 아닌 쓰레기값이면 안전하게 복호화를 시도합니다.
+                isTargetYear = true;
+            }
+
+            // 3. 2027년 이상 데이터만 복호화 진행
+            if (isTargetYear) {
                 try {
                     if (info.getCompanyTel() != null && !info.getCompanyTel().trim().isEmpty()) {
                         info.setCompanyTel(aes256Util.safeDecrypt(info.getCompanyTel()));
@@ -1719,6 +1711,14 @@ public class KibsServiceImpl implements KibsService {
                     }
                     if (info.getCompanyAddressDetail() != null && !info.getCompanyAddressDetail().trim().isEmpty()) {
                         info.setCompanyAddressDetail(aes256Util.safeDecrypt(info.getCompanyAddressDetail()));
+                    }
+
+                    // [UI 보정] 대표 연락처(companyTel)가 비어있다면, 담당자의 tel이나 phone으로 화면에 보여줌
+                    if (info.getCompanyTel() == null || info.getCompanyTel().trim().isEmpty() || info.getCompanyTel().trim().equals("-")) {
+                        String fallback = "";
+                        if (info.getTel() != null && !info.getTel().trim().isEmpty()) fallback = info.getTel();
+                        else if (info.getPhone() != null && !info.getPhone().trim().isEmpty()) fallback = info.getPhone();
+                        info.setCompanyTel(fallback);
                     }
                 } catch (Exception e) {
                     log.error("[OnlineView Decrypt Error] seq: {}, msg: {}", seq, e.getMessage());
