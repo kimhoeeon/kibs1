@@ -1,8 +1,8 @@
 /**
  * Summernote Custom Initialization Script (Stable Version)
  * - 줄간격, 구분선, 표 편집 기능 포함
- * - [수정] 외부 플러그인 제거 -> 'onPaste' 이벤트를 통해 텍스트 청소 기능 직접 구현 (오류 해결)
- * - [수정] fontNamesIgnoreCheck 추가 (폰트 변경 시 콘솔 오류 해결)
+ * - 외부 플러그인 제거 -> 'onPaste' 이벤트를 통해 텍스트 청소 기능 직접 구현 (오류 해결)
+ * - fontNamesIgnoreCheck 추가 (폰트 변경 시 콘솔 오류 해결)
  */
 
 $(document).ready(function() {

@@ -947,7 +947,7 @@ function f_invoice_booth_send(exSeq){
                 let jsonStr = { seq: exSeq };
                 let result = ajaxConnect('/mng/getExhibitorNewInfo.do', 'post', jsonStr);
                 if(nvl(result,'') !== ''){
-                    let companyNameKo = result.companyNameKo;
+                    let companyName = (nvl(result.companyNameKo, '') !== '') ? result.companyNameKo : result.companyNameEn;
                     let email = result.email;
 
                     let filePath = $('input[type=checkbox][name=invoiceSeq]:checked').siblings('input[type=hidden][name=filePath]').val();

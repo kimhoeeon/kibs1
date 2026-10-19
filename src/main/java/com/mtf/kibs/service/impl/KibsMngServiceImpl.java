@@ -4321,7 +4321,44 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public ExhibitorNewDTO processSelectExhibitorNewInvoiceDetail(String seq) {
         //System.out.println("KibsMngServiceImpl > processSelectExhibitorNewInvoiceDetail");
-        return kibsMngMapper.selectExhibitorNewInvoiceDetail(seq);
+        ExhibitorNewDTO info = kibsMngMapper.selectExhibitorNewInvoiceDetail(seq);
+
+        if (info != null) {
+            try {
+                if (info.getEmail() != null && !info.getEmail().trim().isEmpty()) {
+                    info.setEmail(safeDecrypt(info.getEmail()));
+                }
+                if (info.getCompanyTel() != null && !info.getCompanyTel().trim().isEmpty()) {
+                    info.setCompanyTel(safeDecrypt(info.getCompanyTel()));
+                }
+                if (info.getCompanyFax() != null && !info.getCompanyFax().trim().isEmpty()) {
+                    info.setCompanyFax(safeDecrypt(info.getCompanyFax()));
+                }
+                if (info.getCompanyAddress() != null && !info.getCompanyAddress().trim().isEmpty()) {
+                    info.setCompanyAddress(safeDecrypt(info.getCompanyAddress()));
+                }
+                if (info.getCompanyAddressDetail() != null && !info.getCompanyAddressDetail().trim().isEmpty()) {
+                    info.setCompanyAddressDetail(safeDecrypt(info.getCompanyAddressDetail()));
+                }
+                if (info.getTel() != null && !info.getTel().trim().isEmpty()) {
+                    info.setTel(safeDecrypt(info.getTel()));
+                }
+                if (info.getPhone() != null && !info.getPhone().trim().isEmpty()) {
+                    info.setPhone(safeDecrypt(info.getPhone()));
+                }
+
+                // 영문 업체의 경우 국문명(companyNameKo)이 비어있으면 영문명으로 자동 대체하여 PDF 및 UI의 Null 문제 해결
+                if (info.getCompanyNameKo() == null || info.getCompanyNameKo().trim().isEmpty()) {
+                    if (info.getCompanyNameEn() != null && !info.getCompanyNameEn().trim().isEmpty()) {
+                        info.setCompanyNameKo(info.getCompanyNameEn());
+                    }
+                }
+
+            } catch (Exception e) {
+                log.error("[Invoice Detail Decrypt Error] seq: {}, msg: {}", seq, e.getMessage());
+            }
+        }
+        return info;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -6262,7 +6299,6 @@ public class KibsMngServiceImpl implements KibsMngService {
     /*******************************************
      * Mail Send Service Impl
      * *****************************************/
-
     public ResponseDTO processMailSend(MailRequestDTO mailRequestDTO) {
         //System.out.println("KibsMngServiceImpl > processMailSend");
         ResponseDTO responseDto = new ResponseDTO();
@@ -6489,156 +6525,161 @@ public class KibsMngServiceImpl implements KibsMngService {
                     + ", \"username\":\"" + username + "\" "
                     + ", \"receiver\":" + receiver;
 
-                    if(mailRequestDTO.getTemplate() != null && !mailRequestDTO.getTemplate().isEmpty()){
-                        urlParameters += ", \"template\":\"" + mailRequestDTO.getTemplate() + "\" ";		//템플릿 사용할 경우 주석 해제  //발송 할 템플릿 번호
-                    }
-                    //+ ", \"address_books\":\"" + address_books + "\" "	//주소록 사용할 경우 주석 해제
-                    urlParameters += ", \"duplicate_yn\":\"" + duplicate_yn + "\" ";      //중복 발송을 허용할 경우 주석 해제
+            if(mailRequestDTO.getTemplate() != null && !mailRequestDTO.getTemplate().isEmpty()){
+                urlParameters += ", \"template\":\"" + mailRequestDTO.getTemplate() + "\" ";		//템플릿 사용할 경우 주석 해제  //발송 할 템플릿 번호
+            }
+            //+ ", \"address_books\":\"" + address_books + "\" "	//주소록 사용할 경우 주석 해제
+            urlParameters += ", \"duplicate_yn\":\"" + duplicate_yn + "\" ";      //중복 발송을 허용할 경우 주석 해제
 
-                    // 예약 관련 파라미터 주석 해제
-                    //+ ", \"mail_type\":\"" + mail_type + "\" "
-                    //+ ", \"start_reserve_time\":\"" + start_reserve_time + "\" "
-                    //+ ", \"end_reserve_time\":\"" + end_reserve_time + "\" "
-                    //+ ", \"remained_count\":\"" + remained_count + "\" "
+            // 예약 관련 파라미터 주석 해제
+            //+ ", \"mail_type\":\"" + mail_type + "\" "
+            //+ ", \"start_reserve_time\":\"" + start_reserve_time + "\" "
+            //+ ", \"end_reserve_time\":\"" + end_reserve_time + "\" "
+            //+ ", \"remained_count\":\"" + remained_count + "\" "
 
-                    // 필수 안내문구 관련 파라미터 주석 해제
-                    //+ ", \"agreement_text\":\"" + agreement_text + "\" "
-                    //+ ", \"deny_text\":\"" + deny_text + "\" "
-                    //+ ", \"sender_info_text\":\"" + sender_info_text + "\" "
-                    //+ ", \"logo_path\":\"" + logo_path + "\" "
-                    //+ ", \"logo_state\":\"" + logo_state + "\" "
-                    //+ ", \"logo_sort\":\"" + logo_sort + "\" "
+            // 필수 안내문구 관련 파라미터 주석 해제
+            //+ ", \"agreement_text\":\"" + agreement_text + "\" "
+            //+ ", \"deny_text\":\"" + deny_text + "\" "
+            //+ ", \"sender_info_text\":\"" + sender_info_text + "\" "
+            //+ ", \"logo_path\":\"" + logo_path + "\" "
+            //+ ", \"logo_state\":\"" + logo_state + "\" "
+            //+ ", \"logo_sort\":\"" + logo_sort + "\" "
 
-                    // 메일내용, 풋터(수신옵션) 정렬 사용할 경우 주석 해제
-                    //+ ", \"footer_sort\":\"" + footer_sort + "\" "
+            // 메일내용, 풋터(수신옵션) 정렬 사용할 경우 주석 해제
+            //+ ", \"footer_sort\":\"" + footer_sort + "\" "
 
-                    // --- ▼▼▼ 수정 4: API 추적 기능 파라미터 추가 ▼▼▼ ---
-                    if(isInvoiceMail) { // 인보이스 메일일 때만 추적 옵션 추가
-                        // 메일 발송결과를 받고 싶은 URL     return_url이 있는 경우 주석해제 바랍니다.
-                        if (return_url > 0) {
-                            urlParameters += ", \"return_url_yn\": " + true;        //return_url 사용시 필수 입력
-                            urlParameters += ", \"return_url\":\"" + return_url + "\" ";            //return_url 사용시 필수 입력
-                        }
+            // --- ▼▼▼ 수정 4: API 추적 기능 파라미터 추가 ▼▼▼ ---
+            if(isInvoiceMail) { // 인보이스 메일일 때만 추적 옵션 추가
+                // 메일 발송결과를 받고 싶은 URL     return_url이 있는 경우 주석해제 바랍니다.
+                if (return_url > 0) {
+                    urlParameters += ", \"return_url_yn\": " + true;        //return_url 사용시 필수 입력
+                    urlParameters += ", \"return_url\":\"" + return_url + "\" ";            //return_url 사용시 필수 입력
+                }
 
-                        urlParameters += ", \"open\":\"" + open + "\" ";
-                        urlParameters += ", \"check_period\":\"" + check_period + "\" ";
+                urlParameters += ", \"open\":\"" + open + "\" ";
+                urlParameters += ", \"check_period\":\"" + check_period + "\" ";
 
-                        if (option_return_url > 0) { // Webhook URL ID가 설정된 경우에만 추가
-                            urlParameters += ", \"option_return_url\":\"" + option_return_url + "\" ";
-                        }
-                    }
+                if (option_return_url > 0) { // Webhook URL ID가 설정된 경우에만 추가
+                    urlParameters += ", \"option_return_url\":\"" + option_return_url + "\" ";
+                }
+            }
 
-                    // 첨부 파일이 있는 경우 주석 해제
-                    if(file_url != null && !file_url.isEmpty()) {
-                        urlParameters += ", \"file_url\":\"" + file_url + "\" "
-                                + ", \"file_name\":\"" + URLDecoder.decode(file_name, "UTF-8") + "\" ";
-                    }
+            // 첨부 파일이 있는 경우 주석 해제
+            if(file_url != null && !file_url.isEmpty()) {
+                urlParameters += ", \"file_url\":\"" + file_url + "\" "
+                        + ", \"file_name\":\"" + URLDecoder.decode(file_name, "UTF-8") + "\" ";
+            }
 
             urlParameters +=  ", \"key\":\"" + key + "\" ";
             urlParameters = "{"+ urlParameters  +"}";		//JSON 데이터
             System.out.println("urlParameters : " + urlParameters);
 
-            System.setProperty("jsse.enableSNIExtension", "false");
-            con.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter (con.getOutputStream(), StandardCharsets.UTF_8);
-            wr.write(urlParameters);
-            wr.flush();
-            wr.close();
+            System.setProperty("jsse.enableSNIExtension", "false"); // 다이렉트센드를 위해 잠시 끔
+            try {
+                con.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter (con.getOutputStream(), StandardCharsets.UTF_8);
+                wr.write(urlParameters);
+                wr.flush();
+                wr.close();
 
-            int responseCode = con.getResponseCode();
-            //System.out.println(responseCode); // 200
+                int responseCode = con.getResponseCode();
+                //System.out.println(responseCode); // 200
 
-            /*
-             * responseCode 가 200 이 아니면 내부에서 문제가 발생한 케이스입니다.
-             * directsend 관리자에게 문의해주시기 바랍니다.
-             */
+                /*
+                 * responseCode 가 200 이 아니면 내부에서 문제가 발생한 케이스입니다.
+                 * directsend 관리자에게 문의해주시기 바랍니다.
+                 */
 
-            java.io.BufferedReader in = new java.io.BufferedReader(
-                    new java.io.InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
+                java.io.BufferedReader in = new java.io.BufferedReader(
+                        new java.io.InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
 
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
 
-            in.close();
+                in.close();
 
-            System.out.println("mail send response : " + response.toString()); // {"status":"0"}
-            JSONParser parser = new JSONParser();
-            JSONObject responseObj = (JSONObject) parser.parse(response.toString());
-            String mailResponseCode = "";
-            if(responseObj.get("status") != null){
-                mailResponseCode = String.valueOf(responseObj.get("status"));
+                System.out.println("mail send response : " + response.toString()); // {"status":"0"}
+                JSONParser parser = new JSONParser();
+                JSONObject responseObj = (JSONObject) parser.parse(response.toString());
+                String mailResponseCode = "";
+                if(responseObj.get("status") != null){
+                    mailResponseCode = String.valueOf(responseObj.get("status"));
 
-                if("0".equals(mailResponseCode)){
-                    responseDto.setResultCode(CommConstants.RESULT_CODE_SUCCESS);
-                    responseDto.setResultMessage(CommConstants.RESULT_MSG_SUCCESS);
-                    responseDto.setCustomValue(String.valueOf(historySeq));
+                    if("0".equals(mailResponseCode)){
+                        responseDto.setResultCode(CommConstants.RESULT_CODE_SUCCESS);
+                        responseDto.setResultMessage(CommConstants.RESULT_MSG_SUCCESS);
+                        responseDto.setCustomValue(String.valueOf(historySeq));
 
-                    // --- 발송 ID(mail_id) 저장 ---
-                    if (isInvoiceMail && responseObj.get("mail_id") != null) {
-                        String mailId = String.valueOf(responseObj.get("mail_id"));
+                        // --- 발송 ID(mail_id) 저장 ---
+                        if (isInvoiceMail && responseObj.get("mail_id") != null) {
+                            String mailId = String.valueOf(responseObj.get("mail_id"));
 
-                        // (ds_reserve_id 컬럼에 mail_id를 저장)
-                        kibsMngMapper.updateHistoryWithReserveId(historySeq, mailId);
+                            // (ds_reserve_id 컬럼에 mail_id를 저장)
+                            kibsMngMapper.updateHistoryWithReserveId(historySeq, mailId);
+                        }
+
+                    }else{
+                        responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
+                        if(responseObj.get("msg_detail") != null){
+                            responseDto.setResultMessage("[" + mailResponseCode + "]" + responseObj.get("msg") + " - " + responseObj.get("msg_detail"));
+                        }else{
+                            responseDto.setResultMessage("[" + mailResponseCode + "]" + responseObj.get("msg"));
+                        }
                     }
-
                 }else{
                     responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
-                    if(responseObj.get("msg_detail") != null){
-                        responseDto.setResultMessage("[" + mailResponseCode + "]" + responseObj.get("msg") + " - " + responseObj.get("msg_detail"));
-                    }else{
-                        responseDto.setResultMessage("[" + mailResponseCode + "]" + responseObj.get("msg"));
-                    }
+                    responseDto.setResultMessage(CommConstants.RESULT_MSG_FAIL);
                 }
-            }else{
-                responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
-                responseDto.setResultMessage(CommConstants.RESULT_MSG_FAIL);
+
+                /*
+                 * response의 실패
+                 * {"status":101, "msg":"UTF-8 인코딩이 아닙니다."}
+                 * 실패 코드번호, 내용
+                 */
+
+                /*
+                 * response 성공
+                 * {"status":0}
+                 * 성공 코드번호 (성공코드는 다이렉트센드 DB서버에 정상수신됨을 뜻하며 발송성공(실패)의 결과는 발송완료 이후 확인 가능합니다.)
+                 *
+                 * 잘못된 이메일 주소가 포함된 경우
+                 * {"status":0, "msg":"유효하지 않는 이메일을 제외하고 발송 완료 하였습니다.", "msg_detail":"error email : test2@test2, test3@test"}
+                 * 성공 코드번호 (성공코드는 다이렉트센드 DB서버에 정상수신됨을 뜻하며 발송성공(실패)의 결과는 발송완료 이후 확인 가능합니다.), 내용, 잘못된 데이터
+                 *
+                 */
+
+                /*
+                    status code
+                    0   : 정상발송 (성공코드는 다이렉트센드 DB서버에 정상수신됨을 뜻하며 발송성공(실패)의 결과는 발송완료 이후 확인 가능합니다.)
+                    100 : POST validation 실패
+                    101 : 회원정보가 일치하지 않음
+                    102 : Subject, Body 정보가 없습니다.
+                    103 : Sender 이메일이 유효하지 않습니다.
+                    104 : receiver 이메일이 유효하지 않습니다.
+                    105 : 본문에 포함되면 안되는 확장자가 있습니다.
+                    106 : body validation 실패
+                    107 : 받는사람이 없습니다.
+                    108 : 예약정보가 유효하지 않습니다.
+                    109 : return_url이 없습니다.
+                    110 : 첨부파일이 없습니다.
+                    111 : 첨부파일의 개수가 5개를 초과합니다.
+                    112 : 파일의 총Size가 10 MB를 넘어갑니다.
+                    113 : 첨부파일이 다운로드 되지 않았습니다.
+                    114 : utf-8 인코딩 에러 발생
+                    115 : 템플릿 validation 실패
+                    200 : 동일 예약시간으로는 200회 이상 API 호출을 할 수 없습니다.
+                    201 : 분당 300회 이상 API 호출을 할 수 없습니다.
+                    202 : 발송자명이 최대길이를 초과 하였습니다.
+                    205 : 잔액부족
+                    999 : Internal Error.
+                 */
+            } finally {
+                // ★ 통신이 끝난 후 무조건 SNI 기능을 다시 켜서 다른 API(OpenAI 등)에 영향이 없도록 복구 ★
+                System.setProperty("jsse.enableSNIExtension", "true");
             }
-
-            /*
-             * response의 실패
-             * {"status":101, "msg":"UTF-8 인코딩이 아닙니다."}
-             * 실패 코드번호, 내용
-             */
-
-            /*
-             * response 성공
-             * {"status":0}
-             * 성공 코드번호 (성공코드는 다이렉트센드 DB서버에 정상수신됨을 뜻하며 발송성공(실패)의 결과는 발송완료 이후 확인 가능합니다.)
-             *
-             * 잘못된 이메일 주소가 포함된 경우
-             * {"status":0, "msg":"유효하지 않는 이메일을 제외하고 발송 완료 하였습니다.", "msg_detail":"error email : test2@test2, test3@test"}
-             * 성공 코드번호 (성공코드는 다이렉트센드 DB서버에 정상수신됨을 뜻하며 발송성공(실패)의 결과는 발송완료 이후 확인 가능합니다.), 내용, 잘못된 데이터
-             *
-             */
-
-            /*
-                status code
-                0   : 정상발송 (성공코드는 다이렉트센드 DB서버에 정상수신됨을 뜻하며 발송성공(실패)의 결과는 발송완료 이후 확인 가능합니다.)
-                100 : POST validation 실패
-                101 : 회원정보가 일치하지 않음
-                102 : Subject, Body 정보가 없습니다.
-                103 : Sender 이메일이 유효하지 않습니다.
-                104 : receiver 이메일이 유효하지 않습니다.
-                105 : 본문에 포함되면 안되는 확장자가 있습니다.
-                106 : body validation 실패
-                107 : 받는사람이 없습니다.
-                108 : 예약정보가 유효하지 않습니다.
-                109 : return_url이 없습니다.
-                110 : 첨부파일이 없습니다.
-                111 : 첨부파일의 개수가 5개를 초과합니다.
-                112 : 파일의 총Size가 10 MB를 넘어갑니다.
-                113 : 첨부파일이 다운로드 되지 않았습니다.
-                114 : utf-8 인코딩 에러 발생
-                115 : 템플릿 validation 실패
-                200 : 동일 예약시간으로는 200회 이상 API 호출을 할 수 없습니다.
-                201 : 분당 300회 이상 API 호출을 할 수 없습니다.
-                202 : 발송자명이 최대길이를 초과 하였습니다.
-                205 : 잔액부족
-                999 : Internal Error.
-             */
 
         }catch (IOException | ParseException me){
             me.printStackTrace();
@@ -6755,41 +6796,46 @@ public class KibsMngServiceImpl implements KibsMngService {
             urlParameters = "{" + urlParameters + "}";
 
             // 3. API 호출 통신 처리[cite: 1, 2]
-            System.setProperty("jsse.enableSNIExtension", "false");
-            con.setDoOutput(true);
-            java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(con.getOutputStream(), java.nio.charset.StandardCharsets.UTF_8);
-            wr.write(urlParameters);
-            wr.flush();
-            wr.close();
+            System.setProperty("jsse.enableSNIExtension", "false"); // 다이렉트센드를 위해 잠시 끔
+            try {
+                con.setDoOutput(true);
+                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(con.getOutputStream(), java.nio.charset.StandardCharsets.UTF_8);
+                wr.write(urlParameters);
+                wr.flush();
+                wr.close();
 
-            // 4. API 응답 결과 처리[cite: 1, 2]
-            java.io.BufferedReader in = new java.io.BufferedReader(
-                    new java.io.InputStreamReader(con.getInputStream(), java.nio.charset.StandardCharsets.UTF_8));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
+                // 4. API 응답 결과 처리[cite: 1, 2]
+                java.io.BufferedReader in = new java.io.BufferedReader(
+                        new java.io.InputStreamReader(con.getInputStream(), java.nio.charset.StandardCharsets.UTF_8));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
 
-            org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
-            org.json.simple.JSONObject responseObj = (org.json.simple.JSONObject) parser.parse(response.toString());
+                org.json.simple.parser.JSONParser parser = new org.json.simple.parser.JSONParser();
+                org.json.simple.JSONObject responseObj = (org.json.simple.JSONObject) parser.parse(response.toString());
 
-            if (responseObj.get("status") != null) {
-                String mailResponseCode = String.valueOf(responseObj.get("status"));
-                // status "0"은 다이렉트센드 DB 서버에 정상 수신됨을 의미[cite: 2]
-                if ("0".equals(mailResponseCode)) {
-                    responseDto.setResultCode(CommConstants.RESULT_CODE_SUCCESS);
-                    responseDto.setResultMessage(CommConstants.RESULT_MSG_SUCCESS);
+                if (responseObj.get("status") != null) {
+                    String mailResponseCode = String.valueOf(responseObj.get("status"));
+                    // status "0"은 다이렉트센드 DB 서버에 정상 수신됨을 의미[cite: 2]
+                    if ("0".equals(mailResponseCode)) {
+                        responseDto.setResultCode(CommConstants.RESULT_CODE_SUCCESS);
+                        responseDto.setResultMessage(CommConstants.RESULT_MSG_SUCCESS);
+                    } else {
+                        responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
+                        String msg = responseObj.get("msg") != null ? String.valueOf(responseObj.get("msg")) : "";
+                        String msgDetail = responseObj.get("msg_detail") != null ? String.valueOf(responseObj.get("msg_detail")) : "";
+                        responseDto.setResultMessage("[" + mailResponseCode + "] " + msg + " " + msgDetail);
+                    }
                 } else {
                     responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
-                    String msg = responseObj.get("msg") != null ? String.valueOf(responseObj.get("msg")) : "";
-                    String msgDetail = responseObj.get("msg_detail") != null ? String.valueOf(responseObj.get("msg_detail")) : "";
-                    responseDto.setResultMessage("[" + mailResponseCode + "] " + msg + " " + msgDetail);
+                    responseDto.setResultMessage(CommConstants.RESULT_MSG_FAIL);
                 }
-            } else {
-                responseDto.setResultCode(CommConstants.RESULT_CODE_FAIL);
-                responseDto.setResultMessage(CommConstants.RESULT_MSG_FAIL);
+            } finally {
+                // ★ 통신 후 무조건 원상복구 ★
+                System.setProperty("jsse.enableSNIExtension", "true");
             }
 
         } catch (Exception e) {
@@ -6828,7 +6874,6 @@ public class KibsMngServiceImpl implements KibsMngService {
 
         try {
             String cipher = original.replace(" ", "+");
-            // [수정 핵심] safeDecrypt가 아닌 aes256Util.decrypt()를 호출해야 합니다!
             String dec = aes256Util.decrypt(cipher);
 
             if (dec != null && !dec.equals(cipher)) {
@@ -6852,6 +6897,58 @@ public class KibsMngServiceImpl implements KibsMngService {
             // 복호화 에러 발생 시 원본 텍스트 유지
         }
         return decrypted;
+    }
+
+    // ==========================================
+    // DTO DB 저장/수정 전 일괄 암호화 헬퍼 메서드 (관리자용)
+    // ==========================================
+    private void encryptExhibitorNewDTO(ExhibitorNewDTO dto) {
+        try {
+            if (dto.getTel() != null && !dto.getTel().trim().isEmpty()) dto.setTel(aes256Util.encrypt(dto.getTel().trim()));
+            if (dto.getPhone() != null && !dto.getPhone().trim().isEmpty()) dto.setPhone(aes256Util.encrypt(dto.getPhone().trim()));
+            if (dto.getEmail() != null && !dto.getEmail().trim().isEmpty()) dto.setEmail(aes256Util.encrypt(dto.getEmail().trim()));
+            if (dto.getCompanyTel() != null && !dto.getCompanyTel().trim().isEmpty()) dto.setCompanyTel(aes256Util.encrypt(dto.getCompanyTel().trim()));
+            if (dto.getCompanyFax() != null && !dto.getCompanyFax().trim().isEmpty()) dto.setCompanyFax(aes256Util.encrypt(dto.getCompanyFax().trim()));
+            if (dto.getCompanyAddress() != null && !dto.getCompanyAddress().trim().isEmpty()) dto.setCompanyAddress(aes256Util.encrypt(dto.getCompanyAddress().trim()));
+            if (dto.getCompanyAddressDetail() != null && !dto.getCompanyAddressDetail().trim().isEmpty()) dto.setCompanyAddressDetail(aes256Util.encrypt(dto.getCompanyAddressDetail().trim()));
+
+            if (dto.getChargePersonList() != null) {
+                for (ChargeNewDTO charge : dto.getChargePersonList()) {
+                    if (charge.getChargePersonTel() != null && !charge.getChargePersonTel().trim().isEmpty()) charge.setChargePersonTel(aes256Util.encrypt(charge.getChargePersonTel().trim()));
+                    if (charge.getChargePersonPhone() != null && !charge.getChargePersonPhone().trim().isEmpty()) charge.setChargePersonPhone(aes256Util.encrypt(charge.getChargePersonPhone().trim()));
+                    if (charge.getChargePersonEmail() != null && !charge.getChargePersonEmail().trim().isEmpty()) charge.setChargePersonEmail(aes256Util.encrypt(charge.getChargePersonEmail().trim()));
+                }
+            }
+
+            if (dto.getBuyerList() != null) {
+                for (BuyerNewDTO buyer : dto.getBuyerList()) {
+                    if (buyer.getBuyerCompanyTel() != null && !buyer.getBuyerCompanyTel().trim().isEmpty()) buyer.setBuyerCompanyTel(aes256Util.encrypt(buyer.getBuyerCompanyTel().trim()));
+                    if (buyer.getBuyerCompanyPhone() != null && !buyer.getBuyerCompanyPhone().trim().isEmpty()) buyer.setBuyerCompanyPhone(aes256Util.encrypt(buyer.getBuyerCompanyPhone().trim()));
+                    if (buyer.getBuyerCompanyEmail() != null && !buyer.getBuyerCompanyEmail().trim().isEmpty()) buyer.setBuyerCompanyEmail(aes256Util.encrypt(buyer.getBuyerCompanyEmail().trim()));
+                }
+            }
+
+        } catch (Exception e) {
+            log.error("ExhibitorNew Encrypt Error (Admin)", e);
+        }
+    }
+
+    private void encryptExhibitorDTO(ExhibitorDTO dto) {
+        try {
+            if (dto.getCompanyAddress() != null && !dto.getCompanyAddress().trim().isEmpty()) dto.setCompanyAddress(aes256Util.encrypt(dto.getCompanyAddress().trim()));
+            if (dto.getCompanyAddressDetail() != null && !dto.getCompanyAddressDetail().trim().isEmpty()) dto.setCompanyAddressDetail(aes256Util.encrypt(dto.getCompanyAddressDetail().trim()));
+            if (dto.getCompanyFax() != null && !dto.getCompanyFax().trim().isEmpty()) dto.setCompanyFax(aes256Util.encrypt(dto.getCompanyFax().trim()));
+
+            if (dto.getChargePersonList() != null) {
+                for (ChargePersonDTO charge : dto.getChargePersonList()) {
+                    if (charge.getChargePersonTel() != null && !charge.getChargePersonTel().trim().isEmpty()) charge.setChargePersonTel(aes256Util.encrypt(charge.getChargePersonTel().trim()));
+                    if (charge.getChargePersonPhone() != null && !charge.getChargePersonPhone().trim().isEmpty()) charge.setChargePersonPhone(aes256Util.encrypt(charge.getChargePersonPhone().trim()));
+                    if (charge.getChargePersonEmail() != null && !charge.getChargePersonEmail().trim().isEmpty()) charge.setChargePersonEmail(aes256Util.encrypt(charge.getChargePersonEmail().trim()));
+                }
+            }
+        } catch (Exception e) {
+            log.error("Exhibitor Encrypt Error (Admin)", e);
+        }
     }
 
 }

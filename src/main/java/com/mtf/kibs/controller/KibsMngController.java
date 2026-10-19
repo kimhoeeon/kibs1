@@ -4140,6 +4140,13 @@ public class KibsMngController {
                             response.put("resultMessage", "사업자등록증은 PDF, JPG, PNG 형식만 업로드 가능합니다.");
                             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
                         }
+                    } else if (gbn != null && gbn.toLowerCase().contains("invoice")) {
+                        // 인보이스 자동 생성 파일: PDF 전용 허용
+                        if (!ext.equals("pdf")) {
+                            response.put("resultCode", "-1");
+                            response.put("resultMessage", "인보이스 파일은 PDF 형식만 업로드 가능합니다.");
+                            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                        }
                     } else {
                         // 로고, 제품, 배너 등 나머지 모든 파일: JPG, PNG 허용 (PDF 포함 차단)
                         if (!ext.equals("jpg") && !ext.equals("jpeg") && !ext.equals("png")) {

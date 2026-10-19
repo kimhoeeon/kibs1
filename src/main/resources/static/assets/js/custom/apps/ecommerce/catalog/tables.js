@@ -2417,7 +2417,11 @@ let KTAppExhibitorNewNewApplicationSign = function () {
         }
         renderHTML += '</div>';
         renderHTML += '<span class="fw-bold">';
-        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        if(nvl(companyNameKo,'') !== ''){
+            renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        }else{
+            renderHTML += companyNameEn;
+        }
         renderHTML += '</span>';
         renderHTML += '</div>';
         return renderHTML;
@@ -2818,7 +2822,11 @@ let KTAppExhibitorNewNewApplicationUtility = function () {
         renderHTML += '<span class="fw-bold">';
         renderHTML += '<a href="/mng/exhibitorNewNew/application/utility/detail.do?seq=' + row.seq + '"';
         renderHTML += 'class="text-gray-800 text-hover-primary fs-5 fw-bold">';
-        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        if(nvl(companyNameKo,'') !== ''){
+            renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        }else{
+            renderHTML += companyNameEn;
+        }
         renderHTML += '</a>';
         renderHTML += '</span>';
         renderHTML += '</div>';
@@ -3380,7 +3388,11 @@ let KTAppExhibitorNewNewApplicationPass = function () {
         }
         renderHTML += '</div>';
         renderHTML += '<span class="fw-bold">';
-        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        if(nvl(companyNameKo,'') !== ''){
+            renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        }else{
+            renderHTML += companyNameEn;
+        }
         renderHTML += '</span>';
         renderHTML += '</div>';
         return renderHTML;
@@ -3850,7 +3862,11 @@ let KTAppExhibitorNewNewApplicationBuyer = function () {
         }
         renderHTML += '</div>';
         renderHTML += '<span class="fw-bold">';
-        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        if(nvl(companyNameKo,'') !== ''){
+            renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        }else{
+            renderHTML += companyNameEn;
+        }
         renderHTML += '</span>';
         renderHTML += '</div>';
         return renderHTML;
@@ -4425,7 +4441,11 @@ let KTAppExhibitorNewNewApplicationGift = function () {
         }
         renderHTML += '</div>';
         renderHTML += '<span class="fw-bold">';
-        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        if(nvl(companyNameKo,'') !== ''){
+            renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        }else{
+            renderHTML += companyNameEn;
+        }
         renderHTML += '</span>';
         renderHTML += '</div>';
         return renderHTML;
@@ -4963,7 +4983,11 @@ let KTAppExhibitorNewNewApplicationOnline = function () {
         }
         renderHTML += '</div>';
         renderHTML += '<span class="fw-bold">';
-        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        if(nvl(companyNameKo,'') !== ''){
+            renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        }else{
+            renderHTML += companyNameEn;
+        }
         renderHTML += '</span>';
         renderHTML += '</div>';
         return renderHTML;
@@ -5503,7 +5527,11 @@ let KTAppExhibitorNewNewApplicationProduct = function () {
         }
         renderHTML += '</div>';
         renderHTML += '<span class="fw-bold">';
-        renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        if(nvl(companyNameKo,'') !== ''){
+            renderHTML += f_exhibitor_name_gbn(companyNameKo) + '<br>' + companyNameEn;
+        }else{
+            renderHTML += companyNameEn;
+        }
         renderHTML += '</span>';
         renderHTML += '</div>';
         return renderHTML;

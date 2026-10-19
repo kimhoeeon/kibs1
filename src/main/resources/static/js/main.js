@@ -7690,12 +7690,12 @@ function f_company_uploadFile_pdf(formId, elementId, path) {
                     // f_company_file_upload_pdf 함수에서 DB저장을 하고 있었으므로 여기선 경로만 리턴
                     resolve(res.uploadPath + '\\' + res.fileName);
                 } else {
-                    resolve(); // [수정] 실패/없음 경우에도 resolve 호출 (필수!)
+                    resolve(); // 실패/없음 경우에도 resolve 호출 (필수!)
                 }
             })
             .catch(err => {
                 console.error("PDF Upload Error:", err);
-                resolve(); // [수정] 에러 발생 시에도 resolve 호출하여 전체 로직 진행
+                resolve(); // 에러 발생 시에도 resolve 호출하여 전체 로직 진행
             });
 
     });

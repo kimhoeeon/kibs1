@@ -1,5 +1,5 @@
 var pageNum = 1; // 페이지 번호 생성 시점에 따른 변수 초기화
-var transferYear = '2026';
+var transferYear = '2027';
 $(function(){
     //페이지 오픈 시 default ()
     onlineExhibitorList(pageNum);

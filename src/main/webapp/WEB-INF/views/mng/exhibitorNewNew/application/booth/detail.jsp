@@ -834,7 +834,7 @@ if (document.documentElement) {
                 </div>
                 <div class="modal-footer flex-center">
                     <button type="button" class="btn btn-light me-3" data-bs-dismiss="modal">취소</button>
-                    <button type="button" id="createInvoiceConfirmBtn" data-company-name="${info.companyNameKo}" class="btn btn-primary">생성</button>
+                    <button type="button" id="createInvoiceConfirmBtn" data-company-name-ko="${info.companyNameKo}" data-company-name-en="${info.companyNameEn}" class="btn btn-primary">생성</button>
                 </div>
             </div>
         </div>
