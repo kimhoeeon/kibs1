@@ -3024,10 +3024,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         List<MngProductDTO> list = kibsMngMapper.selectMngProductNewList(searchDTO);
         if (list != null && !list.isEmpty()) {
             for (MngProductDTO info : list) {
-                try {
-                    if (info.getTel() != null) info.setTel(aes256Util.safeDecrypt(info.getTel()));
-                    if (info.getPhone() != null) info.setPhone(aes256Util.safeDecrypt(info.getPhone()));
-                } catch (Exception e) {}
+                info.setPhone(mergeAndFilterContact(info.getTel(), info.getPhone()));
             }
         }
         return list;
@@ -4498,10 +4495,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         List<ExhibitorNewDTO> list = kibsMngMapper.selectExhibitorNewSignList(searchDTO);
         if (list != null && !list.isEmpty()) {
             for (ExhibitorNewDTO info : list) {
-                try {
-                    if (info.getTel() != null) info.setTel(aes256Util.safeDecrypt(info.getTel()));
-                    if (info.getPhone() != null) info.setPhone(aes256Util.safeDecrypt(info.getPhone()));
-                } catch (Exception e) {}
+                info.setPhone(mergeAndFilterContact(info.getTel(), info.getPhone()));
             }
         }
         return list;
@@ -4595,10 +4589,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         List<ExhibitorNewDTO> list = kibsMngMapper.selectExhibitorNewUtilityList(searchDTO);
         if (list != null && !list.isEmpty()) {
             for (ExhibitorNewDTO info : list) {
-                try {
-                    if (info.getTel() != null) info.setTel(aes256Util.safeDecrypt(info.getTel()));
-                    if (info.getPhone() != null) info.setPhone(aes256Util.safeDecrypt(info.getPhone()));
-                } catch (Exception e) {}
+                info.setPhone(mergeAndFilterContact(info.getTel(), info.getPhone()));
             }
         }
         return list;
@@ -4706,10 +4697,7 @@ public class KibsMngServiceImpl implements KibsMngService {
         List<MngPassDTO> list = kibsMngMapper.selectExhibitorNewPassList(searchDTO);
         if (list != null && !list.isEmpty()) {
             for (MngPassDTO info : list) {
-                try {
-                    if (info.getTel() != null) info.setTel(aes256Util.safeDecrypt(info.getTel()));
-                    if (info.getPhone() != null) info.setPhone(aes256Util.safeDecrypt(info.getPhone()));
-                } catch (Exception e) {}
+                info.setPhone(mergeAndFilterContact(info.getTel(), info.getPhone()));
             }
         }
         return list;
@@ -5391,9 +5379,9 @@ public class KibsMngServiceImpl implements KibsMngService {
                     if (info.getEmail() != null) info.setEmail(aes256Util.safeDecrypt(info.getEmail()));
 
                     // GROUP_CONCAT 필드 복호화 (부담당자 1,2,3)
-                    info.setChargePersonTel(decryptGroupConcat(info.getChargePersonTel()));
-                    info.setChargePersonPhone(decryptGroupConcat(info.getChargePersonPhone()));
-                    info.setChargePersonEmail(decryptGroupConcat(info.getChargePersonEmail()));
+                    info.setChargePersonTel(aes256Util.decryptMulti(info.getChargePersonTel()));
+                    info.setChargePersonPhone(aes256Util.decryptMulti(info.getChargePersonPhone()));
+                    info.setChargePersonEmail(aes256Util.decryptMulti(info.getChargePersonEmail()));
                 } catch (Exception e) {}
             }
         }
@@ -6850,73 +6838,36 @@ public class KibsMngServiceImpl implements KibsMngService {
         return responseDto;
     }
 
-    // GROUP_CONCAT으로 묶인 암호문(예: 암호문1^암호문2^암호문3)을 각각 복호화하여 다시 묶어주는 헬퍼 메서드
-    private String decryptGroupConcat(String groupStr) {
-        if (groupStr == null || groupStr.trim().isEmpty()) return groupStr;
-        String[] splits = groupStr.split("\\^", -1);
-        for (int i = 0; i < splits.length; i++) {
-            try {
-                if (splits[i] != null && !splits[i].trim().isEmpty()) {
-                    String decrypted = aes256Util.safeDecrypt(splits[i]);
-                    if (decrypted != null && !decrypted.isEmpty()) splits[i] = decrypted;
-                }
-            } catch (Exception e) {
-                // 평문이거나 에러 발생 시 원본 유지
-            }
-        }
-        return String.join("^", splits);
-    }
-
     // ==========================================
-    // DTO DB 저장/수정 전 일괄 암호화 헬퍼 메서드 (관리자용)
+    // tel, phone 병합 및 가짜 암호문 필터링 헬퍼 메서드
     // ==========================================
-    private void encryptExhibitorNewDTO(ExhibitorNewDTO dto) {
+    private String mergeAndFilterContact(String tel, String phone) {
+        String decryptedTel = "";
+        String decryptedPhone = "";
+
         try {
-            if (dto.getTel() != null && !dto.getTel().trim().isEmpty()) dto.setTel(aes256Util.encrypt(dto.getTel().trim()));
-            if (dto.getPhone() != null && !dto.getPhone().trim().isEmpty()) dto.setPhone(aes256Util.encrypt(dto.getPhone().trim()));
-            if (dto.getEmail() != null && !dto.getEmail().trim().isEmpty()) dto.setEmail(aes256Util.encrypt(dto.getEmail().trim()));
-            if (dto.getCompanyTel() != null && !dto.getCompanyTel().trim().isEmpty()) dto.setCompanyTel(aes256Util.encrypt(dto.getCompanyTel().trim()));
-            if (dto.getCompanyFax() != null && !dto.getCompanyFax().trim().isEmpty()) dto.setCompanyFax(aes256Util.encrypt(dto.getCompanyFax().trim()));
-            if (dto.getCompanyAddress() != null && !dto.getCompanyAddress().trim().isEmpty()) dto.setCompanyAddress(aes256Util.encrypt(dto.getCompanyAddress().trim()));
-            if (dto.getCompanyAddressDetail() != null && !dto.getCompanyAddressDetail().trim().isEmpty()) dto.setCompanyAddressDetail(aes256Util.encrypt(dto.getCompanyAddressDetail().trim()));
-
-            if (dto.getChargePersonList() != null) {
-                for (ChargeNewDTO charge : dto.getChargePersonList()) {
-                    if (charge.getChargePersonTel() != null && !charge.getChargePersonTel().trim().isEmpty()) charge.setChargePersonTel(aes256Util.encrypt(charge.getChargePersonTel().trim()));
-                    if (charge.getChargePersonPhone() != null && !charge.getChargePersonPhone().trim().isEmpty()) charge.setChargePersonPhone(aes256Util.encrypt(charge.getChargePersonPhone().trim()));
-                    if (charge.getChargePersonEmail() != null && !charge.getChargePersonEmail().trim().isEmpty()) charge.setChargePersonEmail(aes256Util.encrypt(charge.getChargePersonEmail().trim()));
+            if (tel != null && !tel.trim().isEmpty()) {
+                decryptedTel = aes256Util.safeDecrypt(tel);
+                // 20자 이상의 Base64 찌꺼기 텍스트 필터링 (정상 번호 보존)
+                if (decryptedTel.matches("^[a-zA-Z0-9+/]+={0,2}$") && decryptedTel.length() >= 20 && decryptedTel.matches(".*[a-zA-Z].*")) {
+                    decryptedTel = "";
                 }
             }
-
-            if (dto.getBuyerList() != null) {
-                for (BuyerNewDTO buyer : dto.getBuyerList()) {
-                    if (buyer.getBuyerCompanyTel() != null && !buyer.getBuyerCompanyTel().trim().isEmpty()) buyer.setBuyerCompanyTel(aes256Util.encrypt(buyer.getBuyerCompanyTel().trim()));
-                    if (buyer.getBuyerCompanyPhone() != null && !buyer.getBuyerCompanyPhone().trim().isEmpty()) buyer.setBuyerCompanyPhone(aes256Util.encrypt(buyer.getBuyerCompanyPhone().trim()));
-                    if (buyer.getBuyerCompanyEmail() != null && !buyer.getBuyerCompanyEmail().trim().isEmpty()) buyer.setBuyerCompanyEmail(aes256Util.encrypt(buyer.getBuyerCompanyEmail().trim()));
+            if (phone != null && !phone.trim().isEmpty()) {
+                decryptedPhone = aes256Util.safeDecrypt(phone);
+                if (decryptedPhone.matches("^[a-zA-Z0-9+/]+={0,2}$") && decryptedPhone.length() >= 20 && decryptedPhone.matches(".*[a-zA-Z].*")) {
+                    decryptedPhone = "";
                 }
             }
+        } catch (Exception e) {}
 
-        } catch (Exception e) {
-            log.error("ExhibitorNew Encrypt Error (Admin)", e);
+        String contact = "";
+        if (!decryptedTel.isEmpty()) contact += decryptedTel;
+        if (!decryptedPhone.isEmpty() && !decryptedPhone.equals(decryptedTel)) {
+            if (!contact.isEmpty()) contact += " / ";
+            contact += decryptedPhone;
         }
-    }
-
-    private void encryptExhibitorDTO(ExhibitorDTO dto) {
-        try {
-            if (dto.getCompanyAddress() != null && !dto.getCompanyAddress().trim().isEmpty()) dto.setCompanyAddress(aes256Util.encrypt(dto.getCompanyAddress().trim()));
-            if (dto.getCompanyAddressDetail() != null && !dto.getCompanyAddressDetail().trim().isEmpty()) dto.setCompanyAddressDetail(aes256Util.encrypt(dto.getCompanyAddressDetail().trim()));
-            if (dto.getCompanyFax() != null && !dto.getCompanyFax().trim().isEmpty()) dto.setCompanyFax(aes256Util.encrypt(dto.getCompanyFax().trim()));
-
-            if (dto.getChargePersonList() != null) {
-                for (ChargePersonDTO charge : dto.getChargePersonList()) {
-                    if (charge.getChargePersonTel() != null && !charge.getChargePersonTel().trim().isEmpty()) charge.setChargePersonTel(aes256Util.encrypt(charge.getChargePersonTel().trim()));
-                    if (charge.getChargePersonPhone() != null && !charge.getChargePersonPhone().trim().isEmpty()) charge.setChargePersonPhone(aes256Util.encrypt(charge.getChargePersonPhone().trim()));
-                    if (charge.getChargePersonEmail() != null && !charge.getChargePersonEmail().trim().isEmpty()) charge.setChargePersonEmail(aes256Util.encrypt(charge.getChargePersonEmail().trim()));
-                }
-            }
-        } catch (Exception e) {
-            log.error("Exhibitor Encrypt Error (Admin)", e);
-        }
+        return contact.isEmpty() ? "-" : contact;
     }
 
 }
