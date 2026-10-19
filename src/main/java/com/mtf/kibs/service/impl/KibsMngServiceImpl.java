@@ -6839,7 +6839,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     }
 
     // ==========================================
-    // tel, phone 병합 및 가짜 암호문 필터링 헬퍼 메서드
+    // tel, phone 병합 및 가짜 암호문 필터링 (+82 대응 강화)
     // ==========================================
     private String mergeAndFilterContact(String tel, String phone) {
         String decryptedTel = "";
@@ -6847,15 +6847,16 @@ public class KibsMngServiceImpl implements KibsMngService {
 
         try {
             if (tel != null && !tel.trim().isEmpty()) {
-                decryptedTel = aes256Util.safeDecrypt(tel);
-                // 20자 이상의 Base64 찌꺼기 텍스트 필터링 (정상 번호 보존)
-                if (decryptedTel.matches("^[a-zA-Z0-9+/]+={0,2}$") && decryptedTel.length() >= 20 && decryptedTel.matches(".*[a-zA-Z].*")) {
+                decryptedTel = aes256Util.safeDecrypt(tel).trim();
+                String checkStr = decryptedTel.startsWith("+82 ") ? decryptedTel.substring(4).trim() : decryptedTel;
+                if (checkStr.matches("^[a-zA-Z0-9+/]+={0,2}$") && checkStr.length() >= 20 && checkStr.matches(".*[a-zA-Z].*")) {
                     decryptedTel = "";
                 }
             }
             if (phone != null && !phone.trim().isEmpty()) {
-                decryptedPhone = aes256Util.safeDecrypt(phone);
-                if (decryptedPhone.matches("^[a-zA-Z0-9+/]+={0,2}$") && decryptedPhone.length() >= 20 && decryptedPhone.matches(".*[a-zA-Z].*")) {
+                decryptedPhone = aes256Util.safeDecrypt(phone).trim();
+                String checkStr = decryptedPhone.startsWith("+82 ") ? decryptedPhone.substring(4).trim() : decryptedPhone;
+                if (checkStr.matches("^[a-zA-Z0-9+/]+={0,2}$") && checkStr.length() >= 20 && checkStr.matches(".*[a-zA-Z].*")) {
                     decryptedPhone = "";
                 }
             }
@@ -6868,6 +6869,116 @@ public class KibsMngServiceImpl implements KibsMngService {
             contact += decryptedPhone;
         }
         return contact.isEmpty() ? "-" : contact;
+    }
+
+    // ==========================================
+    // 이중 암호화 및 +82 중복 누적 원천 차단 모듈
+    // ==========================================
+    private String cleanAndEncrypt(String input) {
+        if (input == null || input.trim().isEmpty()) return input;
+        String text = input.trim();
+
+        // 1. 프론트엔드에서 누적된 +82 +82 ... 중복 제거
+        while (text.startsWith("+82 +82 ")) {
+            text = text.replace("+82 +82 ", "+82 ");
+        }
+
+        // 2. 복호화를 위해 +82를 잠시 떼어냄
+        boolean hasCountryCode = false;
+        if (text.startsWith("+82 ")) {
+            hasCountryCode = true;
+            text = text.substring(4).trim();
+        }
+
+        // 3. 평문 확보 시도
+        String decrypted = aes256Util.safeDecrypt(text).trim();
+
+        // 4. 복호화했는데도 여전히 쓰레기 암호문이면 날려버림
+        if (decrypted.matches("^[a-zA-Z0-9+/]+={0,2}$") && decrypted.length() >= 20 && decrypted.matches(".*[a-zA-Z].*")) {
+            decrypted = "";
+        }
+
+        if (decrypted.isEmpty()) return "";
+
+        // 5. 정상 평문이면 국가번호 원상복구 후 딱 한 번만 암호화
+        if (hasCountryCode && !decrypted.startsWith("+82")) {
+            decrypted = "+82 " + decrypted;
+        }
+
+        return aes256Util.encrypt(decrypted);
+    }
+
+    // ==========================================
+    // DTO DB 저장/수정 전 일괄 암호화 헬퍼 메서드 (관리자용)
+    // ==========================================
+    private void encryptExhibitorNewDTO(ExhibitorNewDTO dto) {
+        try {
+            // ★ 2027년 및 그 이후 연도 데이터만 암호화 진행 ★
+            if (dto.getTransferYear() == null || dto.getTransferYear().compareTo("2027") < 0) return;
+
+            dto.setTel(cleanAndEncrypt(dto.getTel()));
+            dto.setPhone(cleanAndEncrypt(dto.getPhone()));
+            dto.setEmail(cleanAndEncrypt(dto.getEmail()));
+            dto.setCompanyTel(cleanAndEncrypt(dto.getCompanyTel()));
+            dto.setCompanyFax(cleanAndEncrypt(dto.getCompanyFax()));
+            dto.setCompanyAddress(cleanAndEncrypt(dto.getCompanyAddress()));
+            dto.setCompanyAddressDetail(cleanAndEncrypt(dto.getCompanyAddressDetail()));
+
+            if (dto.getChargePersonList() != null) {
+                for (ChargeNewDTO charge : dto.getChargePersonList()) {
+                    charge.setChargePersonTel(cleanAndEncrypt(charge.getChargePersonTel()));
+                    charge.setChargePersonPhone(cleanAndEncrypt(charge.getChargePersonPhone()));
+                    charge.setChargePersonEmail(cleanAndEncrypt(charge.getChargePersonEmail()));
+                }
+            }
+
+            if (dto.getBuyerList() != null) {
+                for (BuyerNewDTO buyer : dto.getBuyerList()) {
+                    buyer.setBuyerCompanyTel(cleanAndEncrypt(buyer.getBuyerCompanyTel()));
+                    buyer.setBuyerCompanyPhone(cleanAndEncrypt(buyer.getBuyerCompanyPhone()));
+                    buyer.setBuyerCompanyEmail(cleanAndEncrypt(buyer.getBuyerCompanyEmail()));
+                }
+            }
+        } catch (Exception e) {
+            log.error("ExhibitorNew Encrypt Error (Admin)", e);
+        }
+    }
+
+    private void encryptExhibitorDTO(ExhibitorDTO dto) {
+        try {
+            // ★ 2027년 및 그 이후 연도 데이터만 암호화 진행 (구버전 DTO 방어) ★
+            if (dto.getTransferYear() == null || dto.getTransferYear().compareTo("2027") < 0) return;
+
+            dto.setCompanyAddress(cleanAndEncrypt(dto.getCompanyAddress()));
+            dto.setCompanyAddressDetail(cleanAndEncrypt(dto.getCompanyAddressDetail()));
+            dto.setCompanyFax(cleanAndEncrypt(dto.getCompanyFax()));
+
+            if (dto.getChargePersonList() != null) {
+                for (ChargePersonDTO charge : dto.getChargePersonList()) {
+                    charge.setChargePersonTel(cleanAndEncrypt(charge.getChargePersonTel()));
+                    charge.setChargePersonPhone(cleanAndEncrypt(charge.getChargePersonPhone()));
+                    charge.setChargePersonEmail(cleanAndEncrypt(charge.getChargePersonEmail()));
+                }
+            }
+        } catch (Exception e) {
+            log.error("Exhibitor Encrypt Error (Admin)", e);
+        }
+    }
+
+    // (만약 관리자단에 참관객 정보 저장(SaveVisitor) 로직이 있다면 아래도 추가)
+    private void encryptVisitorDTO(VisitorDTO dto) {
+        try {
+            // ★ 2027년 및 그 이후 참관객 데이터만 암호화 진행 ★
+            if (dto.getJoinYear() == null || dto.getJoinYear().compareTo("2027") < 0) return;
+
+            dto.setTel(cleanAndEncrypt(dto.getTel()));
+            dto.setPhone(cleanAndEncrypt(dto.getPhone()));
+            dto.setEmail(cleanAndEncrypt(dto.getEmail()));
+            dto.setCompanyAddress(cleanAndEncrypt(dto.getCompanyAddress()));
+            dto.setCompanyAddressDetail(cleanAndEncrypt(dto.getCompanyAddressDetail()));
+        } catch (Exception e) {
+            log.error("Visitor Encrypt Error (Admin)", e);
+        }
     }
 
 }

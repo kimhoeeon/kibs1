@@ -2369,48 +2369,85 @@ public class KibsServiceImpl implements KibsService {
     }
 
     // ==========================================
-    // DTO DB 저장/수정 전 일괄 암호화 헬퍼 메서드
+    // 이중 암호화 및 +82 중복 누적 원천 차단 모듈 (사용자용)
+    // ==========================================
+    private String cleanAndEncrypt(String input) {
+        if (input == null || input.trim().isEmpty()) return input;
+        String text = input.trim();
+
+        while (text.startsWith("+82 +82 ")) {
+            text = text.replace("+82 +82 ", "+82 ");
+        }
+
+        boolean hasCountryCode = false;
+        if (text.startsWith("+82 ")) {
+            hasCountryCode = true;
+            text = text.substring(4).trim();
+        }
+
+        String decrypted = aes256Util.safeDecrypt(text).trim();
+
+        if (decrypted.matches("^[a-zA-Z0-9+/]+={0,2}$") && decrypted.length() >= 20 && decrypted.matches(".*[a-zA-Z].*")) {
+            decrypted = "";
+        }
+
+        if (decrypted.isEmpty()) return "";
+
+        if (hasCountryCode && !decrypted.startsWith("+82")) {
+            decrypted = "+82 " + decrypted;
+        }
+
+        return aes256Util.encrypt(decrypted);
+    }
+
+    // ==========================================
+    // DTO DB 저장/수정 전 일괄 암호화 헬퍼 메서드 (사용자용)
     // ==========================================
     private void encryptExhibitorNewDTO(ExhibitorNewDTO dto) {
         try {
-            if (dto.getTel() != null && !dto.getTel().trim().isEmpty()) dto.setTel(aes256Util.encrypt(dto.getTel().trim()));
-            if (dto.getPhone() != null && !dto.getPhone().trim().isEmpty()) dto.setPhone(aes256Util.encrypt(dto.getPhone().trim()));
-            if (dto.getEmail() != null && !dto.getEmail().trim().isEmpty()) dto.setEmail(aes256Util.encrypt(dto.getEmail().trim()));
-            if (dto.getCompanyTel() != null && !dto.getCompanyTel().trim().isEmpty()) dto.setCompanyTel(aes256Util.encrypt(dto.getCompanyTel().trim()));
-            if (dto.getCompanyFax() != null && !dto.getCompanyFax().trim().isEmpty()) dto.setCompanyFax(aes256Util.encrypt(dto.getCompanyFax().trim()));
-            if (dto.getCompanyAddress() != null && !dto.getCompanyAddress().trim().isEmpty()) dto.setCompanyAddress(aes256Util.encrypt(dto.getCompanyAddress().trim()));
-            if (dto.getCompanyAddressDetail() != null && !dto.getCompanyAddressDetail().trim().isEmpty()) dto.setCompanyAddressDetail(aes256Util.encrypt(dto.getCompanyAddressDetail().trim()));
+            // ★ 2027년 및 그 이후 참가업체 데이터만 암호화 진행 ★
+            if (dto.getTransferYear() == null || dto.getTransferYear().compareTo("2027") < 0) return;
+
+            dto.setTel(cleanAndEncrypt(dto.getTel()));
+            dto.setPhone(cleanAndEncrypt(dto.getPhone()));
+            dto.setEmail(cleanAndEncrypt(dto.getEmail()));
+            dto.setCompanyTel(cleanAndEncrypt(dto.getCompanyTel()));
+            dto.setCompanyFax(cleanAndEncrypt(dto.getCompanyFax()));
+            dto.setCompanyAddress(cleanAndEncrypt(dto.getCompanyAddress()));
+            dto.setCompanyAddressDetail(cleanAndEncrypt(dto.getCompanyAddressDetail()));
 
             if (dto.getChargePersonList() != null) {
                 for (ChargeNewDTO charge : dto.getChargePersonList()) {
-                    if (charge.getChargePersonTel() != null && !charge.getChargePersonTel().trim().isEmpty()) charge.setChargePersonTel(aes256Util.encrypt(charge.getChargePersonTel().trim()));
-                    if (charge.getChargePersonPhone() != null && !charge.getChargePersonPhone().trim().isEmpty()) charge.setChargePersonPhone(aes256Util.encrypt(charge.getChargePersonPhone().trim()));
-                    if (charge.getChargePersonEmail() != null && !charge.getChargePersonEmail().trim().isEmpty()) charge.setChargePersonEmail(aes256Util.encrypt(charge.getChargePersonEmail().trim()));
+                    charge.setChargePersonTel(cleanAndEncrypt(charge.getChargePersonTel()));
+                    charge.setChargePersonPhone(cleanAndEncrypt(charge.getChargePersonPhone()));
+                    charge.setChargePersonEmail(cleanAndEncrypt(charge.getChargePersonEmail()));
                 }
             }
 
             if (dto.getBuyerList() != null) {
                 for (BuyerNewDTO buyer : dto.getBuyerList()) {
-                    if (buyer.getBuyerCompanyTel() != null && !buyer.getBuyerCompanyTel().trim().isEmpty()) buyer.setBuyerCompanyTel(aes256Util.encrypt(buyer.getBuyerCompanyTel().trim()));
-                    if (buyer.getBuyerCompanyPhone() != null && !buyer.getBuyerCompanyPhone().trim().isEmpty()) buyer.setBuyerCompanyPhone(aes256Util.encrypt(buyer.getBuyerCompanyPhone().trim()));
-                    if (buyer.getBuyerCompanyEmail() != null && !buyer.getBuyerCompanyEmail().trim().isEmpty()) buyer.setBuyerCompanyEmail(aes256Util.encrypt(buyer.getBuyerCompanyEmail().trim()));
+                    buyer.setBuyerCompanyTel(cleanAndEncrypt(buyer.getBuyerCompanyTel()));
+                    buyer.setBuyerCompanyPhone(cleanAndEncrypt(buyer.getBuyerCompanyPhone()));
+                    buyer.setBuyerCompanyEmail(cleanAndEncrypt(buyer.getBuyerCompanyEmail()));
                 }
             }
-
         } catch (Exception e) {
-            log.error("ExhibitorNew Encrypt Error", e);
+            log.error("ExhibitorNew Encrypt Error (User)", e);
         }
     }
 
     private void encryptVisitorDTO(VisitorDTO dto) {
         try {
-            if (dto.getTel() != null && !dto.getTel().trim().isEmpty()) dto.setTel(aes256Util.encrypt(dto.getTel().trim()));
-            if (dto.getPhone() != null && !dto.getPhone().trim().isEmpty()) dto.setPhone(aes256Util.encrypt(dto.getPhone().trim()));
-            if (dto.getEmail() != null && !dto.getEmail().trim().isEmpty()) dto.setEmail(aes256Util.encrypt(dto.getEmail().trim()));
-            if (dto.getCompanyAddress() != null && !dto.getCompanyAddress().trim().isEmpty()) dto.setCompanyAddress(aes256Util.encrypt(dto.getCompanyAddress().trim()));
-            if (dto.getCompanyAddressDetail() != null && !dto.getCompanyAddressDetail().trim().isEmpty()) dto.setCompanyAddressDetail(aes256Util.encrypt(dto.getCompanyAddressDetail().trim()));
+            // ★ 2027년 및 그 이후 참관객 데이터만 암호화 진행 ★
+            if (dto.getJoinYear() == null || dto.getJoinYear().compareTo("2027") < 0) return;
+
+            dto.setTel(cleanAndEncrypt(dto.getTel()));
+            dto.setPhone(cleanAndEncrypt(dto.getPhone()));
+            dto.setEmail(cleanAndEncrypt(dto.getEmail()));
+            dto.setCompanyAddress(cleanAndEncrypt(dto.getCompanyAddress()));
+            dto.setCompanyAddressDetail(cleanAndEncrypt(dto.getCompanyAddressDetail()));
         } catch (Exception e) {
-            log.error("Visitor Encrypt Error", e);
+            log.error("Visitor Encrypt Error (User)", e);
         }
     }
 
