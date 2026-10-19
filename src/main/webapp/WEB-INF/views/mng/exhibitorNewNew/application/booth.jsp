@@ -243,6 +243,7 @@ if (document.documentElement) {
                                                         data-placeholder="- 참가년도 -" onchange="f_search_condition_sel_change()">
                                                     <option></option>
                                                     <option value="" disabled>- 참가년도 -</option>
+                                                    <option value="2027">2027</option>
                                                     <option value="2026">2026</option>
                                                 </select>
                                                 <!--end::Select2-->
@@ -270,10 +271,12 @@ if (document.documentElement) {
                                                         data-placeholder="- 승인여부 -" onchange="f_search_condition_sel_change()">
                                                     <option></option>
                                                     <option value="" disabled>- 승인여부 -</option>
-                                                    <option value="승인">승인</option>
-                                                    <option value="승인요청">승인요청</option>
-                                                    <option value="미승인">미승인</option>
                                                     <option value="작성중">작성중</option>
+                                                    <option value="승인요청">승인요청</option>
+                                                    <option value="참가승인">참가승인</option>
+                                                    <option value="참가취소(참가의사철회)">참가취소(참가의사철회)</option>
+                                                    <option value="참가취소(참가비미납)">참가취소(참가비미납)</option>
+                                                    <option value="참가취소(기타)">참가취소(기타)</option>
                                                 </select>
                                                 <!--end::Select2-->
                                             </div>

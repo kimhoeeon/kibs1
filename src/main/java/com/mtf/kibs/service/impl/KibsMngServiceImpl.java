@@ -3999,7 +3999,7 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public InvoiceBoothDTO createAndInsertInvoiceBooth(String exhibitorSeq) throws Exception {
         // 1. 인보이스를 생성할 참가업체의 최신 정보를 불러옵니다.
-        ExhibitorNewDTO currentExhibitorInfo = kibsMngMapper.selectExhibitorNewInvoiceDetail(exhibitorSeq);
+        ExhibitorNewDTO currentExhibitorInfo = processSelectExhibitorNewInvoiceDetail(exhibitorSeq);
         if (currentExhibitorInfo == null) {
             throw new Exception("참가업체 정보가 존재하지 않습니다.");
         }
@@ -4058,7 +4058,14 @@ public class KibsMngServiceImpl implements KibsMngService {
         InvoiceBoothDTO newInvoice = new InvoiceBoothDTO();
         newInvoice.setExhibitorSeq(exhibitorSeq); // 참가업체 Seq
         newInvoice.setRecipientEmail(currentExhibitorInfo.getEmail()); // 수신 이메일 (업체 대표 이메일)
-        newInvoice.setTitle(currentExhibitorInfo.getCompanyNameKo() + " - 전시부스"); // 인보이스 제목
+
+        // 혹시라도 이름이 없는 경우를 대비한 2차 안전장치 추가
+        String compName = currentExhibitorInfo.getCompanyNameKo();
+        if (compName == null || compName.trim().isEmpty()) {
+            compName = currentExhibitorInfo.getCompanyNameEn() != null ? currentExhibitorInfo.getCompanyNameEn() : "Unknown Company";
+        }
+        newInvoice.setTitle(compName + " - 전시부스"); // 정상적인 인보이스 제목 저장
+
         newInvoice.setInvoiceCode(invoiceCode); // 생성된 인보이스 코드
         // newInvoice.setIssueDate(LocalDate.now()); // issueDate 컬럼 없음
 
@@ -4104,7 +4111,7 @@ public class KibsMngServiceImpl implements KibsMngService {
 
     @Override
     public InvoiceUtilityDTO createAndInsertInvoiceUtility(String exhibitorSeq) throws Exception {
-        ExhibitorNewDTO currentInfo = kibsMngMapper.selectExhibitorNewInvoiceDetail(exhibitorSeq);
+        ExhibitorNewDTO currentInfo = processSelectExhibitorNewInvoiceDetail(exhibitorSeq);
         if (currentInfo == null) {
             throw new Exception("참가업체 정보가 존재하지 않습니다.");
         }
@@ -4117,7 +4124,14 @@ public class KibsMngServiceImpl implements KibsMngService {
         InvoiceUtilityDTO newInvoice = new InvoiceUtilityDTO();
         newInvoice.setExhibitorSeq(exhibitorSeq);
         newInvoice.setRecipientEmail(currentInfo.getEmail());
-        newInvoice.setTitle(currentInfo.getCompanyNameKo() + " - 유틸리티");
+
+        // 혹시라도 이름이 없는 경우를 대비한 2차 안전장치 추가
+        String compName = currentInfo.getCompanyNameKo();
+        if (compName == null || compName.trim().isEmpty()) {
+            compName = currentInfo.getCompanyNameEn() != null ? currentInfo.getCompanyNameEn() : "Unknown Company";
+        }
+        newInvoice.setTitle(compName + " - 유틸리티"); // 정상적인 인보이스 제목 저장
+
         newInvoice.setInvoiceCode(invoiceCode);
 
         // 유틸리티 신청 내역 스냅샷 복사

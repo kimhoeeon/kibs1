@@ -1647,13 +1647,85 @@ public class KibsServiceImpl implements KibsService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorDTO processSelectOnlineExhibitorInfo(String seq) {
-        return kibsMapper.selectOnlineExhibitorInfo(seq);
+        ExhibitorDTO info = kibsMapper.selectOnlineExhibitorInfo(seq);
+
+        if (info != null) {
+            try {
+                if (info.getCompanyTel() != null && !info.getCompanyTel().trim().isEmpty()) {
+                    info.setCompanyTel(aes256Util.safeDecrypt(info.getCompanyTel()));
+                }
+                if (info.getCompanyFax() != null && !info.getCompanyFax().trim().isEmpty()) {
+                    info.setCompanyFax(aes256Util.safeDecrypt(info.getCompanyFax()));
+                }
+                if (info.getTel() != null && !info.getTel().trim().isEmpty()) {
+                    info.setTel(aes256Util.safeDecrypt(info.getTel()));
+                }
+                if (info.getPhone() != null && !info.getPhone().trim().isEmpty()) {
+                    info.setPhone(aes256Util.safeDecrypt(info.getPhone()));
+                }
+                if (info.getEmail() != null && !info.getEmail().trim().isEmpty()) {
+                    info.setEmail(aes256Util.safeDecrypt(info.getEmail()));
+                }
+                if (info.getCompanyAddress() != null && !info.getCompanyAddress().trim().isEmpty()) {
+                    info.setCompanyAddress(aes256Util.safeDecrypt(info.getCompanyAddress()));
+                }
+                if (info.getCompanyAddressDetail() != null && !info.getCompanyAddressDetail().trim().isEmpty()) {
+                    info.setCompanyAddressDetail(aes256Util.safeDecrypt(info.getCompanyAddressDetail()));
+                }
+            } catch (Exception e) {
+                log.error("[OnlineView Decrypt Error (Old)] seq: {}, msg: {}", seq, e.getMessage());
+            }
+        }
+        return info;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorNewDTO processSelectOnlineExhibitorNewInfo(String seq) {
-        return kibsMapper.selectOnlineExhibitorNewInfo(seq);
+        ExhibitorNewDTO info = kibsMapper.selectOnlineExhibitorNewInfo(seq);
+
+        if (info != null) {
+            // 1. 쿼리에서 transfer_year를 안 가져올 경우를 대비해 단건 조회로 연도를 확실히 가져옵니다.
+            String year = info.getTransferYear();
+            if (year == null || year.isEmpty()) {
+                ExhibitorNewDTO reqDTO = new ExhibitorNewDTO();
+                reqDTO.setSeq(seq);
+                ExhibitorNewDTO baseInfo = kibsMapper.selectExhibitorNewSingle(reqDTO);
+                if (baseInfo != null) {
+                    year = baseInfo.getTransferYear();
+                }
+            }
+
+            // 2. 2027년 및 그 이후 연도 데이터만 복호화 진행 (사용자 요청 엄수)
+            if (info.getTransferYear() != null && info.getTransferYear().compareTo("2027") >= 0) {
+                try {
+                    if (info.getCompanyTel() != null && !info.getCompanyTel().trim().isEmpty()) {
+                        info.setCompanyTel(aes256Util.safeDecrypt(info.getCompanyTel()));
+                    }
+                    if (info.getCompanyFax() != null && !info.getCompanyFax().trim().isEmpty()) {
+                        info.setCompanyFax(aes256Util.safeDecrypt(info.getCompanyFax()));
+                    }
+                    if (info.getTel() != null && !info.getTel().trim().isEmpty()) {
+                        info.setTel(aes256Util.safeDecrypt(info.getTel()));
+                    }
+                    if (info.getPhone() != null && !info.getPhone().trim().isEmpty()) {
+                        info.setPhone(aes256Util.safeDecrypt(info.getPhone()));
+                    }
+                    if (info.getEmail() != null && !info.getEmail().trim().isEmpty()) {
+                        info.setEmail(aes256Util.safeDecrypt(info.getEmail()));
+                    }
+                    if (info.getCompanyAddress() != null && !info.getCompanyAddress().trim().isEmpty()) {
+                        info.setCompanyAddress(aes256Util.safeDecrypt(info.getCompanyAddress()));
+                    }
+                    if (info.getCompanyAddressDetail() != null && !info.getCompanyAddressDetail().trim().isEmpty()) {
+                        info.setCompanyAddressDetail(aes256Util.safeDecrypt(info.getCompanyAddressDetail()));
+                    }
+                } catch (Exception e) {
+                    log.error("[OnlineView Decrypt Error] seq: {}, msg: {}", seq, e.getMessage());
+                }
+            }
+        }
+        return info;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
