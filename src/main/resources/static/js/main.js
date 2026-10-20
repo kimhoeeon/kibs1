@@ -4,6 +4,9 @@ let deletedFileIds = [];
 let isSubmitProceeding = false;
 $(function() {
 
+    // SweetAlert 경고창이 모든 모달(팝업)보다 무조건 최상단에 오도록 강제
+    $('<style>.swal2-container { z-index: 100000 !important; }</style>').appendTo('head');
+
     if (!window.location.href.includes('localhost')) {
         if (window.location.protocol !== "https:") {
             window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
@@ -1987,8 +1990,34 @@ async function step_01_check(exhibitorSeq){
 
     // 수출상담회 참가 희망 여부
     let export_meeting_yn = $('input[type=radio][name=exportMeetingYn]:checked').val();
-    if(export_meeting_yn === 'N'){
-        buyer_add_json_arr = [];
+
+    buyer_add_json_arr = [];
+
+    if (export_meeting_yn === 'Y') {
+        // 컨테이너 단위로 데이터를 캡슐화하여 추출
+        $('.form_chuga_list').each(function() {
+            let $row = $(this);
+            let buyer_add_json_obj = {
+                seq: $row.find('input[name=buyerItemSeq]').val() || '',
+                exSeq: exhibitorSeq,
+                buyerCompanyName: $row.find('input[name=buyerCompanyName]').val(),
+                buyerCompanyCountry: $row.find('input[name=buyerCompanyCountry]').val(),
+                buyerCompanyLocation: $row.find('input[name=buyerCompanyLocation]').val(),
+                buyerCompanyHomepage: $row.find('input[name=buyerCompanyHomepage]').val(),
+                buyerCompanyCharge: $row.find('input[name=buyerCompanyCharge]').val(),
+                buyerCompanyDepart: $row.find('input[name=buyerCompanyDepart]').val(),
+                buyerCompanyPosition: $row.find('input[name=buyerCompanyPosition]').val(),
+                buyerCompanyEmail: $row.find('input[name=buyerCompanyEmail]').val(),
+                buyerCompanyTel: $row.find('input[name=buyerCompanyTel]').val(),
+                buyerCompanyPhone: $row.find('input[name=buyerCompanyPhone]').val(),
+                buyerCompanyFax: $row.find('input[name=buyerCompanyFax]').val(),
+                buyerCompanyItem: $row.find('input[name=buyerCompanyItem]').val(),
+                buyerCompanyInviteReason: $row.find('input[name=buyerCompanyInviteReason]').val(),
+                buyerCompanyProgressYn: $row.find('input[name=buyerCompanyProgressYn]').val(),
+                buyerCompanyHope: $row.find('input[name=buyerCompanyHope]').val()
+            };
+            buyer_add_json_arr.push(buyer_add_json_obj);
+        });
     }
 
     let lang = 'KO';
@@ -2127,109 +2156,55 @@ async function step_01_check(exhibitorSeq){
 }
 
 let buyer_add_json_arr = [];
+let currentBuyerSeq = '';
+let currentBuyerRow = null;
 function f_buyer_add(exSeq){
 
     // 회사명
-    let buyer_company_name = $('#buyer_company_name').val();
-    /*if(buyer_company_name === ''){
+    let buyer_company_name = $('#buyer_company_name').val() ? $('#buyer_company_name').val().trim() : '';
+    if(buyer_company_name === ''){
         showMessage('', 'error', '[ 바이어 정보 ]', '회사명을 입력해 주세요.', '');
-        return false;
-    }*/
-
-    // 국가
-    let buyer_country = $('#buyer_country').val();
-    /*if(buyer_country === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '국가를 입력해 주세요.', '');
-        return false;
-    }*/
-
-    // 소재지
-    let buyer_location = $('#buyer_location').val();
-    /*if(buyer_location === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '소재지를 입력해 주세요.', '');
-        return false;
-    }*/
-
-    // 홈페이지
-    let buyer_homepage = $('#buyer_homepage').val();
-    /*if(buyer_homepage === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '홈페이지 주소를 입력해 주세요.', '');
-        return false;
-    }*/
-
-    // 담당자 성명
-    let buyer_charge = $('#buyer_charge').val();
-
-    // 부서
-    let buyer_depart = $('#buyer_depart').val();
-
-    // 직책
-    let buyer_position = $('#buyer_position').val();
-
-    // 이메일
-    let buyer_email_input1 = $('#buyer_email_input1').val();
-    let buyer_email_input2 = $('#buyer_email_input2').val();
-
-    // 전화번호
-    let buyer_tel = $('#buyer_tel').val();
-
-    // 휴대전화
-    let buyer_phone = $('#buyer_phone').val();
-    if ( nvl(buyer_phone,'') !== '' && !/^010-?[0-9]{4}-?[0-9]{4}$/.test( buyer_phone ) ) {
-        showMessage('', 'error', '[ 바이어 정보 ]', '올바른 휴대전화번호를 입력해 주세요.<br>(앞자리 010 만 가능합니다.)', '');
         return false;
     }
 
+    // 국가
+    let buyer_country = $('#buyer_country').val() ? $('#buyer_country').val().trim() : '';
+    // 소재지
+    let buyer_location = $('#buyer_location').val() ? $('#buyer_location').val().trim() : '';
+    // 홈페이지
+    let buyer_homepage = $('#buyer_homepage').val() ? $('#buyer_homepage').val().trim() : '';
+    // 담당자 성명
+    let buyer_charge = $('#buyer_charge').val() ? $('#buyer_charge').val().trim() : '';
+    // 부서
+    let buyer_depart = $('#buyer_depart').val() ? $('#buyer_depart').val().trim() : '';
+    // 직책
+    let buyer_position = $('#buyer_position').val() ? $('#buyer_position').val().trim() : '';
+    // 이메일
+    let buyer_email_input1 = $('#buyer_email_input1').val() ? $('#buyer_email_input1').val().trim() : '';
+    let buyer_email_input2 = $('#buyer_email_input2').val() ? $('#buyer_email_input2').val().trim() : '';
+    // 전화번호
+    let buyer_tel = $('#buyer_tel').val() ? $('#buyer_tel').val().trim() : '';
+    // 휴대전화
+    let buyer_phone = $('#buyer_phone').val() ? $('#buyer_phone').val().trim() : '';
+    if ( buyer_phone !== '' && !/^010-?[0-9]{4}-?[0-9]{4}$/.test( buyer_phone ) ) {
+        showMessage('', 'error', '[ 바이어 정보 ]', '올바른 휴대전화번호를 입력해 주세요.<br>(앞자리 010 만 가능합니다.)', '');
+        return false;
+    }
     // 팩스
-    let buyer_fax = $('#buyer_fax').val();
-
+    let buyer_fax = $('#buyer_fax').val() ? $('#buyer_fax').val().trim() : '';
     // 취급품목
-    let buyer_item = $('#buyer_item').val();
-    /*if(buyer_item === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '취급품목을 입력해 주세요.', '');
-        return false;
-    }*/
-
+    let buyer_item = $('#buyer_item').val() ? $('#buyer_item').val().trim() : '';
     // 초청사유
-    let buyer_invite_reason = $('#buyer_invite_reason').val();
-    /*if(buyer_invite_reason === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '초청사유를 입력해 주세요.', '');
-        return false;
-    }*/
-
+    let buyer_invite_reason = $('#buyer_invite_reason').val() ? $('#buyer_invite_reason').val().trim() : '';
     // 계약진행 여부
     let buyer_progress_yn = $('#buyer_progress_yn').val();
-
     // 희망사항
-    let buyer_hope = $('#buyer_hope').val();
-    /*if(buyer_hope === ''){
-        showMessage('', 'error', '[ 바이어 정보 ]', '희망사항을 입력해 주세요.', '');
-        return false;
-    }*/
+    let buyer_hope = $('#buyer_hope').val() ? $('#buyer_hope').val().trim() : '';
 
-    /* json Array 에 push */
-
-    let buyer_add_json_obj = {
-        seq: '',
-        exSeq: exSeq,
-        buyerCompanyName: buyer_company_name,
-        buyerCompanyCountry: buyer_country,
-        buyerCompanyLocation: buyer_location,
-        buyerCompanyHomepage: buyer_homepage,
-        buyerCompanyCharge: buyer_charge,
-        buyerCompanyDepart: buyer_depart,
-        buyerCompanyPosition: buyer_position,
-        buyerCompanyEmail: buyer_email_input1 + '@' + buyer_email_input2,
-        buyerCompanyTel: buyer_tel,
-        buyerCompanyPhone: buyer_phone,
-        buyerCompanyFax: buyer_fax,
-        buyerCompanyItem: buyer_item,
-        buyerCompanyInviteReason: buyer_invite_reason,
-        buyerCompanyProgressYn: buyer_progress_yn,
-        buyerCompanyHope: buyer_hope
-    };
-
-    //buyer_add_json_arr.push(buyer_add_json_obj);
+    // 기존에 편집 중이던 행(Row)이 있으면 중복 추가 방지를 위해 제거
+    if (currentBuyerRow !== null) {
+        currentBuyerRow.remove();
+    }
 
     /* body 에 팝업 데이터를 포함한 Element 생성 */
     let buyer_add_btn = $('#buyer_add_btn');
@@ -2247,11 +2222,10 @@ function f_buyer_add(exSeq){
     gubun.innerText = buyer_country + ' / ' + buyer_company_name + ' / ' + buyer_depart + ' ' + buyer_position;
 
     /* buyer value input hidden 생성 */
-    //회사명
     let buyerItemSeq_el = document.createElement('input');
     buyerItemSeq_el.type = 'hidden';
     buyerItemSeq_el.name = 'buyerItemSeq';
-    buyerItemSeq_el.value = '';
+    buyerItemSeq_el.value = currentBuyerSeq; // 수정 전 고유번호(seq) 복원 유지
 
     //회사명
     let buyerCompanyName_el = document.createElement('input');
@@ -2367,6 +2341,7 @@ function f_buyer_add(exSeq){
     modifyFormBuyer.classList.add('modifyFormList');
     modifyFormBuyer.onclick = function(){ f_buyer_modify_modal('create', this); }
     modifyFormBuyer.innerText = '수정';
+
     let delFormBuyer = document.createElement('div');
     delFormBuyer.classList.add('delFormBuyer');
     delFormBuyer.classList.add('delFormList');
@@ -2398,64 +2373,63 @@ function f_buyer_add(exSeq){
 
     buyer_add_btn.before(form_chuga_list);
 
-    /* 팝업창 닫기 */
-    $('.popForm').toggleClass('on');
-    /* body 스크롤 켜기 */
-    $('body').toggleClass('lock_scroll');
-
-    f_buyer_init(); // input 초기화
+    f_buyer_init(); // 초기화 및 팝업 닫기
 }
 
 function f_buyer_init(){
-    // 회사명
+    // ★ 전역 변수 초기화
+    currentBuyerSeq = '';
+    currentBuyerRow = null;
+
     document.querySelector('#buyer_company_name').value = null;
-    // 국가
     document.querySelector('#buyer_country').value = null;
-    // 소재지
     document.querySelector('#buyer_location').value = null;
-    // 홈페이지
     document.querySelector('#buyer_homepage').value = null;
-    // 담당자성명
     document.querySelector('#buyer_charge').value = null;
-    // 부서
     document.querySelector('#buyer_depart').value = null;
-    // 직책
     document.querySelector('#buyer_position').value = null;
-    // 이메일
     document.querySelector('#buyer_email_input1').value = null;
     document.querySelector('#buyer_email_input2').value = null;
     if(document.querySelector('#buyer_email_input2').disabled){
         document.querySelector('#buyer_email_input2').disabled = false;
     }
     document.querySelector('#buyer_email_select').selectedIndex = 0;
-    // 전화번호
     document.querySelector('#buyer_tel').value = null;
-    // 휴대전화
     document.querySelector('#buyer_phone').value = null;
-    // 팩스
     document.querySelector('#buyer_fax').value = null;
-    // 취급품목
     document.querySelector('#buyer_item').value = null;
-    // 초청사유
     document.querySelector('#buyer_invite_reason').value = null;
-    // 계약진행여부
     document.querySelector('#buyer_progress_yn').selectedIndex = 1;
-    // 희망사항
     document.querySelector('#buyer_hope').value = null;
+
+    // 팝업 닫기
+    $('.popFormBuyer').removeClass('on');
+    $('body').removeClass('lock_scroll');
 }
 
 function f_buyer_modify_modal(gbn, value){
-    //console.log(gbn, value);
     if(gbn === 'select'){
-        let jsonObj = {
-            seq: value
-        };
+        let jsonObj = { seq: value };
         let resData = ajaxConnect('/mypage/step/selectBuyerSingle.do','post',jsonObj);
 
-        f_buyer_modal_set(resData);
+        // 수정 모드 시 타겟 지정
+        currentBuyerSeq = value;
+        let targetRow = null;
+        $('.form_chuga_list').each(function() {
+            if($(this).find('input[type=hidden][name=buyerItemSeq]').val() === value) {
+                targetRow = $(this);
+            }
+        });
+        currentBuyerRow = targetRow;
 
+        f_buyer_modal_set(resData);
     }else{
         let row_el = $(value).parent('div');
+
+        // 화면 상에서 수정한 내역의 타겟 지정
+        currentBuyerRow = row_el;
+        currentBuyerSeq = row_el.find('input[type=hidden][name=buyerItemSeq]').val() || '';
+
         let jsonObj = {
             buyerCompanyName: row_el.find('input[type=hidden][name=buyerCompanyName]').val(),
             buyerCompanyCountry: row_el.find('input[type=hidden][name=buyerCompanyCountry]').val(),
@@ -2475,52 +2449,60 @@ function f_buyer_modify_modal(gbn, value){
         }
 
         f_buyer_modal_set(jsonObj);
-
     }
 
-    $('.popFormBuyer').toggleClass('on');
-    $('body').toggleClass('lock_scroll');
+    $('.popFormBuyer').addClass('on');
+    $('body').addClass('lock_scroll');
     document.querySelector('.pop_box').scrollTop = 0;
 }
 
 function f_buyer_modal_set(jsonObj){
-    $('#buyer_popup #buyer_company_name').val(jsonObj.buyerCompanyName);
-    $('#buyer_popup #buyer_country').val(jsonObj.buyerCompanyCountry);
-    $('#buyer_popup #buyer_location').val(jsonObj.buyerCompanyLocation);
-    $('#buyer_popup #buyer_homepage').val(jsonObj.buyerCompanyHomepage);
-    $('#buyer_popup #buyer_charge').val(jsonObj.buyerCompanyCharge);
-    $('#buyer_popup #buyer_depart').val(jsonObj.buyerCompanyDepart);
-    $('#buyer_popup #buyer_position').val(jsonObj.buyerCompanyPosition);
-    $('#buyer_popup #buyer_email_input1').val(jsonObj.buyerCompanyEmail.split('@')[0]);
-    $('#buyer_popup #buyer_email_input2').val(jsonObj.buyerCompanyEmail.split('@')[1]);
+    $('#buyer_popup #buyer_company_name').val(jsonObj.buyerCompanyName || '');
+    $('#buyer_popup #buyer_country').val(jsonObj.buyerCompanyCountry || '');
+    $('#buyer_popup #buyer_location').val(jsonObj.buyerCompanyLocation || '');
+    $('#buyer_popup #buyer_homepage').val(jsonObj.buyerCompanyHomepage || '');
+    $('#buyer_popup #buyer_charge').val(jsonObj.buyerCompanyCharge || '');
+    $('#buyer_popup #buyer_depart').val(jsonObj.buyerCompanyDepart || '');
+    $('#buyer_popup #buyer_position').val(jsonObj.buyerCompanyPosition || '');
 
-    let optionExists = false;
-    $('#buyer_popup #buyer_email_select option').each(
-        function(){
-            if (this.value === jsonObj.buyerCompanyEmail.split('@')[1]) {
+    // [핵심 보강] 이메일에 @가 없거나 비어있는 경우 방어 로직
+    let emailStr = jsonObj.buyerCompanyEmail || '';
+    if(emailStr.includes('@')){
+        let emailParts = emailStr.split('@');
+        $('#buyer_popup #buyer_email_input1').val(emailParts[0]);
+        $('#buyer_popup #buyer_email_input2').val(emailParts[1]);
+
+        let optionExists = false;
+        $('#buyer_popup #buyer_email_select option').each(function(){
+            if (this.value === emailParts[1]) {
                 optionExists = true;
                 return false;
             }
-        }
-    );
+        });
 
-    if(optionExists){
-        $('#buyer_popup #buyer_email_select').val(jsonObj.buyerCompanyEmail.split('@')[1]).prop("selected",true);
-    }else{
-        $('#buyer_popup #buyer_email_select option').eq(0).prop('selected',true);
+        if(optionExists){
+            $('#buyer_popup #buyer_email_select').val(emailParts[1]).prop("selected", true);
+        }else{
+            $('#buyer_popup #buyer_email_select option').eq(0).prop('selected', true);
+        }
+    } else {
+        $('#buyer_popup #buyer_email_input1').val(emailStr);
+        $('#buyer_popup #buyer_email_input2').val('');
+        $('#buyer_popup #buyer_email_select option').eq(0).prop('selected', true);
     }
 
-    $('#buyer_popup #buyer_tel').val(jsonObj.buyerCompanyTel);
-    $('#buyer_popup #buyer_phone').val(jsonObj.buyerCompanyPhone);
-    $('#buyer_popup #buyer_fax').val(jsonObj.buyerCompanyFax);
-    $('#buyer_popup #buyer_item').val(jsonObj.buyerCompanyItem);
-    $('#buyer_popup #buyer_invite_reason').val(jsonObj.buyerCompanyInviteReason);
-    $('#buyer_popup #buyer_progress_yn').val(jsonObj.buyerCompanyProgressYn).prop("selected",true);
-    $('#buyer_popup #buyer_hope').val(jsonObj.buyerCompanyHope);
+    $('#buyer_popup #buyer_tel').val(jsonObj.buyerCompanyTel || '');
+    $('#buyer_popup #buyer_phone').val(jsonObj.buyerCompanyPhone || '');
+    $('#buyer_popup #buyer_fax').val(jsonObj.buyerCompanyFax || '');
+    $('#buyer_popup #buyer_item').val(jsonObj.buyerCompanyItem || '');
+    $('#buyer_popup #buyer_invite_reason').val(jsonObj.buyerCompanyInviteReason || '');
+    $('#buyer_popup #buyer_progress_yn').val(jsonObj.buyerCompanyProgressYn || 'Y').prop("selected", true);
+    $('#buyer_popup #buyer_hope').val(jsonObj.buyerCompanyHope || '');
 }
 
 function f_buyer_remove(gbn, el, seq){
-    //console.log(gbn, el);
+    // 매개변수 seq가 없더라도, DOM에 숨겨진 실제 DB 고유번호(buyerItemSeq)를 찾아냅니다.
+    let actualSeq = seq || $(el).closest('.form_chuga_list').find('input[name="buyerItemSeq"]').val();
 
     Swal.fire({
         icon: 'warning',
@@ -2535,20 +2517,23 @@ function f_buyer_remove(gbn, el, seq){
     }).then((result) => {
         if (result.isConfirmed) {
 
-            if(gbn === 'select'){
-                let jsonObj = {
-                    seq: seq
-                };
-                let resData = ajaxConnect('/mypage/step/deleteBuyer.do','post', jsonObj);
+            if(actualSeq && actualSeq !== ''){
+                // 1. 이미 DB에 저장되어 있는 데이터라면 즉시 삭제 API를 호출합니다.
+                let jsonObj = { seq: actualSeq };
+                let resData = ajaxConnect('/mypage/step/deleteBuyer.do', 'post', jsonObj);
+
                 if(resData.resultCode === "0"){
                     $(el).closest('.form_chuga_list').remove();
+                } else {
+                    showMessage('', 'error', '[ 삭제 실패 ]', '데이터 삭제 중 오류가 발생했습니다.', '');
                 }
-            }else{
+            } else {
+                // 2. 아직 DB에 저장되지 않은 완전 신규 데이터라면 화면(DOM)에서만 제거합니다.
                 $(el).closest('.form_chuga_list').remove();
             }
+
         }//isConfirmed
     }); //swal
-
 }
 
 function check_count(obj){
@@ -5124,32 +5109,35 @@ async function my_step_01_check(exhibitorSeq){
 
     // 수출상담회 참가 희망 여부
     let export_meeting_yn = $('input[type=radio][name=exportMeetingYn]:checked').val();
-    if(export_meeting_yn === 'N'){
-        buyer_add_json_arr = [];
-    }
 
-    let buyerCompanyName_el = $('input[type=hidden][name=buyerCompanyName]');
-    for(let i=0; i<buyerCompanyName_el.length; i++){
-        let buyer_add_json_obj = {
-            seq: $('input[type=hidden][name=buyerItemSeq]').eq(i).val(),
-            exSeq: exhibitorSeq,
-            buyerCompanyName: $('input[type=hidden][name=buyerCompanyName]').eq(i).val(),
-            buyerCompanyCountry: $('input[type=hidden][name=buyerCompanyCountry]').eq(i).val(),
-            buyerCompanyLocation: $('input[type=hidden][name=buyerCompanyLocation]').eq(i).val(),
-            buyerCompanyHomepage: $('input[type=hidden][name=buyerCompanyHomepage]').eq(i).val(),
-            buyerCompanyDepart: $('input[type=hidden][name=buyerCompanyDepart]').eq(i).val(),
-            buyerCompanyPosition: $('input[type=hidden][name=buyerCompanyPosition]').eq(i).val(),
-            buyerCompanyEmail: $('input[type=hidden][name=buyerCompanyEmail]').eq(i).val(),
-            buyerCompanyTel: $('input[type=hidden][name=buyerCompanyTel]').eq(i).val(),
-            buyerCompanyPhone: $('input[type=hidden][name=buyerCompanyPhone]').eq(i).val(),
-            buyerCompanyFax: $('input[type=hidden][name=buyerCompanyFax]').eq(i).val(),
-            buyerCompanyItem: $('input[type=hidden][name=buyerCompanyItem]').eq(i).val(),
-            buyerCompanyInviteReason: $('input[type=hidden][name=buyerCompanyInviteReason]').eq(i).val(),
-            buyerCompanyProgressYn: $('input[type=hidden][name=buyerCompanyProgressYn]').eq(i).val(),
-            buyerCompanyHope: $('input[type=hidden][name=buyerCompanyHope]').eq(i).val()
-        }
+    buyer_add_json_arr = [];
 
-        buyer_add_json_arr.push(buyer_add_json_obj);
+    if (export_meeting_yn === 'Y') {
+        // ★ 핵심수정: DOM 구조에 의존적인 인덱스(i) 수집 방식을 폐기하고,
+        // 각 리스트 컨테이너(.form_chuga_list) 단위로 캡슐화하여 데이터를 추출합니다.
+        $('.form_chuga_list').each(function () {
+            let $row = $(this);
+            let buyer_add_json_obj = {
+                seq: $row.find('input[name=buyerItemSeq]').val() || '',
+                exSeq: exhibitorSeq,
+                buyerCompanyName: $row.find('input[name=buyerCompanyName]').val(),
+                buyerCompanyCountry: $row.find('input[name=buyerCompanyCountry]').val(),
+                buyerCompanyLocation: $row.find('input[name=buyerCompanyLocation]').val(),
+                buyerCompanyHomepage: $row.find('input[name=buyerCompanyHomepage]').val(),
+                buyerCompanyCharge: $row.find('input[name=buyerCompanyCharge]').val(),
+                buyerCompanyDepart: $row.find('input[name=buyerCompanyDepart]').val(),
+                buyerCompanyPosition: $row.find('input[name=buyerCompanyPosition]').val(),
+                buyerCompanyEmail: $row.find('input[name=buyerCompanyEmail]').val(),
+                buyerCompanyTel: $row.find('input[name=buyerCompanyTel]').val(),
+                buyerCompanyPhone: $row.find('input[name=buyerCompanyPhone]').val(),
+                buyerCompanyFax: $row.find('input[name=buyerCompanyFax]').val(),
+                buyerCompanyItem: $row.find('input[name=buyerCompanyItem]').val(),
+                buyerCompanyInviteReason: $row.find('input[name=buyerCompanyInviteReason]').val(),
+                buyerCompanyProgressYn: $row.find('input[name=buyerCompanyProgressYn]').val(),
+                buyerCompanyHope: $row.find('input[name=buyerCompanyHope]').val()
+            };
+            buyer_add_json_arr.push(buyer_add_json_obj);
+        });
     }
 
     let lang = 'KO';
@@ -6385,12 +6373,17 @@ function f_pre_apply_check_login(){
 function f_en_pre_apply_check_login(){
     let name = $('#name').val();
     if(nvl(name,'') === ''){ showMessage('', 'info', '[Confirm]', 'Please enter your name.', ''); return false; }
+
+    // ★ 국가코드 수집 및 결합 로직 추가
+    let phoneCode = $('#phoneCode').val() || '';
     let phone = $('#phone').val();
     if(nvl(phone,'') === ''){ showMessage('', 'info', '[Confirm]', 'Please enter your phone number.', ''); return false; }
 
+    let fullPhone = (phoneCode !== '') ? (phoneCode + ' ' + phone.trim()) : phone.trim();
+
     let jsonObj = {
         name: name,
-        phone: phone,
+        phone: fullPhone,
         joinYear: transferYear
     };
 

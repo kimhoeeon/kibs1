@@ -415,8 +415,15 @@ public class KibsServiceImpl implements KibsService {
                     if (!StringUtil.isEmpty(exhibitorNewDTO.getBuyerList())) {
                         for (int i = 0; i < exhibitorNewDTO.getBuyerList().size(); i++) {
                             BuyerNewDTO buyerNewDTO = exhibitorNewDTO.getBuyerList().get(i);
+
+                            // 회사명이 비어있거나 쓰레기값(//)이면 저장 건너뜀
+                            String compName = buyerNewDTO.getBuyerCompanyName();
+                            if (compName == null || compName.trim().isEmpty() || compName.trim().equals("//") || compName.trim().equals("-")) {
+                                continue;
+                            }
+
                             buyerNewDTO.setExSeq(exhibitorNewSeq);
-                            Integer step01_buyer_result = kibsMapper.insertBuyerNew(buyerNewDTO);
+                            kibsMapper.insertBuyerNew(buyerNewDTO);
                         }
                     }
                 }
@@ -511,11 +518,19 @@ public class KibsServiceImpl implements KibsService {
                 List<BuyerNewDTO> buyerNewList = exhibitorNewDTO.getBuyerList();
                 if (buyerNewList != null) {
                     for (BuyerNewDTO buyerNew : buyerNewList) {
+
+                        // 회사명이 비어있거나 쓰레기값(//)이면 처리 건너뜀
+                        String compName = buyerNew.getBuyerCompanyName();
+                        if (compName == null || compName.trim().isEmpty() || compName.trim().equals("//") || compName.trim().equals("-")) {
+                            continue;
+                        }
+
                         String buyerNewSeq = buyerNew.getSeq();
                         if (buyerNewSeq != null & !Objects.equals(buyerNewSeq, "")) {
-                            Integer updateResult = kibsMapper.updateBuyerNew(buyerNew);
+                            kibsMapper.updateBuyerNew(buyerNew);
                         } else {
-                            Integer insertResult = kibsMapper.insertBuyerNew(buyerNew);
+                            buyerNew.setExSeq(exhibitorNewSeq);
+                            kibsMapper.insertBuyerNew(buyerNew);
                         }
                     }
                 }

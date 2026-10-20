@@ -858,9 +858,28 @@
                                                 <select id="onlineOptionSmall_${status.index + 1}" name="onlineOptionSmall" class="w50"></select>
                                                 <script>
                                                     $(document).ready(function () {
-                                                        $('#onlineOptionBig_${status.index + 1}').val('${online.onlineOptionBig}').prop('selected', true).trigger('change');
-                                                        $('#onlineOptionSmall_${status.index + 1}').val('${online.onlineOptionSmall}').prop('selected', true);
-                                                    })
+                                                        setTimeout(function() {
+                                                            var $big = $('#onlineOptionBig_${status.index + 1}');
+                                                            var $small = $('#onlineOptionSmall_${status.index + 1}');
+                                                            var savedBig = '${online.onlineOptionBig}';
+                                                            var savedSmall = '${online.onlineOptionSmall}';
+
+                                                            // 대분류: 옵션이 미처 안 그려졌을 경우를 대비해 강제로 Option을 끼워 넣습니다.
+                                                            if ($big.find("option[value='" + savedBig + "']").length === 0 && savedBig !== '') {
+                                                                $big.append(new Option(savedBig, savedBig));
+                                                            }
+                                                            $big.val(savedBig).prop('selected', true).trigger('change');
+
+                                                            // 소분류: 대분류 trigger('change') 완료 후 세팅되도록 약간의 텀을 줍니다.
+                                                            setTimeout(function() {
+                                                                if ($small.find("option[value='" + savedSmall + "']").length === 0 && savedSmall !== '') {
+                                                                    $small.append(new Option(savedSmall, savedSmall));
+                                                                }
+                                                                $small.val(savedSmall).prop('selected', true);
+                                                            }, 100);
+
+                                                        }, 100); // DOM이 완전히 준비될 시간을 줍니다.
+                                                    });
                                                 </script>
                                                     <%--<c:if test="${online.onlineOptionBig ne null and online.onlineOptionBig ne '' and online.onlineOptionSmall ne null and online.onlineOptionSmall ne ''}">
                                                         <span class="preOptionList" style="margin-left: 10px; display: block;">
@@ -1043,8 +1062,8 @@
 
                                 <c:if test="${buyerList ne null and not empty buyerList}">
                                     <c:forEach var="buyer" items="${buyerList}" begin="0" end="${buyerList.size()}" step="1">
-                                        <input type="hidden" name="buyerItemSeq" value="${buyer.seq}">
                                         <div class="form_chuga_list">
+                                            <input type="hidden" name="buyerItemSeq" value="${buyer.seq}">
                                             <div class="cont">
                                                 <div class="name">${buyer.buyerCompanyName}</div>
                                                 <div class="gubun">${buyer.buyerCompanyCountry} / ${buyer.buyerCompanyLocation} / ${buyer.buyerCompanyDepart} ${buyer.buyerCompanyPosition}</div>

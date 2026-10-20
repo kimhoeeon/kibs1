@@ -4954,7 +4954,6 @@ public class KibsMngServiceImpl implements KibsMngService {
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
-        Integer result = 0;
 
         try {
 
@@ -4963,11 +4962,18 @@ public class KibsMngServiceImpl implements KibsMngService {
             List<BuyerNewDTO> buyerList = exhibitorNewDTO.getBuyerList();
             if(!buyerList.isEmpty()){
                 for(BuyerNewDTO buyerDTO : buyerList){
+
+                    // ★ [방어 로직 추가]
+                    String compName = buyerDTO.getBuyerCompanyName();
+                    if (compName == null || compName.trim().isEmpty() || compName.trim().equals("//") || compName.trim().equals("-")) {
+                        continue;
+                    }
+
                     buyerDTO.setExSeq(exhibitorSeq);
                     if(buyerDTO.getSeq() != null && !buyerDTO.getSeq().isEmpty()){
-                        Integer upd_result = kibsMngMapper.updateExhibitorNewBuyer(buyerDTO);
+                        kibsMngMapper.updateExhibitorNewBuyer(buyerDTO);
                     }else{
-                        Integer ist_result = kibsMngMapper.insertExhibitorNewBuyer(buyerDTO);
+                        kibsMngMapper.insertExhibitorNewBuyer(buyerDTO);
                     }
                 }
             }

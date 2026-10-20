@@ -2034,8 +2034,8 @@ if (document.documentElement) {
 
                                                     <c:if test="${buyerList ne null and not empty buyerList}">
                                                         <c:forEach var="buyer" items="${buyerList}" begin="0" end="${buyerList.size()}" step="1">
-                                                            <input type="hidden" name="buyerItemSeq" value="${buyer.seq}">
                                                             <div class="form_chuga_list">
+                                                                <input type="hidden" name="buyerItemSeq" value="${buyer.seq}">
                                                                 <div class="cont">
                                                                     <div class="name">${buyer.buyerCompanyName}</div>
                                                                     <div class="gubun">${buyer.buyerCompanyCountry} / ${buyer.buyerCompanyLocation} / ${buyer.buyerCompanyDepart} ${buyer.buyerCompanyPosition}</div>

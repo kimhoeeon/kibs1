@@ -935,50 +935,53 @@ public class KibsController {
         String originalPhone = visitorDTO.getPhone();
 
         if (originalPhone != null && !originalPhone.isEmpty()) {
-            // 1. 입력된 번호에서 숫자만 추출 (하이픈 제거)
+            // 1. 입력된 번호에서 숫자만 추출 (하이픈, 공백 제거)
             String cleanPhone = originalPhone.replaceAll("[^0-9]", "");
 
-            // 2. 하이픈이 포함된 포맷 생성 (010-XXXX-XXXX)
+            // 2. 국가번호(82) 처리 로직 추가 (8210... -> 010...)
+            boolean hasCountryCode = originalPhone.contains("+82") || originalPhone.startsWith("82");
+            if (hasCountryCode && cleanPhone.startsWith("82")) {
+                cleanPhone = "0" + cleanPhone.substring(2);
+            }
+
+            // 3. 하이픈이 포함된 일반 포맷 생성 (010-XXXX-XXXX)
             String hyphenPhone = cleanPhone;
             if (cleanPhone.length() == 11) {
                 hyphenPhone = cleanPhone.substring(0, 3) + "-" + cleanPhone.substring(3, 7) + "-" + cleanPhone.substring(7);
+            } else if (cleanPhone.length() == 10) {
+                hyphenPhone = cleanPhone.substring(0, 3) + "-" + cleanPhone.substring(3, 6) + "-" + cleanPhone.substring(6);
             }
 
+            // 4. +82가 포함된 포맷 생성
+            String plus82HyphenPhone = "+82 " + hyphenPhone;
+            String plus82CleanPhone = "+82 " + cleanPhone;
+
             try {
-                // Case 1: 하이픈 포함 포맷 암호화 조회
-                visitorDTO.setPhone(aes256Util.encrypt(hyphenPhone));
-                result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
+                // 5. [핵심] 발생할 수 있는 모든 경우의 수(암호문/평문)를 배열로 만들어 순차 매칭
+                String[] phoneAttempts = {
+                        aes256Util.encrypt(plus82HyphenPhone), // +82 010-1234-5678 (암호문)
+                        aes256Util.encrypt(plus82CleanPhone),  // +82 01012345678 (암호문)
+                        aes256Util.encrypt(hyphenPhone),       // 010-1234-5678 (암호문)
+                        aes256Util.encrypt(cleanPhone),        // 01012345678 (암호문)
+                        plus82HyphenPhone,                     // (평문)
+                        plus82CleanPhone,                      // (평문)
+                        hyphenPhone,                           // (평문)
+                        cleanPhone                             // (평문)
+                };
 
-                // Case 2: 하이픈 제거 포맷 암호화 조회
-                if (result == null) {
-                    visitorDTO.setPhone(aes256Util.encrypt(cleanPhone));
+                for (String attempt : phoneAttempts) {
+                    visitorDTO.setPhone(attempt);
                     result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
-                }
-
-                // Case 3: DB에 평문으로 들어간 경우 (하이픈 포함 평문)
-                if (result == null) {
-                    visitorDTO.setPhone(hyphenPhone);
-                    result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
-                }
-
-                // Case 4: DB에 평문으로 들어간 경우 (하이픈 제거 평문)
-                if (result == null) {
-                    visitorDTO.setPhone(cleanPhone);
-                    result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
+                    if (result != null) break; // 일치하는 정보가 있으면 루프 즉시 탈출
                 }
             } catch (Exception e) {
-                // 암호화 에러 시 평문 조회로 폴백
+                // 에러 발생 시 최후의 수단으로 기본값으로 한번 더 조회 시도
                 visitorDTO.setPhone(hyphenPhone);
                 result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
-                if (result == null) {
-                    visitorDTO.setPhone(cleanPhone);
-                    result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
-                }
             }
         } else {
             result = kibsService.processSelectPreVisitorCheck(visitorDTO, clientIp);
         }
-        // --------------------------------------------------------
 
         // 차단된 상태인 경우 (429 에러 대신 DTO에 메시지를 담아 200 OK로 리턴)
         if (result != null && "IP_BLOCKED".equals(result.getSeq())) {
@@ -986,7 +989,7 @@ public class KibsController {
             if ("EN".equals(visitorDTO.getLang())) {
                 errorMsg = "Access temporarily restricted due to abnormal attempts. Please try again later.";
             }
-            result.setNote(errorMsg); // 메시지를 빈 필드(note)에 담아 전달
+            result.setNote(errorMsg);
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
 
