@@ -666,6 +666,20 @@ public class KibsServiceImpl implements KibsService {
                     }
                 }
 
+                if (info.getFactoryAddress() != null && !info.getFactoryAddress().trim().isEmpty()) {
+                    String decryptedFactoryAddress = aes256Util.safeDecrypt(info.getFactoryAddress());
+                    if (decryptedFactoryAddress != null && !decryptedFactoryAddress.isEmpty()) {
+                        info.setFactoryAddress(decryptedFactoryAddress);
+                    }
+                }
+
+                if (info.getFactoryAddressDetail() != null && !info.getFactoryAddressDetail().trim().isEmpty()) {
+                    String decryptedFactoryAddressDetail = aes256Util.safeDecrypt(info.getFactoryAddressDetail());
+                    if (decryptedFactoryAddressDetail != null && !decryptedFactoryAddressDetail.isEmpty()) {
+                        info.setFactoryAddressDetail(decryptedFactoryAddressDetail);
+                    }
+                }
+
             } catch (Exception e) {
                 log.error("[Exhibitor Decrypt Error] seq: {}, msg: {}", info.getSeq(), e.getMessage());
             }
@@ -1726,6 +1740,12 @@ public class KibsServiceImpl implements KibsService {
                     }
                     if (info.getCompanyAddressDetail() != null && !info.getCompanyAddressDetail().trim().isEmpty()) {
                         info.setCompanyAddressDetail(aes256Util.safeDecrypt(info.getCompanyAddressDetail()));
+                    }
+                    if (info.getFactoryAddress() != null && !info.getFactoryAddress().trim().isEmpty()) {
+                        info.setFactoryAddress(aes256Util.safeDecrypt(info.getFactoryAddress()));
+                    }
+                    if (info.getFactoryAddressDetail() != null && !info.getFactoryAddressDetail().trim().isEmpty()) {
+                        info.setFactoryAddressDetail(aes256Util.safeDecrypt(info.getFactoryAddressDetail()));
                     }
 
                     // [UI 보정] 대표 연락처(companyTel)가 비어있다면, 담당자의 tel이나 phone으로 화면에 보여줌

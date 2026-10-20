@@ -857,7 +857,7 @@ public class KibsEnController {
             DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
             String today = dateFormat.format(new Date());
             if (Long.parseLong(today) > Long.parseLong("202701010859")) {
-                if (Long.parseLong(today) > Long.parseLong("202703312359")) {
+                if (Long.parseLong(today) > Long.parseLong("202703092359")) {
                     mv.addObject("mode", "close");
                 }else{
                     mv.addObject("mode", "open");

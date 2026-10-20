@@ -2165,6 +2165,22 @@ public class KibsMngServiceImpl implements KibsMngService {
                     }
                 }
 
+                // 공장 주소 복호화
+                if (info.getFactoryAddress() != null && !info.getFactoryAddress().trim().isEmpty()) {
+                    String decryptedFactoryAddress = aes256Util.safeDecrypt(info.getFactoryAddress());
+                    if (decryptedFactoryAddress != null && !decryptedFactoryAddress.isEmpty()) {
+                        info.setFactoryAddress(decryptedFactoryAddress);
+                    }
+                }
+
+                // 공장 상세 주소 복호화
+                if (info.getFactoryAddressDetail() != null && !info.getFactoryAddressDetail().trim().isEmpty()) {
+                    String decryptedFactoryAddressDetail = aes256Util.safeDecrypt(info.getFactoryAddressDetail());
+                    if (decryptedFactoryAddressDetail != null && !decryptedFactoryAddressDetail.isEmpty()) {
+                        info.setFactoryAddressDetail(decryptedFactoryAddressDetail);
+                    }
+                }
+
             } catch (Exception e) {
                 // 복호화 에러 시(평문일 경우 등) 로그만 남기고 원래 값 유지
                 log.error("[Exhibitor Decrypt Error] seq: {}, msg: {}", info.getSeq(), e.getMessage());
@@ -4350,6 +4366,12 @@ public class KibsMngServiceImpl implements KibsMngService {
                 }
                 if (info.getCompanyAddressDetail() != null && !info.getCompanyAddressDetail().trim().isEmpty()) {
                     info.setCompanyAddressDetail(aes256Util.safeDecrypt(info.getCompanyAddressDetail()));
+                }
+                if (info.getFactoryAddress() != null && !info.getFactoryAddress().trim().isEmpty()) {
+                    info.setFactoryAddress(aes256Util.safeDecrypt(info.getFactoryAddress()));
+                }
+                if (info.getFactoryAddressDetail() != null && !info.getFactoryAddressDetail().trim().isEmpty()) {
+                    info.setFactoryAddressDetail(aes256Util.safeDecrypt(info.getFactoryAddressDetail()));
                 }
                 if (info.getTel() != null && !info.getTel().trim().isEmpty()) {
                     info.setTel(aes256Util.safeDecrypt(info.getTel()));
