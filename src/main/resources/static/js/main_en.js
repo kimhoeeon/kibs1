@@ -5760,16 +5760,15 @@ function f_en_pre_apply_check_login(){
     let name = $('#name').val();
     if(nvl(name,'') === ''){ showMessage('', 'info', '[Confirm]', 'Please enter your name.', ''); return false; }
 
-    // ★ 국가코드 수집 및 결합 로직 추가
-    let phoneCode = $('#phoneCode').val() || '';
     let phone = $('#phone').val();
     if(nvl(phone,'') === ''){ showMessage('', 'info', '[Confirm]', 'Please enter your phone number.', ''); return false; }
 
-    let fullPhone = (phoneCode !== '') ? (phoneCode + ' ' + phone.trim()) : phone.trim();
+    // ★ 핵심 수정: 국가 코드를 빼고 하이픈만 제거한 순수 숫자만 서버로 전송
+    let purePhone = phone.replace(/-/g, "").trim();
 
     let jsonObj = {
         name: name,
-        phone: fullPhone,
+        phone: purePhone,
         joinYear: transferYear
     };
 
@@ -6058,7 +6057,8 @@ function f_visitor_form_valid_check(gbn){
             showMessage('', 'info', '[ Visitor Info ]', 'Please enter your mobile phone number.', '');
             return false;
         }else{
-            phone = $('#phoneCode').val() + ' ' + $('#phone').val().trim();
+            // ★ 핵심 수정: 기존 phoneCode 결합 구문을 지우고 하이픈만 제거하도록 수정
+            phone = phone.replace(/-/g, "").trim();
         }
 
         if(!strCheck(name,"name")){

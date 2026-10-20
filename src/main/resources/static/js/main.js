@@ -6374,16 +6374,15 @@ function f_en_pre_apply_check_login(){
     let name = $('#name').val();
     if(nvl(name,'') === ''){ showMessage('', 'info', '[Confirm]', 'Please enter your name.', ''); return false; }
 
-    // ★ 국가코드 수집 및 결합 로직 추가
-    let phoneCode = $('#phoneCode').val() || '';
     let phone = $('#phone').val();
     if(nvl(phone,'') === ''){ showMessage('', 'info', '[Confirm]', 'Please enter your phone number.', ''); return false; }
 
-    let fullPhone = (phoneCode !== '') ? (phoneCode + ' ' + phone.trim()) : phone.trim();
+    // ★ 핵심 수정: 국가 코드를 빼고 하이픈만 제거한 순수 숫자만 서버로 전송
+    let purePhone = phone.replace(/-/g, "").trim();
 
     let jsonObj = {
         name: name,
-        phone: fullPhone,
+        phone: purePhone,
         joinYear: transferYear
     };
 
@@ -6928,8 +6927,10 @@ function f_visitor_form_data_setting(){
 function f_en_visitor_apply(gbn){
 
     if(gbn === 'I'){
+        // ★ 핵심 수정: 중복 검사 시에도 국가코드를 빼고 하이픈만 제거하여 전송
+        let phone = $('#phone').val() ? $('#phone').val().replace(/-/g, "").trim() : '';
 
-        let json = { joinYear: transferYear, name : $('#name').val() , phone: $('#phone').val() };
+        let json = { joinYear: transferYear, name : $('#name').val() , phone: phone };
         let resData = ajaxConnectSimple('/visitor/preApplyCheck.do', 'post', json);
         if(nvl(resData,'') !== ''){
             Swal.fire({
@@ -6981,24 +6982,13 @@ function f_en_visitor_apply(gbn){
                     success: function (data) {
                         if (data.resultCode === "0") {
 
-                            let visitorSeq = data.customValue; //visitorSeq return 값
+                            let visitorSeq = data.customValue;
 
                             let returnUrl = '/eng/buyer/completed.do';
                             if(gbn === 'U'){
                                 returnUrl = '/eng/buyer/mypage.do?seq=' + visitorSeq;
                             }
                             window.location.href = returnUrl;
-
-                            /*Swal.fire({
-                                title: '[사전등록하기]',
-                                html: '참관객 사전등록이 완료되었습니다.',
-                                icon: 'info',
-                                confirmButtonColor: '#00a8ff',
-                                confirmButtonText: '확인'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                }
-                            });*/
 
                         } else {
                             showMessage('', 'error', '에러 발생', '참관객 사전 등록 저장을 실패하였습니다. 관리자에게 문의해 주세요. ' + data.resultMessage, '');
@@ -7009,10 +6999,9 @@ function f_en_visitor_apply(gbn){
                     }
                 })
 
-            }//validCheck
-        }//isConfirmed
-    })//then
-
+            }
+        }
+    })
 }
 
 function f_en_visitor_form_valid_check(gbn){
@@ -7150,14 +7139,36 @@ function f_en_visitor_form_data_setting(){
     joinForm.joinYn = 'Y';
     joinForm.visitorGbn = '개인';
 
-    let nowTime = getCurrentDate(); //yyyymmddhhmmss
-    if(nowTime < '20270215000000'){ // 1차 사전등록
+    let nowTime = getCurrentDate();
+    if(nowTime < '20270216000000'){
         joinForm.timeGbn = '1차';
-    }else{ // 2차 사전등록
+    }else{
         joinForm.timeGbn = '2차';
     }
 
     joinForm.domain = $('#domain').val();
+
+    // ★ 저장 시에도 하이픈 제거 보장 (Tel)
+    let tel = $('#tel').val() ? $('#tel').val().replace(/-/g, "").trim() : '';
+    let telCode = $('#telCode').val() || '';
+    if(nvl(tel,'') !== ''){
+        if (tel.startsWith(telCode)) {
+            tel = tel.substring(telCode.length).trim();
+        }
+        tel = telCode + ' ' + tel;
+    }
+    joinForm.tel = tel;
+
+    // ★ 저장 시에도 하이픈 제거 보장 (Phone)
+    let phone = $('#phone').val() ? $('#phone').val().replace(/-/g, "").trim() : '';
+    let phoneCode = $('#phoneCode').val() || '';
+    if(nvl(phone,'') !== ''){
+        if (phone.startsWith(phoneCode)) {
+            phone = phone.substring(phoneCode.length).trim();
+        }
+        phone = phoneCode + ' ' + phone;
+    }
+    joinForm.phone = phone;
 
     joinForm.regionSi = '';
     joinForm.regionGu = '';
@@ -7165,18 +7176,14 @@ function f_en_visitor_form_data_setting(){
     let partnerInfoArr = [];
     if(joinForm.partnerYn === 'Y'){
         $('.visitPartnerBox').each(function(index, element) {
-            // 첫 번째 박스가 템플릿(빈 값) 역할인지, 실제 입력값인지 확인 필요
-            // 여기서는 이름이 입력된 경우만 수집하도록 처리
             let pName = $(this).find('input[name=partnerName]').val();
 
             if (nvl(pName, '') !== '') {
                 let visitPartnerObj = {
                     seq: $(this).find('input[type=hidden][name=partnerSeq]').val(),
                     visitorSeq: $('input[type=hidden][name=visitorSeq]').val(),
-                    // 신청자 본인 정보 (부모값)
                     name: $('#name').val(),
-                    phone: $('#phone').val(),
-                    // 동반자 정보 (현재 row 값)
+                    phone: phone, // 정제된 phone 사용
                     partnerName: pName,
                     partnerAge: $(this).find('input[name=partnerAge]').val()
                 };

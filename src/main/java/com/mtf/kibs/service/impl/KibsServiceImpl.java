@@ -2210,12 +2210,24 @@ public class KibsServiceImpl implements KibsService {
         // 실제 참관객 데이터 조회
         VisitorDTO result = kibsMapper.selectPreVisitorCheck(visitorDTO);
 
-        if (result == null) {
-            kibsMapper.upsertUserLoginFailLog(paramMap);
-            log.info("[VISITOR-LOGIN-EVENT] IP: {}, 상태: FAIL_NOT_FOUND", clientIp);
-        } else {
+        // ★ 핵심 수정: 국가 코드 Loop를 감안하여 실패 카운트 누적 조건 변경 ★
+        if (result != null) {
+            // 매칭 성공 시 카운트 초기화 (이전 로직 동일)
             kibsMapper.resetUserLoginFailLog(paramMap);
             log.info("[VISITOR-LOGIN-EVENT] IP: {}, 상태: SUCCESS", clientIp);
+        } else {
+            // 실패 시, 현재 들어온 phone 번호가 "마지막 국가 코드"까지 조회된 결과인지 검증
+            String reqPhone = visitorDTO.getPhone() != null ? visitorDTO.getPhone() : "";
+
+            // 만약 프론트에서 보낸 번호가 마지막 순회 코드인 "+91" 로 시작하거나,
+            // 애초에 국가코드를 지원하지 않는 국문 환경(하이픈만 제거된 순수 숫자)일 경우에만 카운트를 1회 올림
+            if (reqPhone.startsWith("+91 ") || reqPhone.matches("^[0-9]+$")) {
+                kibsMapper.upsertUserLoginFailLog(paramMap);
+                log.info("[VISITOR-LOGIN-EVENT] IP: {}, 상태: FINAL_FAIL_NOT_FOUND, 카운트 1 증가", clientIp);
+            } else {
+                // 중간 순회 과정의 실패는 로그만 찍고 DB 카운트를 올리지 않음
+                log.info("[VISITOR-LOGIN-EVENT] IP: {}, 상태: LOOP_FAIL_NOT_FOUND (카운트 누적 안함)", clientIp);
+            }
         }
 
         return result;
