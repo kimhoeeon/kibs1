@@ -665,4 +665,7 @@ public interface KibsMngMapper {
 
     // 특정 IP의 최근 30분 내 차단 상태 확인
     int selectIpBlockCheck(Map<String, Object> paramMap);
+
+    Integer deleteDirectory(DirectoryDTO directoryDTO);
+
 }

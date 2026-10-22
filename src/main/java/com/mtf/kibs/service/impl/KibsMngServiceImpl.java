@@ -2698,6 +2698,11 @@ public class KibsMngServiceImpl implements KibsMngService {
                     FileDTO fileDTO = new FileDTO();
                     fileDTO.setUserId(exhibitorNewDTO.getSeq());
                     commMapper.deleteFileUserId(fileDTO);
+
+                    /* Directory */
+                    DirectoryDTO directoryDTO = new DirectoryDTO();
+                    directoryDTO.setUserId(exhibitorNewDTO.getSeq());
+                    kibsMngMapper.deleteDirectory(directoryDTO);
                 }
                 //System.out.println(result);
             }else{
@@ -2745,6 +2750,11 @@ public class KibsMngServiceImpl implements KibsMngService {
                     BuyerDTO buyerDTO = new BuyerDTO();
                     buyerDTO.setId(exhibitorDTO.getSeq());
                     Integer buyerResult = kibsMngMapper.deleteParticipantCompanyBuyer(buyerDTO);
+
+                    /* Directory */
+                    DirectoryDTO directoryDTO = new DirectoryDTO();
+                    directoryDTO.setUserId(exhibitorDTO.getSeq());
+                    kibsMngMapper.deleteDirectory(directoryDTO);
                 }
                 //System.out.println(result);
             }else{

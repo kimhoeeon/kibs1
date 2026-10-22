@@ -266,7 +266,7 @@ let KTAppExhibitorNewNewMng = function () {
         renderHTML += '<a onclick="f_exhibitor_invoice_detail(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">인보이스 정보</a>';
         renderHTML += '</div>';
         renderHTML += '<div class="menu-item px-3">';
-        renderHTML += '<a onclick="f_exhibitor_remove(' + '\'' + rowSeq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '<a onclick="f_exhibitor_remove(\'' + rowSeq + '\', \'' + companyNameKo + '\')" class="menu-link px-3">삭제</a>';
         renderHTML += '</div>';
         renderHTML += '</div>';
         return renderHTML;

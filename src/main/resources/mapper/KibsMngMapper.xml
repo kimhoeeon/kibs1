@@ -6632,4 +6632,10 @@
           AND last_fail_dttm >= DATE_SUB(NOW(), INTERVAL #{ipLockMinutes} MINUTE)
     </select>
 
+    <!-- 참가업체 삭제 시 디렉토리 정보 연쇄 삭제 -->
+    <delete id="deleteDirectory" parameterType="com.mtf.kibs.dto.DirectoryDTO">
+        /* com.mtf.kibs.mapper.kibsMngMapper.deleteDirectory */
+        DELETE FROM directory
+        WHERE user_id = #{userId}
+    </delete>
 </mapper>

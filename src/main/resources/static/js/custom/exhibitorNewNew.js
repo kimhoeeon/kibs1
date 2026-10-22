@@ -344,19 +344,27 @@ function f_exhibitor_detail(seq, lang){
     $('#applyDetailForm').attr('src','/mng/exhibitorNewNew/participant/company/detail.do?seq=' + seq + '&lang=' + lang);
 }
 
-function f_exhibitor_remove(seq){
-
+function f_exhibitor_remove(seq, companyNameKo){
     if(nvl(seq, "") !== ""){
         Swal.fire({
             icon: 'warning',
-            title: '[ 참가업체 정보 ]',
-            html: '<span style="font-size: 1.2em;">선택한 참가업체 정보를 삭제하시겠습니까?<br/>삭제한 정보는 복구할 수 없습니다.</span>',
+            title: '[ 참가업체 정보 영구 삭제 ]',
+            html: '<span style="font-size: 1.2em;">해당 업체의 모든 정보(인보이스, 출입증 등)가 <b style="color:red;">영구 삭제</b>됩니다.<br/><br/>실수 방지를 위해 아래 입력창에 <b style="color:blue;">' + companyNameKo + '</b> 를 정확히 입력해 주세요.</span>',
+            input: 'text',
+            inputPlaceholder: companyNameKo + ' 입력',
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            confirmButtonText: '삭제하기',
+            confirmButtonText: '영구 삭제하기',
             cancelButtonColor: '#A1A5B7',
-            cancelButtonText: '취소'
+            cancelButtonText: '취소',
+            preConfirm: (inputValue) => {
+                // 관리자가 입력한 값과 실제 회사명이 일치하는지 검증
+                if (inputValue !== companyNameKo) {
+                    Swal.showValidationMessage('입력하신 회사명이 일치하지 않습니다.');
+                    return false;
+                }
+            }
         }).then((result) => {
             if (result.isConfirmed) {
                 let jsonObj = {
@@ -365,7 +373,7 @@ function f_exhibitor_remove(seq){
                 let resData = ajaxConnect('/mng/exhibitorNew/participant/company/delete.do', 'post', jsonObj);
 
                 if (resData.resultCode === "0") {
-                    showMessage('', 'info', '[ 참가업체 정보 ]', '참가업체 정보가 삭제되었습니다.', '');
+                    showMessage('', 'info', '[ 참가업체 정보 ]', '참가업체 정보가 완전히 삭제되었습니다.', '');
                     f_exhibitor_search(); // 삭제 성공 후 재조회 수행
                 } else {
                     showMessage('', 'error', '에러 발생', '참가업체 정보 삭제를 실패하였습니다. 관리자에게 문의해 주세요. ' + resData.resultMessage, '');
