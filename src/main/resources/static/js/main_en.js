@@ -134,21 +134,49 @@ function f_pre_exhibitor_info_call(){
             confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
+                // [추가] 사업자등록번호 (영문 페이지의 경우 ID로 사용할 수 있으므로 추가 매핑)
+                let companyLicenseNum = preExhibitorInfo.companyLicenseNum;
+                if(nvl(companyLicenseNum,'') !== ''){
+                    $('#companyLicenseNum').val(companyLicenseNum);
+                }
+
+                //회사명(국) - 영문 폼에는 보통 노출 안 되지만, 혹시 히든으로 존재할 경우를 대비
+                let companyNameKo = preExhibitorInfo.companyNameKo;
+                if(nvl(companyNameKo,'') !== ''){
+                    $('#companyNameKo').val(companyNameKo);
+                }
                 //회사명(영)
                 let companyNameEn = preExhibitorInfo.companyNameEn;
                 if(nvl(companyNameEn,'') !== ''){
                     $('#companyNameEn').val(companyNameEn);
                 }
-                //본사주소
+
+                // ★ [수정] 영문 페이지 주소 포맷에 맞춘 매핑
+                let companyCountry = preExhibitorInfo.companyCountry;
+                if(nvl(companyCountry,'') !== ''){
+                    $('#companyCountry').val(companyCountry).prop('selected', true);
+                }
+                let companyState = preExhibitorInfo.companyState;
+                if(nvl(companyState,'') !== ''){
+                    $('#companyState').val(companyState);
+                }
+                let companyCity = preExhibitorInfo.companyCity;
+                if(nvl(companyCity,'') !== ''){
+                    $('#companyCity').val(companyCity);
+                }
+                let companyZipcode = preExhibitorInfo.companyZipcode;
+                if(nvl(companyZipcode,'') !== ''){
+                    $('#companyZipcode').val(companyZipcode);
+                }
                 let companyAddress = preExhibitorInfo.companyAddress;
                 if(nvl(companyAddress,'') !== ''){
                     $('#companyAddress').val(companyAddress);
                 }
-                //본사상세주소
                 let companyAddressDetail = preExhibitorInfo.companyAddressDetail;
                 if(nvl(companyAddressDetail,'') !== ''){
                     $('#companyAddressDetail').val(companyAddressDetail);
                 }
+
                 //공장주소
                 let factoryAddress = preExhibitorInfo.factoryAddress;
                 if(nvl(factoryAddress,'') !== ''){
@@ -164,22 +192,50 @@ function f_pre_exhibitor_info_call(){
                 if(nvl(companyCeo,'') !== ''){
                     $('#companyCeo').val(companyCeo);
                 }
-                //전화
-                let companyTel = preExhibitorInfo.companyTel;
-                if(nvl(companyTel,'') !== ''){
-                    $('#companyTel').val(companyTel);
+
+                //전화 (국가코드 분리)
+                let fullCompanyTel = preExhibitorInfo.companyTel;
+                if(nvl(fullCompanyTel,'') !== ''){
+                    if(fullCompanyTel.includes(' ')) {
+                        let parts = fullCompanyTel.split(' ');
+                        $('#companyTelCode').val(parts[0]).prop('selected', true);
+                        $('#companyTel').val(parts[1]);
+                    } else {
+                        $('#companyTelCode').prop('selectedIndex', 0);
+                        $('#companyTel').val(fullCompanyTel);
+                    }
                 }
+
                 //홈페이지
                 let companyHomepage = preExhibitorInfo.companyHomepage;
                 if(nvl(companyHomepage,'') !== ''){
                     $('#companyHomepage').val(companyHomepage);
                     $('input[type=checkbox][name=noPage]').prop('checked', false);
                 }
-                //Fax
-                let companyFax = preExhibitorInfo.companyFax;
-                if(nvl(companyFax,'') !== ''){
-                    $('#companyFax').val(companyFax);
+
+                //Fax (국가코드 분리)
+                let fullCompanyFax = preExhibitorInfo.companyFax;
+                if(nvl(fullCompanyFax,'') !== ''){
+                    if(fullCompanyFax.includes(' ')) {
+                        let parts = fullCompanyFax.split(' ');
+                        $('#companyFaxCode').val(parts[0]).prop('selected', true);
+                        $('#companyFax').val(parts[1]);
+                    } else {
+                        $('#companyFaxCode').prop('selectedIndex', 0);
+                        $('#companyFax').val(fullCompanyFax);
+                    }
                 }
+
+                // [추가] 산업 분류 (industryPart, industryPartEtc)
+                let industryPart = preExhibitorInfo.industryPart;
+                if(nvl(industryPart,'') !== ''){
+                    $('#industryPart').val(industryPart).prop('selected', true).trigger('change');
+                }
+                let industryPartEtc = preExhibitorInfo.industryPartEtc;
+                if(nvl(industryPartEtc,'') !== ''){
+                    $('#industryPartEtc').val(industryPartEtc);
+                }
+
                 //기참가연도
                 let prePartYear = preExhibitorInfo.prePartYear;
                 if(nvl(prePartYear,'') !== ''){
@@ -212,16 +268,33 @@ function f_pre_exhibitor_info_call(){
                 if(nvl(depart,'') !== ''){
                     $('#depart').val(depart);
                 }
-                //전화번호
-                let tel = preExhibitorInfo.tel;
-                if(nvl(tel,'') !== ''){
-                    $('#tel').val(tel);
+
+                //담당자 전화번호 (국가코드 분리)
+                let fullTel = preExhibitorInfo.tel;
+                if(nvl(fullTel,'') !== ''){
+                    if(fullTel.includes(' ')) {
+                        let parts = fullTel.split(' ');
+                        $('#telCode').val(parts[0]).prop('selected', true);
+                        $('#tel').val(parts[1]);
+                    } else {
+                        $('#telCode').prop('selectedIndex', 0);
+                        $('#tel').val(fullTel);
+                    }
                 }
-                //휴대전화
-                let phone = preExhibitorInfo.phone;
-                if(nvl(phone,'') !== ''){
-                    $('#phone').val(phone);
+
+                //담당자 휴대전화 (국가코드 분리)
+                let fullPhone = preExhibitorInfo.phone;
+                if(nvl(fullPhone,'') !== ''){
+                    if(fullPhone.includes(' ')) {
+                        let parts = fullPhone.split(' ');
+                        $('#phoneCode').val(parts[0]).prop('selected', true);
+                        $('#phone').val(parts[1]);
+                    } else {
+                        $('#phoneCode').prop('selectedIndex', 0);
+                        $('#phone').val(fullPhone);
+                    }
                 }
+
                 //이메일
                 let fullEmail = preExhibitorInfo.email;
                 if(nvl(fullEmail,'') !== ''){
@@ -244,11 +317,18 @@ function f_pre_exhibitor_info_call(){
                 if(nvl(companyIntroEn,'') !== ''){
                     $('#companyIntroEn').val(companyIntroEn);
                 }
-                //KIBS 참가목적
+
+                //KIBS 참가목적 (국문)
                 let companyPurposeKo = preExhibitorInfo.companyPurposeKo;
                 if(nvl(companyPurposeKo,'') !== ''){
                     $('#companyPurposeKo').val(companyPurposeKo).prop('selected', true).trigger('change');
                 }
+                // [추가] KIBS 참가목적 (영문)
+                let companyPurposeEn = preExhibitorInfo.companyPurposeEn;
+                if(nvl(companyPurposeEn,'') !== ''){
+                    $('#companyPurposeEn').val(companyPurposeEn).prop('selected', true).trigger('change');
+                }
+
                 //신제품출품 사항 소개(국)
                 let newItemIntroKo = preExhibitorInfo.newItemIntroKo;
                 if(nvl(newItemIntroKo,'') !== ''){
@@ -264,15 +344,57 @@ function f_pre_exhibitor_info_call(){
                 if(nvl(eventPlan,'') !== ''){
                     $('#promotionPlan').val(eventPlan);
                 }
-                //참가분야
-                let fieldPart = preExhibitorInfo.fieldPart;
-                if(nvl(fieldPart,'') !== ''){
-                    let partArr = fieldPart.toString().split('\^');
-                    for(let i=0; i<partArr.length; i++){
-                        $('input[type=checkbox][name=fieldPart][value="' + partArr[i] + '"]')
-                            .prop('checked', true)
-                            .trigger('change');
-                    }
+
+                // ★ [수정] 참가행사 및 분야 (새로운 영문 UI 구조 및 옵션 value에 맞춤 맵핑)
+                let fieldParticipatory = preExhibitorInfo.fieldParticipatory;
+                let fieldPart = preExhibitorInfo.fieldPart; // 과거 데이터
+
+                // 1. 만약 최근 구조(fieldParticipatory)로 저장된 이력이 있다면 바로 세팅
+                if (nvl(fieldParticipatory, '') !== '') {
+                    // 참가 행사 세팅
+                    $('input[type=radio][name=fieldParticipatory][value="' + fieldParticipatory + '"]').prop('checked', true).trigger('change');
+
+                    // 각 순위별 분야 세팅
+                    setTimeout(function() {
+                        let field1 = preExhibitorInfo.fieldParticipatory1;
+                        if(nvl(field1,'') !== '') $('#field1').val(field1).trigger('change');
+
+                        setTimeout(function() {
+                            let field2 = preExhibitorInfo.fieldParticipatory2;
+                            if(nvl(field2,'') !== '') $('#field2').val(field2).trigger('change');
+
+                            setTimeout(function() {
+                                let field3 = preExhibitorInfo.fieldParticipatory3;
+                                if(nvl(field3,'') !== '') $('#field3').val(field3);
+                            }, 100);
+                        }, 100);
+                    }, 100);
+                }
+                // 2. 최근 구조 데이터는 없고, 과거 데이터(fieldPart)만 남아있을 경우의 호환성 처리
+                else if (nvl(fieldPart, '') !== '') {
+                    // 과거 데이터는 전부 경기국제보트쇼(boatShow) 베이스이므로 행사 기본값 선택
+                    $('input[type=radio][name=fieldParticipatory][value="boatShow"]').prop('checked', true).trigger('change');
+
+                    let partArr = fieldPart.toString().split('^');
+
+                    // 콤보박스 구조에 맞게 순차적으로 세팅
+                    setTimeout(function() {
+                        if (partArr.length > 0 && nvl(partArr[0],'') !== '') {
+                            $('#field1').val(partArr[0]).trigger('change');
+                        }
+
+                        setTimeout(function() {
+                            if (partArr.length > 1 && nvl(partArr[1],'') !== '') {
+                                $('#field2').val(partArr[1]).trigger('change');
+                            }
+
+                            setTimeout(function() {
+                                if (partArr.length > 2 && nvl(partArr[2],'') !== '') {
+                                    $('#field3').val(partArr[2]);
+                                }
+                            }, 100);
+                        }, 100);
+                    }, 100);
                 }
 
                 //팝업닫기

@@ -134,6 +134,12 @@ function f_pre_exhibitor_info_call(){
             confirmButtonText: '확인'
         }).then((result) => {
             if (result.isConfirmed) {
+                // 사업자등록번호
+                let companyLicenseNum = preExhibitorInfo.companyLicenseNum;
+                if(nvl(companyLicenseNum,'') !== ''){
+                    $('#companyLicenseNum').val(companyLicenseNum);
+                }
+
                 //회사명(국)
                 let companyNameKo = preExhibitorInfo.companyNameKo;
                 if(nvl(companyNameKo,'') !== ''){
@@ -185,6 +191,18 @@ function f_pre_exhibitor_info_call(){
                 if(nvl(companyFax,'') !== ''){
                     $('#companyFax').val(companyFax);
                 }
+
+                // [추가] 산업 분류 (industryPart, industryPartEtc)
+                let industryPart = preExhibitorInfo.industryPart;
+                if(nvl(industryPart,'') !== ''){
+                    // select 태그 내에 존재하는 option인지 확인 후 세팅, 없으면 '기타' 처리 등 상황에 맞게 적용 가능
+                    $('#industryPart').val(industryPart).prop('selected', true).trigger('change');
+                }
+                let industryPartEtc = preExhibitorInfo.industryPartEtc;
+                if(nvl(industryPartEtc,'') !== ''){
+                    $('#industryPartEtc').val(industryPartEtc);
+                }
+
                 //기참가연도
                 let prePartYear = preExhibitorInfo.prePartYear;
                 if(nvl(prePartYear,'') !== ''){
@@ -258,11 +276,18 @@ function f_pre_exhibitor_info_call(){
                 if(nvl(companyIntroEn,'') !== ''){
                     $('#companyIntroEn').val(companyIntroEn);
                 }
-                //KIBS 참가목적
+                //KIBS 참가목적 (국문)
                 let companyPurposeKo = preExhibitorInfo.companyPurposeKo;
                 if(nvl(companyPurposeKo,'') !== ''){
                     $('#companyPurposeKo').val(companyPurposeKo).prop('selected', true).trigger('change');
                 }
+
+                // [추가] KIBS 참가목적 (영문)
+                let companyPurposeEn = preExhibitorInfo.companyPurposeEn;
+                if(nvl(companyPurposeEn,'') !== ''){
+                    $('#companyPurposeEn').val(companyPurposeEn).prop('selected', true).trigger('change');
+                }
+
                 //신제품출품 사항 소개(국)
                 let newItemIntroKo = preExhibitorInfo.newItemIntroKo;
                 if(nvl(newItemIntroKo,'') !== ''){
@@ -278,15 +303,58 @@ function f_pre_exhibitor_info_call(){
                 if(nvl(eventPlan,'') !== ''){
                     $('#promotionPlan').val(eventPlan);
                 }
-                //참가분야
-                let fieldPart = preExhibitorInfo.fieldPart;
-                if(nvl(fieldPart,'') !== ''){
-                    let partArr = fieldPart.toString().split('\^');
-                    for(let i=0; i<partArr.length; i++){
-                        $('input[type=checkbox][name=fieldPart][value="' + partArr[i] + '"]')
-                            .prop('checked', true)
-                            .trigger('change');
-                    }
+
+                // ★ [수정] 참가행사 및 분야 (새로운 UI 구조에 맞춤 맵핑)
+                let fieldParticipatory = preExhibitorInfo.fieldParticipatory;
+                let fieldPart = preExhibitorInfo.fieldPart; // 과거 데이터 (예: '보트&요트^해양관광')
+
+                // 1. 만약 최근 구조(fieldParticipatory)로 저장된 이력이 있다면 바로 세팅
+                if (nvl(fieldParticipatory, '') !== '') {
+                    // 참가 행사 세팅
+                    $('input[type=radio][name=fieldParticipatory][value="' + fieldParticipatory + '"]').prop('checked', true).trigger('change');
+
+                    // 각 순위별 분야 세팅
+                    // (trigger('change')를 통해 동적으로 하위 select 박스의 option들이 생성된 이후 값을 넣어줘야 함)
+                    setTimeout(function() {
+                        let field1 = preExhibitorInfo.fieldParticipatory1;
+                        if(nvl(field1,'') !== '') $('#field1').val(field1).trigger('change');
+
+                        setTimeout(function() {
+                            let field2 = preExhibitorInfo.fieldParticipatory2;
+                            if(nvl(field2,'') !== '') $('#field2').val(field2).trigger('change');
+
+                            setTimeout(function() {
+                                let field3 = preExhibitorInfo.fieldParticipatory3;
+                                if(nvl(field3,'') !== '') $('#field3').val(field3);
+                            }, 100);
+                        }, 100);
+                    }, 100);
+                }
+                // 2. 최근 구조 데이터는 없고, 과거 데이터(fieldPart)만 남아있을 경우의 호환성 처리
+                else if (nvl(fieldPart, '') !== '') {
+                    // 과거 데이터는 전부 경기국제보트쇼(boatShow) 베이스이므로 행사 기본값 선택
+                    $('input[type=radio][name=fieldParticipatory][value="boatShow"]').prop('checked', true).trigger('change');
+
+                    let partArr = fieldPart.toString().split('^');
+
+                    // 콤보박스 구조에 맞게 순차적으로 세팅
+                    setTimeout(function() {
+                        if (partArr.length > 0 && nvl(partArr[0],'') !== '') {
+                            $('#field1').val(partArr[0]).trigger('change');
+                        }
+
+                        setTimeout(function() {
+                            if (partArr.length > 1 && nvl(partArr[1],'') !== '') {
+                                $('#field2').val(partArr[1]).trigger('change');
+                            }
+
+                            setTimeout(function() {
+                                if (partArr.length > 2 && nvl(partArr[2],'') !== '') {
+                                    $('#field3').val(partArr[2]);
+                                }
+                            }, 100);
+                        }, 100);
+                    }, 100);
                 }
 
                 //팝업닫기

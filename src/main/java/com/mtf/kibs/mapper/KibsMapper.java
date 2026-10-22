@@ -330,6 +330,8 @@ public interface KibsMapper {
 
     BrochureDTO selectBrochureInfo(String year);
 
+    ExhibitorDTO selectPreExhibitorNewSingle(ExhibitorDTO exhibitorDTO);
+
     // ==============================================================
     // 사용자 로그인 보안 제어 (Fail Log)
     // ==============================================================

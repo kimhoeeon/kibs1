@@ -1352,7 +1352,51 @@ public class KibsServiceImpl implements KibsService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ExhibitorDTO processSelectPreExhibitorSingle(ExhibitorDTO exhibitorDTO) {
-        return kibsMapper.selectPreExhibitorSingle(exhibitorDTO);
+
+        // 1. 신규 테이블(26년도 이후)에서 먼저 이전 참가 이력 조회
+        ExhibitorDTO latestInfo = kibsMapper.selectPreExhibitorNewSingle(exhibitorDTO);
+
+        if (latestInfo != null) {
+            // ★ 핵심: exhibitor_new 테이블의 데이터는 암호화되어 있으므로 반드시 복호화(Decrypt) 처리 ★
+            try {
+                if (latestInfo.getCompanyAddress() != null && !latestInfo.getCompanyAddress().trim().isEmpty()) {
+                    latestInfo.setCompanyAddress(aes256Util.safeDecrypt(latestInfo.getCompanyAddress()));
+                }
+                if (latestInfo.getCompanyAddressDetail() != null && !latestInfo.getCompanyAddressDetail().trim().isEmpty()) {
+                    latestInfo.setCompanyAddressDetail(aes256Util.safeDecrypt(latestInfo.getCompanyAddressDetail()));
+                }
+                if (latestInfo.getFactoryAddress() != null && !latestInfo.getFactoryAddress().trim().isEmpty()) {
+                    latestInfo.setFactoryAddress(aes256Util.safeDecrypt(latestInfo.getFactoryAddress()));
+                }
+                if (latestInfo.getFactoryAddressDetail() != null && !latestInfo.getFactoryAddressDetail().trim().isEmpty()) {
+                    latestInfo.setFactoryAddressDetail(aes256Util.safeDecrypt(latestInfo.getFactoryAddressDetail()));
+                }
+                if (latestInfo.getCompanyTel() != null && !latestInfo.getCompanyTel().trim().isEmpty()) {
+                    latestInfo.setCompanyTel(aes256Util.safeDecrypt(latestInfo.getCompanyTel()));
+                }
+                if (latestInfo.getCompanyFax() != null && !latestInfo.getCompanyFax().trim().isEmpty()) {
+                    latestInfo.setCompanyFax(aes256Util.safeDecrypt(latestInfo.getCompanyFax()));
+                }
+                if (latestInfo.getTel() != null && !latestInfo.getTel().trim().isEmpty()) {
+                    latestInfo.setTel(aes256Util.safeDecrypt(latestInfo.getTel()));
+                }
+                if (latestInfo.getPhone() != null && !latestInfo.getPhone().trim().isEmpty()) {
+                    latestInfo.setPhone(aes256Util.safeDecrypt(latestInfo.getPhone()));
+                }
+                if (latestInfo.getEmail() != null && !latestInfo.getEmail().trim().isEmpty()) {
+                    latestInfo.setEmail(aes256Util.safeDecrypt(latestInfo.getEmail()));
+                }
+            } catch (Exception e) {
+                log.error("[PreExhibitorNew Decrypt Error] id: {}, msg: {}", latestInfo.getId(), e.getMessage());
+            }
+
+            return latestInfo;
+
+        } else {
+            // 2. 신규 테이블에 이력이 없다면 구형 테이블(25년도 이전)에서 조회
+            // (기존 구형 테이블은 평문 형태이므로 별도의 복호화 없이 기존 로직 그대로 반환)
+            return kibsMapper.selectPreExhibitorSingle(exhibitorDTO);
+        }
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})

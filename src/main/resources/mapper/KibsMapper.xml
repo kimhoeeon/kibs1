@@ -1117,6 +1117,51 @@
         LIMIT 1
     </select>
 
+    <select id="selectPreExhibitorNewSingle" parameterType="com.mtf.kibs.dto.ExhibitorDTO" resultType="com.mtf.kibs.dto.ExhibitorDTO">
+        /* 26년도 이후 신규 테이블에서 이전 참가 이력 조회 */
+        SELECT
+        id,
+        transfer_year AS transferYear,
+        company_license_num AS companyLicenseNum,
+        company_name_ko AS companyNameKo,
+        company_name_en AS companyNameEn,
+        company_address AS companyAddress,
+        company_address_detail AS companyAddressDetail,
+        factory_address AS factoryAddress,
+        factory_address_detail AS factoryAddressDetail,
+        company_ceo AS companyCeo,
+        company_tel AS companyTel,
+        company_homepage AS companyHomepage,
+        company_fax AS companyFax,
+        industry_part AS industryPart,
+        industry_part_etc AS industryPartEtc,
+        pre_part_year AS prePartYear,
+        member_company_yn AS memberCompanyYn,
+        name,
+        position,
+        depart,
+        tel,
+        phone,
+        email,
+        field_participatory AS fieldParticipatory,
+        field_participatory_1 AS fieldParticipatory1,
+        field_participatory_2 AS fieldParticipatory2,
+        field_participatory_3 AS fieldParticipatory3,
+        company_intro_video AS companyIntroVideo,
+        company_intro_ko AS companyIntroKo,
+        company_intro_en AS companyIntroEn,
+        company_purpose_ko AS companyPurposeKo,
+        company_purpose_en AS companyPurposeEn,
+        new_item_intro_ko AS newItemIntroKo,
+        new_item_intro_en AS newItemIntroEn,
+        promotion_plan AS promotionPlan
+        FROM exhibitor_new
+        WHERE id = #{id}
+        AND transfer_year <![CDATA[<]]> #{transferYear}
+        ORDER BY transfer_year DESC
+        LIMIT 1
+    </select>
+
     <select id="selectOnlineList" parameterType="java.lang.String" resultType="com.mtf.kibs.dto.MainOnlineDTO">
         /* com.mtf.kibs.mapper.KibsMapper.selectOnlineList */
         SELECT r.*
