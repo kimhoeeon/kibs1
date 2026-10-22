@@ -668,4 +668,7 @@ public interface KibsMngMapper {
 
     Integer deleteDirectory(DirectoryDTO directoryDTO);
 
+    // 삭제 로그 INSERT
+    Integer insertExhibitorDeleteLog(Map<String, Object> paramMap);
+
 }

@@ -2641,70 +2641,113 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteExhibitorNew(ExhibitorNewDTO exhibitorNewDTO) {
-        //System.out.println("KibsMngServiceImpl > processDeleteExhibitorNew");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
             if(exhibitorNewDTO.getSeq() != null){
+                String exSeq = exhibitorNewDTO.getSeq();
+
+                // ==========================================
+                // [안전 장치 1] 삭제 전 모든 데이터 JSON 백업
+                // ==========================================
+                Map<String, Object> backupMap = new HashMap<>();
+
+                // 1. 메인 정보
+                ExhibitorNewDTO req = new ExhibitorNewDTO();
+                req.setSeq(exSeq);
+                ExhibitorNewDTO baseInfo = kibsMngMapper.selectExhibitorNewSingle(req);
+                backupMap.put("baseInfo", baseInfo);
+
+                // 2. 하위 연관 테이블 데이터 (알맞은 Mapper 메서드 적용)
+                ChargeNewDTO chargeReq = new ChargeNewDTO(); chargeReq.setExSeq(exSeq);
+                backupMap.put("chargeList", kibsMngMapper.selectChargeNewList(chargeReq));
+
+                ProductNewDTO prodReq = new ProductNewDTO(); prodReq.setExSeq(exSeq);
+                backupMap.put("productList", kibsMngMapper.selectProductNewList(prodReq));
+
+                OnlineNewDTO onlineReq = new OnlineNewDTO(); onlineReq.setExSeq(exSeq);
+                backupMap.put("onlineList", kibsMngMapper.selectOnlineNewList(onlineReq));
+
+                // 출입증, 경품, 바이어는 이미 구현된 DetailList(String 파라미터) 메서드 사용
+                backupMap.put("passList", kibsMngMapper.selectExhibitorNewPassDetailList(exSeq));
+                backupMap.put("giftList", kibsMngMapper.selectExhibitorNewGiftDetailList(exSeq));
+                backupMap.put("buyerList", kibsMngMapper.selectExhibitorNewBuyerDetailList(exSeq));
+
+                backupMap.put("invoiceBoothList", kibsMngMapper.selectInvoiceBoothList(exSeq));
+                backupMap.put("invoiceUtilityList", kibsMngMapper.selectInvoiceUtilityList(exSeq));
+
+                // 디렉토리는 List 반환형식 메서드 사용
+                DirectoryDTO dirReq = new DirectoryDTO();
+                dirReq.setUserId(exSeq);
+                if(baseInfo != null) dirReq.setTransferYear(baseInfo.getTransferYear());
+                backupMap.put("directoryList", kibsMngMapper.selectDirectoryList(dirReq));
+
+                // 3. Jackson ObjectMapper로 JSON 변환
+                com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                String backupJson = mapper.writeValueAsString(backupMap);
+
+                // 4. 삭제자(관리자) ID 추출 (세션 이용)
+                String adminId = "SYSTEM";
+                try {
+                    org.springframework.web.context.request.ServletRequestAttributes attr = (org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes();
+                    javax.servlet.http.HttpSession session = attr.getRequest().getSession(false);
+                    if(session != null && session.getAttribute("id") != null) {
+                        adminId = (String) session.getAttribute("id");
+                    }
+                } catch(Exception e) {}
+
+                // 5. 로그 테이블 INSERT
+                Map<String, Object> logParam = new HashMap<>();
+                logParam.put("exSeq", exSeq);
+                logParam.put("deletedBy", adminId);
+                logParam.put("backupData", backupJson);
+                kibsMngMapper.insertExhibitorDeleteLog(logParam);
+
+                // ==========================================
+                // [기존 로직] 실제 물리적 삭제
+                // ==========================================
                 result = kibsMngMapper.deleteExhibitorNew(exhibitorNewDTO);
 
                 if(result == 0){
                     resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + exhibitorNewDTO.getSeq();
-                }else{
+                    resultMessage = "[Data Delete Fail] Seq : " + exSeq;
+                } else {
                     /* charge_new */
-                    ChargeNewDTO chargeNewDTO = new ChargeNewDTO();
-                    chargeNewDTO.setExSeq(exhibitorNewDTO.getSeq());
-                    Integer chargeNewResult = kibsMngMapper.deleteChargeNew(chargeNewDTO);
-
+                    kibsMngMapper.deleteChargeNew(chargeReq);
                     /* product_new */
-                    ProductNewDTO productNewDTO = new ProductNewDTO();
-                    productNewDTO.setExSeq(exhibitorNewDTO.getSeq());
-                    Integer productNewResult = kibsMngMapper.deleteProductNew(productNewDTO);
-
+                    kibsMngMapper.deleteProductNew(prodReq);
                     /* online_new */
-                    OnlineNewDTO onlineNewDTO = new OnlineNewDTO();
-                    onlineNewDTO.setExSeq(exhibitorNewDTO.getSeq());
-                    Integer onlineNewResult = kibsMngMapper.deleteOnlineNew(onlineNewDTO);
-
+                    kibsMngMapper.deleteOnlineNew(onlineReq);
                     /* pass_new */
-                    PassNewDTO passNewDTO = new PassNewDTO();
-                    passNewDTO.setExSeq(exhibitorNewDTO.getSeq());
-                    Integer passNewResult = kibsMngMapper.deletePassNew(passNewDTO);
-
+                    PassNewDTO passReq = new PassNewDTO(); passReq.setExSeq(exSeq);
+                    kibsMngMapper.deletePassNew(passReq);
                     /* gift_new */
-                    GiftNewDTO giftNewDTO = new GiftNewDTO();
-                    giftNewDTO.setExSeq(exhibitorNewDTO.getSeq());
-                    Integer giftNewResult = kibsMngMapper.deleteGiftNew(giftNewDTO);
-
+                    GiftNewDTO giftReq = new GiftNewDTO(); giftReq.setExSeq(exSeq);
+                    kibsMngMapper.deleteGiftNew(giftReq);
                     /* buyer_new */
-                    BuyerNewDTO buyerNewDTO = new BuyerNewDTO();
-                    buyerNewDTO.setExSeq(exhibitorNewDTO.getSeq());
-                    Integer buyerNewResult = kibsMngMapper.deleteBuyerNew(buyerNewDTO);
+                    BuyerNewDTO buyerReq = new BuyerNewDTO(); buyerReq.setExSeq(exSeq);
+                    kibsMngMapper.deleteBuyerNew(buyerReq);
 
                     /* invoice_booth */
                     InvoiceBoothDTO invoiceBoothDTO = new InvoiceBoothDTO();
-                    invoiceBoothDTO.setExhibitorSeq(exhibitorNewDTO.getSeq());
-                    Integer invoiceBoothResult = kibsMngMapper.deleteExhibitorNewInvoiceBooth(invoiceBoothDTO);
+                    invoiceBoothDTO.setExhibitorSeq(exSeq);
+                    kibsMngMapper.deleteExhibitorNewInvoiceBooth(invoiceBoothDTO);
 
                     /* invoice_utility */
                     InvoiceUtilityDTO invoiceUtilityDTO = new InvoiceUtilityDTO();
-                    invoiceUtilityDTO.setExhibitorSeq(exhibitorNewDTO.getSeq());
-                    Integer invoiceUtilityResult = kibsMngMapper.deleteExhibitorNewInvoiceUtility(invoiceUtilityDTO);
+                    invoiceUtilityDTO.setExhibitorSeq(exSeq);
+                    kibsMngMapper.deleteExhibitorNewInvoiceUtility(invoiceUtilityDTO);
 
-                    /* file */
+                    /* file (DB MetaData) */
                     FileDTO fileDTO = new FileDTO();
-                    fileDTO.setUserId(exhibitorNewDTO.getSeq());
+                    fileDTO.setUserId(exSeq);
                     commMapper.deleteFileUserId(fileDTO);
 
                     /* Directory */
-                    DirectoryDTO directoryDTO = new DirectoryDTO();
-                    directoryDTO.setUserId(exhibitorNewDTO.getSeq());
-                    kibsMngMapper.deleteDirectory(directoryDTO);
+                    kibsMngMapper.deleteDirectory(dirReq);
                 }
-                //System.out.println(result);
             }else{
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Seq Not Found Error]";
@@ -2723,40 +2766,80 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
     @Override
     public ResponseDTO processDeleteParticipantCompany(ExhibitorDTO exhibitorDTO) {
-        //System.out.println("KibsMngServiceImpl > processDeleteParticipantCompany");
         ResponseDTO responseDTO = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         Integer result = 0;
         try {
             if(exhibitorDTO.getSeq() != null){
+                String exSeq = exhibitorDTO.getSeq();
+
+                // ==========================================
+                // [안전 장치 1] 구 버전(25년 이전) 삭제 전 백업
+                // ==========================================
+                Map<String, Object> backupMap = new HashMap<>();
+
+                ExhibitorDTO req = new ExhibitorDTO(); req.setSeq(exSeq);
+                ExhibitorDTO baseInfo = kibsMngMapper.selectExhibitorSingle(req);
+                backupMap.put("baseInfo", baseInfo);
+
+                ChargePersonDTO cReq = new ChargePersonDTO(); cReq.setId(exSeq);
+                backupMap.put("chargeList", kibsMngMapper.selectChargeList(cReq));
+
+                DisplayDTO dReq = new DisplayDTO(); dReq.setId(exSeq);
+                backupMap.put("displayList", kibsMngMapper.selectDisplayList(dReq));
+
+                OnlineDTO oReq = new OnlineDTO(); oReq.setId(exSeq);
+                backupMap.put("onlineList", kibsMngMapper.selectOnlineList(oReq));
+
+                // 출입증, 경품, 바이어는 이미 구현된 DetailList(String 파라미터) 메서드 사용
+                backupMap.put("passList", kibsMngMapper.selectPassDetailList(exSeq));
+                backupMap.put("giftList", kibsMngMapper.selectGiftDetailList(exSeq));
+                backupMap.put("buyerList", kibsMngMapper.selectBuyerDetailList(exSeq));
+
+                // 디렉토리는 List 반환형식 메서드 사용
+                DirectoryDTO dirReq = new DirectoryDTO(); dirReq.setUserId(exSeq);
+                if(baseInfo != null) dirReq.setTransferYear(baseInfo.getTransferYear());
+                backupMap.put("directoryList", kibsMngMapper.selectDirectoryList(dirReq));
+
+                com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                String backupJson = mapper.writeValueAsString(backupMap);
+
+                String adminId = "SYSTEM";
+                try {
+                    org.springframework.web.context.request.ServletRequestAttributes attr = (org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes();
+                    javax.servlet.http.HttpSession session = attr.getRequest().getSession(false);
+                    if(session != null && session.getAttribute("id") != null) {
+                        adminId = (String) session.getAttribute("id");
+                    }
+                } catch(Exception e) {}
+
+                Map<String, Object> logParam = new HashMap<>();
+                logParam.put("exSeq", exSeq);
+                logParam.put("deletedBy", adminId);
+                logParam.put("backupData", backupJson);
+                kibsMngMapper.insertExhibitorDeleteLog(logParam);
+
+                // ==========================================
+                // [기존 로직] 실제 물리적 삭제
+                // ==========================================
                 result = kibsMngMapper.deleteParticipantCompany(exhibitorDTO);
 
                 if(result == 0){
                     resultCode = CommConstants.RESULT_CODE_FAIL;
-                    resultMessage = "[Data Delete Fail] Seq : " + exhibitorDTO.getSeq();
+                    resultMessage = "[Data Delete Fail] Seq : " + exSeq;
                 }else{
                     /* display */
-                    DisplayDTO displayDTO = new DisplayDTO();
-                    displayDTO.setId(exhibitorDTO.getSeq());
-                    Integer displayResult = kibsMngMapper.deleteParticipantCompanyDisplay(displayDTO);
-
+                    kibsMngMapper.deleteParticipantCompanyDisplay(dReq);
                     /* online */
-                    OnlineDTO onlineDTO = new OnlineDTO();
-                    onlineDTO.setId(exhibitorDTO.getSeq());
-                    Integer onlineResult = kibsMngMapper.deleteParticipantCompanyOnline(onlineDTO);
-
+                    kibsMngMapper.deleteParticipantCompanyOnline(oReq);
                     /* buyer */
                     BuyerDTO buyerDTO = new BuyerDTO();
-                    buyerDTO.setId(exhibitorDTO.getSeq());
-                    Integer buyerResult = kibsMngMapper.deleteParticipantCompanyBuyer(buyerDTO);
-
-                    /* Directory */
-                    DirectoryDTO directoryDTO = new DirectoryDTO();
-                    directoryDTO.setUserId(exhibitorDTO.getSeq());
-                    kibsMngMapper.deleteDirectory(directoryDTO);
+                    buyerDTO.setId(exSeq);
+                    kibsMngMapper.deleteParticipantCompanyBuyer(buyerDTO);
+                    /* directory */
+                    kibsMngMapper.deleteDirectory(dirReq);
                 }
-                //System.out.println(result);
             }else{
                 resultCode = CommConstants.RESULT_CODE_FAIL;
                 resultMessage = "[Seq Not Found Error]";

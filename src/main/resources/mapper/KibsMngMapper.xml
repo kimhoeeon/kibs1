@@ -6638,4 +6638,13 @@
         DELETE FROM directory
         WHERE user_id = #{userId}
     </delete>
+
+    <!-- 참가업체 삭제 이력 저장 -->
+    <insert id="insertExhibitorDeleteLog" parameterType="java.util.Map">
+        /* com.mtf.kibs.mapper.KibsMngMapper.insertExhibitorDeleteLog */
+        INSERT INTO exhibitor_delete_log
+            (ex_seq, deleted_by, backup_data, deleted_dttm)
+        VALUES
+            (#{exSeq}, #{deletedBy}, #{backupData}, NOW())
+    </insert>
 </mapper>
