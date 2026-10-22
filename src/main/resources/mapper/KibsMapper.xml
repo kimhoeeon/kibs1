@@ -46,18 +46,35 @@
     <select id="preGetExhibitorEmail" parameterType="com.mtf.kibs.dto.ExhibitorDTO" resultType="java.lang.String">
         /* com.mtf.kibs.mapper.KibsMapper.preGetExhibitorNewEmail */
         SELECT distinct r.email
-        FROM ( SELECT e.email as email
-               FROM exhibitor e
-               WHERE e.id = #{id}
-                 AND e.email IS NOT NULL
-               UNION ALL
-               SELECT c.charge_person_email as email
-               FROM charge c
-               WHERE c.charge_person_email IS NOT NULL
-                 AND c.id IN ( SELECT e.seq
-                               FROM exhibitor e
-                               WHERE e.id = #{id} )
-               ) r
+        FROM (
+                 /* 1. 구형 테이블 (25년 이전) - exhibitor, charge */
+                 SELECT e.email as email
+                 FROM exhibitor e
+                 WHERE e.id = #{id}
+                   AND e.email IS NOT NULL
+                 UNION ALL
+                 SELECT c.charge_person_email as email
+                 FROM charge c
+                 WHERE c.charge_person_email IS NOT NULL
+                   AND c.id IN ( SELECT e.seq
+                                 FROM exhibitor e
+                                 WHERE e.id = #{id} )
+
+                 UNION ALL
+
+                 /* 2. 신규 테이블 (26년 이후) - exhibitor_new, charge_new */
+                 SELECT en.email as email
+                 FROM exhibitor_new en
+                 WHERE en.id = #{id}
+                   AND en.email IS NOT NULL
+                 UNION ALL
+                 SELECT cn.charge_person_email as email
+                 FROM charge_new cn
+                 WHERE cn.charge_person_email IS NOT NULL
+                   AND cn.ex_seq IN ( SELECT en.seq
+                                      FROM exhibitor_new en
+                                      WHERE en.id = #{id} )
+             ) r
         WHERE r.email != ''
     </select>
 
@@ -1157,7 +1174,6 @@
         promotion_plan AS promotionPlan
         FROM exhibitor_new
         WHERE id = #{id}
-        AND transfer_year <![CDATA[<]]> #{transferYear}
         ORDER BY transfer_year DESC
         LIMIT 1
     </select>
