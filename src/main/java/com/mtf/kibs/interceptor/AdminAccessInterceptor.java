@@ -3,6 +3,7 @@ package com.mtf.kibs.interceptor;
 import com.mtf.kibs.dto.AccessDTO;
 import com.mtf.kibs.dto.ResponseDTO;
 import com.mtf.kibs.service.KibsMngService;
+import com.mtf.kibs.util.ClientIpResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -16,14 +17,15 @@ public class AdminAccessInterceptor implements HandlerInterceptor {
     @Autowired
     private KibsMngService kibsMngService;
 
+    @Autowired
+    private ClientIpResolver clientIpResolver;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // 1. 프록시(L4/WAF) 환경을 고려한 실제 IP 추출
-        String clientIp = request.getHeader("X-Forwarded-For");
-        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getHeader("Proxy-Client-IP");
-        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getHeader("WL-Proxy-Client-IP");
-        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getRemoteAddr();
-        if (clientIp != null && clientIp.contains(",")) clientIp = clientIp.split(",")[0].trim();
+        // 1. 실제 IP 추출
+        //    X-Forwarded-For 등 프록시 헤더는 클라이언트가 위조할 수 있어 기본적으로 무시한다.
+        //    (프록시 뒤 운영 시 security.trust-proxy-headers=true 로 설정, ClientIpResolver 참고)
+        String clientIp = clientIpResolver.resolve(request);
 
         // 2. IP 화이트리스트 검사
         AccessDTO dto = new AccessDTO();

@@ -12,6 +12,9 @@ import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.CommService;
 import com.mtf.kibs.service.KibsService;
 import com.mtf.kibs.util.AES256Util;
+import com.mtf.kibs.util.ApplyPeriod;
+import com.mtf.kibs.util.ClientIpResolver;
+import com.mtf.kibs.util.TesterAccessChecker;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,6 +57,12 @@ public class KibsController {
 
     @Autowired
     private AES256Util aes256Util;
+
+    @Autowired
+    private ClientIpResolver clientIpResolver;
+
+    @Autowired
+    private TesterAccessChecker testerAccessChecker; // 신청 기간 외 테스트 허용(접근 IP 화이트리스트 / 관리자 세션) 판정
 
     public KibsController(KibsService ks, CommService cs){
         this.kibsService = ks;
@@ -376,25 +385,13 @@ public class KibsController {
     //***************************************************************************
 
     @RequestMapping(value = "/apply/step01.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView apply_step01(String mode, ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+    public ModelAndView apply_step01(String mode, ExhibitorNewDTO exhibitorNewDTO, HttpSession session, HttpServletRequest request) {
         //System.out.println("KibsController > apply_step01");
         ModelAndView mv = new ModelAndView();
 
-        if(mode != null && !mode.isEmpty()){
-            mv.addObject("mode", mode);
-        }else {
-            DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-            String today = dateFormat.format(new Date());
-            if (Long.parseLong(today) > Long.parseLong("202610210859")) {
-                if (Long.parseLong(today) > Long.parseLong("202612312359")) {
-                    mv.addObject("mode", "close");
-                } else {
-                    mv.addObject("mode", "open");
-                }
-            }else{
-                mv.addObject("mode", "soon");
-            }
-        }
+        // 신청 기간은 ApplyPeriod 에서 일괄 판정. ?mode= 파라미터는 테스터(접근 IP 화이트리스트 IP / 관리자 세션)에게만 미리보기 용도로 허용
+        boolean tester = ApplyPeriod.hasRequestedMode(mode) && testerAccessChecker.isTester(request, session);
+        mv.addObject("mode", ApplyPeriod.resolveMode(mode, ApplyPeriod.exhibitorMode(), tester));
 
         /* 기본정보 - 참가업체 정보 */
         ExhibitorNewDTO exInfo = null;
@@ -882,24 +879,12 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/visitor/apply.do", method = RequestMethod.GET)
-    public ModelAndView visitor_apply(String mode) {
+    public ModelAndView visitor_apply(String mode, HttpSession session, HttpServletRequest request) {
         //System.out.println("KibsController > visitor_apply");
         ModelAndView mv = new ModelAndView();
-        if(mode != null && !mode.isEmpty()){
-            mv.addObject("mode", mode);
-        }else {
-            DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-            String today = dateFormat.format(new Date());
-            if (Long.parseLong(today) > Long.parseLong("202701010859")) {
-                if (Long.parseLong(today) > Long.parseLong("202703092359")) {
-                    mv.addObject("mode", "close");
-                }else{
-                    mv.addObject("mode", "open");
-                }
-            }else{
-                mv.addObject("mode", "soon");
-            }
-        }
+        // 사전등록 기간은 ApplyPeriod 에서 일괄 판정. ?mode= 파라미터는 테스터(접근 IP 화이트리스트 IP / 관리자 세션)에게만 미리보기 용도로 허용
+        boolean tester = ApplyPeriod.hasRequestedMode(mode) && testerAccessChecker.isTester(request, session);
+        mv.addObject("mode", ApplyPeriod.resolveMode(mode, ApplyPeriod.visitorMode(), tester));
         mv.setViewName("/visitor/apply");
         return mv;
     }
@@ -922,14 +907,10 @@ public class KibsController {
 
     @RequestMapping(value = "/visitor/preApplyCheck.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Object> visitor_preApplyCheck(@RequestBody VisitorDTO visitorDTO, HttpServletRequest request) {
+    public ResponseEntity<Object> visitor_preApplyCheck(@RequestBody VisitorDTO visitorDTO, HttpServletRequest request, HttpSession session) {
 
-        // 실제 IP 추출 (프록시/L4 방어)
-        String clientIp = request.getHeader("X-Forwarded-For");
-        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getHeader("Proxy-Client-IP");
-        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getHeader("WL-Proxy-Client-IP");
-        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getRemoteAddr();
-        if (clientIp != null && clientIp.contains(",")) clientIp = clientIp.split(",")[0].trim();
+        // 실제 IP 추출 (프록시 헤더 신뢰 여부는 ClientIpResolver 설정에 따름)
+        String clientIp = clientIpResolver.resolve(request);
 
         VisitorDTO result = null;
         String originalPhone = visitorDTO.getPhone();
@@ -993,21 +974,72 @@ public class KibsController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
 
+        // 이름+휴대전화로 본인 확인된 참관객 seq 를 세션에 보관 → 마이페이지/수정/동반자삭제 접근 권한 근거로 사용
+        if (result != null && result.getSeq() != null && !result.getSeq().isEmpty()) {
+            session.setAttribute("visitorSeq", result.getSeq());
+        }
+
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    /** 세션에 보관된 참관객 seq 와 요청 seq 가 일치하는지(또는 관리자인지) 확인 */
+    private boolean isVisitorOwner(String seq, HttpSession session) {
+        if (seq == null || seq.isEmpty() || session == null) return false;
+        if (ApplyPeriod.isAdmin(session)) return true;
+        Object sessSeq = session.getAttribute("visitorSeq");
+        return sessSeq != null && seq.equals(String.valueOf(sessSeq));
     }
 
     @RequestMapping(value = "/visitor/save.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> visitor_save(@RequestBody VisitorDTO visitorDTO) {
+    public ResponseEntity<ResponseDTO> visitor_save(@RequestBody VisitorDTO visitorDTO, HttpSession session, HttpServletRequest request) {
         //System.out.println("KibsController > visitor_save");
-        ResponseDTO response = kibsService.processSaveVisitor(visitorDTO);
+        boolean isEnglish = "EN".equals(visitorDTO.getLang());
+        boolean isNew = visitorDTO.getSeq() == null || visitorDTO.getSeq().isEmpty();
+
+        ResponseDTO response = new ResponseDTO();
+        response.setResultCode(CommConstants.RESULT_CODE_FAIL);
+
+        if (isNew) {
+            // 신규 등록은 서버에서도 사전등록 기간을 검사 (화면 mode 파라미터 우회 방지)
+            // 기간 외에는 테스터(접근 IP 화이트리스트 IP / 관리자 세션)만 저장 가능
+            if (!ApplyPeriod.isVisitorOpen() && !testerAccessChecker.isTester(request, session)) {
+                response.setResultMessage(isEnglish
+                        ? "Visitor pre-registration is not open at this time."
+                        : "참관객 사전등록 신청 기간이 아닙니다.");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+        } else {
+            // 수정은 본인 확인(참관신청확인)을 거친 seq 만 허용
+            if (!isVisitorOwner(visitorDTO.getSeq(), session)) {
+                response.setResultMessage(isEnglish
+                        ? "Please verify your registration first."
+                        : "참관신청확인을 먼저 진행해 주세요.");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+        }
+
+        response = kibsService.processSaveVisitor(visitorDTO);
+
+        // 저장 성공 시 해당 seq 를 세션에 보관 (완료 페이지 → 마이페이지 이동 허용)
+        if (CommConstants.RESULT_CODE_SUCCESS.equals(response.getResultCode())
+                && response.getCustomValue() != null && !response.getCustomValue().isEmpty()) {
+            session.setAttribute("visitorSeq", response.getCustomValue());
+        }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/visitor/mypage.do", method = RequestMethod.GET)
-    public ModelAndView visitor_mypage(String seq) {
+    public ModelAndView visitor_mypage(String seq, HttpSession session) {
         //System.out.println("KibsController > visitor_mypage");
         ModelAndView mv = new ModelAndView();
+
+        // seq 만으로 타인의 개인정보가 열리지 않도록, 참관신청확인(이름+휴대전화)을 거친 세션만 허용
+        if (!isVisitorOwner(seq, session)) {
+            mv.setViewName("redirect:/visitor/login.do");
+            return mv;
+        }
+
         VisitorDTO info = kibsService.processSelectVisitorSingle(seq);
 
         if(info != null){
@@ -1022,9 +1054,27 @@ public class KibsController {
 
     @RequestMapping(value = "/visitor/mypage/deletePartner.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> visitor_mypage_deletePartner(@RequestBody PartnerDTO partnerDTO) {
+    public ResponseEntity<ResponseDTO> visitor_mypage_deletePartner(@RequestBody PartnerDTO partnerDTO, HttpSession session) {
         //System.out.println("KibsController > visitor_mypage_deletePartner");
         //System.out.println(displayDTO.toString());
+
+        // 세션의 참관객에게 속한 동반자만 삭제 가능
+        Object sessSeq = session.getAttribute("visitorSeq");
+        boolean owned = false;
+        if (sessSeq != null && partnerDTO.getSeq() != null) {
+            List<PartnerDTO> partners = kibsService.processSelectPartnerList(String.valueOf(sessSeq));
+            if (partners != null) {
+                for (PartnerDTO p : partners) {
+                    if (partnerDTO.getSeq().equals(p.getSeq())) { owned = true; break; }
+                }
+            }
+        }
+        if (!owned && !ApplyPeriod.isAdmin(session)) {
+            ResponseDTO denied = new ResponseDTO();
+            denied.setResultCode(CommConstants.RESULT_CODE_FAIL);
+            denied.setResultMessage("삭제 권한이 없습니다. 참관신청확인을 먼저 진행해 주세요.");
+            return new ResponseEntity<>(denied, HttpStatus.OK);
+        }
 
         ResponseDTO responseDTO = kibsService.processDeletePartner(partnerDTO);
 
@@ -2608,12 +2658,8 @@ public class KibsController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> exhibit_loginForm(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session, HttpServletRequest request) {
 
-        // 실제 IP 추출 (프록시/L4 방어)
-        String clientIp = request.getHeader("X-Forwarded-For");
-        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getHeader("Proxy-Client-IP");
-        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getHeader("WL-Proxy-Client-IP");
-        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) clientIp = request.getRemoteAddr();
-        if (clientIp != null && clientIp.contains(",")) clientIp = clientIp.split(",")[0].trim();
+        // 실제 IP 추출 (프록시 헤더 신뢰 여부는 ClientIpResolver 설정에 따름)
+        String clientIp = clientIpResolver.resolve(request);
 
         // 서비스 단에서 로그인 보안 로직 처리 (실패/차단 포함)
         Map<String, Object> response = kibsService.loginWithFailCheck(exhibitorNewDTO, session, clientIp);
@@ -2652,9 +2698,21 @@ public class KibsController {
 
     @RequestMapping(value = "/apply/step/insertExhibitorNew.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<ResponseDTO> insertExhibitorNew(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+    public ResponseEntity<ResponseDTO> insertExhibitorNew(@RequestBody ExhibitorNewDTO exhibitorNewDTO, HttpSession session, HttpServletRequest request) {
         //System.out.println("KibsController > insertExhibitorNew");
         //System.out.println(exhibitorDTO.toString());
+
+        // 신규 참가신청은 서버에서도 신청 기간을 검사 (화면 mode 파라미터 우회 방지)
+        // 기간 외에는 테스터(접근 IP 화이트리스트 IP / 관리자 세션)만 저장 가능
+        if (!ApplyPeriod.isExhibitorOpen() && !testerAccessChecker.isTester(request, session)) {
+            ResponseDTO closed = new ResponseDTO();
+            closed.setResultCode(CommConstants.RESULT_CODE_FAIL);
+            closed.setResultMessage("EN".equals(exhibitorNewDTO.getLang())
+                    ? "Exhibitor application is not open at this time."
+                    : "참가기업 신청 기간이 아닙니다.");
+            return new ResponseEntity<>(closed, HttpStatus.OK);
+        }
+
         ResponseDTO response = kibsService.processInsertExhibitorNew(exhibitorNewDTO);
         if(response.getResultCode().equals("0")){
             session.setAttribute("id", exhibitorNewDTO.getId());

@@ -7,6 +7,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.mtf.kibs.constants.CommConstants;
 import com.mtf.kibs.dto.*;
+import com.mtf.kibs.util.ApplyPeriod;
+import com.mtf.kibs.util.TesterAccessChecker;
 import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.CommService;
 import com.mtf.kibs.service.KibsService;
@@ -46,6 +48,9 @@ public class KibsEnController {
     private final CommService commService;
 
     private final String transferYear = "2027";
+
+    @Autowired
+    private TesterAccessChecker testerAccessChecker; // 신청 기간 외 테스트 허용(접근 IP 화이트리스트 / 관리자 세션) 판정
 
     public KibsEnController(KibsService ks, CommService cs){
         this.kibsService = ks;
@@ -404,25 +409,13 @@ public class KibsEnController {
     //***************************************************************************
 
     @RequestMapping(value = "/eng/apply/step01.do", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView eng_apply_step01(String mode, ExhibitorNewDTO exhibitorNewDTO, HttpSession session) {
+    public ModelAndView eng_apply_step01(String mode, ExhibitorNewDTO exhibitorNewDTO, HttpSession session, HttpServletRequest request) {
         //System.out.println("KibsController > apply_step01");
         ModelAndView mv = new ModelAndView();
 
-        if(mode != null && !mode.isEmpty()){
-            mv.addObject("mode", mode);
-        }else {
-            DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-            String today = dateFormat.format(new Date());
-            if (Long.parseLong(today) > Long.parseLong("202610210859")) {
-                if (Long.parseLong(today) > Long.parseLong("202612312359")) {
-                    mv.addObject("mode", "close");
-                } else {
-                    mv.addObject("mode", "open");
-                }
-            }else{
-                mv.addObject("mode", "soon");
-            }
-        }
+        // 신청 기간은 ApplyPeriod 에서 일괄 판정. ?mode= 파라미터는 테스터(접근 IP 화이트리스트 IP / 관리자 세션)에게만 미리보기 용도로 허용
+        boolean tester = ApplyPeriod.hasRequestedMode(mode) && testerAccessChecker.isTester(request, session);
+        mv.addObject("mode", ApplyPeriod.resolveMode(mode, ApplyPeriod.exhibitorMode(), tester));
 
         /* 기본정보 - 참가업체 정보 */
         ExhibitorNewDTO exInfo = null;
@@ -848,24 +841,12 @@ public class KibsEnController {
     //***************************************************************************
 
     @RequestMapping(value = "/eng/buyer/apply.do", method = RequestMethod.GET)
-    public ModelAndView eng_buyer_apply(String mode) {
+    public ModelAndView eng_buyer_apply(String mode, HttpSession session, HttpServletRequest request) {
         //System.out.println("KibsController > visitor_apply");
         ModelAndView mv = new ModelAndView();
-        if(mode != null && !mode.isEmpty()){
-            mv.addObject("mode", mode);
-        }else {
-            DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-            String today = dateFormat.format(new Date());
-            if (Long.parseLong(today) > Long.parseLong("202701010859")) {
-                if (Long.parseLong(today) > Long.parseLong("202703092359")) {
-                    mv.addObject("mode", "close");
-                }else{
-                    mv.addObject("mode", "open");
-                }
-            }else{
-                mv.addObject("mode", "soon");
-            }
-        }
+        // 사전등록 기간은 ApplyPeriod 에서 일괄 판정. ?mode= 파라미터는 테스터(접근 IP 화이트리스트 IP / 관리자 세션)에게만 미리보기 용도로 허용
+        boolean tester = ApplyPeriod.hasRequestedMode(mode) && testerAccessChecker.isTester(request, session);
+        mv.addObject("mode", ApplyPeriod.resolveMode(mode, ApplyPeriod.visitorMode(), tester));
         mv.setViewName("/eng/buyer/apply");
         return mv;
     }
@@ -911,9 +892,19 @@ public class KibsEnController {
     }
 
     @RequestMapping(value = "/eng/buyer/mypage.do", method = RequestMethod.GET)
-    public ModelAndView eng_buyer_mypage(String seq) {
+    public ModelAndView eng_buyer_mypage(String seq, HttpSession session) {
         //System.out.println("KibsController > eng_buyer_mypage");
         ModelAndView mv = new ModelAndView();
+
+        // seq 만으로 타인의 개인정보가 열리지 않도록, 참관신청확인(이름+휴대전화)을 거친 세션만 허용
+        // (visitorSeq 는 /visitor/preApplyCheck.do, /visitor/save.do 에서 세팅)
+        Object sessSeq = session.getAttribute("visitorSeq");
+        boolean owner = seq != null && !seq.isEmpty() && sessSeq != null && seq.equals(String.valueOf(sessSeq));
+        if (!owner && !ApplyPeriod.isAdmin(session)) {
+            mv.setViewName("redirect:/eng/buyer/login.do");
+            return mv;
+        }
+
         VisitorDTO info = kibsService.processSelectVisitorSingle(seq);
 
         if(info != null){

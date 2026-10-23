@@ -6,6 +6,7 @@ import com.mtf.kibs.service.CalculationService;
 import com.mtf.kibs.service.CommService;
 import com.mtf.kibs.service.KibsMngService;
 import com.mtf.kibs.util.AES256Util;
+import com.mtf.kibs.util.ClientIpResolver;
 import com.mtf.kibs.util.FileUploadUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -64,6 +65,9 @@ public class KibsMngController {
 
     @Autowired
     private AES256Util aes256Util;
+
+    @Autowired
+    private ClientIpResolver clientIpResolver;
 
     /**
      * Instantiates a new Kibs controller.
@@ -408,22 +412,8 @@ public class KibsMngController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> login(@RequestBody AdminDTO adminDTO, HttpSession session, HttpServletRequest request) {
 
-        // 프론트에 의존하지 않고 서버에서 직접 실제 IP 추출 (프록시 방어)
-        String clientIp = request.getHeader("X-Forwarded-For");
-        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) {
-            clientIp = request.getHeader("Proxy-Client-IP");
-        }
-        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) {
-            clientIp = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) {
-            clientIp = request.getRemoteAddr();
-        }
-
-        // 콤마로 구분된 여러 IP가 들어올 경우 (클라이언트 최초 IP만 획득)
-        if (clientIp != null && clientIp.contains(",")) {
-            clientIp = clientIp.split(",")[0].trim();
-        }
+        // 서버에서 직접 실제 IP 추출 (프록시 헤더 신뢰 여부는 ClientIpResolver / security.trust-proxy-headers 설정에 따름)
+        String clientIp = clientIpResolver.resolve(request);
 
         Map<String, Object> result = kibsMngService.loginWithFailCheck(adminDTO, session, clientIp);
 
@@ -4178,7 +4168,11 @@ public class KibsMngController {
             System.out.println("[full file path] : " + uploadPath.getPath() + File.separator + file);
 
         } catch (Exception e) {
+            // 저장 실패를 호출 측에 명확히 알린다. (이전에는 로그만 남기고 200 OK + 빈 응답을 돌려줘 실패가 무시되었음)
             System.out.println("[upload file save error] : " + e.getMessage());
+            response.put("resultCode", "-1");
+            response.put("resultMessage", "파일 저장에 실패하였습니다. " + (e.getMessage() == null ? "" : e.getMessage()));
+            return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity(response, HttpStatus.OK);

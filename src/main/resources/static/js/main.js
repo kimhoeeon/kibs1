@@ -2213,7 +2213,20 @@ async function step_01_check(exhibitorSeq){
                 });
             } catch (err) {
                 console.error("File processing error:", err);
-                Swal.fire("오류", "파일 처리 중 오류가 발생했습니다.", "error");
+                // 업로드 실패를 사유와 함께 안내한 뒤 다음 단계로 진행
+                // (기본 정보는 이미 저장된 상태이며, 파일은 마이페이지 > 기본정보에서 다시 업로드 가능)
+                let uploadErrMsg = (err && err.message) ? err.message : '';
+                Swal.fire({
+                    icon: 'error',
+                    title: '[ 파일 업로드 실패 ]',
+                    html: '<span style="font-size: 1.1em;">사업자등록증/로고 파일 업로드에 실패하였습니다.<br>' + uploadErrMsg + '<br><br>기본 정보는 저장되었습니다.<br>마이페이지 &gt; 기본정보에서 파일을 다시 업로드해 주세요.</span>',
+                    allowOutsideClick: false,
+                    confirmButtonColor: '#00a8ff',
+                    confirmButtonText: '확인'
+                }).then(() => {
+                    isSubmitProceeding = true;
+                    f_page_move('/apply/step2_1.do', exhibitorSeq);
+                });
             }
         }else{
             window.location.href = '/apply/step2_1.do';
@@ -7665,17 +7678,18 @@ function f_company_uploadFile(userId, formId, elementId, path) {
                                 resolve(); // 경로가 비어있으면 통과
                             }
                         } else {
-                            resolve(); // 경로 없어도 통과
+                            // 서버가 저장 실패(resultCode -1)를 돌려준 경우: 실패를 호출 측에 전달 (이전에는 조용히 통과되어 파일 없이 신청이 진행됨)
+                            reject(new Error((res && res.resultMessage) ? res.resultMessage : '파일 업로드에 실패하였습니다.'));
                         }
                     })
                     .catch(err => {
                         console.log(err);
-                        resolve(); // 경로 없어도 통과
+                        reject(err instanceof Error ? err : new Error('파일 업로드에 실패하였습니다.'));
                     });
             },
             error(err) {
                 console.log(err.message);
-                resolve(); // 경로 없어도 통과
+                reject(new Error('이미지 처리에 실패하였습니다. ' + err.message));
             },
         });
     });
@@ -7758,12 +7772,13 @@ function f_company_uploadFile_pdf(formId, elementId, path) {
                     // f_company_file_upload_pdf 함수에서 DB저장을 하고 있었으므로 여기선 경로만 리턴
                     resolve(res.uploadPath + '\\' + res.fileName);
                 } else {
-                    resolve(); // 실패/없음 경우에도 resolve 호출 (필수!)
+                    // 서버 저장 실패를 호출 측에 전달 (이전에는 조용히 통과)
+                    reject(new Error((res && res.resultMessage) ? res.resultMessage : 'PDF 파일 업로드에 실패하였습니다.'));
                 }
             })
             .catch(err => {
                 console.error("PDF Upload Error:", err);
-                resolve(); // 에러 발생 시에도 resolve 호출하여 전체 로직 진행
+                reject(err instanceof Error ? err : new Error('PDF 파일 업로드에 실패하였습니다.'));
             });
 
     });

@@ -172,6 +172,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             session.setAttribute("status", "logon");
             session.setAttribute("id", admin.getId());
             session.setAttribute("note", admin.getNote());
+            session.setAttribute("adminYn", "Y"); // 관리자 세션 식별용 (ApplyPeriod.isAdmin 등에서 사용)
             kibsMngMapper.resetLoginFailLog(paramMap);
 
             // [로그 기록] 로그인 성공

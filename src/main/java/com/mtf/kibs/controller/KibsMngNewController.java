@@ -61,6 +61,8 @@ public class KibsMngNewController {
     @RequestMapping(value = "/mng/exhibitorNewNew/participant/company/detail.do", method = RequestMethod.GET)
     public ModelAndView mng_exhibitorNewNew_company_detail(String seq, String lang) {
         ModelAndView mv = new ModelAndView();
+        // lang 파라미터가 없으면 업체의 신청 언어를 사용 (이전에는 lang 미지정 시 NPE 로 500 발생)
+        String resolvedLang = lang;
         if(seq != null && !seq.isEmpty()){
             /* 전시업체정보 */
             ExhibitorNewDTO requestDto = new ExhibitorNewDTO();
@@ -69,6 +71,9 @@ public class KibsMngNewController {
 
             if(info != null){
                 mv.addObject("info", info);
+                if (resolvedLang == null || resolvedLang.isEmpty()) {
+                    resolvedLang = info.getLang();
+                }
 
                 String exhibitor_new_seq = info.getSeq();
 
@@ -115,7 +120,7 @@ public class KibsMngNewController {
             }
 
         }
-        if(lang.equals("EN")){
+        if("EN".equals(resolvedLang)){
             mv.setViewName("/mng/exhibitorNewNew/participant/company/detail_en");
         }else{
             mv.setViewName("/mng/exhibitorNewNew/participant/company/detail");
