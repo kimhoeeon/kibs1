@@ -339,10 +339,15 @@ public class KibsServiceImpl implements KibsService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
 
         try {
-            // ★ 개인정보 저장 전 DB 암호화 적용 ★
-            encryptExhibitorNewDTO(exhibitorNewDTO);
+            // ★ 개인정보 저장 전 평문 정제 (암호화는 MyBatisEncryptInterceptor 가 @EncryptField 기준으로 1회 수행) ★
+            normalizeExhibitorNewDTO(exhibitorNewDTO);
 
-            Integer existCheck = kibsMapper.checkDuplicateId(exhibitorNewDTO);
+            // 중복 체크는 키 필드만 담은 별도 DTO 로 조회한다.
+            // (원본 DTO 를 그대로 넘기면 인터셉터가 @EncryptField 필드를 이 시점에 한 번 암호화하고, 이어지는 INSERT 에서 다시 암호화하여 이중 암호화가 된다)
+            ExhibitorNewDTO dupCheckDTO = new ExhibitorNewDTO();
+            dupCheckDTO.setId(exhibitorNewDTO.getId());
+            dupCheckDTO.setTransferYear(exhibitorNewDTO.getTransferYear());
+            Integer existCheck = kibsMapper.checkDuplicateId(dupCheckDTO);
             if (existCheck == 0) {
 
                 String note = "step01";
@@ -449,8 +454,8 @@ public class KibsServiceImpl implements KibsService {
         Integer result = 0;
 
         try {
-            // ★ 수정 전 DB 암호화 적용 ★
-            encryptExhibitorNewDTO(exhibitorNewDTO);
+            // ★ 수정 전 평문 정제 (암호화는 MyBatisEncryptInterceptor 가 @EncryptField 기준으로 1회 수행) ★
+            normalizeExhibitorNewDTO(exhibitorNewDTO);
 
             String note = "step01";
             String exhibitorNewSeq = exhibitorNewDTO.getSeq();
@@ -458,7 +463,12 @@ public class KibsServiceImpl implements KibsService {
             if ("Y".equals(exhibitorNewDTO.getPasswordYn())) {
                 String inputPw = exhibitorNewDTO.getPassword();
                 if (!Objects.equals(inputPw, "암호화된비밀번호복사불가능")) {
-                    ExhibitorNewDTO exhibitorNewInfo = kibsMapper.selectExhibitorNewSingle(exhibitorNewDTO);
+                    // 기존 정보 조회는 키 필드만 담은 별도 DTO 로 수행 (원본 DTO 가 UPDATE 전에 인터셉터에 의해 암호화되는 것을 방지)
+                    ExhibitorNewDTO lookupDTO = new ExhibitorNewDTO();
+                    lookupDTO.setSeq(exhibitorNewDTO.getSeq());
+                    lookupDTO.setId(exhibitorNewDTO.getId());
+                    lookupDTO.setTransferYear(exhibitorNewDTO.getTransferYear());
+                    ExhibitorNewDTO exhibitorNewInfo = kibsMapper.selectExhibitorNewSingle(lookupDTO);
                     String preSalt = exhibitorNewInfo.getSalt();
                     String prePw = exhibitorNewInfo.getPassword();
 
@@ -1165,14 +1175,19 @@ public class KibsServiceImpl implements KibsService {
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
 
         try {
-            // ★ 수정 전 DB 암호화 적용 ★
-            encryptExhibitorNewDTO(exhibitorNewDTO);
+            // ★ 수정 전 평문 정제 (암호화는 MyBatisEncryptInterceptor 가 @EncryptField 기준으로 1회 수행) ★
+            normalizeExhibitorNewDTO(exhibitorNewDTO);
 
             String exhibitorNewSeq = exhibitorNewDTO.getSeq();
 
             String inputPw = exhibitorNewDTO.getPassword();
             if (!Objects.equals(inputPw, "암호화된비밀번호복사불가능")) {
-                ExhibitorNewDTO exhibitorNewInfo = kibsMapper.selectExhibitorNewSingle(exhibitorNewDTO);
+                // 기존 정보 조회는 키 필드만 담은 별도 DTO 로 수행 (원본 DTO 가 UPDATE 전에 인터셉터에 의해 암호화되는 것을 방지)
+                ExhibitorNewDTO lookupDTO = new ExhibitorNewDTO();
+                lookupDTO.setSeq(exhibitorNewDTO.getSeq());
+                lookupDTO.setId(exhibitorNewDTO.getId());
+                lookupDTO.setTransferYear(exhibitorNewDTO.getTransferYear());
+                ExhibitorNewDTO exhibitorNewInfo = kibsMapper.selectExhibitorNewSingle(lookupDTO);
                 String preSalt = exhibitorNewInfo.getSalt();
                 String prePw = exhibitorNewInfo.getPassword();
 
@@ -2304,8 +2319,8 @@ public class KibsServiceImpl implements KibsService {
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
         String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
         try {
-            // ★ 참관객 정보 저장 전 DB 암호화 적용 ★
-            encryptVisitorDTO(visitorDTO);
+            // ★ 참관객 정보 저장 전 평문 정제 (암호화는 MyBatisEncryptInterceptor 가 @EncryptField 기준으로 1회 수행) ★
+            normalizeVisitorDTO(visitorDTO);
 
             Integer result = 0;
 
@@ -2535,6 +2550,16 @@ public class KibsServiceImpl implements KibsService {
     // 이중 암호화 및 +82 중복 누적 원천 차단 모듈 (사용자용)
     // ==========================================
     private String cleanAndEncrypt(String input) {
+        String cleaned = cleanPlainText(input);
+        if (cleaned == null || cleaned.isEmpty()) return cleaned;
+        return aes256Util.encrypt(cleaned);
+    }
+
+    /**
+     * 암호화 없이 평문 정제만 수행 (trim, +82 중복 제거, 이미 암호화된 입력은 복호화, 복호화 불가 암호문은 제거).
+     * @EncryptField 가 붙은 DTO 는 MyBatisEncryptInterceptor 가 저장 시 암호화하므로, 여기서 다시 암호화하면 이중 암호화가 된다.
+     */
+    private String cleanPlainText(String input) {
         if (input == null || input.trim().isEmpty()) return input;
         String text = input.trim();
 
@@ -2560,57 +2585,69 @@ public class KibsServiceImpl implements KibsService {
             decrypted = "+82 " + decrypted;
         }
 
-        return aes256Util.encrypt(decrypted);
+        return decrypted;
     }
 
     // ==========================================
-    // DTO DB 저장/수정 전 일괄 암호화 헬퍼 메서드 (사용자용)
+    // DTO DB 저장/수정 전 평문 정제 헬퍼 메서드 (사용자용)
     // ==========================================
-    private void encryptExhibitorNewDTO(ExhibitorNewDTO dto) {
+    /**
+     * 참가업체(및 부담당자/바이어) 개인정보 필드 평문 정제.
+     * @EncryptField 가 붙은 필드(tel/phone/email/companyTel/companyAddress/companyAddressDetail,
+     * chargePerson*, buyerCompany* 의 tel/phone/email)는 insert/update 시 MyBatisEncryptInterceptor 가 1회 암호화하므로
+     * 여기서는 정제만 한다. (이전에는 여기서도 암호화하여 이중 암호화 발생)
+     * companyFax 는 @EncryptField 가 없어 인터셉터 대상이 아니므로 기존대로 여기서 1회 암호화한다.
+     */
+    private void normalizeExhibitorNewDTO(ExhibitorNewDTO dto) {
         try {
-            // ★ 2027년 및 그 이후 참가업체 데이터만 암호화 진행 ★
+            // ★ 2027년 및 그 이후 참가업체 데이터만 정제 진행 ★
             if (dto.getTransferYear() == null || dto.getTransferYear().compareTo("2027") < 0) return;
 
-            dto.setTel(cleanAndEncrypt(dto.getTel()));
-            dto.setPhone(cleanAndEncrypt(dto.getPhone()));
-            dto.setEmail(cleanAndEncrypt(dto.getEmail()));
-            dto.setCompanyTel(cleanAndEncrypt(dto.getCompanyTel()));
-            dto.setCompanyFax(cleanAndEncrypt(dto.getCompanyFax()));
-            dto.setCompanyAddress(cleanAndEncrypt(dto.getCompanyAddress()));
-            dto.setCompanyAddressDetail(cleanAndEncrypt(dto.getCompanyAddressDetail()));
+            dto.setTel(cleanPlainText(dto.getTel()));
+            dto.setPhone(cleanPlainText(dto.getPhone()));
+            dto.setEmail(cleanPlainText(dto.getEmail()));
+            dto.setCompanyTel(cleanPlainText(dto.getCompanyTel()));
+            dto.setCompanyFax(cleanAndEncrypt(dto.getCompanyFax())); // 비대상 필드: 수동 암호화 유지
+            dto.setCompanyAddress(cleanPlainText(dto.getCompanyAddress()));
+            dto.setCompanyAddressDetail(cleanPlainText(dto.getCompanyAddressDetail()));
 
             if (dto.getChargePersonList() != null) {
                 for (ChargeNewDTO charge : dto.getChargePersonList()) {
-                    charge.setChargePersonTel(cleanAndEncrypt(charge.getChargePersonTel()));
-                    charge.setChargePersonPhone(cleanAndEncrypt(charge.getChargePersonPhone()));
-                    charge.setChargePersonEmail(cleanAndEncrypt(charge.getChargePersonEmail()));
+                    charge.setChargePersonTel(cleanPlainText(charge.getChargePersonTel()));
+                    charge.setChargePersonPhone(cleanPlainText(charge.getChargePersonPhone()));
+                    charge.setChargePersonEmail(cleanPlainText(charge.getChargePersonEmail()));
                 }
             }
 
             if (dto.getBuyerList() != null) {
                 for (BuyerNewDTO buyer : dto.getBuyerList()) {
-                    buyer.setBuyerCompanyTel(cleanAndEncrypt(buyer.getBuyerCompanyTel()));
-                    buyer.setBuyerCompanyPhone(cleanAndEncrypt(buyer.getBuyerCompanyPhone()));
-                    buyer.setBuyerCompanyEmail(cleanAndEncrypt(buyer.getBuyerCompanyEmail()));
+                    buyer.setBuyerCompanyTel(cleanPlainText(buyer.getBuyerCompanyTel()));
+                    buyer.setBuyerCompanyPhone(cleanPlainText(buyer.getBuyerCompanyPhone()));
+                    buyer.setBuyerCompanyEmail(cleanPlainText(buyer.getBuyerCompanyEmail()));
                 }
             }
         } catch (Exception e) {
-            log.error("ExhibitorNew Encrypt Error (User)", e);
+            log.error("ExhibitorNew Normalize Error (User)", e);
         }
     }
 
-    private void encryptVisitorDTO(VisitorDTO dto) {
+    /**
+     * 참관객 개인정보 필드 평문 정제 (암호화는 하지 않음).
+     * VisitorDTO 의 tel/phone/email/companyAddress/companyAddressDetail 은 @EncryptField 이므로
+     * insert/update 시 MyBatisEncryptInterceptor 가 1회 암호화한다. (이전에는 여기서도 암호화하여 이중 암호화 발생)
+     */
+    private void normalizeVisitorDTO(VisitorDTO dto) {
         try {
-            // ★ 2027년 및 그 이후 참관객 데이터만 암호화 진행 ★
+            // ★ 2027년 및 그 이후 참관객 데이터만 정제 진행 ★
             if (dto.getJoinYear() == null || dto.getJoinYear().compareTo("2027") < 0) return;
 
-            dto.setTel(cleanAndEncrypt(dto.getTel()));
-            dto.setPhone(cleanAndEncrypt(dto.getPhone()));
-            dto.setEmail(cleanAndEncrypt(dto.getEmail()));
-            dto.setCompanyAddress(cleanAndEncrypt(dto.getCompanyAddress()));
-            dto.setCompanyAddressDetail(cleanAndEncrypt(dto.getCompanyAddressDetail()));
+            dto.setTel(cleanPlainText(dto.getTel()));
+            dto.setPhone(cleanPlainText(dto.getPhone()));
+            dto.setEmail(cleanPlainText(dto.getEmail()));
+            dto.setCompanyAddress(cleanPlainText(dto.getCompanyAddress()));
+            dto.setCompanyAddressDetail(cleanPlainText(dto.getCompanyAddressDetail()));
         } catch (Exception e) {
-            log.error("Visitor Encrypt Error (User)", e);
+            log.error("Visitor Normalize Error (User)", e);
         }
     }
 

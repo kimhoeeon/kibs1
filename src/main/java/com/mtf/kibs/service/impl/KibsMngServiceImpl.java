@@ -2882,7 +2882,20 @@ public class KibsMngServiceImpl implements KibsMngService {
     @Override
     public VisitorDTO processSelectVisitorSingle(String seq) {
         //System.out.println("KibsMngServiceImpl > processSelectVisitorSingle");
-        return kibsMngMapper.selectVisitorSingle(seq);
+        VisitorDTO visitor = kibsMngMapper.selectVisitorSingle(seq);
+
+        if (visitor != null) {
+            try {
+                if (visitor.getTel() != null) visitor.setTel(aes256Util.safeDecrypt(visitor.getTel()));
+                if (visitor.getPhone() != null) visitor.setPhone(aes256Util.safeDecrypt(visitor.getPhone()));
+                if (visitor.getEmail() != null) visitor.setEmail(aes256Util.safeDecrypt(visitor.getEmail()));
+                if (visitor.getCompanyAddress() != null) visitor.setCompanyAddress(aes256Util.safeDecrypt(visitor.getCompanyAddress()));
+                if (visitor.getCompanyAddressDetail() != null) visitor.setCompanyAddressDetail(aes256Util.safeDecrypt(visitor.getCompanyAddressDetail()));
+            } catch (Exception e) {
+                log.error("[Visitor Decrypt Error] seq: {}, msg: {}", seq, e.getMessage());
+            }
+        }
+        return visitor;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
@@ -6615,7 +6628,7 @@ public class KibsMngServiceImpl implements KibsMngService {
             }
 
             // 3. 인보이스 메일일 경우, 정적 통장사본/사업자등록증 파일 추가
-            if (isInvoiceMail) {
+            /*if (isInvoiceMail) {
                 try {
                     String staticBaseUrl = "https://kibs.com/file/invoice/";
 
@@ -6636,7 +6649,7 @@ public class KibsMngServiceImpl implements KibsMngService {
                     System.out.println("Static bank account file name encoding failed");
                     // 통장사본 첨부만 실패하고 메일은 계속 발송되도록 함 (오류 방지)
                 }
-            }
+            }*/
 
             // 4. (기존 로직) 최종 file_url, file_name 문자열 생성
             if (!fileUrlList.isEmpty()) {

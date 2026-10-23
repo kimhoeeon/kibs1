@@ -784,14 +784,23 @@ function f_approval_status_btn_yn(){
                         if(md_approval_stat_val === '참가승인'){
 
                             let jsonStr = {seq: seq};
+
+                            // 1. 업체 언어(lang) 정보 조회
+                            let exhibitorInfo = ajaxConnectSimple('/mng/getExhibitorNewInfo.do', 'post', jsonStr);
+                            let lang = exhibitorInfo.lang;
+
+                            // 2. 언어별 제목 및 템플릿 번호 세팅
+                            let mailSubject = (lang === 'EN') ? '[2027 Korea International Boat Show] Exhibitor Approval Notice' : '[2027 경기국제보트쇼] 참가기업 승인 안내';
+                            let mailTemplate = (lang === 'EN') ? "201" : "171";
+
                             let emailArr = ajaxConnectSimple('/getExhibitorNewEmailList.do', 'post', jsonStr);
 
                             for(let j=0; j<emailArr.length; j++){
                                 let email = emailArr[j];
                                 let jsonObj = {
-                                    subject: '[2027 경기국제보트쇼] 참가기업 승인 안내', //제목
-                                    body: "", //본문
-                                    template: "171", //템플릿 번호
+                                    subject: mailSubject,
+                                    body: "",
+                                    template: mailTemplate,
                                     receiver: [{ email: email }]
                                 }
                                 ajaxConnect('/mail/send.do', 'post', jsonObj);
