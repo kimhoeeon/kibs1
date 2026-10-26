@@ -17,6 +17,7 @@
         FROM ai_clipping
         WHERE del_yn = 'N'
           AND reg_date <![CDATA[>=]]> DATE_SUB(NOW(), INTERVAL #{days} DAY)
+        ORDER BY reg_date DESC
     </select>
 
     <select id="selectAiClippingList" parameterType="com.mtf.kibs.dto.AiClippingDTO" resultType="com.mtf.kibs.dto.AiClippingDTO">

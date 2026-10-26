@@ -150,40 +150,48 @@ public class AiClippingScheduler {
             CollectContext ctx = new CollectContext();
             ctx.targetCount = 5; // 목표 기사 수
 
-            // 최근 발행/생성된 클리핑에 이미 실린 기사 링크 (호 간 중복 방지)
-            ctx.previouslyUsedLinks = loadRecentlyUsedLinks();
-            System.out.println("-> 최근 " + dedupeDays + "일 클리핑에 실린 기사 링크 " + ctx.previouslyUsedLinks.size() + "건 제외 대상");
+            // 최근 발행/생성된 클리핑에 이미 실린 기사 링크·제목 (호 간 중복 방지)
+            loadRecentlyUsed(ctx);
+            System.out.println("-> 최근 " + dedupeDays + "일 클리핑에 실린 기사 링크 " + ctx.previouslyUsedLinks.size() + "건 제외 대상, 제목 " + ctx.previouslyUsedTitles.size() + "건을 '이미 다룬 사안'으로 전달");
 
             List<String> poolKeywords = new ArrayList<>();
             for (AiClippingKeywordDTO kw : keywordList) {
                 if (kw.getKeyword() != null && !kw.getKeyword().trim().isEmpty()) poolKeywords.add(kw.getKeyword().trim());
             }
 
-            // [1차] 등록 키워드에서 키워드당 1건씩 선정
-            collectArticles(poolKeywords, 1, "1차 (등록 키워드, 키워드당 1건)", ctx);
+            List<String> fallback = new ArrayList<>();
+            if (fallbackKeywords != null) {
+                for (String s : fallbackKeywords.split(",")) {
+                    String t = s.trim();
+                    if (!t.isEmpty() && !poolKeywords.contains(t)) fallback.add(t);
+                }
+            }
+            Collections.shuffle(fallback);
 
-            // [2차] 목표 미달이면 같은 키워드에서 추가 선정 (재크롤링 없이 캐시된 후보 재사용, 키워드당 누적 최대 maxPicksPerKeyword 건)
+            // [1차] 등록 키워드에서 키워드당 1건씩 선정 (최근 recentDays 이내 기사만)
+            collectArticles(poolKeywords, 1, false, "1차 (등록 키워드, 키워드당 1건, 최근 기사)", ctx);
+
+            // [2차] 목표 미달이면 같은 키워드에서 추가 선정 (재크롤링 없이 캐시된 후보 재사용, 키워드당 누적 최대 maxPicksPerKeyword 건, 최근 기사만)
             if (ctx.collected < ctx.targetCount && maxPicksPerKeyword > 1) {
                 System.out.println("-> 목표 " + ctx.targetCount + "건 미달(" + ctx.collected + "건). 2차 보충: 등록 키워드에서 추가 선정");
-                collectArticles(poolKeywords, maxPicksPerKeyword, "2차 (등록 키워드 추가 선정)", ctx);
+                collectArticles(poolKeywords, maxPicksPerKeyword, false, "2차 (등록 키워드 추가 선정, 최근 기사)", ctx);
             }
 
-            // [3차] 그래도 미달이면 보조 키워드(설정값)로 수집
-            if (ctx.collected < ctx.targetCount) {
-                List<String> fallback = new ArrayList<>();
-                if (fallbackKeywords != null) {
-                    for (String s : fallbackKeywords.split(",")) {
-                        String t = s.trim();
-                        if (!t.isEmpty() && !poolKeywords.contains(t)) fallback.add(t);
-                    }
+            // [3차] 그래도 미달이면 보조 키워드(설정값)로 수집 (최근 기사만)
+            if (ctx.collected < ctx.targetCount && !fallback.isEmpty()) {
+                System.out.println("-> 목표 " + ctx.targetCount + "건 미달(" + ctx.collected + "건). 3차 보충: 보조 키워드 " + fallback.size() + "개로 수집");
+                collectArticles(fallback, 1, false, "3차 (보조 키워드, 최근 기사)", ctx);
+                if (ctx.collected < ctx.targetCount && maxPicksPerKeyword > 1) {
+                    collectArticles(fallback, maxPicksPerKeyword, false, "3차 (보조 키워드 추가 선정, 최근 기사)", ctx);
                 }
-                if (!fallback.isEmpty()) {
-                    Collections.shuffle(fallback);
-                    System.out.println("-> 목표 " + ctx.targetCount + "건 미달(" + ctx.collected + "건). 3차 보충: 보조 키워드 " + fallback.size() + "개로 수집");
-                    collectArticles(fallback, 1, "3차 (보조 키워드)", ctx);
-                    if (ctx.collected < ctx.targetCount && maxPicksPerKeyword > 1) {
-                        collectArticles(fallback, maxPicksPerKeyword, "3차 (보조 키워드 추가 선정)", ctx);
-                    }
+            }
+
+            // [4차] 최근 기사만으로 목표를 못 채울 때만 이전 기사(recentDays 초과) 허용 — 등록 키워드 → 보조 키워드 순
+            if (ctx.collected < ctx.targetCount) {
+                System.out.println("-> 목표 " + ctx.targetCount + "건 미달(" + ctx.collected + "건). 4차 보충: 최근 " + recentDays + "일 이전 기사 허용");
+                collectArticles(poolKeywords, Math.max(1, maxPicksPerKeyword), true, "4차 (등록 키워드, 이전 기사 허용)", ctx);
+                if (ctx.collected < ctx.targetCount && !fallback.isEmpty()) {
+                    collectArticles(fallback, Math.max(1, maxPicksPerKeyword), true, "4차 (보조 키워드, 이전 기사 허용)", ctx);
                 }
             }
 
@@ -237,8 +245,11 @@ public class AiClippingScheduler {
         List<String> usedKeywords = new ArrayList<>();          // 표시용 (중복 없이)
         List<String[]> usedSources = new ArrayList<>();         // {언론사, 링크, 제목, 날짜}
         Set<String> previouslyUsedLinks = new HashSet<>();       // 최근 호에 실린 링크
+        List<String> previouslyUsedTitles = new ArrayList<>();   // 최근 호에 실린 기사 제목 (같은 사안의 다른 언론사 기사 제외용)
         Map<String, List<String[]>> candidateCache = new HashMap<>(); // 키워드별 크롤링 결과 캐시
         Map<String, Integer> picksPerKeyword = new HashMap<>();  // 키워드별 선정 건수
+        Set<String> rejectedRecent = new HashSet<>();            // 최근 기사만으로 심사했을 때 전부 탈락한 키워드
+        Set<String> rejectedOlder = new HashSet<>();             // 이전 기사까지 포함해 심사했을 때 전부 탈락한 키워드
     }
 
     /**
@@ -247,12 +258,16 @@ public class AiClippingScheduler {
      * - 크롤링 결과는 캐시해 2차/3차 보충 단계에서 재크롤링하지 않는다.
      * - 이미 실린 기사(이번 호 + 최근 호)는 후보에서 제외한다.
      */
-    private void collectArticles(List<String> keywords, int maxPicks, String stageName, CollectContext ctx) throws InterruptedException {
+    private void collectArticles(List<String> keywords, int maxPicks, boolean allowOlder, String stageName, CollectContext ctx) throws InterruptedException {
         for (String targetKeyword : keywords) {
             if (ctx.collected >= ctx.targetCount) break;
 
             int picked = ctx.picksPerKeyword.getOrDefault(targetKeyword, 0);
             if (picked >= maxPicks) continue;
+
+            // 같은 조건(최근만 / 이전 포함)으로 이미 전부 탈락한 키워드는 다시 심사하지 않음
+            if (!allowOlder && ctx.rejectedRecent.contains(targetKeyword)) continue;
+            if (allowOlder && ctx.rejectedOlder.contains(targetKeyword)) continue;
 
             System.out.println("-> [" + stageName + "] 수집 시도 키워드: " + targetKeyword);
 
@@ -278,13 +293,21 @@ public class AiClippingScheduler {
                 if (removed > 0) System.out.println("   이미 실린 기사 " + removed + "건 후보 제외");
             }
 
+            // 최근 기사만 허용하는 단계에서는 recentDays 를 넘긴 후보를 미리 제거
+            if (!allowOlder) {
+                int before = candidateArticles.size();
+                candidateArticles.removeIf(c -> !isRecent(c[3]));
+                int removed = before - candidateArticles.size();
+                if (removed > 0) System.out.println("   최근 " + recentDays + "일 이전 기사 " + removed + "건 후보 제외 (이 단계는 최근 기사만)");
+            }
+
             if (candidateArticles.isEmpty()) {
                 System.out.println("   [스킵] 선정 가능한 후보 없음.");
                 continue;
             }
 
-            // [2단계] 능동적 필터링: AI에게 기사 적합성 심사
-            String validArticleFromAi = filterAndSummarizeValidArticle(targetKeyword, candidateArticles, ctx.usedSources);
+            // [2단계] 능동적 필터링: AI에게 기사 적합성 심사 (최근 호 제목을 '이미 다룬 사안'으로 함께 전달)
+            String validArticleFromAi = filterAndSummarizeValidArticle(targetKeyword, candidateArticles, ctx.usedSources, ctx.previouslyUsedTitles);
 
             if (validArticleFromAi != null && !validArticleFromAi.trim().isEmpty()) {
                 ctx.rawArticlesBuilder.append(validArticleFromAi).append("\n\n");
@@ -293,9 +316,9 @@ public class AiClippingScheduler {
                 ctx.collected++;
                 System.out.println("   [성공] 유효 기사 확보 (" + ctx.collected + "/" + ctx.targetCount + ")");
             } else {
-                // 이 키워드는 더 뽑을 게 없는 것으로 보고 상한까지 채워 다음 단계에서 건너뛰게 함
-                ctx.picksPerKeyword.put(targetKeyword, Math.max(picked, maxPicks));
-                System.out.println("   [스킵] 후보 기사들이 AI 적합성 심사(산업 무관, 사건사고, 선거 등)에서 모두 탈락함.");
+                // 같은 조건으로는 더 뽑을 게 없으므로 기록해 두고 다음 단계에서 건너뛰게 함
+                if (allowOlder) ctx.rejectedOlder.add(targetKeyword); else ctx.rejectedRecent.add(targetKeyword);
+                System.out.println("   [스킵] 후보 기사들이 AI 적합성 심사(산업 무관, 사건사고, 선거, 이미 다룬 사안 등)에서 모두 탈락함.");
             }
 
             if (ctx.collected >= ctx.targetCount) break;
@@ -443,32 +466,45 @@ public class AiClippingScheduler {
         return l.toLowerCase();
     }
 
+    /** 프롬프트에 넘길 '이미 다룬 기사' 제목 최대 개수 (최신 호부터) */
+    private static final int MAX_RECENT_TITLES_FOR_PROMPT = 60;
+
     /**
-     * 최근 dedupeDays 일 내 생성된 클리핑(미노출 포함, 삭제 제외) 본문에서 기사 링크를 추출한다.
-     * 본문은 generateFinalNewsletter 가 만든 HTML 이며 출처/본문 하이퍼링크가 href='...' 또는 href="..." 로 들어 있다.
+     * 최근 dedupeDays 일 내 생성된 클리핑(미노출 포함, 삭제 제외) 본문에서 기사 링크와 제목을 추출해 ctx 에 채운다.
+     * 본문은 generateFinalNewsletter 가 만든 HTML 이며, 상단 "출처" 목록의 <a href='링크'>제목</a> 에서 제목을 얻는다.
+     * (본문 중간의 키워드 하이퍼링크는 제목이 아니므로, 같은 링크에 대해 처음 나온 앵커 텍스트만 제목으로 사용한다)
      */
-    private Set<String> loadRecentlyUsedLinks() {
-        Set<String> links = new HashSet<>();
-        if (dedupeDays <= 0) return links;
+    private void loadRecentlyUsed(CollectContext ctx) {
+        if (dedupeDays <= 0) return;
         try {
             List<String> contents = aiClippingMapper.selectRecentClippingContents(dedupeDays);
-            if (contents == null) return links;
-            Pattern hrefPattern = Pattern.compile("href\\s*=\\s*['\"]([^'\"]+)['\"]", Pattern.CASE_INSENSITIVE);
+            if (contents == null) return;
+            Pattern anchorPattern = Pattern.compile("<a\\s+[^>]*href\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>(.*?)</a>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+            Set<String> titleSeen = new HashSet<>();
             for (String content : contents) {
                 if (content == null) continue;
-                Matcher m = hrefPattern.matcher(content);
+                Set<String> linksInThisContent = new HashSet<>();
+                Matcher m = anchorPattern.matcher(content);
                 while (m.find()) {
                     String url = m.group(1).trim();
                     // 사이트 내부 링크(수신거부, 로고 등)는 제외하고 외부 기사 링크만 수집
                     if (!url.startsWith("http")) continue;
                     if (url.contains("kibs.com")) continue;
-                    links.add(normalizeLink(url));
+                    String norm = normalizeLink(url);
+                    ctx.previouslyUsedLinks.add(norm);
+
+                    // 같은 본문에서 처음 등장한 앵커 텍스트 = 출처 목록의 기사 제목
+                    if (linksInThisContent.add(norm) && ctx.previouslyUsedTitles.size() < MAX_RECENT_TITLES_FOR_PROMPT) {
+                        String title = m.group(2).replaceAll("<[^>]+>", "").replaceAll("\\s+", " ").trim();
+                        if (title.length() >= 8 && titleSeen.add(title)) {
+                            ctx.previouslyUsedTitles.add(title);
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
-            System.err.println("최근 클리핑 링크 조회 실패: " + e.getMessage());
+            System.err.println("최근 클리핑 링크/제목 조회 실패: " + e.getMessage());
         }
-        return links;
     }
 
     /**
@@ -537,7 +573,7 @@ public class AiClippingScheduler {
     }
 
     // 2단계: AI 필터링 (번호를 기반으로 매칭하는 견고한 로직)
-    private String filterAndSummarizeValidArticle(String keyword, List<String[]> candidates, List<String[]> usedSources) {
+    private String filterAndSummarizeValidArticle(String keyword, List<String[]> candidates, List<String[]> usedSources, List<String> recentTitles) {
         // 최근 recentDays 이내 기사를 앞쪽에 배치 (상대 순서 유지). 프롬프트 번호와 선택 매칭은 이 정렬된 목록 기준.
         List<String[]> recent = new ArrayList<>();
         List<String[]> older = new ArrayList<>();
@@ -558,6 +594,14 @@ public class AiClippingScheduler {
         promptBuilder.append("4. **정책 기사는 합격 대상**: 정부·지자체(도지사, 시장 등)의 해양레저·해양관광 정책 발표, 마리나·항만 등 인프라 조성 계획, 관련 예산·지원사업, 공식 행사(박람회, 축제, 간담회) 기사는 정치인이 등장하더라도 '정치 가십'이 아니라 '관광 정책' 기사로 보고 합격시켜. (단, 해양레저·해양관광 내용이 핵심이 아닌 단순 정치 행보 기사는 제외)\n");
         promptBuilder.append("5. **최신성 우선**: 이 클리핑은 주간 동향이야. 각 후보에 표시된 [최근] 기사 중 합격 기사가 하나라도 있으면 반드시 [최근] 기사 중에서 골라. [이전] 기사는 [최근] 기사가 모두 불합격일 때만 선택해.\n");
         promptBuilder.append(buildElectionRule()).append("\n");
+        promptBuilder.append("7. **이미 다룬 사안 배제**: 아래 [최근 호에 이미 다룬 기사] 목록과 같은 사안(동일 정책 발표, 동일 행사, 동일 협약·사업, 동일 제품 출시)을 다룬 기사는 언론사나 제목이 달라도 무조건 버려. 새로운 사안이거나 뚜렷한 후속 진전(결과 발표, 착공, 수치 공개 등)이 있는 기사만 합격이야.\n\n");
+        if (recentTitles != null && !recentTitles.isEmpty()) {
+            promptBuilder.append("[최근 호에 이미 다룬 기사]\n");
+            for (String t : recentTitles) {
+                promptBuilder.append("- ").append(t).append("\n");
+            }
+            promptBuilder.append("\n");
+        }
         promptBuilder.append("[요구사항]\n");
         promptBuilder.append("- 합격한 기사가 있다면, 그 중 가장 중요한 1개의 기사만 골라내. (5번 최신성 우선 규칙 적용)\n");
         promptBuilder.append("- 출력 형식은 반드시 아래와 같이 딱 4줄 텍스트로만 해. (마크다운 ** 등 절대 금지)\n");
