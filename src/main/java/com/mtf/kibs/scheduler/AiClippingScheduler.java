@@ -55,6 +55,21 @@ public class AiClippingScheduler {
     /** 후보 수집 시 최대 탐색 페이지 수 (Daum 뉴스 검색은 페이지당 10건 내외) */
     private static final int MAX_SEARCH_PAGES = 5;
 
+    /** 이 일수 이내 기사를 우선 선정 (주간 클리핑 성격 유지). 이내 기사가 모두 탈락할 때만 더 오래된 기사 허용 */
+    @Value("${ai.clipping.recent-days:30}")
+    private int recentDays;
+
+    /**
+     * 선거일 목록(yyyy-MM-dd, 콤마 구분). 선거일 기준 electionWindowDays 전부터 선거일까지는
+     * 후보자·출마예정자 관련 기사 배제를 더 엄격하게 적용한다.
+     * 기본값: 2028-04-12 제23대 국회의원 선거, 2030-06-03 제22대 대통령 선거·제10회 지방선거. 일정 변경 시 설정으로 조정.
+     */
+    @Value("${ai.clipping.election-dates:2028-04-12,2030-06-03}")
+    private String electionDates;
+
+    @Value("${ai.clipping.election-window-days:90}")
+    private int electionWindowDays;
+
     // 1. [생성 담당] 매주 금요일 오전 8시 자동 실행 (미노출/미발송 상태로 생성만 수행)
     @Scheduled(cron = "0 0 8 * * FRI", zone = "Asia/Seoul")
     public void generateAiClippingAt10AM() {
@@ -262,16 +277,19 @@ public class AiClippingScheduler {
                     fullText = fullText.replace("동영상 첨부된 문서", "").replace("사진 첨부된 문서", "").replace("음성 첨부된 문서", "").replace("다음뉴스", "")
                             .replaceAll("관련기사\\s*\\d+건?", "").replaceAll("관련뉴스\\s*\\d+건?", "").replaceAll("[|·ⓒ]", " ").trim();
 
-                    String articleDate = "";
+                    //    검색 결과의 상대 표기("3시간 전", "어제", "2주 전" 등)는 수집 시점 기준 절대 날짜(yyyy.MM.dd)로 고정한다.
+                    //    (클리핑 본문에 저장된 뒤에는 재계산되지 않으므로 상대 표기를 남기지 않는다)
+                    String rawDateText = "";
                     Matcher matcher = Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)").matcher(fullText);
-                    if (matcher.find()) articleDate = matcher.group(1).trim();
-                    if (articleDate.isEmpty()) articleDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-                    else if (articleDate.endsWith(".")) articleDate = articleDate.substring(0, articleDate.length() - 1);
+                    if (matcher.find()) rawDateText = matcher.group(1).trim();
+
+                    LocalDate parsedDate = parseArticleDate(rawDateText);
+                    String articleDate = (parsedDate != null ? parsedDate : LocalDate.now()).format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
 
                     // 4. 언론사명(검색 결과 텍스트 기반 임시값)
                     //    기사 본문 접속(og:site_name)은 후보마다 하지 않고, AI 가 선정한 1건에 대해서만 resolvePublisher() 로 수행한다.
                     String leftover = fullText;
-                    if (!articleDate.isEmpty()) leftover = leftover.replace(articleDate, "");
+                    if (!rawDateText.isEmpty()) leftover = leftover.replace(rawDateText, "");
                     String publisher = leftover.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
                     if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) publisher = "언론사";
 
@@ -287,6 +305,85 @@ public class AiClippingScheduler {
             System.err.println("Daum 크롤링 실패 [" + keyword + "]: " + e.getMessage());
         }
         return candidates;
+    }
+
+    /**
+     * 검색 결과의 날짜 표기("2026.10.20", "3시간 전", "어제", "2일 전", "1주 전", "2개월 전")를 LocalDate 로 변환.
+     * 해석 불가 시 null.
+     */
+    private LocalDate parseArticleDate(String text) {
+        if (text == null || text.trim().isEmpty()) return null;
+        String t = text.trim();
+        LocalDate today = LocalDate.now();
+        try {
+            if (t.matches("\\d{4}\\.\\d{2}\\.\\d{2}\\.?")) {
+                if (t.endsWith(".")) t = t.substring(0, t.length() - 1);
+                return LocalDate.parse(t, DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+            }
+            if (t.contains("어제")) return today.minusDays(1);
+            Matcher m = Pattern.compile("(\\d+)\\s*(시간|분|일|주|개월)\\s*전").matcher(t);
+            if (m.find()) {
+                int n = Integer.parseInt(m.group(1));
+                switch (m.group(2)) {
+                    case "분":
+                    case "시간":
+                        return today;
+                    case "일":
+                        return today.minusDays(n);
+                    case "주":
+                        return today.minusWeeks(n);
+                    case "개월":
+                        return today.minusMonths(n);
+                    default:
+                        return null;
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
+    /**
+     * 선거 관련 배제 규칙 문구.
+     * - 항상: 후보자·예비후보자·출마예정자의 공약·유세·행보·인터뷰 기사는 정책 내용이 있어도 배제.
+     * - 선거일 electionWindowDays 전 ~ 선거일: 현직 단체장·의원 기사도 공약성/치적 홍보성이면 배제하고,
+     *   기관(도청·시청·부처) 명의의 정책·사업 공고 기사만 합격.
+     */
+    private String buildElectionRule() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("6. **선거 관련 배제**: 선거 후보자·예비후보자·출마 예정자의 공약, 유세, 지역 방문 행보, 인터뷰 기사는 해양레저·해양관광 정책 내용이 있어도 무조건 버려.");
+
+        LocalDate today = LocalDate.now();
+        LocalDate activeElection = null;
+        if (electionDates != null) {
+            for (String s : electionDates.split(",")) {
+                String t = s.trim();
+                if (t.isEmpty()) continue;
+                try {
+                    LocalDate d = LocalDate.parse(t);
+                    LocalDate windowStart = d.minusDays(Math.max(0, electionWindowDays));
+                    if (!today.isBefore(windowStart) && !today.isAfter(d)) {
+                        activeElection = d;
+                        break;
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+        }
+
+        if (activeElection != null) {
+            sb.append(" 특히 지금은 ").append(activeElection).append(" 선거일 기준 ").append(electionWindowDays)
+              .append("일 전 선거 기간이야. 이 기간에는 현직 도지사·시장·군수·국회의원·지방의원이 등장하는 기사도 공약성·치적 홍보성이면 버리고, ")
+              .append("기관(도청·시청·군청·부처·공사) 명의로 발표된 정책·사업 공고·인프라 조성 기사만 합격시켜.");
+            System.out.println("   [선거 기간] " + activeElection + " 선거일 기준 " + electionWindowDays + "일 전 규칙 적용 중");
+        }
+        return sb.toString();
+    }
+
+    /** 기사 날짜가 recentDays 이내인지 (날짜를 모르면 최근으로 간주하지 않음) */
+    private boolean isRecent(String dateText) {
+        LocalDate d = parseArticleDate(dateText);
+        return d != null && !d.isBefore(LocalDate.now().minusDays(Math.max(0, recentDays)));
     }
 
     private long randomDelay(int minMs, int maxMs) {
@@ -313,15 +410,28 @@ public class AiClippingScheduler {
 
     // 2단계: AI 필터링 (번호를 기반으로 매칭하는 견고한 로직)
     private String filterAndSummarizeValidArticle(String keyword, List<String[]> candidates, List<String[]> usedSources) {
+        // 최근 recentDays 이내 기사를 앞쪽에 배치 (상대 순서 유지). 프롬프트 번호와 선택 매칭은 이 정렬된 목록 기준.
+        List<String[]> recent = new ArrayList<>();
+        List<String[]> older = new ArrayList<>();
+        for (String[] c : candidates) {
+            if (isRecent(c[3])) recent.add(c); else older.add(c);
+        }
+        candidates.clear();
+        candidates.addAll(recent);
+        candidates.addAll(older);
+        System.out.println("   후보 중 최근 " + recentDays + "일 이내 기사 " + recent.size() + "건 / 이전 기사 " + older.size() + "건");
+
         StringBuilder promptBuilder = new StringBuilder();
         promptBuilder.append("너는 해양레저산업 비즈니스 전문가야. 다음은 '").append(keyword).append("' 키워드로 검색된 최신 뉴스 후보들이야.\n\n");
         promptBuilder.append("[판단 기준 - 매우 엄격함]\n");
         promptBuilder.append("1. **부정적/사건사고 기사 절대 배제**: 바다에서 일어난 조난, 구조, 갯벌 고립, 실종, 사망, 침몰, 해경 적발 등 단순 사회면/사건사고 기사는 무조건 버려.\n");
         promptBuilder.append("2. **타 산업/가십/연예 절대 배제**: 정치인 개인 가십·선거·정쟁, 연예인 사생활(연예인의 요트·보트 소유나 여행 기사 포함), 골프 클럽, 부동산, 아파트 분양 등 해양레저(보트, 요트, 마리나, 해양관광) 산업/비즈니스 동향과 관련 없는 기사는 무조건 버려.\n");
         promptBuilder.append("3. 위 두 기준을 통과한, 업계 관계자에게 유의미한 '산업 동향, 기술 발전, 전시회, 비즈니스, 관광 정책' 관련 기사만 합격이야.\n");
-        promptBuilder.append("4. **정책 기사는 합격 대상**: 정부·지자체(도지사, 시장 등)의 해양레저·해양관광 정책 발표, 마리나·항만 등 인프라 조성 계획, 관련 예산·지원사업, 공식 행사(박람회, 축제, 간담회) 기사는 정치인이 등장하더라도 '정치 가십'이 아니라 '관광 정책' 기사로 보고 합격시켜. (단, 해양레저·해양관광 내용이 핵심이 아닌 단순 정치 행보 기사는 제외)\n\n");
+        promptBuilder.append("4. **정책 기사는 합격 대상**: 정부·지자체(도지사, 시장 등)의 해양레저·해양관광 정책 발표, 마리나·항만 등 인프라 조성 계획, 관련 예산·지원사업, 공식 행사(박람회, 축제, 간담회) 기사는 정치인이 등장하더라도 '정치 가십'이 아니라 '관광 정책' 기사로 보고 합격시켜. (단, 해양레저·해양관광 내용이 핵심이 아닌 단순 정치 행보 기사는 제외)\n");
+        promptBuilder.append("5. **최신성 우선**: 이 클리핑은 주간 동향이야. 각 후보에 표시된 [최근] 기사 중 합격 기사가 하나라도 있으면 반드시 [최근] 기사 중에서 골라. [이전] 기사는 [최근] 기사가 모두 불합격일 때만 선택해.\n");
+        promptBuilder.append(buildElectionRule()).append("\n");
         promptBuilder.append("[요구사항]\n");
-        promptBuilder.append("- 합격한 기사가 있다면, 그 중 가장 중요한 1개의 기사만 골라내.\n");
+        promptBuilder.append("- 합격한 기사가 있다면, 그 중 가장 중요한 1개의 기사만 골라내. (5번 최신성 우선 규칙 적용)\n");
         promptBuilder.append("- 출력 형식은 반드시 아래와 같이 딱 4줄 텍스트로만 해. (마크다운 ** 등 절대 금지)\n");
         promptBuilder.append("선택번호: (1~").append(candidates.size()).append(" 중 하나 숫자만 입력)\n");
         promptBuilder.append("제목: (선택한 기사 제목)\n");
@@ -332,7 +442,9 @@ public class AiClippingScheduler {
 
         for (int i = 0; i < candidates.size(); i++) {
             String[] c = candidates.get(i);
-            promptBuilder.append((i + 1)).append(". 제목: ").append(c[2]).append("\n");
+            promptBuilder.append((i + 1)).append(". ")
+                    .append(isRecent(c[3]) ? "[최근] " : "[이전] ")
+                    .append("날짜: ").append(c[3]).append(" | 제목: ").append(c[2]).append("\n");
             promptBuilder.append("   내용: ").append(c[4]).append("\n\n");
         }
 
@@ -436,19 +548,9 @@ public class AiClippingScheduler {
             String title = src[2];
             String rawDate = src.length > 3 ? src[3] : "";
 
-            LocalDate calculatedDate = LocalDate.now();
-            try {
-                if (rawDate.matches("\\d{4}\\.\\d{2}\\.\\d{2}")) {
-                    calculatedDate = LocalDate.parse(rawDate, DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-                } else if (rawDate.contains("어제")) {
-                    calculatedDate = LocalDate.now().minusDays(1);
-                } else if (rawDate.matches("\\d+\\s*일\\s*전")) {
-                    int days = Integer.parseInt(rawDate.replaceAll("[^0-9]", ""));
-                    calculatedDate = LocalDate.now().minusDays(days);
-                }
-            } catch (Exception e) {
-                calculatedDate = LocalDate.now();
-            }
+            // 수집 단계에서 이미 yyyy.MM.dd 로 고정되지만, 안전하게 공용 파서로 한 번 더 해석 (상대 표기도 처리)
+            LocalDate parsedSrcDate = parseArticleDate(rawDate);
+            LocalDate calculatedDate = parsedSrcDate != null ? parsedSrcDate : LocalDate.now();
 
             String displayDate = calculatedDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) + "(" + calculatedDate.format(DateTimeFormatter.ofPattern("E", java.util.Locale.KOREAN)) + ")";
             map.put("publisher", pub);

@@ -1345,7 +1345,7 @@ public class KibsController {
     }
 
     @RequestMapping(value = "/board/clippingView.do", method = RequestMethod.GET)
-    public ModelAndView board_clippingView(String seq) {
+    public ModelAndView board_clippingView(String seq, HttpSession session) {
         ModelAndView mv = new ModelAndView();
 
         // 1. 조회수 증가는 JS 단에서 API를 호출하여 이미 처리했으므로, 여기서는 데이터만 조회합니다.
@@ -1355,6 +1355,15 @@ public class KibsController {
         // 2. 데이터 단건 조회 로직
         // (AiClippingMapper를 KibsController 상단에 @Autowired로 주입받아야 합니다)
         AiClippingDTO clippingInfo = aiClippingMapper.selectAiClippingDetail(seq);
+
+        // 3. 미노출(display_yn != 'Y') 또는 삭제된 글은 관리자 세션이 아니면 직접 URL 로도 열리지 않게 차단
+        //    (월요일 자동 발행 전 검수 중인 글이 URL 만으로 노출되는 것을 방지)
+        if (clippingInfo != null
+                && (!"Y".equals(clippingInfo.getDisplayYn()) || "Y".equals(clippingInfo.getDelYn()))
+                && !ApplyPeriod.isAdmin(session)) {
+            mv.setViewName("redirect:/board/clipping.do");
+            return mv;
+        }
 
         if(clippingInfo != null){
             // 이전글/다음글을 세팅하기 위한 전체 리스트 조회
