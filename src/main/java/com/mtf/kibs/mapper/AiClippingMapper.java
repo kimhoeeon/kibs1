@@ -40,6 +40,9 @@ public interface AiClippingMapper {
     // 메일 발송 성공/실패 카운트 업데이트
     int updateSendCnt(AiClippingDTO dto);
 
+    // 최근 N일 내 생성된(미노출 포함, 삭제 제외) 클리핑 본문 목록 - 호(回) 간 기사 중복 방지용
+    List<String> selectRecentClippingContents(int days);
+
     // ==== 키워드 관리 ====
     List<AiClippingKeywordDTO> selectKeywordList();
 

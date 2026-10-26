@@ -70,6 +70,18 @@ public class AiClippingScheduler {
     @Value("${ai.clipping.election-window-days:90}")
     private int electionWindowDays;
 
+    /** 이 일수 내에 생성된 클리핑(미노출 포함)에 이미 실린 기사 링크는 다음 생성 시 후보에서 제외 (호 간 중복 방지) */
+    @Value("${ai.clipping.dedupe-days:60}")
+    private int dedupeDays;
+
+    /** 목표 건수 미달 시 보충 단계에서 같은 키워드에서 뽑을 수 있는 최대 기사 수 (1차는 항상 키워드당 1건) */
+    @Value("${ai.clipping.max-picks-per-keyword:2}")
+    private int maxPicksPerKeyword;
+
+    /** 등록 키워드로 목표 건수를 못 채울 때만 사용하는 보조 키워드 (콤마 구분). 관리자 키워드 풀에 있는 것은 자동 제외 */
+    @Value("${ai.clipping.fallback-keywords:해양레저산업,마리나,요트,보트쇼,해양관광,레저선박,수상레저,선박 전동화,해양레저 지원사업,요트 관광}")
+    private String fallbackKeywords;
+
     // 1. [생성 담당] 매주 금요일 오전 8시 자동 실행 (미노출/미발송 상태로 생성만 수행)
     @Scheduled(cron = "0 0 8 * * FRI", zone = "Asia/Seoul")
     public void generateAiClippingAt10AM() {
@@ -135,50 +147,51 @@ public class AiClippingScheduler {
 
             Collections.shuffle(keywordList);
 
-            StringBuilder rawArticlesBuilder = new StringBuilder();
-            List<String> usedKeywords = new ArrayList<>();
-            List<String[]> usedSources = new ArrayList<>();
+            CollectContext ctx = new CollectContext();
+            ctx.targetCount = 5; // 목표 기사 수
 
-            int successKeywordCount = 0;
-            int maxKeywordLimit = 5;
+            // 최근 발행/생성된 클리핑에 이미 실린 기사 링크 (호 간 중복 방지)
+            ctx.previouslyUsedLinks = loadRecentlyUsedLinks();
+            System.out.println("-> 최근 " + dedupeDays + "일 클리핑에 실린 기사 링크 " + ctx.previouslyUsedLinks.size() + "건 제외 대상");
 
+            List<String> poolKeywords = new ArrayList<>();
             for (AiClippingKeywordDTO kw : keywordList) {
-                String targetKeyword = kw.getKeyword();
-                System.out.println("-> 수집 시도 키워드: " + targetKeyword);
-
-                // [1단계] Daum에서 후보 기사 긁어오기
-                List<String[]> candidateArticles = fetchCandidateArticlesFromDaum(targetKeyword);
-
-                // 다른 키워드에서 이미 선정된 기사는 후보에서 제외 (같은 기사 중복 수록 방지)
-                if (!usedSources.isEmpty() && !candidateArticles.isEmpty()) {
-                    Set<String> usedLinks = new HashSet<>();
-                    for (String[] s : usedSources) usedLinks.add(s[1]);
-                    candidateArticles.removeIf(c -> usedLinks.contains(c[1]));
-                }
-
-                if (candidateArticles.isEmpty()) {
-                    System.out.println("   [스킵] 크롤링 결과 없음.");
-                    continue;
-                }
-
-                // [2단계] 능동적 필터링: AI에게 기사 적합성 심사
-                String validArticleFromAi = filterAndSummarizeValidArticle(targetKeyword, candidateArticles, usedSources);
-
-                if (validArticleFromAi != null && !validArticleFromAi.trim().isEmpty()) {
-                    rawArticlesBuilder.append(validArticleFromAi).append("\n\n");
-                    usedKeywords.add(targetKeyword);
-                    successKeywordCount++;
-                    System.out.println("   [성공] AI 필터링을 통과한 유효 기사 확보 (현재 수집 키워드: " + successKeywordCount + "/" + maxKeywordLimit + ")");
-                } else {
-                    System.out.println("   [스킵] 수집된 후보 기사들이 AI 적합성 심사(산업 무관, 단순 사고 등)에서 모두 탈락함.");
-                }
-
-                if (successKeywordCount >= maxKeywordLimit) {
-                    break;
-                }
-
-                Thread.sleep(1500);
+                if (kw.getKeyword() != null && !kw.getKeyword().trim().isEmpty()) poolKeywords.add(kw.getKeyword().trim());
             }
+
+            // [1차] 등록 키워드에서 키워드당 1건씩 선정
+            collectArticles(poolKeywords, 1, "1차 (등록 키워드, 키워드당 1건)", ctx);
+
+            // [2차] 목표 미달이면 같은 키워드에서 추가 선정 (재크롤링 없이 캐시된 후보 재사용, 키워드당 누적 최대 maxPicksPerKeyword 건)
+            if (ctx.collected < ctx.targetCount && maxPicksPerKeyword > 1) {
+                System.out.println("-> 목표 " + ctx.targetCount + "건 미달(" + ctx.collected + "건). 2차 보충: 등록 키워드에서 추가 선정");
+                collectArticles(poolKeywords, maxPicksPerKeyword, "2차 (등록 키워드 추가 선정)", ctx);
+            }
+
+            // [3차] 그래도 미달이면 보조 키워드(설정값)로 수집
+            if (ctx.collected < ctx.targetCount) {
+                List<String> fallback = new ArrayList<>();
+                if (fallbackKeywords != null) {
+                    for (String s : fallbackKeywords.split(",")) {
+                        String t = s.trim();
+                        if (!t.isEmpty() && !poolKeywords.contains(t)) fallback.add(t);
+                    }
+                }
+                if (!fallback.isEmpty()) {
+                    Collections.shuffle(fallback);
+                    System.out.println("-> 목표 " + ctx.targetCount + "건 미달(" + ctx.collected + "건). 3차 보충: 보조 키워드 " + fallback.size() + "개로 수집");
+                    collectArticles(fallback, 1, "3차 (보조 키워드)", ctx);
+                    if (ctx.collected < ctx.targetCount && maxPicksPerKeyword > 1) {
+                        collectArticles(fallback, maxPicksPerKeyword, "3차 (보조 키워드 추가 선정)", ctx);
+                    }
+                }
+            }
+
+            System.out.println("-> 최종 확보 기사 " + ctx.collected + "건 / 목표 " + ctx.targetCount + "건, 사용 키워드: " + ctx.usedKeywords);
+
+            StringBuilder rawArticlesBuilder = ctx.rawArticlesBuilder;
+            List<String> usedKeywords = ctx.usedKeywords;
+            List<String[]> usedSources = ctx.usedSources;
 
             String rawArticles = rawArticlesBuilder.toString();
 
@@ -214,6 +227,81 @@ public class AiClippingScheduler {
             System.out.println("========== AI 클리핑 프로세스 실행 중 오류 발생 ==========");
         }
         return false;
+    }
+
+    /** 한 번의 클리핑 생성 동안 단계(1차/2차/3차)를 넘나들며 공유하는 수집 상태 */
+    private static class CollectContext {
+        int targetCount = 5;
+        int collected = 0;
+        StringBuilder rawArticlesBuilder = new StringBuilder();
+        List<String> usedKeywords = new ArrayList<>();          // 표시용 (중복 없이)
+        List<String[]> usedSources = new ArrayList<>();         // {언론사, 링크, 제목, 날짜}
+        Set<String> previouslyUsedLinks = new HashSet<>();       // 최근 호에 실린 링크
+        Map<String, List<String[]>> candidateCache = new HashMap<>(); // 키워드별 크롤링 결과 캐시
+        Map<String, Integer> picksPerKeyword = new HashMap<>();  // 키워드별 선정 건수
+    }
+
+    /**
+     * 주어진 키워드 목록을 순회하며 목표 건수에 도달할 때까지 기사를 선정한다.
+     * - 키워드당 선정 건수가 maxPicks 에 도달한 키워드는 건너뛴다.
+     * - 크롤링 결과는 캐시해 2차/3차 보충 단계에서 재크롤링하지 않는다.
+     * - 이미 실린 기사(이번 호 + 최근 호)는 후보에서 제외한다.
+     */
+    private void collectArticles(List<String> keywords, int maxPicks, String stageName, CollectContext ctx) throws InterruptedException {
+        for (String targetKeyword : keywords) {
+            if (ctx.collected >= ctx.targetCount) break;
+
+            int picked = ctx.picksPerKeyword.getOrDefault(targetKeyword, 0);
+            if (picked >= maxPicks) continue;
+
+            System.out.println("-> [" + stageName + "] 수집 시도 키워드: " + targetKeyword);
+
+            // [1단계] Daum에서 후보 기사 긁어오기 (캐시 우선)
+            List<String[]> cached = ctx.candidateCache.get(targetKeyword);
+            if (cached == null) {
+                cached = fetchCandidateArticlesFromDaum(targetKeyword);
+                ctx.candidateCache.put(targetKeyword, cached);
+            } else {
+                System.out.println("   캐시된 후보 " + cached.size() + "건 재사용");
+            }
+            List<String[]> candidateArticles = new ArrayList<>(cached);
+
+            // 이미 실린 기사는 후보에서 제외:
+            //  - 이번 생성에서 이미 선정된 기사 (같은 호 내 중복 방지)
+            //  - 최근 dedupeDays 일 내 클리핑에 실린 기사 (호 간 중복 방지)
+            if (!candidateArticles.isEmpty()) {
+                Set<String> usedLinks = new HashSet<>(ctx.previouslyUsedLinks);
+                for (String[] s : ctx.usedSources) usedLinks.add(normalizeLink(s[1]));
+                int before = candidateArticles.size();
+                candidateArticles.removeIf(c -> usedLinks.contains(normalizeLink(c[1])));
+                int removed = before - candidateArticles.size();
+                if (removed > 0) System.out.println("   이미 실린 기사 " + removed + "건 후보 제외");
+            }
+
+            if (candidateArticles.isEmpty()) {
+                System.out.println("   [스킵] 선정 가능한 후보 없음.");
+                continue;
+            }
+
+            // [2단계] 능동적 필터링: AI에게 기사 적합성 심사
+            String validArticleFromAi = filterAndSummarizeValidArticle(targetKeyword, candidateArticles, ctx.usedSources);
+
+            if (validArticleFromAi != null && !validArticleFromAi.trim().isEmpty()) {
+                ctx.rawArticlesBuilder.append(validArticleFromAi).append("\n\n");
+                if (!ctx.usedKeywords.contains(targetKeyword)) ctx.usedKeywords.add(targetKeyword);
+                ctx.picksPerKeyword.put(targetKeyword, picked + 1);
+                ctx.collected++;
+                System.out.println("   [성공] 유효 기사 확보 (" + ctx.collected + "/" + ctx.targetCount + ")");
+            } else {
+                // 이 키워드는 더 뽑을 게 없는 것으로 보고 상한까지 채워 다음 단계에서 건너뛰게 함
+                ctx.picksPerKeyword.put(targetKeyword, Math.max(picked, maxPicks));
+                System.out.println("   [스킵] 후보 기사들이 AI 적합성 심사(산업 무관, 사건사고, 선거 등)에서 모두 탈락함.");
+            }
+
+            if (ctx.collected >= ctx.targetCount) break;
+
+            Thread.sleep(1500);
+        }
     }
 
     // 1단계: Daum 뉴스 크롤링 메서드
@@ -341,6 +429,46 @@ public class AiClippingScheduler {
         } catch (Exception ignored) {
         }
         return null;
+    }
+
+    /** 링크 비교용 정규화: 공백 제거, 쿼리스트링·해시 제거, 끝 슬래시 제거, 소문자 */
+    private String normalizeLink(String link) {
+        if (link == null) return "";
+        String l = link.trim();
+        int q = l.indexOf('?');
+        if (q >= 0) l = l.substring(0, q);
+        int h = l.indexOf('#');
+        if (h >= 0) l = l.substring(0, h);
+        while (l.endsWith("/")) l = l.substring(0, l.length() - 1);
+        return l.toLowerCase();
+    }
+
+    /**
+     * 최근 dedupeDays 일 내 생성된 클리핑(미노출 포함, 삭제 제외) 본문에서 기사 링크를 추출한다.
+     * 본문은 generateFinalNewsletter 가 만든 HTML 이며 출처/본문 하이퍼링크가 href='...' 또는 href="..." 로 들어 있다.
+     */
+    private Set<String> loadRecentlyUsedLinks() {
+        Set<String> links = new HashSet<>();
+        if (dedupeDays <= 0) return links;
+        try {
+            List<String> contents = aiClippingMapper.selectRecentClippingContents(dedupeDays);
+            if (contents == null) return links;
+            Pattern hrefPattern = Pattern.compile("href\\s*=\\s*['\"]([^'\"]+)['\"]", Pattern.CASE_INSENSITIVE);
+            for (String content : contents) {
+                if (content == null) continue;
+                Matcher m = hrefPattern.matcher(content);
+                while (m.find()) {
+                    String url = m.group(1).trim();
+                    // 사이트 내부 링크(수신거부, 로고 등)는 제외하고 외부 기사 링크만 수집
+                    if (!url.startsWith("http")) continue;
+                    if (url.contains("kibs.com")) continue;
+                    links.add(normalizeLink(url));
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("최근 클리핑 링크 조회 실패: " + e.getMessage());
+        }
+        return links;
     }
 
     /**
