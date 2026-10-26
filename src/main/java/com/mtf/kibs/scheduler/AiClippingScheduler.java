@@ -41,6 +41,20 @@ public class AiClippingScheduler {
     @Value("${openai.model.summarize}")
     private String openAiModel;
 
+    /** 키워드당 Daum 뉴스 후보 기사 수 (이전에는 3건 하드코딩이라 커버리지가 좁았음) */
+    @Value("${daum.search.articles-per-keyword:10}")
+    private int articlesPerKeyword;
+
+    /** 목록 페이지 간 딜레이(ms) - 크롤링 부하 완화 */
+    @Value("${daum.search.list-delay-min-ms:1000}")
+    private int listDelayMinMs;
+
+    @Value("${daum.search.list-delay-max-ms:2000}")
+    private int listDelayMaxMs;
+
+    /** 후보 수집 시 최대 탐색 페이지 수 (Daum 뉴스 검색은 페이지당 10건 내외) */
+    private static final int MAX_SEARCH_PAGES = 5;
+
     // 1. [생성 담당] 매주 금요일 오전 8시 자동 실행 (미노출/미발송 상태로 생성만 수행)
     @Scheduled(cron = "0 0 8 * * FRI", zone = "Asia/Seoul")
     public void generateAiClippingAt10AM() {
@@ -120,6 +134,13 @@ public class AiClippingScheduler {
                 // [1단계] Daum에서 후보 기사 긁어오기
                 List<String[]> candidateArticles = fetchCandidateArticlesFromDaum(targetKeyword);
 
+                // 다른 키워드에서 이미 선정된 기사는 후보에서 제외 (같은 기사 중복 수록 방지)
+                if (!usedSources.isEmpty() && !candidateArticles.isEmpty()) {
+                    Set<String> usedLinks = new HashSet<>();
+                    for (String[] s : usedSources) usedLinks.add(s[1]);
+                    candidateArticles.removeIf(c -> usedLinks.contains(c[1]));
+                }
+
                 if (candidateArticles.isEmpty()) {
                     System.out.println("   [스킵] 크롤링 결과 없음.");
                     continue;
@@ -183,78 +204,111 @@ public class AiClippingScheduler {
     // 1단계: Daum 뉴스 크롤링 메서드
     private List<String[]> fetchCandidateArticlesFromDaum(String keyword) {
         List<String[]> candidates = new ArrayList<>();
+        Set<String> seenLinks = new HashSet<>();
+        int targetCount = Math.max(1, articlesPerKeyword);
+
         try {
             String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
-            String url = "https://search.daum.net/search?w=news&q=" + encodedKeyword + "&sort=rec";
 
-            Document doc = Jsoup.connect(url)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-                    .timeout(5000)
-                    .get();
-
-            Elements newsElements = doc.select(".c-item-content");
-            int count = 0;
-
-            for (Element element : newsElements) {
-                if (count >= 3) break;
-
-                Element titleElement = element.select(".item-title").first();
-                if (titleElement == null) continue;
-
-                String title = titleElement.text();
-                String summary = element.select(".conts-desc").text();
-
-                // 1. 불량 텍스트 차단
-                if (summary.contains("function()") || summary.contains("document.") || summary.contains("{") || summary.contains("}")) {
-                    continue;
+            // 설정값(daum.search.articles-per-keyword)만큼 채울 때까지 검색 결과 페이지를 넘겨가며 수집
+            for (int page = 1; page <= MAX_SEARCH_PAGES && candidates.size() < targetCount; page++) {
+                if (page > 1) {
+                    Thread.sleep(randomDelay(listDelayMinMs, listDelayMaxMs));
                 }
 
-                // 2. 링크 처리
-                String link = "";
-                if (titleElement.tagName().equals("a")) link = titleElement.attr("href");
-                else if (titleElement.select("a").first() != null) link = titleElement.select("a").first().attr("href");
-                else if (element.select("a").first() != null) link = element.select("a").first().attr("href");
+                String url = "https://search.daum.net/search?w=news&q=" + encodedKeyword + "&sort=rec&p=" + page;
 
-                // 깡통 링크 차단
-                if (link == null || link.trim().isEmpty() || link.startsWith("#") || link.contains("search.daum.net")) {
-                    continue;
-                }
-                if (!link.startsWith("http")) link = "https:" + (link.startsWith("/") ? "" : "/") + link;
+                Document doc = Jsoup.connect(url)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                        .timeout(5000)
+                        .get();
 
-                // 3. 날짜 추출
-                String fullText = element.text().replace(title, "").replace(summary, "");
-                fullText = fullText.replace("동영상 첨부된 문서", "").replace("사진 첨부된 문서", "").replace("음성 첨부된 문서", "").replace("다음뉴스", "")
-                        .replaceAll("관련기사\\s*\\d+건?", "").replaceAll("관련뉴스\\s*\\d+건?", "").replaceAll("[|·ⓒ]", " ").trim();
+                Elements newsElements = doc.select(".c-item-content");
+                if (newsElements.isEmpty()) break; // 더 이상 결과 없음
 
-                String articleDate = "";
-                Matcher matcher = Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)").matcher(fullText);
-                if (matcher.find()) articleDate = matcher.group(1).trim();
-                if (articleDate.isEmpty()) articleDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-                else if (articleDate.endsWith(".")) articleDate = articleDate.substring(0, articleDate.length() - 1);
+                int addedOnThisPage = 0;
 
-                // 4. 언론사명 추출
-                String publisher = "언론사";
-                try {
-                    Document articleDoc = Jsoup.connect(link).timeout(3000).get();
-                    Element ogSiteName = articleDoc.selectFirst("meta[property=og:site_name]");
-                    if (ogSiteName != null) {
-                        publisher = ogSiteName.attr("content").replace("Daum", "").replace("|", "").trim();
+                for (Element element : newsElements) {
+                    if (candidates.size() >= targetCount) break;
+
+                    Element titleElement = element.select(".item-title").first();
+                    if (titleElement == null) continue;
+
+                    String title = titleElement.text();
+                    String summary = element.select(".conts-desc").text();
+
+                    // 1. 불량 텍스트 차단
+                    if (summary.contains("function()") || summary.contains("document.") || summary.contains("{") || summary.contains("}")) {
+                        continue;
                     }
-                } catch (Exception e) {
+
+                    // 2. 링크 처리
+                    String link = "";
+                    if (titleElement.tagName().equals("a")) link = titleElement.attr("href");
+                    else if (titleElement.select("a").first() != null) link = titleElement.select("a").first().attr("href");
+                    else if (element.select("a").first() != null) link = element.select("a").first().attr("href");
+
+                    // 깡통 링크 차단
+                    if (link == null || link.trim().isEmpty() || link.startsWith("#") || link.contains("search.daum.net")) {
+                        continue;
+                    }
+                    if (!link.startsWith("http")) link = "https:" + (link.startsWith("/") ? "" : "/") + link;
+
+                    // 페이지 간 중복 기사 제거
+                    if (!seenLinks.add(link)) continue;
+
+                    // 3. 날짜 추출
+                    String fullText = element.text().replace(title, "").replace(summary, "");
+                    fullText = fullText.replace("동영상 첨부된 문서", "").replace("사진 첨부된 문서", "").replace("음성 첨부된 문서", "").replace("다음뉴스", "")
+                            .replaceAll("관련기사\\s*\\d+건?", "").replaceAll("관련뉴스\\s*\\d+건?", "").replaceAll("[|·ⓒ]", " ").trim();
+
+                    String articleDate = "";
+                    Matcher matcher = Pattern.compile("(\\d{4}\\.\\d{2}\\.\\d{2}\\.?|\\d+\\s*(시간|분|일|주|개월)\\s*전|어제)").matcher(fullText);
+                    if (matcher.find()) articleDate = matcher.group(1).trim();
+                    if (articleDate.isEmpty()) articleDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+                    else if (articleDate.endsWith(".")) articleDate = articleDate.substring(0, articleDate.length() - 1);
+
+                    // 4. 언론사명(검색 결과 텍스트 기반 임시값)
+                    //    기사 본문 접속(og:site_name)은 후보마다 하지 않고, AI 가 선정한 1건에 대해서만 resolvePublisher() 로 수행한다.
                     String leftover = fullText;
                     if (!articleDate.isEmpty()) leftover = leftover.replace(articleDate, "");
-                    publisher = leftover.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
+                    String publisher = leftover.replaceAll("(?<!\\S)\\d+(?!\\S)", "").replaceAll("\\s{2,}", " ").trim();
+                    if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) publisher = "언론사";
+
+                    candidates.add(new String[]{publisher, link, title, articleDate, summary});
+                    addedOnThisPage++;
                 }
 
-                if (publisher.isEmpty() || publisher.matches("^[0-9\\s\\p{P}]+$")) publisher = "언론사";
-
-                candidates.add(new String[]{publisher, link, title, articleDate, summary});
-                count++;
+                if (addedOnThisPage == 0) break; // 이 페이지에서 새 기사가 없으면 종료
             }
+
+            System.out.println("   후보 기사 " + candidates.size() + "건 수집 (목표 " + targetCount + "건)");
         } catch (Exception e) {
             System.err.println("Daum 크롤링 실패 [" + keyword + "]: " + e.getMessage());
         }
         return candidates;
+    }
+
+    private long randomDelay(int minMs, int maxMs) {
+        if (maxMs <= minMs) return Math.max(0, minMs);
+        return minMs + new Random().nextInt(maxMs - minMs);
+    }
+
+    /** 선정된 기사 1건에 대해서만 본문의 og:site_name 으로 언론사명을 확정한다 (실패 시 검색 결과 기반 임시값 유지) */
+    private String resolvePublisher(String link, String fallback) {
+        try {
+            Document articleDoc = Jsoup.connect(link)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                    .timeout(3000)
+                    .get();
+            Element ogSiteName = articleDoc.selectFirst("meta[property=og:site_name]");
+            if (ogSiteName != null) {
+                String publisher = ogSiteName.attr("content").replace("Daum", "").replace("|", "").trim();
+                if (!publisher.isEmpty() && !publisher.matches("^[0-9\\s\\p{P}]+$")) return publisher;
+            }
+        } catch (Exception ignored) {
+        }
+        return (fallback == null || fallback.isEmpty()) ? "언론사" : fallback;
     }
 
     // 2단계: AI 필터링 (번호를 기반으로 매칭하는 견고한 로직)
@@ -263,12 +317,13 @@ public class AiClippingScheduler {
         promptBuilder.append("너는 해양레저산업 비즈니스 전문가야. 다음은 '").append(keyword).append("' 키워드로 검색된 최신 뉴스 후보들이야.\n\n");
         promptBuilder.append("[판단 기준 - 매우 엄격함]\n");
         promptBuilder.append("1. **부정적/사건사고 기사 절대 배제**: 바다에서 일어난 조난, 구조, 갯벌 고립, 실종, 사망, 침몰, 해경 적발 등 단순 사회면/사건사고 기사는 무조건 버려.\n");
-        promptBuilder.append("2. **타 산업/가십 절대 배제**: 정치인 가십, 골프 클럽, 부동산, 아파트 분양 등 해양레저(보트, 요트, 마리나, 해양관광) 산업/비즈니스 동향과 관련 없는 기사는 무조건 버려.\n");
-        promptBuilder.append("3. 위 두 기준을 통과한, 업계 관계자에게 유의미한 '산업 동향, 기술 발전, 전시회, 비즈니스, 관광 정책' 관련 기사만 합격이야.\n\n");
+        promptBuilder.append("2. **타 산업/가십/연예 절대 배제**: 정치인 개인 가십·선거·정쟁, 연예인 사생활(연예인의 요트·보트 소유나 여행 기사 포함), 골프 클럽, 부동산, 아파트 분양 등 해양레저(보트, 요트, 마리나, 해양관광) 산업/비즈니스 동향과 관련 없는 기사는 무조건 버려.\n");
+        promptBuilder.append("3. 위 두 기준을 통과한, 업계 관계자에게 유의미한 '산업 동향, 기술 발전, 전시회, 비즈니스, 관광 정책' 관련 기사만 합격이야.\n");
+        promptBuilder.append("4. **정책 기사는 합격 대상**: 정부·지자체(도지사, 시장 등)의 해양레저·해양관광 정책 발표, 마리나·항만 등 인프라 조성 계획, 관련 예산·지원사업, 공식 행사(박람회, 축제, 간담회) 기사는 정치인이 등장하더라도 '정치 가십'이 아니라 '관광 정책' 기사로 보고 합격시켜. (단, 해양레저·해양관광 내용이 핵심이 아닌 단순 정치 행보 기사는 제외)\n\n");
         promptBuilder.append("[요구사항]\n");
         promptBuilder.append("- 합격한 기사가 있다면, 그 중 가장 중요한 1개의 기사만 골라내.\n");
         promptBuilder.append("- 출력 형식은 반드시 아래와 같이 딱 4줄 텍스트로만 해. (마크다운 ** 등 절대 금지)\n");
-        promptBuilder.append("선택번호: (1,2,3 중 하나 숫자만 입력)\n");
+        promptBuilder.append("선택번호: (1~").append(candidates.size()).append(" 중 하나 숫자만 입력)\n");
         promptBuilder.append("제목: (선택한 기사 제목)\n");
         promptBuilder.append("링크: (선택한 기사 링크)\n");
         promptBuilder.append("내용: (해당 기사의 핵심 내용을 3~4문장으로 요약)\n\n");
@@ -335,8 +390,11 @@ public class AiClippingScheduler {
                 String finalTitle = selectedTitle.isEmpty() ? c[2] : selectedTitle;
                 String finalSummary = selectedSummaryBuilder.toString().trim();
 
+                // 선정된 기사 1건에 대해서만 본문 접속으로 언론사명 확정 (후보 전체 접속 대비 크롤링 부하 절감)
+                String publisher = resolvePublisher(c[1], c[0]);
+
                 // {언론사, 링크, 제목, 날짜}
-                usedSources.add(new String[]{c[0], c[1], finalTitle, c[3]});
+                usedSources.add(new String[]{publisher, c[1], finalTitle, c[3]});
                 return "제목: " + finalTitle + "\n원본링크: " + c[1] + "\n내용: " + finalSummary;
             }
 

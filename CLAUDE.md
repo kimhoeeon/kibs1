@@ -25,6 +25,7 @@
 - 참가신청서 3세대: `~2025` EXHIBITOR 계열(`/mng/exhibitor/**`, exhibitor.js) / `2026` EXHIBITOR_NEW transfer_year=2026(`/mng/exhibitorNew/**`, exhibitorNew.js) / `2027~` 같은 테이블 transfer_year=2027(`/mng/exhibitorNewNew/**`, exhibitorNewNew.js, booth_new_new.js 등). 2026·2027은 JS 상수 `transferYear`와 경로만 다른 복제본.
 - 공개 신청 플로우: `/apply/step01` → `step2_1`(부스) → `2_9`(출품) → `2_2`(간판) → `2_3`(유틸리티) → `2_4`(출입증) → `2_5`(경품) → `2_8`(디렉토리) → `step03`(승인요청 제출, 접수 메일). `/mypage/*`는 동일 단계 수정. 영문은 `/eng/apply`, `/eng/mypage`.
 - 참관객: `/visitor/apply.do` 등록, `/visitor/login.do` 이름+휴대전화 확인 → `/visitor/mypage.do?seq=`. 영문은 `/eng/buyer/*`이지만 저장/확인 API는 국문 `/visitor/*`를 공용.
+- AI 뉴스 클리핑(`scheduler/AiClippingScheduler`): 금 08:00 생성(미노출) → 월 08:00 노출+구독자 발송. 선정 로직 = 관리자 등록 키워드(ai_clipping_keyword)를 섞어 순회 → 키워드당 Daum 뉴스 최신순 후보 `daum.search.articles-per-keyword`건(기본 10, 최대 5페이지 페이지네이션, 페이지 간 `daum.search.list-delay-*` 딜레이, 다른 키워드에서 이미 선정된 기사 제외) → GPT 필터(사건사고·구조·조난·해경 적발, 정치인 가십·선거, 연예인 사생활, 부동산 등 **무조건 배제**; 산업·기술·전시회·비즈니스·정책 기사 합격; 정부·지자체 해양레저/해양관광 정책·인프라·공식행사 기사는 정치인이 등장해도 합격; 키워드당 1건) → 선정 기사 1건만 본문 접속해 언론사명 확정 → 최대 5개 키워드 성공 시 중단 → 뉴스레터 HTML 생성. 관리자 `/mng/center/board/clipping.do`에서 수동 생성·키워드 관리 가능. **배제 조건은 발주사·사용자 합의로 유지(2026-10-26).**
 
 ## 수정 규칙 (반드시 지킬 것)
 1. **국문/영문 동시 반영**: KibsController ↔ KibsEnController, main.js ↔ main_en.js, 국문/영문 JSP. 한쪽만 고치면 어긋난다.
@@ -60,7 +61,9 @@
 - 2026 관리자(exhibitorNew.js) 승인 메일은 국문 템플릿(171)만 사용.
 - 공개 사이트 LOGOUT은 세션 전체를 초기화하므로 관리자 세션 기반 테스트 중 로그아웃하면 다시 관리자 로그인 필요.
 - 서버 `application.properties`에 `security.trust-proxy-headers=false` 항목 추가 권장(없어도 기본 false).
+- AI 클리핑 키워드 보강은 관리자 화면에서 수동 등록 필요(예: "해양관광 정책", "마리나 개발", "해양레저 지원사업"). 관리자 수동 기사 추가 기능은 없음(수동 생성은 전체 재수집).
 
 ## 변경 이력
 - 2026-10-23 (커밋 9b0c24b): 발주사 요청 3건 — 관리자 참관객 상세 복호화, 영문 승인 메일 템플릿(201) 분기, 인보이스 정적 첨부(통장사본/사업자등록증) 제거. 참관객·참가업체 저장 시 수동 암호화 제거(이중 암호화 원인) + 사전 조회용 키 DTO 분리.
+- 2026-10-26 (미커밋): 경기도청 "해양레저 기사가 클리핑에 안 잡힌다" 문의 대응. 원인 = 키워드당 최신 3건만 후보 + 사건사고/연예 배제 규칙(규칙은 유지 결정). 개선: 후보 수를 설정값 기반 페이지네이션으로 확대, 선정 기사만 언론사명 조회, 키워드 간 중복 기사 제거, 필터 프롬프트에 정부·지자체 해양관광 정책 기사 합격 명시 및 연예인 요트 기사 배제 명시.
 - 2026-10-23 (커밋 92c8e4f): 테스트에서 발견한 5건 — `mode=open` 우회 차단(ApplyPeriod/TesterAccessChecker, 서버 기간 검사), 참관객 마이페이지 seq 직접 접근 차단(세션 visitorSeq), X-Forwarded-For 신뢰 설정화(ClientIpResolver), 2027 업체 상세 lang NPE, 업로드 실패 응답/안내. 기간 외 테스트는 접근 IP 화이트리스트 기준으로 허용.
