@@ -30,6 +30,7 @@
         send_success_cnt AS sendSuccessCnt,
         send_fail_cnt AS sendFailCnt,
         display_yn AS displayYn,
+        approve_yn AS approveYn,
         del_yn AS delYn,
         DATE_FORMAT(reg_date, '%Y-%m-%d %H:%i:%s') AS regDate,
         DATE_FORMAT(mod_date, '%Y-%m-%d %H:%i:%s') AS modDate
@@ -138,6 +139,7 @@
             send_success_cnt AS sendSuccessCnt,
             send_fail_cnt AS sendFailCnt,
             display_yn AS displayYn,
+            approve_yn AS approveYn,
             del_yn AS delYn,
             DATE_FORMAT(reg_date, '%Y-%m-%d %H:%i:%s') AS regDate,
             DATE_FORMAT(mod_date, '%Y-%m-%d %H:%i:%s') AS modDate
@@ -204,5 +206,87 @@
         DELETE FROM ai_clipping_keyword
         WHERE seq = #{seq}
     </delete>
+
+    <!-- ===================== V2: 승인 / 월 10시 발행 ===================== -->
+    <update id="updateApproveStatus" parameterType="map">
+        /* com.mtf.kibs.mapper.AiClippingMapper.updateApproveStatus */
+        UPDATE ai_clipping
+        SET approve_yn = #{approveYn},
+            mod_date = CURRENT_TIMESTAMP
+        WHERE seq = #{seq}
+    </update>
+
+    <!-- 오늘 생성된 미노출·미삭제 클리핑. requireApproval 이 true 면 승인(approve_yn='Y')된 것만 -->
+    <select id="selectTodayPendingClippings" parameterType="map" resultType="com.mtf.kibs.dto.AiClippingDTO">
+        /* com.mtf.kibs.mapper.AiClippingMapper.selectTodayPendingClippings */
+        SELECT seq,
+               title,
+               content,
+               display_yn AS displayYn,
+               approve_yn AS approveYn,
+               del_yn AS delYn,
+               DATE_FORMAT(reg_date, '%Y-%m-%d %H:%i:%s') AS regDate
+        FROM ai_clipping
+        WHERE del_yn = 'N'
+          AND display_yn = 'N'
+          AND DATE(reg_date) = CURDATE()
+        <if test="requireApproval != null and requireApproval">
+          AND approve_yn = 'Y'
+        </if>
+        ORDER BY reg_date DESC
+    </select>
+
+    <!-- ===================== V2: 기사 단위 저장 ===================== -->
+    <insert id="insertClippingArticle" parameterType="com.mtf.kibs.dto.AiClippingArticleDTO" useGeneratedKeys="true" keyProperty="seq">
+        /* com.mtf.kibs.mapper.AiClippingMapper.insertClippingArticle */
+        INSERT INTO ai_clipping_article
+            (clipping_seq, keyword, title, link, publisher, summary, article_date, relevance_score, status, topic_no, reg_date)
+        VALUES
+            (#{clippingSeq}, #{keyword}, #{title}, #{link}, #{publisher}, #{summary},
+             <choose>
+                 <when test="articleDate != null and articleDate != ''">STR_TO_DATE(#{articleDate}, '%Y-%m-%d')</when>
+                 <otherwise>NULL</otherwise>
+             </choose>,
+             #{relevanceScore}, #{status}, #{topicNo}, CURRENT_TIMESTAMP)
+    </insert>
+
+    <!-- 공개 상세 "최신 관련 기사": 브리핑 사용 기사 + 목록 기사, 날짜 내림차순 -->
+    <select id="selectClippingArticlesForList" parameterType="long" resultType="com.mtf.kibs.dto.AiClippingArticleDTO">
+        /* com.mtf.kibs.mapper.AiClippingMapper.selectClippingArticlesForList */
+        SELECT seq,
+               clipping_seq AS clippingSeq,
+               keyword,
+               title,
+               link,
+               publisher,
+               DATE_FORMAT(article_date, '%Y-%m-%d') AS articleDate,
+               relevance_score AS relevanceScore,
+               status,
+               topic_no AS topicNo
+        FROM ai_clipping_article
+        WHERE clipping_seq = #{clippingSeq}
+          AND status IN ('SELECTED', 'LISTED')
+        ORDER BY article_date DESC, relevance_score DESC, seq ASC
+    </select>
+
+    <!-- 관리자용: 해당 클리핑의 기사 전체 (제외 사유 포함) -->
+    <select id="selectClippingArticlesAll" parameterType="long" resultType="com.mtf.kibs.dto.AiClippingArticleDTO">
+        /* com.mtf.kibs.mapper.AiClippingMapper.selectClippingArticlesAll */
+        SELECT seq,
+               clipping_seq AS clippingSeq,
+               keyword,
+               title,
+               link,
+               publisher,
+               summary,
+               DATE_FORMAT(article_date, '%Y-%m-%d') AS articleDate,
+               relevance_score AS relevanceScore,
+               status,
+               topic_no AS topicNo,
+               DATE_FORMAT(reg_date, '%Y-%m-%d %H:%i:%s') AS regDate
+        FROM ai_clipping_article
+        WHERE clipping_seq = #{clippingSeq}
+        ORDER BY FIELD(status, 'SELECTED', 'LISTED', 'EXCLUDED_SCORE', 'EXCLUDED_BLACKLIST'), relevance_score DESC, article_date DESC
+    </select>
 
 </mapper>

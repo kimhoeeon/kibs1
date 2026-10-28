@@ -1,5 +1,6 @@
 package com.mtf.kibs.mapper;
 
+import com.mtf.kibs.dto.AiClippingArticleDTO;
 import com.mtf.kibs.dto.AiClippingDTO;
 import com.mtf.kibs.dto.AiClippingKeywordDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -42,6 +43,22 @@ public interface AiClippingMapper {
 
     // 최근 N일 내 생성된(미노출 포함, 삭제 제외) 클리핑 본문 목록 - 호(回) 간 기사 중복 방지용
     List<String> selectRecentClippingContents(int days);
+
+    // ==== V2: 승인 / 월 10시 발행 ====
+    // 관리자 승인 상태 변경 (approve_yn)
+    int updateApproveStatus(Map<String, String> param);
+
+    // 오늘 생성된 미노출·미삭제 클리핑 (requireApproval=true 면 approve_yn='Y' 만)
+    List<AiClippingDTO> selectTodayPendingClippings(Map<String, Object> param);
+
+    // ==== V2: 기사 단위 저장 ====
+    int insertClippingArticle(AiClippingArticleDTO dto);
+
+    // 공개 상세 "최신 관련 기사" 목록 (SELECTED + LISTED, 날짜 내림차순)
+    List<AiClippingArticleDTO> selectClippingArticlesForList(Long clippingSeq);
+
+    // 관리자용: 해당 클리핑의 기사 전체 (제외 포함)
+    List<AiClippingArticleDTO> selectClippingArticlesAll(Long clippingSeq);
 
     // ==== 키워드 관리 ====
     List<AiClippingKeywordDTO> selectKeywordList();

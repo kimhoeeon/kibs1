@@ -35,6 +35,28 @@ public class AiClippingScheduler {
     @Autowired
     private NewsletterService newsletterService;
 
+    @Autowired
+    private AiClippingPipelineV2 pipelineV2;
+
+    /**
+     * 파이프라인 선택. legacy = 금 08:00 생성 → 월 08:00 노출·발송 (이 클래스의 기존 로직),
+     * v2 = 월 08:00 생성 → 월 10:00 승인 글 노출·발송 (AiClippingPipelineV2). 2026-10-28 발주사 요청 전환용.
+     */
+    @Value("${ai.clipping.pipeline:legacy}")
+    private String pipeline;
+
+    /** v2: 월 10:00 자동 노출·발송을 승인(approve_yn='Y')된 글로 제한할지. 발주사 확답 전 기본 true */
+    @Value("${ai.clipping.publish-requires-approval:true}")
+    private boolean publishRequiresApproval;
+
+    public boolean isV2() {
+        return "v2".equalsIgnoreCase(pipeline == null ? "" : pipeline.trim());
+    }
+
+    public boolean isPublishRequiresApproval() {
+        return publishRequiresApproval;
+    }
+
     @Value("${openai.api-key}")
     private String openAiApiKey;
 
@@ -85,13 +107,24 @@ public class AiClippingScheduler {
     // 1. [생성 담당] 매주 금요일 오전 8시 자동 실행 (미노출/미발송 상태로 생성만 수행)
     @Scheduled(cron = "0 0 8 * * FRI", zone = "Asia/Seoul")
     public void generateAiClippingAt10AM() {
+        if (isV2()) {
+            System.out.println("[금요일 08:00 AM] ai.clipping.pipeline=v2 이므로 금요일 생성은 건너뜁니다 (월 08:00 생성).");
+            return;
+        }
         System.out.println("========== [금요일 08:00 AM] AI 클리핑 자동 생성 스케줄러 시작 (미노출/미발송) ==========");
         processAiClipping(false); // false를 전달하여 뉴스레터 자동 발송 차단 (임시저장)
     }
 
-    // 2. [발행 담당] 매주 월요일 오전 8시 자동 실행 (금요일에 생성되어 검수 완료된 기사를 노출로 변경 후 발송)
+    // 2. [발행 담당] 매주 월요일 오전 8시 자동 실행
+    //    legacy: 금요일에 생성되어 검수 완료된 기사를 노출로 변경 후 발송
+    //    v2    : 지난 주 월 08:00 ~ 지금 기사로 클리핑 생성(미노출·미승인). 발행은 10:00 (publishApprovedAt10AM)
     @Scheduled(cron = "0 0 8 * * MON", zone = "Asia/Seoul")
     public void publishAndSendAiClippingAt8AM() {
+        if (isV2()) {
+            System.out.println("========== [월요일 08:00 AM] AI 클리핑 V2 생성 스케줄러 시작 (미노출/미승인) ==========");
+            pipelineV2.generate(false);
+            return;
+        }
         System.out.println("========== [월요일 08:00 AM] AI 클리핑 자동 승인 및 발송 스케줄러 시작 ==========");
 
         try {
@@ -127,8 +160,23 @@ public class AiClippingScheduler {
         }
     }
 
-    // 3. 실제 클리핑 수집 및 생성을 담당하는 코어 로직
+    // 2-1. [v2 발행 담당] 매주 월요일 오전 10시: 오늘 08:00 에 생성된 글 중 (승인된) 미노출 글을 노출 전환 후 발송
+    @Scheduled(cron = "0 0 10 * * MON", zone = "Asia/Seoul")
+    public void publishApprovedAt10AM() {
+        if (!isV2()) return;
+        System.out.println("========== [월요일 10:00 AM] AI 클리핑 V2 발행 스케줄러 시작 (승인 필수: " + publishRequiresApproval + ") ==========");
+        pipelineV2.publishToday(publishRequiresApproval);
+    }
+
+    // 3. 실제 클리핑 수집 및 생성을 담당하는 코어 로직 (관리자 수동 생성 포함). v2 설정이면 V2 파이프라인으로 위임
     public boolean processAiClipping(boolean isSend) {
+        if (isV2()) {
+            return pipelineV2.generate(isSend) != null;
+        }
+        return processAiClippingLegacy(isSend);
+    }
+
+    private boolean processAiClippingLegacy(boolean isSend) {
         System.out.println("========== AI 클리핑 코어 프로세스 시작 (발송여부: " + isSend + ") ==========");
 
         try {

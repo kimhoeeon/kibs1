@@ -72,8 +72,16 @@ $(function() {
                             html += '<span class="badge badge-light-success mb-1">게시중</span><br>';
                             html += '<button class="btn btn-sm btn-light-danger btn-toggle-display mt-1" data-seq="' + item.seq + '" data-status="N">미노출 변경</button>';
                         } else {
-                            html += '<span class="badge badge-light-secondary mb-1">임시저장</span><br>';
-                            html += '<button class="btn btn-sm btn-primary btn-toggle-display mt-1" data-seq="' + item.seq + '" data-status="Y">게시 (승인)</button>';
+                            html += '<span class="badge badge-light-secondary mb-1">임시저장</span>';
+                            // V2 승인 상태: 승인(approve_yn=Y) 글만 월요일 10:00 에 자동 노출·발송된다. "게시" 는 즉시 노출.
+                            if(item.approveYn === 'Y') {
+                                html += ' <span class="badge badge-light-success mb-1">발행 승인</span><br>';
+                                html += '<button class="btn btn-sm btn-light-warning btn-toggle-approve mt-1" data-seq="' + item.seq + '" data-status="N">승인 취소</button> ';
+                            } else {
+                                html += ' <span class="badge badge-light-warning mb-1">미승인</span><br>';
+                                html += '<button class="btn btn-sm btn-success btn-toggle-approve mt-1" data-seq="' + item.seq + '" data-status="Y">발행 승인</button> ';
+                            }
+                            html += '<button class="btn btn-sm btn-primary btn-toggle-display mt-1" data-seq="' + item.seq + '" data-status="Y">즉시 게시</button>';
                         }
                         html += '  </td>';
 
@@ -528,6 +536,35 @@ $(function() {
                         loadKeywordList();
                     } else {
                         alert(res.resultMsg);
+                    }
+                }
+            });
+        }
+    });
+
+    // 발행 승인 토글(승인 <-> 취소) 버튼 클릭 이벤트 (V2: 승인된 당일 생성 글만 월요일 10:00 자동 노출·발송)
+    $(document).on('click', '.btn-toggle-approve', function() {
+        let seq = String($(this).data('seq'));
+        let status = String($(this).data('status'));
+
+        let confirmMsg = status === 'Y'
+            ? '해당 글을 발행 승인하시겠습니까?\n(승인된 글은 월요일 10:00 에 자동으로 노출·발송됩니다. 즉시 게시가 아닙니다.)'
+            : '해당 글의 발행 승인을 취소하시겠습니까?';
+
+        if(confirm(confirmMsg)) {
+            $.ajax({
+                url: '/mng/center/board/clipping/approve.do',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ seq: seq, approveYn: status }),
+                success: function(res) {
+                    alert(res.resultMsg || (res.resultCode === "0" ? "처리되었습니다." : "승인 상태 변경에 실패했습니다."));
+                    if(res.resultCode === "0") loadClippingList(currentPage);
+                },
+                error: function(xhr) {
+                    if (xhr.status !== 401 && xhr.status !== 403) {
+                        alert("서버 통신 중 오류가 발생했습니다. (F12 콘솔 확인)");
+                        console.error("Error Detail: ", xhr.responseText);
                     }
                 }
             });

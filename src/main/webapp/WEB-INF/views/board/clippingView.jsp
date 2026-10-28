@@ -125,6 +125,21 @@
                     <div class="board_view_cont ql-editor">
                         ${clippingInfo.content}
                     </div>
+                    <%-- 최신 관련 기사: 이번 호 수집 창에서 전처리·연관도 심사를 통과한 기사 전체 (제목/링크/날짜/언론사만, 요약문 비공개) --%>
+                    <c:if test="${not empty relatedArticles}">
+                        <div class="clipping_related" style="margin-top: 50px; padding: 20px; background-color: #f8f9fa; border-top: 4px solid #1d5cad; border-bottom: 1px solid #ddd;">
+                            <strong style="color: #1d5cad; display:block; margin-bottom:15px; font-size: 16px;">■ 최신 관련 기사 <span style="font-weight:normal; color:#666; font-size:14px;">(${fn:length(relatedArticles)}건)</span></strong>
+                            <ul style="list-style: none; padding: 0; margin: 0;">
+                                <c:forEach var="art" items="${relatedArticles}">
+                                    <li style="font-size: 14px; color: #333; margin-bottom: 8px; line-height: 1.6;">
+                                        <span style="color:#666;">${fn:replace(art.articleDate,'-','.')}</span> |
+                                        <a href="<c:out value='${art.link}'/>" target="_blank" rel="noopener" style="color:#1d5cad; text-decoration:underline; text-underline-offset:2px;<c:if test="${art.status eq 'SELECTED'}"> font-weight:bold;</c:if>"><c:out value="${art.title}"/></a>
+                                        | <c:out value="${art.publisher}"/>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </c:if>
                     <div class="board_view_btn">
                         <c:if test="${clippingInfo.prevSeq ne null and clippingInfo.prevSeq ne ''}">
                             <a href="/board/clippingView.do?seq=${clippingInfo.prevSeq}" class="prevBtn">이전글</a>

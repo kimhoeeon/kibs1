@@ -161,7 +161,10 @@ public class AdminBoardRestController {
 
             if (isSuccess) {
                 result.put("resultCode", "0");
-                result.put("resultMsg", isSend ? "AI 클리핑 기사 생성 및 뉴스레터 발송이 완료되었습니다." : "AI 클리핑 기사가 생성되었습니다. (발송 생략)");
+                String created = aiClippingScheduler.isV2()
+                        ? "AI 클리핑 기사가 생성되었습니다. (미노출·미승인 상태, 월요일 10:00 자동 발행은 승인된 글만)"
+                        : "AI 클리핑 기사가 생성되었습니다. (발송 생략)";
+                result.put("resultMsg", isSend ? "AI 클리핑 기사 생성 및 뉴스레터 발송이 완료되었습니다." : created);
             } else {
                 // 수집된 유효 기사가 하나도 없어 생성되지 않았을 때
                 result.put("resultCode", "-1");
@@ -289,6 +292,51 @@ public class AdminBoardRestController {
         } catch (Exception e) {
             result.put("resultCode", "-1");
             result.put("resultMsg", "상태 변경 중 오류 발생");
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    /* ================= AI 클리핑 V2: 승인 / 기사 목록 ================= */
+
+    /**
+     * 승인 상태 변경 (approve_yn). v2 파이프라인에서 월 10:00 자동 노출·발송 대상은 당일 생성 + 승인된 글.
+     * 노출(display_yn) 과는 별개: 승인은 "10시에 자동으로 나가도 된다"는 표시이고, 노출은 즉시 게시다.
+     */
+    @PostMapping("/clipping/approve.do")
+    public ResponseEntity<Map<String, Object>> updateClippingApprove(@RequestBody Map<String, String> payload) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            String approveYn = "Y".equals(payload.get("approveYn")) ? "Y" : "N";
+            Map<String, String> param = new HashMap<>();
+            param.put("seq", payload.get("seq"));
+            param.put("approveYn", approveYn);
+            int updated = aiClippingMapper.updateApproveStatus(param);
+            if (updated > 0) {
+                result.put("resultCode", "0");
+                result.put("resultMsg", "Y".equals(approveYn) ? "승인되었습니다. 월요일 10:00 에 자동 노출·발송됩니다." : "승인이 취소되었습니다.");
+            } else {
+                result.put("resultCode", "-1");
+                result.put("resultMsg", "대상 글을 찾을 수 없습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("resultCode", "-1");
+            result.put("resultMsg", "승인 상태 변경 중 오류 발생");
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    /** 해당 클리핑의 기사 단위 수집·선정 결과 (v2 생성 글만 데이터가 있음) */
+    @GetMapping("/clipping/articles.ajax")
+    public ResponseEntity<Map<String, Object>> getClippingArticles(@RequestParam String seq) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            result.put("resultCode", "0");
+            result.put("list", aiClippingMapper.selectClippingArticlesAll(Long.parseLong(seq)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("resultCode", "-1");
+            result.put("resultMsg", "기사 목록 조회 중 오류 발생");
         }
         return ResponseEntity.ok(result);
     }

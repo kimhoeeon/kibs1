@@ -15,6 +15,7 @@ public class AiClippingDTO {
     private String regDate;
     private String modDate;
     private String displayYn;
+    private String approveYn;   // 관리자 승인 여부 (월 10시 자동 노출·발송 대상 판정, V2)
 
     private String searchType;
     private String searchKeyword;

@@ -1389,6 +1389,13 @@ public class KibsController {
             }
 
             mv.addObject("clippingInfo", clippingInfo);
+
+            // 4. "최신 관련 기사" (V2 파이프라인이 기사 단위로 저장한 전처리 통과 기사. 웹 상세에만 노출, 메일 본문에는 포함하지 않음)
+            try {
+                mv.addObject("relatedArticles", aiClippingMapper.selectClippingArticlesForList(Long.parseLong(seq)));
+            } catch (Exception e) {
+                System.err.println("clippingView 관련 기사 조회 실패 (seq=" + seq + "): " + e.getMessage());
+            }
         }
 
         mv.setViewName("/board/clippingView");
