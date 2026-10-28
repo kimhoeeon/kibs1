@@ -18,9 +18,10 @@ public final class ApplyPeriod {
     public static final String MODE_CLOSE = "close";
 
     /* 참가기업 신청 기간 (yyyyMMddHHmm, 초과 시 다음 단계)
-     * 2026-10-28 발주사 요청으로 조기 마감(원래 2026-12-31 23:59). 재오픈 요청 시 CLOSE_AFTER 를 다시 늘리면 된다. */
-    private static final long EXHIBITOR_OPEN_AFTER = 202610210859L;
-    private static final long EXHIBITOR_CLOSE_AFTER = 202610281600L;
+     * 2026-10-28 발주사 요청으로 신청 페이지를 "오픈 전(soon)" 상태로 되돌림 (원래 2026-10-21 08:59 오픈 ~ 2026-12-31 23:59).
+     * 오픈 일정은 미정이라 OPEN_AFTER 를 도래하지 않을 값으로 두었다. 발주사가 일정을 확정하면 OPEN_AFTER 만 실제 시각으로 바꾼다. */
+    private static final long EXHIBITOR_OPEN_AFTER = 209912312359L;
+    private static final long EXHIBITOR_CLOSE_AFTER = 209912312359L;
 
     /* 참관객 사전등록 기간 (yyyyMMddHHmm, 초과 시 다음 단계) */
     private static final long VISITOR_OPEN_AFTER = 202701010859L;
