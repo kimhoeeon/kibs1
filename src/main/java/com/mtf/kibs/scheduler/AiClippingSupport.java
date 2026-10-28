@@ -20,11 +20,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * AI 클리핑 공용 헬퍼 (V2 파이프라인용).
- *
- * 기존 AiClippingScheduler(금요일 생성 → 월요일 발행, legacy)는 전환 완료 전까지 그대로 두기 위해 손대지 않았다.
- * 그 안의 동일 성격 헬퍼(callOpenAI, parseArticleDate, normalizeLink, buildElectionRule 등)와 로직이 같으며,
- * legacy 제거 시 이 클래스로 일원화한다.
+ * AI 클리핑 공용 헬퍼 (OpenAI 호출, 날짜·링크·제목 정규화, 유사도, 본문·언론사 수집, 선거 규칙, 최근 호 중복 데이터).
+ * AiClippingPipelineV2 가 사용한다.
  */
 @Component
 public class AiClippingSupport {

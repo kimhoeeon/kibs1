@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * AI 뉴스 클리핑 V2 파이프라인 (2026-10-28 발주사 요청).
  *
  * <pre>
- * 월 08:00 생성 → (관리자 검수·승인) → 월 10:00 노출+발송   (스케줄은 AiClippingScheduler 가 ai.clipping.pipeline=v2 일 때 이 클래스로 위임)
+ * 월 08:00 생성 → 월 10:00 노출+발송 (스케줄 진입점은 AiClippingScheduler, 승인 필수 여부는 ai.clipping.publish-requires-approval)
  *
  * 1. 수집      : 등록 키워드(등록 순) × Daum 뉴스 최신순. 수집 창 = 지난 월요일 08:00 ~ 지금 (날짜 단위 필터 + 링크 중복 제거)
  * 2. 전처리    : 이전 호 링크 제외 → 링크 중복 제거 → 말머리 제거 후 제목 유사도(≥ threshold) 중복 제거 → 제목 블랙리스트 → EXCLUDED_BLACKLIST

@@ -38,8 +38,7 @@ public class AdminNewsletterController {
     // AI 뉴스 클리핑 관리 페이지
     @GetMapping("/clipping.do")
     public String clippingList(Model model) {
-        // 화면 안내 문구와 승인 버튼 노출을 실제 스케줄 설정에 맞춘다
-        model.addAttribute("clippingV2", aiClippingScheduler.isV2());
+        // 화면 안내 문구와 승인 버튼 노출을 실제 발행 설정에 맞춘다
         model.addAttribute("clippingApprovalRequired", aiClippingScheduler.isPublishRequiresApproval());
         return "mng/center/board/clipping";
     }

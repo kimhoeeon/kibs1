@@ -161,9 +161,9 @@ public class AdminBoardRestController {
 
             if (isSuccess) {
                 result.put("resultCode", "0");
-                String created = aiClippingScheduler.isV2()
-                        ? "AI 클리핑 기사가 생성되었습니다. (미노출·미승인 상태, 월요일 10:00 자동 발행은 승인된 글만)"
-                        : "AI 클리핑 기사가 생성되었습니다. (발송 생략)";
+                String created = aiClippingScheduler.isPublishRequiresApproval()
+                        ? "AI 클리핑 기사가 생성되었습니다. (임시저장·미승인 상태, 월요일 10:00 자동 발행은 당일 생성 + 승인된 글만)"
+                        : "AI 클리핑 기사가 생성되었습니다. (임시저장 상태, 월요일 10:00 자동 발행은 당일 생성 글만 대상)";
                 result.put("resultMsg", isSend ? "AI 클리핑 기사 생성 및 뉴스레터 발송이 완료되었습니다." : created);
             } else {
                 // 수집된 유효 기사가 하나도 없어 생성되지 않았을 때
