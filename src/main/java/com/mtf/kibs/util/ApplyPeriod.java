@@ -17,9 +17,10 @@ public final class ApplyPeriod {
     public static final String MODE_OPEN = "open";
     public static final String MODE_CLOSE = "close";
 
-    /* 참가기업 신청 기간 (yyyyMMddHHmm, 초과 시 다음 단계) */
+    /* 참가기업 신청 기간 (yyyyMMddHHmm, 초과 시 다음 단계)
+     * 2026-10-28 발주사 요청으로 조기 마감(원래 2026-12-31 23:59). 재오픈 요청 시 CLOSE_AFTER 를 다시 늘리면 된다. */
     private static final long EXHIBITOR_OPEN_AFTER = 202610210859L;
-    private static final long EXHIBITOR_CLOSE_AFTER = 202612312359L;
+    private static final long EXHIBITOR_CLOSE_AFTER = 202610281600L;
 
     /* 참관객 사전등록 기간 (yyyyMMddHHmm, 초과 시 다음 단계) */
     private static final long VISITOR_OPEN_AFTER = 202701010859L;
