@@ -32,9 +32,15 @@ public class AdminNewsletterController {
         return "mng/center/board/subscriber";
     }
 
+    @Autowired
+    private com.mtf.kibs.scheduler.AiClippingScheduler aiClippingScheduler;
+
     // AI 뉴스 클리핑 관리 페이지
     @GetMapping("/clipping.do")
-    public String clippingList() {
+    public String clippingList(Model model) {
+        // 화면 안내 문구와 승인 버튼 노출을 실제 스케줄 설정에 맞춘다
+        model.addAttribute("clippingV2", aiClippingScheduler.isV2());
+        model.addAttribute("clippingApprovalRequired", aiClippingScheduler.isPublishRequiresApproval());
         return "mng/center/board/clipping";
     }
 

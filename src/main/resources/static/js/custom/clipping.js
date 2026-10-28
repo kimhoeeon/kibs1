@@ -73,13 +73,19 @@ $(function() {
                             html += '<button class="btn btn-sm btn-light-danger btn-toggle-display mt-1" data-seq="' + item.seq + '" data-status="N">미노출 변경</button>';
                         } else {
                             html += '<span class="badge badge-light-secondary mb-1">임시저장</span>';
-                            // V2 승인 상태: 승인(approve_yn=Y) 글만 월요일 10:00 에 자동 노출·발송된다. "게시" 는 즉시 노출.
-                            if(item.approveYn === 'Y') {
-                                html += ' <span class="badge badge-light-success mb-1">발행 승인</span><br>';
-                                html += '<button class="btn btn-sm btn-light-warning btn-toggle-approve mt-1" data-seq="' + item.seq + '" data-status="N">승인 취소</button> ';
+                            // V2 승인 상태: 설정(publish-requires-approval)이 켜진 경우에만 승인 배지·버튼 노출.
+                            // 기본(승인 불필요)에서는 월요일 당일 생성 글이 10:00 에 그대로 자동 노출·발송된다. "즉시 게시" 는 지금 바로 노출.
+                            var approvalRequired = (typeof clippingApprovalRequired !== 'undefined') && clippingApprovalRequired === true;
+                            if(approvalRequired) {
+                                if(item.approveYn === 'Y') {
+                                    html += ' <span class="badge badge-light-success mb-1">발행 승인</span><br>';
+                                    html += '<button class="btn btn-sm btn-light-warning btn-toggle-approve mt-1" data-seq="' + item.seq + '" data-status="N">승인 취소</button> ';
+                                } else {
+                                    html += ' <span class="badge badge-light-warning mb-1">미승인</span><br>';
+                                    html += '<button class="btn btn-sm btn-success btn-toggle-approve mt-1" data-seq="' + item.seq + '" data-status="Y">발행 승인</button> ';
+                                }
                             } else {
-                                html += ' <span class="badge badge-light-warning mb-1">미승인</span><br>';
-                                html += '<button class="btn btn-sm btn-success btn-toggle-approve mt-1" data-seq="' + item.seq + '" data-status="Y">발행 승인</button> ';
+                                html += '<br>';
                             }
                             html += '<button class="btn btn-sm btn-primary btn-toggle-display mt-1" data-seq="' + item.seq + '" data-status="Y">즉시 게시</button>';
                         }

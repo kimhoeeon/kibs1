@@ -42,11 +42,15 @@ public class AiClippingScheduler {
      * 파이프라인 선택. legacy = 금 08:00 생성 → 월 08:00 노출·발송 (이 클래스의 기존 로직),
      * v2 = 월 08:00 생성 → 월 10:00 승인 글 노출·발송 (AiClippingPipelineV2). 2026-10-28 발주사 요청 전환용.
      */
-    @Value("${ai.clipping.pipeline:legacy}")
+    @Value("${ai.clipping.pipeline:v2}")
     private String pipeline;
 
-    /** v2: 월 10:00 자동 노출·발송을 승인(approve_yn='Y')된 글로 제한할지. 발주사 확답 전 기본 true */
-    @Value("${ai.clipping.publish-requires-approval:true}")
+    /**
+     * v2: 월 10:00 자동 노출·발송을 승인(approve_yn='Y')된 글로 제한할지.
+     * 발주사 확답(2026-10-28): 검수·승인 과정 불필요, 공휴일 무관 → 기본 false (생성된 글을 그대로 10:00 에 발송).
+     * 발송을 막으려면 10:00 전에 관리자에서 해당 글을 삭제한다.
+     */
+    @Value("${ai.clipping.publish-requires-approval:false}")
     private boolean publishRequiresApproval;
 
     public boolean isV2() {
