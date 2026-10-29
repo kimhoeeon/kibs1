@@ -366,13 +366,14 @@ public class KibsMngController {
         StatisticsDTO reqDto = new StatisticsDTO();
         reqDto.setTransferYear(transferYear);
         StatisticsDTO boothInfo = kibsMngService.processSelectStatisticsCompanyBooth(reqDto);
-        String[] boothSplit = boothInfo.getInCount().split(",");
+        // 신청 0건 등으로 칸 수가 모자라면 0으로 채운다 (2026-10-29 ArrayIndexOutOfBounds 대응)
+        int[] boothCounts = parseCounts(boothInfo == null ? null : boothInfo.getInCount(), 3);
 
         SplineStatisticsDTO result = new SplineStatisticsDTO();
         List<Integer> series = new ArrayList<>();
-        series.add(Integer.parseInt(boothSplit[0])); //독립부스
-        series.add(Integer.parseInt(boothSplit[1])); //조립부스
-        series.add(Integer.parseInt(boothSplit[2])); //온라인부스
+        series.add(boothCounts[0]); //독립부스
+        series.add(boothCounts[1]); //조립부스
+        series.add(boothCounts[2]); //온라인부스
         result.setSeries(series);
 
         List<String> labels = new ArrayList<>();
@@ -394,13 +395,29 @@ public class KibsMngController {
         reqDto.setTransferYear(transferYear);
         StatisticsDTO fieldPartInfo = kibsMngService.processSelectStatisticsCompanyFieldPart(reqDto);
 
-        String[] fieldPartSplit = fieldPartInfo.getInCount().split(",");
+        // 분야 9칸 고정. 신청 0건 등으로 칸 수가 모자라면 0으로 채운다
+        int[] counts = parseCounts(fieldPartInfo == null ? null : fieldPartInfo.getInCount(), 9);
         List<Integer> data = new ArrayList<>();
-        for(String fieldPart : fieldPartSplit){
-            data.add(Integer.parseInt(fieldPart));
+        for (int c : counts) {
+            data.add(c);
         }
 
         return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    /** "1,2,3" 형태의 건수 문자열을 size 칸 정수 배열로. 비었거나 칸이 모자라거나 숫자가 아니면 해당 칸은 0 */
+    private static int[] parseCounts(String csv, int size) {
+        int[] result = new int[size];
+        if (csv == null || csv.trim().isEmpty()) return result;
+        String[] parts = csv.split(",");
+        for (int i = 0; i < size && i < parts.length; i++) {
+            try {
+                result[i] = Integer.parseInt(parts[i].trim());
+            } catch (NumberFormatException e) {
+                result[i] = 0;
+            }
+        }
+        return result;
     }
 
     /**
