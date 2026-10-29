@@ -62,6 +62,7 @@
 - 업로드/다운로드 물리 경로 하드코딩(`/usr/local/tomcat/webapps/...`). 설정값으로 빼는 것이 바람직.
 - 로깅: `System.out.println` 78곳, `printStackTrace` 134곳. 로거는 서비스 2개만 사용.
 - `src/test/java/dbTest/MySQLConnectionTest.java`에 운영 DB 계정/비밀번호 평문 커밋됨.
+- 발송 API 계정이 소스에 하드코딩되어 커밋됨(2026-10-29 확인): 알리고 문자 `CommServiceImpl.smsSend`(user_id/key), DirectSend 메일 `KibsMngServiceImpl.processMailSend`(username/key/sender). 내부 보안 정책(비밀값 하드코딩 금지)상 `application.properties` 설정값으로 옮기고 키를 교체해야 함. 템플릿 프로젝트는 `directsend.*`/`aligo.*` 설정으로 분리되어 있음.
 - 2026 관리자(exhibitorNew.js) 승인 메일은 국문 템플릿(171)만 사용.
 - 공개 사이트 LOGOUT은 세션 전체를 초기화하므로 관리자 세션 기반 테스트 중 로그아웃하면 다시 관리자 로그인 필요.
 - 서버 `application.properties`에 `security.trust-proxy-headers=false` 항목 추가 권장(없어도 기본 false).
