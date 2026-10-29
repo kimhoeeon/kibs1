@@ -194,6 +194,31 @@ $(function() {
     });
 
     /* ---------------------------------------------------------
+       운영 가이드 접기/펼치기 (기본 펼침, 선택은 localStorage 에 기억)
+    --------------------------------------------------------- */
+    (function() {
+        const GUIDE_KEY = 'kibsClippingGuideCollapsed';
+        const $body = $('#clippingGuideBody');
+        const $btn = $('#btnToggleGuide');
+        if ($body.length === 0 || $btn.length === 0) return;
+
+        let remembered = null;
+        try { remembered = localStorage.getItem(GUIDE_KEY); } catch (e) {}
+        if (remembered === 'Y') {
+            $body.removeClass('show');
+            $btn.text('펼치기').attr('aria-expanded', 'false');
+        }
+        $body.on('shown.bs.collapse', function() {
+            $btn.text('접기').attr('aria-expanded', 'true');
+            try { localStorage.setItem(GUIDE_KEY, 'N'); } catch (e) {}
+        });
+        $body.on('hidden.bs.collapse', function() {
+            $btn.text('펼치기').attr('aria-expanded', 'false');
+            try { localStorage.setItem(GUIDE_KEY, 'Y'); } catch (e) {}
+        });
+    })();
+
+    /* ---------------------------------------------------------
        최신 관련 기사 (ai_clipping_article) 공통 로더/렌더러
        - 공개 상세·메일과 같은 기준: SELECTED/LISTED 만, 날짜 내림차순, 최대 150건
        - 0점(EXCLUDED_SCORE)·블랙리스트(EXCLUDED_BLACKLIST) 기사는 제외

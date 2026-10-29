@@ -105,9 +105,13 @@ if (document.documentElement) {
                                         <span class="path1"></span><span class="path2"></span><span class="path3"></span>
                                     </i>
                                     <div class="d-flex flex-stack flex-grow-1">
-                                        <div class="fw-semibold">
-                                            <h4 class="text-gray-900 fw-bold">AI 뉴스 클리핑 자동화 운영 가이드</h4>
-                                            <div class="fs-6 text-gray-700 mt-2" style="line-height: 1.6;">
+                                        <div class="fw-semibold w-100">
+                                            <%-- 제목 줄: 오른쪽 [접기]/[펼치기] 버튼. 기본은 펼침, 선택은 브라우저(localStorage)에 기억 --%>
+                                            <div class="d-flex align-items-center justify-content-between" style="max-width: 1200px;">
+                                                <h4 class="text-gray-900 fw-bold mb-0">AI 뉴스 클리핑 자동화 운영 가이드</h4>
+                                                <button type="button" id="btnToggleGuide" class="btn btn-sm btn-light-primary ms-4" data-bs-toggle="collapse" data-bs-target="#clippingGuideBody" aria-expanded="true" aria-controls="clippingGuideBody">접기</button>
+                                            </div>
+                                            <div id="clippingGuideBody" class="collapse show fs-6 text-gray-700 mt-2" style="line-height: 1.6;">
                                                 <ul class="mb-0 px-5" style="max-width: 1200px;">
                                                     <c:choose>
                                                         <c:when test="${clippingApprovalRequired}">
@@ -449,7 +453,7 @@ if (document.documentElement) {
         // 발행 승인 버튼은 ai.clipping.publish-requires-approval=true 일 때만 노출 (기본 false: 월 10:00 승인 없이 자동 발송)
         var clippingApprovalRequired = ${clippingApprovalRequired ? 'true' : 'false'};
     </script>
-    <script src="/js/custom/clipping.js?ver=20261029b"></script>
+    <script src="/js/custom/clipping.js?ver=20261029c"></script>
 
 </c:if>
 </body>
