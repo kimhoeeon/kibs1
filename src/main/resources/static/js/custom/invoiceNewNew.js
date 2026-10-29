@@ -108,7 +108,8 @@ $(function(){
             discountScale4: $('#discountScale4').is(':checked'), // 예시 ID
             discountScale5: $('#discountScale5').is(':checked'), // 예시 ID
             discountScale6: $('#discountScale6').is(':checked'), // 예시 ID
-            discountLeisure: $('#discountLeisure').is(':checked'), // 예시 ID (실제 체크박스 ID)
+            // 협회 할인: 10부스 미만/이상 두 체크박스 중 하나라도 체크면 적용 (2026-10-29), 체크박스가 없는 화면은 hidden 값 사용
+            discountLeisure: $('#discountLeisureUnder10, #discountLeisureOver10').is(':checked') || $('#discountLeisureChecked').val() === 'true',
 
             // 특별 할인 정보 (화면에서 직접 가져오기)
             discountSpecial1Yn: $('#discountSpecial1Yn').is(':checked'), // 실제 체크박스 ID

@@ -993,7 +993,7 @@ if (document.documentElement) {
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="/js/mngMain.js?ver=20260630"></script>
-    <script src="/js/custom/invoiceNewNew.js?ver=20260630"></script>
+    <script src="/js/custom/invoiceNewNew.js?ver=20261029"></script>
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->
