@@ -164,6 +164,9 @@ $(function() {
                 // textarea(val) 대신 시각적 에디터에 HTML 렌더링 형태로 삽입
                 $('#visualEditor').html(res.data.content);
 
+                // 최신 관련 기사(본문과 별도 저장)는 읽기 전용으로 편집기 아래에 표시
+                renderEditRelated(res.data.seq);
+
                 new bootstrap.Modal(document.getElementById('modalClippingDetail')).show();
             }
         });
@@ -190,6 +193,64 @@ $(function() {
         });
     });
 
+    /* ---------------------------------------------------------
+       최신 관련 기사 (ai_clipping_article) 공통 로더/렌더러
+       - 공개 상세·메일과 같은 기준: SELECTED/LISTED 만, 날짜 내림차순, 최대 150건
+       - 0점(EXCLUDED_SCORE)·블랙리스트(EXCLUDED_BLACKLIST) 기사는 제외
+    --------------------------------------------------------- */
+    const RELATED_MAX = 150;
+
+    function loadRelatedArticles(seq, callback) {
+        if (!seq) { callback([]); return; }
+        $.getJSON('/mng/center/board/clipping/articles.ajax', { seq: seq }, function(res) {
+            let list = (res && res.list) ? res.list : [];
+            list = list.filter(function(a) { return a.status === 'SELECTED' || a.status === 'LISTED'; });
+            list.sort(function(a, b) { return (b.articleDate || '').localeCompare(a.articleDate || ''); });
+            callback(list.slice(0, RELATED_MAX));
+        }).fail(function() { callback([]); });
+    }
+
+    function escapeText(v) { return $('<div>').text(v || '').html(); }
+
+    function buildRelatedItemsHtml(list) {
+        let html = '';
+        list.forEach(function(a) {
+            html += '<li style="margin-bottom: 6px;">'
+                + '<span style="color:#666;">' + escapeText((a.articleDate || '').replace(/-/g, '.')) + '</span> | '
+                + '<a href="' + escapeText(a.link) + '" target="_blank" rel="noopener" style="color:#1d5cad; text-decoration:underline;">' + escapeText(a.title) + '</a> | '
+                + escapeText(a.publisher) + '</li>';
+        });
+        return html;
+    }
+
+    // 수정/상세 모달: 편집기 아래 읽기 전용 목록
+    function renderEditRelated(seq) {
+        $('#editRelatedCount').text('0');
+        $('#editRelatedList').hide().empty();
+        $('#editRelatedEmpty').hide();
+        $('#btnToggleRelated').text('목록 펼치기').prop('disabled', true);
+        loadRelatedArticles(seq, function(list) {
+            $('#editRelatedCount').text(list.length);
+            if (list.length === 0) {
+                $('#editRelatedEmpty').show();
+                return;
+            }
+            $('#editRelatedList').html(buildRelatedItemsHtml(list));
+            $('#btnToggleRelated').prop('disabled', false);
+        });
+    }
+
+    $('#btnToggleRelated').on('click', function() {
+        let $list = $('#editRelatedList');
+        if ($list.is(':visible')) {
+            $list.slideUp(150);
+            $(this).text('목록 펼치기');
+        } else {
+            $list.slideDown(150);
+            $(this).text('목록 접기');
+        }
+    });
+
     // 3. [프론트 미리보기] 버튼 클릭 로직
     $('#btnPreviewClipping').on('click', function() {
         let title = $('#editTitle').val();
@@ -197,6 +258,10 @@ $(function() {
 
         // 새 창(팝업)을 열어 프론트엔드와 동일한 UI 렌더링
         let previewWin = window.open('', '_blank', 'width=1200,height=900,scrollbars=yes');
+        if (!previewWin) {
+            alert('브라우저가 팝업을 차단했습니다. 이 사이트의 팝업을 허용한 뒤 다시 눌러 주세요.');
+            return;
+        }
         previewWin.document.write(`
             <!DOCTYPE html>
             <html lang="ko">
@@ -222,11 +287,24 @@ $(function() {
                     <div class="board_view_cont">
                         ${content}
                     </div>
+                    <div id="previewRelated"></div>
                 </div>
             </body>
             </html>
         `);
         previewWin.document.close();
+
+        // 최신 관련 기사 목록 (공개 상세·메일과 동일 기준)
+        loadRelatedArticles($('#editSeq').val(), function(list) {
+            if (list.length === 0) return;
+            let html = '<div style="margin-top: 50px; padding: 20px; background-color: #f8f9fa; border-top: 4px solid #1d5cad; border-bottom: 1px solid #ddd;">'
+                + '<strong style="color: #1d5cad; display:block; margin-bottom:15px; font-size: 16px;">■ 최신 관련 기사 (' + list.length + '건)</strong>'
+                + '<ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #333; line-height: 1.6;">'
+                + buildRelatedItemsHtml(list)
+                + '</ul></div>';
+            let box = previewWin.document.getElementById('previewRelated');
+            if (box) box.innerHTML = html;
+        });
     });
 
     // 4. 삭제 버튼 로직 (기존과 동일)

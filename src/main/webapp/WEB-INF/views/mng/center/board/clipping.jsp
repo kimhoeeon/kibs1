@@ -300,6 +300,25 @@ if (document.documentElement) {
                             <div id="visualEditor" contenteditable="true" style="outline: none; min-height: 100%;"></div>
                         </div>
                         <div class="text-muted fs-7 mt-2">* 복잡한 HTML 코드는 숨겨집니다. 화면에 보이는 대로 글자를 수정하시면 디자인과 하단 출처는 안전하게 유지됩니다.</div>
+
+                        <%-- 최신 관련 기사: 본문 HTML 과 별도로 기사 단위 테이블에 저장되어 발행 화면·메일·미리보기에서만 본문 아래에 자동으로 붙는다. 편집 대상이 아니므로 여기서는 읽기 전용으로 보여 준다. --%>
+                        <div id="editRelatedBox" class="mt-8 p-5 rounded" style="background-color: #f1faff; border: 1px dashed #009ef7;">
+                            <div class="d-flex align-items-start">
+                                <i class="ki-duotone ki-information-5 fs-2x text-primary me-3"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                <div class="fs-6">
+                                    <div class="fw-bold text-primary mb-1">"최신 관련 기사" 목록은 위 본문에 들어 있지 않습니다.</div>
+                                    <div class="text-gray-700">본문과 별도로 저장되며, <b>공개 게시글·구독자 메일·프론트 미리보기</b>에서는 본문 아래에 자동으로 붙습니다.
+                                        (수집 후 중복 제거와 연관도 심사를 통과한 기사, 날짜순 최대 150건, 0점·블랙리스트 기사 제외) 이 목록은 편집할 수 없습니다.</div>
+                                </div>
+                            </div>
+                            <div class="separator my-4"></div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold fs-6">■ 최신 관련 기사 <span id="editRelatedCount" class="text-primary">0</span>건</span>
+                                <button type="button" id="btnToggleRelated" class="btn btn-sm btn-light-primary">목록 펼치기</button>
+                            </div>
+                            <div id="editRelatedEmpty" class="text-muted fs-7 mt-3" style="display: none;">이 글은 기사 단위 데이터가 없는 이전 방식(2026-10-28 이전) 글이라 관련 기사 영역이 표시되지 않습니다.</div>
+                            <ul id="editRelatedList" class="list-unstyled mt-3 mb-0 fs-7" style="display: none; max-height: 320px; overflow-y: auto; line-height: 1.7;"></ul>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
@@ -428,7 +447,7 @@ if (document.documentElement) {
         // 발행 승인 버튼은 ai.clipping.publish-requires-approval=true 일 때만 노출 (기본 false: 월 10:00 승인 없이 자동 발송)
         var clippingApprovalRequired = ${clippingApprovalRequired ? 'true' : 'false'};
     </script>
-    <script src="/js/custom/clipping.js?ver=20261028b"></script>
+    <script src="/js/custom/clipping.js?ver=20261029b"></script>
 
 </c:if>
 </body>

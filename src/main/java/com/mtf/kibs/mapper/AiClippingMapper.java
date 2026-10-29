@@ -4,6 +4,7 @@ import com.mtf.kibs.dto.AiClippingArticleDTO;
 import com.mtf.kibs.dto.AiClippingDTO;
 import com.mtf.kibs.dto.AiClippingKeywordDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,7 @@ public interface AiClippingMapper {
     int insertClippingArticle(AiClippingArticleDTO dto);
 
     // 공개 상세 "최신 관련 기사" 목록 (SELECTED + LISTED, 날짜 내림차순)
-    List<AiClippingArticleDTO> selectClippingArticlesForList(Long clippingSeq);
+    List<AiClippingArticleDTO> selectClippingArticlesForList(@Param("clippingSeq") Long clippingSeq, @Param("limit") int limit);
 
     // 관리자용: 해당 클리핑의 기사 전체 (제외 포함)
     List<AiClippingArticleDTO> selectClippingArticlesAll(Long clippingSeq);

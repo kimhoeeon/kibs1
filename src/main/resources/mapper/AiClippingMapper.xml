@@ -251,7 +251,7 @@
     </insert>
 
     <!-- 공개 상세 "최신 관련 기사": 브리핑 사용 기사 + 목록 기사, 날짜 내림차순 -->
-    <select id="selectClippingArticlesForList" parameterType="long" resultType="com.mtf.kibs.dto.AiClippingArticleDTO">
+    <select id="selectClippingArticlesForList" parameterType="map" resultType="com.mtf.kibs.dto.AiClippingArticleDTO">
         /* com.mtf.kibs.mapper.AiClippingMapper.selectClippingArticlesForList */
         SELECT seq,
                clipping_seq AS clippingSeq,
@@ -267,6 +267,7 @@
         WHERE clipping_seq = #{clippingSeq}
           AND status IN ('SELECTED', 'LISTED')
         ORDER BY article_date DESC, relevance_score DESC, seq ASC
+        LIMIT #{limit}
     </select>
 
     <!-- 관리자용: 해당 클리핑의 기사 전체 (제외 사유 포함) -->

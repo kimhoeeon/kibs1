@@ -17,6 +17,7 @@ import com.mtf.kibs.util.ClientIpResolver;
 import com.mtf.kibs.util.TesterAccessChecker;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -48,6 +49,10 @@ public class KibsController {
 
     @Autowired
     private AiClippingMapper aiClippingMapper;
+
+    /** AI 클리핑 상세의 "최신 관련 기사" 최대 노출 건수 (발주사 확정 2026-10-29: 날짜순 최대 150건, 메일과 동일) */
+    @Value("${ai.clipping.related-max:150}")
+    private int clippingRelatedMax;
 
     private final KibsService kibsService;
 
@@ -1390,9 +1395,9 @@ public class KibsController {
 
             mv.addObject("clippingInfo", clippingInfo);
 
-            // 4. "최신 관련 기사" (V2 파이프라인이 기사 단위로 저장한 전처리 통과 기사. 웹 상세에만 노출, 메일 본문에는 포함하지 않음)
+            // 4. "최신 관련 기사" (V2 파이프라인이 기사 단위로 저장한 전처리·연관도 통과 기사. 날짜순 최대 related-max 건, 메일 본문 하단에도 동일 목록)
             try {
-                mv.addObject("relatedArticles", aiClippingMapper.selectClippingArticlesForList(Long.parseLong(seq)));
+                mv.addObject("relatedArticles", aiClippingMapper.selectClippingArticlesForList(Long.parseLong(seq), clippingRelatedMax));
             } catch (Exception e) {
                 System.err.println("clippingView 관련 기사 조회 실패 (seq=" + seq + "): " + e.getMessage());
             }
