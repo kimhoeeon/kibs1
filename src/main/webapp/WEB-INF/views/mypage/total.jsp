@@ -167,7 +167,7 @@
                                                     <td>${boothRownum}</td>
                                                     <td>독립부스</td>
                                                     <td>${info.standAloneBoothCnt}</td>
-                                                    <td>1,800,000</td>
+                                                    <td>2,100,000</td>
                                                     <td><fmt:formatNumber value="${info.standAloneBoothFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -179,7 +179,7 @@
                                                     <td>${boothRownum}</td>
                                                     <td>조립부스</td>
                                                     <td>${info.assemblyBoothCnt}</td>
-                                                    <td>2,100,000</td>
+                                                    <td>2,400,000</td>
                                                     <td><fmt:formatNumber value="${info.assemblyBoothFee}"/></td>
                                                     <td>${info.initRegiDttm}</td>
                                                     <td>${info.finalRegiDttm}</td>
@@ -275,9 +275,9 @@
                                                 <tr>
                                                     <td>${discountRownum}</td>
                                                     <td>10부스 이상 참가업체</td>
-                                                    <td>1 부스당 400,000 원 할인</td>
+                                                    <td>1 부스당 500,000 원 할인</td>
                                                     <td><c:out value="${physicalBoothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 400000}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 500000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountScale2}">
@@ -285,9 +285,9 @@
                                                 <tr>
                                                     <td>${discountRownum}</td>
                                                     <td>20부스 이상 참가업체</td>
-                                                    <td>1 부스당 650,000 원 할인</td>
+                                                    <td>1 부스당 820,000 원 할인</td>
                                                     <td><c:out value="${physicalBoothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 650000}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 820000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountScale3}">
@@ -295,9 +295,9 @@
                                                 <tr>
                                                     <td>${discountRownum}</td>
                                                     <td>30부스 이상 참가업체</td>
-                                                    <td>1 부스당 750,000 원 할인</td>
+                                                    <td>1 부스당 950,000 원 할인</td>
                                                     <td><c:out value="${physicalBoothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 750000}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 950000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountScale4}">
@@ -305,9 +305,9 @@
                                                 <tr>
                                                     <td>${discountRownum}</td>
                                                     <td>40부스 이상 참가업체</td>
-                                                    <td>1 부스당 800,000 원 할인</td>
+                                                    <td>1 부스당 1,030,000 원 할인</td>
                                                     <td><c:out value="${physicalBoothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 800000}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 1030000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountScale5}">
@@ -315,9 +315,9 @@
                                                 <tr>
                                                     <td>${discountRownum}</td>
                                                     <td>50부스 이상 참가업체</td>
-                                                    <td>1 부스당 850,000 원 할인</td>
+                                                    <td>1 부스당 1,080,000 원 할인</td>
                                                     <td><c:out value="${physicalBoothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 850000}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 1080000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountScale6}">
@@ -325,9 +325,9 @@
                                                 <tr>
                                                     <td>${discountRownum}</td>
                                                     <td>100부스 이상 참가업체</td>
-                                                    <td>1 부스당 900,000 원 할인</td>
+                                                    <td>1 부스당 1,150,000 원 할인</td>
                                                     <td><c:out value="${physicalBoothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 900000}"/></td>
+                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 1150000}"/></td>
                                                 </tr>
                                             </c:if>
                                             <c:if test="${info.discountRe}">
@@ -364,10 +364,20 @@
                                                 <c:set var="discountRownum" value="${discountRownum + 1}"/>
                                                 <tr>
                                                     <td>${discountRownum}</td>
-                                                    <td>한국해양레저산업협회 회원사</td>
-                                                    <td>1 부스당 200,000 원 할인</td>
-                                                    <td><c:out value="${physicalBoothCnt}"/></td>
-                                                    <td>- <fmt:formatNumber value="${physicalBoothCnt * 200000}"/></td>
+                                                    <c:choose>
+                                                        <c:when test="${physicalBoothCnt < 10}">
+                                                            <td>한국해양레저산업협회 회원사 (10부스 미만)</td>
+                                                            <td>업체당 500,000 원 할인</td>
+                                                            <td>1</td>
+                                                            <td>- <fmt:formatNumber value="500000"/></td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <td>한국해양레저산업협회 회원사 (10부스 이상)</td>
+                                                            <td>1 부스당 200,000 원 할인</td>
+                                                            <td><c:out value="${physicalBoothCnt}"/></td>
+                                                            <td>- <fmt:formatNumber value="${physicalBoothCnt * 200000}"/></td>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </tr>
                                             </c:if>
                                             <tr class="txtBold">

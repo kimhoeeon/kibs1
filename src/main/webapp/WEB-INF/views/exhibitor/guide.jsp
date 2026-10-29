@@ -134,8 +134,9 @@
                             <div class="tit">참가비 납부</div>
                         </div>
                         <div class="txt2">
-                            <div class="small">인보이스 발행일로부터 7일 이내</div>
-                            <div class="big">참가비 전액 납부</div>
+                            <%-- 2026-10-29 인보이스 납부 안내와 동일 문구 유지(인보이스 JSP 변경 시 함께 수정) --%>
+                            <div class="small">참가비 전액 납부 (별도 안내 예정)</div>
+                            <div class="big">2027년 1월 이후 납부</div>
                         </div>
                         <%--<div class="txt3">입금계좌 사무국 문의</div>--%>
                     </div>
@@ -200,7 +201,7 @@
                                 <div class="txtHp">※ 추가 부대시설은 별도신청</div>
                             </td>
                             <td rowspan="3">업체당 10만원</td>
-                            <td>1,800,000</td>
+                            <td>2,100,000</td>
                         </tr>
                         <tr>
                             <td>조립부스</td>
@@ -213,7 +214,7 @@
                                 <div class="txtHp">전기 1kw (220V 콘센트)</div>
                                 <div class="txtHp">※ 추가 부대시설은 별도신청</div>
                             </td>
-                            <td>2,100,000</td>
+                            <td>2,400,000</td>
                         </tr>
                         <%--<tr>
                             <td>온라인부스</td>
@@ -246,72 +247,81 @@
                 <div class="table_box">
                     <table>
                         <colgroup>
+                            <col width="16%">
+                            <col width="24%">
+                            <col width="16%">
                             <col width="20%">
-                            <col width="40%">
                             <col width="">
                         </colgroup>
                         <thead>
                         <tr>
                             <th>구분</th>
-                            <th>할인금액(부스당)</th>
                             <th colspan="2">내용</th>
+                            <th>할인금액</th>
+                            <th>비고</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td rowspan="2">조기신청 할인</td>
-                            <td>(1차) 조기신청 할인(~2026. 11. 30_월)</td>
-                            <td>300,000원</td>
+                            <td colspan="2">(1차) 조기신청 할인(~2026. 11. 30_월)</td>
+                            <td>300,000원 <span style="font-size: 13px; color: #666;">/ 부스당</span></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td>(2차) 조기신청 할인(~2026. 12. 31_목)</td>
-                            <td>200,000원</td>
+                            <td colspan="2">(2차) 조기신청 할인(~2026. 12. 31_목)</td>
+                            <td>200,000원 <span style="font-size: 13px; color: #666;">/ 부스당</span></td>
                             <td></td>
                         </tr>
                         <tr>
                             <td rowspan="6">규모 할인</td>
-                            <td>10부스 이상 참가업체</td>
-                            <td>400,000원</td>
+                            <td colspan="2">10부스 이상 참가업체</td>
+                            <td>500,000원 <span style="font-size: 13px; color: #666;">/ 부스당</span></td>
                             <td rowspan="6">※ 최초 참가업체<br>부스당 30만원 추가 할인</td>
                         </tr>
                         <tr>
-                            <td>20부스 이상 참가업체</td>
-                            <td style="border: 1px solid #ddd;">650,000원</td>
+                            <td colspan="2">20부스 이상 참가업체</td>
+                            <td style="border: 1px solid #ddd;">820,000원 <span style="font-size: 13px; color: #666;">/ 부스당</span></td>
                         </tr>
                         <tr>
-                            <td>30부스 이상 참가업체</td>
-                            <td style="border: 1px solid #ddd;">750,000원</td>
+                            <td colspan="2">30부스 이상 참가업체</td>
+                            <td style="border: 1px solid #ddd;">950,000원 <span style="font-size: 13px; color: #666;">/ 부스당</span></td>
                         </tr>
                         <tr>
-                            <td>40부스 이상 참가업체</td>
-                            <td style="border: 1px solid #ddd;">800,000원</td>
+                            <td colspan="2">40부스 이상 참가업체</td>
+                            <td style="border: 1px solid #ddd;">1,030,000원 <span style="font-size: 13px; color: #666;">/ 부스당</span></td>
                         </tr>
                         <tr>
-                            <td>50부스 이상 참가업체</td>
-                            <td style="border: 1px solid #ddd;">850,000원</td>
+                            <td colspan="2">50부스 이상 참가업체</td>
+                            <td style="border: 1px solid #ddd;">1,080,000원 <span style="font-size: 13px; color: #666;">/ 부스당</span></td>
                         </tr>
                         <tr>
-                            <td>100부스 이상 참가업체</td>
-                            <td style="border: 1px solid #ddd;">900,000원</td>
+                            <td colspan="2">100부스 이상 참가업체</td>
+                            <td style="border: 1px solid #ddd;">1,150,000원 <span style="font-size: 13px; color: #666;">/ 부스당</span></td>
                         </tr>
                         <tr>
                             <td>재참가 할인</td>
-                            <td>2015년 ~ 2026년 참가업체</td>
-                            <td>200,000원</td>
+                            <td colspan="2">2015년 ~ 2026년 참가업체</td>
+                            <td>200,000원 <span style="font-size: 13px; color: #666;">/ 부스당</span></td>
                             <td></td>
                         </tr>
                         <tr>
                             <td>첫참가 할인</td>
-                            <td>최초 참가업체(10부스 미만 참가)</td>
-                            <td>500,000원</td>
+                            <td colspan="2">최초 참가업체(10부스 미만 참가)</td>
+                            <td>500,000원 <span style="font-size: 13px; color: #666;">/ 부스당</span></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td>협회 할인</td>
-                            <td>한국해양레저산업협회 회원사</td>
-                            <td>200,000원</td>
+                            <td rowspan="2">협회 할인</td>
+                            <td rowspan="2">한국해양레저산업협회 회원사</td>
+                            <td>10부스 미만</td>
+                            <td>500,000원 <span style="font-size: 13px; color: #666;">/ 업체당</span></td>
                             <td></td>
+                        </tr>
+                        <tr>
+                            <td>10부스 이상</td>
+                            <td style="border: 1px solid #ddd;">200,000원 <span style="font-size: 13px; color: #666;">/ 부스당</span></td>
+                            <td style="border: 1px solid #ddd;"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -512,7 +522,7 @@
                 <div class="txt_box">
                     <div class="big">일정 심사를 거쳐 자격을 갖춘 바이어에게는 KIBS 공식 호텔 숙박비, 항공권 등 초청 비용을 지원합니다.
                     </div>
-                    <div class="small">(문의: 031-995-8946/8912, kibs@kintex.com)</div>
+                    <div class="small">(문의: 031-995-8946, kibs@kintex.com)</div>
                 </div>
             </div>
         </div>

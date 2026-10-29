@@ -618,8 +618,8 @@ function checkBooth(){
 // --- 전역 상수 설정 ---
 
 const boothPrices = {
-    standAlone: 1800000,
-    assembly: 2100000,
+    standAlone: 2100000,
+    assembly: 2400000,
     online: 1000000
 };
 const registrationFee = 100000; // 기본 등록비
@@ -635,11 +635,11 @@ const registrationFee = 100000; // 기본 등록비
 const now = new Date();
 
 // 1차 조기신청 마감일
-const discount1Deadline = new Date('2025-11-14T23:59:59');
+const discount1Deadline = new Date('2026-11-30T23:59:59');
 
 // 2차 조기신청 기간
-const discount2StartDate = new Date('2025-11-15T00:00:00');
-const discount2Deadline = new Date('2025-12-12T23:59:59');
+const discount2StartDate = new Date('2026-12-01T00:00:00');
+const discount2Deadline = new Date('2026-12-31T23:59:59');
 
 /**
  * 오프라인 부스 수량에 따라 규모 할인을 자동으로 선택하고 비활성화하는 함수
@@ -770,6 +770,39 @@ function handleDiscountEarly2() {
 }
 
 /**
+ * 협회 할인(한국해양레저산업협회 회원사)을 부스 수량에 따라 자동 선택하는 함수 (2026-10-29 발주사 요청)
+ * 10부스 미만 → 업체당 500,000원(discountLeisureUnder10) / 10부스 이상 → 부스당 200,000원(discountLeisureOver10)
+ * 회원사가 아니면 선택 불가. 회원사는 둘 다 체크 해제하면 할인을 받지 않는다. 부스 수량 0이면 상태를 바꾸지 않는다.
+ */
+function updateLeisureDiscountState(physicalBooths) {
+    const under10 = $('#discountLeisureUnder10');
+    const over10 = $('#discountLeisureOver10');
+    if (under10.length === 0 && over10.length === 0) return;
+
+    const memberInput = $('#memberCompanyYn');
+    const isMember = memberInput.length === 0 || memberInput.val() === 'Y';
+    const wantsLeisure = under10.is(':checked') || over10.is(':checked');
+
+    if (!isMember) {
+        if (wantsLeisure) {
+            alert("한국해양레저산업협회 회원사 여부 - '아니오'\n체크 시 해당 할인은 불가합니다.");
+        }
+        under10.prop('checked', false);
+        over10.prop('checked', false);
+        return;
+    }
+    if (!wantsLeisure || physicalBooths <= 0) return;
+
+    if (physicalBooths < 10) {
+        under10.prop('checked', true);
+        over10.prop('checked', false);
+    } else {
+        under10.prop('checked', false);
+        over10.prop('checked', true);
+    }
+}
+
+/**
  * 첫 참가 할인 선택 여부에 따라 재참가 할인 체크박스를 활성/비활성화 하는 함수
  */
 function updateReParticipantDiscountState() {
@@ -816,7 +849,7 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
         discountScale4: $('#discountScale4').is(':checked') || $('#discountScale4Checked').val() === 'true',
         discountScale5: $('#discountScale5').is(':checked') || $('#discountScale5Checked').val() === 'true',
         discountScale6: $('#discountScale6').is(':checked') || $('#discountScale6Checked').val() === 'true',
-        discountLeisure: $('#discountLeisure').is(':checked') || $('#discountLeisureChecked').val() === 'true',
+        discountLeisure: $('#discountLeisureUnder10, #discountLeisureOver10').is(':checked') || $('#discountLeisureChecked').val() === 'true',
 
         // 특별 할인 정보 (hidden input 등에서 가져오기)
         discountSpecial1Yn: $('#discountSpecial1Yn').val() === 'true',
@@ -867,6 +900,9 @@ async function calculateTotal(pageType) { // async 키워드 추가, pageType �
         // 재참가 할인 상태 업데이트 (main.js 함수) 및 inputData 반영
         updateReParticipantDiscountState();
         inputData.discountRe = $('#discountRe').is(':checked');
+        // 협회 할인: 부스 수량에 따라 10부스 미만/이상 행 자동 선택
+        updateLeisureDiscountState(physicalBooths);
+        inputData.discountLeisure = $('#discountLeisureUnder10, #discountLeisureOver10').is(':checked');
         // 규모 할인 상태 inputData 반영
         inputData.discountScale1 = $('#discountScale1').is(':checked');
         inputData.discountScale2 = $('#discountScale2').is(':checked');
@@ -1013,12 +1049,12 @@ function autoTotalSum(){
                 case 'discountEarly2': discountPrc = '200000'; break;
                 case 'discountFirst': discountPrc = '500000'; break;
                 case 'discountRe': discountPrc = '200000'; break;
-                case 'discountScale1': discountPrc = '400000'; break;
-                case 'discountScale2': discountPrc = '650000'; break;
-                case 'discountScale3': discountPrc = '750000'; break;
-                case 'discountScale4': discountPrc = '800000'; break;
-                case 'discountScale5': discountPrc = '850000'; break;
-                case 'discountScale6': discountPrc = '900000'; break;
+                case 'discountScale1': discountPrc = '500000'; break;
+                case 'discountScale2': discountPrc = '820000'; break;
+                case 'discountScale3': discountPrc = '950000'; break;
+                case 'discountScale4': discountPrc = '1030000'; break;
+                case 'discountScale5': discountPrc = '1080000'; break;
+                case 'discountScale6': discountPrc = '1150000'; break;
                 default: break;
             }
             autoDiscountSum($('#'+names[i]),discountPrc);
@@ -1033,7 +1069,7 @@ function autoDiscountSum(checkbox){
     if(nvl(memberCompanyYn,'') !== ''){
         let memberCompanyYn_id = $(checkbox).prop('id');
         let memberCompanyYn_flag = $(checkbox).prop('checked');
-        if(memberCompanyYn === 'N' && memberCompanyYn_id === 'discountLeisure' && memberCompanyYn_flag){
+        if(memberCompanyYn === 'N' && memberCompanyYn_id.indexOf('discountLeisure') === 0 && memberCompanyYn_flag){
             alert("한국해양레저산업협회 회원사 여부 - \'아니오\'\n체크 시 해당 할인은 불가합니다.");
             $(checkbox).prop('checked',false);
             return;
@@ -1062,8 +1098,8 @@ function autoDiscountSum(checkbox){
 
         if(boothSum > 0) {
 
-            let boothPrc = (parseInt($('#stand_alone_booth_cnt').val() || 0) * 1800000)
-                + (parseInt($('#assembly_booth_cnt').val() || 0) * 2100000)
+            let boothPrc = (parseInt($('#stand_alone_booth_cnt').val() || 0) * 2100000)
+                + (parseInt($('#assembly_booth_cnt').val() || 0) * 2400000)
                 /*+ (parseInt($('#online_booth_cnt option:selected').val()) * 1000000)*/
                 + 100000;
 
@@ -1227,7 +1263,7 @@ function f_pw_init(){
                         Swal.fire({
                             icon: 'info',
                             title: '[ 회원 정보 ]',
-                            html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소로 메일 전송이 실패하였습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 031-995-8946/8912</span>',
+                            html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소로 메일 전송이 실패하였습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 031-995-8946</span>',
                             allowOutsideClick: false,
                             confirmButtonColor: '#00a8ff',
                             confirmButtonText: '확인'
@@ -1238,7 +1274,7 @@ function f_pw_init(){
                     Swal.fire({
                         icon: 'info',
                         title: '[ 회원 정보 ]',
-                        html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소가 없습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 031-995-8946/8912</span>',
+                        html: '<span style="font-size: 1.2em;">해당 ID에 등록된 Email 주소가 없습니다.<br>경기국제보트쇼 사무국으로 문의 바랍니다.<br>Tel. 031-995-8946</span>',
                         allowOutsideClick: false,
                         confirmButtonColor: '#00a8ff',
                         confirmButtonText: '확인'
@@ -2666,7 +2702,8 @@ function step_2_1_check(exhibitorSeq){
     $('input[name="discount"]:checked').each(function() {
         const id = $(this).attr('id');
         const discountAmount = parseInt($(this).data('discount')) || 0;
-        discountPrcSum += (physicalBooths * discountAmount);
+        // 협회 할인 10부스 미만은 업체당 정액, 나머지는 부스당
+        discountPrcSum += (id === 'discountLeisureUnder10') ? discountAmount : (physicalBooths * discountAmount);
 
         // discountType 문자열을 ID 기반으로 생성
         switch(id) {
@@ -2681,7 +2718,8 @@ function step_2_1_check(exhibitorSeq){
             case 'discountRe': discountType += ',재참가'; break;
             case 'discountFirstUnder10': discountType += ',첫참가(10미만)'; break;
             case 'discountFirstOver10': discountType += ',첫참가(10이상)'; break;
-            case 'discountLeisure': discountType += ',해양레저산업협회'; break;
+            case 'discountLeisureUnder10': discountType += ',해양레저산업협회(10미만)'; break;
+            case 'discountLeisureOver10': discountType += ',해양레저산업협회(10이상)'; break;
         }
     });
 
@@ -2692,7 +2730,7 @@ function step_2_1_check(exhibitorSeq){
     // --- 3. 발전기금 계산 (참가자가 보는 화면 계산용) ---
     /*let developmentFund = 0;
     const isMember = $('#memberCompanyYn').val() === 'Y';
-    const isLeisureDiscountChecked = $('#discountLeisure').is(':checked');
+    const isLeisureDiscountChecked = $('#discountLeisureUnder10, #discountLeisureOver10').is(':checked');
     if (isMember || isLeisureDiscountChecked) {
         developmentFund = Math.floor(boothPrcSum * 0.1);
     }
@@ -2734,7 +2772,7 @@ function step_2_1_check(exhibitorSeq){
         discountScale4: $('#discountScale4').is(':checked'),
         discountScale5: $('#discountScale5').is(':checked'),
         discountScale6: $('#discountScale6').is(':checked'),
-        discountLeisure: $('#discountLeisure').is(':checked'),
+        discountLeisure: $('#discountLeisureUnder10, #discountLeisureOver10').is(':checked'),
         discountYn: (discountType !== '') ? 'Y' : 'N',
         boothPrcSum: boothPrcSum,
         discountPrcSum: discountPrcSum,
@@ -5706,7 +5744,8 @@ function my_step_2_1_check(exhibitorSeq){
     $('input[name="discount"]:checked').each(function() {
         const id = $(this).attr('id');
         const discountAmount = parseInt($(this).data('discount')) || 0;
-        discountPrcSum += (physicalBooths * discountAmount);
+        // 협회 할인 10부스 미만은 업체당 정액, 나머지는 부스당
+        discountPrcSum += (id === 'discountLeisureUnder10') ? discountAmount : (physicalBooths * discountAmount);
 
         // discountType 문자열을 ID 기반으로 생성
         switch(id) {
@@ -5721,7 +5760,8 @@ function my_step_2_1_check(exhibitorSeq){
             case 'discountRe': discountType += ',재참가'; break;
             case 'discountFirstUnder10': discountType += ',첫참가(10미만)'; break;
             case 'discountFirstOver10': discountType += ',첫참가(10이상)'; break;
-            case 'discountLeisure': discountType += ',해양레저산업협회'; break;
+            case 'discountLeisureUnder10': discountType += ',해양레저산업협회(10미만)'; break;
+            case 'discountLeisureOver10': discountType += ',해양레저산업협회(10이상)'; break;
         }
     });
 
@@ -5732,7 +5772,7 @@ function my_step_2_1_check(exhibitorSeq){
     // --- 3. 발전기금 계산 (참가자가 보는 화면 계산용) ---
     /*let developmentFund = 0;
     const isMember = $('#memberCompanyYn').val() === 'Y';
-    const isLeisureDiscountChecked = $('#discountLeisure').is(':checked');
+    const isLeisureDiscountChecked = $('#discountLeisureUnder10, #discountLeisureOver10').is(':checked');
     if (isMember || isLeisureDiscountChecked) {
         developmentFund = Math.floor(boothPrcSum * 0.1);
     }
@@ -5774,7 +5814,7 @@ function my_step_2_1_check(exhibitorSeq){
         discountScale4: $('#discountScale4').is(':checked'),
         discountScale5: $('#discountScale5').is(':checked'),
         discountScale6: $('#discountScale6').is(':checked'),
-        discountLeisure: $('#discountLeisure').is(':checked'),
+        discountLeisure: $('#discountLeisureUnder10, #discountLeisureOver10').is(':checked'),
         discountYn: (discountType !== '') ? 'Y' : 'N',
         boothPrcSum: boothPrcSum,
         discountPrcSum: discountPrcSum/*,

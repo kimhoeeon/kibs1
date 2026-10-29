@@ -108,8 +108,8 @@
                     </div>
                     <div>
                         <c:choose>
-                            <c:when test="${isEng}">Tel : +82-31-995-8946/8912</c:when>
-                            <c:otherwise>전화 : 031-995-8946/8912</c:otherwise>
+                            <c:when test="${isEng}">Tel : +82-31-995-8946</c:when>
+                            <c:otherwise>전화 : 031-995-8946</c:otherwise>
                         </c:choose>
                     </div>
                     <div>
@@ -339,7 +339,7 @@
                             <td><c:choose><c:when test="${isEng}">Total Amount</c:when><c:otherwise>합계</c:otherwise></c:choose></td>
                             <td class="final_total"><fmt:formatNumber value="${invoiceInfo.prcTotal}" type="currency" maxFractionDigits="0" currencySymbol="${currMark}"/>${currTail}</td>
                             <td style="color: red; font-size: 15px; font-weight: 700;">
-                                <c:choose><c:when test="${isEng}">Within 7 days of invoice issuance</c:when><c:otherwise>인보이스 발행일로부터 7일 이내</c:otherwise></c:choose>
+                                <c:choose><c:when test="${isEng}">After January 2027 (details to be announced separately)</c:when><c:otherwise>2027년 1월 이후 납부 (별도 안내 예정)</c:otherwise></c:choose>
                             </td>
                         </tr>
                     </tbody>
@@ -349,7 +349,6 @@
             <c:if test="${!isEng}">
                 <div class="cmnt">
                     <div>부스비 및 부대시설비의 세금계산서는 행사 종료 후 E-mail을 통해 전자세금계산서 일괄 발행</div>
-                    <div><u>납부기한 엄수하여 납부 부탁드립니다.</u></div>
                 </div>
             </c:if>
         </div>
@@ -357,53 +356,14 @@
 
         <!-- box -->
         <div class="cont_box">
-            <div class="title">4. <c:choose><c:when test="${isEng}">Bank Account Information</c:when><c:otherwise>납부 계좌 정보</c:otherwise></c:choose></div>
-            <!-- table -->
-            <div class="table">
-                <table>
-                    <colgroup>
-                        <col>
-                        <col>
-                    </colgroup>
-                    <tbody>
-                        <c:choose>
-                            <c:when test="${isEng}">
-                                <tr>
-                                    <th>Bank Name</th>
-                                    <td>Nonghyup Bank</td>
-                                </tr>
-                                <tr>
-                                    <th>Account No.</th>
-                                    <td>301-0350-8985-51</td>
-                                </tr>
-                                <tr>
-                                    <th>Beneficiary Name</th>
-                                    <td>KINTEX</td>
-                                </tr>
-                                <tr>
-                                    <th>SWIFT Code</th>
-                                    <td>(Please ask Secretariat if needed)</td>
-                                </tr>
-                            </c:when>
-                            <c:otherwise>
-                                <tr>
-                                    <th>은행명</th>
-                                    <td>농협</td>
-                                </tr>
-                                <tr>
-                                    <th>계좌번호</th>
-                                    <td>301-0350-8985-51</td>
-                                </tr>
-                                <tr>
-                                    <th>예금주</th>
-                                    <td>(주)킨텍스</td>
-                                </tr>
-                            </c:otherwise>
-                        </c:choose>
-                    </tbody>
-                </table>
+            <div class="title">4. <c:choose><c:when test="${isEng}">Payment Information</c:when><c:otherwise>납부 안내</c:otherwise></c:choose></div>
+            <%-- 2026-10-29 발주사 요청: 계좌 정보 삭제, 납부 시기 안내 문구로 대체 --%>
+            <div style="margin-top: 10px; font-size: 14px; font-weight: 700;">
+                <c:choose>
+                    <c:when test="${isEng}">Participation fee payment will be available after January 2027. Further details will be provided separately.</c:when>
+                    <c:otherwise>참가비 납부는 2027년 1월 이후 납부 (별도 안내 예정)</c:otherwise>
+                </c:choose>
             </div>
-            <!-- table -->
             <div style="margin-top: 10px; font-size: 12px;">
                 <c:choose>
                     <c:when test="${isEng}">※ An additional invoice will be issued for utility applications.</c:when>
@@ -418,12 +378,12 @@
             <div class="cmnt">
                 <c:choose>
                     <c:when test="${isEng}">
-                        <div>Inquiry: KIBS 2027 Secretariat (Tel: +82-31-995-8946/8912) (E-mail: kibs@kintex.com)</div>
+                        <div>Inquiry: KIBS 2027 Secretariat (Tel: +82-31-995-8946) (E-mail: kibs@kintex.com)</div>
                         <div>Thank you for your interest and participation.</div>
                         <div>We will do our best to help you achieve your goals through this exhibition.</div>
                     </c:when>
                     <c:otherwise>
-                        <div>문의처 : 킨텍스 경기국제보트쇼 사무국 (Tel : 031-995-8946/8912) (E-mail : kibs@kintex.com)</div>
+                        <div>문의처 : 킨텍스 경기국제보트쇼 사무국 (Tel : 031-995-8946) (E-mail : kibs@kintex.com)</div>
                         <div>귀사의 관심과 참여에 깊은 감사 드립니다.</div>
                         <div>동 전시회를 통해 조기 목표하신 성과를 거양하시도록 최선을 다하겠습니다.</div>
                     </c:otherwise>

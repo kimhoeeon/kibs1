@@ -663,11 +663,11 @@ const registrationFee = 0; // 기본 등록비
 const now = new Date();
 
 // 1차 조기신청 마감일
-const discount1Deadline = new Date('2025-11-14T23:59:59');
+const discount1Deadline = new Date('2026-11-30T23:59:59');
 
 // 2차 조기신청 기간
-const discount2StartDate = new Date('2025-11-15T00:00:00');
-const discount2Deadline = new Date('2025-12-12T23:59:59');
+const discount2StartDate = new Date('2026-12-01T00:00:00');
+const discount2Deadline = new Date('2026-12-31T23:59:59');
 
 /**
  * 오프라인 부스 수량에 따라 규모 할인을 자동으로 선택하고 비활성화하는 함수
@@ -1002,12 +1002,12 @@ function autoTotalSum(){
                 case 'discountEarly2': discountPrc = '200000'; break;
                 case 'discountFirst': discountPrc = '500000'; break;
                 case 'discountRe': discountPrc = '200000'; break;
-                case 'discountScale1': discountPrc = '400000'; break;
-                case 'discountScale2': discountPrc = '650000'; break;
-                case 'discountScale3': discountPrc = '750000'; break;
-                case 'discountScale4': discountPrc = '800000'; break;
-                case 'discountScale5': discountPrc = '850000'; break;
-                case 'discountScale6': discountPrc = '900000'; break;
+                case 'discountScale1': discountPrc = '500000'; break;
+                case 'discountScale2': discountPrc = '820000'; break;
+                case 'discountScale3': discountPrc = '950000'; break;
+                case 'discountScale4': discountPrc = '1030000'; break;
+                case 'discountScale5': discountPrc = '1080000'; break;
+                case 'discountScale6': discountPrc = '1150000'; break;
                 default: break;
             }
             autoDiscountSum($('#'+names[i]),discountPrc);
@@ -1022,7 +1022,7 @@ function autoDiscountSum(checkbox){
     if(nvl(memberCompanyYn,'') !== ''){
         let memberCompanyYn_id = $(checkbox).prop('id');
         let memberCompanyYn_flag = $(checkbox).prop('checked');
-        if(memberCompanyYn === 'N' && memberCompanyYn_id === 'discountLeisure' && memberCompanyYn_flag){
+        if(memberCompanyYn === 'N' && memberCompanyYn_id.indexOf('discountLeisure') === 0 && memberCompanyYn_flag){
             alert("This discount is not available if you selected 'No' for KMIA Membership.");
             $(checkbox).prop('checked',false);
             return;
@@ -1051,8 +1051,8 @@ function autoDiscountSum(checkbox){
 
         if(boothSum > 0) {
 
-            let boothPrc = (parseInt($('#stand_alone_booth_cnt').val() || 0) * 1800000)
-                + (parseInt($('#assembly_booth_cnt').val() || 0) * 2100000)
+            let boothPrc = (parseInt($('#stand_alone_booth_cnt').val() || 0) * 2100000)
+                + (parseInt($('#assembly_booth_cnt').val() || 0) * 2400000)
                 /*+ (parseInt($('#online_booth_cnt option:selected').val()) * 1000000)*/
                 + 100000;
 
@@ -1221,7 +1221,7 @@ function f_pw_init(){
                         Swal.fire({
                             icon: 'info',
                             title: '[ Member Info ]',
-                            html: '<span style="font-size: 1.2em;">Failed to send an email to the registered email address.<br>Please contact the KIBS Secretariat.<br>Tel. +82-31-995-8946/8912</span>',
+                            html: '<span style="font-size: 1.2em;">Failed to send an email to the registered email address.<br>Please contact the KIBS Secretariat.<br>Tel. +82-31-995-8946</span>',
                             allowOutsideClick: false,
                             confirmButtonColor: '#00a8ff',
                             confirmButtonText: 'Confirm'
@@ -1232,7 +1232,7 @@ function f_pw_init(){
                     Swal.fire({
                         icon: 'info',
                         title: '[ Member Info ]',
-                        html: '<span style="font-size: 1.2em;">There is no email address registered for this ID.<br>Please contact the KIBS Secretariat.<br>Tel. +82-31-995-8946/8912</span>',
+                        html: '<span style="font-size: 1.2em;">There is no email address registered for this ID.<br>Please contact the KIBS Secretariat.<br>Tel. +82-31-995-8946</span>',
                         allowOutsideClick: false,
                         confirmButtonColor: '#00a8ff',
                         confirmButtonText: 'Confirm'
@@ -5212,7 +5212,7 @@ function my_step_2_1_check(exhibitorSeq){
     // --- 3. 발전기금 계산 (참가자가 보는 화면 계산용) ---
     /*let developmentFund = 0;
     const isMember = $('#memberCompanyYn').val() === 'Y';
-    const isLeisureDiscountChecked = $('#discountLeisure').is(':checked');
+    const isLeisureDiscountChecked = $('#discountLeisureUnder10, #discountLeisureOver10').is(':checked');
     if (isMember || isLeisureDiscountChecked) {
         developmentFund = Math.floor(boothPrcSum * 0.1);
     }

@@ -287,7 +287,8 @@ function f_booth_form_data_setting(exhibitorSeq){
         const id = $(this).attr('id');
         const discountAmount = parseInt($(this).data('discount')) || 0;
 
-        discountPrcSum += (physicalBooths * discountAmount);
+        // 협회 할인 10부스 미만은 업체당 정액, 나머지는 부스당
+        discountPrcSum += (id === 'discountLeisureUnder10') ? discountAmount : (physicalBooths * discountAmount);
 
         // discountType 문자열을 ID 기반으로 생성
         switch(id) {
@@ -302,7 +303,8 @@ function f_booth_form_data_setting(exhibitorSeq){
             case 'discountRe': discountType += ',재참가'; break;
             case 'discountFirstUnder10': discountType += ',첫참가(10미만)'; break;
             case 'discountFirstOver10': discountType += ',첫참가(10이상)'; break;
-            case 'discountLeisure': discountType += ',해양레저산업협회'; break;
+            case 'discountLeisureUnder10': discountType += ',해양레저산업협회(10미만)'; break;
+            case 'discountLeisureOver10': discountType += ',해양레저산업협회(10이상)'; break;
         }
     });
 
@@ -343,7 +345,7 @@ function f_booth_form_data_setting(exhibitorSeq){
         discountScale4: $('#discountScale4').is(':checked'),
         discountScale5: $('#discountScale5').is(':checked'),
         discountScale6: $('#discountScale6').is(':checked'),
-        discountLeisure: $('#discountLeisure').is(':checked'),
+        discountLeisure: $('#discountLeisureUnder10, #discountLeisureOver10').is(':checked'),
         discountYn: discountYn,
         boothPrcSum: boothPrcSum,
         discountPrcSum: discountPrcSum
@@ -377,8 +379,8 @@ function checkBooth(){
 // --- 전역 상수 설정 ---
 
 const boothPrices = {
-    standAlone: 1800000,
-    assembly: 2100000,
+    standAlone: 2100000,
+    assembly: 2400000,
     online: 1000000
 };
 const registrationFee = 100000; // 기본 등록비
@@ -521,6 +523,39 @@ function handleDiscountEarly2() {
 }
 
 /**
+ * 협회 할인(한국해양레저산업협회 회원사)을 부스 수량에 따라 자동 선택하는 함수 (2026-10-29 발주사 요청)
+ * 10부스 미만 → 업체당 500,000원(discountLeisureUnder10) / 10부스 이상 → 부스당 200,000원(discountLeisureOver10)
+ * 회원사가 아니면 선택 불가. 회원사는 둘 다 체크 해제하면 할인을 받지 않는다. 부스 수량 0이면 상태를 바꾸지 않는다.
+ */
+function updateLeisureDiscountState(physicalBooths) {
+    const under10 = $('#discountLeisureUnder10');
+    const over10 = $('#discountLeisureOver10');
+    if (under10.length === 0 && over10.length === 0) return;
+
+    const memberInput = $('#memberCompanyYn');
+    const isMember = memberInput.length === 0 || memberInput.val() === 'Y';
+    const wantsLeisure = under10.is(':checked') || over10.is(':checked');
+
+    if (!isMember) {
+        if (wantsLeisure) {
+            alert("한국해양레저산업협회 회원사 여부 - '아니오'\n체크 시 해당 할인은 불가합니다.");
+        }
+        under10.prop('checked', false);
+        over10.prop('checked', false);
+        return;
+    }
+    if (!wantsLeisure || physicalBooths <= 0) return;
+
+    if (physicalBooths < 10) {
+        under10.prop('checked', true);
+        over10.prop('checked', false);
+    } else {
+        under10.prop('checked', false);
+        over10.prop('checked', true);
+    }
+}
+
+/**
  * 첫 참가 할인 선택 여부에 따라 재참가 할인 체크박스를 활성/비활성화 하는 함수
  */
 function updateReParticipantDiscountState() {
@@ -588,6 +623,8 @@ function calculateTotal() {
 
     // 첫 참가 할인 상태가 변경되었으므로, 재참가 할인 상태를 업데이트합니다.
     updateReParticipantDiscountState();
+    // 협회 할인: 부스 수량에 따라 10부스 미만/이상 행 자동 선택
+    updateLeisureDiscountState(physicalBooths);
 
     // 3. 총 할인액 계산
     let totalDiscount = 0;
@@ -596,7 +633,8 @@ function calculateTotal() {
     $('input[name="discount"]').each(function() {
         if ($(this).prop('checked')) { // 체크된 상태인지 직접 확인
             let discountPerBooth = parseInt($(this).data('discount')) || 0;
-            totalDiscount += (physicalBooths * discountPerBooth);
+            // 협회 할인 10부스 미만은 업체당 정액, 나머지는 부스당
+            totalDiscount += ($(this).attr('id') === 'discountLeisureUnder10') ? discountPerBooth : (physicalBooths * discountPerBooth);
         }
     });
 
@@ -604,7 +642,7 @@ function calculateTotal() {
     let developmentFund = 0;
     // 3. 협회 회원사(DB값)이거나 협회 할인 체크박스가 체크되어 있는지 확인
     const isMember = $('#memberCompanyYn').val() === 'Y'; // hidden input으로 memberCompanyYn 값 필요
-    const isLeisureDiscountChecked = $('#discountLeisure').is(':checked');
+    const isLeisureDiscountChecked = $('#discountLeisureUnder10, #discountLeisureOver10').is(':checked');
 
     if (isMember || isLeisureDiscountChecked) {
         // 발전기금 = (등록비 + 모든 부스비)의 10%
@@ -741,8 +779,8 @@ function autoDiscountSum(checkbox, discountPrc){
 
     if(boothSum > 0) {
 
-        let boothPrc = (parseInt($('#stand_alone_booth_cnt').val() || 0) * 1800000)
-            + (parseInt($('#assembly_booth_cnt').val() || 0) * 2100000)
+        let boothPrc = (parseInt($('#stand_alone_booth_cnt').val() || 0) * 2100000)
+            + (parseInt($('#assembly_booth_cnt').val() || 0) * 2400000)
             + (parseInt($('#online_booth_cnt option:selected').val()) * 1000000)
             + 100000;
 

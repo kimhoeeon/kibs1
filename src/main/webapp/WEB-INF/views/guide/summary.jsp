@@ -110,7 +110,7 @@
     <div class="summ_s summ_s1 padding_tb">
         <div class="inner">
             <div class="summ_box">
-                <div class="summ_poster"><img src="/img/keyvisual28_kor.jpg?ver=20260205" alt="2026 경기국제보트쇼 공식 포스터"></div>
+                <div class="summ_poster"><img src="/img/keyvisual29_kor.jpg" alt="2026 경기국제보트쇼 공식 포스터"></div>
                 <div class="summ_info">
                     <ul class="infoBox">
                         <li>

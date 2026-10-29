@@ -850,7 +850,7 @@ public class KibsMngNewController {
             SXSSFRow row = sheet2.createRow(rowCnt2++);
             row.createCell(0).setCellValue("■ 부스(vat 별도)"); row.getCell(0).setCellStyle(titleStyle);
             rowCnt2++;
-            String[][] boothData = { {"부스구분", "가격"}, {"독립부스 1차", "1,500,000"}, {"조립부스 1차", "1,800,000"}, {"독립부스 2차", "1,600,000"}, {"조립부스 2차", "1,900,000"}, {"독립부스", "1,800,000"}, {"조립부스", "2,100,000"} };
+            String[][] boothData = { {"부스구분", "가격"}, {"독립부스 1차", "1,500,000"}, {"조립부스 1차", "1,800,000"}, {"독립부스 2차", "1,600,000"}, {"조립부스 2차", "1,900,000"}, {"독립부스", "2,100,000"}, {"조립부스", "2,400,000"} };
             for (int i=0; i<boothData.length; i++) {
                 row = sheet2.createRow(rowCnt2++);
                 row.createCell(0).setCellValue(boothData[i][0]); row.createCell(1).setCellValue(boothData[i][1]);
@@ -865,7 +865,7 @@ public class KibsMngNewController {
             row = sheet2.createRow(rowCnt2++);
             row.createCell(0).setCellValue("구분"); row.createCell(1).setCellValue("할인항목"); row.createCell(2).setCellValue("가격"); row.createCell(3).setCellValue("비고");
             for(int i=0; i<4; i++) row.getCell(i).setCellStyle(mainHeaderStyle);
-            String[][] discountData = { {"기본할인", "1차 조기신청 할인", "300,000", "부스당"}, {"기본할인", "2차 조기신청 할인", "200,000", "부스당"}, {"규모할인", "10부스 이상", "400,000", "첫참가 업체 30만원/부스 추가 할인"}, {"규모할인", "20부스 이상", "650,000", ""}, {"규모할인", "30부스 이상", "750,000", ""}, {"규모할인", "40부스 이상", "800,000", ""}, {"규모할인", "50부스 이상", "850,000", ""}, {"규모할인", "100부스 이상", "900,000", ""}, {"기본할인", "재참가 기업 할인", "200,000", ""}, {"기본할인", "첫참가 기업 할인", "500,000", "10부스 미만 신청시에만 적용"}, {"기본할인", "협회 회원사", "200,000", ""}, {"특별할인(비공개)", "올해의 제품상", "최종 참가비용의 50% 할인", "=할인 적용 된 금액의 50%"}, {"특별할인(비공개)", "특별관", "기본할인 적용가격의 최대 80% 할인", ""}, {"기타", "해양레저산업협회 발전기금 납부", "참가비의 10% 납부", ""} };
+            String[][] discountData = { {"기본할인", "1차 조기신청 할인", "300,000", "부스당"}, {"기본할인", "2차 조기신청 할인", "200,000", "부스당"}, {"규모할인", "10부스 이상", "500,000", "첫참가 업체 30만원/부스 추가 할인"}, {"규모할인", "20부스 이상", "820,000", ""}, {"규모할인", "30부스 이상", "950,000", ""}, {"규모할인", "40부스 이상", "1,030,000", ""}, {"규모할인", "50부스 이상", "1,080,000", ""}, {"규모할인", "100부스 이상", "1,150,000", ""}, {"기본할인", "재참가 기업 할인", "200,000", ""}, {"기본할인", "첫참가 기업 할인", "500,000", "10부스 미만 신청시에만 적용"}, {"기본할인", "협회 회원사(10부스 미만)", "500,000", "업체당"}, {"기본할인", "협회 회원사(10부스 이상)", "200,000", "부스당"}, {"특별할인(비공개)", "올해의 제품상", "최종 참가비용의 50% 할인", "=할인 적용 된 금액의 50%"}, {"특별할인(비공개)", "특별관", "기본할인 적용가격의 최대 80% 할인", ""}, {"기타", "해양레저산업협회 발전기금 납부", "참가비의 10% 납부", ""} };
             int discountStartRow = rowCnt2;
             for(String[] d : discountData){
                 row = sheet2.createRow(rowCnt2++);
@@ -874,8 +874,8 @@ public class KibsMngNewController {
             }
             sheet2.addMergedRegion(new CellRangeAddress(discountStartRow, discountStartRow + 1, 0, 0));
             sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 2, discountStartRow + 7, 0, 0));
-            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 8, discountStartRow + 10, 0, 0));
-            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 11, discountStartRow + 12, 0, 0));
+            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 8, discountStartRow + 11, 0, 0));
+            sheet2.addMergedRegion(new CellRangeAddress(discountStartRow + 12, discountStartRow + 13, 0, 0));
             rowCnt2+=2;
 
             row = sheet2.createRow(rowCnt2++);

@@ -13,8 +13,12 @@ public class CalculationService {
 
     // --- 국문 (KRW) 단가 ---
     private static final int REGISTRATION_FEE = 100000;
-    private static final int STAND_ALONE_BOOTH_FEE = 1800000;
-    private static final int ASSEMBLY_BOOTH_FEE = 2100000;
+    // 2027 (2026-10-29 발주사 요청: 독립 1,800,000 → 2,100,000 / 조립 2,100,000 → 2,400,000)
+    private static final int STAND_ALONE_BOOTH_FEE = 2100000;
+    private static final int ASSEMBLY_BOOTH_FEE = 2400000;
+    // 2026 단가(지난 연도 재계산용, 변경 금지)
+    private static final int STAND_ALONE_BOOTH_FEE_2026 = 1800000;
+    private static final int ASSEMBLY_BOOTH_FEE_2026 = 2100000;
     private static final int ONLINE_BOOTH_FEE = 1000000; // 온라인 부스비 (필요시 수정)
 
     // --- 영문 (USD) 단가 ---
@@ -26,16 +30,25 @@ public class CalculationService {
     // --- 기본 할인액 (CommConstants 또는 DB 값 사용 권장) ---
     private static final int DISCOUNT_EARLY_1_AMOUNT = 300000;
     private static final int DISCOUNT_EARLY_2_AMOUNT = 200000;
-    private static final int DISCOUNT_SCALE_1_AMOUNT = 400000;
-    private static final int DISCOUNT_SCALE_2_AMOUNT = 650000;
-    private static final int DISCOUNT_SCALE_3_AMOUNT = 750000;
-    private static final int DISCOUNT_SCALE_4_AMOUNT = 800000;
-    private static final int DISCOUNT_SCALE_5_AMOUNT = 850000;
-    private static final int DISCOUNT_SCALE_6_AMOUNT = 900000;
+    // 규모 할인 2027 (2026-10-29 발주사 요청)
+    private static final int DISCOUNT_SCALE_1_AMOUNT = 500000;
+    private static final int DISCOUNT_SCALE_2_AMOUNT = 820000;
+    private static final int DISCOUNT_SCALE_3_AMOUNT = 950000;
+    private static final int DISCOUNT_SCALE_4_AMOUNT = 1030000;
+    private static final int DISCOUNT_SCALE_5_AMOUNT = 1080000;
+    private static final int DISCOUNT_SCALE_6_AMOUNT = 1150000;
+    // 규모 할인 2026(지난 연도 재계산용, 변경 금지)
+    private static final int DISCOUNT_SCALE_1_AMOUNT_2026 = 400000;
+    private static final int DISCOUNT_SCALE_2_AMOUNT_2026 = 650000;
+    private static final int DISCOUNT_SCALE_3_AMOUNT_2026 = 750000;
+    private static final int DISCOUNT_SCALE_4_AMOUNT_2026 = 800000;
+    private static final int DISCOUNT_SCALE_5_AMOUNT_2026 = 850000;
+    private static final int DISCOUNT_SCALE_6_AMOUNT_2026 = 900000;
     private static final int DISCOUNT_RE_AMOUNT = 200000;
     private static final int DISCOUNT_FIRST_UNDER_10_AMOUNT = 500000;
     private static final int DISCOUNT_FIRST_OVER_10_AMOUNT = 300000;
-    private static final int DISCOUNT_LEISURE_AMOUNT = 200000;
+    private static final int DISCOUNT_LEISURE_AMOUNT = 200000;            // 협회 할인: 10부스 이상, 부스당
+    private static final int DISCOUNT_LEISURE_UNDER_10_AMOUNT = 500000;   // 협회 할인: 10부스 미만, 업체당 정액 (2027, 2026-10-29)
 
     /**
      * 기본 계산 진입점 (연도가 없을 경우 무조건 최신 2027년으로 계산)
@@ -115,8 +128,10 @@ public class CalculationService {
             }
             basicDiscountSum += scaleDiscount;
 
-            // --- 협회 할인 (중복 가능) ---
-            if (input.isDiscountLeisure()) basicDiscountSum += physicalBooths * DISCOUNT_LEISURE_AMOUNT;
+            // --- 협회 할인 (중복 가능) : 10부스 미만은 업체당 정액, 10부스 이상은 부스당 ---
+            if (input.isDiscountLeisure()) {
+                basicDiscountSum += (physicalBooths < 10) ? DISCOUNT_LEISURE_UNDER_10_AMOUNT : physicalBooths * DISCOUNT_LEISURE_AMOUNT;
+            }
         }
         result.setBasicDiscountSum(basicDiscountSum);
 
@@ -225,8 +240,8 @@ public class CalculationService {
         boolean isEnglish = "EN".equalsIgnoreCase(input.getLang());
 
         int registrationFee = isEnglish ? EN_REGISTRATION_FEE : REGISTRATION_FEE;
-        int standAloneFeeUnit = isEnglish ? EN_STAND_ALONE_BOOTH_FEE : STAND_ALONE_BOOTH_FEE;
-        int assemblyFeeUnit = isEnglish ? EN_ASSEMBLY_BOOTH_FEE : ASSEMBLY_BOOTH_FEE;
+        int standAloneFeeUnit = isEnglish ? EN_STAND_ALONE_BOOTH_FEE : STAND_ALONE_BOOTH_FEE_2026;
+        int assemblyFeeUnit = isEnglish ? EN_ASSEMBLY_BOOTH_FEE : ASSEMBLY_BOOTH_FEE_2026;
         int onlineFeeUnit = isEnglish ? EN_ONLINE_BOOTH_FEE : ONLINE_BOOTH_FEE;
 
         // --- 1. 부스 총액 계산 (등록비 포함) ---
@@ -256,17 +271,17 @@ public class CalculationService {
 
             int scaleDiscount = 0;
             if (physicalBooths >= 100 && input.isDiscountScale6()) {
-                scaleDiscount = physicalBooths * DISCOUNT_SCALE_6_AMOUNT;
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_6_AMOUNT_2026;
             } else if (physicalBooths >= 50 && input.isDiscountScale5()) {
-                scaleDiscount = physicalBooths * DISCOUNT_SCALE_5_AMOUNT;
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_5_AMOUNT_2026;
             } else if (physicalBooths >= 40 && input.isDiscountScale4()) {
-                scaleDiscount = physicalBooths * DISCOUNT_SCALE_4_AMOUNT;
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_4_AMOUNT_2026;
             } else if (physicalBooths >= 30 && input.isDiscountScale3()) {
-                scaleDiscount = physicalBooths * DISCOUNT_SCALE_3_AMOUNT;
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_3_AMOUNT_2026;
             } else if (physicalBooths >= 20 && input.isDiscountScale2()) {
-                scaleDiscount = physicalBooths * DISCOUNT_SCALE_2_AMOUNT;
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_2_AMOUNT_2026;
             } else if (physicalBooths >= 10 && input.isDiscountScale1()) {
-                scaleDiscount = physicalBooths * DISCOUNT_SCALE_1_AMOUNT;
+                scaleDiscount = physicalBooths * DISCOUNT_SCALE_1_AMOUNT_2026;
             }
             basicDiscountSum += scaleDiscount;
 
