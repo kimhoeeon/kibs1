@@ -475,71 +475,71 @@ if (document.documentElement) {
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountEarly1" data-discount="300000" <c:if test="${info.discountEarly1}">checked</c:if> disabled></td>
                                                             <td rowspan="2">조기신청 할인</td>
                                                             <td>(1차) 조기신청 할인 (~ 2026. 11. 30 월)</td>
-                                                            <td>300,000 원 / 부스당</td>
+                                                            <td>300,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountEarly2" data-discount="200000" <c:if test="${info.discountEarly2}">checked</c:if> disabled></td>
                                                             <td>(2차) 조기신청 할인 (~ 2026. 12. 31 목)</td>
-                                                            <td>200,000 원 / 부스당</td>
+                                                            <td>200,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale1" data-discount="500000" <c:if test="${info.discountScale1}">checked</c:if> disabled></td>
                                                             <td rowspan="6">규모 할인</td>
                                                             <td>10부스 이상 참가업체</td>
-                                                            <td>500,000 원 / 부스당</td>
+                                                            <td>500,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale2" data-discount="820000" <c:if test="${info.discountScale2}">checked</c:if> disabled></td>
                                                             <td>20부스 이상 참가업체</td>
-                                                            <td>820,000 원 / 부스당</td>
+                                                            <td>820,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale3" data-discount="950000" <c:if test="${info.discountScale3}">checked</c:if> disabled></td>
                                                             <td>30부스 이상 참가업체</td>
-                                                            <td>950,000 원 / 부스당</td>
+                                                            <td>950,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale4" data-discount="1030000" <c:if test="${info.discountScale4}">checked</c:if> disabled></td>
                                                             <td>40부스 이상 참가업체</td>
-                                                            <td>1,030,000 원 / 부스당</td>
+                                                            <td>1,030,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale5" data-discount="1080000" <c:if test="${info.discountScale5}">checked</c:if> disabled></td>
                                                             <td>50부스 이상 참가업체</td>
-                                                            <td>1,080,000 원 / 부스당</td>
+                                                            <td>1,080,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountScale6" data-discount="1150000" <c:if test="${info.discountScale6}">checked</c:if> disabled></td>
                                                             <td>100부스 이상 참가업체</td>
-                                                            <td>1,150,000 원 / 부스당</td>
+                                                            <td>1,150,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountRe" data-discount="200000" <c:if test="${info.discountRe}">checked</c:if> disabled></td>
                                                             <td>재참가 할인</td>
                                                             <td>2015년 ~ 2026년 참가 업체</td>
-                                                            <td>200,000 원 / 부스당</td>
+                                                            <td>200,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountFirstUnder10" data-discount="500000" <c:if test="${info.discountFirstUnder10}">checked</c:if> disabled></td>
                                                             <td rowspan="2">첫참가 할인</td>
                                                             <td>최초 참가업체 (10부스 미만 참가)</td>
-                                                            <td>500,000 원 / 부스당</td>
+                                                            <td>500,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountFirstOver10" data-discount="300000" <c:if test="${info.discountFirstOver10}">checked</c:if> disabled></td>
                                                             <td>최초 참가업체 (10부스 이상 참가)</td>
-                                                            <td>300,000 원 / 부스당</td>
+                                                            <td>300,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountLeisureUnder10" data-discount="500000" <c:if test="${info.discountLeisure && (info.standAloneBoothCnt + info.assemblyBoothCnt) < 10}">checked</c:if> disabled></td>
                                                             <td rowspan="2">협회 할인</td>
-                                                            <td>한국해양레저산업협회 회원사 (10부스 미만 참가)</td>
-                                                            <td>500,000 원 / 업체당</td>
+                                                            <td>한국해양레저산업협회 회원사 10부스 미만(업체당)</td>
+                                                            <td>500,000 원</td>
                                                         </tr>
                                                         <tr class="text-center align-middle">
                                                             <td><input type="checkbox" class="form-check-input basic-discount" id="discountLeisureOver10" data-discount="200000" <c:if test="${info.discountLeisure && (info.standAloneBoothCnt + info.assemblyBoothCnt) >= 10}">checked</c:if> disabled></td>
-                                                            <td>한국해양레저산업협회 회원사 (10부스 이상 참가)</td>
-                                                            <td>200,000 원 / 부스당</td>
+                                                            <td>한국해양레저산업협회 회원사 10부스 이상</td>
+                                                            <td>200,000 원</td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

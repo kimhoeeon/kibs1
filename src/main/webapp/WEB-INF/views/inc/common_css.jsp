@@ -5,5 +5,5 @@
 <!-- 공통 CSS -->
 <link href="/css/reset.css?ver=20260630" rel="stylesheet">
 <link href="/css/font.css?ver=20260630" rel="stylesheet">
-<link href="/css/style.css?ver=20260630" rel="stylesheet">
+<link href="/css/style.css?ver=20261029" rel="stylesheet">
 <link href="/css/responsive.css?ver=20260630" rel="stylesheet">

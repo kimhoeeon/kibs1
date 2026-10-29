@@ -303,8 +303,8 @@
                                             <li class="form_ptag_hd">
                                                 <div class="select">선택</div>
                                                 <div class="cate">구분</div>
-                                                <div class="note">할인금액</div>
-                                                <div class="discount">내용</div>
+                                                <div class="discount">할인금액</div>
+                                                <div class="note">내용</div>
                                             </li>
                                             <li class="form_span">
                                                 <div class="select">
@@ -313,16 +313,16 @@
                                                     </label>
                                                 </div>
                                                 <div class="cate rowspan-2">조기신청 할인<%-- (종료)--%></div>
-                                                <div class="note">300,000 원 / 부스당</div>
-                                                <div class="discount">(1차) 조기신청 할인 (~ 2026. 11. 30 월)</div>
+                                                <div class="discount">300,000 원</div>
+                                                <div class="note">(1차) 조기신청 할인 (~ 2026. 11. 30 월)</div>
 
                                                 <div class="select">
                                                     <label class="discount-item" id="discountItem2">
                                                         <input type="checkbox" id="discountEarly2" name="discount" data-discount="200000" onchange="calculateTotal();" <c:if test="${info.discountEarly2}">checked</c:if> <%--disabled--%>>
                                                     </label>
                                                 </div>
-                                                <div class="note">200,000 원 / 부스당</div>
-                                                <div class="discount">(2차) 조기신청 할인 (~ 2026. 12. 31 목)</div>
+                                                <div class="discount">200,000 원</div>
+                                                <div class="note">(2차) 조기신청 할인 (~ 2026. 12. 31 목)</div>
 
                                                 <div class="select">
                                                     <label class="discount-item single-choice-discount">
@@ -330,48 +330,48 @@
                                                     </label>
                                                 </div>
                                                 <div class="cate rowspan-6">규모 할인</div>
-                                                <div class="note">500,000 원 / 부스당</div>
-                                                <div class="discount">10부스 이상 참가업체</div>
+                                                <div class="discount">500,000 원</div>
+                                                <div class="note">10부스 이상 참가업체</div>
 
                                                 <div class="select">
                                                     <label class="discount-item single-choice-discount">
                                                         <input type="checkbox" id="discountScale2" name="discount" data-discount="820000" onchange="calculateTotal();" <c:if test="${info.discountScale2}">checked</c:if> >
                                                     </label>
                                                 </div>
-                                                <div class="note">820,000 원 / 부스당</div>
-                                                <div class="discount">20부스 이상 참가업체</div>
+                                                <div class="discount">820,000 원</div>
+                                                <div class="note">20부스 이상 참가업체</div>
 
                                                 <div class="select">
                                                     <label class="discount-item single-choice-discount">
                                                         <input type="checkbox" id="discountScale3" name="discount" data-discount="950000" onchange="calculateTotal();" <c:if test="${info.discountScale3}">checked</c:if> >
                                                     </label>
                                                 </div>
-                                                <div class="note">950,000 원 / 부스당</div>
-                                                <div class="discount">30부스 이상 참가업체</div>
+                                                <div class="discount">950,000 원</div>
+                                                <div class="note">30부스 이상 참가업체</div>
 
                                                 <div class="select">
                                                     <label class="discount-item single-choice-discount">
                                                         <input type="checkbox" id="discountScale4" name="discount" data-discount="1030000" onchange="calculateTotal();" <c:if test="${info.discountScale4}">checked</c:if> >
                                                     </label>
                                                 </div>
-                                                <div class="note">1,030,000 원 / 부스당</div>
-                                                <div class="discount">40부스 이상 참가업체</div>
+                                                <div class="discount">1,030,000 원</div>
+                                                <div class="note">40부스 이상 참가업체</div>
 
                                                 <div class="select">
                                                     <label class="discount-item single-choice-discount">
                                                         <input type="checkbox" id="discountScale5" name="discount" data-discount="1080000" onchange="calculateTotal();" <c:if test="${info.discountScale5}">checked</c:if> >
                                                     </label>
                                                 </div>
-                                                <div class="note">1,080,000 원 / 부스당</div>
-                                                <div class="discount">50부스 이상 참가업체</div>
+                                                <div class="discount">1,080,000 원</div>
+                                                <div class="note">50부스 이상 참가업체</div>
 
                                                 <div class="select">
                                                     <label class="discount-item single-choice-discount">
                                                         <input type="checkbox" id="discountScale6" name="discount" data-discount="1150000" onchange="calculateTotal();" <c:if test="${info.discountScale6}">checked</c:if> >
                                                     </label>
                                                 </div>
-                                                <div class="note">1,150,000 원 / 부스당</div>
-                                                <div class="discount">100부스 이상 참가업체</div>
+                                                <div class="discount">1,150,000 원</div>
+                                                <div class="note">100부스 이상 참가업체</div>
 
                                                 <div class="select">
                                                     <label class="discount-item">
@@ -379,8 +379,8 @@
                                                     </label>
                                                 </div>
                                                 <div class="cate">재참가 할인</div>
-                                                <div class="note">200,000 원 / 부스당</div>
-                                                <div class="discount">2015년 ~ 2026년 참가 업체</div>
+                                                <div class="discount">200,000 원</div>
+                                                <div class="note">2015년 ~ 2026년 참가 업체</div>
 
                                                 <div class="select">
                                                     <label class="discount-item">
@@ -388,16 +388,16 @@
                                                     </label>
                                                 </div>
                                                 <div class="cate rowspan-2">첫참가 할인</div>
-                                                <div class="note">500,000 원 / 부스당</div>
-                                                <div class="discount">최초 참가업체 (10부스 미만 참가)</div>
+                                                <div class="discount">500,000 원</div>
+                                                <div class="note">최초 참가업체 (10부스 미만 참가)</div>
 
                                                 <div class="select">
                                                     <label class="discount-item">
                                                         <input type="checkbox" id="discountFirstOver10" name="discount" data-discount="300000" onchange="calculateTotal();" data-db-val="${info.prePartYear}" ${info.prePartYear == 'first' && info.standAloneBoothCnt + info.assemblyBoothCnt >= 10 ? 'checked' : ''}>
                                                     </label>
                                                 </div>
-                                                <div class="note">300,000 원 / 부스당</div>
-                                                <div class="discount">최초 참가업체 (10부스 이상 참가)</div>
+                                                <div class="discount">300,000 원</div>
+                                                <div class="note">최초 참가업체 (10부스 이상 참가)</div>
 
                                                 <div class="select">
                                                 <label class="discount-item">
@@ -405,16 +405,16 @@
                                                 </label>
                                             </div>
                                             <div class="cate rowspan-2">협회 할인</div>
-                                            <div class="note">한국해양레저산업협회 회원사 10부스 미만(업체당)</div>
                                             <div class="discount">500,000 원</div>
+                                            <div class="note">한국해양레저산업협회 회원사 10부스 미만(업체당)</div>
 
                                             <div class="select">
                                                 <label class="discount-item">
                                                     <input type="checkbox" id="discountLeisureOver10" name="discount" data-discount="200000" onchange="calculateTotal();" data-db-lock="${info.memberCompanyYn}" ${info.memberCompanyYn == 'Y' && info.standAloneBoothCnt + info.assemblyBoothCnt >= 10 ? 'checked' : ''} >
                                                 </label>
                                             </div>
+                                            <div class="discount">200,000 원</div>
                                             <div class="note">한국해양레저산업협회 회원사 10부스 이상</div>
-                                            <div class="discount">200,000 원 / 부스당</div>
 
                                                 <c:if test="${info.discountSpecial1Yn}">
                                                     <div class="select">
