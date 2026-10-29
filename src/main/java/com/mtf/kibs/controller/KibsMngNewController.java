@@ -850,7 +850,8 @@ public class KibsMngNewController {
             SXSSFRow row = sheet2.createRow(rowCnt2++);
             row.createCell(0).setCellValue("■ 부스(vat 별도)"); row.getCell(0).setCellStyle(titleStyle);
             rowCnt2++;
-            String[][] boothData = { {"부스구분", "가격"}, {"독립부스 1차", "1,500,000"}, {"조립부스 1차", "1,800,000"}, {"독립부스 2차", "1,600,000"}, {"조립부스 2차", "1,900,000"}, {"독립부스", "2,100,000"}, {"조립부스", "2,400,000"} };
+            // 2027 단가 (2026-10-29 발주사 변경분). 1차/2차 단가 체계는 2027 에 없으므로 행을 두지 않는다
+            String[][] boothData = { {"부스구분", "가격"}, {"독립부스", "2,100,000"}, {"조립부스", "2,400,000"} };
             for (int i=0; i<boothData.length; i++) {
                 row = sheet2.createRow(rowCnt2++);
                 row.createCell(0).setCellValue(boothData[i][0]); row.createCell(1).setCellValue(boothData[i][1]);
