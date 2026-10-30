@@ -1334,30 +1334,32 @@ function f_apply_comp(step, seq){
 /* //////////////////////////////// begin:step_01 ////////////////////////////////// */
 
 function f_phone_number_valid_check(el) {
-    // 순수 DOM 요소를 jQuery 객체로 변환하여 $el 변수에 할당합니다.
+    // 2026-10-30 QA 1번: blur 시 alert 뒤 focus 를 되돌리면 사용자가 클릭한 다른 요소와 포커스가 오가며 alert 가 반복됐다.
+    // → blur 에서는 입력칸 아래 안내문만 표시하고, 형식 검사는 저장 시(step_01_check)에서 막는다.
     let $el = $(el);
+    let pureNum = ($el.val() || '').replace(/-/g, '');
+    let msg = '';
 
-    let phoneNum = $el.val();
-    // 하이픈 제거 후 순수 숫자만 추출
-    let pureNum = phoneNum.replace(/-/g, "");
-
-    // 값이 비어있지 않은 경우에만 검사
     if (pureNum.length > 0) {
-        // 1) 010으로 시작하는지 검사
-        if (pureNum.substring(0, 3) !== "010") {
-            alert('휴대전화번호는 "010"으로 시작해야 합니다.');
-            $el.val(''); // 값 초기화
-            $el.trigger('focus'); // 다시 입력하도록 포커스 이동
-            return false;
-        }
-
-        // 2) 전체 자릿수 검사 (010 국번은 최소 11자리 숫자여야 함)
-        if (pureNum.length < 11) {
-            alert('휴대전화번호 형식이 올바르지 않습니다.\n(예: 010-1234-5678)');
-            $el.trigger('focus'); // 다시 입력하도록 포커스 이동
-            return false;
+        if (pureNum.substring(0, 3) !== '010') {
+            msg = '휴대전화번호는 "010"으로 시작해야 합니다.';
+        } else if (pureNum.length < 11) {
+            msg = '휴대전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)';
         }
     }
+
+    let $hint = $el.nextAll('.phone-valid-msg').first();
+    if (msg !== '') {
+        if ($hint.length === 0) {
+            $hint = $('<p class="phone-valid-msg" style="color:#AD1D1D; font-size:0.9em; margin-top:4px;"></p>').insertAfter($el);
+        }
+        $hint.text(msg);
+        $el.css('border-color', '#AD1D1D');
+        return false;
+    }
+    $hint.remove();
+    $el.css('border-color', '');
+    return true;
 }
 
 function f_id_license_num_set(input){
@@ -1760,23 +1762,15 @@ async function step_01_check(exhibitorSeq){
         return false;
     }*/
 
-    // 담당자 휴대전화
+    // 담당자(부담당자) 휴대전화 — 선택 입력이지만 입력했다면 형식이 맞아야 한다 (2026-10-30 QA 1번: blur alert 제거에 따라 저장 시 검사 복원)
     let charge_person_phone_el = $('input[type=tel][name=chargePersonPhone]');
-    /*let charge_person_phone_len = charge_person_phone_el.length;
-    let charge_person_phone_flag = true;
-    for(let i=0; i<charge_person_phone_len; i++){
-        if(charge_person_phone_el.eq(i).val() === ''){
-            charge_person_phone_flag = false;
-        }
-
-        if ( charge_person_phone_flag && !/^010-?[0-9]{4}-?[0-9]{4}$/.test( charge_person_phone_el.eq(i).val() ) ) {
-            charge_person_phone_flag = false;
+    for(let i=0; i<charge_person_phone_el.length; i++){
+        let charge_person_phone_val = (charge_person_phone_el.eq(i).val() || '').trim();
+        if ( charge_person_phone_val !== '' && !/^010-?[0-9]{4}-?[0-9]{4}$/.test( charge_person_phone_val ) ) {
+            showMessage('', 'error', '[ 담당자 정보 ]', '부담당자 #' + (i + 1) + ' 휴대전화번호를 올바른 형식으로 입력해 주세요.<br>(앞자리 010 만 가능합니다.)', '');
+            return false;
         }
     }
-    if(!charge_person_phone_flag){
-        showMessage('', 'error', '[담당자 정보]', '휴대전화를 입력해 주세요.<br>또는 올바른 휴대전화번호 형식으로 입력해 주세요.(010 만 가능)', '');
-        return false;
-    }*/
 
     // 담당자 이메일
     let charge_person_email_el = $('input[type=email][name=chargePersonEmail]');
@@ -4896,23 +4890,15 @@ async function my_step_01_check(exhibitorSeq){
         return false;
     }*/
 
-    // 담당자 휴대전화
+    // 담당자(부담당자) 휴대전화 — 선택 입력이지만 입력했다면 형식이 맞아야 한다 (2026-10-30 QA 1번: blur alert 제거에 따라 저장 시 검사 복원)
     let charge_person_phone_el = $('input[type=tel][name=chargePersonPhone]');
-    /*let charge_person_phone_len = charge_person_phone_el.length;
-    let charge_person_phone_flag = true;
-    for(let i=0; i<charge_person_phone_len; i++){
-        if(charge_person_phone_el.eq(i).val() === ''){
-            charge_person_phone_flag = false;
-        }
-
-        if ( charge_person_phone_flag && !/^010-?[0-9]{4}-?[0-9]{4}$/.test( charge_person_phone_el.eq(i).val() ) ) {
-            charge_person_phone_flag = false;
+    for(let i=0; i<charge_person_phone_el.length; i++){
+        let charge_person_phone_val = (charge_person_phone_el.eq(i).val() || '').trim();
+        if ( charge_person_phone_val !== '' && !/^010-?[0-9]{4}-?[0-9]{4}$/.test( charge_person_phone_val ) ) {
+            showMessage('', 'error', '[ 담당자 정보 ]', '부담당자 #' + (i + 1) + ' 휴대전화번호를 올바른 형식으로 입력해 주세요.<br>(앞자리 010 만 가능합니다.)', '');
+            return false;
         }
     }
-    if(!charge_person_phone_flag){
-        showMessage('', 'error', '[담당자 정보]', '휴대전화를 입력해 주세요.<br>또는 올바른 휴대전화번호 형식으로 입력해 주세요.(010 만 가능)', '');
-        return false;
-    }*/
 
     // 담당자 이메일
     let charge_person_email_el = $('input[type=email][name=chargePersonEmail]');

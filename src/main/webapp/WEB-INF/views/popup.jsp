@@ -57,7 +57,7 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="/js/jquery.cookie.min.js"></script>
     <script src="/js/jquery.ui.touch-punch.min.js"></script>
-    <script src="/js/main.js?ver=20260630"></script>
+    <script src="/js/main.js?ver=20261030"></script>
 
     <style>
         /* 기본 리셋 및 전체 설정 */

@@ -530,7 +530,7 @@ if (document.documentElement) {
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="/js/mngMain.js?ver=20260630"></script>
-    <script src="/js/custom/booth_new_new.js?ver=20260630"></script>
+    <script src="/js/custom/booth_new_new.js?ver=20261030"></script>
 
     <script>
         document.addEventListener("keyup", function(event) {

@@ -831,6 +831,10 @@ public class KibsServiceImpl implements KibsService {
             exhibitorNewDTO.setPrcSum(result.getPrcSum());
             exhibitorNewDTO.setPrcVat(result.getPrcVat());
             exhibitorNewDTO.setPrcTotal(result.getPrcTotal());
+            // 부스 금액 컬럼도 서버 단가로 확정 저장 (2026-10-30 QA 4번: 브라우저가 옛 main.js 를 캐시하면 옛 단가로 계산된 금액이 그대로 저장되던 문제)
+            exhibitorNewDTO.setRegistrationFee(result.getRegistrationFee());
+            exhibitorNewDTO.setStandAloneBoothFee(result.getStandAloneBoothFee());
+            exhibitorNewDTO.setAssemblyBoothFee(result.getAssemblyBoothFee());
 
             exhibitorNewDTO.setNote("step2_1");
             Integer step2_1_ex_result = kibsMapper.updateExhibitorNewBooth(exhibitorNewDTO);

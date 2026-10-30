@@ -11,6 +11,9 @@ public class CalculationResultDTO {
 
     // --- 공통 계산 항목 ---
     private int boothPrcSum;          // 부스 총액 (등록비 포함)
+    private int registrationFee;      // 등록비 (DB 저장용, 2026-10-30)
+    private int standAloneBoothFee;   // 독립부스 금액 = 수량 x 단가 (DB 저장용, 2026-10-30)
+    private int assemblyBoothFee;     // 조립부스 금액 = 수량 x 단가 (DB 저장용, 2026-10-30)
     private int basicDiscountSum;     // 기본 할인 총액
     private int specialDiscountTotal; // 특별 할인 총액
     private int developmentFund;      // 발전 기금

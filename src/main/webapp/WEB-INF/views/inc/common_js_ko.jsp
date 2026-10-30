@@ -11,4 +11,4 @@
 <script src="/js/resize/compressor.js"></script>
 <script src="/js/script.js?ver=20260630"></script>
 <script src="/js/swiper.js"></script>
-<script src="/js/main.js?ver=20260630"></script>
+<script src="/js/main.js?ver=20261030"></script>

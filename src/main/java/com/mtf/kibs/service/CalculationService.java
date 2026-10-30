@@ -90,6 +90,9 @@ public class CalculationService {
                 + (input.getAssemblyBoothCnt() * assemblyFeeUnit)
                 /*+ (input.getOnlineBoothCnt() * onlineFeeUnit)*/;
         result.setBoothPrcSum(boothPrcSum);
+        result.setRegistrationFee(registrationFee);
+        result.setStandAloneBoothFee(input.getStandAloneBoothCnt() * standAloneFeeUnit);
+        result.setAssemblyBoothFee(input.getAssemblyBoothCnt() * assemblyFeeUnit);
 
         // --- 2. 기본 할인 총액 계산 ---
         int basicDiscountSum = 0;
@@ -250,6 +253,9 @@ public class CalculationService {
                 + (input.getAssemblyBoothCnt() * assemblyFeeUnit)
                 + (input.getOnlineBoothCnt() * onlineFeeUnit);
         result.setBoothPrcSum(boothPrcSum);
+        result.setRegistrationFee(registrationFee);
+        result.setStandAloneBoothFee(input.getStandAloneBoothCnt() * standAloneFeeUnit);
+        result.setAssemblyBoothFee(input.getAssemblyBoothCnt() * assemblyFeeUnit);
 
         // --- 2. 기본 할인 총액 계산 ---
         int basicDiscountSum = 0;

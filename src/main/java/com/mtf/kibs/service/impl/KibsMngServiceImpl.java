@@ -4099,6 +4099,21 @@ public class KibsMngServiceImpl implements KibsMngService {
 
         try {
 
+            // 부스 금액·부스 총액은 화면(JS) 값 대신 서버 단가로 재계산해 저장 (2026-10-30 QA 4번, 연도별 단가는 transfer_year 기준)
+            ExhibitorNewDTO currentData = kibsMngMapper.selectExhibitorNewInvoiceDetail(exhibitorNewDTO.getSeq());
+            if (currentData != null) {
+                CalculationInputDTO feeInput = new CalculationInputDTO();
+                feeInput.setLang(currentData.getLang() != null ? currentData.getLang() : "KO");
+                feeInput.setRegistrationCnt(exhibitorNewDTO.getRegistrationCnt() != null ? exhibitorNewDTO.getRegistrationCnt() : 0);
+                feeInput.setStandAloneBoothCnt(exhibitorNewDTO.getStandAloneBoothCnt() != null ? exhibitorNewDTO.getStandAloneBoothCnt() : 0);
+                feeInput.setAssemblyBoothCnt(exhibitorNewDTO.getAssemblyBoothCnt() != null ? exhibitorNewDTO.getAssemblyBoothCnt() : 0);
+                CalculationResultDTO feeResult = calculationService.calculateTotals(feeInput, currentData.getTransferYear());
+                exhibitorNewDTO.setRegistrationFee(feeResult.getRegistrationFee());
+                exhibitorNewDTO.setStandAloneBoothFee(feeResult.getStandAloneBoothFee());
+                exhibitorNewDTO.setAssemblyBoothFee(feeResult.getAssemblyBoothFee());
+                exhibitorNewDTO.setBoothPrcSum(feeResult.getBoothPrcSum());
+            }
+
             /* exhibitor table update */
             result = kibsMngMapper.updateExhibitorNewBooth(exhibitorNewDTO);
 
